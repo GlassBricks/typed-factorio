@@ -8,7 +8,7 @@ export function assertEquals<T>(expected: T, actual: T): void {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function assertNever(_value: never): never {
-  throw new Error("Value was not never")
+  throw new Error("Value should be never")
 }
 
 export function getOrPut<K, V extends unknown>(map: Map<K, V>, key: K, def: V): V {

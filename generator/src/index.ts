@@ -25,7 +25,7 @@ const opts = commandLineArgs(options)
 
 if (!opts.file) throw Error("json file name not provided")
 
-console.log("parsing file")
+console.log("reading file")
 const api = JSON.parse(fs.readFileSync(opts.file, "utf-8"))
 
 console.log("generating docs")
@@ -34,13 +34,13 @@ let output = new DefinitionsGenerator(api, {
 }).generateDeclarations()
 
 if (!opts.noformat) {
-  console.log("formatting")
+  console.log("formatting with prettier")
   output = prettier.format(output, {
     parser: "typescript",
     printWidth: 120,
     plugins: ["prettier-plugin-jsdoc"],
   })
 }
-
 console.log("writing file")
 fs.writeFileSync(`factorio-${api.stage}-${api.application_version}.d.ts`, output)
+console.log("done")

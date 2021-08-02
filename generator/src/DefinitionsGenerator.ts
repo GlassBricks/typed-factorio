@@ -2,14 +2,30 @@ import * as ts from "typescript"
 import { NodeFlags, SyntaxKind } from "typescript"
 import { createRecordType, Modifiers, Tokens, toPascalCase, Types } from "./gen-util"
 import { assertEquals, assertNever, sortByOrder } from "./util"
-import { printer } from "./printer"
-import { addJsDoc, createComment } from "./jsDoc"
+import { emptySourceFile, printer } from "./printer"
 
 export default class DefinitionsGenerator {
   private statements: ts.Statement[] = []
   private numericTypes = new Set<string>()
 
+  private typeNames: Record<string, string> = {} // original: mapped
+
   private static keywords = new Set(["function", "interface"])
+  private builtins = new Set(this.docs.builtin_types.map((e) => e.name))
+  private defines = new Set<string>()
+  private events = new Set<string>(this.docs.events.map((e) => e.name))
+  private classes = new Set<string>(this.docs.classes.map((e) => e.name))
+  private concepts = new Set<string>(this.docs.concepts.map((e) => e.name))
+  private globalObjects = new Set<string>(this.docs.global_objects.map((e) => e.name))
+
+  private readonly rootDefine = {
+    order: 0,
+    name: "defines",
+    description: "",
+    subkeys: this.docs.defines,
+  }
+
+  private readonly docUrlBase = `https://lua-api.factorio.com/${this.docs.application_version}/`
 
   constructor(
     private readonly docs: FactorioApiJson,
@@ -26,10 +42,42 @@ export default class DefinitionsGenerator {
   }
 
   private addHeaders() {
-    this.statements.push(createComment('/ <reference types="lua-types/5.2" />'))
+    this.statements.push(DefinitionsGenerator.createComment('/ <reference types="lua-types/5.2" />'))
+  }
+
+  private preprocessAll() {
+    for (const type of [
+      this.docs.builtin_types,
+      this.docs.classes,
+      this.docs.concepts,
+      this.docs.global_objects,
+    ].flat()) {
+      this.typeNames[type.name] = type.name
+    }
+    for (const event of this.docs.events) {
+      this.typeNames[event.name] = DefinitionsGenerator.getMappedEventName(event)
+    }
+    const addDefine = (define: Define, prefix: string) => {
+      const name = prefix + define.name
+      this.typeNames[name] = name
+      this.defines.add(name)
+      if (define.values) {
+        for (const value of define.values) {
+          const valueName = name + "." + value.name
+          this.typeNames[valueName] = valueName
+        }
+      }
+      if (define.subkeys) {
+        for (const subkey of define.subkeys) {
+          addDefine(subkey, name + ".")
+        }
+      }
+    }
+    addDefine(this.rootDefine, "")
   }
 
   private generateAll() {
+    this.preprocessAll()
     this.generateBuiltins()
     this.generateDefines()
     this.generateEvents()
@@ -50,7 +98,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateBuiltins() {
-    this.statements.push(createComment(" Builtins"))
+    this.statements.push(DefinitionsGenerator.createComment(" Builtins"))
     for (const builtin of this.docs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string") continue
       let type: ts.TypeNode
@@ -67,25 +115,26 @@ export default class DefinitionsGenerator {
         undefined,
         type
       )
-      if (this.options.docs) addJsDoc(typeAliasDeclaration, builtin)
+      if (this.options.docs) this.addJsDoc(typeAliasDeclaration, builtin, builtin.name)
       this.statements.push(typeAliasDeclaration)
     }
   }
 
   private generateDefines() {
-    this.statements.push(createComment(" Defines"))
+    this.statements.push(DefinitionsGenerator.createComment(" Defines"))
 
-    const generateDefinesDeclaration = (path: string, define: Define, modifiers?: ts.Modifier[]): ts.Statement => {
+    const generateDefinesDeclaration = (define: Define, path: string, modifiers?: ts.Modifier[]): ts.Statement => {
       let declaration: ts.Statement
+      const thisPath = path + (path ? "." : "") + define.name
       if (define.values) {
-        const members = define.values
-          .sort(sortByOrder)
-          .map((m, i) => ts.factory.createEnumMember(m.name, ts.factory.createNumericLiteral(i)))
+        const members = define.values.sort(sortByOrder).map((m, i) => {
+          const enumMember = ts.factory.createEnumMember(m.name, ts.factory.createNumericLiteral(i))
+          if (this.options.docs) this.addJsDoc(enumMember, m, thisPath + "." + m.name)
+          return enumMember
+        })
         declaration = ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)
       } else if (define.subkeys) {
-        const declarations = define.subkeys
-          .sort(sortByOrder)
-          .map((d) => generateDefinesDeclaration(path + (path ? "." : "") + define.name, d))
+        const declarations = define.subkeys.sort(sortByOrder).map((d) => generateDefinesDeclaration(d, thisPath))
         declaration = ts.factory.createModuleDeclaration(
           undefined,
           modifiers,
@@ -97,20 +146,11 @@ export default class DefinitionsGenerator {
         assertEquals("prototypes", define.name) // todo: manual definitions
         declaration = createPrototypesDefine(define)
       }
-      if (this.options.docs) addJsDoc(declaration, define)
+      if (this.options.docs) this.addJsDoc(declaration, define, thisPath)
       return declaration
     }
 
-    const defines = generateDefinesDeclaration(
-      "",
-      {
-        order: 0,
-        name: "defines",
-        description: "", // TODO
-        subkeys: this.docs.defines,
-      },
-      [Modifiers.declare]
-    )
+    const defines = generateDefinesDeclaration(this.rootDefine, "", [Modifiers.declare])
     this.statements.push(defines)
 
     function createPrototypesDefine(define: BasicMember): ts.Statement {
@@ -137,7 +177,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateEvents() {
-    this.statements.push(createComment(" Events"))
+    this.statements.push(DefinitionsGenerator.createComment(" Events"))
     this.statements.push(
       ...this.docs.events.sort(sortByOrder).map((event) => {
         const name = DefinitionsGenerator.getMappedEventName(event)
@@ -154,7 +194,7 @@ export default class DefinitionsGenerator {
             return this.mapParameterToProperty(p)
           })
         )
-        if (this.options.docs) addJsDoc(interfaceDeclaration, event)
+        if (this.options.docs) this.addJsDoc(interfaceDeclaration, event, event.name)
         return interfaceDeclaration
       })
     )
@@ -167,7 +207,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateClasses() {
-    this.statements.push(createComment(" Classes"))
+    this.statements.push(DefinitionsGenerator.createComment(" Classes"))
     for (const clazz of this.docs.classes.sort(sortByOrder)) {
       const inherits: ts.ExpressionWithTypeArguments[] = []
       // const members = new Map<string, ts.TypeElement[]>()
@@ -181,7 +221,7 @@ export default class DefinitionsGenerator {
         )
       }
       for (const attribute of clazz.attributes.sort(sortByOrder)) {
-        const property = this.mapAttribute(attribute)
+        const property = this.mapAttribute(attribute, clazz.name)
         // for (const subclass of attribute.subclasses || [""]) {
         //   getOrPut(members, subclass, []).push(property)
         // }
@@ -250,7 +290,7 @@ export default class DefinitionsGenerator {
       this.statements.push(baseDeclaration)
 
       // if (members.size <= 1) {
-      if (this.options.docs) addJsDoc(baseDeclaration, clazz)
+      if (this.options.docs) this.addJsDoc(baseDeclaration, clazz, clazz.name)
       // } else {
       //   // todo: discriminator + default + stuff
       //   const heritageClause = [
@@ -277,20 +317,26 @@ export default class DefinitionsGenerator {
       //   )
       //   this.statements.push(actualDeclaration)
       //   if (this.options.docs) {
-      //     addJsDoc(actualDeclaration, clazz)
+      //     this.addJsDoc(actualDeclaration, clazz)
       //   }
       // }
     }
   }
 
   private generateConcepts() {
-    this.statements.push(createComment(" Concepts"))
+    this.statements.push(DefinitionsGenerator.createComment(" Concepts"))
     for (const concept of this.docs.concepts.sort(sortByOrder)) {
       let type: ts.TypeNode | ts.InterfaceDeclaration
 
       if (concept.category === "union") {
         type = ts.factory.createUnionTypeNode(
-          concept.options.sort(sortByOrder).map((option) => this.mapType(option.type))
+          concept.options.sort(sortByOrder).map((option) => {
+            const typeNode = this.mapType(option.type)
+            if (this.options.docs) {
+              this.addJsDoc(typeNode, option, undefined)
+            }
+            return typeNode
+          })
         )
       } else if (concept.category === "concept") {
         type = Types.unknown // todo: manual type defs
@@ -301,7 +347,7 @@ export default class DefinitionsGenerator {
           concept.name,
           undefined,
           undefined,
-          concept.attributes.sort(sortByOrder).map((m) => this.mapAttribute(m))
+          concept.attributes.sort(sortByOrder).map((attr) => this.mapAttribute(attr, concept.name))
         )
       } else if (concept.category === "flag") {
         type = ts.factory.createInterfaceDeclaration(
@@ -362,13 +408,13 @@ export default class DefinitionsGenerator {
       const declaration = ts.isInterfaceDeclaration(type)
         ? type
         : ts.factory.createTypeAliasDeclaration(undefined, undefined, concept.name, undefined, type)
-      if (this.options.docs) addJsDoc(declaration, concept)
+      if (this.options.docs) this.addJsDoc(declaration, concept, concept.name)
       this.statements.push(declaration)
     }
   }
 
   private generateGlobalObjects() {
-    this.statements.push(createComment(" Global objects"))
+    this.statements.push(DefinitionsGenerator.createComment(" Global objects"))
     for (const globalObject of this.docs.global_objects.sort(sortByOrder)) {
       const definition = ts.factory.createVariableStatement(
         [Modifiers.declare],
@@ -377,7 +423,7 @@ export default class DefinitionsGenerator {
           ts.NodeFlags.Const
         )
       )
-      if (this.options.docs) addJsDoc(definition, globalObject)
+      if (this.options.docs) this.addJsDoc(definition, globalObject, globalObject.name)
       this.statements.push(definition)
     }
   }
@@ -389,7 +435,7 @@ export default class DefinitionsGenerator {
     )
   }
 
-  private mapAttribute(attribute: Attribute): ts.TypeElement {
+  private mapAttribute(attribute: Attribute, path: string): ts.TypeElement {
     // todo: nilable
     let member: ts.TypeElement
     if (!attribute.read) {
@@ -418,7 +464,7 @@ export default class DefinitionsGenerator {
         this.mapType(attribute.type)
       )
     }
-    if (this.options.docs) addJsDoc(member, attribute)
+    if (this.options.docs) this.addJsDoc(member, attribute, path + "." + attribute.name)
     return member
   }
 
@@ -468,7 +514,8 @@ export default class DefinitionsGenerator {
     if (this.options.docs) {
       const params: ts.JSDocTag[] = method.takes_table
         ? []
-        : method.parameters
+        : (method.parameters as { name: string; description?: string }[])
+            .concat([{ name: "args", description: method.variadic_description }])
             .filter((p) => p.description)
             .map((p) =>
               ts.factory.createJSDocParameterTag(
@@ -483,7 +530,7 @@ export default class DefinitionsGenerator {
       if (method.return_description) {
         params.push(ts.factory.createJSDocReturnTag(undefined, undefined, method.return_description))
       }
-      addJsDoc(methodSignature, method, params)
+      this.addJsDoc(methodSignature, method, fromClass + "." + method.name, params)
     }
     return methodSignature
   }
@@ -543,7 +590,7 @@ export default class DefinitionsGenerator {
     )
     this.statements.push(declaration)
     if (memberForDocs && this.options.docs) {
-      addJsDoc(declaration, memberForDocs)
+      this.addJsDoc(declaration, memberForDocs, memberForDocs.name)
     }
     return ts.factory.createTypeReferenceNode(name)
   }
@@ -602,7 +649,7 @@ export default class DefinitionsGenerator {
       parameter.optional ? Tokens.question : undefined,
       this.mapType(parameter.type)
     )
-    if (this.options.docs) addJsDoc(propertySignature, parameter)
+    if (this.options.docs) this.addJsDoc(propertySignature, parameter, undefined)
     return propertySignature
   }
 
@@ -629,5 +676,126 @@ export default class DefinitionsGenerator {
       return "_" + name
     }
     return name
+  }
+
+  private processDescription(description: string): string {
+    let result = ""
+    for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|```((?:(?!```).)*```))/gs)) {
+      const withLinks = text.replace(/(?<!\[)\[(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
+        let link: string
+        if (origLink.match(/^http(s?):\/\//)) {
+          link = origLink
+        } else if (origLink.match(/\.html($|#)/)) {
+          link = this.docUrlBase + origLink
+        } else if (this.typeNames[origLink]) {
+          link = this.typeNames[origLink]
+        } else {
+          const match = origLink.match(/^(.+?)::(.+)$/)
+          if (match) {
+            link = match[1] + "." + match[2]
+          } else {
+            console.log(`unresolved link: ${origLink}`)
+            link = origLink
+          }
+        }
+        if (link === name) {
+          return `{@link ${link}}`
+        } else {
+          return `{@link ${link} ${name}}`
+        }
+      })
+      result += withLinks
+
+      if (codeBlock) result += "```lua" + codeBlock
+    }
+
+    return result
+  }
+
+  private getDocumentationUrl(reference: string): string {
+    let relative_link: string
+    if (this.builtins.has(reference)) {
+      relative_link = "Builtin-Types.html#" + reference
+    } else if (this.classes.has(reference)) {
+      relative_link = reference + ".html"
+    } else if (this.events.has(reference)) {
+      relative_link = "events.html#" + reference
+    } else if (this.defines.has(reference)) {
+      relative_link = "defines.html#" + reference
+    } else if (this.concepts.has(reference)) {
+      relative_link = "Concepts.html#"
+    } else if (this.globalObjects.has(reference)) {
+      relative_link = ""
+    } else {
+      if (reference.includes(".")) {
+        const className = reference.substr(0, reference.indexOf("."))
+        return this.getDocumentationUrl(className) + "#" + reference
+      } else {
+        console.log("Could not get url:", reference)
+        relative_link = ""
+      }
+    }
+    return this.docUrlBase + relative_link
+  }
+
+  private addJsDoc(
+    node: ts.Node,
+    element: { description: string; subclasses?: string[] } & WithNotes,
+    reference: string | undefined,
+    tags?: ts.JSDocTag[]
+  ) {
+    const comment = [
+      element.description,
+      element.notes?.map((n) => "**Note**: " + n),
+      element.subclasses &&
+        `_Can only be used if this is ${
+          element.subclasses.length === 1
+            ? element.subclasses[0]
+            : `${element.subclasses.slice(0, -1).join(", ")} or ${element.subclasses[element.subclasses.length - 1]}`
+        }_`,
+      reference && `{@link ${this.getDocumentationUrl(reference)} View documentation}`,
+    ]
+      .filter((x) => !!x)
+      .join("\n\n")
+
+    tags = tags || []
+    if (element.examples) {
+      tags.push(
+        ...element.examples.map((e) =>
+          ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("example"), "\n" + this.processDescription(e))
+        )
+      )
+    }
+    if (element.see_also) {
+      tags.push(
+        ...element.see_also?.map((l) =>
+          ts.factory.createJSDocSeeTag(
+            undefined,
+            ts.factory.createJSDocNameReference(ts.factory.createIdentifier(l.replace(/::/g, ".")))
+          )
+        )
+      )
+    }
+    if (!comment && tags.length === 0) return
+
+    const jsDoc = ts.factory.createJSDocComment(comment && this.processDescription(comment), tags)
+
+    const text = printer
+      .printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
+      .trim()
+      .replace(/^\/\*|\*\/$/g, "")
+
+    ts.addSyntheticLeadingComment(node, SyntaxKind.MultiLineCommentTrivia, text, true)
+  }
+
+  private static createComment(text: string, multiline?: boolean): ts.EmptyStatement {
+    const node = ts.factory.createEmptyStatement()
+    ts.addSyntheticLeadingComment(
+      node,
+      multiline ? SyntaxKind.MultiLineCommentTrivia : SyntaxKind.SingleLineCommentTrivia,
+      text,
+      true
+    )
+    return node
   }
 }

@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/index.ts",
-    "lint": "eslint **/*.ts*",
-    "lint:fix": "eslint **/*.ts* --fix"
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix"
   }
 }
