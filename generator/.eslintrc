@@ -1,0 +1,61 @@
+{
+  "root": true,
+  "env": {
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "standard",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "rules": {
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": [
+      "warn"
+    ],
+    "no-useless-constructor": "off",
+    "@typescript-eslint/no-useless-constructor": "warn",
+    "max-len": [
+      "warn",
+      {
+        "code": 120
+      }
+    ],
+    "camelcase": "off",
+    "spaced-comment": "warn",
+    "lines-between-class-members": "warn",
+    "prettier/prettier": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-inferrable-types": [
+      "warn",
+      {
+        "ignoreParameters": true,
+        "ignoreProperties": true
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "quotes": [
+      "warn",
+      "double",
+      {
+        "avoidEscape": true
+      }
+    ]
+  }
+}
