@@ -31,7 +31,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "run": "yarn run build && node dist/index.js ./generator-src --outdir temp",
+    "run": "ts-node src/index.ts ./generator-src --outdir temp",
     "run:noformat": "yarn run run --noformat",
     "run:nodocs": "yarn run run --nodocs",
     "lint": "eslint src/**/*.ts",

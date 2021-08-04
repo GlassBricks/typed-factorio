@@ -40,7 +40,7 @@ if (!opts.folder) throw Error("folder name not provided")
 console.log("reading files")
 const jsonApi = JSON.parse(fs.readFileSync(path.join(opts.folder[0], "runtime-api.json"), "utf-8"))
 
-const manualDefinesFile = path.resolve(opts.folder[0], "manual-defines.ts")
+const manualDefinesFile = path.resolve(opts.folder[0], "manualDefinitions.ts")
 const program = ts.createProgram({
   rootNames: [manualDefinesFile],
   options: {},
