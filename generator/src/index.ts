@@ -4,7 +4,6 @@ import DefinitionsGenerator from "./DefinitionsGenerator"
 import commandLineArgs from "command-line-args"
 import * as path from "path"
 import ts from "typescript"
-import { processManualDefines } from "./manualDefines"
 
 const options: commandLineArgs.OptionDefinition[] = [
   {
@@ -46,7 +45,7 @@ const program = ts.createProgram({
   rootNames: [manualDefinesFile],
   options: {},
 })
-const manualDefines = processManualDefines(program.getSourceFile(manualDefinesFile))
+const manualDefines = program.getSourceFile(manualDefinesFile)
 
 console.log("generating docs")
 let output = new DefinitionsGenerator(jsonApi, manualDefines, !opts.nodocs).generateDeclarations()

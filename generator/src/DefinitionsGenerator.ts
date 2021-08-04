@@ -1,12 +1,13 @@
-import ts, { NodeFlags, SyntaxKind } from "typescript"
+import * as ts from "typescript"
 import { createRecordType, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
 import { assertEquals, assertNever, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
-import { RootDef } from "./manualDefines"
+import { processManualDefinitions, RootDef } from "./manualDefines"
 import chalk from "chalk"
 
 export default class DefinitionsGenerator {
   private statements: ts.Statement[] = []
+  private readonly manualDefinitions: Record<string, RootDef | undefined>
 
   private builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
   private defines = new Set<string>()
@@ -16,7 +17,8 @@ export default class DefinitionsGenerator {
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
 
   private numericTypes = new Set<string>()
-  private typeNames: Record<string, string> = {} // original: mapped
+  // original: mapped
+  private typeNames: Record<string, string> = {}
 
   private readonly rootDefine = {
     order: 0,
@@ -32,7 +34,7 @@ export default class DefinitionsGenerator {
 
   constructor(
     private readonly apiDocs: FactorioApiJson,
-    private readonly manualDefines: Record<string, RootDef | undefined>,
+    private readonly manualDefinitionsSource: ts.SourceFile | undefined,
     private readonly docs: boolean
   ) {
     if (apiDocs.application !== "factorio") {
@@ -41,10 +43,22 @@ export default class DefinitionsGenerator {
     if (apiDocs.api_version !== 1) {
       throw new Error("Unsupported api version " + apiDocs.api_version)
     }
+    this.manualDefinitions = processManualDefinitions(manualDefinitionsSource)
+  }
+
+  private generateAll() {
+    this.preprocessAll()
+    this.generateBuiltins()
+    this.generateDefines()
+    this.generateEvents()
+    this.generateClasses()
+    this.generateConcepts()
+    this.generateGlobalObjects()
+    this.generateManualDefinitions()
   }
 
   private addHeaders() {
-    this.statements.push(DefinitionsGenerator.createComment('/ <reference types="lua-types/5.2" />'))
+    this.statements.push(createComment('/ <reference types="lua-types/5.2" />'))
   }
 
   private preprocessAll() {
@@ -78,29 +92,19 @@ export default class DefinitionsGenerator {
     addDefine(this.rootDefine, "")
   }
 
-  private generateAll() {
-    this.preprocessAll()
-    this.generateBuiltins()
-    this.generateDefines()
-    this.generateEvents()
-    this.generateClasses()
-    this.generateConcepts()
-    this.generateGlobalObjects()
-  }
-
   generateDeclarations(): string {
     this.addHeaders()
     this.generateAll()
     const sourceFile = ts.factory.createSourceFile(
       this.statements,
-      ts.factory.createToken(SyntaxKind.EndOfFileToken),
-      NodeFlags.None
+      ts.factory.createToken(ts.SyntaxKind.EndOfFileToken),
+      ts.NodeFlags.None
     )
     return printer.printFile(sourceFile)
   }
 
   private generateBuiltins() {
-    this.statements.push(DefinitionsGenerator.createComment(" Builtins"))
+    this.statements.push(createComment(" Builtins"))
     for (const builtin of this.apiDocs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string") continue
       let type: ts.TypeNode
@@ -120,7 +124,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateDefines() {
-    this.statements.push(DefinitionsGenerator.createComment(" Defines"))
+    this.statements.push(createComment(" Defines"))
 
     const generateDefinesDeclaration = (define: Define, path: string, modifiers?: ts.Modifier[]): ts.Statement => {
       let declaration: ts.Statement
@@ -177,7 +181,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateEvents() {
-    this.statements.push(DefinitionsGenerator.createComment(" Events"))
+    this.statements.push(createComment(" Events"))
     this.statements.push(
       ...this.apiDocs.events.sort(sortByOrder).map((event) => {
         const name = DefinitionsGenerator.getMappedEventName(event)
@@ -209,16 +213,17 @@ export default class DefinitionsGenerator {
   }
 
   private generateClasses() {
-    this.statements.push(DefinitionsGenerator.createComment(" Classes"))
+    this.statements.push(createComment(" Classes"))
+
     for (const clazz of this.apiDocs.classes.sort(sortByOrder)) {
-      const existing = this.manualDefines[clazz.name]
+      const existing = this.manualDefinitions[clazz.name]
       if (existing && existing.kind !== "interface" && existing.kind !== "type") {
         throw new Error("Manual define for class should be interface or type alias")
       }
+
+      // supertypes
       const superTypes: ts.TypeNode[] = []
       // const members = new Map<string, ts.TypeElement[]>()
-      const members: ts.TypeElement[] = []
-
       if (clazz.base_classes) {
         superTypes.push(
           ...clazz.base_classes.map((b) =>
@@ -242,12 +247,22 @@ export default class DefinitionsGenerator {
           if (!type) throw new Error(`Manual define ${clazz.name} extends an array type without type arguments`)
           arrayType = { type, readonly }
         }
-      } // array inherit with type aliases not yet supported
+      }
+      // array inherit with type aliases not yet supported
+
+      // members
+      const members: ts.TypeElement[] = []
+
+      const standardMembers: {
+        help?: Method
+        object_name?: Attribute
+        valid?: Attribute
+      } = {}
 
       const callOperator = clazz.operators.find((x) => x.name === "call") as CallOperator | undefined
       const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
 
-      for (const method of clazz.methods.sort(sortByOrder)) {
+      const addMethod = (method: Method) => {
         const methodSignature = this.mapMethod(clazz.name, method)
         const existingMethod = existing?.members[method.name]
         if (existingMethod) {
@@ -258,30 +273,25 @@ export default class DefinitionsGenerator {
               } instead`
             )
           }
-          const copy = ts.factory.createMethodSignature(
-            existingMethod.modifiers,
-            existingMethod.name,
-            existingMethod.questionToken,
-            existingMethod.typeParameters,
-            existingMethod.parameters,
-            existingMethod.type
-          )
-          ts.setSyntheticLeadingComments(copy, ts.getSyntheticLeadingComments(methodSignature))
-          members.push(copy)
+          existingMethod.emitNode = existingMethod.emitNode || {}
+          ts.setSyntheticLeadingComments(existingMethod, ts.getSyntheticLeadingComments(methodSignature))
+          members.push(existingMethod)
         } else {
           members.push(methodSignature)
         }
-        // for (const subclass of method.subclasses || [""]) {
-        //   getOrPut(members, subclass, []).push(property)
-        // }
+      }
+      for (const method of clazz.methods.sort(sortByOrder)) {
+        if (method.name === "help") {
+          standardMembers.help = method
+          continue
+        }
+        addMethod(method)
       }
       if (callOperator) {
         const asMethod = this.mapMethod(clazz.name, { ...callOperator, name: "operator%20()" })
         const callSignature = ts.factory.createCallSignature(undefined, asMethod.parameters, asMethod.type)
         ts.setSyntheticLeadingComments(callSignature, ts.getSyntheticLeadingComments(asMethod))
-        members
-          // .get("")!
-          .push(callSignature)
+        members.push(callSignature)
       }
       if (lengthOperator) {
         const length = this.addJsDoc(
@@ -296,12 +306,10 @@ export default class DefinitionsGenerator {
           lengthOperator,
           clazz.name + ".operator%20#"
         )
-        members
-          // .get("")!
-          .push(length)
+        members.push(length)
       }
 
-      for (const attribute of clazz.attributes.sort(sortByOrder)) {
+      const addProperty = (attribute: Attribute) => {
         const property = this.mapAttribute(attribute, clazz.name)
         const existingProperty = existing?.members[attribute.name]
         if (existingProperty) {
@@ -312,24 +320,23 @@ export default class DefinitionsGenerator {
               } instead`
             )
           }
-          const copy = ts.factory.createPropertySignature(
-            existingProperty.modifiers,
-            existingProperty.name,
-            existingProperty.questionToken,
-            existingProperty.type
-          )
-          ts.setSyntheticLeadingComments(copy, ts.getSyntheticLeadingComments(property))
-          members.push(copy)
+          existingProperty.emitNode = existingProperty.emitNode || {}
+          ts.setSyntheticLeadingComments(existingProperty, ts.getSyntheticLeadingComments(property))
+          members.push(existingProperty)
         } else {
           members.push(property)
         }
-        // for (const subclass of attribute.subclasses || [""]) {
-        //   getOrPut(members, subclass, []).push(property)
-        // }
       }
-      let indexingType: ts.TypeAliasDeclaration | ts.InterfaceDeclaration | undefined
-      const indexOperator = clazz.operators.find((x) => x.name === "index") as IndexOperator | undefined
-      if (indexOperator) {
+
+      for (const attribute of clazz.attributes.sort(sortByOrder)) {
+        if (attribute.name === "valid" || attribute.name === "object_name") {
+          standardMembers[attribute.name] = attribute
+          continue
+        }
+        addProperty(attribute)
+      }
+
+      const getIndexingType = (operator: IndexOperator) => {
         if (arrayType) {
           const indexSignature = this.addJsDoc(
             ts.factory.createIndexSignature(
@@ -348,58 +355,62 @@ export default class DefinitionsGenerator {
               ],
               arrayType.type
             ),
-            indexOperator,
+            operator,
             clazz.name + ".operator%20[]"
           )
           members.push(indexSignature)
-        } else if (existing?.kind === "type" && existing.indexOperator) {
-          const existingIndexOp = existing.indexOperator
-          if (ts.isMappedTypeNode(existingIndexOp)) {
-            const copy = this.addJsDoc(
-              ts.factory.createMappedTypeNode(
-                existingIndexOp.readonlyToken,
-                existingIndexOp.typeParameter,
-                existingIndexOp.nameType,
-                existingIndexOp.questionToken,
-                existingIndexOp.type
-              ),
-              indexOperator,
-              clazz.name + ".operator%20[]"
-            )
-            indexingType = ts.factory.createTypeAliasDeclaration(
-              undefined,
-              undefined,
-              clazz.name + "Index",
-              existing.node.typeParameters,
-              copy
-            )
-          } else if (ts.isTypeLiteralNode(existingIndexOp)) {
-            const existingIndexSignature = existingIndexOp.members[0] as ts.IndexSignatureDeclaration
-            const indexSignature = this.addJsDoc(
-              ts.factory.createIndexSignature(
-                existingIndexSignature.decorators,
-                existingIndexSignature.modifiers,
-                existingIndexSignature.parameters,
-                existingIndexSignature.type
-              ),
-              indexOperator,
-              clazz.name + ".operator%20[]"
-            )
-            indexingType = ts.factory.createInterfaceDeclaration(
-              undefined,
-              undefined,
-              clazz.name + "Index",
-              undefined,
-              undefined,
-              [indexSignature]
-            )
-          } else {
-            assertNever(existingIndexOp)
-          }
-        } else {
-          console.warn(chalk.yellow("No index operator manual definition for class", clazz.name))
+          return undefined
         }
+        if (!(existing?.kind === "type" && existing.indexOperator)) {
+          console.warn(chalk.yellow("No index operator manual definition for class", clazz.name))
+          return
+        }
+
+        const existingIndexOp = existing.indexOperator
+        if (ts.isMappedTypeNode(existingIndexOp)) {
+          return ts.factory.createTypeAliasDeclaration(
+            undefined,
+            undefined,
+            clazz.name + "Index",
+            existing.node.typeParameters,
+            this.addJsDoc(existingIndexOp, operator, clazz.name + ".operator%20[]")
+          )
+        }
+        if (ts.isTypeLiteralNode(existingIndexOp)) {
+          const existingIndexSignature = existingIndexOp.members[0] as ts.IndexSignatureDeclaration
+          const indexSignature = this.addJsDoc(
+            ts.factory.createIndexSignature(
+              existingIndexSignature.decorators,
+              existingIndexSignature.modifiers,
+              existingIndexSignature.parameters,
+              existingIndexSignature.type
+            ),
+            operator,
+            clazz.name + ".operator%20[]"
+          )
+          return ts.factory.createInterfaceDeclaration(
+            undefined,
+            undefined,
+            clazz.name + "Index",
+            undefined,
+            undefined,
+            [indexSignature]
+          )
+        }
+        assertNever(existingIndexOp)
       }
+
+      const indexOperator = clazz.operators.find((x) => x.name === "index") as IndexOperator | undefined
+      const indexingType = indexOperator && getIndexingType(indexOperator)
+
+      if (standardMembers.help && standardMembers.valid && standardMembers.object_name) {
+        superTypes.unshift(ts.factory.createTypeReferenceNode("LuaObject"))
+      } else {
+        if (standardMembers.valid) addProperty(standardMembers.valid)
+        if (standardMembers.object_name) addProperty(standardMembers.object_name)
+        if (standardMembers.help) addMethod(standardMembers.help)
+      }
+
       // const hasMultipleTypes = members.size > 1
       const baseDeclaration = ts.factory.createInterfaceDeclaration(
         undefined,
@@ -408,9 +419,14 @@ export default class DefinitionsGenerator {
         indexingType ? clazz.name + "Members" : clazz.name,
         indexingType ? undefined : existing?.node.typeParameters,
         superTypes.length !== 0
-          ? [ts.factory.createHeritageClause(SyntaxKind.ExtendsKeyword, superTypes as ts.ExpressionWithTypeArguments[])]
+          ? [
+            ts.factory.createHeritageClause(
+              ts.SyntaxKind.ExtendsKeyword,
+              superTypes as ts.ExpressionWithTypeArguments[]
+            ),
+          ]
           : undefined,
-        members // .get("")!
+        members
       )
       this.statements.push(baseDeclaration)
 
@@ -439,7 +455,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateConcepts() {
-    this.statements.push(DefinitionsGenerator.createComment(" Concepts"))
+    this.statements.push(createComment(" Concepts"))
     for (const concept of this.apiDocs.concepts.sort(sortByOrder)) {
       let type: ts.TypeNode | ts.InterfaceDeclaration
       if (concept.category === "union") {
@@ -498,7 +514,7 @@ export default class DefinitionsGenerator {
           concept.parameters.sort(sortByOrder).map((param) => this.mapParameterToProperty(param))
         )
         const array = ts.factory.createTypeOperatorNode(
-          SyntaxKind.ReadonlyKeyword,
+          ts.SyntaxKind.ReadonlyKeyword,
           ts.factory.createTupleTypeNode(
             // already sorted
             concept.parameters.map((param) =>
@@ -524,7 +540,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateGlobalObjects() {
-    this.statements.push(DefinitionsGenerator.createComment(" Global objects"))
+    this.statements.push(createComment(" Global objects"))
     for (const globalObject of this.apiDocs.global_objects.sort(sortByOrder)) {
       const definition = ts.factory.createVariableStatement(
         [Modifiers.declare],
@@ -535,6 +551,26 @@ export default class DefinitionsGenerator {
       )
       this.addJsDoc(definition, globalObject, globalObject.name)
       this.statements.push(definition)
+    }
+  }
+
+  private generateManualDefinitions() {
+    this.statements.push(createComment(" manual definitions"))
+
+    const restoreDocs = (node: ts.Node) => {
+      const doc = (node as ts.JSDocContainer).jsDoc?.[0]
+      if (doc) {
+        const text = doc.getText(this.manualDefinitionsSource)
+        addJSDocText(node, text)
+      }
+      node.forEachChild(restoreDocs)
+    }
+
+    for (const key in this.manualDefinitions) {
+      if (key in this.typeNames) continue
+      const node = this.manualDefinitions[key]!.node
+      restoreDocs(node)
+      this.statements.push(node)
     }
   }
 
@@ -581,19 +617,19 @@ export default class DefinitionsGenerator {
   private mapMethod(fromClass: string, method: Method): ts.MethodSignature {
     const parameters = method.takes_table
       ? [
-          ts.factory.createParameterDeclaration(
-            undefined,
-            undefined,
-            undefined,
-            "params",
-            method.table_is_optional ? Tokens.question : undefined,
-            method.variant_parameter_groups !== undefined
-              ? this.createVariantParameterTypes(fromClass + toPascalCase(method.name), method)
-              : ts.factory.createTypeLiteralNode(
-                  method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m))
-                )
-          ),
-        ]
+        ts.factory.createParameterDeclaration(
+          undefined,
+          undefined,
+          undefined,
+          "params",
+          method.table_is_optional ? Tokens.question : undefined,
+          method.variant_parameter_groups !== undefined
+            ? this.createVariantParameterTypes(fromClass + toPascalCase(method.name), method)
+            : ts.factory.createTypeLiteralNode(
+              method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m))
+            )
+        ),
+      ]
       : method.parameters.sort(sortByOrder).map((m) => this.mapParameterToParameter(m))
 
     if (method.variadic_type) {
@@ -667,7 +703,7 @@ export default class DefinitionsGenerator {
       )
     )
     const heritageClause = [
-      ts.factory.createHeritageClause(SyntaxKind.ExtendsKeyword, [
+      ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
         ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
       ]),
     ]
@@ -800,36 +836,41 @@ export default class DefinitionsGenerator {
 
   private processDescription(description: string): string {
     let result = ""
+
+    const mapLink: (origLink: string) => string = (origLink) => {
+      if (origLink.match(/^http(s?):\/\//)) {
+        return origLink
+      } else if (origLink.match(/\.html($|#)/)) {
+        return this.docUrlBase + origLink
+      } else if (this.typeNames[origLink]) {
+        return this.typeNames[origLink]
+      }
+      const referenceMatch = origLink.match(/^(.+?)::(.+)$/)
+      if (referenceMatch) {
+        const clazz = mapLink(referenceMatch[1])
+        const field = referenceMatch[2]
+        const operator = field.match(/(?<=operator )(.*)/)?.[1]
+        let fieldRef: string
+        if (!operator) {
+          fieldRef = "." + field
+        } else if (operator === "#") {
+          fieldRef = ".length"
+        } else if (operator === "[]" || operator === "()") {
+          fieldRef = "" // not supported, at least not until declaration links get standardized
+        } else {
+          throw new Error(`Unknown operator ${operator}`)
+        }
+        return clazz + fieldRef
+      } else {
+        console.warn(chalk.yellow(`unresolved doc reference: ${origLink}`))
+        return origLink
+      }
+    }
+
     for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|(```(?:(?!```).)*```))/gs)) {
       const withLinks = text.replace(/(?<!\[)\[(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
         let link: string
-        if (origLink.match(/^http(s?):\/\//)) {
-          link = origLink
-        } else if (origLink.match(/\.html($|#)/)) {
-          link = this.docUrlBase + origLink
-        } else if (this.typeNames[origLink]) {
-          link = this.typeNames[origLink]
-        } else {
-          const referenceMatch = origLink.match(/^(.+?)::(.+)$/)
-          if (referenceMatch) {
-            const field = referenceMatch[2]
-            const operator = field.match(/(?<=operator )(.*)/)?.[1]
-            let fieldRef: string
-            if (!operator) {
-              fieldRef = "." + field
-            } else if (operator === "#") {
-              fieldRef = ".length"
-            } else if (operator === "[]" || operator === "()") {
-              fieldRef = "" // not supported, at least not until declaration links get standardized
-            } else {
-              throw new Error(`Unknown operator ${operator}`)
-            }
-            link = referenceMatch[1] + fieldRef
-          } else {
-            console.warn(chalk.yellow(`unresolved link: ${origLink}`))
-            link = origLink
-          }
-        }
+        link = mapLink(origLink)
         if (link === name) {
           return `{@link ${link}}`
         } else {
@@ -855,7 +896,7 @@ export default class DefinitionsGenerator {
     } else if (this.defines.has(reference)) {
       relative_link = "defines.html#" + reference
     } else if (this.concepts.has(reference)) {
-      relative_link = "Concepts.html#"
+      relative_link = "Concepts.html#" + reference
     } else if (this.globalObjects.has(reference)) {
       relative_link = ""
     } else {
@@ -876,25 +917,22 @@ export default class DefinitionsGenerator {
     reference: string | undefined,
     tags?: ts.JSDocTag[]
   ): T {
-    const comment = this.docs
+    let comment = this.docs
       ? [
-          element.description,
-          element.variant_parameter_description,
-          element.notes?.map((n) => "**Note**: " + n),
-          element.subclasses &&
-            `_Can only be used if this is ${
-              element.subclasses.length === 1
-                ? element.subclasses[0]
-                : `${element.subclasses.slice(0, -1).join(", ")} or ${
-                    element.subclasses[element.subclasses.length - 1]
-                  }`
-            }_`,
-          reference &&
-            !reference.match(/\.(valid|object_name|help)/) &&
-            `{@link ${this.getDocumentationUrl(reference)} View documentation}`,
-        ]
-          .filter((x) => x)
-          .join("\n\n")
+        element.description,
+        element.variant_parameter_description,
+        element.notes?.map((n) => "**Note**: " + n),
+        element.subclasses &&
+        `_Can only be used if this is ${
+          element.subclasses.length === 1
+            ? element.subclasses[0]
+            : `${element.subclasses.slice(0, -1).join(", ")} or ${
+              element.subclasses[element.subclasses.length - 1]
+            }`
+        }_`,
+      ]
+        .filter((x) => x)
+        .join("\n\n")
       : undefined
 
     tags = tags || []
@@ -917,24 +955,38 @@ export default class DefinitionsGenerator {
     }
     if (!comment && tags.length === 0) return node
 
+    if (reference) comment += `\n\n{@link ${this.getDocumentationUrl(reference)} View documentation}`
+
     const jsDoc = ts.factory.createJSDocComment(comment && this.processDescription(comment), tags)
+    addFakeJSDoc(node, jsDoc)
 
-    const text = printer
-      .printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
-      .trim()
-      .replace(/^\/\*|\*\/$/g, "")
-
-    return ts.addSyntheticLeadingComment(node, SyntaxKind.MultiLineCommentTrivia, text, true)
-  }
-
-  private static createComment(text: string, multiline?: boolean): ts.EmptyStatement {
-    const node = ts.factory.createEmptyStatement()
-    ts.addSyntheticLeadingComment(
-      node,
-      multiline ? SyntaxKind.MultiLineCommentTrivia : SyntaxKind.SingleLineCommentTrivia,
-      text,
-      true
-    )
     return node
   }
+}
+
+function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc) {
+  const text: string = printer.printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
+  addJSDocText(node, text)
+  return node
+}
+
+function addJSDocText(node: ts.Node, text: string) {
+  node.emitNode = node.emitNode ?? {}
+  return ts.addSyntheticLeadingComment(
+    node,
+    ts.SyntaxKind.MultiLineCommentTrivia,
+    text.trim().replace(/^\/\*|\*\/$/g, ""),
+    true
+  )
+}
+
+function createComment(text: string, multiline?: boolean): ts.EmptyStatement {
+  const node = ts.factory.createEmptyStatement()
+  ts.addSyntheticLeadingComment(
+    node,
+    multiline ? ts.SyntaxKind.MultiLineCommentTrivia : ts.SyntaxKind.SingleLineCommentTrivia,
+    text,
+    true
+  )
+  return node
 }

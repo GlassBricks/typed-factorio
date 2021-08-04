@@ -25,7 +25,7 @@ export interface TypeAliasDef extends BaseDef {
 
 export interface NamespaceDef extends BaseDef {
   readonly kind: "namespace"
-  readonly node: ts.NamedDeclaration
+  readonly node: ts.NamespaceDeclaration
   readonly members: Record<string, NamespaceDef | ConstDef | EnumDef>
 }
 
@@ -137,7 +137,7 @@ function createDef(node: ts.Statement): AnyDef {
   }
 }
 
-export function processManualDefines(file: ts.SourceFile | undefined): Record<string, RootDef | undefined> {
+export function processManualDefinitions(file: ts.SourceFile | undefined): Record<string, RootDef | undefined> {
   const result: Record<string, RootDef | undefined> = {}
   if (!file) {
     console.log("No manual definitions found")
