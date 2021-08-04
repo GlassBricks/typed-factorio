@@ -800,7 +800,7 @@ export default class DefinitionsGenerator {
 
   private processDescription(description: string): string {
     let result = ""
-    for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|```((?:(?!```).)*```))/gs)) {
+    for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|(```(?:(?!```).)*```))/gs)) {
       const withLinks = text.replace(/(?<!\[)\[(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
         let link: string
         if (origLink.match(/^http(s?):\/\//)) {
@@ -838,7 +838,7 @@ export default class DefinitionsGenerator {
       })
       result += withLinks
 
-      if (codeBlock) result += "```lua" + codeBlock
+      if (codeBlock) result += codeBlock
     }
 
     return result
