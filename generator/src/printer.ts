@@ -1,8 +1,7 @@
-import * as ts from "typescript"
-import { NewLineKind, ScriptTarget } from "typescript"
+import ts from "typescript"
 
 export const printer = ts.createPrinter({
   omitTrailingSemicolon: true,
-  newLine: NewLineKind.LineFeed,
+  newLine: ts.NewLineKind.LineFeed,
 })
-export const emptySourceFile = ts.createSourceFile("", "", ScriptTarget.ESNext)
+export const emptySourceFile = ts.createSourceFile("", "", ts.ScriptTarget.ESNext)

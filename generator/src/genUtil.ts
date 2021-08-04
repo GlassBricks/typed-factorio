@@ -1,18 +1,17 @@
-import * as ts from "typescript"
-import { SyntaxKind } from "typescript"
+import ts from "typescript"
 
 export const Modifiers = {
-  declare: ts.factory.createModifier(SyntaxKind.DeclareKeyword),
-  readonly: ts.factory.createModifier(SyntaxKind.ReadonlyKeyword),
+  declare: ts.factory.createModifier(ts.SyntaxKind.DeclareKeyword),
+  readonly: ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
 }
 
 export const Types = {
-  void: ts.factory.createKeywordTypeNode(SyntaxKind.VoidKeyword),
-  unknown: ts.factory.createKeywordTypeNode(SyntaxKind.UnknownKeyword),
-  object: ts.factory.createKeywordTypeNode(SyntaxKind.ObjectKeyword),
-  string: ts.factory.createKeywordTypeNode(SyntaxKind.StringKeyword),
-  number: ts.factory.createKeywordTypeNode(SyntaxKind.NumberKeyword),
-  boolean: ts.factory.createKeywordTypeNode(SyntaxKind.BooleanKeyword),
+  void: ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
+  unknown: ts.factory.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword),
+  object: ts.factory.createKeywordTypeNode(ts.SyntaxKind.ObjectKeyword),
+  string: ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+  number: ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
+  boolean: ts.factory.createKeywordTypeNode(ts.SyntaxKind.BooleanKeyword),
 
   numberLiteral(n: number | string): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(n))
@@ -23,9 +22,9 @@ export const Types = {
 }
 
 export const Tokens = {
-  question: ts.factory.createToken(SyntaxKind.QuestionToken),
-  dotDotDot: ts.factory.createToken(SyntaxKind.DotDotDotToken),
-  readonly: ts.factory.createToken(SyntaxKind.ReadonlyKeyword),
+  question: ts.factory.createToken(ts.SyntaxKind.QuestionToken),
+  dotDotDot: ts.factory.createToken(ts.SyntaxKind.DotDotDotToken),
+  readonly: ts.factory.createToken(ts.SyntaxKind.ReadonlyKeyword),
 }
 
 export function capitalize(str: string): string {

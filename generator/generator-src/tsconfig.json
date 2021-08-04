@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": [
+      "esnext"
+    ],
+    "types": [
+      "lua-types/5.2",
+      "typescript-to-lua/language-extensions"
+    ]
+  },
+  "include": [
+    "**/*.ts"
+  ]
+}
