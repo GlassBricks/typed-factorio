@@ -1,8 +1,8 @@
 import * as ts from "typescript"
-import { createRecordType, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
-import { assertEquals, assertNever, sortByOrder } from "./util"
+import { Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
+import { assertNever, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
-import { InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef } from "./manualDefinitions"
+import { AnyDef, InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef } from "./manualDefinitions"
 import chalk from "chalk"
 
 export default class DefinitionsGenerator {
@@ -126,10 +126,20 @@ export default class DefinitionsGenerator {
   private generateDefines() {
     this.statements.push(createComment(" Defines"))
 
-    const generateDefinesDeclaration = (define: Define, path: string, modifiers?: ts.Modifier[]): ts.Statement => {
+    const generateDefinesDeclaration = (
+      define: Define,
+      path: string,
+      existing: AnyDef | undefined,
+      modifiers?: ts.Modifier[]
+    ): ts.Statement => {
       let declaration: ts.Statement
       const thisPath = path + (path ? "." : "") + define.name
       if (define.values) {
+        if (existing && existing.kind !== "enum") {
+          throw new Error(
+            `Manual definition for ${path} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
+          )
+        }
         const members = define.values.sort(sortByOrder).map((m, i) => {
           return this.addJsDoc(
             ts.factory.createEnumMember(m.name, ts.factory.createNumericLiteral(i)),
@@ -139,7 +149,14 @@ export default class DefinitionsGenerator {
         })
         declaration = ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)
       } else if (define.subkeys) {
-        const declarations = define.subkeys.sort(sortByOrder).map((d) => generateDefinesDeclaration(d, thisPath))
+        if (existing && existing.kind !== "namespace") {
+          throw new Error(
+            `Manual definition for ${path} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
+          )
+        }
+        const declarations = define.subkeys
+          .sort(sortByOrder)
+          .map((d) => generateDefinesDeclaration(d, thisPath + "." + d.name, existing?.members[d.name]))
         declaration = ts.factory.createModuleDeclaration(
           undefined,
           modifiers,
@@ -147,37 +164,16 @@ export default class DefinitionsGenerator {
           ts.factory.createModuleBlock(declarations),
           ts.NodeFlags.Namespace
         )
+      } else if (!existing) {
+        this.warnIncompleteDefinition("Incomplete define for", path)
+        declaration = ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown)
       } else {
-        assertEquals("prototypes", define.name) // todo: manual definitions
-        declaration = createPrototypesDefine(define)
+        declaration = existing.node
       }
       return this.addJsDoc(declaration, define, thisPath)
     }
-
-    const defines = generateDefinesDeclaration(this.rootDefine, "", [Modifiers.declare])
+    const defines = generateDefinesDeclaration(this.rootDefine, "", this.manualDefinitions.defines, [Modifiers.declare])
     this.statements.push(defines)
-
-    function createPrototypesDefine(define: BasicMember): ts.Statement {
-      // todo: manual definitions
-      return ts.factory.createVariableStatement(
-        undefined,
-        ts.factory.createVariableDeclarationList(
-          [
-            ts.factory.createVariableDeclaration(
-              define.name,
-              undefined,
-              createRecordType(
-                true,
-                false,
-                Types.string,
-                createRecordType(true, true, Types.string, Types.numberLiteral(0))
-              )
-            ),
-          ],
-          ts.NodeFlags.Const
-        )
-      )
-    }
   }
 
   private generateEvents() {

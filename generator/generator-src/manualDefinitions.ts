@@ -2,6 +2,12 @@ type uint = number
 type double = number
 type float = number
 declare namespace defines {
+  const prototypes: {
+    readonly [Type in string]?: {
+      readonly [Name in string]?: 0 & { _notNilBrand: any }
+    }
+  }
+
   namespace difficulty_settings {
     enum recipe_difficulty {}
 
