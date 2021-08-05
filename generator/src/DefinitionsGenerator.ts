@@ -128,35 +128,39 @@ export default class DefinitionsGenerator {
 
     const generateDefinesDeclaration = (
       define: Define,
-      path: string,
+      parent: string,
       existing: AnyDef | undefined,
       modifiers?: ts.Modifier[]
     ): ts.Statement => {
       let declaration: ts.Statement
-      const thisPath = path + (path ? "." : "") + define.name
+      const thisPath = parent + (parent ? "." : "") + define.name
       if (define.values) {
         if (existing && existing.kind !== "enum") {
           throw new Error(
-            `Manual definition for ${path} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
+            `Manual definition for ${parent} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
           )
         }
-        const members = define.values.sort(sortByOrder).map((m, i) => {
-          return this.addJsDoc(
-            ts.factory.createEnumMember(m.name, ts.factory.createNumericLiteral(i)),
-            m,
-            thisPath + "." + m.name
+        const members = define.values
+          .sort(sortByOrder)
+          .map((m, i) =>
+            this.addJsDoc(
+              ts.factory.createEnumMember(m.name, ts.factory.createNumericLiteral(i)),
+              m,
+              thisPath + "." + m.name
+            )
           )
-        })
         declaration = ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)
       } else if (define.subkeys) {
         if (existing && existing.kind !== "namespace") {
           throw new Error(
-            `Manual definition for ${path} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
+            `Manual definition for ${parent}.${define.name} should be a namespace, got ${
+              ts.SyntaxKind[existing.node.kind]
+            }`
           )
         }
         const declarations = define.subkeys
           .sort(sortByOrder)
-          .map((d) => generateDefinesDeclaration(d, thisPath + "." + d.name, existing?.members[d.name]))
+          .map((d) => generateDefinesDeclaration(d, thisPath, existing?.members[d.name]))
         declaration = ts.factory.createModuleDeclaration(
           undefined,
           modifiers,
@@ -165,7 +169,7 @@ export default class DefinitionsGenerator {
           ts.NodeFlags.Namespace
         )
       } else if (!existing) {
-        this.warnIncompleteDefinition("Incomplete define for", path)
+        this.warnIncompleteDefinition("Incomplete define for", parent)
         declaration = ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown)
       } else {
         declaration = existing.node
@@ -570,7 +574,7 @@ export default class DefinitionsGenerator {
 
   private mapAttribute(
     attribute: Attribute,
-    fromClass: string,
+    parent: string,
     existingContainer: InterfaceDef | TypeAliasDef | undefined
   ): ts.TypeElement {
     // todo: nilable
@@ -579,7 +583,7 @@ export default class DefinitionsGenerator {
     if (existingProperty) {
       if (!ts.isPropertySignature(existingProperty)) {
         throw new Error(
-          `Manual define for ${fromClass}.${attribute.name} should be a property signature, got ${
+          `Manual define for ${parent}.${attribute.name} should be a property signature, got ${
             ts.SyntaxKind[existingProperty.kind]
           } instead`
         )
@@ -605,13 +609,13 @@ export default class DefinitionsGenerator {
         )
       }
     }
-    this.addJsDoc(member, attribute, fromClass + "." + attribute.name)
+    this.addJsDoc(member, attribute, parent + "." + attribute.name)
     return member
   }
 
   private mapMethod(
     method: Method,
-    fromClass: string,
+    parent: string,
     existingContainer: InterfaceDef | TypeAliasDef | undefined
   ): ts.MethodSignature {
     let member: ts.MethodSignature
@@ -619,7 +623,7 @@ export default class DefinitionsGenerator {
     if (existingMethod) {
       if (!ts.isMethodSignature(existingMethod)) {
         throw new Error(
-          `Manual define for ${fromClass}.${method.name} should be a method signature, got ${
+          `Manual define for ${parent}.${method.name} should be a method signature, got ${
             ts.SyntaxKind[existingMethod.kind]
           } instead`
         )
@@ -636,11 +640,11 @@ export default class DefinitionsGenerator {
               "params",
               method.table_is_optional ? Tokens.question : undefined,
               method.variant_parameter_groups !== undefined
-                ? this.createVariantParameterTypes(fromClass + toPascalCase(method.name), method)
+                ? this.createVariantParameterTypes(parent + toPascalCase(method.name), method)
                 : ts.factory.createTypeLiteralNode(
                     method.parameters
                       .sort(sortByOrder)
-                      .map((m) => this.mapParameterToProperty(m, fromClass + "." + method.name))
+                      .map((m) => this.mapParameterToProperty(m, parent + "." + method.name))
                   )
             ),
           ]
@@ -691,7 +695,7 @@ export default class DefinitionsGenerator {
       }
     }
     tags.push(DefinitionsGenerator.noSelfAnnotation)
-    this.addJsDoc(member, method, fromClass + "." + method.name, tags)
+    this.addJsDoc(member, method, parent + "." + method.name, tags)
     return member
   }
 
@@ -708,7 +712,7 @@ export default class DefinitionsGenerator {
 
   private mapParameterToProperty(
     parameter: Parameter,
-    fromClass: string,
+    parent: string,
     existingContainer?: InterfaceDef | TypeAliasDef
   ): ts.PropertySignature {
     let member: ts.PropertySignature
@@ -716,7 +720,7 @@ export default class DefinitionsGenerator {
     if (existingProperty) {
       if (!ts.isPropertySignature(existingProperty)) {
         throw new Error(
-          `Manual define for ${fromClass}.${parameter.name} should be a property signature, got ${
+          `Manual define for ${parent}.${parameter.name} should be a property signature, got ${
             ts.SyntaxKind[existingProperty.kind]
           } instead`
         )
@@ -745,7 +749,7 @@ export default class DefinitionsGenerator {
     /*
     else {
       if (member.name === "type") {
-        console.log(chalk.blueBright(`Possibly enum type, from ${fromClass}.${member.name}`))
+        console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
       }
     }
     */
@@ -949,7 +953,7 @@ export default class DefinitionsGenerator {
       }
     } else if (this.events.has(reference)) {
       relative_link = "events.html#" + reference
-    } else if (this.defines.has(reference)) {
+    } else if (reference.startsWith("defines.")) {
       relative_link = "defines.html#" + reference
     } else if (this.concepts.has(reference)) {
       relative_link = "Concepts.html#" + reference
