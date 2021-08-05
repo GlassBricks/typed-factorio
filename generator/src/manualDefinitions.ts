@@ -54,12 +54,14 @@ function createDef(node: ts.Statement): AnyDef {
       members: getMembers(node.members),
     }
   } else if (ts.isTypeAliasDeclaration(node)) {
-    const types: ReadonlyArray<ts.TypeNode> = ts.isUnionTypeNode(node.type) ? node.type.types : [node.type]
-    const membersNode = types.find((t) => ts.isTypeLiteralNode(t)) as ts.TypeLiteralNode | undefined
+    const types: ReadonlyArray<ts.TypeNode> = ts.isIntersectionTypeNode(node.type) ? node.type.types : [node.type]
     const mappedTypeIndexOperator = types.find((t) => ts.isMappedTypeNode(t)) as ts.MappedTypeNode | undefined
     const literalIndexOperator = types.find((t) => {
       return ts.isTypeLiteralNode(t) && t.members.length === 1 && ts.isIndexSignatureDeclaration(t.members[0])
     }) as ts.TypeLiteralNode
+    const membersNode = types.find((t) => ts.isTypeLiteralNode(t) && t !== literalIndexOperator) as
+      | ts.TypeLiteralNode
+      | undefined
     const inherits = types.filter((t) => ts.isTypeReferenceNode(t))
     return {
       kind: "type",

@@ -1,5 +1,5 @@
 import * as ts from "typescript"
-import { Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
+import { mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
 import { assertNever, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
 import { AnyDef, InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef } from "./manualDefinitions"
@@ -153,9 +153,7 @@ export default class DefinitionsGenerator {
       } else if (define.subkeys) {
         if (existing && existing.kind !== "namespace") {
           throw new Error(
-            `Manual definition for ${parent}.${define.name} should be a namespace, got ${
-              ts.SyntaxKind[existing.node.kind]
-            }`
+            `Manual definition for ${thisPath} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
           )
         }
         const declarations = define.subkeys
@@ -169,7 +167,7 @@ export default class DefinitionsGenerator {
           ts.NodeFlags.Namespace
         )
       } else if (!existing) {
-        this.warnIncompleteDefinition("Incomplete define for", parent)
+        this.warnIncompleteDefinition("Incomplete define for", thisPath)
         declaration = ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown)
       } else {
         declaration = existing.node
@@ -286,14 +284,14 @@ export default class DefinitionsGenerator {
         members.push(callSignature)
       }
       if (lengthOperator) {
+        // length operator is (supposed to be) numeric, so not map with transforms
+        const type = this.mapTypeRaw(lengthOperator.type)
         const length = this.addJsDoc(
           ts.factory.createPropertySignature(
             [Modifiers.readonly],
             "length",
             undefined,
-            arrayType
-              ? this.mapType(lengthOperator.type)
-              : ts.factory.createTypeReferenceNode("LuaLengthMethod", [this.mapType(lengthOperator.type)])
+            arrayType ? type : ts.factory.createTypeReferenceNode("LuaLengthMethod", [type])
           ),
           lengthOperator,
           clazz.name + ".operator%20#"
@@ -388,11 +386,9 @@ export default class DefinitionsGenerator {
         if (standardMembers.help) addMethod(standardMembers.help)
       }
 
-      // const hasMultipleTypes = members.size > 1
       const baseDeclaration = ts.factory.createInterfaceDeclaration(
         undefined,
         undefined,
-        // hasMultipleTypes ? "Base" + clazz.name : clazz.name,
         indexingType ? clazz.name + "Members" : clazz.name,
         indexingType ? undefined : existing?.node.typeParameters,
         superTypes.length !== 0
@@ -457,7 +453,9 @@ export default class DefinitionsGenerator {
           ts.factory.createUnionTypeNode(
             concept.options
               .sort(sortByOrder)
-              .map((option) => this.addJsDoc(this.mapType(option.type), option, undefined))
+              .map((option) =>
+                this.addJsDoc(this.mapTypeWithTransforms(option, option.type, concept.name), option, undefined)
+              )
           )
         )
       } else if (concept.category === "struct") {
@@ -517,15 +515,15 @@ export default class DefinitionsGenerator {
         const array = ts.factory.createTypeOperatorNode(
           ts.SyntaxKind.ReadonlyKeyword,
           ts.factory.createTupleTypeNode(
-            // already sorted
-            concept.parameters.map((param) =>
-              ts.factory.createNamedTupleMember(
+            table.members.map((member) => {
+              const property = member as ts.PropertySignature
+              return ts.factory.createNamedTupleMember(
                 undefined,
-                ts.factory.createIdentifier(param.name),
-                param.optional ? Tokens.question : undefined,
-                this.mapType(param.type)
+                property.name as ts.Identifier,
+                property.questionToken,
+                property.type!
               )
-            )
+            })
           )
         )
         declaration = createTypeAlias(ts.factory.createUnionTypeNode([table, array]))
@@ -543,7 +541,13 @@ export default class DefinitionsGenerator {
       const definition = ts.factory.createVariableStatement(
         [Modifiers.declare],
         ts.factory.createVariableDeclarationList(
-          [ts.factory.createVariableDeclaration(globalObject.name, undefined, this.mapType(globalObject.type))],
+          [
+            ts.factory.createVariableDeclaration(
+              globalObject.name,
+              undefined,
+              this.mapTypeWithTransforms(globalObject, globalObject.type, "")
+            ),
+          ],
           ts.NodeFlags.Const
         )
       )
@@ -577,7 +581,6 @@ export default class DefinitionsGenerator {
     parent: string,
     existingContainer: InterfaceDef | TypeAliasDef | undefined
   ): ts.TypeElement {
-    // todo: nilable
     let member: ts.TypeElement
     const existingProperty = existingContainer?.members[attribute.name]
     if (existingProperty) {
@@ -591,7 +594,7 @@ export default class DefinitionsGenerator {
       existingProperty.emitNode = existingProperty.emitNode || {}
       member = existingProperty
     } else {
-      const type = DefinitionsGenerator.tryMakeStringEnum(attribute) ?? this.mapType(attribute.type)
+      const type = this.mapTypeWithTransforms(attribute, attribute.type, parent)
       if (!attribute.read) {
         member = ts.factory.createSetAccessorDeclaration(
           undefined,
@@ -620,6 +623,7 @@ export default class DefinitionsGenerator {
   ): ts.MethodSignature {
     let member: ts.MethodSignature
     const existingMethod = existingContainer?.members[method.name]
+    const thisPath = parent + "." + method.name
     if (existingMethod) {
       if (!ts.isMethodSignature(existingMethod)) {
         throw new Error(
@@ -642,13 +646,11 @@ export default class DefinitionsGenerator {
               method.variant_parameter_groups !== undefined
                 ? this.createVariantParameterTypes(parent + toPascalCase(method.name), method)
                 : ts.factory.createTypeLiteralNode(
-                    method.parameters
-                      .sort(sortByOrder)
-                      .map((m) => this.mapParameterToProperty(m, parent + "." + method.name))
+                    method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, thisPath))
                   )
             ),
           ]
-        : method.parameters.sort(sortByOrder).map((m) => this.mapParameterToParameter(m))
+        : method.parameters.sort(sortByOrder).map((m) => this.mapParameterToParameter(m, thisPath))
 
       if (method.variadic_type) {
         parameters.push(
@@ -658,7 +660,7 @@ export default class DefinitionsGenerator {
             Tokens.dotDotDot,
             "args",
             undefined,
-            this.mapType({
+            this.mapTypeRaw({
               complex_type: "array",
               value: method.variadic_type,
             })
@@ -666,7 +668,12 @@ export default class DefinitionsGenerator {
         )
       }
 
-      const returnType = method.return_type ? this.mapType(method.return_type) : Types.void
+      let returnType: ts.TypeNode
+      if (!method.return_type) {
+        returnType = Types.void
+      } else {
+        returnType = this.mapTypeWithTransforms(method, method.return_type, parent)
+      }
       member = ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
     }
     const tags: ts.JSDocTag[] = []
@@ -695,18 +702,19 @@ export default class DefinitionsGenerator {
       }
     }
     tags.push(DefinitionsGenerator.noSelfAnnotation)
-    this.addJsDoc(member, method, parent + "." + method.name, tags)
+    this.addJsDoc(member, method, thisPath, tags)
     return member
   }
 
-  private mapParameterToParameter(parameter: Parameter): ts.ParameterDeclaration {
+  private mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
+    const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false)
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
       undefined,
       DefinitionsGenerator.escapeParameterName(parameter.name),
-      parameter.optional ? Tokens.question : undefined,
-      this.mapType(parameter.type)
+      parameter.optional || nullable ? Tokens.question : undefined,
+      type
     )
   }
 
@@ -728,19 +736,52 @@ export default class DefinitionsGenerator {
       existingProperty.emitNode = existingProperty.emitNode || {}
       member = existingProperty
     } else {
-      const type = DefinitionsGenerator.tryMakeStringEnum(parameter) ?? this.mapType(parameter.type)
+      const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false)
       member = ts.factory.createPropertySignature(
         [Modifiers.readonly],
         DefinitionsGenerator.escapePropertyName(parameter.name),
-        parameter.optional ? Tokens.question : undefined,
+        parameter.optional || nullable ? Tokens.question : undefined,
         type
       )
     }
     return this.addJsDoc(member, parameter, undefined)
   }
 
-  private static tryMakeStringEnum(member: Attribute | Parameter): ts.UnionTypeNode | undefined {
-    if (member.type === "string") {
+  private mapTypeWithTransforms(
+    member: { description: string; name?: string },
+    baseType: Type,
+    parent: string
+  ): ts.TypeNode
+
+  private mapTypeWithTransforms(
+    member: { description: string; name?: string },
+    baseType: Type,
+    parent: string,
+    makeNullable: boolean
+  ): [type: ts.TypeNode, isNullable: boolean]
+
+  private mapTypeWithTransforms(
+    member: { description: string; name?: string },
+    baseType: Type,
+    parent: string,
+    makeNullable?: boolean
+  ): [type: ts.TypeNode, isNullable: boolean] | ts.TypeNode {
+    let type = DefinitionsGenerator.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType)
+    const isNullable = !(member as Parameter).optional && this.isNullableFromDescription(member, parent)
+    if (isNullable && makeNullable !== false) {
+      type = mergeUnion(type, Types.undefined)
+    }
+    if (makeNullable !== undefined) {
+      return [type, isNullable]
+    }
+    return type
+  }
+
+  private static tryMakeStringEnum(
+    member: { description: string; name?: string },
+    type: Type
+  ): ts.UnionTypeNode | undefined {
+    if (type === "string") {
       const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
       if (matches.size >= 2) {
         return ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
@@ -757,6 +798,25 @@ export default class DefinitionsGenerator {
     return undefined
   }
 
+  private isNullableFromDescription(member: { description: string; name?: string }, parent: string): boolean {
+    const description = member.description + "\n" + (member as Method).return_description ?? ""
+    const nullableRegex = /(returns|or|be|possibly|otherwise|else|) [`']?nil[`']?|`?nil`? (if|when|otherwise)/i
+    const nullable = member.description.match(nullableRegex)
+    if (nullable) {
+      if (!description.match(/[`' ]nil/i)) {
+        this.warnIncompleteDefinition(
+          `Inconsistency in nullability in description: ${parent}.${member.name}\n`,
+          indent(description)
+        )
+      }
+      return true
+    }
+    if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
+      console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
+    }
+    return false
+  }
+
   private isIndexableType(type: Type): boolean {
     return (
       typeof type === "string" &&
@@ -764,15 +824,15 @@ export default class DefinitionsGenerator {
     )
   }
 
-  private mapType(type: Type): ts.TypeNode {
+  private mapTypeRaw(type: Type): ts.TypeNode {
     if (typeof type === "string") {
       return ts.factory.createTypeReferenceNode(type)
     }
     if (type.complex_type === "variant") {
-      return ts.factory.createUnionTypeNode(type.options.map((m) => this.mapType(m)))
+      return ts.factory.createUnionTypeNode(type.options.map((m) => this.mapTypeRaw(m)))
     }
     if (type.complex_type === "array") {
-      return ts.factory.createArrayTypeNode(this.mapType(type.value))
+      return ts.factory.createArrayTypeNode(this.mapTypeRaw(type.value))
     }
     if (type.complex_type === "dictionary") {
       let recordType = "Record"
@@ -780,10 +840,13 @@ export default class DefinitionsGenerator {
         this.warnIncompleteDefinition("Not typescript indexable type for key in dictionary complex type: ", type)
         recordType = "LuaTable"
       }
-      return ts.factory.createTypeReferenceNode(recordType, [this.mapType(type.key), this.mapType(type.value)])
+      return ts.factory.createTypeReferenceNode(recordType, [this.mapTypeRaw(type.key), this.mapTypeRaw(type.value)])
     }
     if (type.complex_type === "LuaCustomTable") {
-      return ts.factory.createTypeReferenceNode("LuaCustomTable", [this.mapType(type.key), this.mapType(type.value)])
+      return ts.factory.createTypeReferenceNode("LuaCustomTable", [
+        this.mapTypeRaw(type.key),
+        this.mapTypeRaw(type.value),
+      ])
     }
     if (type.complex_type === "function") {
       return ts.factory.createFunctionTypeNode(
@@ -795,14 +858,14 @@ export default class DefinitionsGenerator {
             undefined,
             `param${index + 1}`,
             undefined,
-            this.mapType(value)
+            this.mapTypeRaw(value)
           )
         ),
         Types.void
       )
     }
     if (type.complex_type === "LuaLazyLoadedValue") {
-      return ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [this.mapType(type.value)])
+      return ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [this.mapTypeRaw(type.value)])
     }
     if (type.complex_type === "table") {
       if (type.variant_parameter_groups) {
@@ -964,7 +1027,7 @@ export default class DefinitionsGenerator {
         const className = reference.substr(0, reference.indexOf("."))
         return this.getDocumentationUrl(className) + "#" + reference
       } else {
-        this.warnIncompleteDefinition("Could not get url:", reference)
+        this.warnIncompleteDefinition("Could not get documentation url:", reference)
         relative_link = ""
       }
     }
@@ -991,6 +1054,7 @@ export default class DefinitionsGenerator {
                   }`
             }_`,
         ]
+          .flat()
           .filter((x) => !!x)
           .join("\n\n")
       : undefined
@@ -1028,6 +1092,10 @@ export default class DefinitionsGenerator {
   private warnIncompleteDefinition(...args: unknown[]) {
     console.log(chalk.yellow(...args))
   }
+}
+
+function indent(str: string): string {
+  return "    " + str.split("\n").join("\n    ")
 }
 
 function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc) {

@@ -4,7 +4,7 @@ type float = number
 declare namespace defines {
   const prototypes: {
     readonly [Type in string]?: {
-      readonly [Name in string]?: 0 & { _notNilBrand: any }
+      readonly [Name in string]?: 0 & { _notFalsyBrand: any }
     }
   }
 
@@ -14,6 +14,7 @@ declare namespace defines {
     enum technology_difficulty {}
   }
   enum circuit_connector_id {}
+  enum gui_type {}
 }
 
 // classes
@@ -25,15 +26,30 @@ interface LuaLazyLoadedValue<T> {
   get(): T
 }
 
+interface LuaPlayer {}
+
+interface LuaEntity {
+  get_driver(): LuaEntity | LuaPlayer | undefined
+  get_passenger(): LuaEntity | LuaPlayer | undefined
+  initial_amount: uint | undefined
+}
+
 interface Fluid {}
 
 interface LuaFluidBox extends Array<Fluid | undefined> {}
 
+interface LuaEquipment {}
+interface LuaEquipmentGrid {}
+
 type LuaGuiElement = {
   readonly [name: string]: LuaGuiElement | undefined
+} & {
+  drag_target: LuaGuiElement | undefined
 }
 
-interface LuaItemStack {}
+interface LuaItemStack {
+  durability: double | undefined
+}
 
 interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
 
@@ -42,6 +58,14 @@ interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 interface ChunkPositionAndArea {}
 
 interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
+
+interface LuaPermissionGroup {}
+interface LuaPermissionGroups {
+  create_group(name?: string): LuaPermissionGroup | undefined
+}
+interface LuaPlayer {
+  readonly cutscene_character: LuaEntity | undefined
+}
 
 // concepts
 type LocalisedString = [string, ...LocalisedString[]] | string | number
@@ -198,9 +222,9 @@ interface MapSettings {
     goal_pressure_ratio: number
     /** How many nodes can be expanded at most per tick. */
     max_steps_worked_per_tick: number
-    /** How much work each patfinding job is allowed to do per tick. */
+    /** How much work each pathfinding job is allowed to do per tick. */
     max_work_done_per_tick: number
-    /** Path cache setings */
+    /** Path cache settings */
     use_path_cache: boolean
     /** Number of elements in the cache */
     short_cache_size: number
@@ -249,7 +273,7 @@ interface MapSettings {
     general_entity_subsequent_collision_penalty: number
     /** Collision penalty for collisions in the extended bounding box but outside the entity's actual bounding box */
     extended_collision_penalty: number
-    /** Uptil this amount any client will be served by the path finder (no estimate on the path length) */
+    /** Until this amount any client will be served by the path finder (no estimate on the path length) */
     max_clients_to_accept_any_new_request: number
     /** From max_clients_to_accept_any_new_request till this one only those that have a short estimate will be served */
     max_clients_to_accept_short_new_request: number

@@ -7,6 +7,7 @@ export const Modifiers = {
 
 export const Types = {
   void: ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
+  undefined: ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
   unknown: ts.factory.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword),
   object: ts.factory.createKeywordTypeNode(ts.SyntaxKind.ObjectKeyword),
   string: ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
@@ -35,17 +36,11 @@ export function toPascalCase(str: string): string {
   return str.split(/[-_ ]/g).map(capitalize).join("")
 }
 
-export function createRecordType(
-  readonly: boolean,
-  optional: boolean,
-  key: ts.TypeNode,
-  value: ts.TypeNode
-): ts.MappedTypeNode {
-  return ts.factory.createMappedTypeNode(
-    readonly ? Tokens.readonly : undefined,
-    ts.factory.createTypeParameterDeclaration("K", key),
-    undefined,
-    optional ? Tokens.question : undefined,
-    value
-  )
+export function mergeUnion(a: ts.TypeNode, b: ts.TypeNode): ts.UnionTypeNode {
+  function getTypes(t: ts.TypeNode): readonly ts.TypeNode[] {
+    if (ts.isUnionTypeNode(t)) return t.types
+    return [t]
+  }
+
+  return ts.factory.createUnionTypeNode([...getTypes(a), ...getTypes(b)])
 }
