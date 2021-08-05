@@ -54,7 +54,7 @@ export default class DefinitionsGenerator {
     this.generateClasses()
     this.generateConcepts()
     this.generateGlobalObjects()
-    this.generateManualDefinitions()
+    this.generateAdditionalTypes()
   }
 
   private addHeaders() {
@@ -196,7 +196,7 @@ export default class DefinitionsGenerator {
               if (p.name === "name" && event.name !== "CustomInputEvent") {
                 p.type += "." + event.name
               }
-              return this.mapParameterToProperty(p)
+              return this.mapParameterToProperty(p, name)
             })
           ),
           event,
@@ -411,7 +411,7 @@ export default class DefinitionsGenerator {
         this.addJsDoc(baseDeclaration, clazz, clazz.name)
       } else {
         this.statements.push(indexingType)
-        let typeArguments = existing?.node.typeParameters?.map((p) => ts.factory.createTypeReferenceNode(p.name))
+        const typeArguments = existing?.node.typeParameters?.map((p) => ts.factory.createTypeReferenceNode(p.name))
         const actualDeclaration = ts.factory.createTypeAliasDeclaration(
           undefined,
           undefined,
@@ -477,11 +477,14 @@ export default class DefinitionsGenerator {
           undefined,
           undefined,
           concept.options.sort(sortByOrder).map((flag) =>
-            this.mapParameterToProperty({
-              ...flag,
-              type: "boolean",
-              optional: true,
-            })
+            this.mapParameterToProperty(
+              {
+                ...flag,
+                type: "boolean",
+                optional: true,
+              },
+              concept.name
+            )
           )
         )
       } else if (concept.category === "table" || concept.category === "filter") {
@@ -495,7 +498,7 @@ export default class DefinitionsGenerator {
             concept.name,
             undefined,
             undefined,
-            concept.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m))
+            concept.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, concept.name, existing))
           )
         }
       } else if (concept.category === "enum") {
@@ -509,7 +512,7 @@ export default class DefinitionsGenerator {
       } else if (concept.category === "table_or_array") {
         // todo: separate type shenanigans
         const table = ts.factory.createTypeLiteralNode(
-          concept.parameters.sort(sortByOrder).map((param) => this.mapParameterToProperty(param))
+          concept.parameters.sort(sortByOrder).map((param) => this.mapParameterToProperty(param, concept.name))
         )
         const array = ts.factory.createTypeOperatorNode(
           ts.SyntaxKind.ReadonlyKeyword,
@@ -549,8 +552,8 @@ export default class DefinitionsGenerator {
     }
   }
 
-  private generateManualDefinitions() {
-    this.statements.push(createComment(" manual definitions"))
+  private generateAdditionalTypes() {
+    this.statements.push(createComment(" Manually defined additional types"))
 
     const restoreDocs = (node: ts.Node) => {
       const doc = (node as ts.JSDocContainer).jsDoc?.[0]
@@ -564,16 +567,9 @@ export default class DefinitionsGenerator {
     for (const key in this.manualDefinitions) {
       if (key in this.typeNames) continue
       const node = this.manualDefinitions[key]!.node
-      restoreDocs(node)
+      if (this.docs) restoreDocs(node)
       this.statements.push(node)
     }
-  }
-
-  private isIndexableType(type: Type): boolean {
-    return (
-      typeof type === "string" &&
-      (type === "string" || type === "number" || type.startsWith("defines.") || this.numericTypes.has(type))
-    )
   }
 
   private mapAttribute(
@@ -594,31 +590,24 @@ export default class DefinitionsGenerator {
       }
       existingProperty.emitNode = existingProperty.emitNode || {}
       member = existingProperty
-    } else if (!attribute.read) {
-      member = ts.factory.createSetAccessorDeclaration(
-        undefined,
-        undefined,
-        attribute.name,
-        [
-          ts.factory.createParameterDeclaration(
-            undefined,
-            undefined,
-            undefined,
-            "value",
-            undefined,
-            this.mapType(attribute.type),
-            undefined
-          ),
-        ],
-        undefined
-      )
     } else {
-      member = ts.factory.createPropertySignature(
-        attribute.write ? undefined : [Modifiers.readonly],
-        attribute.name,
-        undefined,
-        this.mapType(attribute.type)
-      )
+      const type = DefinitionsGenerator.tryMakeStringEnum(attribute) ?? this.mapType(attribute.type)
+      if (!attribute.read) {
+        member = ts.factory.createSetAccessorDeclaration(
+          undefined,
+          undefined,
+          attribute.name,
+          [ts.factory.createParameterDeclaration(undefined, undefined, undefined, "value", undefined, type, undefined)],
+          undefined
+        )
+      } else {
+        member = ts.factory.createPropertySignature(
+          attribute.write ? undefined : [Modifiers.readonly],
+          attribute.name,
+          undefined,
+          type
+        )
+      }
     }
     this.addJsDoc(member, attribute, fromClass + "." + attribute.name)
     return member
@@ -653,7 +642,9 @@ export default class DefinitionsGenerator {
               method.variant_parameter_groups !== undefined
                 ? this.createVariantParameterTypes(fromClass + toPascalCase(method.name), method)
                 : ts.factory.createTypeLiteralNode(
-                    method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m))
+                    method.parameters
+                      .sort(sortByOrder)
+                      .map((m) => this.mapParameterToProperty(m, fromClass + "." + method.name))
                   )
             ),
           ]
@@ -692,13 +683,15 @@ export default class DefinitionsGenerator {
                 false,
                 undefined,
                 undefined,
-                p.description ? "- " + p.description : undefined
+                this.processDescription(p.description ? "- " + p.description : undefined)
               )
             )
         )
       }
       if (method.return_description) {
-        tags.push(ts.factory.createJSDocReturnTag(undefined, undefined, method.return_description))
+        tags.push(
+          ts.factory.createJSDocReturnTag(undefined, undefined, this.processDescription(method.return_description))
+        )
       }
     }
     tags.push(DefinitionsGenerator.noSelfAnnotation)
@@ -706,66 +699,72 @@ export default class DefinitionsGenerator {
     return member
   }
 
-  private createVariantParameterTypes(
-    name: string,
-    variants: WithParameterVariants,
-    memberForDocs?: BasicMember
-  ): ts.TypeReferenceNode {
-    const baseName = "Base" + name
-    this.statements.push(
-      ts.factory.createInterfaceDeclaration(
-        undefined,
-        undefined,
-        baseName,
-        undefined,
-        undefined,
-        variants.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p))
-      )
+  private mapParameterToParameter(parameter: Parameter): ts.ParameterDeclaration {
+    return ts.factory.createParameterDeclaration(
+      undefined,
+      undefined,
+      undefined,
+      DefinitionsGenerator.escapeParameterName(parameter.name),
+      parameter.optional ? Tokens.question : undefined,
+      this.mapType(parameter.type)
     )
-    const heritageClause = [
-      ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
-        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
-      ]),
-    ]
-    const groups: ts.TypeNode[] = []
-    const discriminatorField = variants.variant_parameter_description?.match(/depending on `(.+?)`:/)?.[1]
-    for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
-      const isDefine = group.name.startsWith("defines.")
-      const groupIntfName =
-        toPascalCase(isDefine ? group.name.substr(group.name.lastIndexOf(".") + 1) : group.name) + name
-
-      const members: ts.PropertySignature[] = []
-      if (discriminatorField) {
-        members.push(
-          ts.factory.createPropertySignature(
-            [Modifiers.readonly],
-            discriminatorField,
-            undefined,
-            isDefine ? ts.factory.createTypeReferenceNode(group.name) : Types.stringLiteral(group.name)
-          )
-        )
-      }
-      members.push(...group.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p)))
-      this.statements.push(
-        ts.factory.createInterfaceDeclaration(undefined, undefined, groupIntfName, undefined, heritageClause, members)
-      )
-      groups.push(ts.factory.createTypeReferenceNode(groupIntfName))
-    }
-    const declaration = ts.factory.createTypeAliasDeclaration(
-      undefined,
-      undefined,
-      name,
-      undefined,
-      ts.factory.createUnionTypeNode(groups)
-    )
-    this.statements.push(declaration)
-    if (memberForDocs) {
-      this.addJsDoc(declaration, memberForDocs, memberForDocs.name)
-    }
-    return ts.factory.createTypeReferenceNode(name)
   }
 
-  mapType(type: Type): ts.TypeNode {
+  private mapParameterToProperty(
+    parameter: Parameter,
+    fromClass: string,
+    existingContainer?: InterfaceDef | TypeAliasDef
+  ): ts.PropertySignature {
+    let member: ts.PropertySignature
+    const existingProperty = existingContainer?.members[parameter.name]
+    if (existingProperty) {
+      if (!ts.isPropertySignature(existingProperty)) {
+        throw new Error(
+          `Manual define for ${fromClass}.${parameter.name} should be a property signature, got ${
+            ts.SyntaxKind[existingProperty.kind]
+          } instead`
+        )
+      }
+      existingProperty.emitNode = existingProperty.emitNode || {}
+      member = existingProperty
+    } else {
+      const type = DefinitionsGenerator.tryMakeStringEnum(parameter) ?? this.mapType(parameter.type)
+      member = ts.factory.createPropertySignature(
+        [Modifiers.readonly],
+        DefinitionsGenerator.escapePropertyName(parameter.name),
+        parameter.optional ? Tokens.question : undefined,
+        type
+      )
+    }
+    return this.addJsDoc(member, parameter, undefined)
+  }
+
+  private static tryMakeStringEnum(member: Attribute | Parameter): ts.UnionTypeNode | undefined {
+    if (member.type === "string") {
+      const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
+      if (matches.size >= 2) {
+        return ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
+      }
+    }
+    /*
+    else {
+      if (member.name === "type") {
+        console.log(chalk.blueBright(`Possibly enum type, from ${fromClass}.${member.name}`))
+      }
+    }
+    */
+
+    return undefined
+  }
+
+  private isIndexableType(type: Type): boolean {
+    return (
+      typeof type === "string" &&
+      (type === "string" || type === "number" || type.startsWith("defines.") || this.numericTypes.has(type))
+    )
+  }
+
+  private mapType(type: Type): ts.TypeNode {
     if (typeof type === "string") {
       return ts.factory.createTypeReferenceNode(type)
     }
@@ -810,23 +809,68 @@ export default class DefinitionsGenerator {
         throw new Error("Variant parameter complex type not yet supported")
       }
       return ts.factory.createTypeLiteralNode(
-        type.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m))
+        type.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, "<<table type>>"))
       )
     }
     assertNever(type)
   }
 
-  private mapParameterToProperty(parameter: Parameter): ts.PropertySignature {
-    return this.addJsDoc(
-      ts.factory.createPropertySignature(
-        [Modifiers.readonly],
-        DefinitionsGenerator.escapePropertyName(parameter.name),
-        parameter.optional ? Tokens.question : undefined,
-        this.mapType(parameter.type)
-      ),
-      parameter,
-      undefined
+  private createVariantParameterTypes(
+    name: string,
+    variants: WithParameterVariants,
+    memberForDocs?: BasicMember
+  ): ts.TypeReferenceNode {
+    const baseName = "Base" + name
+    this.statements.push(
+      ts.factory.createInterfaceDeclaration(
+        undefined,
+        undefined,
+        baseName,
+        undefined,
+        undefined,
+        variants.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p, baseName))
+      )
     )
+    const heritageClause = [
+      ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
+        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
+      ]),
+    ]
+    const groups: ts.TypeNode[] = []
+    const discriminatorField = variants.variant_parameter_description?.match(/depending on `(.+?)`:/)?.[1]
+    for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
+      const isDefine = group.name.startsWith("defines.")
+      const groupName = toPascalCase(isDefine ? group.name.substr(group.name.lastIndexOf(".") + 1) : group.name) + name
+
+      const members: ts.PropertySignature[] = []
+      if (discriminatorField) {
+        members.push(
+          ts.factory.createPropertySignature(
+            [Modifiers.readonly],
+            discriminatorField,
+            undefined,
+            isDefine ? ts.factory.createTypeReferenceNode(group.name) : Types.stringLiteral(group.name)
+          )
+        )
+      }
+      members.push(...group.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p, groupName)))
+      this.statements.push(
+        ts.factory.createInterfaceDeclaration(undefined, undefined, groupName, undefined, heritageClause, members)
+      )
+      groups.push(ts.factory.createTypeReferenceNode(groupName))
+    }
+    const declaration = ts.factory.createTypeAliasDeclaration(
+      undefined,
+      undefined,
+      name,
+      undefined,
+      ts.factory.createUnionTypeNode(groups)
+    )
+    this.statements.push(declaration)
+    if (memberForDocs) {
+      this.addJsDoc(declaration, memberForDocs, memberForDocs.name)
+    }
+    return ts.factory.createTypeReferenceNode(name)
   }
 
   private static escapePropertyName(name: string): ts.PropertyName {
@@ -834,17 +878,6 @@ export default class DefinitionsGenerator {
       return ts.factory.createStringLiteral(name)
     }
     return ts.factory.createIdentifier(name)
-  }
-
-  private mapParameterToParameter(parameter: Parameter): ts.ParameterDeclaration {
-    return ts.factory.createParameterDeclaration(
-      undefined,
-      undefined,
-      undefined,
-      DefinitionsGenerator.escapeParameterName(parameter.name),
-      parameter.optional ? Tokens.question : undefined,
-      this.mapType(parameter.type)
-    )
   }
 
   private static escapeParameterName(name: string): string {
@@ -899,7 +932,7 @@ export default class DefinitionsGenerator {
           }
         })
         .replace("__1__\n   ", "__1__") // fix for LocalisedString description
-        .replace(/\n(?!(\n| -))/g, "\n\n")
+        .replace(/\n(?!([\n-]))/g, "\n\n")
       result += withLinks
 
       if (codeBlock) result += codeBlock
@@ -958,7 +991,7 @@ export default class DefinitionsGenerator {
                   }`
             }_`,
         ]
-          .filter((x) => x)
+          .filter((x) => !!x)
           .join("\n\n")
       : undefined
 
@@ -982,7 +1015,7 @@ export default class DefinitionsGenerator {
     }
     if (!comment && tags.length === 0) return node
 
-    if (reference) comment += `\n\n{@link ${this.getDocumentationUrl(reference)} View documentation}`
+    if (this.docs && reference) comment += `\n\n{@link ${this.getDocumentationUrl(reference)} View documentation}`
 
     const jsDoc = ts.factory.createJSDocComment(comment, tags)
     addFakeJSDoc(node, jsDoc)
@@ -992,7 +1025,7 @@ export default class DefinitionsGenerator {
 
   // might not be static in the future
   // noinspection JSMethodCanBeStatic
-  private warnIncompleteDefinition(...args: any[]) {
+  private warnIncompleteDefinition(...args: unknown[]) {
     console.log(chalk.yellow(...args))
   }
 }

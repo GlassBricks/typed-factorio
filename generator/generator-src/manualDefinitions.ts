@@ -300,6 +300,10 @@ type MapGenSize =
   | "very-big"
   | "very-good"
 
+interface ArithmeticCombinatorParameters {
+  readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
+}
+
 type SpriteType =
   | "item"
   | "entity"
