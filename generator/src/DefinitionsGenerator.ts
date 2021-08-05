@@ -4,6 +4,7 @@ import { assertNever, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
 import { AnyDef, InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef } from "./manualDefinitions"
 import chalk from "chalk"
+import * as console from "console"
 
 export default class DefinitionsGenerator {
   private statements: ts.Statement[] = []
@@ -260,21 +261,12 @@ export default class DefinitionsGenerator {
       const callOperator = clazz.operators.find((x) => x.name === "call") as CallOperator | undefined
       const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
 
-      const addMethod = (method: Method) => {
-        const methodSignature = this.mapMethod(method, clazz.name, existing)
-        const existingMethod = existing?.members[method.name]
-        if (existingMethod) {
-          members.push(existingMethod)
-        } else {
-          members.push(methodSignature)
-        }
-      }
       for (const method of clazz.methods.sort(sortByOrder)) {
         if (method.name === "help") {
           standardMembers.help = method
           continue
         }
-        addMethod(method)
+        members.push(this.mapMethod(method, clazz.name, existing))
       }
       if (callOperator) {
         // manual define for operator not supported yet
@@ -299,16 +291,12 @@ export default class DefinitionsGenerator {
         members.push(length)
       }
 
-      const addProperty = (attribute: Attribute) => {
-        members.push(this.mapAttribute(attribute, clazz.name, existing))
-      }
-
       for (const attribute of clazz.attributes.sort(sortByOrder)) {
         if (attribute.name === "valid" || attribute.name === "object_name") {
           standardMembers[attribute.name] = attribute
           continue
         }
-        addProperty(attribute)
+        members.push(this.mapAttribute(attribute, clazz.name, existing))
       }
 
       const getIndexingType = (operator: IndexOperator) => {
@@ -381,9 +369,10 @@ export default class DefinitionsGenerator {
       if (standardMembers.help && standardMembers.valid && standardMembers.object_name) {
         superTypes.unshift(ts.factory.createTypeReferenceNode("LuaObject"))
       } else {
-        if (standardMembers.valid) addProperty(standardMembers.valid)
-        if (standardMembers.object_name) addProperty(standardMembers.object_name)
-        if (standardMembers.help) addMethod(standardMembers.help)
+        if (standardMembers.valid) members.push(this.mapAttribute(standardMembers.valid, clazz.name, existing))
+        if (standardMembers.object_name)
+          members.push(this.mapAttribute(standardMembers.object_name, clazz.name, existing))
+        if (standardMembers.help) members.push(this.mapMethod(standardMembers.help, clazz.name, existing))
       }
 
       const baseDeclaration = ts.factory.createInterfaceDeclaration(
@@ -621,9 +610,41 @@ export default class DefinitionsGenerator {
     parent: string,
     existingContainer: InterfaceDef | TypeAliasDef | undefined
   ): ts.MethodSignature {
-    let member: ts.MethodSignature
     const existingMethod = existingContainer?.members[method.name]
     const thisPath = parent + "." + method.name
+    const parameters = method.takes_table
+      ? [
+          ts.factory.createParameterDeclaration(
+            undefined,
+            undefined,
+            undefined,
+            "params",
+            method.table_is_optional ? Tokens.question : undefined,
+            method.variant_parameter_groups !== undefined
+              ? this.createVariantParameterTypes(parent + toPascalCase(method.name), method)
+              : ts.factory.createTypeLiteralNode(
+                  method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, thisPath))
+                )
+          ),
+        ]
+      : method.parameters.sort(sortByOrder).map((m) => this.mapParameterToParameter(m, thisPath))
+
+    if (method.variadic_type) {
+      parameters.push(
+        ts.factory.createParameterDeclaration(
+          undefined,
+          undefined,
+          Tokens.dotDotDot,
+          "args",
+          undefined,
+          this.mapTypeRaw({
+            complex_type: "array",
+            value: method.variadic_type,
+          })
+        )
+      )
+    }
+    let member: ts.MethodSignature
     if (existingMethod) {
       if (!ts.isMethodSignature(existingMethod)) {
         throw new Error(
@@ -632,42 +653,20 @@ export default class DefinitionsGenerator {
           } instead`
         )
       }
-      existingMethod.emitNode = existingMethod.emitNode || {}
-      member = existingMethod
-    } else {
-      const parameters = method.takes_table
-        ? [
-            ts.factory.createParameterDeclaration(
-              undefined,
-              undefined,
-              undefined,
-              "params",
-              method.table_is_optional ? Tokens.question : undefined,
-              method.variant_parameter_groups !== undefined
-                ? this.createVariantParameterTypes(parent + toPascalCase(method.name), method)
-                : ts.factory.createTypeLiteralNode(
-                    method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, thisPath))
-                  )
-            ),
-          ]
-        : method.parameters.sort(sortByOrder).map((m) => this.mapParameterToParameter(m, thisPath))
-
-      if (method.variadic_type) {
-        parameters.push(
-          ts.factory.createParameterDeclaration(
-            undefined,
-            undefined,
-            Tokens.dotDotDot,
-            "args",
-            undefined,
-            this.mapTypeRaw({
-              complex_type: "array",
-              value: method.variadic_type,
-            })
-          )
+      existingMethod.emitNode = existingMethod.emitNode ?? {}
+      if (method.parameters.length > 0 && existingMethod.parameters.length === 0) {
+        member = ts.factory.createMethodSignature(
+          existingMethod.modifiers,
+          existingMethod.name,
+          existingMethod.questionToken,
+          existingMethod.typeParameters,
+          parameters,
+          existingMethod.type
         )
+      } else {
+        member = existingMethod
       }
-
+    } else {
       let returnType: ts.TypeNode
       if (!method.return_type) {
         returnType = Types.void
@@ -799,9 +798,9 @@ export default class DefinitionsGenerator {
   }
 
   private isNullableFromDescription(member: { description: string; name?: string }, parent: string): boolean {
-    const description = member.description + "\n" + (member as Method).return_description ?? ""
+    const description = member.description + " " + (member as Method).return_description ?? ""
     const nullableRegex = /(returns|or|be|possibly|otherwise|else|) [`']?nil[`']?|`?nil`? (if|when|otherwise)/i
-    const nullable = member.description.match(nullableRegex)
+    const nullable = description.match(nullableRegex)
     if (nullable) {
       if (!description.match(/[`' ]nil/i)) {
         this.warnIncompleteDefinition(
@@ -811,9 +810,9 @@ export default class DefinitionsGenerator {
       }
       return true
     }
-    if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
-      console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
-    }
+    // if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
+    //   console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
+    // }
     return false
   }
 

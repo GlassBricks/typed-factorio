@@ -15,6 +15,7 @@ declare namespace defines {
   }
   enum circuit_connector_id {}
   enum gui_type {}
+  enum rail_direction {}
 }
 
 // classes
@@ -32,6 +33,11 @@ interface LuaEntity {
   get_driver(): LuaEntity | LuaPlayer | undefined
   get_passenger(): LuaEntity | LuaPlayer | undefined
   initial_amount: uint | undefined
+
+  revive(): LuaMultiReturn<[Record<string, uint>, LuaEntity | undefined, LuaEntity | undefined]>
+  silent_revive(): LuaMultiReturn<[Record<string, uint>, LuaEntity | undefined, LuaEntity | undefined]>
+
+  get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
 }
 
 interface Fluid {}
@@ -51,7 +57,10 @@ interface LuaItemStack {
   durability: double | undefined
 }
 
-interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
+interface LuaInventory extends ReadonlyArray<LuaItemStack> {
+  find_item_stack(item: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
+  find_empty_stack(item?: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
+}
 
 interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 
