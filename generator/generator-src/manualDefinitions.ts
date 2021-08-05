@@ -10,7 +10,7 @@ declare namespace defines {
   enum circuit_connector_id {}
 }
 
-// indexing + generics
+// classes
 type LuaCustomTable<K extends keyof any, V> = {
   [P in K]: V
 }
@@ -32,6 +32,10 @@ interface LuaItemStack {}
 interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
 
 interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
+
+interface ChunkPositionAndArea {}
+
+interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
 // concepts
 type LocalisedString = [string, ...LocalisedString[]] | string | number
