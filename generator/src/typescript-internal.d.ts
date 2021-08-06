@@ -1,6 +1,6 @@
 declare module "typescript" {
   interface JSDocContainer {
-    jsDoc?: ts.JSDoc[]
+    jsDoc?: JSDoc[]
   }
   interface Node {
     emitNode?: unknown

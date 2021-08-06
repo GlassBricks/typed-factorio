@@ -13,6 +13,7 @@ export interface InterfaceDef extends BaseDef {
   readonly node: ts.InterfaceDeclaration
   readonly supertypes: readonly ts.ExpressionWithTypeArguments[]
   readonly members: Record<string, ts.TypeElement>
+  readonly annotations: Record<string, string[]>
 }
 
 export interface TypeAliasDef extends BaseDef {
@@ -21,12 +22,14 @@ export interface TypeAliasDef extends BaseDef {
   readonly supertypes: readonly ts.TypeNode[]
   readonly indexOperator: ts.MappedTypeNode | ts.TypeLiteralNode | undefined
   readonly members: Record<string, ts.TypeElement>
+  readonly annotations: Record<string, string[]>
 }
 
 export interface NamespaceDef extends BaseDef {
   readonly kind: "namespace"
   readonly node: ts.NamespaceDeclaration
   readonly members: Record<string, NamespaceDef | ConstDef | EnumDef>
+  readonly annotations: Record<string, string[]>
 }
 
 export interface ConstDef extends BaseDef {
@@ -52,6 +55,7 @@ function createDef(node: ts.Statement): AnyDef {
       name: node.name.text,
       supertypes: node.heritageClauses?.find((value) => value.token === SyntaxKind.ExtendsKeyword)?.types ?? [],
       members: getMembers(node.members),
+      annotations: getAnnotations(node),
     }
   } else if (ts.isTypeAliasDeclaration(node)) {
     const types: ReadonlyArray<ts.TypeNode> = ts.isIntersectionTypeNode(node.type) ? node.type.types : [node.type]
@@ -70,6 +74,7 @@ function createDef(node: ts.Statement): AnyDef {
       supertypes: inherits,
       members: membersNode ? getMembers(membersNode.members) : {},
       indexOperator: mappedTypeIndexOperator ?? literalIndexOperator,
+      annotations: getAnnotations(node),
     }
   } else if (ts.isModuleDeclaration(node) && node.flags & ts.NodeFlags.Namespace) {
     return {
@@ -77,6 +82,7 @@ function createDef(node: ts.Statement): AnyDef {
       node: node as ts.NamespaceDeclaration,
       name: node.name.text,
       members: getNamespaceMembers(node as ts.NamespaceDeclaration),
+      annotations: getAnnotations(node),
     }
   } else if (ts.isVariableStatement(node)) {
     const type = node.declarationList.declarations[0].type
@@ -135,6 +141,20 @@ function createDef(node: ts.Statement): AnyDef {
         throw new Error("Namespace member must be another namespace, const, or enum")
       }
     }
+    return result
+  }
+
+  function getAnnotations(node: ts.JSDocContainer): Record<string, string[]> {
+    const result: Record<string, string[]> = {}
+    node.jsDoc?.forEach((value) =>
+      value.tags?.forEach((tag) => {
+        result[tag.tagName.text] = !tag.comment
+          ? []
+          : typeof tag.comment === "string"
+          ? tag.comment.split(" ")
+          : tag.comment.map((part) => part.text)
+      })
+    )
     return result
   }
 }

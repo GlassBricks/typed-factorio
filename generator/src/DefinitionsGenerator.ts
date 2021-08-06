@@ -2,7 +2,7 @@ import * as ts from "typescript"
 import { mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
 import { assertNever, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
-import { AnyDef, InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef } from "./manualDefinitions"
+import { AnyDef, InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef } from "./manualDefinitionsPreprocessing"
 import chalk from "chalk"
 import * as console from "console"
 
@@ -16,12 +16,13 @@ export default class DefinitionsGenerator {
   private classes = new Set<string>(this.apiDocs.classes.map((e) => e.name))
   private concepts = new Set<string>(this.apiDocs.concepts.map((e) => e.name))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
+  private tableOrArrayConcepts = new Set<string>()
 
   private numericTypes = new Set<string>()
   // original: mapped
   private typeNames: Record<string, string> = {}
 
-  private readonly rootDefine = {
+  private readonly rootDefine: Define = {
     order: 0,
     name: "defines",
     description: "",
@@ -91,6 +92,13 @@ export default class DefinitionsGenerator {
       }
     }
     addDefine(this.rootDefine, "")
+
+    for (const concept of this.apiDocs.concepts) {
+      const existing = this.manualDefinitions[concept.name]
+      if (concept.category === "table_or_array" && existing?.annotations.tableOrArray) {
+        this.tableOrArrayConcepts.add(concept.name)
+      }
+    }
   }
 
   generateDeclarations(): string {
@@ -277,7 +285,7 @@ export default class DefinitionsGenerator {
       }
       if (lengthOperator) {
         // length operator is (supposed to be) numeric, so not map with transforms
-        const type = this.mapTypeRaw(lengthOperator.type)
+        const type = this.mapTypeRaw(lengthOperator.type, true)
         const length = this.addJsDoc(
           ts.factory.createPropertySignature(
             [Modifiers.readonly],
@@ -443,7 +451,7 @@ export default class DefinitionsGenerator {
             concept.options
               .sort(sortByOrder)
               .map((option) =>
-                this.addJsDoc(this.mapTypeWithTransforms(option, option.type, concept.name), option, undefined)
+                this.addJsDoc(this.mapTypeWithTransforms(option, option.type, concept.name, false), option, undefined)
               )
           )
         )
@@ -498,24 +506,50 @@ export default class DefinitionsGenerator {
         )
       } else if (concept.category === "table_or_array") {
         // todo: separate type shenanigans
-        const table = ts.factory.createTypeLiteralNode(
-          concept.parameters.sort(sortByOrder).map((param) => this.mapParameterToProperty(param, concept.name))
-        )
-        const array = ts.factory.createTypeOperatorNode(
-          ts.SyntaxKind.ReadonlyKeyword,
-          ts.factory.createTupleTypeNode(
-            table.members.map((member) => {
-              const property = member as ts.PropertySignature
-              return ts.factory.createNamedTupleMember(
-                undefined,
-                property.name as ts.Identifier,
-                property.questionToken,
-                property.type!
-              )
-            })
+        const parameters = concept.parameters
+          .sort(sortByOrder)
+          .map((param) => this.mapParameterToProperty(param, concept.name))
+
+        this.statements.push(
+          ts.factory.createInterfaceDeclaration(
+            undefined,
+            undefined,
+            concept.name + "Table",
+            undefined,
+            undefined,
+            parameters
           )
         )
-        declaration = createTypeAlias(ts.factory.createUnionTypeNode([table, array]))
+
+        this.statements.push(
+          ts.factory.createTypeAliasDeclaration(
+            undefined,
+            undefined,
+            concept.name + "Array",
+            undefined,
+            ts.factory.createTypeOperatorNode(
+              ts.SyntaxKind.ReadonlyKeyword,
+              ts.factory.createTupleTypeNode(
+                parameters.map((member) => {
+                  const property = member as ts.PropertySignature
+                  return ts.factory.createNamedTupleMember(
+                    undefined,
+                    property.name as ts.Identifier,
+                    property.questionToken,
+                    property.type!
+                  )
+                })
+              )
+            )
+          )
+        )
+
+        declaration = createTypeAlias(
+          ts.factory.createUnionTypeNode([
+            ts.factory.createTypeReferenceNode(concept.name + "Table"),
+            ts.factory.createTypeReferenceNode(concept.name + "Array"),
+          ])
+        )
       } else {
         assertNever(concept)
       }
@@ -534,7 +568,7 @@ export default class DefinitionsGenerator {
             ts.factory.createVariableDeclaration(
               globalObject.name,
               undefined,
-              this.mapTypeWithTransforms(globalObject, globalObject.type, "")
+              this.mapTypeWithTransforms(globalObject, globalObject.type, "", true)
             ),
           ],
           ts.NodeFlags.Const
@@ -583,7 +617,7 @@ export default class DefinitionsGenerator {
       existingProperty.emitNode = existingProperty.emitNode || {}
       member = existingProperty
     } else {
-      const type = this.mapTypeWithTransforms(attribute, attribute.type, parent)
+      const type = this.mapTypeWithTransforms(attribute, attribute.type, parent, !attribute.write)
       if (!attribute.read) {
         member = ts.factory.createSetAccessorDeclaration(
           undefined,
@@ -637,10 +671,13 @@ export default class DefinitionsGenerator {
           Tokens.dotDotDot,
           "args",
           undefined,
-          this.mapTypeRaw({
-            complex_type: "array",
-            value: method.variadic_type,
-          })
+          this.mapTypeRaw(
+            {
+              complex_type: "array",
+              value: method.variadic_type,
+            },
+            false
+          )
         )
       )
     }
@@ -671,7 +708,7 @@ export default class DefinitionsGenerator {
       if (!method.return_type) {
         returnType = Types.void
       } else {
-        returnType = this.mapTypeWithTransforms(method, method.return_type, parent)
+        returnType = this.mapTypeWithTransforms(method, method.return_type, parent, true)
       }
       member = ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
     }
@@ -706,7 +743,7 @@ export default class DefinitionsGenerator {
   }
 
   private mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
-    const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false)
+    const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false, false)
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
@@ -735,7 +772,7 @@ export default class DefinitionsGenerator {
       existingProperty.emitNode = existingProperty.emitNode || {}
       member = existingProperty
     } else {
-      const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false)
+      const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false, false)
       member = ts.factory.createPropertySignature(
         [Modifiers.readonly],
         DefinitionsGenerator.escapePropertyName(parameter.name),
@@ -749,13 +786,15 @@ export default class DefinitionsGenerator {
   private mapTypeWithTransforms(
     member: { description: string; name?: string },
     baseType: Type,
-    parent: string
+    parent: string,
+    outOnly: boolean
   ): ts.TypeNode
 
   private mapTypeWithTransforms(
     member: { description: string; name?: string },
     baseType: Type,
     parent: string,
+    outOnly: boolean,
     makeNullable: boolean
   ): [type: ts.TypeNode, isNullable: boolean]
 
@@ -763,9 +802,10 @@ export default class DefinitionsGenerator {
     member: { description: string; name?: string },
     baseType: Type,
     parent: string,
+    outOnly: boolean,
     makeNullable?: boolean
   ): [type: ts.TypeNode, isNullable: boolean] | ts.TypeNode {
-    let type = DefinitionsGenerator.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType)
+    let type = DefinitionsGenerator.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType, outOnly)
     const isNullable = !(member as Parameter).optional && this.isNullableFromDescription(member, parent)
     if (isNullable && makeNullable !== false) {
       type = mergeUnion(type, Types.undefined)
@@ -823,15 +863,18 @@ export default class DefinitionsGenerator {
     )
   }
 
-  private mapTypeRaw(type: Type): ts.TypeNode {
+  private mapTypeRaw(type: Type, outOnly: boolean): ts.TypeNode {
     if (typeof type === "string") {
+      if (outOnly && this.tableOrArrayConcepts.has(type)) {
+        return ts.factory.createTypeReferenceNode(type + "Table")
+      }
       return ts.factory.createTypeReferenceNode(type)
     }
     if (type.complex_type === "variant") {
-      return ts.factory.createUnionTypeNode(type.options.map((m) => this.mapTypeRaw(m)))
+      return ts.factory.createUnionTypeNode(type.options.map((m) => this.mapTypeRaw(m, outOnly)))
     }
     if (type.complex_type === "array") {
-      return ts.factory.createArrayTypeNode(this.mapTypeRaw(type.value))
+      return ts.factory.createArrayTypeNode(this.mapTypeRaw(type.value, outOnly))
     }
     if (type.complex_type === "dictionary") {
       let recordType = "Record"
@@ -839,12 +882,15 @@ export default class DefinitionsGenerator {
         this.warnIncompleteDefinition("Not typescript indexable type for key in dictionary complex type: ", type)
         recordType = "LuaTable"
       }
-      return ts.factory.createTypeReferenceNode(recordType, [this.mapTypeRaw(type.key), this.mapTypeRaw(type.value)])
+      return ts.factory.createTypeReferenceNode(recordType, [
+        this.mapTypeRaw(type.key, outOnly),
+        this.mapTypeRaw(type.value, outOnly),
+      ])
     }
     if (type.complex_type === "LuaCustomTable") {
       return ts.factory.createTypeReferenceNode("LuaCustomTable", [
-        this.mapTypeRaw(type.key),
-        this.mapTypeRaw(type.value),
+        this.mapTypeRaw(type.key, outOnly),
+        this.mapTypeRaw(type.value, outOnly),
       ])
     }
     if (type.complex_type === "function") {
@@ -857,14 +903,14 @@ export default class DefinitionsGenerator {
             undefined,
             `param${index + 1}`,
             undefined,
-            this.mapTypeRaw(value)
+            this.mapTypeRaw(value, false)
           )
         ),
         Types.void
       )
     }
     if (type.complex_type === "LuaLazyLoadedValue") {
-      return ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [this.mapTypeRaw(type.value)])
+      return ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [this.mapTypeRaw(type.value, true)])
     }
     if (type.complex_type === "table") {
       if (type.variant_parameter_groups) {
@@ -949,44 +995,44 @@ export default class DefinitionsGenerator {
     return name
   }
 
+  private mapLink(origLink: string): string {
+    if (origLink.match(/^http(s?):\/\//)) {
+      return origLink
+    } else if (origLink.match(/\.html($|#)/)) {
+      return this.docUrlBase + origLink
+    } else if (this.typeNames[origLink]) {
+      return this.typeNames[origLink]
+    }
+    const referenceMatch = origLink.match(/^(.+?)::(.+)$/)
+    if (referenceMatch) {
+      const clazz = this.mapLink(referenceMatch[1])
+      const field = referenceMatch[2]
+      const operator = field.match(/(?<=operator )(.*)/)?.[1]
+      let fieldRef: string
+      if (!operator) {
+        fieldRef = "." + field
+      } else if (operator === "#") {
+        fieldRef = ".length"
+      } else if (operator === "[]" || operator === "()") {
+        fieldRef = "" // not supported, at least not until declaration links get standardized
+      } else {
+        throw new Error(`Unknown operator ${operator}`)
+      }
+      return clazz + fieldRef
+    } else {
+      this.warnIncompleteDefinition(`unresolved doc reference: ${origLink}`)
+      return origLink
+    }
+  }
+
   private processDescription(description: string | undefined): string | undefined {
     if (!description) return undefined
     let result = ""
 
-    const mapLink: (origLink: string) => string = (origLink) => {
-      if (origLink.match(/^http(s?):\/\//)) {
-        return origLink
-      } else if (origLink.match(/\.html($|#)/)) {
-        return this.docUrlBase + origLink
-      } else if (this.typeNames[origLink]) {
-        return this.typeNames[origLink]
-      }
-      const referenceMatch = origLink.match(/^(.+?)::(.+)$/)
-      if (referenceMatch) {
-        const clazz = mapLink(referenceMatch[1])
-        const field = referenceMatch[2]
-        const operator = field.match(/(?<=operator )(.*)/)?.[1]
-        let fieldRef: string
-        if (!operator) {
-          fieldRef = "." + field
-        } else if (operator === "#") {
-          fieldRef = ".length"
-        } else if (operator === "[]" || operator === "()") {
-          fieldRef = "" // not supported, at least not until declaration links get standardized
-        } else {
-          throw new Error(`Unknown operator ${operator}`)
-        }
-        return clazz + fieldRef
-      } else {
-        this.warnIncompleteDefinition(`unresolved doc reference: ${origLink}`)
-        return origLink
-      }
-    }
-
     for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|(```(?:(?!```).)*```))/gs)) {
       const withLinks = text
         .replace(/(?<!\[)\[(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
-          const link = mapLink(origLink)
+          const link = this.mapLink(origLink)
           if (link === name) {
             return `{@link ${link}}`
           } else {
@@ -1021,14 +1067,12 @@ export default class DefinitionsGenerator {
       relative_link = "Concepts.html#" + reference
     } else if (this.globalObjects.has(reference)) {
       relative_link = ""
+    } else if (reference.includes(".")) {
+      const className = reference.substr(0, reference.indexOf("."))
+      return this.getDocumentationUrl(className) + "#" + reference
     } else {
-      if (reference.includes(".")) {
-        const className = reference.substr(0, reference.indexOf("."))
-        return this.getDocumentationUrl(className) + "#" + reference
-      } else {
-        this.warnIncompleteDefinition("Could not get documentation url:", reference)
-        relative_link = ""
-      }
+      this.warnIncompleteDefinition("Could not get documentation url:", reference)
+      relative_link = ""
     }
     return this.docUrlBase + relative_link
   }

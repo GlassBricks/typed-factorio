@@ -44,9 +44,6 @@ interface Fluid {}
 
 interface LuaFluidBox extends Array<Fluid | undefined> {}
 
-interface LuaEquipment {}
-interface LuaEquipmentGrid {}
-
 type LuaGuiElement = {
   readonly [name: string]: LuaGuiElement | undefined
 } & {
@@ -65,13 +62,13 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
 interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 
 interface ChunkPositionAndArea {}
-
 interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
 interface LuaPermissionGroup {}
 interface LuaPermissionGroups {
   create_group(name?: string): LuaPermissionGroup | undefined
 }
+
 interface LuaPlayer {
   readonly cutscene_character: LuaEntity | undefined
 }
@@ -391,14 +388,19 @@ type CollisionMaskLayer =
   | "not-setup"
   | `layer-${number}`
 
-type CollisionMask = PartialRecord<CollisionMaskLayer, true>
+type CollisionMask = {
+  readonly [P in CollisionMaskLayer]?: true
+}
 
-type CollisionMaskWithFlags = PartialRecord<
-  CollisionMaskLayer | "not-colliding-with-itself" | "consider-tile-transitions" | "colliding-with-tiles-only",
-  true
->
+type CollisionMaskWithFlags = {
+  readonly [P in
+    | CollisionMaskLayer
+    | "not-colliding-with-itself"
+    | "consider-tile-transitions"
+    | "colliding-with-tiles-only"]?: true
+}
 
-type TriggerTargetMask = Record<string, boolean>
+type TriggerTargetMask = Record<string, true>
 
 type CircularProjectileCreationSpecification = [RealOrientation, Vector]
 
@@ -424,8 +426,12 @@ type MouseButtonFlag =
   | "button-8"
   | "button-9"
 
-//todo: in-out types
-type MouseButtonFlags = (MouseButtonFlag | "left-and-right")[] | PartialRecord<MouseButtonFlag, true>
+type MouseButtonFlagsTable = {
+  readonly [P in MouseButtonFlag]?: true
+}
+type MouseButtonFlagsArray = readonly (MouseButtonFlag | "left-and-right")[]
+/** @tableOrArray */
+type MouseButtonFlags = MouseButtonFlagsTable | MouseButtonFlagsArray
 
 type RenderLayer =
   | number
@@ -516,30 +522,26 @@ type EventFilter =
   | LuaScriptRaisedBuiltEventFilter[]
   | LuaPlayerBuiltEntityEventFilter[]
   | LuaPlayerRepairedEntityEventFilter[]
+
 // concept modifications
 
-// todo: in-out types
-interface Position {
-  x: number
-  y: number
-}
-
 // where a vector is supposed to be not a vector
+interface PositionTable {}
 
 interface SmokeSource {
-  readonly position?: Position
-  readonly north_position?: Position
-  readonly east_position?: Position
-  readonly south_position?: Position
-  readonly west_position?: Position
+  readonly position?: PositionTable
+  readonly north_position?: PositionTable
+  readonly east_position?: PositionTable
+  readonly south_position?: PositionTable
+  readonly west_position?: PositionTable
 }
 
 interface FluidBoxConnection {
-  readonly positions: Position[]
+  readonly positions: PositionTable[]
 }
 
 interface CircularParticleCreationSpecification {
-  center: Position
+  readonly center: PositionTable
 }
 
 // additional types
@@ -691,7 +693,3 @@ interface BlueprintConnectionData {
 
 /** There are not yet full definitions for this type. See {@link https://lua-api.factorio.com/1.1.36/LuaControlBehavior.html}. */
 type BlueprintControlBehavior = unknown
-
-type PartialRecord<K extends keyof any, V> = {
-  [P in K]?: V
-}
