@@ -1105,7 +1105,7 @@ export default class DefinitionsGenerator {
 
     for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|(```(?:(?!```).)*```))/gs)) {
       const withLinks = text
-        .replace(/(?<!\[)\[(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
+        .replace(/\[(?!\[)(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
           const link = this.mapLink(origLink)
           if (link === name) {
             return `{@link ${link}}`
