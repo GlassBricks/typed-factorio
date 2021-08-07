@@ -4,6 +4,7 @@ import DefinitionsGenerator from "./DefinitionsGenerator"
 import commandLineArgs from "command-line-args"
 import * as path from "path"
 import ts from "typescript"
+import { emptySourceFile } from "./printer"
 
 const options: commandLineArgs.OptionDefinition[] = [
   {
@@ -45,7 +46,7 @@ const program = ts.createProgram({
   rootNames: [manualDefinesFile],
   options: {},
 })
-const manualDefines = program.getSourceFile(manualDefinesFile)
+const manualDefines = program.getSourceFile(manualDefinesFile) ?? emptySourceFile
 
 console.log("generating docs")
 let output = new DefinitionsGenerator(

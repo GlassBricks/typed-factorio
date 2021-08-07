@@ -1,5 +1,5 @@
 import * as ts from "typescript"
-import { EmitFlags } from "typescript"
+import { EmitFlags, EmitHint } from "typescript"
 import { mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
 import { assertNever, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
@@ -70,7 +70,7 @@ export default class DefinitionsGenerator {
 
   constructor(
     private readonly apiDocs: FactorioApiJson,
-    private readonly manualDefinitionsSource: ts.SourceFile | undefined,
+    private readonly manualDefinitionsSource: ts.SourceFile,
     private readonly checker: ts.TypeChecker,
     private readonly docs: boolean
   ) {
@@ -144,7 +144,7 @@ export default class DefinitionsGenerator {
     this.generateAll()
     let result = ""
     for (const statement of this.statements) {
-      result += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource ?? emptySourceFile)
+      result += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource)
       result += "\n\n"
     }
     return result
@@ -154,19 +154,23 @@ export default class DefinitionsGenerator {
     this.statements.push(createComment(" Builtins"))
     for (const builtin of this.apiDocs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string") continue
-      let type: ts.TypeNode
+      let declaration: ts.Statement
       if (builtin.name === "table") {
-        type = Types.object
+        const tableDeclaration = this.manualDefinitions.table
+        if (!tableDeclaration) {
+          this.warnIncompleteDefinition('No definition given for "table" type')
+          continue
+        }
+        declaration = tableDeclaration.node
       } else {
         this.numericTypes.add(builtin.name)
-        type = Types.number
+        declaration = this.addJsDoc(
+          ts.factory.createTypeAliasDeclaration(undefined, undefined, builtin.name, undefined, Types.number),
+          builtin,
+          builtin.name
+        )
       }
-      const typeAliasDeclaration = this.addJsDoc(
-        ts.factory.createTypeAliasDeclaration(undefined, undefined, builtin.name, undefined, type),
-        builtin,
-        builtin.name
-      )
-      this.statements.push(typeAliasDeclaration)
+      this.statements.push(declaration)
     }
   }
 
@@ -698,15 +702,22 @@ export default class DefinitionsGenerator {
           declaration = createTypeAlias(Types.unknown)
         }
       } else if (concept.category === "union") {
-        declaration = createTypeAlias(
-          ts.factory.createUnionTypeNode(
-            concept.options
-              .sort(sortByOrder)
-              .map((option) =>
-                this.addJsDoc(this.mapTypeWithTransforms(option, option.type, concept.name, false), option, undefined)
-              )
+        const types = concept.options
+          .sort(sortByOrder)
+          .map((option) => this.mapTypeWithTransforms(option, option.type, concept.name, false))
+        declaration = createTypeAlias(ts.factory.createUnionTypeNode(types))
+        concept.description += concept.options
+          .map(
+            (option, i) =>
+              option.description &&
+              ` - ${
+                typeof option.type === "string"
+                  ? option.type
+                  : printer.printNode(EmitHint.Unspecified, types[i], this.manualDefinitionsSource)
+              }: ${option.description}`
           )
-        )
+          .filter((x) => !!x)
+          .join("\n\n")
       } else if (concept.category === "struct") {
         declaration = ts.factory.createInterfaceDeclaration(
           undefined,

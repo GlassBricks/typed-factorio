@@ -1,6 +1,8 @@
 type uint = number
 type double = number
 type float = number
+type table = LuaTable | Record<any, any>
+
 declare namespace defines {
   const prototypes: {
     readonly [Type in string]?: {
@@ -307,7 +309,7 @@ type LocalisedString = [string, ...LocalisedString[]] | string | number
 
 type RealOrientation = float
 
-type Tags = Record<string, AnyBasic>
+type Tags = Record<string, AnyBasic | undefined>
 
 interface PositionTable {}
 interface PositionArray {}
@@ -642,9 +644,9 @@ type AnyBasic =
   | string
   | number
   | boolean
-  | LuaTable<AnyNotNil, any>
+  | LuaTable
   | {
-      [K in keyof any]: AnyBasic
+      [K in keyof any]: AnyBasic | undefined
     }
 
 type Any = any
