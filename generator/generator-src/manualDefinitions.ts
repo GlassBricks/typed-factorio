@@ -80,7 +80,9 @@ type RealOrientation = float
 
 type Tags = Record<string, AnyBasic>
 
-type Vector = [x: number, y: number]
+interface PositionTable {}
+interface PositionArray {}
+type Vector = PositionArray
 
 // last updated 1.1.37
 interface MapSettings {
@@ -218,7 +220,7 @@ interface MapSettings {
   }
 
   readonly path_finder: {
-    /** Defines whether we prefer forward (>1) or backward (<-1) or symmetrical (1) search */
+    /** Defines whether we prefer forward (>1) or backward (<1) or symmetrical (1) search */
     fwd2bwd_ratio: number
     /**
      * When comparing nodes in open which one to check next
@@ -400,7 +402,9 @@ type CollisionMaskWithFlags = {
     | "colliding-with-tiles-only"]?: true
 }
 
-type TriggerTargetMask = Record<string, true>
+type TriggerTargetMask = {
+  readonly [P in string]?: true
+}
 
 type CircularProjectileCreationSpecification = [RealOrientation, Vector]
 
@@ -526,7 +530,6 @@ type EventFilter =
 // concept modifications
 
 // where a vector is supposed to be not a vector
-interface PositionTable {}
 
 interface SmokeSource {
   readonly position?: PositionTable
@@ -545,30 +548,6 @@ interface CircularParticleCreationSpecification {
 }
 
 // additional types
-
-/**
- * Common properties of many factorio LuaObjects.
- *
- * @noSelf
- */
-interface LuaObject {
-  /**
-   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
-   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
-   * object becomes invalid, i.e. this attribute will be `boolean`. Mods are advised to check for object validity if any
-   * change to the game state might have occurred between the creation of the Lua object and its access.
-   */
-  readonly valid: boolean
-
-  /**
-   * The class name of this object. Available even when `valid` is boolean. For LuaStruct objects it may also be
-   * suffixed with a dotted path to a member of the struct.
-   */
-  readonly object_name: string
-
-  /** All methods and properties that this object supports. */
-  help(): string
-}
 
 interface MapGenSettings {}
 

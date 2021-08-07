@@ -28,12 +28,12 @@ const options: commandLineArgs.OptionDefinition[] = [
   },
 ]
 
-const opts: {
+const opts = commandLineArgs(options) as {
   folder: string[]
   nodocs: boolean
   noformat: boolean
   outdir?: string
-} = commandLineArgs(options) as any
+}
 
 if (!opts.folder) throw Error("folder name not provided")
 

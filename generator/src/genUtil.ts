@@ -14,9 +14,6 @@ export const Types = {
   number: ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
   boolean: ts.factory.createKeywordTypeNode(ts.SyntaxKind.BooleanKeyword),
 
-  numberLiteral(n: number | string): ts.LiteralTypeNode {
-    return ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(n))
-  },
   stringLiteral(text: string): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(text))
   },

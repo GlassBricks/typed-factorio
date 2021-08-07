@@ -6,6 +6,20 @@ import { AnyDef, InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef }
 import chalk from "chalk"
 import * as console from "console"
 
+interface GeneratedClass {
+  readonly clazz: Class
+  readonly existing: InterfaceDef | TypeAliasDef | undefined
+  readonly superTypes: ts.TypeNode[]
+  arrayType?: {
+    readonly type: ts.TypeNode
+    readonly: boolean
+  }
+  readonly members: { original: Method | Attribute; member: ts.TypeElement }[]
+  readonly attributes: ts.PropertySignature[]
+
+  indexingType?: ts.TypeAliasDeclaration | ts.InterfaceDeclaration | undefined
+}
+
 export default class DefinitionsGenerator {
   private statements: ts.Statement[] = []
   private readonly manualDefinitions: Record<string, RootDef | undefined>
@@ -61,6 +75,7 @@ export default class DefinitionsGenerator {
 
   private addHeaders() {
     this.statements.push(createComment('/ <reference types="lua-types/5.2" />'))
+    this.statements.push(createComment("* @noSelfInFile ", true)) // makes lambda types have no self
   }
 
   private preprocessAll() {
@@ -95,8 +110,10 @@ export default class DefinitionsGenerator {
 
     for (const concept of this.apiDocs.concepts) {
       const existing = this.manualDefinitions[concept.name]
-      if (concept.category === "table_or_array" && existing?.annotations.tableOrArray) {
+      if (concept.category === "table_or_array" || existing?.annotations.tableOrArray) {
         this.tableOrArrayConcepts.add(concept.name)
+        this.typeNames[concept.name + "Table"] = concept.name
+        this.typeNames[concept.name + "Array"] = concept.name
       }
     }
   }
@@ -227,10 +244,27 @@ export default class DefinitionsGenerator {
       if (existing && existing.kind !== "interface" && existing.kind !== "type") {
         throw new Error("Manual define for class should be interface or type alias")
       }
+      const generated: GeneratedClass = {
+        clazz,
+        existing,
+        superTypes: [],
+        members: [],
+        attributes: [],
+      }
+      for (const step of [
+        fillSupertypes,
+        fillArrayType,
+        fillMethods,
+        fillAttributes,
+        fillIndexOperator,
+        shiftLuaObjectMembers,
+        createDeclarations,
+      ]) {
+        step.call(this, generated)
+      }
+    }
 
-      // supertypes
-      const superTypes: ts.TypeNode[] = []
-      // const members = new Map<string, ts.TypeElement[]>()
+    function fillSupertypes({ clazz, existing, superTypes }: GeneratedClass) {
       if (clazz.base_classes) {
         superTypes.push(
           ...clazz.base_classes.map((b) =>
@@ -241,52 +275,46 @@ export default class DefinitionsGenerator {
       if (existing) {
         superTypes.push(...existing.supertypes)
       }
+    }
 
-      let arrayType: { type: ts.TypeNode; readonly: boolean } | undefined
-      if (existing?.kind === "interface") {
-        const arrayExtends = existing.supertypes.find(
-          (t) =>
-            ts.isIdentifier(t.expression) && (t.expression.text === "Array" || t.expression.text === "ReadonlyArray")
-        )
-        if (arrayExtends) {
-          const type = arrayExtends.typeArguments?.[0]
-          const readonly = (arrayExtends.expression as ts.Identifier).text === "ReadonlyArray"
-          if (!type) throw new Error(`Manual define ${clazz.name} extends an array type without type arguments`)
-          arrayType = { type, readonly }
-        }
-      }
+    function fillArrayType(generated: GeneratedClass) {
+      const { clazz, existing } = generated
+      if (existing?.kind !== "interface") return
+      const arrayExtends = existing.supertypes.find(
+        (t) => ts.isIdentifier(t.expression) && (t.expression.text === "Array" || t.expression.text === "ReadonlyArray")
+      )
+      if (!arrayExtends) return
+      const type = arrayExtends.typeArguments?.[0]
+      const readonly = (arrayExtends.expression as ts.Identifier).text === "ReadonlyArray"
+      if (!type) throw new Error(`Manual define ${clazz.name} extends an array type without type arguments`)
+      generated.arrayType = { type, readonly }
       // array inherit with type aliases not yet supported
+    }
 
-      // members
-      const members: ts.TypeElement[] = []
-
-      const standardMembers: {
-        help?: Method
-        object_name?: Attribute
-        valid?: Attribute
-      } = {}
+    function fillMethods(this: DefinitionsGenerator, { clazz, existing, members, arrayType }: GeneratedClass) {
+      members.push(
+        ...clazz.methods.sort(sortByOrder).map((method) => ({
+          original: method,
+          member: this.mapMethod(method, clazz.name, existing),
+        }))
+      )
 
       const callOperator = clazz.operators.find((x) => x.name === "call") as CallOperator | undefined
-      const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
-
-      for (const method of clazz.methods.sort(sortByOrder)) {
-        if (method.name === "help") {
-          standardMembers.help = method
-          continue
-        }
-        members.push(this.mapMethod(method, clazz.name, existing))
-      }
       if (callOperator) {
         // manual define for operator not supported yet
         const asMethod = this.mapMethod({ ...callOperator, name: "operator%20()" }, clazz.name, undefined)
         const callSignature = ts.factory.createCallSignature(undefined, asMethod.parameters, asMethod.type)
         ts.setSyntheticLeadingComments(callSignature, ts.getSyntheticLeadingComments(asMethod))
-        members.push(callSignature)
+        members.push({
+          original: callOperator,
+          member: callSignature,
+        })
       }
+      const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
       if (lengthOperator) {
         // length operator is (supposed to be) numeric, so not map with transforms
         const type = this.mapTypeRaw(lengthOperator.type, true)
-        const length = this.addJsDoc(
+        const lengthProperty = this.addJsDoc(
           ts.factory.createPropertySignature(
             [Modifiers.readonly],
             "length",
@@ -296,93 +324,139 @@ export default class DefinitionsGenerator {
           lengthOperator,
           clazz.name + ".operator%20#"
         )
-        members.push(length)
+        members.push({ original: lengthOperator, member: lengthProperty })
+      }
+    }
+
+    function fillAttributes(this: DefinitionsGenerator, { clazz, existing, members }: GeneratedClass) {
+      members.push(
+        ...clazz.attributes.sort(sortByOrder).map((attr) => ({
+          original: attr,
+          member: this.mapAttribute(attr, clazz.name, existing),
+        }))
+      )
+    }
+
+    function fillIndexOperator(this: DefinitionsGenerator, generated: GeneratedClass): void {
+      const { clazz, existing, arrayType, members } = generated
+      const indexOperator = clazz.operators.find((x) => x.name === "index") as IndexOperator | undefined
+      if (!indexOperator) return
+      if (arrayType) {
+        const indexSignature = this.addJsDoc(
+          ts.factory.createIndexSignature(
+            undefined,
+            arrayType.readonly ? [Modifiers.readonly] : undefined,
+            [
+              ts.factory.createParameterDeclaration(
+                undefined,
+                undefined,
+                undefined,
+                "index",
+                undefined,
+                Types.number,
+                undefined
+              ),
+            ],
+            arrayType.type
+          ),
+          indexOperator,
+          clazz.name + ".operator%20[]"
+        )
+        members.push({ original: indexOperator, member: indexSignature })
+        return
+      }
+      if (!(existing?.kind === "type" && existing.indexOperator)) {
+        this.warnIncompleteDefinition("No index operator manual definition for class", clazz.name)
+        return
       }
 
-      for (const attribute of clazz.attributes.sort(sortByOrder)) {
-        if (attribute.name === "valid" || attribute.name === "object_name") {
-          standardMembers[attribute.name] = attribute
-          continue
-        }
-        members.push(this.mapAttribute(attribute, clazz.name, existing))
-      }
-
-      const getIndexingType = (operator: IndexOperator) => {
-        if (arrayType) {
-          const indexSignature = this.addJsDoc(
-            ts.factory.createIndexSignature(
-              undefined,
-              arrayType.readonly ? [Modifiers.readonly] : undefined,
-              [
-                ts.factory.createParameterDeclaration(
-                  undefined,
-                  undefined,
-                  undefined,
-                  "index",
-                  undefined,
-                  Types.number,
-                  undefined
-                ),
-              ],
-              arrayType.type
-            ),
-            operator,
-            clazz.name + ".operator%20[]"
-          )
-          members.push(indexSignature)
-          return undefined
-        }
-        if (!(existing?.kind === "type" && existing.indexOperator)) {
-          this.warnIncompleteDefinition("No index operator manual definition for class", clazz.name)
-          return
-        }
-
-        const existingIndexOp = existing.indexOperator
-        if (ts.isMappedTypeNode(existingIndexOp)) {
-          return ts.factory.createTypeAliasDeclaration(
-            undefined,
-            undefined,
-            clazz.name + "Index",
-            existing.node.typeParameters,
-            this.addJsDoc(existingIndexOp, operator, clazz.name + ".operator%20[]")
-          )
-        }
-        if (ts.isTypeLiteralNode(existingIndexOp)) {
-          const existingIndexSignature = existingIndexOp.members[0] as ts.IndexSignatureDeclaration
-          const indexSignature = this.addJsDoc(
-            ts.factory.createIndexSignature(
-              existingIndexSignature.decorators,
-              existingIndexSignature.modifiers,
-              existingIndexSignature.parameters,
-              existingIndexSignature.type
-            ),
-            operator,
-            clazz.name + ".operator%20[]"
-          )
-          return ts.factory.createInterfaceDeclaration(
-            undefined,
-            undefined,
-            clazz.name + "Index",
-            undefined,
-            undefined,
-            [indexSignature]
-          )
-        }
+      const existingIndexOp = existing.indexOperator
+      if (ts.isMappedTypeNode(existingIndexOp)) {
+        generated.indexingType = ts.factory.createTypeAliasDeclaration(
+          undefined,
+          undefined,
+          clazz.name + "Index",
+          existing.node.typeParameters,
+          this.addJsDoc(existingIndexOp, indexOperator, clazz.name + ".operator%20[]")
+        )
+      } else if (ts.isTypeLiteralNode(existingIndexOp)) {
+        const indexSignature = this.addJsDoc(
+          existingIndexOp.members[0] as ts.IndexSignatureDeclaration,
+          indexOperator,
+          clazz.name + ".operator%20[]"
+        )
+        generated.indexingType = ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          clazz.name + "Index",
+          undefined,
+          undefined,
+          [indexSignature]
+        )
+      } else {
         assertNever(existingIndexOp)
       }
+    }
 
-      const indexOperator = clazz.operators.find((x) => x.name === "index") as IndexOperator | undefined
-      const indexingType = indexOperator && getIndexingType(indexOperator)
-
-      if (standardMembers.help && standardMembers.valid && standardMembers.object_name) {
-        superTypes.unshift(ts.factory.createTypeReferenceNode("LuaObject"))
-      } else {
-        if (standardMembers.valid) members.push(this.mapAttribute(standardMembers.valid, clazz.name, existing))
-        if (standardMembers.object_name)
-          members.push(this.mapAttribute(standardMembers.object_name, clazz.name, existing))
-        if (standardMembers.help) members.push(this.mapMethod(standardMembers.help, clazz.name, existing))
+    function shiftLuaObjectMembers(this: DefinitionsGenerator, { members, clazz }: GeneratedClass) {
+      const standardMembers: {
+        valid?: { original: Attribute; member: ts.PropertySignature }
+        object_name?: { original: Attribute; member: ts.PropertySignature }
+        help?: { original: Method; member: ts.MethodSignature }
+      } = {}
+      for (let i = 0; i < members.length; i++) {
+        const group = members[i]
+        const member = group.member
+        if (!member.name || !ts.isIdentifier(member.name)) continue
+        const name = member.name.text
+        if (name === "valid" || name === "object_name" || name === "help") {
+          standardMembers[name] = group as never
+          members.splice(i, 1)
+          i--
+        }
       }
 
+      function setNoRefJsDoc(
+        this: DefinitionsGenerator,
+        property: { original: Attribute | Method; member: ts.TypeElement }
+      ) {
+        ts.setSyntheticLeadingComments(property.member, undefined)
+        this.addJsDoc(property.member, property.original, undefined)
+      }
+
+      if (standardMembers.valid) {
+        const property = standardMembers.valid
+        setNoRefJsDoc.call(this, property)
+        members.push(standardMembers.valid)
+      }
+
+      if (standardMembers.object_name) {
+        const attribute = standardMembers.object_name
+        const member = attribute.member
+        setNoRefJsDoc.call(this, attribute)
+        if (!clazz.description.match(/abstract/i)) {
+          attribute.member = ts.factory.updatePropertySignature(
+            member,
+            member.modifiers,
+            member.name,
+            member.questionToken,
+            Types.stringLiteral(clazz.name)
+          )
+        }
+        members.push(standardMembers.object_name)
+      }
+
+      if (standardMembers.help) {
+        const property = standardMembers.help
+        setNoRefJsDoc.call(this, property)
+        members.push(standardMembers.help)
+      }
+    }
+
+    function createDeclarations(
+      this: DefinitionsGenerator,
+      { clazz, existing, superTypes, members, indexingType }: GeneratedClass
+    ) {
       const baseDeclaration = ts.factory.createInterfaceDeclaration(
         undefined,
         undefined,
@@ -396,13 +470,14 @@ export default class DefinitionsGenerator {
               ),
             ]
           : undefined,
-        members
+        members.map((m) => m.member)
       )
       this.statements.push(baseDeclaration)
 
       if (!indexingType) {
-        this.addJsDoc(baseDeclaration, clazz, clazz.name)
+        this.addJsDoc(baseDeclaration, clazz, clazz.name, [DefinitionsGenerator.noSelfAnnotation])
       } else {
+        DefinitionsGenerator.addNoSelfAnnotationOnly(baseDeclaration)
         this.statements.push(indexingType)
         const typeArguments = existing?.node.typeParameters?.map((p) => ts.factory.createTypeReferenceNode(p.name))
         const actualDeclaration = ts.factory.createTypeAliasDeclaration(
@@ -737,7 +812,6 @@ export default class DefinitionsGenerator {
         )
       }
     }
-    tags.push(DefinitionsGenerator.noSelfAnnotation)
     this.addJsDoc(member, method, thisPath, tags)
     return member
   }
@@ -1128,6 +1202,11 @@ export default class DefinitionsGenerator {
     addFakeJSDoc(node, jsDoc)
 
     return node
+  }
+
+  private static addNoSelfAnnotationOnly(node: ts.Node) {
+    const jsDoc = ts.factory.createJSDocComment(undefined, [DefinitionsGenerator.noSelfAnnotation])
+    addFakeJSDoc(node, jsDoc)
   }
 
   // might not be static in the future
