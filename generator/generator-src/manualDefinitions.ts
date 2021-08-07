@@ -44,7 +44,7 @@ interface Fluid {}
 
 interface LuaFluidBox extends Array<Fluid | undefined> {}
 
-type LuaGuiElementType =
+type GuiElementType =
   | "choose-elem-button"
   | "drop-down"
   | "empty-widget"
@@ -71,16 +71,16 @@ type LuaGuiElementType =
   | "table"
   | "textfield"
 
-interface BaseLuaGuiElementAdd {
-  readonly type: LuaGuiElementType
+interface BaseGuiSpec {
+  readonly type: GuiElementType
 }
-interface FlowLuaGuiElementAdd {
+interface FlowGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
-interface FrameLuaGuiElementAdd {
+interface FrameGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
-interface LineLuaGuiElementAdd {
+interface LineGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
 
@@ -113,7 +113,7 @@ interface ChooseElemButtonFilters {
   technology: TechnologyPrototypeFilter[]
 }
 
-interface BaseChooseElemButtonAdd extends BaseLuaGuiElementAdd {
+interface BaseChooseElemButtonSpec extends BaseGuiSpec {
   readonly type: "choose-elem-button"
   /** The type of the button - one of the following values. */
   readonly elem_type: ChooseElemButtonType
@@ -121,86 +121,86 @@ interface BaseChooseElemButtonAdd extends BaseLuaGuiElementAdd {
   readonly filters?: ChooseElemButtonFilters[this["elem_type"]]
 }
 
-interface ItemChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface ItemChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "item"
   /** If type is `"item"` - the default value for the button. */
   readonly item?: string
 }
 
-interface TileChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface TileChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "tile"
   /** If type is `"tile"` - the default value for the button. */
   readonly tile?: string
 }
 
-interface EntityChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface EntityChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "entity"
   /** If type is `"entity"` - the default value for the button. */
   readonly entity?: string
 }
 
-interface SignalChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface SignalChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "signal"
   /** If type is `"signal"` - the default value for the button. */
   readonly signal?: SignalID
 }
 
-interface FluidChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface FluidChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "fluid"
   /** If type is `"fluid"` - the default value for the button. */
   readonly fluid?: string
 }
 
-interface RecipeChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface RecipeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "recipe"
   /** If type is `"recipe"` - the default value for the button. */
   readonly recipe?: string
 }
 
-interface DecorativeChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface DecorativeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "decorative"
   /** If type is `"decorative"` - the default value for the button. */
   readonly decorative?: string
 }
 
-interface ItemGroupChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface ItemGroupChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "item-group"
   /** If type is `"item-group"` - the default value for the button. */
   readonly "item-group"?: string
 }
 
-interface AchievementChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface AchievementChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "achievement"
   /** If type is `"achievement"` - the default value for the button. */
   readonly achievement?: string
 }
 
-interface EquipmentChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface EquipmentChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "equipment"
   /** If type is `"equipment"` - the default value for the button. */
   readonly equipment?: string
 }
 
-interface TechnologyChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+interface TechnologyChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "technology"
   /** If type is `"technology"` - the default value for the button. */
   readonly technology?: string
 }
 
-type ChooseElemButtonLuaGuiElementAdd =
-  | ItemChooseElemButtonAdd
-  | TileChooseElemButtonAdd
-  | EntityChooseElemButtonAdd
-  | SignalChooseElemButtonAdd
-  | FluidChooseElemButtonAdd
-  | RecipeChooseElemButtonAdd
-  | DecorativeChooseElemButtonAdd
-  | ItemGroupChooseElemButtonAdd
-  | AchievementChooseElemButtonAdd
-  | EquipmentChooseElemButtonAdd
-  | TechnologyChooseElemButtonAdd
+type ChooseElemButtonGuiSpec =
+  | ItemChooseElemButtonSpec
+  | TileChooseElemButtonSpec
+  | EntityChooseElemButtonSpec
+  | SignalChooseElemButtonSpec
+  | FluidChooseElemButtonSpec
+  | RecipeChooseElemButtonSpec
+  | DecorativeChooseElemButtonSpec
+  | ItemGroupChooseElemButtonSpec
+  | AchievementChooseElemButtonSpec
+  | EquipmentChooseElemButtonSpec
+  | TechnologyChooseElemButtonSpec
 
-interface LuaGuiElementAdd {
+interface GuiSpec {
   type
 }
 
@@ -208,9 +208,10 @@ interface LuaGuiElementAdd {
 type LuaGuiElement = {
   readonly [name: string]: LuaGuiElement | undefined
 } & {
-  readonly type: LuaGuiElementType
+  readonly type: GuiElementType
 
-  add<Spec extends LuaGuiElementAdd>(element: Spec): Extract<LuaGuiElement, { type: Spec["type"] }>
+  /** @variantsName GuiSpec */
+  add<Spec extends GuiSpec>(element: Spec): Extract<LuaGuiElement, { type: Spec["type"] }>
 
   readonly elem_type: ChooseElemButtonType
   // @ts-ignore

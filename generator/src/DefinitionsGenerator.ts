@@ -402,11 +402,12 @@ export default class DefinitionsGenerator {
       }
 
       const existingIndexOp = existing.indexOperator
+      const shortName = removeLuaPrefix(clazz.name)
       if (ts.isMappedTypeNode(existingIndexOp)) {
         generated.indexType = ts.factory.createTypeAliasDeclaration(
           undefined,
           undefined,
-          clazz.name + "Index",
+          shortName + "Index",
           existing.node.typeParameters,
           this.addJsDoc(existingIndexOp, indexOperator, clazz.name + ".operator%20[]")
         )
@@ -419,7 +420,7 @@ export default class DefinitionsGenerator {
         generated.indexType = ts.factory.createInterfaceDeclaration(
           undefined,
           undefined,
-          clazz.name + "Index",
+          shortName + "Index",
           undefined,
           undefined,
           [indexSignature]
@@ -563,21 +564,23 @@ export default class DefinitionsGenerator {
       if (indexType) {
         this.statements.push(indexType)
       }
-      const indexTypeName = indexType ? clazz.name + "Index" : undefined
+      const shortName = removeLuaPrefix(clazz.name)
+      const indexTypeName = indexType ? shortName + "Index" : undefined
       if (!discriminatedUnionInfo) {
         createDeclaration.call(this, existing, indexTypeName, clazz, clazz.name, superTypes, allMembers)
       } else {
+        const baseName = "Base" + shortName
         createDeclaration.call(
           this,
           existing,
           undefined,
           undefined,
-          "Base" + clazz.name,
+          baseName,
           superTypes,
           discriminatedUnionInfo.membersBySubclass.get("")!
         )
         const groupSupertypes = [
-          ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier("Base" + clazz.name), undefined),
+          ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
         ]
         for (const [groupName, members] of discriminatedUnionInfo.membersBySubclass) {
           if (groupName === "") continue
@@ -586,19 +589,21 @@ export default class DefinitionsGenerator {
             existing,
             indexTypeName,
             undefined,
-            toPascalCase(groupName) + clazz.name,
+            toPascalCase(groupName) + shortName,
             groupSupertypes,
             members
           )
         }
 
         const types = discriminatedUnionInfo.types.map((groupName) =>
-          ts.factory.createTypeReferenceNode(toPascalCase(groupName) + clazz.name + (indexTypeName ? "Members" : ""))
+          ts.factory.createTypeReferenceNode(
+            toPascalCase(groupName) + (indexTypeName ? shortName + "Members" : clazz.name)
+          )
         )
         const unionDeclaration = ts.factory.createTypeAliasDeclaration(
           undefined,
           undefined,
-          indexTypeName ? clazz.name + "Members" : clazz.name,
+          indexTypeName ? shortName + "Members" : clazz.name,
           undefined,
           ts.factory.createUnionTypeNode(types)
         )
@@ -612,7 +617,7 @@ export default class DefinitionsGenerator {
             clazz.name,
             existing?.node.typeParameters,
             ts.factory.createIntersectionTypeNode([
-              ts.factory.createTypeReferenceNode(clazz.name + "Members"),
+              ts.factory.createTypeReferenceNode(shortName + "Members"),
               ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName)),
             ])
           )
@@ -752,7 +757,6 @@ export default class DefinitionsGenerator {
           )
         )
       } else if (concept.category === "table_or_array") {
-        // todo: separate type shenanigans
         const parameters = concept.parameters
           .sort(sortByOrder)
           .map((param) => this.mapParameterToProperty(param, concept.name))
@@ -896,7 +900,11 @@ export default class DefinitionsGenerator {
             "params",
             method.table_is_optional ? Tokens.question : undefined,
             method.variant_parameter_groups !== undefined
-              ? this.createVariantParameterTypes(parent + toPascalCase(method.name), method)
+              ? this.createVariantParameterTypes(
+                  (existingMethod && getAnnotations(existingMethod as ts.JSDocContainer).variantsName?.[0]) ??
+                    removeLuaPrefix(parent) + toPascalCase(method.name),
+                  method
+                )
               : ts.factory.createTypeLiteralNode(
                   method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, thisPath))
                 )
@@ -1177,7 +1185,8 @@ export default class DefinitionsGenerator {
     variants: WithParameterVariants,
     memberForDocs?: BasicMember
   ): ts.TypeReferenceNode {
-    const baseName = "Base" + name
+    const shortName = removeLuaPrefix(name)
+    const baseName = "Base" + shortName
 
     const existingBase = this.manualDefinitions[baseName]
     if (existingBase?.kind === "namespace") {
@@ -1236,9 +1245,10 @@ export default class DefinitionsGenerator {
     const otherTypes = variants.variant_parameter_groups!.find((x) => x.name === "Other types")
     if (otherTypes) {
       otherTypes.order = variants.variant_parameter_groups!.length + 1
+      otherTypes.name = "Other"
     } else {
       variants.variant_parameter_groups!.push({
-        name: "Other types",
+        name: "Other",
         order: variants.variant_parameter_groups!.length + 1,
         description: "",
         parameters: [],
@@ -1250,18 +1260,17 @@ export default class DefinitionsGenerator {
     }
 
     for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
-      const groupName = group.name
-      const isOtherTypes = groupName === "Other types"
+      const isOtherTypes = group.name === "Other"
       if (!isOtherTypes) {
-        unusedTypes?.delete(groupName)
+        unusedTypes?.delete(group.name)
       } else {
         if (!unusedTypes || unusedTypes.size === 0) continue
       }
-      const pascalGroupName =
-        toPascalCase(isDefine ? groupName.substr(groupName.lastIndexOf(".") + 1) : groupName) + name
-      const existing = this.manualDefinitions[pascalGroupName]
+      const fullName =
+        toPascalCase(isDefine ? group.name.substr(group.name.lastIndexOf(".") + 1) : group.name) + shortName
+      const existing = this.manualDefinitions[fullName]
       if (existing?.kind === "namespace") {
-        throw new Error(`Manual definition for variant parameter type ${name} cannot be a namespace`)
+        throw new Error(`Manual definition for variant parameter type ${fullName} cannot be a namespace`)
       }
 
       let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
@@ -1275,17 +1284,17 @@ export default class DefinitionsGenerator {
               [Modifiers.readonly],
               discriminantProperty,
               undefined,
-              isOtherTypes ? ts.factory.createUnionTypeNode(Array.from(unusedTypes!).map(getType)) : getType(groupName)
+              isOtherTypes ? ts.factory.createUnionTypeNode(Array.from(unusedTypes!).map(getType)) : getType(group.name)
             )
           )
         }
         members.push(
-          ...group.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p, pascalGroupName, existing))
+          ...group.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p, fullName, existing))
         )
         declaration = ts.factory.createInterfaceDeclaration(
           undefined,
           undefined,
-          pascalGroupName,
+          fullName,
           undefined,
           heritageClause,
           members
@@ -1294,8 +1303,8 @@ export default class DefinitionsGenerator {
       this.addJsDoc(declaration, group, undefined)
       this.statements.push(declaration)
 
-      this.typeNames[pascalGroupName] = pascalGroupName
-      groupNames.push(ts.factory.createTypeReferenceNode(pascalGroupName))
+      this.typeNames[fullName] = fullName
+      groupNames.push(ts.factory.createTypeReferenceNode(fullName))
     }
     const declaration = ts.factory.createTypeAliasDeclaration(
       undefined,
@@ -1475,6 +1484,12 @@ export default class DefinitionsGenerator {
 
 function indent(str: string): string {
   return "    " + str.split("\n").join("\n    ")
+}
+
+function removeLuaPrefix(str: string): string {
+  if (str.startsWith("Lua")) str = str.substring(3)
+
+  return str
 }
 
 function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc) {
