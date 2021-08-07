@@ -1,23 +1,41 @@
 import * as ts from "typescript"
+import { EmitFlags } from "typescript"
 import { mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
 import { assertNever, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
-import { AnyDef, InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef } from "./manualDefinitionsPreprocessing"
+import {
+  AnyDef,
+  getAnnotations,
+  InterfaceDef,
+  processManualDefinitions,
+  RootDef,
+  TypeAliasDef,
+} from "./manualDefinitionsPreprocessing"
 import chalk from "chalk"
 import * as console from "console"
 
+interface MemberAndOriginal {
+  original: Method | Attribute
+  member: ts.TypeElement
+}
 interface GeneratedClass {
   readonly clazz: Class
   readonly existing: InterfaceDef | TypeAliasDef | undefined
-  readonly superTypes: ts.TypeNode[]
+  readonly superTypes: ts.ExpressionWithTypeArguments[]
+  readonly members: MemberAndOriginal[]
+
   arrayType?: {
     readonly type: ts.TypeNode
     readonly: boolean
   }
-  readonly members: { original: Method | Attribute; member: ts.TypeElement }[]
-  readonly attributes: ts.PropertySignature[]
+  indexType?: ts.TypeAliasDeclaration | ts.InterfaceDeclaration | undefined
 
-  indexingType?: ts.TypeAliasDeclaration | ts.InterfaceDeclaration | undefined
+  discriminatedUnionInfo?: {
+    property: string
+    types: string[]
+    // empty string == base
+    membersBySubclass: Map<string, MemberAndOriginal[]>
+  }
 }
 
 export default class DefinitionsGenerator {
@@ -25,11 +43,13 @@ export default class DefinitionsGenerator {
   private readonly manualDefinitions: Record<string, RootDef | undefined>
 
   private builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
-  private defines = new Set<string>()
+  private defines = new Map<string, Define>()
   private events = new Set<string>(this.apiDocs.events.map((e) => e.name))
   private classes = new Set<string>(this.apiDocs.classes.map((e) => e.name))
+  // private classMembers = new Map<string, Map<string, Attribute | Method>>()
   private concepts = new Set<string>(this.apiDocs.concepts.map((e) => e.name))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
+
   private tableOrArrayConcepts = new Set<string>()
 
   private numericTypes = new Set<string>()
@@ -51,6 +71,7 @@ export default class DefinitionsGenerator {
   constructor(
     private readonly apiDocs: FactorioApiJson,
     private readonly manualDefinitionsSource: ts.SourceFile | undefined,
+    private readonly checker: ts.TypeChecker,
     private readonly docs: boolean
   ) {
     if (apiDocs.application !== "factorio") {
@@ -79,21 +100,16 @@ export default class DefinitionsGenerator {
   }
 
   private preprocessAll() {
-    for (const type of [
-      this.apiDocs.builtin_types,
-      this.apiDocs.classes,
-      this.apiDocs.concepts,
-      this.apiDocs.global_objects,
-    ].flat()) {
+    for (const type of [this.apiDocs.classes, this.apiDocs.builtin_types, this.apiDocs.global_objects].flat()) {
       this.typeNames[type.name] = type.name
     }
     for (const event of this.apiDocs.events) {
       this.typeNames[event.name] = DefinitionsGenerator.getMappedEventName(event)
     }
-    const addDefine = (define: Define, prefix: string) => {
-      const name = prefix + define.name
+    const addDefine = (define: Define, parent: string) => {
+      const name = parent + (parent ? "." : "") + define.name
       this.typeNames[name] = name
-      this.defines.add(name)
+      this.defines.set(name, define)
       if (define.values) {
         for (const value of define.values) {
           const valueName = name + "." + value.name
@@ -102,16 +118,21 @@ export default class DefinitionsGenerator {
       }
       if (define.subkeys) {
         for (const subkey of define.subkeys) {
-          addDefine(subkey, name + ".")
+          addDefine(subkey, name)
         }
       }
     }
     addDefine(this.rootDefine, "")
 
     for (const concept of this.apiDocs.concepts) {
+      this.typeNames[concept.name] = concept.name
+
       const existing = this.manualDefinitions[concept.name]
-      if (concept.category === "table_or_array" || existing?.annotations.tableOrArray) {
+      const isTableOrArrayConcept = concept.category === "table_or_array"
+      if (isTableOrArrayConcept || existing?.annotations.tableOrArray) {
         this.tableOrArrayConcepts.add(concept.name)
+      }
+      if (isTableOrArrayConcept) {
         this.typeNames[concept.name + "Table"] = concept.name
         this.typeNames[concept.name + "Array"] = concept.name
       }
@@ -121,12 +142,12 @@ export default class DefinitionsGenerator {
   generateDeclarations(): string {
     this.addHeaders()
     this.generateAll()
-    const sourceFile = ts.factory.createSourceFile(
-      this.statements,
-      ts.factory.createToken(ts.SyntaxKind.EndOfFileToken),
-      ts.NodeFlags.None
-    )
-    return printer.printFile(sourceFile)
+    let result = ""
+    for (const statement of this.statements) {
+      result += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource ?? emptySourceFile)
+      result += "\n\n"
+    }
+    return result
   }
 
   private generateBuiltins() {
@@ -249,7 +270,6 @@ export default class DefinitionsGenerator {
         existing,
         superTypes: [],
         members: [],
-        attributes: [],
       }
       for (const step of [
         fillSupertypes,
@@ -258,13 +278,14 @@ export default class DefinitionsGenerator {
         fillAttributes,
         fillIndexOperator,
         shiftLuaObjectMembers,
+        processDiscriminatedUnion,
         createDeclarations,
       ]) {
         step.call(this, generated)
       }
     }
 
-    function fillSupertypes({ clazz, existing, superTypes }: GeneratedClass) {
+    function fillSupertypes(this: DefinitionsGenerator, { clazz, existing, superTypes }: GeneratedClass) {
       if (clazz.base_classes) {
         superTypes.push(
           ...clazz.base_classes.map((b) =>
@@ -273,7 +294,20 @@ export default class DefinitionsGenerator {
         )
       }
       if (existing) {
-        superTypes.push(...existing.supertypes)
+        if (existing.kind === "interface") {
+          superTypes.push(...existing.supertypes)
+        } else if (existing.kind === "type") {
+          superTypes.push(
+            ...existing.supertypes.map((t) =>
+              ts.factory.createExpressionWithTypeArguments(
+                ts.factory.createIdentifier(t.getText(this.manualDefinitionsSource)),
+                undefined
+              )
+            )
+          )
+        } else {
+          assertNever(existing)
+        }
       }
     }
 
@@ -305,10 +339,7 @@ export default class DefinitionsGenerator {
         const asMethod = this.mapMethod({ ...callOperator, name: "operator%20()" }, clazz.name, undefined)
         const callSignature = ts.factory.createCallSignature(undefined, asMethod.parameters, asMethod.type)
         ts.setSyntheticLeadingComments(callSignature, ts.getSyntheticLeadingComments(asMethod))
-        members.push({
-          original: callOperator,
-          member: callSignature,
-        })
+        members.push({ original: callOperator, member: callSignature })
       }
       const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
       if (lengthOperator) {
@@ -372,7 +403,7 @@ export default class DefinitionsGenerator {
 
       const existingIndexOp = existing.indexOperator
       if (ts.isMappedTypeNode(existingIndexOp)) {
-        generated.indexingType = ts.factory.createTypeAliasDeclaration(
+        generated.indexType = ts.factory.createTypeAliasDeclaration(
           undefined,
           undefined,
           clazz.name + "Index",
@@ -385,7 +416,7 @@ export default class DefinitionsGenerator {
           indexOperator,
           clazz.name + ".operator%20[]"
         )
-        generated.indexingType = ts.factory.createInterfaceDeclaration(
+        generated.indexType = ts.factory.createInterfaceDeclaration(
           undefined,
           undefined,
           clazz.name + "Index",
@@ -453,48 +484,188 @@ export default class DefinitionsGenerator {
       }
     }
 
+    function processDiscriminatedUnion(this: DefinitionsGenerator, generated: GeneratedClass) {
+      const { clazz, existing } = generated
+      if (!existing) return
+      const discriminantProperty = existing.annotations.discriminatedUnion?.[0]
+      if (discriminantProperty === undefined) return
+
+      const property = generated.members.find((m) => m.original.name === discriminantProperty)
+      if (property === undefined) {
+        throw new Error(`Discriminant property ${discriminantProperty} was not found on ${clazz.name}`)
+      }
+      const memberNode = property.member
+      if (!ts.isPropertySignature(memberNode)) {
+        throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} should be a property signature`)
+      }
+      const types = this.tryGetUnionTypeStringLiterals(memberNode.type!)
+      if (!types) {
+        throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} is not a string literal union`)
+      }
+      const normalizedNames = new Map(types.map((t) => [normalizeName(t), t]))
+
+      const membersBySubclass = new Map<string, MemberAndOriginal[]>(
+        types.map((t) => [
+          t,
+          [
+            {
+              member: ts.factory.updatePropertySignature(
+                memberNode,
+                memberNode.modifiers,
+                memberNode.name,
+                memberNode.questionToken,
+                Types.stringLiteral(t)
+              ),
+              original: property.original,
+            },
+          ],
+        ])
+      )
+      membersBySubclass.set("", [])
+
+      for (const memberAndOriginal of generated.members) {
+        const original = memberAndOriginal.original
+        const existingMember = existing.members[original.name]
+        const subclasses =
+          (existingMember && getAnnotations(existingMember as ts.JSDocContainer).subclasses) ?? original.subclasses
+        if (subclasses) {
+          for (const subclass of subclasses) {
+            const name = normalizedNames.get(normalizeName(subclass))
+            if (name === undefined) {
+              throw new Error(
+                `Subclass restriction ${subclass} for ${clazz.name}.${
+                  original.name
+                } does not fit subclass types: ${Array.from(normalizedNames.keys())}`
+              )
+            }
+            membersBySubclass.get(name)!.push(memberAndOriginal)
+          }
+        } else {
+          membersBySubclass.get("")!.push(memberAndOriginal)
+        }
+      }
+
+      generated.discriminatedUnionInfo = {
+        property: discriminantProperty,
+        types,
+        membersBySubclass: membersBySubclass,
+      }
+
+      function normalizeName(name: string) {
+        return name.replace(/[-_]/g, "").toLowerCase()
+      }
+    }
+
     function createDeclarations(
       this: DefinitionsGenerator,
-      { clazz, existing, superTypes, members, indexingType }: GeneratedClass
+      { clazz, existing, superTypes, members: allMembers, indexType, discriminatedUnionInfo }: GeneratedClass
+    ) {
+      if (indexType) {
+        this.statements.push(indexType)
+      }
+      const indexTypeName = indexType ? clazz.name + "Index" : undefined
+      if (!discriminatedUnionInfo) {
+        createDeclaration.call(this, existing, indexTypeName, clazz, clazz.name, superTypes, allMembers)
+      } else {
+        createDeclaration.call(
+          this,
+          existing,
+          undefined,
+          undefined,
+          "Base" + clazz.name,
+          superTypes,
+          discriminatedUnionInfo.membersBySubclass.get("")!
+        )
+        const groupSupertypes = [
+          ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier("Base" + clazz.name), undefined),
+        ]
+        for (const [groupName, members] of discriminatedUnionInfo.membersBySubclass) {
+          if (groupName === "") continue
+          createDeclaration.call(
+            this,
+            existing,
+            indexTypeName,
+            undefined,
+            toPascalCase(groupName) + clazz.name,
+            groupSupertypes,
+            members
+          )
+        }
+
+        const types = discriminatedUnionInfo.types.map((groupName) =>
+          ts.factory.createTypeReferenceNode(toPascalCase(groupName) + clazz.name + (indexTypeName ? "Members" : ""))
+        )
+        const unionDeclaration = ts.factory.createTypeAliasDeclaration(
+          undefined,
+          undefined,
+          indexTypeName ? clazz.name + "Members" : clazz.name,
+          undefined,
+          ts.factory.createUnionTypeNode(types)
+        )
+        if (!indexTypeName) this.addJsDoc(unionDeclaration, clazz, clazz.name)
+        this.statements.push(unionDeclaration)
+
+        if (indexTypeName) {
+          const declaration = ts.factory.createTypeAliasDeclaration(
+            undefined,
+            undefined,
+            clazz.name,
+            existing?.node.typeParameters,
+            ts.factory.createIntersectionTypeNode([
+              ts.factory.createTypeReferenceNode(clazz.name + "Members"),
+              ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName)),
+            ])
+          )
+          this.addJsDoc(declaration, clazz, clazz.name)
+          this.statements.push(declaration)
+        }
+      }
+    }
+
+    function createDeclaration(
+      this: DefinitionsGenerator,
+      existing: InterfaceDef | TypeAliasDef | undefined,
+      indexTypeName: string | undefined,
+      classForDocs: Class | undefined,
+      name: string,
+      superTypes: ts.ExpressionWithTypeArguments[],
+      members: MemberAndOriginal[]
     ) {
       const baseDeclaration = ts.factory.createInterfaceDeclaration(
         undefined,
         undefined,
-        indexingType ? clazz.name + "Members" : clazz.name,
-        indexingType ? undefined : existing?.node.typeParameters,
+        indexTypeName ? name + "Members" : name,
+        indexTypeName ? undefined : existing?.node.typeParameters,
         superTypes.length !== 0
-          ? [
-              ts.factory.createHeritageClause(
-                ts.SyntaxKind.ExtendsKeyword,
-                superTypes as ts.ExpressionWithTypeArguments[]
-              ),
-            ]
+          ? [ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, superTypes)]
           : undefined,
         members.map((m) => m.member)
       )
       this.statements.push(baseDeclaration)
 
-      if (!indexingType) {
-        this.addJsDoc(baseDeclaration, clazz, clazz.name, [DefinitionsGenerator.noSelfAnnotation])
+      if (!indexTypeName) {
+        if (classForDocs) {
+          this.addJsDoc(baseDeclaration, classForDocs, classForDocs.name, [DefinitionsGenerator.noSelfAnnotation])
+        } else {
+          DefinitionsGenerator.addNoSelfAnnotationOnly(baseDeclaration)
+        }
       } else {
         DefinitionsGenerator.addNoSelfAnnotationOnly(baseDeclaration)
-        this.statements.push(indexingType)
         const typeArguments = existing?.node.typeParameters?.map((p) => ts.factory.createTypeReferenceNode(p.name))
-        const actualDeclaration = ts.factory.createTypeAliasDeclaration(
+        const declaration = ts.factory.createTypeAliasDeclaration(
           undefined,
           undefined,
-          clazz.name,
+          name,
           existing?.node.typeParameters,
           ts.factory.createIntersectionTypeNode([
-            ts.factory.createTypeReferenceNode(clazz.name + "Members"),
-            ts.factory.createExpressionWithTypeArguments(
-              ts.factory.createIdentifier(clazz.name + "Index"),
-              typeArguments
-            ),
+            ts.factory.createTypeReferenceNode(name + "Members"),
+            ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName), typeArguments),
           ])
         )
-        this.addJsDoc(actualDeclaration, clazz, clazz.name)
-        this.statements.push(actualDeclaration)
+        if (classForDocs) {
+          this.addJsDoc(declaration, classForDocs, classForDocs.name)
+        }
+        this.statements.push(declaration)
       }
     }
   }
@@ -516,6 +687,7 @@ export default class DefinitionsGenerator {
       if (concept.category === "concept") {
         if (existing) {
           declaration = existing.node
+          ts.setEmitFlags(declaration, ts.EmitFlags.NoComments)
         } else {
           this.warnIncompleteDefinition(`No concept definition given for ${concept.name}.`)
           declaration = createTypeAlias(Types.unknown)
@@ -657,19 +829,10 @@ export default class DefinitionsGenerator {
   private generateAdditionalTypes() {
     this.statements.push(createComment(" Manually defined additional types"))
 
-    const restoreDocs = (node: ts.Node) => {
-      const doc = (node as ts.JSDocContainer).jsDoc?.[0]
-      if (doc) {
-        const text = doc.getText(this.manualDefinitionsSource)
-        addJSDocText(node, text)
-      }
-      node.forEachChild(restoreDocs)
-    }
-
     for (const key in this.manualDefinitions) {
       if (key in this.typeNames) continue
       const node = this.manualDefinitions[key]!.node
-      if (this.docs) restoreDocs(node)
+      if (!this.docs) ts.setEmitFlags(node, EmitFlags.NoNestedComments | EmitFlags.NoComments)
       this.statements.push(node)
     }
   }
@@ -680,6 +843,7 @@ export default class DefinitionsGenerator {
     existingContainer: InterfaceDef | TypeAliasDef | undefined
   ): ts.TypeElement {
     let member: ts.TypeElement
+    const type = this.mapTypeWithTransforms(attribute, attribute.type, parent, !attribute.write)
     const existingProperty = existingContainer?.members[attribute.name]
     if (existingProperty) {
       if (!ts.isPropertySignature(existingProperty)) {
@@ -689,26 +853,28 @@ export default class DefinitionsGenerator {
           } instead`
         )
       }
-      existingProperty.emitNode = existingProperty.emitNode || {}
-      member = existingProperty
+      member = ts.factory.createPropertySignature(
+        existingProperty.modifiers,
+        existingProperty.name,
+        existingProperty.questionToken,
+        existingProperty.type ?? type
+      )
+      ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
+    } else if (!attribute.read) {
+      member = ts.factory.createSetAccessorDeclaration(
+        undefined,
+        undefined,
+        attribute.name,
+        [ts.factory.createParameterDeclaration(undefined, undefined, undefined, "value", undefined, type, undefined)],
+        undefined
+      )
     } else {
-      const type = this.mapTypeWithTransforms(attribute, attribute.type, parent, !attribute.write)
-      if (!attribute.read) {
-        member = ts.factory.createSetAccessorDeclaration(
-          undefined,
-          undefined,
-          attribute.name,
-          [ts.factory.createParameterDeclaration(undefined, undefined, undefined, "value", undefined, type, undefined)],
-          undefined
-        )
-      } else {
-        member = ts.factory.createPropertySignature(
-          attribute.write ? undefined : [Modifiers.readonly],
-          attribute.name,
-          undefined,
-          type
-        )
-      }
+      member = ts.factory.createPropertySignature(
+        attribute.write ? undefined : [Modifiers.readonly],
+        attribute.name,
+        undefined,
+        type
+      )
     }
     this.addJsDoc(member, attribute, parent + "." + attribute.name)
     return member
@@ -757,6 +923,9 @@ export default class DefinitionsGenerator {
       )
     }
     let member: ts.MethodSignature
+    const returnType = !method.return_type
+      ? Types.void
+      : this.mapTypeWithTransforms(method, method.return_type, parent, true)
     if (existingMethod) {
       if (!ts.isMethodSignature(existingMethod)) {
         throw new Error(
@@ -765,26 +934,16 @@ export default class DefinitionsGenerator {
           } instead`
         )
       }
-      existingMethod.emitNode = existingMethod.emitNode ?? {}
-      if (method.parameters.length > 0 && existingMethod.parameters.length === 0) {
-        member = ts.factory.createMethodSignature(
-          existingMethod.modifiers,
-          existingMethod.name,
-          existingMethod.questionToken,
-          existingMethod.typeParameters,
-          parameters,
-          existingMethod.type
-        )
-      } else {
-        member = existingMethod
-      }
+      member = ts.factory.createMethodSignature(
+        existingMethod.modifiers,
+        existingMethod.name,
+        existingMethod.questionToken,
+        existingMethod.typeParameters,
+        existingMethod.parameters.length > 0 ? existingMethod.parameters : parameters,
+        existingMethod.type ?? returnType
+      )
+      ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
     } else {
-      let returnType: ts.TypeNode
-      if (!method.return_type) {
-        returnType = Types.void
-      } else {
-        returnType = this.mapTypeWithTransforms(method, method.return_type, parent, true)
-      }
       member = ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
     }
     const tags: ts.JSDocTag[] = []
@@ -843,7 +1002,6 @@ export default class DefinitionsGenerator {
           } instead`
         )
       }
-      existingProperty.emitNode = existingProperty.emitNode || {}
       member = existingProperty
     } else {
       const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false, false)
@@ -890,13 +1048,30 @@ export default class DefinitionsGenerator {
     return type
   }
 
+  private tryGetUnionTypeStringLiterals(typeNode: ts.TypeNode): string[] | undefined {
+    if (ts.isUnionTypeNode(typeNode)) {
+      if (typeNode.types.some((t) => !ts.isLiteralTypeNode(t) || !ts.isStringLiteral(t.literal))) return undefined
+      return typeNode.types.map((t) => ((t as ts.LiteralTypeNode).literal as ts.StringLiteral).text)
+    }
+
+    let type = this.checker.getTypeFromTypeNode(typeNode)
+    while (!type.isUnion() && type.symbol) {
+      type = this.checker.getDeclaredTypeOfSymbol(type.symbol)
+    }
+    if (type.isUnion()) {
+      if (type.types.some((t) => !t.isStringLiteral())) return undefined
+      return type.types.map((t) => (t as ts.StringLiteralType).value)
+    }
+    return undefined
+  }
+
   private static tryMakeStringEnum(
     member: { description: string; name?: string },
     type: Type
   ): ts.UnionTypeNode | undefined {
     if (type === "string") {
       const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
-      if (matches.size >= 2) {
+      if (matches.size >= 2 || (matches.size === 1 && member.description.match(/One of `"[a-zA-Z-_]+?"`/))) {
         return ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
       }
     }
@@ -1003,6 +1178,16 @@ export default class DefinitionsGenerator {
     memberForDocs?: BasicMember
   ): ts.TypeReferenceNode {
     const baseName = "Base" + name
+
+    const existingBase = this.manualDefinitions[baseName]
+    if (existingBase?.kind === "namespace") {
+      throw new Error(`Manual definition for variant parameter type ${name} cannot be a namespace`)
+    }
+
+    const baseProperties = variants.parameters.sort(sortByOrder).map((p) => ({
+      original: p,
+      member: this.mapParameterToProperty(p, baseName, existingBase),
+    }))
     this.statements.push(
       ts.factory.createInterfaceDeclaration(
         undefined,
@@ -1010,48 +1195,120 @@ export default class DefinitionsGenerator {
         baseName,
         undefined,
         undefined,
-        variants.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p, baseName))
+        baseProperties.map((g) => g.member)
       )
     )
+    this.typeNames[baseName] = name
+
+    const discriminantProperty = variants.variant_parameter_description?.match(/depending on `(.+?)`:/)?.[1]
+    let unusedTypes: Set<string> | undefined
+    let isDefine = false
+    if (discriminantProperty) {
+      const property = baseProperties.find((g) => g.original.name === discriminantProperty)
+      if (property === undefined) {
+        throw new Error(`Discriminant property ${discriminantProperty} was not found on ${name}`)
+      }
+      const originalType = property.original.type
+      let types: string[] | undefined
+      if (typeof originalType === "string" && originalType.startsWith("defines.")) {
+        isDefine = true
+        types = this.defines.get(originalType)?.values?.map((value) => originalType + "." + value.name)
+        if (!types) {
+          throw new Error(
+            `Discriminant property ${name}.${discriminantProperty} has nonexistent define type ${originalType}`
+          )
+        }
+      } else {
+        types = this.tryGetUnionTypeStringLiterals(property.member.type!)
+        if (!types) {
+          throw new Error(`Discriminant property ${name}.${discriminantProperty} is not a string literal union`)
+        }
+      }
+      unusedTypes = new Set<string>(types)
+    }
+
+    const groupNames: ts.TypeNode[] = []
     const heritageClause = [
       ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
         ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
       ]),
     ]
-    const groups: ts.TypeNode[] = []
-    const discriminatorField = variants.variant_parameter_description?.match(/depending on `(.+?)`:/)?.[1]
-    for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
-      const isDefine = group.name.startsWith("defines.")
-      const groupName = toPascalCase(isDefine ? group.name.substr(group.name.lastIndexOf(".") + 1) : group.name) + name
+    const otherTypes = variants.variant_parameter_groups!.find((x) => x.name === "Other types")
+    if (otherTypes) {
+      otherTypes.order = variants.variant_parameter_groups!.length + 1
+    } else {
+      variants.variant_parameter_groups!.push({
+        name: "Other types",
+        order: variants.variant_parameter_groups!.length + 1,
+        description: "",
+        parameters: [],
+      })
+    }
 
-      const members: ts.PropertySignature[] = []
-      if (discriminatorField) {
-        members.push(
-          ts.factory.createPropertySignature(
-            [Modifiers.readonly],
-            discriminatorField,
-            undefined,
-            isDefine ? ts.factory.createTypeReferenceNode(group.name) : Types.stringLiteral(group.name)
+    function getType(groupName: string) {
+      return isDefine ? ts.factory.createTypeReferenceNode(groupName) : Types.stringLiteral(groupName)
+    }
+
+    for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
+      const groupName = group.name
+      const isOtherTypes = groupName === "Other types"
+      if (!isOtherTypes) {
+        unusedTypes?.delete(groupName)
+      } else {
+        if (!unusedTypes || unusedTypes.size === 0) continue
+      }
+      const pascalGroupName =
+        toPascalCase(isDefine ? groupName.substr(groupName.lastIndexOf(".") + 1) : groupName) + name
+      const existing = this.manualDefinitions[pascalGroupName]
+      if (existing?.kind === "namespace") {
+        throw new Error(`Manual definition for variant parameter type ${name} cannot be a namespace`)
+      }
+
+      let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
+      if (existing?.kind === "type") {
+        declaration = existing.node
+      } else {
+        const members: ts.PropertySignature[] = []
+        if (discriminantProperty) {
+          members.push(
+            ts.factory.createPropertySignature(
+              [Modifiers.readonly],
+              discriminantProperty,
+              undefined,
+              isOtherTypes ? ts.factory.createUnionTypeNode(Array.from(unusedTypes!).map(getType)) : getType(groupName)
+            )
           )
+        }
+        members.push(
+          ...group.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p, pascalGroupName, existing))
+        )
+        declaration = ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          pascalGroupName,
+          undefined,
+          heritageClause,
+          members
         )
       }
-      members.push(...group.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p, groupName)))
-      this.statements.push(
-        ts.factory.createInterfaceDeclaration(undefined, undefined, groupName, undefined, heritageClause, members)
-      )
-      groups.push(ts.factory.createTypeReferenceNode(groupName))
+      this.addJsDoc(declaration, group, undefined)
+      this.statements.push(declaration)
+
+      this.typeNames[pascalGroupName] = pascalGroupName
+      groupNames.push(ts.factory.createTypeReferenceNode(pascalGroupName))
     }
     const declaration = ts.factory.createTypeAliasDeclaration(
       undefined,
       undefined,
       name,
       undefined,
-      ts.factory.createUnionTypeNode(groups)
+      ts.factory.createUnionTypeNode(groupNames)
     )
     this.statements.push(declaration)
     if (memberForDocs) {
       this.addJsDoc(declaration, memberForDocs, memberForDocs.name)
     }
+    this.typeNames[name] = name
     return ts.factory.createTypeReferenceNode(name)
   }
 
@@ -1222,18 +1479,14 @@ function indent(str: string): string {
 
 function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc) {
   const text: string = printer.printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
-  addJSDocText(node, text)
-  return node
-}
-
-function addJSDocText(node: ts.Node, text: string) {
   node.emitNode = node.emitNode ?? {}
-  return ts.addSyntheticLeadingComment(
+  ts.addSyntheticLeadingComment(
     node,
     ts.SyntaxKind.MultiLineCommentTrivia,
     text.trim().replace(/^\/\*|\*\/$/g, ""),
     true
   )
+  return node
 }
 
 function createComment(text: string, multiline?: boolean): ts.EmptyStatement {

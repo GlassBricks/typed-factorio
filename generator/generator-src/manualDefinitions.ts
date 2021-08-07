@@ -44,10 +44,238 @@ interface Fluid {}
 
 interface LuaFluidBox extends Array<Fluid | undefined> {}
 
+type LuaGuiElementType =
+  | "choose-elem-button"
+  | "drop-down"
+  | "empty-widget"
+  | "entity-preview"
+  | "list-box"
+  | "scroll-pane"
+  | "sprite-button"
+  | "tabbed-pane"
+  | "text-box"
+  | "button"
+  | "camera"
+  | "checkbox"
+  | "flow"
+  | "frame"
+  | "label"
+  | "line"
+  | "minimap"
+  | "progressbar"
+  | "radiobutton"
+  | "slider"
+  | "sprite"
+  | "switch"
+  | "tab"
+  | "table"
+  | "textfield"
+
+interface BaseLuaGuiElementAdd {
+  readonly type: LuaGuiElementType
+}
+interface FlowLuaGuiElementAdd {
+  readonly direction?: "horizontal" | "vertical"
+}
+interface FrameLuaGuiElementAdd {
+  readonly direction?: "horizontal" | "vertical"
+}
+interface LineLuaGuiElementAdd {
+  readonly direction?: "horizontal" | "vertical"
+}
+
+interface SignalID {}
+
+type ChooseElemButtonType =
+  | "item"
+  | "tile"
+  | "entity"
+  | "signal"
+  | "fluid"
+  | "recipe"
+  | "decorative"
+  | "item-group"
+  | "achievement"
+  | "equipment"
+  | "technology"
+
+interface ChooseElemButtonFilters {
+  item: ItemPrototypeFilter[]
+  tile: TilePrototypeFilter[]
+  entity: EntityPrototypeFilter[]
+  signal: never
+  fluid: FluidPrototypeFilter[]
+  recipe: RecipePrototypeFilter[]
+  decorative: DecorativePrototypeFilter[]
+  "item-group": never
+  achievement: AchievementPrototypeFilter[]
+  equipment: EquipmentPrototypeFilter[]
+  technology: TechnologyPrototypeFilter[]
+}
+
+interface BaseChooseElemButtonAdd extends BaseLuaGuiElementAdd {
+  readonly type: "choose-elem-button"
+  /** The type of the button - one of the following values. */
+  readonly elem_type: ChooseElemButtonType
+  /** Filters describing what to show in the selection window. See {@link LuaGuiElement.elem_filters LuaGuiElement::elem_filters}. */
+  readonly filters?: ChooseElemButtonFilters[this["elem_type"]]
+}
+
+interface ItemChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "item"
+  /** If type is `"item"` - the default value for the button. */
+  readonly item?: string
+}
+
+interface TileChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "tile"
+  /** If type is `"tile"` - the default value for the button. */
+  readonly tile?: string
+}
+
+interface EntityChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "entity"
+  /** If type is `"entity"` - the default value for the button. */
+  readonly entity?: string
+}
+
+interface SignalChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "signal"
+  /** If type is `"signal"` - the default value for the button. */
+  readonly signal?: SignalID
+}
+
+interface FluidChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "fluid"
+  /** If type is `"fluid"` - the default value for the button. */
+  readonly fluid?: string
+}
+
+interface RecipeChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "recipe"
+  /** If type is `"recipe"` - the default value for the button. */
+  readonly recipe?: string
+}
+
+interface DecorativeChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "decorative"
+  /** If type is `"decorative"` - the default value for the button. */
+  readonly decorative?: string
+}
+
+interface ItemGroupChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "item-group"
+  /** If type is `"item-group"` - the default value for the button. */
+  readonly "item-group"?: string
+}
+
+interface AchievementChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "achievement"
+  /** If type is `"achievement"` - the default value for the button. */
+  readonly achievement?: string
+}
+
+interface EquipmentChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "equipment"
+  /** If type is `"equipment"` - the default value for the button. */
+  readonly equipment?: string
+}
+
+interface TechnologyChooseElemButtonAdd extends BaseChooseElemButtonAdd {
+  readonly elem_type: "technology"
+  /** If type is `"technology"` - the default value for the button. */
+  readonly technology?: string
+}
+
+type ChooseElemButtonLuaGuiElementAdd =
+  | ItemChooseElemButtonAdd
+  | TileChooseElemButtonAdd
+  | EntityChooseElemButtonAdd
+  | SignalChooseElemButtonAdd
+  | FluidChooseElemButtonAdd
+  | RecipeChooseElemButtonAdd
+  | DecorativeChooseElemButtonAdd
+  | ItemGroupChooseElemButtonAdd
+  | AchievementChooseElemButtonAdd
+  | EquipmentChooseElemButtonAdd
+  | TechnologyChooseElemButtonAdd
+
+interface LuaGuiElementAdd {
+  type
+}
+
+/** @discriminatedUnion type */
 type LuaGuiElement = {
   readonly [name: string]: LuaGuiElement | undefined
 } & {
+  readonly type: LuaGuiElementType
+
+  add<Spec extends LuaGuiElementAdd>(element: Spec): Extract<LuaGuiElement, { type: Spec["type"] }>
+
+  readonly elem_type: ChooseElemButtonType
+  // @ts-ignore
+  elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | undefined
+  // @ts-ignore
+  elem_filters: ChooseElemButtonFilters[this["elem_type"]] | undefined
+
+  /** @subclasses dropdown list-box */
+  clear_items()
+  /** @subclasses dropdown list-box */
+  get_item()
+  /** @subclasses dropdown list-box */
+  set_item()
+  /** @subclasses dropdown list-box */
+  add_item()
+  /** @subclasses dropdown list-box */
+  remove_item()
+  /** @subclasses slider */
+  get_slider_minimum()
+  /** @subclasses slider */
+  get_slider_maximum()
+  /** @subclasses slider */
+  set_slider_minimum_maximum()
+  /** @subclasses slider */
+  get_slider_value_step()
+  /** @subclasses slider */
+  get_slider_discrete_slider()
+  /** @subclasses slider */
+  get_slider_discrete_values()
+  /** @subclasses slider */
+  set_slider_value_step()
+  /** @subclasses slider */
+  set_slider_discrete_slider()
+  /** @subclasses slider */
+  set_slider_discrete_values()
+  /** @subclasses sprite-button sprite */
+  sprite
+  /** @subclasses sprite-button sprite */
+  resize_to_sprite
+  /** @subclasses sprite-button */
+  clicked_sprite
+  /** @subclasses dropdown list-box */
+  items
+  /** @subclasses dropdown list-box */
+  selected_index
+  /** @subclasses sprite-button */
+  number
+  /** @subclasses sprite-button */
+  show_percent_for_small_numbers
+  /** @subclasses camera minimap */
+  position
+  /** @subclasses camera minimap */
+  surface_index
+  /** @subclasses camera minimap */
+  zoom
+  /** @subclasses minimap */
+  force
+  /** @subclasses button sprite-button */
+  mouse_button_filter
+  /** @subclasses flow frame label table empty-widget */
   drag_target: LuaGuiElement | undefined
+  /** @subclasses tabbed-pane */
+  readonly tabs
+  /** @subclasses entity-preview camera minimap */
+  entity
 }
 
 interface LuaItemStack {
@@ -82,6 +310,7 @@ type Tags = Record<string, AnyBasic>
 
 interface PositionTable {}
 interface PositionArray {}
+interface Position {}
 type Vector = PositionArray
 
 // last updated 1.1.37
@@ -615,17 +844,6 @@ interface DecorativePrototypeFilter {}
 interface AchievementPrototypeFilter {}
 interface EquipmentPrototypeFilter {}
 interface TechnologyPrototypeFilter {}
-
-type PrototypeFilter =
-  | ItemPrototypeFilter
-  | TilePrototypeFilter
-  | EntityPrototypeFilter
-  | FluidPrototypeFilter
-  | RecipePrototypeFilter
-  | DecorativePrototypeFilter
-  | AchievementPrototypeFilter
-  | EquipmentPrototypeFilter
-  | TechnologyPrototypeFilter
 
 // wiki scraping?
 

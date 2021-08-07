@@ -12,8 +12,8 @@ export interface InterfaceDef extends BaseDef {
   readonly kind: "interface"
   readonly node: ts.InterfaceDeclaration
   readonly supertypes: readonly ts.ExpressionWithTypeArguments[]
-  readonly members: Record<string, ts.TypeElement>
-  readonly annotations: Record<string, string[]>
+  readonly members: Record<string, ts.TypeElement | undefined>
+  readonly annotations: Record<string, string[] | undefined>
 }
 
 export interface TypeAliasDef extends BaseDef {
@@ -21,8 +21,8 @@ export interface TypeAliasDef extends BaseDef {
   readonly node: ts.TypeAliasDeclaration
   readonly supertypes: readonly ts.TypeNode[]
   readonly indexOperator: ts.MappedTypeNode | ts.TypeLiteralNode | undefined
-  readonly members: Record<string, ts.TypeElement>
-  readonly annotations: Record<string, string[]>
+  readonly members: Record<string, ts.TypeElement | undefined>
+  readonly annotations: Record<string, string[] | undefined>
 }
 
 export interface NamespaceDef extends BaseDef {
@@ -143,20 +143,6 @@ function createDef(node: ts.Statement): AnyDef {
     }
     return result
   }
-
-  function getAnnotations(node: ts.JSDocContainer): Record<string, string[]> {
-    const result: Record<string, string[]> = {}
-    node.jsDoc?.forEach((value) =>
-      value.tags?.forEach((tag) => {
-        result[tag.tagName.text] = !tag.comment
-          ? []
-          : typeof tag.comment === "string"
-          ? tag.comment.split(" ")
-          : tag.comment.map((part) => part.text)
-      })
-    )
-    return result
-  }
 }
 
 export function processManualDefinitions(file: ts.SourceFile | undefined): Record<string, RootDef | undefined> {
@@ -173,5 +159,19 @@ export function processManualDefinitions(file: ts.SourceFile | undefined): Recor
       }
     }
   }
+  return result
+}
+
+export function getAnnotations(node: ts.JSDocContainer): Record<string, string[]> {
+  const result: Record<string, string[]> = {}
+  node.jsDoc?.forEach((value) =>
+    value.tags?.forEach((tag) => {
+      result[tag.tagName.text] = !tag.comment
+        ? []
+        : typeof tag.comment === "string"
+        ? tag.comment.split(" ")
+        : tag.comment.map((part) => part.text)
+    })
+  )
   return result
 }

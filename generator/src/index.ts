@@ -48,7 +48,12 @@ const program = ts.createProgram({
 const manualDefines = program.getSourceFile(manualDefinesFile)
 
 console.log("generating docs")
-let output = new DefinitionsGenerator(jsonApi, manualDefines, !opts.nodocs).generateDeclarations()
+let output = new DefinitionsGenerator(
+  jsonApi,
+  manualDefines,
+  program.getTypeChecker(),
+  !opts.nodocs
+).generateDeclarations()
 
 if (!opts.noformat) {
   console.log("formatting with prettier")
