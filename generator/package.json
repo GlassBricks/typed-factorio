@@ -1,14 +1,13 @@
 {
-  "name": "typely-factorio",
+  "name": "factorio-type-generator",
   "version": "0.1.0",
   "license": "MIT",
-  "main": "index.ts",
   "dependencies": {
     "chalk": "^4.1.2",
     "command-line-args": "^5.2.0",
     "prettier": "^2.3.2",
     "prettier-plugin-jsdoc": "^0.3.23",
-    "typescript": "^4.3"
+    "typescript": "^4.3.5"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.0.1",
@@ -26,14 +25,10 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^5.1.0",
     "lua-types": "^2.10.1",
-    "prettier": "^2.3.2",
     "ts-node": "^10.1.0"
   },
   "scripts": {
-    "build": "tsc",
-    "run": "ts-node src/index.ts ./generator-src --outdir temp",
-    "run:noformat": "yarn run run --noformat",
-    "run:nodocs": "yarn run run --nodocs",
+    "gen": "ts-node src/index.ts",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix"
   }

@@ -3,8 +3,5 @@
   "tabWidth": 2,
   "trailingComma": "es5",
   "endOfLine": "auto",
-  "printWidth": 120,
-  "plugins": [
-    "prettier-plugin-jsdoc"
-  ]
+  "printWidth": 120
 }

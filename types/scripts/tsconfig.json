@@ -7,14 +7,13 @@
       "esnext"
     ],
     "skipLibCheck": true,
+    "sourceMap": true,
+    "outDir": "./dist",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
   "include": [
-    "./src/**/*.ts"
-  ],
-  "ts-node": {
-    "files": true
-  }
+    "./*.ts"
+  ]
 }

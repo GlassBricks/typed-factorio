@@ -4,14 +4,14 @@ import DefinitionsGenerator from "./DefinitionsGenerator"
 import commandLineArgs from "command-line-args"
 import * as path from "path"
 import ts from "typescript"
-import { emptySourceFile } from "./printer"
+import * as console from "console"
 
 const options: commandLineArgs.OptionDefinition[] = [
   {
-    name: "folder",
-    type: String,
-    defaultOption: true,
-    multiple: true,
+    name: "json",
+  },
+  {
+    name: "defines",
   },
   {
     name: "nodocs",
@@ -24,29 +24,32 @@ const options: commandLineArgs.OptionDefinition[] = [
     defaultValue: false,
   },
   {
-    name: "outdir",
+    name: "out",
     alias: "o",
+    defaultValue: "%application-%stage-%version.d.ts",
   },
 ]
 
 const opts = commandLineArgs(options) as {
-  folder: string[]
+  json: string
+  defines: string
   nodocs: boolean
   noformat: boolean
-  outdir?: string
+  out: string
 }
 
-if (!opts.folder) throw Error("folder name not provided")
-
 console.log("reading files")
-const jsonApi = JSON.parse(fs.readFileSync(path.join(opts.folder[0], "runtime-api.json"), "utf-8"))
+const jsonApi = JSON.parse(fs.readFileSync(opts.json, "utf-8")) as FactorioApiJson
 
-const manualDefinesFile = path.resolve(opts.folder[0], "manualDefinitions.ts")
+const manualDefinesFile = path.resolve(opts.defines)
 const program = ts.createProgram({
   rootNames: [manualDefinesFile],
   options: {},
 })
-const manualDefines = program.getSourceFile(manualDefinesFile) ?? emptySourceFile
+const manualDefines = program.getSourceFile(manualDefinesFile)
+if (!manualDefines) {
+  throw new Error("Manual definitions file not found or not valid")
+}
 
 console.log("generating docs")
 let output = new DefinitionsGenerator(
@@ -65,9 +68,15 @@ if (!opts.noformat) {
   })
 }
 console.log("writing file")
-const outPath = path.join(
-  opts.outdir || "",
-  `${jsonApi.application}-${jsonApi.stage}-${jsonApi.application_version}.d.ts`
+const outPath = path.resolve(
+  opts.out
+    .replace("%application", jsonApi.application)
+    .replace("%stage", jsonApi.stage)
+    .replace("%version", jsonApi.application_version)
 )
+const dir = path.dirname(outPath)
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir)
+}
 fs.writeFileSync(outPath, output)
 console.log("done")
