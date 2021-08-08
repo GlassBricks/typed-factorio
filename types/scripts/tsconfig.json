@@ -2,13 +2,12 @@
   "compilerOptions": {
     "strict": true,
     "target": "es2017",
-    "module": "commonjs",
+    "module": "None",
     "lib": [
       "esnext"
     ],
     "skipLibCheck": true,
     "sourceMap": true,
-    "outDir": "./dist",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true

@@ -848,8 +848,6 @@ interface AchievementPrototypeFilter {}
 interface EquipmentPrototypeFilter {}
 interface TechnologyPrototypeFilter {}
 
-// wiki scraping?
-
 // last updated 1.1.37
 /**
  * Object containing information about the connections to other entities formed by red or green wires.

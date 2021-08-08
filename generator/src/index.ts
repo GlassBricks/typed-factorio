@@ -28,6 +28,7 @@ const options: commandLineArgs.OptionDefinition[] = [
     alias: "o",
     defaultValue: "%application-%stage-%version.d.ts",
   },
+  { name: "errorOnWarnings", type: Boolean, defaultValue: false },
 ]
 
 const opts = commandLineArgs(options) as {
@@ -36,6 +37,7 @@ const opts = commandLineArgs(options) as {
   nodocs: boolean
   noformat: boolean
   out: string
+  errorOnWarnings: boolean
 }
 
 console.log("reading files")
@@ -56,7 +58,8 @@ let output = new DefinitionsGenerator(
   jsonApi,
   manualDefines,
   program.getTypeChecker(),
-  !opts.nodocs
+  !opts.nodocs,
+  opts.errorOnWarnings
 ).generateDeclarations()
 
 if (!opts.noformat) {

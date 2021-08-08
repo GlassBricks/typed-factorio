@@ -51,9 +51,8 @@ export default class DefinitionsGenerator {
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
 
   private tableOrArrayConcepts = new Set<string>()
-
   private numericTypes = new Set<string>()
-  // original: mapped
+  // original -> mapped
   private typeNames: Record<string, string> = {}
 
   private readonly rootDefine: Define = {
@@ -65,6 +64,7 @@ export default class DefinitionsGenerator {
 
   private readonly docUrlBase = `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
 
+  private readonly warnings: string[] = []
   private static keywords = new Set(["function", "interface"])
   private static noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
 
@@ -72,15 +72,30 @@ export default class DefinitionsGenerator {
     private readonly apiDocs: FactorioApiJson,
     private readonly manualDefinitionsSource: ts.SourceFile,
     private readonly checker: ts.TypeChecker,
-    private readonly docs: boolean
+    private readonly docs: boolean,
+    private readonly errorOnWarnings: boolean
   ) {
     if (apiDocs.application !== "factorio") {
-      throw new Error("Unsupported application type " + apiDocs.application)
+      throw new Error("Unsupported application " + apiDocs.application)
     }
     if (apiDocs.api_version !== 1) {
       throw new Error("Unsupported api version " + apiDocs.api_version)
     }
     this.manualDefinitions = processManualDefinitions(manualDefinitionsSource)
+  }
+
+  generateDeclarations(): string {
+    this.addHeaders()
+    this.generateAll()
+    if (this.errorOnWarnings && this.warnings.length !== 0) {
+      throw new Error(this.warnings.join("\n"))
+    }
+    let result = ""
+    for (const statement of this.statements) {
+      result += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource)
+      result += "\n\n"
+    }
+    return result
   }
 
   private generateAll() {
@@ -137,17 +152,6 @@ export default class DefinitionsGenerator {
         this.typeNames[concept.name + "Array"] = concept.name
       }
     }
-  }
-
-  generateDeclarations(): string {
-    this.addHeaders()
-    this.generateAll()
-    let result = ""
-    for (const statement of this.statements) {
-      result += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource)
-      result += "\n\n"
-    }
-    return result
   }
 
   private generateBuiltins() {
@@ -1486,10 +1490,9 @@ export default class DefinitionsGenerator {
     addFakeJSDoc(node, jsDoc)
   }
 
-  // might not be static in the future
-  // noinspection JSMethodCanBeStatic
   private warnIncompleteDefinition(...args: unknown[]) {
     console.log(chalk.yellow(...args))
+    this.warnings.push(args.join(" "))
   }
 }
 

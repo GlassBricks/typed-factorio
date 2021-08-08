@@ -34,7 +34,7 @@ async function runForFile(name: string, file: string, extraArgs?: string) {
   })
 }
 
-function findMax(arr: string[]): string {
+function maxOf(arr: string[]): string {
   let max = arr[0]
   for (let i = 1; i < arr.length; i++) {
     if (arr[i] > max) max = arr[i]
@@ -42,16 +42,16 @@ function findMax(arr: string[]): string {
   return max
 }
 
-async function main() {
-  if (dev) {
-    const latest = findMax([...jsonFiles.keys()])
-    await runForFile(latest, jsonFiles.get(latest)!, "--noformat")
-  } else {
-    await Promise.all([...jsonFiles.entries()].map(([version, file]) => runForFile(version, file)))
-  }
-}
-
 main().catch((e) => {
   console.error(e)
   throw e
 })
+
+async function main() {
+  if (dev) {
+    const latest = maxOf([...jsonFiles.keys()])
+    await runForFile(latest, jsonFiles.get(latest)!, "--noformat")
+  } else {
+    await Promise.all([...jsonFiles.entries()].map(([version, file]) => runForFile(version, file, "--errorOnWarnings")))
+  }
+}
