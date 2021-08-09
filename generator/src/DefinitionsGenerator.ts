@@ -115,7 +115,7 @@ export default class DefinitionsGenerator {
 
   private addHeaders() {
     this.statements.push(createComment('/ <reference types="lua-types/5.2" />'))
-    this.statements.push(createComment("* @noSelfInFile ", true)) // makes lambda types have no self
+    this.statements.push(createComment("* @noSelfInFile ", true)) // makes arrow functions have no self
   }
 
   private preprocessAll() {

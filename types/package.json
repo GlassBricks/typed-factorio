@@ -2,10 +2,18 @@
   "name": "typed-factorio",
   "version": "0.1.0",
   "description": "Full and featureful typescript definitions for the the Factorio lua api.",
+  "keywords": [
+    "factorio",
+    "types",
+    "typescript-to-lua",
+    "tstl"
+  ],
   "repository": "https://github.com/GlassBricks/FactorioTypes",
   "license": "MIT",
   "files": [
-    "**/*.d.ts"
+    "/*.d.ts",
+    "generated/*.d.ts",
+    "common/*.d.ts"
   ],
   "homepage": "https://github.com/GlassBricks/FactorioTypes#readme",
   "scripts": {
