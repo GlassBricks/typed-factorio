@@ -1,18 +1,19 @@
 {
-  "name": "factorio-types",
+  "name": "typed-factorio",
   "version": "0.1.0",
-  "description": "Robust typescript definitions for the the Factorio lua api.",
+  "description": "Full and featureful typescript definitions for the the Factorio lua api.",
   "repository": "https://github.com/GlassBricks/FactorioTypes",
   "license": "MIT",
   "files": [
-    "generated/**.d.ts"
+    "**/*.d.ts"
   ],
   "homepage": "https://github.com/GlassBricks/FactorioTypes#readme",
   "scripts": {
     "generate": "ts-node scripts/generate.ts",
     "generate:dev": "ts-node scripts/generate.ts dev",
     "pretest": "yarn run generate",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "yarn run generate"
   },
   "dependencies": {
     "lua-types": "^2.10.1",

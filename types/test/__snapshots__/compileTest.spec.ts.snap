@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`arrayLike.ts factorio version 1.1.35 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+myInventory = game.create_inventory(4)
+slot1 = myInventory[1]
+slot2 = myInventory[2]
+len = #myInventory"
+`;
+
+exports[`arrayLike.ts factorio version 1.1.36 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+myInventory = game.create_inventory(4)
+slot1 = myInventory[1]
+slot2 = myInventory[2]
+len = #myInventory"
+`;
+
+exports[`arrayLike.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+myInventory = game.create_inventory(4)
+slot1 = myInventory[1]
+slot2 = myInventory[2]
+len = #myInventory"
+`;
+
 exports[`events.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 script.on_event(
@@ -114,6 +138,42 @@ script.on_event(
 script.get_event_handler(myCustomEvent)({myCustomData = 0})"
 `;
 
+exports[`ghostRevive.ts factorio version 1.1.35 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+ret = {
+    ghost.revive()
+}
+if ret[1] ~= nil then
+    local ent = ret[2]
+else
+    local ent = ret[2]
+end"
+`;
+
+exports[`ghostRevive.ts factorio version 1.1.36 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+ret = {
+    ghost.revive()
+}
+if ret[1] ~= nil then
+    local ent = ret[2]
+else
+    local ent = ret[2]
+end"
+`;
+
+exports[`ghostRevive.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+ret = {
+    ghost.revive()
+}
+if ret[1] ~= nil then
+    local ent = ret[2]
+else
+    local ent = ret[2]
+end"
+`;
+
 exports[`guiElement.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 button = game.player.gui.screen.add({type = \\"button\\", enabled = true, mouse_button_filter = {\\"left\\"}})
@@ -141,7 +201,9 @@ chooseElemButton = game.player.gui.screen.add({type = \\"choose-elem-button\\", 
 exports[`helloWorld.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 function greetPlayer(self, player)
-    player.print(\\"Hello, world!\\")
+    player.print(
+        serpent.line({hello = \\"world!\\"})
+    )
 end
 script.on_event(
     defines.events.on_player_created,
@@ -164,7 +226,9 @@ script.on_init(
 exports[`helloWorld.ts factorio version 1.1.36 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 function greetPlayer(self, player)
-    player.print(\\"Hello, world!\\")
+    player.print(
+        serpent.line({hello = \\"world!\\"})
+    )
 end
 script.on_event(
     defines.events.on_player_created,
@@ -187,7 +251,9 @@ script.on_init(
 exports[`helloWorld.ts factorio version 1.1.37 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 function greetPlayer(self, player)
-    player.print(\\"Hello, world!\\")
+    player.print(
+        serpent.line({hello = \\"world!\\"})
+    )
 end
 script.on_event(
     defines.events.on_player_created,
@@ -205,4 +271,61 @@ script.on_init(
         end
     end
 )"
+`;
+
+exports[`luaLazyLoadedValue.ts factorio version 1.1.35 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+script.on_event(
+    defines.events.on_player_setup_blueprint,
+    function(e)
+        local mapping = e.mapping.get()
+    end
+)"
+`;
+
+exports[`luaLazyLoadedValue.ts factorio version 1.1.36 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+script.on_event(
+    defines.events.on_player_setup_blueprint,
+    function(e)
+        local mapping = e.mapping.get()
+    end
+)"
+`;
+
+exports[`luaLazyLoadedValue.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+script.on_event(
+    defines.events.on_player_setup_blueprint,
+    function(e)
+        local mapping = e.mapping.get()
+    end
+)"
+`;
+
+exports[`table.ts factorio version 1.1.35 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+t1 = {a = 3, b = true, c = {}}
+myThing1 = {a = t1, b = nil}
+t2 = myThing1
+t3 = foo
+foo2 = t3"
+`;
+
+exports[`table.ts factorio version 1.1.36 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+t1 = {a = 3, b = true, c = {}}
+myThing1 = {a = t1, b = nil}
+t2 = myThing1
+t3 = foo
+foo2 = t3"
+`;
+
+exports[`table.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+t1 = {a = 3, b = true, c = {}}
+myThing1 = {a = t1, b = nil}
+t2 = myThing1
+t3 = foo
+foo2 = t3"
 `;

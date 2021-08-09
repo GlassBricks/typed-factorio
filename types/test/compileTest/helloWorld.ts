@@ -1,5 +1,5 @@
 function greetPlayer(player: LuaPlayer) {
-  player.print("Hello, world!")
+  player.print(serpent.line({ hello: "world!" }))
 }
 
 // todo: event types

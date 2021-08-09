@@ -65,23 +65,6 @@ interface SerpentOptions {
   tablecomment: boolean | number
 }
 
-/** @noSelf */
-interface Serpent {
-  /** Full serialization; sets name, compact and sparse options; */
-  dump(tbl: unknown, options?: Partial<SerpentOptions>): string
-
-  /** Single line pretty printing, no self-ref section; sets sortkeys and comment options; */
-  line(tbl: unknown, options?: Partial<SerpentOptions>): string
-
-  /** Multi-line indented pretty printing, no self-ref section; sets indent, sortkeys, and comment options. */
-  block(tbl: unknown, options?: Partial<SerpentOptions>): string
-  /**
-   * For loading serialized fragments, serpent also provides `load` function that adds safety checks and reports an
-   * error if there is any executable code in the fragment.
-   */
-  load<T>(str: string, options?: { safe?: boolean }): LuaMultiReturn<[true, T] | [false, string]>
-}
-
 /**
  * Factorio provides the {@link https://github.com/pkulchenko/serpent serpent library} as a global variable `serpent` for
  * all mods to use. It allows for easy debugging of tables, because serpent makes it trivial to print them, for example
@@ -90,7 +73,22 @@ interface Serpent {
  * Furthermore, two options were added: `refcomment` (true/false/maxlevel) and `tablecomment` (true/false/maxlevel),
  * which allow to separately control the self-reference and table value output of the `comment` option.
  */
-declare const serpent: Serpent
+declare namespace serpent {
+  /** Full serialization; sets name, compact and sparse options; */
+  function dump(tbl: unknown, options?: Partial<SerpentOptions>): string
+
+  /** Single line pretty printing, no self-ref section; sets sortkeys and comment options; */
+  function line(tbl: unknown, options?: Partial<SerpentOptions>): string
+
+  /** Multi-line indented pretty printing, no self-ref section; sets indent, sortkeys, and comment options. */
+  function block(tbl: unknown, options?: Partial<SerpentOptions>): string
+
+  /**
+   * For loading serialized fragments, serpent also provides `load` function that adds safety checks and reports an
+   * error if there is any executable code in the fragment.
+   */
+  function load<T>(str: string, options?: { safe?: boolean }): LuaMultiReturn<[true, T] | [false, string]>
+}
 
 /**
  * This function allows to log {@link LocalisedString} to the Factorio
@@ -98,30 +96,28 @@ declare const serpent: Serpent
  * stage easier, because it allows to simply inspect entire prototype tables. For example, this allows to see all
  * properties of the sulfur item prototype: `log(serpent.block(data.raw["item"]["sulfur"]))`
  */
-declare function log(str: LocalisedString): void
+declare function log(ls: LocalisedString): void
 
 /**
  * This function allows printing {@link LocalisedString}s to stdout without polluting the logfile. This is primarily
  * useful for communicating with external tools that launch Factorio as a child process.
  */
-declare function localised_print(str: LocalisedString): void
+declare function localised_print(ls: LocalisedString): void
 
 /**
  * Factorio provides the function `table_size()` as a simple way to find the size of tables with non-continuous keys,
  * because the standard `#` does not work correctly for these. The function is a C++-side implementation of the
  * following Lua code, thus it is faster than using this code in Lua:
  *
- * ```lua
- * local function size(t)
- *   local count = 0
- *    for k,v in pairs(t) do
- *     count = count + 1
- *   end
- *   return count
- * end
- * ```
+ *     local function size(t)
+ *       local count = 0
+ *        for k,v in pairs(t) do
+ *         count = count + 1
+ *       end
+ *       return count
+ *     end
  *
  * Note that `table_size()` does not work correctly for {@link LuaCustomTable}s, their size has to be determined with
  * {@link LuaCustomTable.length LuaCustomTable::operator #} instead.
  */
-declare function table_size(table: object): number
+declare function table_size(tbl: table): number

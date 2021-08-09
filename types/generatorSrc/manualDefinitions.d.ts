@@ -47,8 +47,8 @@ interface LuaEntity {
   get_passenger(): LuaEntity | LuaPlayer | undefined
   initial_amount: uint | undefined
 
-  revive(): LuaMultiReturn<[Record<string, uint>, LuaEntity | undefined, LuaEntity | undefined]>
-  silent_revive(): LuaMultiReturn<[Record<string, uint>, LuaEntity | undefined, LuaEntity | undefined]>
+  revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
+  silent_revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
 
   get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
 }
@@ -332,7 +332,7 @@ type RaiseableEvents =
 
 interface EventData {}
 interface CustomInputEvent {}
-/** Represents a custom event id created by {@link LuaBootstrap.generate_event_name}, with type data of the event. */
+/** A custom event id created by {@link LuaBootstrap.generate_event_name}, with type data of the event. */
 type CustomEventId<T extends table> = uint & { _eventData: T }
 
 interface LuaBootstrap {
@@ -347,9 +347,9 @@ interface LuaBootstrap {
 
   generate_event_name<T extends table>(): CustomEventId<T>
 
-  get_event_handler<T>(event: CustomEventId<T>): ((data: T) => void) | undefined
-  get_event_handler(event: string): ((data: CustomInputEvent) => void) | undefined
-  get_event_handler<E extends defines.events>(event: E): ((data: EventTypes[E]) => void) | undefined
+  get_event_handler<T>(event: CustomEventId<T>): (data: T) => void
+  get_event_handler(event: string): (data: CustomInputEvent) => void
+  get_event_handler<E extends defines.events>(event: E): (data: EventTypes[E]) => void
 
   get_event_filter<E extends keyof EventFilters>(event: E): EventFilters[E][] | undefined
 
@@ -770,49 +770,9 @@ type RenderLayer =
   | "arrow"
   | "cursor"
 
-interface LuaEntityClonedEventFilter {}
-interface LuaEntityDamagedEventFilter {}
-interface LuaPlayerMinedEntityEventFilter {}
-interface LuaPreRobotMinedEntityEventFilter {}
-interface LuaRobotBuiltEntityEventFilter {}
-interface LuaPostEntityDiedEventFilter {}
-interface LuaEntityDiedEventFilter {}
-interface LuaScriptRaisedReviveEventFilter {}
-interface LuaPrePlayerMinedEntityEventFilter {}
-interface LuaEntityMarkedForDeconstructionEventFilter {}
-interface LuaPreGhostDeconstructedEventFilter {}
-interface LuaEntityDeconstructionCancelledEventFilter {}
-interface LuaEntityMarkedForUpgradeEventFilter {}
-interface LuaSectorScannedEventFilter {}
-interface LuaRobotMinedEntityEventFilter {}
-interface LuaScriptRaisedDestroyEventFilter {}
-interface LuaUpgradeCancelledEventFilter {}
-interface LuaScriptRaisedBuiltEventFilter {}
-interface LuaPlayerBuiltEntityEventFilter {}
-interface LuaPlayerRepairedEntityEventFilter {}
-
-// todo: special types for events
-type EventFilter =
-  | LuaEntityClonedEventFilter[]
-  | LuaEntityDamagedEventFilter[]
-  | LuaPlayerMinedEntityEventFilter[]
-  | LuaPreRobotMinedEntityEventFilter[]
-  | LuaRobotBuiltEntityEventFilter[]
-  | LuaPostEntityDiedEventFilter[]
-  | LuaEntityDiedEventFilter[]
-  | LuaScriptRaisedReviveEventFilter[]
-  | LuaPrePlayerMinedEntityEventFilter[]
-  | LuaEntityMarkedForDeconstructionEventFilter[]
-  | LuaPreGhostDeconstructedEventFilter[]
-  | LuaEntityDeconstructionCancelledEventFilter[]
-  | LuaEntityMarkedForUpgradeEventFilter[]
-  | LuaSectorScannedEventFilter[]
-  | LuaRobotMinedEntityEventFilter[]
-  | LuaScriptRaisedDestroyEventFilter[]
-  | LuaUpgradeCancelledEventFilter[]
-  | LuaScriptRaisedBuiltEventFilter[]
-  | LuaPlayerBuiltEntityEventFilter[]
-  | LuaPlayerRepairedEntityEventFilter[]
+/** @omit */
+interface EventFilter {
+}
 
 // concept modifications
 

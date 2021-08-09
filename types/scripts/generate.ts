@@ -1,6 +1,5 @@
 import * as fs from "fs"
 import * as path from "path"
-import * as util from "util"
 import concurrently from "concurrently"
 
 const args = process.argv.slice(2)
@@ -16,21 +15,10 @@ const jsonFiles = new Map(
     .map((file) => [file![1], path.resolve(generatorSrc, file![0])])
 )
 
-const outDir = dev
-  ? path.resolve(__dirname, "../out/%version.ts")
-  : path.resolve(__dirname, "../generated/%version.d.ts")
-
-const writeFile = util.promisify(fs.writeFile)
-
-function genRootFile(version: string): Promise<void> {
-  const str = `/// <reference path="./generated/${version}.d.ts" />
-/// <reference path="./core/index.d.ts" />
-`
-  return writeFile(path.resolve(`./${version}.d.ts`), str)
-}
+const outPath = path.resolve(__dirname, "../generated/%version.d.ts")
 
 function runForFile(version: string, file: string, extraArgs?: string): string {
-  return `yarn run gen --json "${file}" --defines "${manualDefines}" --out "${outDir}" ` + (extraArgs ?? "")
+  return `yarn run gen --json "${file}" --defines "${manualDefines}" --out "${outPath}" ` + (extraArgs ?? "")
 }
 
 function maxOf(arr: string[]): string {
@@ -41,9 +29,8 @@ function maxOf(arr: string[]): string {
   return max
 }
 
-main().catch((e) => {
-  console.error(e)
-  throw e
+main().catch(() => {
+  process.exit(1)
 })
 
 async function main() {
@@ -57,16 +44,13 @@ async function main() {
     versions = [...jsonFiles.keys()]
     commands = [...jsonFiles.entries()].map(([versions, file]) => runForFile(versions, file, "--error-on-warnings"))
   }
-  await Promise.all<any>([
-    ...versions.map(genRootFile),
-    concurrently(
-      commands.map((c, i) => ({
-        command: c,
-        name: versions[i],
-      })),
-      {
-        cwd: path.resolve(__dirname, "../../generator"),
-      }
-    ),
-  ])
+  await concurrently(
+    commands.map((c, i) => ({
+      command: c,
+      name: versions[i],
+    })),
+    {
+      cwd: path.resolve(__dirname, "../../generator"),
+    }
+  )
 }

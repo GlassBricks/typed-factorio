@@ -1,7 +1,6 @@
-import * as ts from "typescript"
-import { EmitFlags, EmitHint } from "typescript"
+import ts from "typescript"
 import { mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
-import { assertNever, assertType, getFirst, sortByOrder } from "./util"
+import { assertNever, getFirst, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
 import {
   AnyDef,
@@ -338,7 +337,7 @@ export default class DefinitionsGenerator {
       const readonly = (arrayExtends.expression as ts.Identifier).text === "ReadonlyArray"
       if (!type) throw new Error(`Manual define ${clazz.name} extends an array type without type arguments`)
       generated.arrayType = { type, readonly }
-      // array inherit with type aliases not yet supported
+      // array inherit with type aliases not supported
     }
 
     function fillMethods(this: DefinitionsGenerator, { clazz, existing, members, arrayType }: GeneratedClass) {
@@ -709,6 +708,7 @@ export default class DefinitionsGenerator {
       if (concept.category === "concept") {
         if (existing) {
           declaration = existing.node
+          if (getAnnotations(declaration).omit) continue
           ts.setEmitFlags(declaration, ts.EmitFlags.NoComments)
         } else {
           this.warnIncompleteDefinition(`No concept definition given for ${concept.name}.`)
@@ -726,7 +726,7 @@ export default class DefinitionsGenerator {
               ` - ${
                 typeof option.type === "string"
                   ? option.type
-                  : printer.printNode(EmitHint.Unspecified, types[i], this.manualDefinitionsSource)
+                  : printer.printNode(ts.EmitHint.Unspecified, types[i], this.manualDefinitionsSource)
               }: ${option.description}`
           )
           .filter((x) => !!x)
@@ -860,7 +860,7 @@ export default class DefinitionsGenerator {
     for (const key in this.manualDefinitions) {
       if (key in this.typeNames) continue
       const node = this.manualDefinitions[key]!.node
-      if (!this.docs) ts.setEmitFlags(node, EmitFlags.NoNestedComments | EmitFlags.NoComments)
+      if (!this.docs) ts.setEmitFlags(node, ts.EmitFlags.NoNestedComments | ts.EmitFlags.NoComments)
       this.statements.push(node)
     }
   }
@@ -1037,8 +1037,7 @@ export default class DefinitionsGenerator {
           )
         }
       })
-      assertType<ts.MethodSignature[]>(existingMethods)
-      members = existingMethods.map((m) => {
+      members = (existingMethods as ts.MethodSignature[]).map((m) => {
         const member = ts.factory.createMethodSignature(
           m.modifiers,
           m.name,
@@ -1047,7 +1046,7 @@ export default class DefinitionsGenerator {
           m.parameters.length > 0 ? m.parameters : parameters,
           m.type ?? returnType
         )
-        ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
+        ts.setEmitFlags(member.name, ts.EmitFlags.NoComments)
         return member
       })
     } else {

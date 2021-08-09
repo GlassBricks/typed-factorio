@@ -1,4 +1,4 @@
-import ts, { SyntaxKind } from "typescript"
+import ts from "typescript"
 
 // preprocessed TS AST easier to use
 
@@ -53,7 +53,7 @@ function createDef(node: ts.Statement): AnyDef {
       kind: "interface",
       node,
       name: node.name.text,
-      supertypes: node.heritageClauses?.find((value) => value.token === SyntaxKind.ExtendsKeyword)?.types ?? [],
+      supertypes: node.heritageClauses?.find((value) => value.token === ts.SyntaxKind.ExtendsKeyword)?.types ?? [],
       members: getMembers(node.members),
       annotations: getAnnotations(node),
     }
