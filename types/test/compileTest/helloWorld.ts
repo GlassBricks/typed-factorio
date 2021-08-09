@@ -3,8 +3,8 @@ function greetPlayer(player: LuaPlayer) {
 }
 
 // todo: event types
-script.on_event(defines.events.on_player_created, (e: EventData) => {
-  greetPlayer(game.get_player((e as OnPlayerCreatedEvent).player_index)!)
+script.on_event(defines.events.on_player_created, (e) => {
+  greetPlayer(game.get_player(e.player_index)!)
 })
 
 script.on_init(() => {

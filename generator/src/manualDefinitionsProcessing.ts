@@ -12,7 +12,7 @@ export interface InterfaceDef extends BaseDef {
   readonly kind: "interface"
   readonly node: ts.InterfaceDeclaration
   readonly supertypes: readonly ts.ExpressionWithTypeArguments[]
-  readonly members: Record<string, ts.TypeElement | undefined>
+  readonly members: Record<string, ts.TypeElement[] | undefined>
   readonly annotations: Record<string, string[] | undefined>
 }
 
@@ -21,7 +21,7 @@ export interface TypeAliasDef extends BaseDef {
   readonly node: ts.TypeAliasDeclaration
   readonly supertypes: readonly ts.TypeNode[]
   readonly indexOperator: ts.MappedTypeNode | ts.TypeLiteralNode | undefined
-  readonly members: Record<string, ts.TypeElement | undefined>
+  readonly members: Record<string, ts.TypeElement[] | undefined>
   readonly annotations: Record<string, string[] | undefined>
 }
 
@@ -104,7 +104,7 @@ function createDef(node: ts.Statement): AnyDef {
   }
 
   function getMembers(members: ts.NodeArray<ts.TypeElement>) {
-    const result: Record<string, ts.TypeElement> = {}
+    const result: Record<string, ts.TypeElement[]> = {}
     for (const member of members) {
       let name: string
       if (ts.isIndexSignatureDeclaration(member)) {
@@ -124,7 +124,8 @@ function createDef(node: ts.Statement): AnyDef {
             ? propertyName.text
             : ts.idText(propertyName)
       }
-      result[name] = member
+      result[name] = result[name] || []
+      result[name].push(member)
     }
     return result
   }
@@ -148,7 +149,6 @@ function createDef(node: ts.Statement): AnyDef {
 export function processManualDefinitions(file: ts.SourceFile | undefined): Record<string, RootDef | undefined> {
   const result: Record<string, RootDef | undefined> = {}
   if (!file) {
-    console.log("No manual definitions found")
     return result
   }
   for (const statement of file.statements) {

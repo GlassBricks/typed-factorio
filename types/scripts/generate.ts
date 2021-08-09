@@ -1,11 +1,12 @@
 import * as fs from "fs"
-import * as child_process from "child_process"
 import * as path from "path"
+import * as util from "util"
+import concurrently from "concurrently"
 
 const args = process.argv.slice(2)
 const dev = args[0] === "dev"
 
-let generatorSrc = path.resolve(__dirname, "../generatorSrc")
+const generatorSrc = path.resolve(__dirname, "../generatorSrc")
 const files = fs.readdirSync(generatorSrc)
 const manualDefines = path.resolve(generatorSrc, files.find((f) => f.endsWith(".d.ts"))!)
 const jsonFiles = new Map(
@@ -15,23 +16,21 @@ const jsonFiles = new Map(
     .map((file) => [file![1], path.resolve(generatorSrc, file![0])])
 )
 
-const outDir = dev ? path.resolve("./out/%version.d.ts") : path.resolve("./%version.d.ts")
+const outDir = dev
+  ? path.resolve(__dirname, "../out/%version.ts")
+  : path.resolve(__dirname, "../generated/%version.d.ts")
 
-async function runForFile(name: string, file: string, extraArgs?: string) {
-  const process = child_process.exec(
-    `cd ../generator && yarn run gen --json "${file}" --defines "${manualDefines}" --out "${outDir}" ` +
-      (extraArgs ?? "")
-  )
-  process.stdout?.on("data", (data) => {
-    console.log(`${name}: ${data}`)
-  })
-  process.stderr?.on("data", (data) => {
-    console.error(`${name}: ${data}`)
-  })
-  return new Promise((resolve, reject) => {
-    process.on("exit", resolve)
-    process.on("error", reject)
-  })
+const writeFile = util.promisify(fs.writeFile)
+
+function genRootFile(version: string): Promise<void> {
+  const str = `/// <reference path="./generated/${version}.d.ts" />
+/// <reference path="./core/index.d.ts" />
+`
+  return writeFile(path.resolve(`./${version}.d.ts`), str)
+}
+
+function runForFile(version: string, file: string, extraArgs?: string): string {
+  return `yarn run gen --json "${file}" --defines "${manualDefines}" --out "${outDir}" ` + (extraArgs ?? "")
 }
 
 function maxOf(arr: string[]): string {
@@ -48,10 +47,26 @@ main().catch((e) => {
 })
 
 async function main() {
+  let versions: string[]
+  let commands: string[]
   if (dev) {
     const latest = maxOf([...jsonFiles.keys()])
-    await runForFile(latest, jsonFiles.get(latest)!, "--noformat")
+    versions = [latest]
+    commands = [runForFile(latest, jsonFiles.get(latest)!, "--noformat")]
   } else {
-    await Promise.all([...jsonFiles.entries()].map(([version, file]) => runForFile(version, file, "--errorOnWarnings")))
+    versions = [...jsonFiles.keys()]
+    commands = [...jsonFiles.entries()].map(([versions, file]) => runForFile(versions, file, "--error-on-warnings"))
   }
+  await Promise.all<any>([
+    ...versions.map(genRootFile),
+    concurrently(
+      commands.map((c, i) => ({
+        command: c,
+        name: versions[i],
+      })),
+      {
+        cwd: path.resolve(__dirname, "../../generator"),
+      }
+    ),
+  ])
 }

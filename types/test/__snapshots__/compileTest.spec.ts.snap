@@ -1,0 +1,208 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`events.ts factorio version 1.1.35 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+script.on_event(
+    defines.events.on_ai_command_completed,
+    function(e)
+        print(e.result)
+    end
+)
+script.on_event(defines.events.on_area_cloned, nil)
+script.on_event(
+    defines.events.on_built_entity,
+    function(e)
+        log(
+            serpent.line(e)
+        )
+    end,
+    {{filter = \\"type\\", type = \\"foo\\"}, {filter = \\"ghost_type\\", type = \\"bar\\"}}
+)
+script.set_event_filter(defines.events.on_robot_built_entity, {{filter = \\"circuit-network-connectable\\"}})
+filters = script.get_event_filter(defines.events.on_entity_damaged)
+script.on_event(
+    \\"someInput\\",
+    function(e)
+        log(
+            serpent.block(e)
+        )
+    end
+)
+myCustomEvent = script.generate_event_name()
+script.on_event(
+    myCustomEvent,
+    function(d)
+        log(d.myCustomData)
+    end
+)
+script.get_event_handler(myCustomEvent)({myCustomData = 0})"
+`;
+
+exports[`events.ts factorio version 1.1.36 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+script.on_event(
+    defines.events.on_ai_command_completed,
+    function(e)
+        print(e.result)
+    end
+)
+script.on_event(defines.events.on_area_cloned, nil)
+script.on_event(
+    defines.events.on_built_entity,
+    function(e)
+        log(
+            serpent.line(e)
+        )
+    end,
+    {{filter = \\"type\\", type = \\"foo\\"}, {filter = \\"ghost_type\\", type = \\"bar\\"}}
+)
+script.set_event_filter(defines.events.on_robot_built_entity, {{filter = \\"circuit-network-connectable\\"}})
+filters = script.get_event_filter(defines.events.on_entity_damaged)
+script.on_event(
+    \\"someInput\\",
+    function(e)
+        log(
+            serpent.block(e)
+        )
+    end
+)
+myCustomEvent = script.generate_event_name()
+script.on_event(
+    myCustomEvent,
+    function(d)
+        log(d.myCustomData)
+    end
+)
+script.get_event_handler(myCustomEvent)({myCustomData = 0})"
+`;
+
+exports[`events.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+script.on_event(
+    defines.events.on_ai_command_completed,
+    function(e)
+        print(e.result)
+    end
+)
+script.on_event(defines.events.on_area_cloned, nil)
+script.on_event(
+    defines.events.on_built_entity,
+    function(e)
+        log(
+            serpent.line(e)
+        )
+    end,
+    {{filter = \\"type\\", type = \\"foo\\"}, {filter = \\"ghost_type\\", type = \\"bar\\"}}
+)
+script.set_event_filter(defines.events.on_robot_built_entity, {{filter = \\"circuit-network-connectable\\"}})
+filters = script.get_event_filter(defines.events.on_entity_damaged)
+script.on_event(
+    \\"someInput\\",
+    function(e)
+        log(
+            serpent.block(e)
+        )
+    end
+)
+myCustomEvent = script.generate_event_name()
+script.on_event(
+    myCustomEvent,
+    function(d)
+        log(d.myCustomData)
+    end
+)
+script.get_event_handler(myCustomEvent)({myCustomData = 0})"
+`;
+
+exports[`guiElement.ts factorio version 1.1.35 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+button = game.player.gui.screen.add({type = \\"button\\", enabled = true, mouse_button_filter = {\\"left\\"}})
+name = button.name
+child = button.namee
+chooseElemButton = game.player.gui.screen.add({type = \\"choose-elem-button\\", elem_type = \\"item\\", item = \\"foo\\", filters = {{filter = \\"name\\", name = \\"foo2\\"}}})"
+`;
+
+exports[`guiElement.ts factorio version 1.1.36 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+button = game.player.gui.screen.add({type = \\"button\\", enabled = true, mouse_button_filter = {\\"left\\"}})
+name = button.name
+child = button.namee
+chooseElemButton = game.player.gui.screen.add({type = \\"choose-elem-button\\", elem_type = \\"item\\", item = \\"foo\\", filters = {{filter = \\"name\\", name = \\"foo2\\"}}})"
+`;
+
+exports[`guiElement.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+button = game.player.gui.screen.add({type = \\"button\\", enabled = true, mouse_button_filter = {\\"left\\"}})
+name = button.name
+child = button.namee
+chooseElemButton = game.player.gui.screen.add({type = \\"choose-elem-button\\", elem_type = \\"item\\", item = \\"foo\\", filters = {{filter = \\"name\\", name = \\"foo2\\"}}})"
+`;
+
+exports[`helloWorld.ts factorio version 1.1.35 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+function greetPlayer(self, player)
+    player.print(\\"Hello, world!\\")
+end
+script.on_event(
+    defines.events.on_player_created,
+    function(e)
+        greetPlayer(
+            nil,
+            game.get_player(e.player_index)
+        )
+    end
+)
+script.on_init(
+    function()
+        for ____, luaPlayer in pairs(game.players) do
+            greetPlayer(nil, luaPlayer)
+        end
+    end
+)"
+`;
+
+exports[`helloWorld.ts factorio version 1.1.36 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+function greetPlayer(self, player)
+    player.print(\\"Hello, world!\\")
+end
+script.on_event(
+    defines.events.on_player_created,
+    function(e)
+        greetPlayer(
+            nil,
+            game.get_player(e.player_index)
+        )
+    end
+)
+script.on_init(
+    function()
+        for ____, luaPlayer in pairs(game.players) do
+            greetPlayer(nil, luaPlayer)
+        end
+    end
+)"
+`;
+
+exports[`helloWorld.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+function greetPlayer(self, player)
+    player.print(\\"Hello, world!\\")
+end
+script.on_event(
+    defines.events.on_player_created,
+    function(e)
+        greetPlayer(
+            nil,
+            game.get_player(e.player_index)
+        )
+    end
+)
+script.on_init(
+    function()
+        for ____, luaPlayer in pairs(game.players) do
+            greetPlayer(nil, luaPlayer)
+        end
+    end
+)"
+`;

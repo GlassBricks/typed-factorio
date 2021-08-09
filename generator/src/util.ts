@@ -20,6 +20,11 @@ export function getOrPut<K, V extends unknown>(map: Map<K, V>, key: K, def: V): 
   return val
 }
 
-export function isEmpty(o: Record<any, unknown>): boolean {
-  return Object.keys(o).length === 0
+export function assertType<T>(t: unknown): asserts t is T {
+  // noop
+}
+
+export function getFirst<T>(elemOrArray: T | T[]): T {
+  if (Array.isArray(elemOrArray)) return elemOrArray[0]
+  return elemOrArray
 }

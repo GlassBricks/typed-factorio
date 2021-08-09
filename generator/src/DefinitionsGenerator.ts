@@ -1,7 +1,7 @@
 import * as ts from "typescript"
 import { EmitFlags, EmitHint } from "typescript"
 import { mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
-import { assertNever, sortByOrder } from "./util"
+import { assertNever, assertType, getFirst, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
 import {
   AnyDef,
@@ -10,13 +10,13 @@ import {
   processManualDefinitions,
   RootDef,
   TypeAliasDef,
-} from "./manualDefinitionsPreprocessing"
+} from "./manualDefinitionsProcessing"
 import chalk from "chalk"
 import * as console from "console"
 
 interface MemberAndOriginal {
   original: Method | Attribute
-  member: ts.TypeElement
+  member: ts.TypeElement | ts.MethodSignature[]
 }
 interface GeneratedClass {
   readonly clazz: Class
@@ -44,8 +44,8 @@ export default class DefinitionsGenerator {
 
   private builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
   private defines = new Map<string, Define>()
-  private events = new Set<string>(this.apiDocs.events.map((e) => e.name))
-  private classes = new Set<string>(this.apiDocs.classes.map((e) => e.name))
+  private events = new Map<string, Event>(this.apiDocs.events.map((e) => [e.name, e]))
+  private classes = new Map<string, Class>(this.apiDocs.classes.map((e) => [e.name, e]))
   // private classMembers = new Map<string, Map<string, Attribute | Method>>()
   private concepts = new Set<string>(this.apiDocs.concepts.map((e) => e.name))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
@@ -65,8 +65,12 @@ export default class DefinitionsGenerator {
   private readonly docUrlBase = `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
 
   private readonly warnings: string[] = []
+
   private static keywords = new Set(["function", "interface"])
   private static noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
+
+  private static EventTypes = "EventTypes"
+  private static EventFilters = "EventFilters"
 
   constructor(
     private readonly apiDocs: FactorioApiJson,
@@ -106,7 +110,8 @@ export default class DefinitionsGenerator {
     this.generateClasses()
     this.generateConcepts()
     this.generateGlobalObjects()
-    this.generateAdditionalTypes()
+    this.addManuallyDefined()
+    this.generateAdditional()
   }
 
   private addHeaders() {
@@ -119,7 +124,7 @@ export default class DefinitionsGenerator {
       this.typeNames[type.name] = type.name
     }
     for (const event of this.apiDocs.events) {
-      this.typeNames[event.name] = DefinitionsGenerator.getMappedEventName(event)
+      this.typeNames[event.name] = DefinitionsGenerator.getMappedEventName(event.name)
     }
     const addDefine = (define: Define, parent: string) => {
       const name = parent + (parent ? "." : "") + define.name
@@ -152,6 +157,9 @@ export default class DefinitionsGenerator {
         this.typeNames[concept.name + "Array"] = concept.name
       }
     }
+
+    this.typeNames[DefinitionsGenerator.EventTypes] = DefinitionsGenerator.EventTypes
+    this.typeNames[DefinitionsGenerator.EventFilters] = DefinitionsGenerator.EventFilters
   }
 
   private generateBuiltins() {
@@ -237,7 +245,7 @@ export default class DefinitionsGenerator {
     this.statements.push(createComment(" Events"))
     this.statements.push(
       ...this.apiDocs.events.sort(sortByOrder).map((event) => {
-        const name = DefinitionsGenerator.getMappedEventName(event)
+        const name = DefinitionsGenerator.getMappedEventName(event.name)
         return this.addJsDoc(
           ts.factory.createInterfaceDeclaration(
             undefined,
@@ -259,8 +267,8 @@ export default class DefinitionsGenerator {
     )
   }
 
-  private static getMappedEventName(event: Event): string {
-    let name = toPascalCase(event.name)
+  private static getMappedEventName(eventName: string): string {
+    let name = toPascalCase(eventName)
     if (!name.endsWith("Event")) name += "Event"
     return name
   }
@@ -447,6 +455,7 @@ export default class DefinitionsGenerator {
       for (let i = 0; i < members.length; i++) {
         const group = members[i]
         const member = group.member
+        if (Array.isArray(member)) continue
         if (!member.name || !ts.isIdentifier(member.name)) continue
         const name = member.name.text
         if (name === "valid" || name === "object_name" || name === "help") {
@@ -504,7 +513,7 @@ export default class DefinitionsGenerator {
         throw new Error(`Discriminant property ${discriminantProperty} was not found on ${clazz.name}`)
       }
       const memberNode = property.member
-      if (!ts.isPropertySignature(memberNode)) {
+      if (Array.isArray(memberNode) || !ts.isPropertySignature(memberNode)) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} should be a property signature`)
       }
       const types = this.tryGetUnionTypeStringLiterals(memberNode.type!)
@@ -652,7 +661,7 @@ export default class DefinitionsGenerator {
         superTypes.length !== 0
           ? [ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, superTypes)]
           : undefined,
-        members.map((m) => m.member)
+        members.flatMap((m) => m.member)
       )
       this.statements.push(baseDeclaration)
 
@@ -845,7 +854,7 @@ export default class DefinitionsGenerator {
     }
   }
 
-  private generateAdditionalTypes() {
+  private addManuallyDefined() {
     this.statements.push(createComment(" Manually defined additional types"))
 
     for (const key in this.manualDefinitions) {
@@ -856,6 +865,67 @@ export default class DefinitionsGenerator {
     }
   }
 
+  private generateAdditional() {
+    this.generateEventTypes()
+  }
+
+  private generateEventTypes() {
+    const eventTypesMembers: ts.PropertySignature[] = []
+    const eventFiltersMembers: ts.PropertySignature[] = []
+    const definesEvents = ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("defines"), "events")
+    for (const eventDefine of this.defines.get("defines.events")!.values!) {
+      const name = eventDefine.name
+      const event = this.events.get(name)
+      if (!event) throw new Error(`Event define without event type: ${name}`)
+      const propertyName = ts.factory.createComputedPropertyName(
+        ts.factory.createPropertyAccessExpression(definesEvents, name)
+      )
+
+      const eventTypeName = DefinitionsGenerator.getMappedEventName(name)
+      eventTypesMembers.push(
+        ts.factory.createPropertySignature(
+          undefined,
+          propertyName,
+          undefined,
+          ts.factory.createTypeReferenceNode(eventTypeName)
+        )
+      )
+
+      const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
+      if (eventFilterName) {
+        eventFiltersMembers.push(
+          ts.factory.createPropertySignature(
+            undefined,
+            propertyName,
+            undefined,
+            ts.factory.createTypeReferenceNode(eventFilterName)
+          )
+        )
+      }
+    }
+
+    this.statements.push(
+      ts.factory.createInterfaceDeclaration(
+        undefined,
+        undefined,
+        DefinitionsGenerator.EventTypes,
+        undefined,
+        undefined,
+        eventTypesMembers
+      )
+    )
+    this.statements.push(
+      ts.factory.createInterfaceDeclaration(
+        undefined,
+        undefined,
+        DefinitionsGenerator.EventFilters,
+        undefined,
+        undefined,
+        eventFiltersMembers
+      )
+    )
+  }
+
   private mapAttribute(
     attribute: Attribute,
     parent: string,
@@ -863,7 +933,7 @@ export default class DefinitionsGenerator {
   ): ts.TypeElement {
     let member: ts.TypeElement
     const type = this.mapTypeWithTransforms(attribute, attribute.type, parent, !attribute.write)
-    const existingProperty = existingContainer?.members[attribute.name]
+    const existingProperty = existingContainer?.members[attribute.name]?.[0]
     if (existingProperty) {
       if (!ts.isPropertySignature(existingProperty)) {
         throw new Error(
@@ -899,12 +969,20 @@ export default class DefinitionsGenerator {
     return member
   }
 
+  private mapMethod(method: Method, parent: string, existingContainer: undefined): ts.MethodSignature
   private mapMethod(
     method: Method,
     parent: string,
     existingContainer: InterfaceDef | TypeAliasDef | undefined
-  ): ts.MethodSignature {
-    const existingMethod = existingContainer?.members[method.name]
+  ): ts.MethodSignature[] | ts.MethodSignature
+
+  private mapMethod(
+    method: Method,
+    parent: string,
+    existingContainer: InterfaceDef | TypeAliasDef | undefined
+  ): ts.MethodSignature[] | ts.MethodSignature {
+    const existingMethods = existingContainer?.members[method.name]
+    const firstExistingMethod = existingMethods?.[0]
     const thisPath = parent + "." + method.name
     const parameters = method.takes_table
       ? [
@@ -916,7 +994,7 @@ export default class DefinitionsGenerator {
             method.table_is_optional ? Tokens.question : undefined,
             method.variant_parameter_groups !== undefined
               ? this.createVariantParameterTypes(
-                  (existingMethod && getAnnotations(existingMethod as ts.JSDocContainer).variantsName?.[0]) ??
+                  (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
                     removeLuaPrefix(parent) + toPascalCase(method.name),
                   method
                 )
@@ -945,29 +1023,35 @@ export default class DefinitionsGenerator {
         )
       )
     }
-    let member: ts.MethodSignature
+    let members: ts.MethodSignature[] | ts.MethodSignature
     const returnType = !method.return_type
       ? Types.void
       : this.mapTypeWithTransforms(method, method.return_type, parent, true)
-    if (existingMethod) {
-      if (!ts.isMethodSignature(existingMethod)) {
-        throw new Error(
-          `Manual define for ${parent}.${method.name} should be a method signature, got ${
-            ts.SyntaxKind[existingMethod.kind]
-          } instead`
+    if (existingMethods) {
+      existingMethods.forEach((m) => {
+        if (!ts.isMethodSignature(m)) {
+          throw new Error(
+            `Manual define for ${parent}.${method.name} should be a method signature, got ${
+              ts.SyntaxKind[m.kind]
+            } instead`
+          )
+        }
+      })
+      assertType<ts.MethodSignature[]>(existingMethods)
+      members = existingMethods.map((m) => {
+        const member = ts.factory.createMethodSignature(
+          m.modifiers,
+          m.name,
+          m.questionToken,
+          m.typeParameters,
+          m.parameters.length > 0 ? m.parameters : parameters,
+          m.type ?? returnType
         )
-      }
-      member = ts.factory.createMethodSignature(
-        existingMethod.modifiers,
-        existingMethod.name,
-        existingMethod.questionToken,
-        existingMethod.typeParameters,
-        existingMethod.parameters.length > 0 ? existingMethod.parameters : parameters,
-        existingMethod.type ?? returnType
-      )
-      ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
+        ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
+        return member
+      })
     } else {
-      member = ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
+      members = ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
     }
     const tags: ts.JSDocTag[] = []
     if (this.docs) {
@@ -994,18 +1078,24 @@ export default class DefinitionsGenerator {
         )
       }
     }
-    this.addJsDoc(member, method, thisPath, tags)
-    return member
+    this.addJsDoc(getFirst(members), method, thisPath, tags)
+    // if (Array.isArray(members)) {
+    //   for (let i = 1; i < members.length; i++) {
+    //     const member = members[i]
+    //     addFakeJSDoc(member, ts.factory.createJSDocComment(`{@inheritDoc ${thisPath}}`))
+    //   }
+    // }
+    return members
   }
 
   private mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
-    const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false, false)
+    const type = this.mapTypeWithTransforms(parameter, parameter.type, parent, false)
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
       undefined,
       DefinitionsGenerator.escapeParameterName(parameter.name),
-      parameter.optional || nullable ? Tokens.question : undefined,
+      parameter.optional ? Tokens.question : undefined,
       type
     )
   }
@@ -1016,7 +1106,7 @@ export default class DefinitionsGenerator {
     existingContainer?: InterfaceDef | TypeAliasDef
   ): ts.PropertySignature {
     let member: ts.PropertySignature
-    const existingProperty = existingContainer?.members[parameter.name]
+    const existingProperty = existingContainer?.members[parameter.name]?.[0]
     if (existingProperty) {
       if (!ts.isPropertySignature(existingProperty)) {
         throw new Error(
@@ -1027,11 +1117,11 @@ export default class DefinitionsGenerator {
       }
       member = existingProperty
     } else {
-      const [type, nullable] = this.mapTypeWithTransforms(parameter, parameter.type, parent, false, false)
+      const type = this.mapTypeWithTransforms(parameter, parameter.type, parent, false)
       member = ts.factory.createPropertySignature(
         [Modifiers.readonly],
         DefinitionsGenerator.escapePropertyName(parameter.name),
-        parameter.optional || nullable ? Tokens.question : undefined,
+        parameter.optional ? Tokens.question : undefined,
         type
       )
     }
@@ -1043,30 +1133,11 @@ export default class DefinitionsGenerator {
     baseType: Type,
     parent: string,
     outOnly: boolean
-  ): ts.TypeNode
-
-  private mapTypeWithTransforms(
-    member: { description: string; name?: string },
-    baseType: Type,
-    parent: string,
-    outOnly: boolean,
-    makeNullable: boolean
-  ): [type: ts.TypeNode, isNullable: boolean]
-
-  private mapTypeWithTransforms(
-    member: { description: string; name?: string },
-    baseType: Type,
-    parent: string,
-    outOnly: boolean,
-    makeNullable?: boolean
-  ): [type: ts.TypeNode, isNullable: boolean] | ts.TypeNode {
-    let type = DefinitionsGenerator.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType, outOnly)
+  ): ts.TypeNode {
+    const type = DefinitionsGenerator.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType, outOnly)
     const isNullable = !(member as Parameter).optional && this.isNullableFromDescription(member, parent)
-    if (isNullable && makeNullable !== false) {
-      type = mergeUnion(type, Types.undefined)
-    }
-    if (makeNullable !== undefined) {
-      return [type, isNullable]
+    if (isNullable) {
+      return mergeUnion(type, Types.undefined)
     }
     return type
   }

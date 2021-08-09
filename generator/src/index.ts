@@ -28,10 +28,10 @@ const options: commandLineArgs.OptionDefinition[] = [
     alias: "o",
     defaultValue: "%application-%stage-%version.d.ts",
   },
-  { name: "errorOnWarnings", type: Boolean, defaultValue: false },
+  { name: "error-on-warnings", type: Boolean, defaultValue: false },
 ]
 
-const opts = commandLineArgs(options) as {
+const opts = commandLineArgs(options, { camelCase: true }) as {
   json: string
   defines: string
   nodocs: boolean
