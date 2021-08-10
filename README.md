@@ -1,5 +1,7 @@
 # Typed Factorio
 
+## NOTE: this package is not _yet_ published to npm
+
 Featureful, strongly-typed Typescript definitions for the Factorio lua api. This is intended to be used with [TypescriptToLua](https://typescripttolua.github.io/).
 
 This project aims to provide type definitions for the Factorio API that are as complete as possible. This means minimal `any`s and `unknown`s, correct nullability, and many manually defined features and additions to provide more complete types.
