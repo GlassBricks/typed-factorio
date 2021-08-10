@@ -303,6 +303,45 @@ script.on_event(
 )"
 `;
 
+exports[`pairs.ts factorio version 1.1.35 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+for id, player in pairs(game.players) do
+    local num = id
+    local p = player
+end
+bar = {foo = {}}
+for id, player in pairs(bar) do
+    local num = id
+    local p = player
+end"
+`;
+
+exports[`pairs.ts factorio version 1.1.36 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+for id, player in pairs(game.players) do
+    local num = id
+    local p = player
+end
+bar = {foo = {}}
+for id, player in pairs(bar) do
+    local num = id
+    local p = player
+end"
+`;
+
+exports[`pairs.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+for id, player in pairs(game.players) do
+    local num = id
+    local p = player
+end
+bar = {foo = {}}
+for id, player in pairs(bar) do
+    local num = id
+    local p = player
+end"
+`;
+
 exports[`table.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 t1 = {a = 3, b = true, c = {}}
