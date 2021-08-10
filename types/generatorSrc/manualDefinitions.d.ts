@@ -1,7 +1,7 @@
 type uint = number
 type double = number
 type float = number
-type table = LuaTable | Record<any, any>
+type table = object
 
 declare namespace defines {
   const prototypes: {
@@ -18,17 +18,21 @@ declare namespace defines {
   enum circuit_connector_id {}
   enum gui_type {}
   enum rail_direction {}
-  enum events {
-    on_console_chat = 0,
-    on_player_crafted_item = 1,
-    on_player_fast_transferred = 2,
-    on_biter_base_built = 3,
-    on_market_item_purchased = 4,
-    script_raised_built = 5,
-    script_raised_destroy = 6,
-    script_raised_revive = 7,
-    script_raised_set_tiles = 8,
+  type events = typeof events[keyof typeof events]
+  /** @symbolEnum */
+  namespace events {
+    const on_console_chat: unique symbol
+    const on_player_crafted_item: unique symbol
+    const on_player_fast_transferred: unique symbol
+    const on_biter_base_built: unique symbol
+    const on_market_item_purchased: unique symbol
+    const script_raised_built: unique symbol
+    const script_raised_destroy: unique symbol
+    const script_raised_revive: unique symbol
+    const script_raised_set_tiles: unique symbol
   }
+  /** @numericEnum */
+  enum command {}
 }
 
 // classes
@@ -320,15 +324,15 @@ type EventTypes = Record<defines.events, any>
 type EventFilters = Record<defines.events, any>
 
 type RaiseableEvents =
-  | defines.events.on_console_chat
-  | defines.events.on_player_crafted_item
-  | defines.events.on_player_fast_transferred
-  | defines.events.on_biter_base_built
-  | defines.events.on_market_item_purchased
-  | defines.events.script_raised_built
-  | defines.events.script_raised_destroy
-  | defines.events.script_raised_revive
-  | defines.events.script_raised_set_tiles
+  | typeof defines.events.on_console_chat
+  | typeof defines.events.on_player_crafted_item
+  | typeof defines.events.on_player_fast_transferred
+  | typeof defines.events.on_biter_base_built
+  | typeof defines.events.on_market_item_purchased
+  | typeof defines.events.script_raised_built
+  | typeof defines.events.script_raised_destroy
+  | typeof defines.events.script_raised_revive
+  | typeof defines.events.script_raised_set_tiles
 
 interface EventData {}
 interface CustomInputEvent {}
@@ -336,26 +340,26 @@ interface CustomInputEvent {}
 type CustomEventId<T extends table> = uint & { _eventData: T }
 
 interface LuaBootstrap {
-  on_event<T>(event: CustomEventId<T>, f: ((data: T) => void) | undefined): void
-  on_event(event: string, f: ((data: CustomInputEvent) => void) | undefined): void
   on_event<E extends keyof EventFilters>(
     event: E,
     f: ((data: EventTypes[E]) => void) | undefined,
     filters?: EventFilters[E][]
   ): void
   on_event<E extends defines.events>(event: E | E[], f: ((data: EventTypes[E]) => void) | undefined): void
+  on_event(event: string, f: ((data: CustomInputEvent) => void) | undefined): void
+  on_event<T extends table>(event: CustomEventId<T>, f: ((data: T) => void) | undefined): void
 
   generate_event_name<T extends table>(): CustomEventId<T>
 
-  get_event_handler<T>(event: CustomEventId<T>): (data: T) => void
-  get_event_handler(event: string): (data: CustomInputEvent) => void
   get_event_handler<E extends defines.events>(event: E): (data: EventTypes[E]) => void
+  get_event_handler(event: string): (data: CustomInputEvent) => void
+  get_event_handler<T extends table>(event: CustomEventId<T>): (data: T) => void
 
   get_event_filter<E extends keyof EventFilters>(event: E): EventFilters[E][] | undefined
 
   set_event_filter<E extends keyof EventFilters>(event: E, filters: EventFilters[E][] | undefined): void
 
-  raise_event<T>(event: CustomEventId<T>, data: T): void
+  raise_event<T extends table>(event: CustomEventId<T>, data: T): void
   raise_event<E extends RaiseableEvents>(event: E, data: Omit<EventTypes[E], keyof EventData>): void
 }
 

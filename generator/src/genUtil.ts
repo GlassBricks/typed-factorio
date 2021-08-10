@@ -9,7 +9,9 @@ export const Types = {
   void: ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
   undefined: ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
   unknown: ts.factory.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword),
+  object: ts.factory.createKeywordTypeNode(ts.SyntaxKind.ObjectKeyword),
   number: ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
+  symbol: ts.factory.createKeywordTypeNode(ts.SyntaxKind.SymbolKeyword),
 
   stringLiteral(text: string): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(text))
@@ -36,4 +38,28 @@ export function mergeUnion(a: ts.TypeNode, b: ts.TypeNode): ts.UnionTypeNode {
   }
 
   return ts.factory.createUnionTypeNode([...getTypes(a), ...getTypes(b)])
+}
+
+export function createNamespace(
+  modifiers: ts.Modifier[] | undefined,
+  name: string,
+  statements: ts.Statement[]
+): ts.ModuleDeclaration {
+  return ts.factory.createModuleDeclaration(
+    undefined,
+    modifiers,
+    ts.factory.createIdentifier(name),
+    ts.factory.createModuleBlock(statements),
+    ts.NodeFlags.Namespace
+  )
+}
+
+export function createConst(name: string, type: ts.TypeNode): ts.VariableStatement {
+  return ts.factory.createVariableStatement(
+    undefined,
+    ts.factory.createVariableDeclarationList(
+      [ts.factory.createVariableDeclaration(name, undefined, type)],
+      ts.NodeFlags.Const
+    )
+  )
 }

@@ -51,6 +51,7 @@ async function main() {
     })),
     {
       cwd: path.resolve(__dirname, "../../generator"),
+      prefix: dev ? "none" : undefined,
     }
   )
 }

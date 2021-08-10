@@ -41,6 +41,7 @@ export interface ConstDef extends BaseDef {
 export interface EnumDef extends BaseDef {
   readonly kind: "enum"
   readonly node: ts.EnumDeclaration
+  readonly annotations: Record<string, string[]>
 }
 
 export type RootDef = InterfaceDef | TypeAliasDef | NamespaceDef
@@ -98,6 +99,7 @@ function createDef(node: ts.Statement): AnyDef {
       kind: "enum",
       node,
       name: node.name.text,
+      annotations: getAnnotations(node),
     }
   } else {
     throw new Error("Unknown node given to manual defines, type " + ts.SyntaxKind[node.kind])
@@ -138,7 +140,7 @@ function createDef(node: ts.Statement): AnyDef {
       if (!def) continue
       if (def.kind === "namespace" || def.kind === "const" || def.kind === "enum") {
         result[def.name] = def
-      } else {
+      } else if (def.kind !== "type") {
         throw new Error("Namespace member must be another namespace, const, or enum")
       }
     }

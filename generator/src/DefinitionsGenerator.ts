@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
+import { createConst, createNamespace, mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
 import { assertNever, getFirst, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
 import {
@@ -165,22 +165,18 @@ export default class DefinitionsGenerator {
     this.statements.push(createComment(" Builtins"))
     for (const builtin of this.apiDocs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string") continue
-      let declaration: ts.Statement
+      let type: ts.KeywordTypeNode
       if (builtin.name === "table") {
-        const tableDeclaration = this.manualDefinitions.table
-        if (!tableDeclaration) {
-          this.warnIncompleteDefinition('No definition given for "table" type')
-          continue
-        }
-        declaration = tableDeclaration.node
+        type = Types.object
       } else {
         this.numericTypes.add(builtin.name)
-        declaration = this.addJsDoc(
-          ts.factory.createTypeAliasDeclaration(undefined, undefined, builtin.name, undefined, Types.number),
-          builtin,
-          builtin.name
-        )
+        type = Types.number
       }
+      const declaration = this.addJsDoc(
+        ts.factory.createTypeAliasDeclaration(undefined, undefined, builtin.name, undefined, type),
+        builtin,
+        builtin.name
+      )
       this.statements.push(declaration)
     }
   }
@@ -193,51 +189,93 @@ export default class DefinitionsGenerator {
       parent: string,
       existing: AnyDef | undefined,
       modifiers?: ts.Modifier[]
-    ): ts.Statement => {
-      let declaration: ts.Statement
+    ): ts.Statement[] => {
+      let declaration: ts.Statement[]
       const thisPath = parent + (parent ? "." : "") + define.name
       if (define.values) {
-        if (existing && existing.kind !== "enum") {
-          throw new Error(
-            `Manual definition for ${parent} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
-          )
-        }
-        const members = define.values
-          .sort(sortByOrder)
-          .map((m, i) =>
-            this.addJsDoc(
-              ts.factory.createEnumMember(m.name, ts.factory.createNumericLiteral(i)),
-              m,
-              thisPath + "." + m.name
+        if (existing?.kind === "namespace" && existing?.annotations.symbolEnum) {
+          // namespace name { const member: unique symbol }
+          // type name = typeof name[keyof typeof name]
+          const members = define.values.sort(sortByOrder).map((m) => {
+            const statement = createConst(
+              m.name,
+              ts.factory.createTypeOperatorNode(ts.SyntaxKind.UniqueKeyword, Types.symbol)
             )
+            if (thisPath === "defines.events") {
+              this.addJsDoc(
+                statement,
+                {
+                  description: `Event type: {@link ${DefinitionsGenerator.getMappedEventName(m.name)}}`,
+                },
+                undefined
+              )
+            }
+            return statement
+          })
+
+          const namespace = createNamespace(undefined, define.name, members)
+
+          const typeofExp = ts.factory.createExpressionWithTypeArguments(
+            ts.factory.createTypeOfExpression(ts.factory.createIdentifier(define.name)),
+            undefined
           )
-        declaration = ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)
+          const keyofTypeof = ts.factory.createTypeOperatorNode(ts.SyntaxKind.KeyOfKeyword, typeofExp)
+          const type = ts.factory.createTypeAliasDeclaration(
+            undefined,
+            undefined,
+            define.name,
+            undefined,
+            ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof)
+          )
+
+          declaration = [namespace, type]
+        } else {
+          if (existing && existing.kind !== "enum") {
+            throw new Error(
+              `Manual definition for ${thisPath} should be a enum, got ${ts.SyntaxKind[existing.node.kind]}`
+            )
+          }
+          const members = define.values
+            .sort(sortByOrder)
+            .map((m, i) =>
+              this.addJsDoc(
+                ts.factory.createEnumMember(
+                  m.name,
+                  existing?.annotations.numericEnum ? ts.factory.createNumericLiteral(i) : undefined
+                ),
+                m,
+                thisPath + "." + m.name
+              )
+            )
+          declaration = [ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)]
+        }
       } else if (define.subkeys) {
         if (existing && existing.kind !== "namespace") {
           throw new Error(
             `Manual definition for ${thisPath} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
           )
         }
-        const declarations = define.subkeys
+        const subkeys = define.subkeys
           .sort(sortByOrder)
-          .map((d) => generateDefinesDeclaration(d, thisPath, existing?.members[d.name]))
-        declaration = ts.factory.createModuleDeclaration(
-          undefined,
-          modifiers,
-          ts.factory.createIdentifier(define.name),
-          ts.factory.createModuleBlock(declarations),
-          ts.NodeFlags.Namespace
-        )
+          .flatMap((d) => generateDefinesDeclaration(d, thisPath, existing?.members[d.name]))
+        declaration = [createNamespace(modifiers, define.name, subkeys)]
       } else if (!existing) {
         this.warnIncompleteDefinition("Incomplete define for", thisPath)
-        declaration = ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown)
+        declaration = [
+          ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown),
+        ]
       } else {
-        declaration = existing.node
+        declaration = [existing.node]
       }
-      return this.addJsDoc(declaration, define, thisPath)
+      if (Array.isArray(declaration)) {
+        declaration.forEach((d) => {
+          this.addJsDoc(d, define, thisPath)
+        })
+      }
+      return declaration
     }
     const defines = generateDefinesDeclaration(this.rootDefine, "", this.manualDefinitions.defines, [Modifiers.declare])
-    this.statements.push(defines)
+    this.statements.push(...defines)
   }
 
   private generateEvents() {
@@ -254,7 +292,7 @@ export default class DefinitionsGenerator {
             undefined,
             event.data.sort(sortByOrder).map((p) => {
               if (p.name === "name" && event.name !== "CustomInputEvent") {
-                p.type += "." + event.name
+                p.type = "typeof " + p.type + "." + event.name
               }
               return this.mapParameterToProperty(p, name)
             })
@@ -1589,12 +1627,10 @@ function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc) {
 }
 
 function createComment(text: string, multiline?: boolean): ts.EmptyStatement {
-  const node = ts.factory.createEmptyStatement()
-  ts.addSyntheticLeadingComment(
-    node,
+  return ts.addSyntheticLeadingComment(
+    ts.factory.createEmptyStatement(),
     multiline ? ts.SyntaxKind.MultiLineCommentTrivia : ts.SyntaxKind.SingleLineCommentTrivia,
     text,
     true
   )
-  return node
 }

@@ -2,7 +2,6 @@ function greetPlayer(player: LuaPlayer) {
   player.print(serpent.line({ hello: "world!" }))
 }
 
-// todo: event types
 script.on_event(defines.events.on_player_created, (e) => {
   greetPlayer(game.get_player(e.player_index)!)
 })
