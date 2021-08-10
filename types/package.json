@@ -1,6 +1,6 @@
 {
   "name": "typed-factorio",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Full and featureful typescript definitions for the the Factorio lua api.",
   "keywords": [
     "factorio",

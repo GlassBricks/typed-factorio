@@ -25,7 +25,7 @@ yarn add typed-factorio
 ```diff
 {
   "compilerOptions": {
-+    "types": [ "/<version>" ]
++    "types": [ "typed-factorio/<version>" ]
   }
 }
 ```
