@@ -21,7 +21,7 @@
     "generate:dev": "ts-node scripts/generate.ts dev",
     "pretest": "yarn run generate",
     "test": "jest",
-    "prepare": "yarn run generate"
+    "prepublishOnly": "yarn run test"
   },
   "dependencies": {
     "lua-types": "^2.10.1",
