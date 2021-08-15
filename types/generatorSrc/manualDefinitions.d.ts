@@ -699,14 +699,7 @@ type TriggerTargetMask = {
 
 type CircularProjectileCreationSpecification = [RealOrientation, Vector]
 
-type AnyBasic =
-  | string
-  | number
-  | boolean
-  | LuaTable
-  | {
-      [K in keyof any]: AnyBasic | undefined
-    }
+type AnyBasic = string | number | boolean | table
 
 type Any = any
 
