@@ -35,7 +35,10 @@ declare namespace defines {
   enum command {}
 }
 
-// classes
+// -- classes --
+
+// generics and extensions
+
 type LuaCustomTable<K extends keyof any, V> = {
   [P in K]: V
 }
@@ -44,22 +47,23 @@ interface LuaLazyLoadedValue<T> {
   get(): T
 }
 
-interface LuaPlayer {}
+interface ChunkPositionAndArea {}
+interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
-interface LuaEntity {
-  get_driver(): LuaEntity | LuaPlayer | undefined
-  get_passenger(): LuaEntity | LuaPlayer | undefined
-  initial_amount: uint | undefined
-
-  revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
-  silent_revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
-
-  get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
-}
+// Array-likeTypes
 
 interface Fluid {}
 
 interface LuaFluidBox extends Array<Fluid | undefined> {}
+
+interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
+
+interface LuaInventory extends ReadonlyArray<LuaItemStack> {
+  find_item_stack(item: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
+  find_empty_stack(item?: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
+}
+
+// GuiElement
 
 type GuiElementType =
   | "choose-elem-button"
@@ -115,6 +119,16 @@ type ChooseElemButtonType =
   | "achievement"
   | "equipment"
   | "technology"
+
+interface ItemPrototypeFilter {}
+interface TilePrototypeFilter {}
+interface EntityPrototypeFilter {}
+interface FluidPrototypeFilter {}
+interface RecipePrototypeFilter {}
+interface DecorativePrototypeFilter {}
+interface AchievementPrototypeFilter {}
+interface EquipmentPrototypeFilter {}
+interface TechnologyPrototypeFilter {}
 
 interface ChooseElemButtonFilters {
   item: ItemPrototypeFilter[]
@@ -217,6 +231,7 @@ type ChooseElemButtonGuiSpec =
   | EquipmentChooseElemButtonSpec
   | TechnologyChooseElemButtonSpec
 
+// stub only
 interface GuiSpec {
   type
 }
@@ -296,19 +311,24 @@ type LuaGuiElement = {
   entity
 }
 
+// nullability, multi-return
+
+interface LuaPlayer {}
+
+interface LuaEntity {
+  get_driver(): LuaEntity | LuaPlayer | undefined
+  get_passenger(): LuaEntity | LuaPlayer | undefined
+  initial_amount: uint | undefined
+
+  revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
+  silent_revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
+
+  get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
+}
+
 interface LuaItemStack {
   durability: double | undefined
 }
-
-interface LuaInventory extends ReadonlyArray<LuaItemStack> {
-  find_item_stack(item: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
-  find_empty_stack(item?: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
-}
-
-interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
-
-interface ChunkPositionAndArea {}
-interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
 interface LuaPermissionGroup {}
 interface LuaPermissionGroups {
@@ -318,6 +338,8 @@ interface LuaPermissionGroups {
 interface LuaPlayer {
   readonly cutscene_character: LuaEntity | undefined
 }
+
+// events
 
 // these are replaced with actual types
 type EventTypes = Record<defines.events, any>
@@ -363,7 +385,8 @@ interface LuaBootstrap {
   raise_event<E extends RaiseableEvents>(event: E, data: Omit<EventTypes[E], keyof EventData>): void
 }
 
-// concepts
+//  -- Concepts --
+
 type LocalisedString = [string, ...LocalisedString[]] | string | number
 
 type RealOrientation = float
@@ -372,7 +395,7 @@ type Tags = Record<string, AnyBasic | undefined>
 
 interface PositionTable {}
 interface PositionArray {}
-interface Position {}
+
 type Vector = PositionArray
 
 // last updated 1.1.37
@@ -646,6 +669,7 @@ type SpriteType =
   | "equipment"
   | "file"
   | "utility"
+// template string type allows for autocomplete
 type SpritePath = string | `${SpriteType}/${string}`
 
 type SoundType =
@@ -663,6 +687,7 @@ type SoundType =
   | "entity-rotated"
   | "entity-open"
   | "entity-close"
+// template string type allows for autocomplete
 type SoundPath = string | `${SoundType}/${string}`
 
 type CollisionMaskLayer =
@@ -771,9 +796,7 @@ type RenderLayer =
 interface EventFilter {
 }
 
-// concept modifications
-
-// where a vector is supposed to be not a vector
+// where a vector is supposed to be a position table instead
 
 interface SmokeSource {
   readonly position?: PositionTable
@@ -849,16 +872,6 @@ interface MapGenPreset {
     }
   }
 }
-
-interface ItemPrototypeFilter {}
-interface TilePrototypeFilter {}
-interface EntityPrototypeFilter {}
-interface FluidPrototypeFilter {}
-interface RecipePrototypeFilter {}
-interface DecorativePrototypeFilter {}
-interface AchievementPrototypeFilter {}
-interface EquipmentPrototypeFilter {}
-interface TechnologyPrototypeFilter {}
 
 // last updated 1.1.37
 /**
