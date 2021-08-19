@@ -24,6 +24,14 @@ slot2 = myInventory[2]
 len = #myInventory"
 `;
 
+exports[`arrayLike.ts factorio version 1.1.38 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+myInventory = game.create_inventory(4)
+slot1 = myInventory[1]
+slot2 = myInventory[2]
+len = #myInventory"
+`;
+
 exports[`events.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 script.on_event(
@@ -138,6 +146,44 @@ script.on_event(
 script.get_event_handler(myCustomEvent)({myCustomData = 0})"
 `;
 
+exports[`events.ts factorio version 1.1.38 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+script.on_event(
+    defines.events.on_ai_command_completed,
+    function(e)
+        print(e.result)
+    end
+)
+script.on_event(defines.events.on_area_cloned, nil)
+script.on_event(
+    defines.events.on_built_entity,
+    function(e)
+        log(
+            serpent.line(e)
+        )
+    end,
+    {{filter = \\"type\\", type = \\"foo\\"}, {filter = \\"ghost_type\\", type = \\"bar\\"}}
+)
+script.set_event_filter(defines.events.on_robot_built_entity, {{filter = \\"circuit-network-connectable\\"}})
+filters = script.get_event_filter(defines.events.on_entity_damaged)
+script.on_event(
+    \\"someInput\\",
+    function(e)
+        log(
+            serpent.block(e)
+        )
+    end
+)
+myCustomEvent = script.generate_event_name()
+script.on_event(
+    myCustomEvent,
+    function(d)
+        log(d.myCustomData)
+    end
+)
+script.get_event_handler(myCustomEvent)({myCustomData = 0})"
+`;
+
 exports[`ghostRevive.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 ret = {
@@ -174,6 +220,18 @@ else
 end"
 `;
 
+exports[`ghostRevive.ts factorio version 1.1.38 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+ret = {
+    ghost.revive()
+}
+if ret[1] ~= nil then
+    local ent = ret[2]
+else
+    local ent = ret[2]
+end"
+`;
+
 exports[`guiElement.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 button = game.player.gui.screen.add({type = \\"button\\", enabled = true, mouse_button_filter = {\\"left\\"}})
@@ -191,6 +249,14 @@ chooseElemButton = game.player.gui.screen.add({type = \\"choose-elem-button\\", 
 `;
 
 exports[`guiElement.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+button = game.player.gui.screen.add({type = \\"button\\", enabled = true, mouse_button_filter = {\\"left\\"}})
+name = button.name
+child = button.namee
+chooseElemButton = game.player.gui.screen.add({type = \\"choose-elem-button\\", elem_type = \\"item\\", item = \\"foo\\", filters = {{filter = \\"name\\", name = \\"foo2\\"}}})"
+`;
+
+exports[`guiElement.ts factorio version 1.1.38 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 button = game.player.gui.screen.add({type = \\"button\\", enabled = true, mouse_button_filter = {\\"left\\"}})
 name = button.name
@@ -273,6 +339,31 @@ script.on_init(
 )"
 `;
 
+exports[`helloWorld.ts factorio version 1.1.38 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+function greetPlayer(self, player)
+    player.print(
+        serpent.line({hello = \\"world!\\"})
+    )
+end
+script.on_event(
+    defines.events.on_player_created,
+    function(e)
+        greetPlayer(
+            nil,
+            game.get_player(e.player_index)
+        )
+    end
+)
+script.on_init(
+    function()
+        for ____, luaPlayer in pairs(game.players) do
+            greetPlayer(nil, luaPlayer)
+        end
+    end
+)"
+`;
+
 exports[`luaLazyLoadedValue.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 script.on_event(
@@ -294,6 +385,16 @@ script.on_event(
 `;
 
 exports[`luaLazyLoadedValue.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+script.on_event(
+    defines.events.on_player_setup_blueprint,
+    function(e)
+        local mapping = e.mapping.get()
+    end
+)"
+`;
+
+exports[`luaLazyLoadedValue.ts factorio version 1.1.38 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 script.on_event(
     defines.events.on_player_setup_blueprint,
@@ -342,6 +443,19 @@ for id, player in pairs(bar) do
 end"
 `;
 
+exports[`pairs.ts factorio version 1.1.38 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+for id, player in pairs(game.players) do
+    local num = id
+    local p = player
+end
+bar = {foo = {}}
+for id, player in pairs(bar) do
+    local num = id
+    local p = player
+end"
+`;
+
 exports[`table.ts factorio version 1.1.35 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 t1 = {a = 3, b = true, c = {}}
@@ -361,6 +475,15 @@ foo2 = t3"
 `;
 
 exports[`table.ts factorio version 1.1.37 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+t1 = {a = 3, b = true, c = {}}
+myThing1 = {a = t1, b = nil}
+t2 = myThing1
+t3 = foo
+foo2 = t3"
+`;
+
+exports[`table.ts factorio version 1.1.38 1`] = `
 "--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
 t1 = {a = 3, b = true, c = {}}
 myThing1 = {a = t1, b = nil}

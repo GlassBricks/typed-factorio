@@ -29,6 +29,25 @@ function maxOf(arr: string[]): string {
   return max
 }
 
+async function generateDeclForVersion(version: string) {
+  await fs.promises.writeFile(
+    path.resolve(__dirname, "..", version + ".d.ts"),
+    `/// <reference path="./generated/${version}.d.ts" />
+/// <reference path="./common/index.d.ts" />
+`
+  )
+}
+
+async function generateDeclForLatest(version: string) {
+  await fs.promises.writeFile(
+    path.resolve(__dirname, "..", "latest.d.ts"),
+    `/// <reference path="./${version}.d.ts" />
+// If the version here does not match the actual latest version, the types may not be published yet,
+// or you need to update your package version.
+`
+  )
+}
+
 main().catch(() => {
   process.exit(1)
 })
@@ -36,22 +55,26 @@ main().catch(() => {
 async function main() {
   let versions: string[]
   let commands: string[]
+  const latest = maxOf([...jsonFiles.keys()])
   if (dev) {
-    const latest = maxOf([...jsonFiles.keys()])
     versions = [latest]
     commands = [runForFile(latest, jsonFiles.get(latest)!, "--noformat")]
   } else {
     versions = [...jsonFiles.keys()]
     commands = [...jsonFiles.entries()].map(([versions, file]) => runForFile(versions, file, "--error-on-warnings"))
   }
-  await concurrently(
-    commands.map((c, i) => ({
-      command: c,
-      name: versions[i],
-    })),
-    {
-      cwd: path.resolve(__dirname, "../../generator"),
-      prefix: dev ? "none" : undefined,
-    }
-  )
+  await Promise.all<any>([
+    concurrently(
+      commands.map((c, i) => ({
+        command: c,
+        name: versions[i],
+      })),
+      {
+        cwd: path.resolve(__dirname, "../../generator"),
+        prefix: dev ? "none" : undefined,
+      }
+    ),
+    ...versions.map(generateDeclForVersion),
+    generateDeclForLatest(latest),
+  ])
 }
