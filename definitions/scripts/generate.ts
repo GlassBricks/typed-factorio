@@ -7,7 +7,7 @@ const dev = args[0] === "dev"
 
 const generatorSrc = path.resolve(__dirname, "../generatorSrc")
 const files = fs.readdirSync(generatorSrc)
-const manualDefines = path.resolve(generatorSrc, files.find((f) => f.endsWith(".d.ts"))!)
+const manualDefines = path.resolve(generatorSrc, files.find((f) => f.endsWith(".ts"))!)
 const jsonFiles = new Map(
   files
     .map((file) => file.match(/runtime-api-([0-9-.]+)\.json/))
@@ -33,7 +33,7 @@ async function generateDeclForVersion(version: string) {
   await fs.promises.writeFile(
     path.resolve(__dirname, "..", version + ".d.ts"),
     `/// <reference path="./generated/${version}.d.ts" />
-/// <reference path="./common/index.d.ts" />
+/// <reference path="./runtime/index.d.ts" />
 `
   )
 }

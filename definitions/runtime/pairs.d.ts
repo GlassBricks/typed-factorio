@@ -10,4 +10,4 @@ declare function pairs<K extends keyof any, V>(table: LuaCustomTable<K, V>): Lua
  *
  * @deprecated
  */
-declare function ipairs<V>(table: LuaCustomTable<any, any>): never
+declare function ipairs(table: LuaCustomTable<any, any>): never

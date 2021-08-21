@@ -4,9 +4,9 @@ This workspace holds the npm package for factorio types.
 
 `/generatorSrc` contains the files given to the generator.
 
-`/generated` is where the generated declarations are outputed.
+`/generated` is where the generated declarations are outputted.
 
-`/common` contains non-generated additional types.
+`/runtime` contains non-generated additional types.
 
 `/scripts` contains the script that run the generator.
 
@@ -15,5 +15,5 @@ This workspace holds the npm package for factorio types.
 ## npm/yarn tasks
 
 - `generate` runs the generator for all factorio versions
-- `generate:dev` only runs the generator for the latest factorio version, and without formatting with prettier (formatting takes a long time).
+- `generate:dev` only runs the generator for the latest factorio version, and without formatting with prettier. Since formatting takes a long time, this takes significantly shorter.
 
