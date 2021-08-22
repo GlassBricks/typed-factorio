@@ -1,10 +1,8 @@
 # Typed Factorio
 
-Featureful, strongly-typed Typescript definitions for the Factorio lua api. This is intended to be used with [TypescriptToLua](https://typescripttolua.github.io/).
+Featureful typescript definitions for the Factorio modding lua api. This is intended to be used with [TypescriptToLua](https://typescripttolua.github.io/).
 
-This project aims to provide type definitions for the Factorio API that are as complete as possible. This means minimal `any`s and `unknown`s, correct nullability, and many manually defined modifications and additions to provide smart and more complete types.
-
-The generator integrates both the Factorio JSON api docs, and manually defined additions and overrides.
+This project aims to provide type definitions for the Factorio API that are as complete as possible. This means minimal `any`s and `unknown`s, correct nullability, and smart types where possible. The generator integrates both the Factorio JSON api docs and manually defined additions and overrides.
 
 ## Installation
 
@@ -13,7 +11,7 @@ To use in your TypescriptToLua project:
 1. Install this package
 
 ```
-npm add typed-factorio
+npm install typed-factorio
 
 or
 
