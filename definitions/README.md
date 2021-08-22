@@ -66,4 +66,4 @@ You can pass a type parameter to `script.generate_event_name()` with the type of
 
 ### Examples
 
-Check out the [`/types/test/compileTest`](types/test/compileTest) directory for more examples on particular type features.
+Check out the [`/definitions/test/compileTest`](definitions/test/compileTest) directory for more examples on particular type features.
