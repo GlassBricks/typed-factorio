@@ -38,7 +38,7 @@ interface GeneratedClass {
 }
 
 export default class DefinitionsGenerator {
-  private statements: ts.Statement[] = []
+  private files = new Map<string, ts.Statement[]>()
   private readonly manualDefinitions: Record<string, RootDef | undefined>
 
   private builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
@@ -87,16 +87,19 @@ export default class DefinitionsGenerator {
     this.manualDefinitions = processManualDefinitions(manualDefinitionsSource)
   }
 
-  generateDeclarations(): string {
-    this.addHeaders()
+  generateDeclarations(): Map<string, string> {
     this.generateAll()
     if (this.errorOnWarnings && this.warnings.length !== 0) {
       throw new Error(this.warnings.join("\n"))
     }
-    let result = ""
-    for (const statement of this.statements) {
-      result += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource)
-      result += "\n\n"
+    const result = new Map<string, string>()
+    for (const [fileName, statements] of this.files) {
+      let content = ""
+      for (const statement of statements) {
+        content += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource)
+        content += "\n\n"
+      }
+      result.set(fileName, content)
     }
     return result
   }
@@ -110,12 +113,6 @@ export default class DefinitionsGenerator {
     this.generateConcepts()
     this.generateGlobalObjects()
     this.addManuallyDefined()
-    this.generateAdditional()
-  }
-
-  private addHeaders() {
-    this.statements.push(createComment('/ <reference types="lua-types/5.2" />'))
-    this.statements.push(createComment("* @noSelfInFile ", true)) // makes arrow functions have no self
   }
 
   private preprocessAll() {
@@ -161,8 +158,13 @@ export default class DefinitionsGenerator {
     this.typeNames[DefinitionsGenerator.EventFilters] = DefinitionsGenerator.EventFilters
   }
 
+  private addFile(name: string, statements: ts.Statement[]) {
+    statements.unshift(createComment("* @noSelfInFile ", true))
+    this.files.set(name, statements)
+  }
+
   private generateBuiltins() {
-    this.statements.push(createComment(" Builtins"))
+    const statements: ts.Statement[] = []
     for (const builtin of this.apiDocs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string") continue
       let type: ts.KeywordTypeNode
@@ -172,25 +174,25 @@ export default class DefinitionsGenerator {
         this.numericTypes.add(builtin.name)
         type = Types.number
       }
-      const declaration = this.addJsDoc(
-        ts.factory.createTypeAliasDeclaration(undefined, undefined, builtin.name, undefined, type),
-        builtin,
-        builtin.name
+      statements.push(
+        this.addJsDoc(
+          ts.factory.createTypeAliasDeclaration(undefined, undefined, builtin.name, undefined, type),
+          builtin,
+          builtin.name
+        )
       )
-      this.statements.push(declaration)
     }
+    this.addFile("builtin-types", statements)
   }
 
   private generateDefines() {
-    this.statements.push(createComment(" Defines"))
-
     const generateDefinesDeclaration = (
       define: Define,
       parent: string,
       existing: AnyDef | undefined,
       modifiers?: ts.Modifier[]
     ): ts.Statement[] => {
-      let declaration: ts.Statement[]
+      let declarations: ts.Statement[]
       const thisPath = parent + (parent ? "." : "") + define.name
       if (define.values) {
         if (existing?.kind === "namespace" && existing?.annotations.symbolEnum) {
@@ -228,7 +230,7 @@ export default class DefinitionsGenerator {
             ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof)
           )
 
-          declaration = [namespace, type]
+          declarations = [namespace, type]
         } else {
           if (existing && existing.kind !== "enum") {
             throw new Error(
@@ -247,7 +249,7 @@ export default class DefinitionsGenerator {
                 thisPath + "." + m.name
               )
             )
-          declaration = [ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)]
+          declarations = [ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)]
         }
       } else if (define.subkeys) {
         if (existing && existing.kind !== "namespace") {
@@ -258,50 +260,107 @@ export default class DefinitionsGenerator {
         const subkeys = define.subkeys
           .sort(sortByOrder)
           .flatMap((d) => generateDefinesDeclaration(d, thisPath, existing?.members[d.name]))
-        declaration = [createNamespace(modifiers, define.name, subkeys)]
+        declarations = [createNamespace(modifiers, define.name, subkeys)]
       } else if (!existing) {
         this.warnIncompleteDefinition("Incomplete define for", thisPath)
-        declaration = [
+        declarations = [
           ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown),
         ]
       } else {
-        declaration = [existing.node]
+        declarations = [existing.node]
       }
-      if (Array.isArray(declaration)) {
-        declaration.forEach((d) => {
+      if (Array.isArray(declarations)) {
+        declarations.forEach((d) => {
           this.addJsDoc(d, define, thisPath)
         })
       }
-      return declaration
+      return declarations
     }
     const defines = generateDefinesDeclaration(this.rootDefine, "", this.manualDefinitions.defines, [Modifiers.declare])
-    this.statements.push(...defines)
+    this.addFile("defines", defines)
   }
 
   private generateEvents() {
-    this.statements.push(createComment(" Events"))
-    this.statements.push(
-      ...this.apiDocs.events.sort(sortByOrder).map((event) => {
-        const name = DefinitionsGenerator.getMappedEventName(event.name)
-        return this.addJsDoc(
-          ts.factory.createInterfaceDeclaration(
-            undefined,
-            undefined,
-            name,
-            undefined,
-            undefined,
-            event.data.sort(sortByOrder).map((p) => {
-              if (p.name === "name" && event.name !== "CustomInputEvent") {
-                p.type = "typeof " + p.type + "." + event.name
-              }
-              return this.mapParameterToProperty(p, name)
-            })
-          ),
-          event,
-          event.name
+    const statements = this.apiDocs.events.sort(sortByOrder).map((event) => {
+      const name = DefinitionsGenerator.getMappedEventName(event.name)
+      return this.addJsDoc(
+        ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          name,
+          undefined,
+          undefined,
+          event.data.sort(sortByOrder).map((p) => {
+            if (p.name === "name" && event.name !== "CustomInputEvent") {
+              p.type = "typeof " + p.type + "." + event.name
+            }
+            return this.mapParameterToProperty(p, name)
+          })
+        ),
+        event,
+        event.name
+      )
+    })
+
+    const generateEventTypes = () => {
+      const eventTypesMembers: ts.PropertySignature[] = []
+      const eventFiltersMembers: ts.PropertySignature[] = []
+      const definesEvents = ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("defines"), "events")
+      for (const eventDefine of this.defines.get("defines.events")!.values!) {
+        const name = eventDefine.name
+        const event = this.events.get(name)
+        if (!event) throw new Error(`Event define without event type: ${name}`)
+        const propertyName = ts.factory.createComputedPropertyName(
+          ts.factory.createPropertyAccessExpression(definesEvents, name)
         )
-      })
-    )
+
+        const eventTypeName = DefinitionsGenerator.getMappedEventName(name)
+        eventTypesMembers.push(
+          ts.factory.createPropertySignature(
+            undefined,
+            propertyName,
+            undefined,
+            ts.factory.createTypeReferenceNode(eventTypeName)
+          )
+        )
+
+        const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
+        if (eventFilterName) {
+          eventFiltersMembers.push(
+            ts.factory.createPropertySignature(
+              undefined,
+              propertyName,
+              undefined,
+              ts.factory.createTypeReferenceNode(eventFilterName)
+            )
+          )
+        }
+      }
+
+      statements.push(
+        ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          DefinitionsGenerator.EventTypes,
+          undefined,
+          undefined,
+          eventTypesMembers
+        )
+      )
+      statements.push(
+        ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          DefinitionsGenerator.EventFilters,
+          undefined,
+          undefined,
+          eventFiltersMembers
+        )
+      )
+    }
+    generateEventTypes()
+
+    this.addFile("events", statements)
   }
 
   private static getMappedEventName(eventName: string): string {
@@ -311,7 +370,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateClasses() {
-    this.statements.push(createComment(" Classes"))
+    const statements: ts.Statement[] = []
 
     for (const clazz of this.apiDocs.classes.sort(sortByOrder)) {
       const existing = this.manualDefinitions[clazz.name]
@@ -337,6 +396,8 @@ export default class DefinitionsGenerator {
         step.call(this, generated)
       }
     }
+
+    this.addFile("classes", statements)
 
     function fillSupertypes(this: DefinitionsGenerator, { clazz, existing, superTypes }: GeneratedClass) {
       if (clazz.base_classes) {
@@ -367,12 +428,12 @@ export default class DefinitionsGenerator {
     function fillArrayType(generated: GeneratedClass) {
       const { clazz, existing } = generated
       if (existing?.kind !== "interface") return
-      const arrayExtends = existing.supertypes.find(
+      const arrayType = existing.supertypes.find(
         (t) => ts.isIdentifier(t.expression) && (t.expression.text === "Array" || t.expression.text === "ReadonlyArray")
       )
-      if (!arrayExtends) return
-      const type = arrayExtends.typeArguments?.[0]
-      const readonly = (arrayExtends.expression as ts.Identifier).text === "ReadonlyArray"
+      if (!arrayType) return
+      const type = arrayType.typeArguments?.[0]
+      const readonly = (arrayType.expression as ts.Identifier).text === "ReadonlyArray"
       if (!type) throw new Error(`Manual define ${clazz.name} extends an array type without type arguments`)
       generated.arrayType = { type, readonly }
       // array inherit with type aliases not supported
@@ -382,14 +443,22 @@ export default class DefinitionsGenerator {
       members.push(
         ...clazz.methods.sort(sortByOrder).map((method) => ({
           original: method,
-          member: this.mapMethod(method, clazz.name, existing),
+          member: mapMethod.call(this, method, clazz.name, existing),
         }))
       )
 
       const callOperator = clazz.operators.find((x) => x.name === "call") as CallOperator | undefined
       if (callOperator) {
         // manual define for operator not supported yet
-        const asMethod = this.mapMethod({ ...callOperator, name: "operator%20()" }, clazz.name, undefined)
+        const asMethod = mapMethod.call(
+          this,
+          {
+            ...callOperator,
+            name: "operator%20()",
+          },
+          clazz.name,
+          undefined
+        ) as ts.MethodSignature
         const callSignature = ts.factory.createCallSignature(undefined, asMethod.parameters, asMethod.type)
         ts.setSyntheticLeadingComments(callSignature, ts.getSyntheticLeadingComments(asMethod))
         members.push({ original: callOperator, member: callSignature })
@@ -616,7 +685,7 @@ export default class DefinitionsGenerator {
       { clazz, existing, superTypes, members: allMembers, indexType, discriminatedUnionInfo }: GeneratedClass
     ) {
       if (indexType) {
-        this.statements.push(indexType)
+        statements.push(indexType)
       }
       const shortName = removeLuaPrefix(clazz.name)
       const indexTypeName = indexType ? shortName + "Index" : undefined
@@ -662,7 +731,7 @@ export default class DefinitionsGenerator {
           ts.factory.createUnionTypeNode(types)
         )
         if (!indexTypeName) this.addJsDoc(unionDeclaration, clazz, clazz.name)
-        this.statements.push(unionDeclaration)
+        statements.push(unionDeclaration)
 
         if (indexTypeName) {
           const declaration = ts.factory.createTypeAliasDeclaration(
@@ -676,7 +745,7 @@ export default class DefinitionsGenerator {
             ])
           )
           this.addJsDoc(declaration, clazz, clazz.name)
-          this.statements.push(declaration)
+          statements.push(declaration)
         }
       }
     }
@@ -700,7 +769,7 @@ export default class DefinitionsGenerator {
           : undefined,
         members.flatMap((m) => m.member)
       )
-      this.statements.push(baseDeclaration)
+      statements.push(baseDeclaration)
 
       if (!indexTypeName) {
         if (classForDocs) {
@@ -724,13 +793,127 @@ export default class DefinitionsGenerator {
         if (classForDocs) {
           this.addJsDoc(declaration, classForDocs, classForDocs.name)
         }
-        this.statements.push(declaration)
+        statements.push(declaration)
       }
+    }
+
+    function mapMethod(
+      this: DefinitionsGenerator,
+      method: Method,
+      parent: string,
+      existingContainer: InterfaceDef | TypeAliasDef | undefined
+    ): ts.MethodSignature[] | ts.MethodSignature {
+      const existingMethods = existingContainer?.members[method.name]
+      const firstExistingMethod = existingMethods?.[0]
+      const thisPath = parent + "." + method.name
+      const parameters = method.takes_table
+        ? [
+            ts.factory.createParameterDeclaration(
+              undefined,
+              undefined,
+              undefined,
+              "params",
+              method.table_is_optional ? Tokens.question : undefined,
+              method.variant_parameter_groups !== undefined
+                ? this.createVariantParameterTypes(
+                    (firstExistingMethod &&
+                      getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
+                      removeLuaPrefix(parent) + toPascalCase(method.name),
+                    method,
+                    statements
+                  )
+                : ts.factory.createTypeLiteralNode(
+                    method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, thisPath))
+                  )
+            ),
+          ]
+        : method.parameters.sort(sortByOrder).map((m) => this.mapParameterToParameter(m, thisPath))
+
+      if (method.variadic_type) {
+        parameters.push(
+          ts.factory.createParameterDeclaration(
+            undefined,
+            undefined,
+            Tokens.dotDotDot,
+            "args",
+            undefined,
+            this.mapTypeRaw(
+              {
+                complex_type: "array",
+                value: method.variadic_type,
+              },
+              false
+            )
+          )
+        )
+      }
+      let members: ts.MethodSignature[] | ts.MethodSignature
+      const returnType = !method.return_type
+        ? Types.void
+        : this.mapTypeWithTransforms(method, method.return_type, parent, true)
+      if (existingMethods) {
+        existingMethods.forEach((m) => {
+          if (!ts.isMethodSignature(m)) {
+            throw new Error(
+              `Manual define for ${parent}.${method.name} should be a method signature, got ${
+                ts.SyntaxKind[m.kind]
+              } instead`
+            )
+          }
+        })
+        members = (existingMethods as ts.MethodSignature[]).map((m) => {
+          const member = ts.factory.createMethodSignature(
+            m.modifiers,
+            m.name,
+            m.questionToken,
+            m.typeParameters,
+            m.parameters.length > 0 ? m.parameters : parameters,
+            m.type ?? returnType
+          )
+          ts.setEmitFlags(member.name, ts.EmitFlags.NoComments)
+          return member
+        })
+      } else {
+        members = ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
+      }
+      const tags: ts.JSDocTag[] = []
+      if (this.docs) {
+        if (!method.takes_table) {
+          tags.push(
+            ...(method.parameters as { name: string; description?: string }[])
+              .concat([{ name: "args", description: method.variadic_description }])
+              .filter((p) => p.description !== undefined)
+              .map((p) =>
+                ts.factory.createJSDocParameterTag(
+                  undefined,
+                  ts.factory.createIdentifier(DefinitionsGenerator.escapeParameterName(p.name)),
+                  false,
+                  undefined,
+                  undefined,
+                  this.processDescription(p.description ? "- " + p.description : undefined)
+                )
+              )
+          )
+        }
+        if (method.return_description) {
+          tags.push(
+            ts.factory.createJSDocReturnTag(undefined, undefined, this.processDescription(method.return_description))
+          )
+        }
+      }
+      this.addJsDoc(getFirst(members), method, thisPath, tags)
+      // if (Array.isArray(members)) {
+      //   for (let i = 1; i < members.length; i++) {
+      //     const member = members[i]
+      //     addFakeJSDoc(member, ts.factory.createJSDocComment(`{@inheritDoc ${thisPath}}`))
+      //   }
+      // }
+      return members
     }
   }
 
   private generateConcepts() {
-    this.statements.push(createComment(" Concepts"))
+    const statements: ts.Statement[] = []
     for (const concept of this.apiDocs.concepts.sort(sortByOrder)) {
       let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
 
@@ -798,7 +981,7 @@ export default class DefinitionsGenerator {
         )
       } else if (concept.category === "table" || concept.category === "filter") {
         if (concept.variant_parameter_groups) {
-          this.createVariantParameterTypes(concept.name, concept, concept)
+          this.createVariantParameterTypes(concept.name, concept, statements, concept)
           continue
         } else {
           declaration = ts.factory.createInterfaceDeclaration(
@@ -823,7 +1006,7 @@ export default class DefinitionsGenerator {
           .sort(sortByOrder)
           .map((param) => this.mapParameterToProperty(param, concept.name))
 
-        this.statements.push(
+        statements.push(
           ts.factory.createInterfaceDeclaration(
             undefined,
             undefined,
@@ -834,7 +1017,7 @@ export default class DefinitionsGenerator {
           )
         )
 
-        this.statements.push(
+        statements.push(
           ts.factory.createTypeAliasDeclaration(
             undefined,
             undefined,
@@ -867,13 +1050,13 @@ export default class DefinitionsGenerator {
         assertNever(concept)
       }
       this.addJsDoc(declaration, concept, concept.name)
-      this.statements.push(declaration)
+      statements.push(declaration)
     }
+    this.addFile("concepts", statements)
   }
 
   private generateGlobalObjects() {
-    this.statements.push(createComment(" Global objects"))
-    for (const globalObject of this.apiDocs.global_objects.sort(sortByOrder)) {
+    const statements = this.apiDocs.global_objects.sort(sortByOrder).map((globalObject) => {
       const definition = ts.factory.createVariableStatement(
         [Modifiers.declare],
         ts.factory.createVariableDeclarationList(
@@ -888,80 +1071,20 @@ export default class DefinitionsGenerator {
         )
       )
       this.addJsDoc(definition, globalObject, globalObject.name)
-      this.statements.push(definition)
-    }
+      return definition
+    })
+    this.addFile("global-objects", statements)
   }
 
   private addManuallyDefined() {
-    this.statements.push(createComment(" Manually defined additional types"))
-
+    const statements: ts.Statement[] = []
     for (const key in this.manualDefinitions) {
       if (key in this.typeNames) continue
       const node = this.manualDefinitions[key]!.node
       if (!this.docs) ts.setEmitFlags(node, ts.EmitFlags.NoNestedComments | ts.EmitFlags.NoComments)
-      this.statements.push(node)
+      statements.push(node)
     }
-  }
-
-  private generateAdditional() {
-    this.generateEventTypes()
-  }
-
-  private generateEventTypes() {
-    const eventTypesMembers: ts.PropertySignature[] = []
-    const eventFiltersMembers: ts.PropertySignature[] = []
-    const definesEvents = ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("defines"), "events")
-    for (const eventDefine of this.defines.get("defines.events")!.values!) {
-      const name = eventDefine.name
-      const event = this.events.get(name)
-      if (!event) throw new Error(`Event define without event type: ${name}`)
-      const propertyName = ts.factory.createComputedPropertyName(
-        ts.factory.createPropertyAccessExpression(definesEvents, name)
-      )
-
-      const eventTypeName = DefinitionsGenerator.getMappedEventName(name)
-      eventTypesMembers.push(
-        ts.factory.createPropertySignature(
-          undefined,
-          propertyName,
-          undefined,
-          ts.factory.createTypeReferenceNode(eventTypeName)
-        )
-      )
-
-      const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
-      if (eventFilterName) {
-        eventFiltersMembers.push(
-          ts.factory.createPropertySignature(
-            undefined,
-            propertyName,
-            undefined,
-            ts.factory.createTypeReferenceNode(eventFilterName)
-          )
-        )
-      }
-    }
-
-    this.statements.push(
-      ts.factory.createInterfaceDeclaration(
-        undefined,
-        undefined,
-        DefinitionsGenerator.EventTypes,
-        undefined,
-        undefined,
-        eventTypesMembers
-      )
-    )
-    this.statements.push(
-      ts.factory.createInterfaceDeclaration(
-        undefined,
-        undefined,
-        DefinitionsGenerator.EventFilters,
-        undefined,
-        undefined,
-        eventFiltersMembers
-      )
-    )
+    this.addFile("manually-defined", statements)
   }
 
   private mapAttribute(
@@ -1005,124 +1128,6 @@ export default class DefinitionsGenerator {
     }
     this.addJsDoc(member, attribute, parent + "." + attribute.name)
     return member
-  }
-
-  private mapMethod(method: Method, parent: string, existingContainer: undefined): ts.MethodSignature
-  private mapMethod(
-    method: Method,
-    parent: string,
-    existingContainer: InterfaceDef | TypeAliasDef | undefined
-  ): ts.MethodSignature[] | ts.MethodSignature
-
-  private mapMethod(
-    method: Method,
-    parent: string,
-    existingContainer: InterfaceDef | TypeAliasDef | undefined
-  ): ts.MethodSignature[] | ts.MethodSignature {
-    const existingMethods = existingContainer?.members[method.name]
-    const firstExistingMethod = existingMethods?.[0]
-    const thisPath = parent + "." + method.name
-    const parameters = method.takes_table
-      ? [
-          ts.factory.createParameterDeclaration(
-            undefined,
-            undefined,
-            undefined,
-            "params",
-            method.table_is_optional ? Tokens.question : undefined,
-            method.variant_parameter_groups !== undefined
-              ? this.createVariantParameterTypes(
-                  (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
-                    removeLuaPrefix(parent) + toPascalCase(method.name),
-                  method
-                )
-              : ts.factory.createTypeLiteralNode(
-                  method.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, thisPath))
-                )
-          ),
-        ]
-      : method.parameters.sort(sortByOrder).map((m) => this.mapParameterToParameter(m, thisPath))
-
-    if (method.variadic_type) {
-      parameters.push(
-        ts.factory.createParameterDeclaration(
-          undefined,
-          undefined,
-          Tokens.dotDotDot,
-          "args",
-          undefined,
-          this.mapTypeRaw(
-            {
-              complex_type: "array",
-              value: method.variadic_type,
-            },
-            false
-          )
-        )
-      )
-    }
-    let members: ts.MethodSignature[] | ts.MethodSignature
-    const returnType = !method.return_type
-      ? Types.void
-      : this.mapTypeWithTransforms(method, method.return_type, parent, true)
-    if (existingMethods) {
-      existingMethods.forEach((m) => {
-        if (!ts.isMethodSignature(m)) {
-          throw new Error(
-            `Manual define for ${parent}.${method.name} should be a method signature, got ${
-              ts.SyntaxKind[m.kind]
-            } instead`
-          )
-        }
-      })
-      members = (existingMethods as ts.MethodSignature[]).map((m) => {
-        const member = ts.factory.createMethodSignature(
-          m.modifiers,
-          m.name,
-          m.questionToken,
-          m.typeParameters,
-          m.parameters.length > 0 ? m.parameters : parameters,
-          m.type ?? returnType
-        )
-        ts.setEmitFlags(member.name, ts.EmitFlags.NoComments)
-        return member
-      })
-    } else {
-      members = ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
-    }
-    const tags: ts.JSDocTag[] = []
-    if (this.docs) {
-      if (!method.takes_table) {
-        tags.push(
-          ...(method.parameters as { name: string; description?: string }[])
-            .concat([{ name: "args", description: method.variadic_description }])
-            .filter((p) => p.description !== undefined)
-            .map((p) =>
-              ts.factory.createJSDocParameterTag(
-                undefined,
-                ts.factory.createIdentifier(DefinitionsGenerator.escapeParameterName(p.name)),
-                false,
-                undefined,
-                undefined,
-                this.processDescription(p.description ? "- " + p.description : undefined)
-              )
-            )
-        )
-      }
-      if (method.return_description) {
-        tags.push(
-          ts.factory.createJSDocReturnTag(undefined, undefined, this.processDescription(method.return_description))
-        )
-      }
-    }
-    this.addJsDoc(getFirst(members), method, thisPath, tags)
-    // if (Array.isArray(members)) {
-    //   for (let i = 1; i < members.length; i++) {
-    //     const member = members[i]
-    //     addFakeJSDoc(member, ts.factory.createJSDocComment(`{@inheritDoc ${thisPath}}`))
-    //   }
-    // }
-    return members
   }
 
   private mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
@@ -1306,6 +1311,7 @@ export default class DefinitionsGenerator {
   private createVariantParameterTypes(
     name: string,
     variants: WithParameterVariants,
+    statements: ts.Statement[],
     memberForDocs?: BasicMember
   ): ts.TypeReferenceNode {
     const shortName = removeLuaPrefix(name)
@@ -1320,7 +1326,7 @@ export default class DefinitionsGenerator {
       original: p,
       member: this.mapParameterToProperty(p, baseName, existingBase),
     }))
-    this.statements.push(
+    statements.push(
       ts.factory.createInterfaceDeclaration(
         undefined,
         undefined,
@@ -1424,7 +1430,7 @@ export default class DefinitionsGenerator {
         )
       }
       this.addJsDoc(declaration, group, undefined)
-      this.statements.push(declaration)
+      statements.push(declaration)
 
       this.typeNames[fullName] = fullName
       groupNames.push(ts.factory.createTypeReferenceNode(fullName))
@@ -1436,7 +1442,7 @@ export default class DefinitionsGenerator {
       undefined,
       ts.factory.createUnionTypeNode(groupNames)
     )
-    this.statements.push(declaration)
+    statements.push(declaration)
     if (memberForDocs) {
       this.addJsDoc(declaration, memberForDocs, memberForDocs.name)
     }
