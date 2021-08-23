@@ -11,7 +11,6 @@ import {
   TypeAliasDef,
 } from "./manualDefinitionsProcessing"
 import chalk from "chalk"
-import * as console from "console"
 
 interface MemberAndOriginal {
   original: Method | Attribute
@@ -37,8 +36,35 @@ interface GeneratedClass {
   }
 }
 
+class Statements {
+  statements: ts.Statement[] = [createComment("* @noSelfInFile ", true)]
+
+  constructor(private addBefore: Map<string, ts.Statement[]>) {}
+
+  add(statement: ts.Statement) {
+    let name: string | undefined
+    if (
+      ts.isInterfaceDeclaration(statement) ||
+      ts.isTypeAliasDeclaration(statement) ||
+      ts.isModuleDeclaration(statement)
+    ) {
+      name = statement.name.text
+    } else if (ts.isVariableStatement(statement)) {
+      name = (statement.declarationList.declarations[0].name as ts.Identifier).text
+    }
+    if (name) {
+      const addBefore = this.addBefore.get(name)
+      if (addBefore) {
+        this.statements.push(...addBefore)
+        this.addBefore.delete(name)
+      }
+    }
+    this.statements.push(statement)
+  }
+}
+
 export default class DefinitionsGenerator {
-  private files = new Map<string, ts.Statement[]>()
+  private outFiles = new Map<string, ts.Statement[]>()
   private readonly manualDefinitions: Record<string, RootDef | undefined>
 
   private builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
@@ -52,7 +78,11 @@ export default class DefinitionsGenerator {
   private tableOrArrayConcepts = new Set<string>()
   private numericTypes = new Set<string>()
   // original -> mapped
+  // also a record of which types exists
   private typeNames: Record<string, string> = {}
+
+  private addBefore = new Map<string, ts.Statement[]>()
+  private addTo = new Map<string, ts.Statement[]>()
 
   private readonly rootDefine: Define = {
     order: 0,
@@ -93,7 +123,7 @@ export default class DefinitionsGenerator {
       throw new Error(this.warnings.join("\n"))
     }
     const result = new Map<string, string>()
-    for (const [fileName, statements] of this.files) {
+    for (const [fileName, statements] of this.outFiles) {
       let content = ""
       for (const statement of statements) {
         content += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource)
@@ -101,6 +131,7 @@ export default class DefinitionsGenerator {
       }
       result.set(fileName, content)
     }
+    result.set("index", this.generateIndex())
     return result
   }
 
@@ -112,7 +143,8 @@ export default class DefinitionsGenerator {
     this.generateClasses()
     this.generateConcepts()
     this.generateGlobalObjects()
-    this.addManuallyDefined()
+    this.generateIndex()
+    this.checkManuallyDefined()
   }
 
   private preprocessAll() {
@@ -156,15 +188,56 @@ export default class DefinitionsGenerator {
 
     this.typeNames[DefinitionsGenerator.EventTypes] = DefinitionsGenerator.EventTypes
     this.typeNames[DefinitionsGenerator.EventFilters] = DefinitionsGenerator.EventFilters
+
+    for (const def of Object.values(this.manualDefinitions as Record<string, RootDef>)) {
+      const addBefore = def.annotations.addBefore?.[0]
+      const addTo = def.annotations.addTo?.[0]
+      const node = def.node
+      if (addBefore) {
+        if (addTo) throw new Error(`Cannot specify both addBefore and addTo for ${node.name.text}`)
+
+        if (!this.addBefore.has(addBefore)) {
+          this.addBefore.set(addBefore, [])
+        }
+        this.addBefore.get(addBefore)!.push(node)
+      }
+      if (addTo) {
+        if (!this.addTo.has(addTo)) {
+          this.addTo.set(addTo, [])
+        }
+        this.addTo.get(addTo)!.push(node)
+      }
+      if (!(addBefore || addTo)) continue
+      if (!this.docs) {
+        ts.setEmitFlags(node, ts.EmitFlags.NoNestedComments | ts.EmitFlags.NoComments)
+      } else {
+        ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
+        const docs = node.jsDoc!
+        if (docs.length > 1) {
+          for (const doc of docs.slice(1)) {
+            addFakeJSDoc(node, doc, this.manualDefinitionsSource)
+          }
+        }
+      }
+    }
   }
 
-  private addFile(name: string, statements: ts.Statement[]) {
-    statements.unshift(createComment("* @noSelfInFile ", true))
-    this.files.set(name, statements)
+  private addFile(name: string, statements: Statements) {
+    const result = statements.statements
+    const addTo = this.addTo.get(name) || []
+    if (addTo) {
+      result.push(...addTo)
+      this.addTo.delete(name)
+    }
+    this.outFiles.set(name, result)
+  }
+
+  private newStatements() {
+    return new Statements(this.addBefore)
   }
 
   private generateBuiltins() {
-    const statements: ts.Statement[] = []
+    const statements = this.newStatements()
     for (const builtin of this.apiDocs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string") continue
       let type: ts.KeywordTypeNode
@@ -174,7 +247,7 @@ export default class DefinitionsGenerator {
         this.numericTypes.add(builtin.name)
         type = Types.number
       }
-      statements.push(
+      statements.add(
         this.addJsDoc(
           ts.factory.createTypeAliasDeclaration(undefined, undefined, builtin.name, undefined, type),
           builtin,
@@ -277,30 +350,35 @@ export default class DefinitionsGenerator {
       return declarations
     }
     const defines = generateDefinesDeclaration(this.rootDefine, "", this.manualDefinitions.defines, [Modifiers.declare])
-    this.addFile("defines", defines)
+    const statements = this.newStatements()
+    statements.add(defines[0])
+    this.addFile("defines", statements)
   }
 
   private generateEvents() {
-    const statements = this.apiDocs.events.sort(sortByOrder).map((event) => {
+    const statements = this.newStatements()
+    for (const event of this.apiDocs.events.sort(sortByOrder)) {
       const name = DefinitionsGenerator.getMappedEventName(event.name)
-      return this.addJsDoc(
-        ts.factory.createInterfaceDeclaration(
-          undefined,
-          undefined,
-          name,
-          undefined,
-          undefined,
-          event.data.sort(sortByOrder).map((p) => {
-            if (p.name === "name" && event.name !== "CustomInputEvent") {
-              p.type = "typeof " + p.type + "." + event.name
-            }
-            return this.mapParameterToProperty(p, name)
-          })
-        ),
-        event,
-        event.name
+      statements.add(
+        this.addJsDoc(
+          ts.factory.createInterfaceDeclaration(
+            undefined,
+            undefined,
+            name,
+            undefined,
+            undefined,
+            event.data.sort(sortByOrder).map((p) => {
+              if (p.name === "name" && event.name !== "CustomInputEvent") {
+                p.type = "typeof " + p.type + "." + event.name
+              }
+              return this.mapParameterToProperty(p, name)
+            })
+          ),
+          event,
+          event.name
+        )
       )
-    })
+    }
 
     const generateEventTypes = () => {
       const eventTypesMembers: ts.PropertySignature[] = []
@@ -337,7 +415,7 @@ export default class DefinitionsGenerator {
         }
       }
 
-      statements.push(
+      statements.add(
         ts.factory.createInterfaceDeclaration(
           undefined,
           undefined,
@@ -347,7 +425,7 @@ export default class DefinitionsGenerator {
           eventTypesMembers
         )
       )
-      statements.push(
+      statements.add(
         ts.factory.createInterfaceDeclaration(
           undefined,
           undefined,
@@ -370,7 +448,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateClasses() {
-    const statements: ts.Statement[] = []
+    const statements = this.newStatements()
 
     for (const clazz of this.apiDocs.classes.sort(sortByOrder)) {
       const existing = this.manualDefinitions[clazz.name]
@@ -685,7 +763,7 @@ export default class DefinitionsGenerator {
       { clazz, existing, superTypes, members: allMembers, indexType, discriminatedUnionInfo }: GeneratedClass
     ) {
       if (indexType) {
-        statements.push(indexType)
+        statements.add(indexType)
       }
       const shortName = removeLuaPrefix(clazz.name)
       const indexTypeName = indexType ? shortName + "Index" : undefined
@@ -731,7 +809,7 @@ export default class DefinitionsGenerator {
           ts.factory.createUnionTypeNode(types)
         )
         if (!indexTypeName) this.addJsDoc(unionDeclaration, clazz, clazz.name)
-        statements.push(unionDeclaration)
+        statements.add(unionDeclaration)
 
         if (indexTypeName) {
           const declaration = ts.factory.createTypeAliasDeclaration(
@@ -745,7 +823,7 @@ export default class DefinitionsGenerator {
             ])
           )
           this.addJsDoc(declaration, clazz, clazz.name)
-          statements.push(declaration)
+          statements.add(declaration)
         }
       }
     }
@@ -769,7 +847,7 @@ export default class DefinitionsGenerator {
           : undefined,
         members.flatMap((m) => m.member)
       )
-      statements.push(baseDeclaration)
+      statements.add(baseDeclaration)
 
       if (!indexTypeName) {
         if (classForDocs) {
@@ -793,7 +871,7 @@ export default class DefinitionsGenerator {
         if (classForDocs) {
           this.addJsDoc(declaration, classForDocs, classForDocs.name)
         }
-        statements.push(declaration)
+        statements.add(declaration)
       }
     }
 
@@ -913,7 +991,7 @@ export default class DefinitionsGenerator {
   }
 
   private generateConcepts() {
-    const statements: ts.Statement[] = []
+    const statements = this.newStatements()
     for (const concept of this.apiDocs.concepts.sort(sortByOrder)) {
       let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
 
@@ -1006,7 +1084,7 @@ export default class DefinitionsGenerator {
           .sort(sortByOrder)
           .map((param) => this.mapParameterToProperty(param, concept.name))
 
-        statements.push(
+        statements.add(
           ts.factory.createInterfaceDeclaration(
             undefined,
             undefined,
@@ -1017,7 +1095,7 @@ export default class DefinitionsGenerator {
           )
         )
 
-        statements.push(
+        statements.add(
           ts.factory.createTypeAliasDeclaration(
             undefined,
             undefined,
@@ -1050,13 +1128,14 @@ export default class DefinitionsGenerator {
         assertNever(concept)
       }
       this.addJsDoc(declaration, concept, concept.name)
-      statements.push(declaration)
+      statements.add(declaration)
     }
     this.addFile("concepts", statements)
   }
 
   private generateGlobalObjects() {
-    const statements = this.apiDocs.global_objects.sort(sortByOrder).map((globalObject) => {
+    const statements = this.newStatements()
+    for (const globalObject of this.apiDocs.global_objects.sort(sortByOrder)) {
       const definition = ts.factory.createVariableStatement(
         [Modifiers.declare],
         ts.factory.createVariableDeclarationList(
@@ -1071,20 +1150,40 @@ export default class DefinitionsGenerator {
         )
       )
       this.addJsDoc(definition, globalObject, globalObject.name)
-      return definition
-    })
+      statements.add(definition)
+    }
     this.addFile("global-objects", statements)
   }
 
-  private addManuallyDefined() {
-    const statements: ts.Statement[] = []
-    for (const key in this.manualDefinitions) {
-      if (key in this.typeNames) continue
-      const node = this.manualDefinitions[key]!.node
-      if (!this.docs) ts.setEmitFlags(node, ts.EmitFlags.NoNestedComments | ts.EmitFlags.NoComments)
-      statements.push(node)
+  private generateIndex(): string {
+    let result = '///<reference types="lua-types/5.2" />\n'
+    for (const file of this.outFiles.keys()) {
+      result += `///<reference path="${file}.d.ts" />\n`
     }
-    this.addFile("manually-defined", statements)
+    return result
+  }
+
+  private checkManuallyDefined() {
+    for (const [name, d] of Object.entries(this.manualDefinitions)) {
+      const def = d!
+      const hasAdd = def.annotations.addBefore || def.annotations.addTo
+      const isExisting = name in this.typeNames
+      if (!!hasAdd === isExisting) {
+        this.warnIncompleteDefinition(
+          `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${
+            hasAdd ? "has" : "does not have"
+          } add annotation:`,
+          name
+        )
+      }
+    }
+    for (const name of this.addBefore.keys()) {
+      this.warnIncompleteDefinition("Could not find existing statement", name, "to add before")
+    }
+
+    for (const name of this.addTo.keys()) {
+      this.warnIncompleteDefinition("Could not find existing file", name, "to add to")
+    }
   }
 
   private mapAttribute(
@@ -1311,7 +1410,7 @@ export default class DefinitionsGenerator {
   private createVariantParameterTypes(
     name: string,
     variants: WithParameterVariants,
-    statements: ts.Statement[],
+    statements: Statements,
     memberForDocs?: BasicMember
   ): ts.TypeReferenceNode {
     const shortName = removeLuaPrefix(name)
@@ -1326,7 +1425,7 @@ export default class DefinitionsGenerator {
       original: p,
       member: this.mapParameterToProperty(p, baseName, existingBase),
     }))
-    statements.push(
+    statements.add(
       ts.factory.createInterfaceDeclaration(
         undefined,
         undefined,
@@ -1430,7 +1529,7 @@ export default class DefinitionsGenerator {
         )
       }
       this.addJsDoc(declaration, group, undefined)
-      statements.push(declaration)
+      statements.add(declaration)
 
       this.typeNames[fullName] = fullName
       groupNames.push(ts.factory.createTypeReferenceNode(fullName))
@@ -1442,7 +1541,7 @@ export default class DefinitionsGenerator {
       undefined,
       ts.factory.createUnionTypeNode(groupNames)
     )
-    statements.push(declaration)
+    statements.add(declaration)
     if (memberForDocs) {
       this.addJsDoc(declaration, memberForDocs, memberForDocs.name)
     }
@@ -1620,8 +1719,10 @@ function removeLuaPrefix(str: string): string {
   return str
 }
 
-function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc) {
-  const text: string = printer.printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
+function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc, sourceFile?: ts.SourceFile) {
+  const text: string = sourceFile
+    ? jsDoc.getText(sourceFile)
+    : printer.printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
   node.emitNode = node.emitNode ?? {}
   ts.addSyntheticLeadingComment(
     node,

@@ -89,16 +89,6 @@ async function main() {
     promises.push(fs.promises.writeFile(fileName, content))
   }
 
-  function getIndexFileContent() {
-    let content = ""
-    for (const key of outFiles.keys()) {
-      content += `///<reference path="${key}.d.ts" />\n`
-    }
-    return content
-  }
-
-  promises.push(fs.promises.writeFile(path.join(outDir, "index.d.ts"), getIndexFileContent()))
-
   await Promise.all(promises)
 }
 

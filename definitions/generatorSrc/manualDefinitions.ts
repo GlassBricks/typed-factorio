@@ -47,24 +47,28 @@ interface LuaLazyLoadedValue<T> {
   get(): T
 }
 
-interface ChunkPositionAndArea {}
-interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
+interface ChunkPositionAndArea {
+}
+interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {
+}
 
 // Array-likeTypes
 
-interface Fluid {}
+interface Fluid {
+}
 
-interface LuaFluidBox extends Array<Fluid | undefined> {}
+interface LuaFluidBox extends Array<Fluid | undefined> {
+}
 
-interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
+interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {
+}
 
 interface LuaInventory extends ReadonlyArray<LuaItemStack> {
   find_item_stack(item: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
   find_empty_stack(item?: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
 }
 
-// GuiElement
-
+/** @addBefore BaseGuiSpec */
 type GuiElementType =
   | "choose-elem-button"
   | "drop-down"
@@ -105,8 +109,10 @@ interface LineGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
 
-interface SignalID {}
+interface SignalID {
+}
 
+/** @addBefore ChooseElemButtonGuiSpec */
 type ChooseElemButtonType =
   | "item"
   | "tile"
@@ -120,16 +126,26 @@ type ChooseElemButtonType =
   | "equipment"
   | "technology"
 
-interface ItemPrototypeFilter {}
-interface TilePrototypeFilter {}
-interface EntityPrototypeFilter {}
-interface FluidPrototypeFilter {}
-interface RecipePrototypeFilter {}
-interface DecorativePrototypeFilter {}
-interface AchievementPrototypeFilter {}
-interface EquipmentPrototypeFilter {}
-interface TechnologyPrototypeFilter {}
+interface ItemPrototypeFilter {
+}
+interface TilePrototypeFilter {
+}
+interface EntityPrototypeFilter {
+}
+interface FluidPrototypeFilter {
+}
+interface RecipePrototypeFilter {
+}
+interface DecorativePrototypeFilter {
+}
+interface AchievementPrototypeFilter {
+}
+interface EquipmentPrototypeFilter {
+}
+interface TechnologyPrototypeFilter {
+}
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface ChooseElemButtonFilters {
   item: ItemPrototypeFilter[]
   tile: TilePrototypeFilter[]
@@ -144,6 +160,7 @@ interface ChooseElemButtonFilters {
   technology: TechnologyPrototypeFilter[]
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface BaseChooseElemButtonSpec extends BaseGuiSpec {
   readonly type: "choose-elem-button"
   /** The type of the button - one of the following values. */
@@ -152,66 +169,77 @@ interface BaseChooseElemButtonSpec extends BaseGuiSpec {
   readonly filters?: ChooseElemButtonFilters[this["elem_type"]]
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface ItemChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "item"
   /** If type is `"item"` - the default value for the button. */
   readonly item?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface TileChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "tile"
   /** If type is `"tile"` - the default value for the button. */
   readonly tile?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface EntityChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "entity"
   /** If type is `"entity"` - the default value for the button. */
   readonly entity?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface SignalChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "signal"
   /** If type is `"signal"` - the default value for the button. */
   readonly signal?: SignalID
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface FluidChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "fluid"
   /** If type is `"fluid"` - the default value for the button. */
   readonly fluid?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface RecipeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "recipe"
   /** If type is `"recipe"` - the default value for the button. */
   readonly recipe?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface DecorativeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "decorative"
   /** If type is `"decorative"` - the default value for the button. */
   readonly decorative?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface ItemGroupChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "item-group"
   /** If type is `"item-group"` - the default value for the button. */
   readonly "item-group"?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface AchievementChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "achievement"
   /** If type is `"achievement"` - the default value for the button. */
   readonly achievement?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface EquipmentChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "equipment"
   /** If type is `"equipment"` - the default value for the button. */
   readonly equipment?: string
 }
 
+/** @addBefore ChooseElemButtonGuiSpec */
 interface TechnologyChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "technology"
   /** If type is `"technology"` - the default value for the button. */
@@ -313,7 +341,8 @@ type LuaGuiElement = {
 
 // nullability, multi-return
 
-interface LuaPlayer {}
+interface LuaPlayer {
+}
 
 interface LuaEntity {
   get_driver(): LuaEntity | LuaPlayer | undefined
@@ -330,7 +359,8 @@ interface LuaItemStack {
   durability: double | undefined
 }
 
-interface LuaPermissionGroup {}
+interface LuaPermissionGroup {
+}
 interface LuaPermissionGroups {
   create_group(name?: string): LuaPermissionGroup | undefined
 }
@@ -344,7 +374,7 @@ interface LuaPlayer {
 // these are replaced with actual types
 type EventTypes = Record<defines.events, any>
 type EventFilters = Record<defines.events, any>
-
+/** @addBefore LuaBootstrap */
 type RaiseableEvents =
   | typeof defines.events.on_console_chat
   | typeof defines.events.on_player_crafted_item
@@ -356,8 +386,12 @@ type RaiseableEvents =
   | typeof defines.events.script_raised_revive
   | typeof defines.events.script_raised_set_tiles
 
-interface EventData {}
-interface CustomInputEvent {}
+interface EventData {
+}
+interface CustomInputEvent {
+}
+
+/** @addBefore LuaBootstrap */
 /** A custom event id created by {@link LuaBootstrap.generate_event_name}, with type data of the event. */
 type CustomEventId<T extends table> = uint & { _eventData: T }
 
@@ -393,8 +427,10 @@ type RealOrientation = float
 
 type Tags = Record<string, AnyBasic | undefined>
 
-interface PositionTable {}
-interface PositionArray {}
+interface PositionTable {
+}
+interface PositionArray {
+}
 
 type Vector = PositionArray
 
@@ -655,7 +691,7 @@ type MapGenSize =
 interface ArithmeticCombinatorParameters {
   readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
 }
-
+/** @addBefore SpritePath */
 type SpriteType =
   | "item"
   | "entity"
@@ -711,8 +747,7 @@ type CollisionMask = {
 }
 
 type CollisionMaskWithFlags = {
-  readonly [P in
-    | CollisionMaskLayer
+  readonly [P in | CollisionMaskLayer
     | "not-colliding-with-itself"
     | "consider-tile-transitions"
     | "colliding-with-tiles-only"]?: true
@@ -728,6 +763,7 @@ type AnyBasic = string | number | boolean | table
 
 type Any = any
 
+/** @addBefore MouseButtonFlags */
 type MouseButtonFlag =
   | "left"
   | "right"
@@ -738,10 +774,11 @@ type MouseButtonFlag =
   | "button-7"
   | "button-8"
   | "button-9"
-
+/** @addBefore MouseButtonFlags */
 type MouseButtonFlagsTable = {
   readonly [P in MouseButtonFlag]?: true
 }
+/** @addBefore MouseButtonFlags */
 type MouseButtonFlagsArray = readonly (MouseButtonFlag | "left-and-right")[]
 /** @tableOrArray */
 type MouseButtonFlags = MouseButtonFlagsTable | MouseButtonFlagsArray
@@ -816,8 +853,10 @@ interface CircularParticleCreationSpecification {
 
 // additional types
 
-interface MapGenSettings {}
+interface MapGenSettings {
+}
 
+/** @addTo concepts */
 /**
  * A map gen preset. Used in {@link https://wiki.factorio.com/Prototype/MapGenPresets Prototype/MapGenPresets}.
  *
@@ -873,18 +912,19 @@ interface MapGenPreset {
   }
 }
 
-// last updated 1.1.37
+/** @addBefore BlueprintEntity */
 /**
- * Object containing information about the connections to other entities formed by red or green wires.
+ * Information about a single connection between two connection points.
  *
- * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_object View Documentation}
+ * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_data_object View Documentation}
  */
-interface BlueprintCircuitConnection {
-  /** First connection point. The default for everything that doesn't have multiple connection points. */
-  "1"?: BlueprintConnectionPoint
-  /** Second connection point. For example, the "output" part of an arithmetic combinator. */
-  "2"?: BlueprintConnectionPoint
+interface BlueprintConnectionData {
+  /** ID of the entity this connection is connected with. */
+  entity_id: uint
+  /** The circuit connector id of the entity this connection is connected to, see {@link defines.circuit_connector_id} */
+  circuit_id?: defines.circuit_connector_id
 }
+/** @addBefore BlueprintEntity */
 /**
  * The actual point where a wire is connected to. Contains information about where it is connected to.
  *
@@ -902,17 +942,19 @@ interface BlueprintConnectionPoint {
    */
   green?: BlueprintConnectionData[]
 }
+/** @addBefore BlueprintEntity */
 /**
- * Information about a single connection between two connection points.
+ * Object containing information about the connections to other entities formed by red or green wires.
  *
- * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_data_object View Documentation}
+ * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_object View Documentation}
  */
-interface BlueprintConnectionData {
-  /** ID of the entity this connection is connected with. */
-  entity_id: uint
-  /** The circuit connector id of the entity this connection is connected to, see {@link defines.circuit_connector_id} */
-  circuit_id?: defines.circuit_connector_id
+interface BlueprintCircuitConnection {
+  /** First connection point. The default for everything that doesn't have multiple connection points. */
+  "1"?: BlueprintConnectionPoint
+  /** Second connection point. For example, the "output" part of an arithmetic combinator. */
+  "2"?: BlueprintConnectionPoint
 }
 
+/** @addTo concepts */
 /** There are not yet full definitions for this type. See {@link https://lua-api.factorio.com/1.1.36/LuaControlBehavior.html}. */
 type BlueprintControlBehavior = unknown

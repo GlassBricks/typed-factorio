@@ -19,6 +19,7 @@
   "scripts": {
     "generate": "cd ../generator && yarn run gen --in ../definitions/generatorSrc --out ../definitions/generated --warn-as-error",
     "generate:dev": "cd ../generator && yarn run gen --in ../definitions/generatorSrc --out ../definitions/generated --no-format",
+    "clean": "rimraf ./generated",
     "pretest": "yarn run generate",
     "test": "jest",
     "prepublishOnly": "yarn run test",

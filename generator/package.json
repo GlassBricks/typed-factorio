@@ -24,6 +24,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^5.1.0",
     "lua-types": "^2.10.1",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.1.0"
   },
   "scripts": {
