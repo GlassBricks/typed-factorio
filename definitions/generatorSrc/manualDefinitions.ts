@@ -271,7 +271,7 @@ type LuaGuiElement = {
   readonly type: GuiElementType
 
   /** @variantsName GuiSpec */
-  add<Spec extends GuiSpec>(element: Spec): Extract<LuaGuiElement, { type: Spec["type"] }>
+  add<Type extends GuiElementType>(element: GuiSpec & { type: Type }): Extract<LuaGuiElement, { type: Type }>
 
   readonly elem_type: ChooseElemButtonType
   // @ts-ignore

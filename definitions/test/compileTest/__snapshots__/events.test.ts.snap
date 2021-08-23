@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`on_event set handler 1`] = `
+"script.on_event(
+    defines.events.on_ai_command_completed,
+    function(e)
+        log(e.result)
+    end
+)
+script.on_event(
+    \\"someInput\\",
+    function(e)
+        log(
+            serpent.block(e)
+        )
+    end
+)
+script.on_event(defines.events.on_area_cloned, nil)
+"
+`;
