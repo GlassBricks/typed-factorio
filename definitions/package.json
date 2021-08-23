@@ -21,7 +21,8 @@
     "generate:dev": "cd ../generator && yarn run gen --in ../definitions/generatorSrc --out ../definitions/generated --no-format",
     "pretest": "yarn run generate",
     "test": "jest",
-    "prepublishOnly": "yarn run test"
+    "prepublishOnly": "yarn run test",
+    "download-latest-runtime-api": "ts-node ./scripts/downloadLatest.ts"
   },
   "dependencies": {
     "lua-types": "^2.10.1",
