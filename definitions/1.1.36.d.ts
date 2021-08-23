@@ -1,1 +1,1 @@
-/// <reference path="./control/index.d.ts" />
+/// <reference path="./runtime/index.d.ts" />

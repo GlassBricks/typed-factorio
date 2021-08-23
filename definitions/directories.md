@@ -6,7 +6,7 @@ This workspace holds the npm package for factorio types.
 
 `/generated` is where the generated declarations are outputted.
 
-`/control` contains non-generated additional types for the control stage.
+`/runtime` contains non-generated additional types for the runtime stage.
 
 `/tests` contains compilation tests.
 
