@@ -42,6 +42,7 @@ async function main() {
     }
   }
   const version = contents.application_version
+  console.log(`downloaded runtime api for version ${version}`)
   await fs.promises.rename(destination, path.resolve(destinationFolder, `runtime-api-${version}.json`))
 }
 
