@@ -33,6 +33,8 @@ declare namespace defines {
   }
   /** @numericEnum */
   enum command {}
+  /** @numericEnum */
+  enum direction {}
 }
 
 // -- classes --
