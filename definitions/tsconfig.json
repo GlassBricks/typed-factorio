@@ -1,0 +1,18 @@
+// this exists just to help tooling find files for development
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "none",
+    "moduleResolution": "node",
+    "strict": true,
+    "plugins": [
+      {
+        "name": "typescript-tstl-plugin"
+      }
+    ],
+    "noEmit": true,
+  },
+  "include": [
+    "**/*.d.ts"
+  ]
+}

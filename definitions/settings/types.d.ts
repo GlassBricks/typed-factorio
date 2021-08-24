@@ -1,7 +1,5 @@
 // Based off of https://wiki.factorio.com/Tutorial:Mod_settings
 
-type LocalisedString = [string, ...LocalisedString[]] | string | number
-
 export type SettingType = "bool-setting" | "int-setting" | "double-setting" | "string-setting"
 
 export interface BaseSettingDefinition {
