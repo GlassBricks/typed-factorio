@@ -62,7 +62,7 @@ export function tstl(...args: [string] | [TemplateStringsArray, ...any[]]) {
   return new CompileTestBuilder(diagnostics, outFile!.fileContent)
 }
 
-const fileCache: Record<string, string> = {}
+const fileCache: Record<string, string | null> = {}
 
 const compilerHost = ts.createCompilerHost({
   moduleResolution: ts.ModuleResolutionKind.NodeJs,
@@ -82,7 +82,15 @@ function getCompilerHostWithInput(input: string): ts.CompilerHost {
       if (fileName === "input.ts") {
         return ts.createSourceFile(fileName, input, languageVersion)
       }
-      return compilerHost.getSourceFile(fileName, languageVersion)
+      if (fileCache[fileName] !== undefined) {
+        const fileContent = fileCache[fileName]
+        if (!fileContent) return undefined
+        return ts.createSourceFile(fileName, fileContent, languageVersion)
+      }
+
+      const sourceFile = compilerHost.getSourceFile(fileName, languageVersion)
+      fileCache[fileName] = sourceFile?.text ?? null
+      return sourceFile
     },
   }
 }
