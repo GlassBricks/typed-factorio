@@ -1,6 +1,6 @@
 # Typed Factorio
 
-Featureful typescript definitions for the Factorio modding lua api. This is intended to be used with [TypescriptToLua](https://typescripttolua.github.io/).
+Complete and featureful typescript definitions for the Factorio modding lua api. This is intended to be used with [TypescriptToLua](https://typescripttolua.github.io/).
 
 This project aims to provide type definitions for the Factorio API that are as complete as possible. This means minimal `any`s and `unknown`s, correct nullability, and smart types where possible. The generator integrates both the Factorio JSON api docs and manually defined additions and overrides.
 
@@ -23,34 +23,82 @@ yarn add typed-factorio
 ```diff
 {
   "compilerOptions": {
-+    "types": [ "typed-factorio/<version>" ]
++    "types": [ "typed-factorio/runtime" ]
   }
 }
 ```
 
-Where `<version>` is a factorio version e.g. `1.1.37`, or `latest` for the latest factorio version.
+This will add the types for the runtime stage to your entire project.
 
-Note: When the types are released for a new factorio version, you will need update your package version to get the types.
+Note: When types are updated, or released for a new factorio version, you will need update your package version to get the types.
 
-## Notes on types
+### Settings and data stage
+
+There are also basic definitions for the settings/data stage.
+
+To avoid type conflicts, the global tables for the settings/data stages have to be declared manually where you need them. The types be imported from `typed-factorio/data-stage-types` and `typed-factorio/settings-stage-types`. Examples:
+
+```ts
+import { Data, Mods } from "typed-factorio/data/types"
+// or 
+import { Data, Mods } from "typed-factorio/settings/types"
+
+declare const data: Data
+declare const mods: Mods
+
+data.extend([{ ... }])
+```
+
+There are currently full types for settings stage, but only basic types for the data stage.
+
+### Factorio lualib modules
+
+Currently, there are types for the following modules:
+
+- `util`
+- `mod-gui`
+
+If you have a need for types to more lualib modules, feel free to open an issue or pull request.
+
+## Type features
+
+Typed-factorio has nearly 100% complete types for the runtime stage. Even description-only concepts and some not documented types are filled in manually.
+
+The only incomplete type is `BlueprintControlBehavior`, which isn't documented anywhere.
 
 ### Lua features
 
 The types include [TypescriptToLua language extensions](https://typescripttolua.github.io/docs/advanced/language-extensions/)
 and [lua-types](https://github.com/TypeScriptToLua/lua-types) (for v5.2), as dependencies.
 
-This is so that features like `LuaLengthMethod` and `LuaMultiReturn` can be used.
+This is to use tstl features such as `LuaLengthMethod` and `LuaMultiReturn`.
 
 ### `nil`
 
 The types consistently use `undefined` to represent `nil`.
-`null` is not used instead because `undefined` in typescript is more similar to `nil` in lua, than `null`, and optional parameters/properties already use `undefined`.
+`null` is not used, even though it takes fewer characters to type, because `undefined` in typescript is much more similar to `nil` in lua, and optional parameters/properties already use `undefined`.
 
-A class attribute is marked as undefined only if the _read_ read is possibly nil. To _write_ `nil` to properties where `nil` is accepted but the _read_ type cannot be nil, you can use `undefined!` or `myNullableValue!`, e.g. `controlBehavior.parameters = undefined!`.
+A class attribute is marked as possibly undefined only if the _read_ type is possibly `nil`. For properties where `nil` is not possible on _read_, but is possible on `write`, you can write `nil` by using `undefined!` or `myNullableValue!`, e.g. `controlBehavior.parameters = undefined!`.
+
+### Variant parameter types
+
+Variant parameter types (types with "additional fields can be specified depending on ...") are handled as discriminated unions. This gives proper type checking for individual variants.
+
+The type for a specific variant is prefixed with the either variant name or "Other" for variants without additional fields, e.g. `AmmoDamageTechnologyModifier`, `OtherTechnologyModifier`
+
+### Events
+
+`script.on_event()`, `script.get/set_filters()`, and `script.raise_event()` all have type checking on the event data/filter type, inferred from what is passed as the event name/id.
+
+You can pass a type parameter to `script.generate_event_name()` with the type of the event data, and it will return an `EventId` that also holds type info of the event data. Other event functions on `script` can then use the type data when the `EventId` is used.
 
 ### Array-like types
 
-Classes that have an index and length operator and have an array-like structure inherit from `(Readonly)Array`. This allows you to use them like arrays, such as array methods and `.length`. However, this also means, like typescript arrays, they are **0-indexed, not 1-indexed**.
+Classes that have an index operator, a length operator, and have an array-like structure, inherit from `(Readonly)Array`. These are `LuaInventory`, `LuaFluidBox`, `LuaTransportLine`. This allows you to use these classes like arrays, meaning having array methods, and `.length` translating to the lua length operator. However, this also means, like typescript arrays, they are **0-indexed, not 1-indexed**.
+
+### Table or array types
+
+For table or array types (e.g. Position), there also are types such as `PositionTable` and `PositionArray` types that refer to the table or array form specifically.
 
 ### LuaGuiElement
 
@@ -58,12 +106,8 @@ Classes that have an index and length operator and have an array-like structure 
 
 Similarly, the table passed to `LuaGuiElement.add`, referred to as `GuiSpec`, is also broken up into a discriminated union for each gui element type. The type for a specific GuiSpec type is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`.
 
-### Events
-
-`script.on_event()`, `script.get/set_filters()`, and `script.raise_event()` all have type checking on the event data/filter type, inferred from what is passed as the event name/id.
-
-You can pass a type parameter to `script.generate_event_name()` with the type of the event data, and it will return an `EventId` that also holds type info for that data.
+This is done both to provide more accurate types, and for possible integration with [JSX](https://typescripttolua.github.io/docs/jsx/).
 
 ### Examples
 
-Check out the [`/definitions/test/compileTest`](definitions/test/compileTest) directory for more examples on particular type features.
+Check out the `tests` directory for more examples on particular type features.

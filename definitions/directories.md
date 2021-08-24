@@ -1,14 +1,14 @@
-# Types
+# Definitions
 
 This workspace holds the npm package for factorio types.
 
-`/generatorSrc` contains the files given to the generator.
+`generatorSrc` contains the files given to the generator.
 
-`/generated` is where the generated declarations are outputted.
+`generated` is where the generated declarations are outputted.
 
-`/runtime` contains non-generated additional types for the runtime stage.
+`runtime` contains non-generated additional types for the runtime stage.
 
-`/tests` contains compilation tests.
+`tests` contains compilation tests.
 
 ## npm/yarn tasks
 
