@@ -14,4 +14,3 @@ test("pairs iteration on lua custom tables", () => {
     }
   `.expectToHaveNoDiagnostics()
 })
-

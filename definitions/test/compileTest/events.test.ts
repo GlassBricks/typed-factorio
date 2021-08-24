@@ -13,7 +13,8 @@ describe("on_event", () => {
     `.expectToMatchSnapshot()
 
     tstl`
-      script.on_event(defines.events.on_area_cloned, (e: OnAiCommandCompletedEvent)=> {})
+      script.on_event(defines.events.on_area_cloned, (e: OnAiCommandCompletedEvent) => {
+      })
     `.expectToHaveDiagnostics()
   })
 

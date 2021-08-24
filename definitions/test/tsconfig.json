@@ -5,7 +5,10 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
+    "esModuleInterop": true
   },
-  "include": ["./**/*.ts", "../runtime/index.d.ts"]
+  "include": [
+    "./**/*.ts",
+    "../runtime/index.d.ts"
+  ]
 }
