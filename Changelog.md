@@ -1,3 +1,9 @@
+# v0.4.1
+
+### Changed
+
+- LuaRemote.addInterface now lets remote functions take any arguments.
+
 # v0.4.0
 
 ## **BREAKING**

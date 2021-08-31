@@ -70,6 +70,8 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
   find_empty_stack(item?: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
 }
 
+// Gui element
+
 /** @addBefore BaseGuiSpec */
 type GuiElementType =
   | "choose-elem-button"
@@ -369,6 +371,12 @@ interface LuaPermissionGroups {
 
 interface LuaPlayer {
   readonly cutscene_character: LuaEntity | undefined
+}
+
+// other
+
+interface LuaRemote {
+  add_interface(name: string, functions: Record<string, (...args: any) => void>): void
 }
 
 // events
