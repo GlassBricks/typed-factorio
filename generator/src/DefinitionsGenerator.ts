@@ -91,7 +91,7 @@ export default class DefinitionsGenerator {
     subkeys: this.apiDocs.defines,
   }
 
-  private readonly docUrlBase = `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
+  private readonly docUrlBase = "https://lua-api.factorio.com/next/"
 
   private readonly warnings: string[] = []
 
@@ -1620,13 +1620,9 @@ export default class DefinitionsGenerator {
     if (this.builtins.has(reference)) {
       relative_link = "Builtin-Types.html#" + reference
     } else if (this.classes.has(reference)) {
-      if (reference.endsWith("ControlBehavior")) {
-        relative_link = "LuaControlBehavior.html#" + reference
-      } else {
-        relative_link = reference + ".html"
-      }
+      relative_link = reference + ".html"
     } else if (this.events.has(reference)) {
-      relative_link = "events.html#" + reference
+      relative_link = "Events.html#" + reference
     } else if (reference.startsWith("defines.")) {
       relative_link = "defines.html#" + reference
     } else if (this.concepts.has(reference)) {
