@@ -1595,7 +1595,7 @@ export default class DefinitionsGenerator {
     if (!description) return undefined
     let result = ""
 
-    for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|(```(?:(?!```).)*```))/gs)) {
+    for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|```((?:(?!```).)*)```)/gs)) {
       const withLinks = text
         .replace(/\[(?!\[)(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
           const link = this.mapLink(origLink)
@@ -1609,7 +1609,7 @@ export default class DefinitionsGenerator {
         .replace(/\n(?!([\n-]))/g, "\n\n")
       result += withLinks
 
-      if (codeBlock) result += codeBlock
+      if (codeBlock) result += "```lua" + codeBlock + "```"
     }
 
     return result

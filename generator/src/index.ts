@@ -79,11 +79,14 @@ async function main() {
   const promises: Promise<unknown>[] = []
   for (let [name, content] of outFiles) {
     if (opts.format) {
-      content = prettier.format(content, {
-        parser: "typescript",
-        printWidth: 120,
-        plugins: ["prettier-plugin-jsdoc"],
-      })
+      content = prettier
+        .format(content, {
+          parser: "typescript",
+          printWidth: 120,
+          semi: false,
+          plugins: ["prettier-plugin-jsdoc"],
+        })
+        .replace(/;```/g, "```") // workaround for prettier plugin jsdoc bug
     }
     const fileName = path.join(outDir, name + ".d.ts")
     promises.push(fs.promises.writeFile(fileName, content))
