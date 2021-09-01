@@ -15,6 +15,8 @@
     "./src/**/*.ts"
   ],
   "ts-node": {
-    "files": true
+    "files": true,
+    "transpileOnly": true,
+    "transpiler": "ts-node/transpilers/swc-experimental"
   }
 }

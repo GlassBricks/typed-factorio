@@ -10,6 +10,7 @@
     "typescript": "^4.3.5"
   },
   "devDependencies": {
+    "@swc/core": "^1.2.84",
     "@types/node": "^16.7.1",
     "@types/prettier": "^2.3.2",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
@@ -29,6 +30,7 @@
   },
   "scripts": {
     "gen": "ts-node src/index.ts",
+    "check": "tsc --noEmit",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix"
   }

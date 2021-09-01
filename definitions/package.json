@@ -15,7 +15,7 @@
   ],
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "scripts": {
-    "generate": "cd ../generator && yarn run gen --in ../definitions/generatorSrc --out ../definitions/generated --warn-as-error",
+    "generate": "cd ../generator && yarn run check && yarn run gen --in ../definitions/generatorSrc --out ../definitions/generated --warn-as-error",
     "generate:dev": "cd ../generator && yarn run gen --in ../definitions/generatorSrc --out ../definitions/generated --no-format",
     "clean": "rimraf ./generated",
     "pretest": "yarn run generate",
