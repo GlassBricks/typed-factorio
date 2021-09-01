@@ -1,7 +1,5 @@
 {
-  "name": "factorio-type-generator",
-  "version": "0.1.0",
-  "license": "MIT",
+  "private": true,
   "dependencies": {
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
