@@ -34,9 +34,11 @@ Note: When types are updated, or released for a new factorio version, you will n
 
 ### Settings and data stage
 
-There are also basic definitions for the settings/data stage.
+There are also definitions for the settings/data stage.
 
-To avoid type conflicts, the global tables for the settings/data stages have to be declared manually where you need them. The types be imported from `typed-factorio/data-stage-types` and `typed-factorio/settings-stage-types`. Examples:
+To avoid type conflicts, the global tables for the settings/data stages have to be declared manually where you need them. These types can be imported from `typed-factorio/data/types` or `typed-factorio/settings/types`.
+
+Example:
 
 ```ts
 import { Data, Mods } from "typed-factorio/data/types"
@@ -58,27 +60,27 @@ Currently, there are types for the following modules:
 - `util`
 - `mod-gui`
 
-If you have a need for types to more lualib modules, feel free to open an issue or pull request.
+If you have a need for types to more lualib modules, feel free to open an issue or pull request on GitHub.
 
 ## Type features
 
-Typed-factorio has nearly 100% complete types for the runtime stage. Even description-only concepts and some not documented types are filled in manually.
+Typed-factorio has nearly 100% complete types for the runtime stage. Description-only concepts and some not documented types are filled in manually.
 
 The only incomplete type is `BlueprintControlBehavior`, which isn't documented anywhere.
 
 ### Lua features
 
 The types include [TypescriptToLua language extensions](https://typescripttolua.github.io/docs/advanced/language-extensions/)
-and [lua-types](https://github.com/TypeScriptToLua/lua-types) (for v5.2), as dependencies.
+and [lua-types](https://github.com/TypeScriptToLua/lua-types) (for v5.2) as dependencies.
 
 This is to use tstl features such as `LuaLengthMethod` and `LuaMultiReturn`.
 
 ### `nil`
 
 The types consistently use `undefined` to represent `nil`.
-`null` is not used, even though it takes fewer characters to type, because `undefined` in typescript is much more similar to `nil` in lua, and optional parameters/properties already use `undefined`.
+`null` is not used, because `undefined` in typescript is much more similar to `nil` in lua, and optional parameters/properties already use `undefined`.
 
-A class attribute is marked as possibly undefined only if the _read_ type is possibly `nil`. For properties where `nil` is not possible on _read_, but is possible on `write`, you can write `nil` by using `undefined!` or `myNullableValue!`, e.g. `controlBehavior.parameters = undefined!`.
+A class attribute is marked as possibly undefined only if the _read_ type is possibly `nil`. For properties where `nil` is not possible on _read_, but is possible on _write_, you can write `nil` by using `undefined!` or `myNullableValue!`, e.g. `controlBehavior.parameters = undefined!`.
 
 ### Variant parameter types
 
@@ -90,7 +92,7 @@ The type for a specific variant is prefixed with the either variant name or "Oth
 
 `script.on_event()`, `script.get/set_filters()`, and `script.raise_event()` all have type checking on the event data/filter type, inferred from what is passed as the event name/id.
 
-You can pass a type parameter to `script.generate_event_name()` with the type of the event data, and it will return an `EventId` that also holds type info of the event data. Other event functions on `script` can then use the type data when the `EventId` is used.
+You can pass a type parameter to `script.generate_event_name()`, and it will return an `EventId` that holds type info of the event data. Event functions on `script` can then use the type data when the `EventId` is passed.
 
 ### Array-like types
 
@@ -98,7 +100,7 @@ Classes that have an index operator, a length operator, and have an array-like s
 
 ### Table or array types
 
-For table or array types (e.g. Position), there also are types such as `PositionTable` and `PositionArray` types that refer to the table or array form specifically.
+For table or array types (e.g. Position), there also are types such as `PositionTable` and `PositionArray` that refer to the table or array form specifically.
 
 ### LuaGuiElement
 
@@ -110,4 +112,4 @@ This is done both to provide more accurate types, and for possible integration w
 
 ### Examples
 
-Check out the `tests` directory for more examples on particular type features.
+Check out the `test` directory on GitHub for more examples on particular type features.
