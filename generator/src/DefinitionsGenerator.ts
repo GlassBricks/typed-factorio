@@ -16,6 +16,7 @@ interface MemberAndOriginal {
   original: Method | Attribute
   member: ts.TypeElement | ts.MethodSignature[]
 }
+
 interface GeneratedClass {
   readonly clazz: Class
   readonly existing: InterfaceDef | TypeAliasDef | undefined
@@ -1303,9 +1304,9 @@ export default class DefinitionsGenerator {
     type: Type
   ): ts.UnionTypeNode | undefined {
     if (type === "string") {
-      const matches = Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1])
-      if (matches.length >= 2 || (matches.length === 1 && member.description.match(/One of `"[a-zA-Z-_]+?"`/))) {
-        return ts.factory.createUnionTypeNode(matches.map(Types.stringLiteral))
+      const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
+      if (matches.size >= 2 || (matches.size === 1 && member.description.match(/One of `"[a-zA-Z-_]+?"`/))) {
+        return ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
       }
     }
     /*
