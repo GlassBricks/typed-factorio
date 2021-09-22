@@ -35,6 +35,18 @@ declare namespace defines {
   enum command {}
   /** @numericEnum */
   enum direction {}
+
+  namespace control_behavior {
+    namespace mining_drill {
+      enum resource_read_mode {}
+    }
+    namespace inserter {
+      enum hand_read_mode {}
+    }
+    namespace transport_belt {
+      enum content_read_mode {}
+    }
+  }
 }
 
 // -- classes --
@@ -49,21 +61,16 @@ interface LuaLazyLoadedValue<T> {
   get(): T
 }
 
-interface ChunkPositionAndArea {
-}
-interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {
-}
+interface ChunkPositionAndArea {}
+interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
 // Array-likeTypes
 
-interface Fluid {
-}
+interface Fluid {}
 
-interface LuaFluidBox extends Array<Fluid | undefined> {
-}
+interface LuaFluidBox extends Array<Fluid | undefined> {}
 
-interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {
-}
+interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 
 interface LuaInventory extends ReadonlyArray<LuaItemStack> {
   find_item_stack(item: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
@@ -113,8 +120,7 @@ interface LineGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
 
-interface SignalID {
-}
+interface SignalID {}
 
 /** @addBefore ChooseElemButtonGuiSpec */
 type ChooseElemButtonType =
@@ -130,24 +136,15 @@ type ChooseElemButtonType =
   | "equipment"
   | "technology"
 
-interface ItemPrototypeFilter {
-}
-interface TilePrototypeFilter {
-}
-interface EntityPrototypeFilter {
-}
-interface FluidPrototypeFilter {
-}
-interface RecipePrototypeFilter {
-}
-interface DecorativePrototypeFilter {
-}
-interface AchievementPrototypeFilter {
-}
-interface EquipmentPrototypeFilter {
-}
-interface TechnologyPrototypeFilter {
-}
+interface ItemPrototypeFilter {}
+interface TilePrototypeFilter {}
+interface EntityPrototypeFilter {}
+interface FluidPrototypeFilter {}
+interface RecipePrototypeFilter {}
+interface DecorativePrototypeFilter {}
+interface AchievementPrototypeFilter {}
+interface EquipmentPrototypeFilter {}
+interface TechnologyPrototypeFilter {}
 
 /** @addBefore ChooseElemButtonGuiSpec */
 interface ChooseElemButtonFilters {
@@ -345,8 +342,7 @@ type LuaGuiElement = {
 
 // nullability, multi-return
 
-interface LuaPlayer {
-}
+interface LuaPlayer {}
 
 interface LuaEntity {
   get_driver(): LuaEntity | LuaPlayer | undefined
@@ -363,8 +359,7 @@ interface LuaItemStack {
   durability: double | undefined
 }
 
-interface LuaPermissionGroup {
-}
+interface LuaPermissionGroup {}
 interface LuaPermissionGroups {
   create_group(name?: string): LuaPermissionGroup | undefined
 }
@@ -396,10 +391,8 @@ type RaiseableEvents =
   | typeof defines.events.script_raised_revive
   | typeof defines.events.script_raised_set_tiles
 
-interface EventData {
-}
-interface CustomInputEvent {
-}
+interface EventData {}
+interface CustomInputEvent {}
 
 /** @addBefore LuaBootstrap */
 /** A custom event id created by {@link LuaBootstrap.generate_event_name}, with type data of the event. */
@@ -437,10 +430,8 @@ type RealOrientation = float
 
 type Tags = Record<string, AnyBasic | undefined>
 
-interface PositionTable {
-}
-interface PositionArray {
-}
+interface PositionTable {}
+interface PositionArray {}
 
 type Vector = PositionArray
 
@@ -522,7 +513,8 @@ type CollisionMask = {
 }
 
 type CollisionMaskWithFlags = {
-  readonly [P in | CollisionMaskLayer
+  readonly [P in
+    | CollisionMaskLayer
     | "not-colliding-with-itself"
     | "consider-tile-transitions"
     | "colliding-with-tiles-only"]?: true
@@ -605,8 +597,7 @@ type RenderLayer =
   | "cursor"
 
 /** @omit */
-interface EventFilter {
-}
+interface EventFilter {}
 
 // where a vector is supposed to be a position table instead
 
@@ -628,8 +619,7 @@ interface CircularParticleCreationSpecification {
 
 // additional types
 
-interface MapGenSettings {
-}
+interface MapGenSettings {}
 
 /** @addTo concepts */
 /**
@@ -730,6 +720,47 @@ interface BlueprintCircuitConnection {
   "2"?: BlueprintConnectionPoint
 }
 
+interface CircuitCondition {}
+interface Signal {}
+interface DeciderCombinatorParameters {}
+interface ProgrammableSpeakerCircuitParameters {}
+
 /** @addTo concepts */
-/** There are not yet full definitions for this type. See {@link https://lua-api.factorio.com/1.1.36/LuaControlBehavior.html}. */
-type BlueprintControlBehavior = unknown
+interface BlueprintControlBehavior {
+  readonly condition?: CircuitCondition
+  readonly circuit_condition?: CircuitCondition
+  readonly filters?: Signal[]
+  readonly is_on?: boolean
+  readonly arithmetic_conditions?: ArithmeticCombinatorParameters
+  readonly decider_conditions?: DeciderCombinatorParameters
+  readonly circuit_enable_disable?: boolean
+  readonly circuit_read_resources?: boolean
+  readonly circuit_resource_read_mode?: defines.control_behavior.mining_drill.resource_read_mode
+  readonly read_stopped_train?: boolean
+  readonly train_stopped_signal?: SignalID
+  readonly read_from_train?: boolean
+  readonly send_to_train?: boolean
+  readonly circuit_mode_of_operation?: number
+  readonly circuit_read_hand_contents?: boolean
+  readonly circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
+  readonly circuit_set_stack_size?: boolean
+  readonly stack_control_input_signal?: SignalID
+  readonly use_colors?: boolean
+  readonly read_robot_stats?: boolean
+  readonly read_logistics?: boolean
+  readonly available_logistic_output_signal?: boolean
+  readonly total_logistic_output_signal?: boolean
+  readonly available_construction_output_signal?: boolean
+  readonly total_construction_output_signal?: boolean
+  readonly circuit_contents_read_mode?: defines.control_behavior.transport_belt.content_read_mode
+  readonly output_signal?: SignalID
+  readonly circuit_close_signal?: boolean
+  readonly circuit_read_signal?: boolean
+  readonly red_output_signal?: SignalID
+  readonly orange_output_signal?: SignalID
+  readonly green_output_signal?: SignalID
+  readonly blue_output_signal?: SignalID
+  readonly circuit_open_gate?: boolean
+  readonly circuit_read_sensor?: boolean
+  readonly circuit_parameters?: ProgrammableSpeakerCircuitParameters
+}

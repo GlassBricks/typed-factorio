@@ -64,9 +64,7 @@ If you have a need for types to more lualib modules, feel free to open an issue 
 
 ## Type features
 
-Typed-factorio has nearly 100% complete types for the runtime stage. Description-only concepts and some not documented types are filled in manually.
-
-The only incomplete type is `BlueprintControlBehavior`, which isn't documented anywhere.
+Typed-factorio has 100% complete types for the runtime stage. Description-only concepts and some not documented types are filled in manually.
 
 ### Lua features
 

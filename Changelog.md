@@ -1,3 +1,7 @@
+# v0.6.1
+
+- Added type for BlueprintControlBehavior
+
 # v0.6.0
 
 - Updated to factorio version 1.1.40
