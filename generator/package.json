@@ -1,4 +1,6 @@
 {
+  "name": "typed-factorio-generator",
+  "version": "0.1.0",
   "private": true,
   "dependencies": {
     "chalk": "^4.1.2",
@@ -23,6 +25,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^5.1.0",
     "lua-types": "^2.10.1",
+    "typescript-to-lua": "^1.0.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.1.0"
   },
