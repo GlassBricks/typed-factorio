@@ -1,7 +1,13 @@
+# v0.6.0
+
+- Updated to factorio version 1.1.40
+- Fixed regression with duplicate strings in string union types
+
 # v0.5.0
 
 - Updated to factorio version 1.1.39
-- Documentation links now point to the new API docs website. More info here: https://forums.factorio.com/viewtopic.php?f=34&t=99797
+- Documentation links now point to the new API docs website. More info
+  here: https://forums.factorio.com/viewtopic.php?f=34&t=99797
 
 # v0.4.1
 
