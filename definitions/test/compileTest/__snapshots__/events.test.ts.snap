@@ -16,5 +16,10 @@ script.on_event(
     end
 )
 script.on_event(defines.events.on_area_cloned, nil)
+script.on_event(
+    {defines.events.on_pre_build, defines.events.on_player_dropped_item},
+    function(e)
+    end
+)
 "
 `;

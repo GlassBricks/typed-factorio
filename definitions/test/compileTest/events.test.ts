@@ -3,13 +3,16 @@ import { tstl } from "../util"
 describe("on_event", () => {
   test("set handler", () => {
     tstl`
-      script.on_event(defines.events.on_ai_command_completed, (e: OnAiCommandCompletedEvent) => {
-        log(e.result)
+    script.on_event(defines.events.on_ai_command_completed, (e: OnAiCommandCompletedEvent) => {
+      log(e.result)
+    })
+    script.on_event("someInput", (e: CustomInputEvent) => {
+      log(serpent.block(e))
+    })
+    script.on_event(defines.events.on_area_cloned, undefined)
+    script.on_event([defines.events.on_pre_build, defines.events.on_player_dropped_item],
+      (e: OnPreBuildEvent | OnPlayerDroppedItemEvent) => {
       })
-      script.on_event("someInput", (e: CustomInputEvent) => {
-        log(serpent.block(e))
-      })
-      script.on_event(defines.events.on_area_cloned, undefined)
     `.expectToMatchSnapshot()
 
     tstl`

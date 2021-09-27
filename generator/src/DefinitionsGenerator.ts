@@ -99,9 +99,6 @@ export default class DefinitionsGenerator {
   private static keywords = new Set(["function", "interface"])
   private static noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
 
-  private static EventTypes = "EventTypes"
-  private static EventFilters = "EventFilters"
-
   constructor(
     private readonly apiDocs: FactorioApiJson,
     private readonly manualDefinitionsSource: ts.SourceFile,
@@ -187,9 +184,6 @@ export default class DefinitionsGenerator {
       }
     }
 
-    this.typeNames[DefinitionsGenerator.EventTypes] = DefinitionsGenerator.EventTypes
-    this.typeNames[DefinitionsGenerator.EventFilters] = DefinitionsGenerator.EventFilters
-
     for (const def of Object.values(this.manualDefinitions as Record<string, RootDef>)) {
       const addBefore = def.annotations.addBefore?.[0]
       const addTo = def.annotations.addTo?.[0]
@@ -260,6 +254,34 @@ export default class DefinitionsGenerator {
   }
 
   private generateDefines() {
+    const generateEventsDefine = (define: Define) => {
+      // namespace events { const member: EventId<Id> }
+      const filters = Array.from(this.events.values())
+        .map((event) => {
+          return event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
+        })
+        .filter((x) => !!x)
+      const members = define.values!.sort(sortByOrder).map((m) => {
+        const eventType = DefinitionsGenerator.getMappedEventName(m.name)
+        const typeArguments = [ts.factory.createTypeReferenceNode(eventType)]
+        const event = this.events.get(m.name)!
+        const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
+        if (eventFilterName) {
+          typeArguments.push(ts.factory.createTypeReferenceNode(eventFilterName))
+        }
+
+        let description = `Event type: {@link ${eventType}}`
+        if (eventFilterName) {
+          description += `\nEvent filter: {@link ${eventFilterName}}`
+        }
+
+        const statement = createConst(m.name, ts.factory.createTypeReferenceNode("EventId", typeArguments))
+        return this.addJsDoc(statement, { description }, undefined)
+      })
+      const namespace = createNamespace(undefined, define.name, members)
+      return [namespace]
+    }
+
     const generateDefinesDeclaration = (
       define: Define,
       parent: string,
@@ -269,42 +291,8 @@ export default class DefinitionsGenerator {
       let declarations: ts.Statement[]
       const thisPath = parent + (parent ? "." : "") + define.name
       if (define.values) {
-        if (existing?.kind === "namespace" && existing?.annotations.symbolEnum) {
-          // namespace name { const member: unique symbol }
-          // type name = typeof name[keyof typeof name]
-          const members = define.values.sort(sortByOrder).map((m) => {
-            const statement = createConst(
-              m.name,
-              ts.factory.createTypeOperatorNode(ts.SyntaxKind.UniqueKeyword, Types.symbol)
-            )
-            if (thisPath === "defines.events") {
-              this.addJsDoc(
-                statement,
-                {
-                  description: `Event type: {@link ${DefinitionsGenerator.getMappedEventName(m.name)}}`,
-                },
-                undefined
-              )
-            }
-            return statement
-          })
-
-          const namespace = createNamespace(undefined, define.name, members)
-
-          const typeofExp = ts.factory.createExpressionWithTypeArguments(
-            ts.factory.createTypeOfExpression(ts.factory.createIdentifier(define.name)),
-            undefined
-          )
-          const keyofTypeof = ts.factory.createTypeOperatorNode(ts.SyntaxKind.KeyOfKeyword, typeofExp)
-          const type = ts.factory.createTypeAliasDeclaration(
-            undefined,
-            undefined,
-            define.name,
-            undefined,
-            ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof)
-          )
-
-          declarations = [namespace, type]
+        if (thisPath === "defines.events") {
+          declarations = generateEventsDefine(define)
         } else {
           if (existing && existing.kind !== "enum") {
             throw new Error(
@@ -358,84 +346,26 @@ export default class DefinitionsGenerator {
     const statements = this.newStatements()
     for (const event of this.apiDocs.events.sort(sortByOrder)) {
       const name = DefinitionsGenerator.getMappedEventName(event.name)
-      statements.add(
-        this.addJsDoc(
-          ts.factory.createInterfaceDeclaration(
-            undefined,
-            undefined,
-            name,
-            undefined,
-            undefined,
-            event.data.sort(sortByOrder).map((p) => {
-              if (p.name === "name" && event.name !== "CustomInputEvent") {
-                p.type = "typeof " + p.type + "." + event.name
-              }
-              return this.mapParameterToProperty(p, name)
-            })
-          ),
-          event,
-          event.name
-        )
-      )
-    }
-
-    const generateEventTypes = () => {
-      const eventTypesMembers: ts.PropertySignature[] = []
-      const eventFiltersMembers: ts.PropertySignature[] = []
-      const definesEvents = ts.factory.createPropertyAccessExpression(ts.factory.createIdentifier("defines"), "events")
-      for (const eventDefine of this.defines.get("defines.events")!.values!) {
-        const name = eventDefine.name
-        const event = this.events.get(name)
-        if (!event) throw new Error(`Event define without event type: ${name}`)
-        const propertyName = ts.factory.createComputedPropertyName(
-          ts.factory.createPropertyAccessExpression(definesEvents, name)
-        )
-
-        const eventTypeName = DefinitionsGenerator.getMappedEventName(name)
-        eventTypesMembers.push(
-          ts.factory.createPropertySignature(
-            undefined,
-            propertyName,
-            undefined,
-            ts.factory.createTypeReferenceNode(eventTypeName)
-          )
-        )
-
-        const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
-        if (eventFilterName) {
-          eventFiltersMembers.push(
-            ts.factory.createPropertySignature(
-              undefined,
-              propertyName,
-              undefined,
-              ts.factory.createTypeReferenceNode(eventFilterName)
-            )
-          )
-        }
+      const existing = this.manualDefinitions[name]
+      if (existing && existing.kind !== "interface") {
+        throw new Error(`Manual definition for ${name} should be a interface, got ${ts.SyntaxKind[existing.node.kind]}`)
       }
-
-      statements.add(
-        ts.factory.createInterfaceDeclaration(
-          undefined,
-          undefined,
-          DefinitionsGenerator.EventTypes,
-          undefined,
-          undefined,
-          eventTypesMembers
-        )
+      const declaration = ts.factory.createInterfaceDeclaration(
+        undefined,
+        undefined,
+        name,
+        undefined,
+        undefined,
+        event.data.sort(sortByOrder).map((p) => {
+          if (p.name === "name" && event.name !== "CustomInputEvent") {
+            p.type = "typeof " + p.type + "." + event.name
+          }
+          return this.mapParameterToProperty(p, name, existing)
+        })
       )
-      statements.add(
-        ts.factory.createInterfaceDeclaration(
-          undefined,
-          undefined,
-          DefinitionsGenerator.EventFilters,
-          undefined,
-          undefined,
-          eventFiltersMembers
-        )
-      )
+      this.addJsDoc(declaration, event, event.name)
+      statements.add(declaration)
     }
-    generateEventTypes()
 
     this.addFile("events", statements)
   }
