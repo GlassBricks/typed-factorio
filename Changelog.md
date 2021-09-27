@@ -1,3 +1,7 @@
+# v0.7.0
+- Updated to factorio version 1.1.41 (no changes to lua api)
+- Improved smart types for events
+
 # v0.6.1
 
 - Added type for BlueprintControlBehavior
