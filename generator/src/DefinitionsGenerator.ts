@@ -256,11 +256,6 @@ export default class DefinitionsGenerator {
   private generateDefines() {
     const generateEventsDefine = (define: Define) => {
       // namespace events { const member: EventId<Id> }
-      const filters = Array.from(this.events.values())
-        .map((event) => {
-          return event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
-        })
-        .filter((x) => !!x)
       const members = define.values!.sort(sortByOrder).map((m) => {
         const eventType = DefinitionsGenerator.getMappedEventName(m.name)
         const typeArguments = [ts.factory.createTypeReferenceNode(eventType)]
@@ -279,7 +274,21 @@ export default class DefinitionsGenerator {
         return this.addJsDoc(statement, { description }, undefined)
       })
       const namespace = createNamespace(undefined, define.name, members)
-      return [namespace]
+
+      // type events = typeof events[keyof typeof events]
+      const typeofExp = ts.factory.createExpressionWithTypeArguments(
+        ts.factory.createTypeOfExpression(ts.factory.createIdentifier(define.name)),
+        undefined
+      )
+      const keyofTypeof = ts.factory.createTypeOperatorNode(ts.SyntaxKind.KeyOfKeyword, typeofExp)
+      const type = ts.factory.createTypeAliasDeclaration(
+        undefined,
+        undefined,
+        define.name,
+        undefined,
+        ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof)
+      )
+      return [namespace, type]
     }
 
     const generateDefinesDeclaration = (
