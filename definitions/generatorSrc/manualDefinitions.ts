@@ -397,7 +397,7 @@ interface CustomInputEvent {
 
 /** @addTo events */
 /** An event id. */
-type EventId<T extends table, F extends table | void = void> = uint & {
+type EventId<T extends table, F = unknown> = uint & {
   readonly _eventData: T
   readonly _filter: F
 }
@@ -417,7 +417,7 @@ interface LuaBootstrap {
     f: ((data: E["_eventData"]) => void) | undefined,
     filters?: E["_filter"][]
   ): void
-  on_event<E extends EventId<any, any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | undefined): void
+  on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | undefined): void
   on_event(event: string, f: ((data: CustomInputEvent) => void) | undefined): void
 
   generate_event_name<T extends table>(): CustomEventId<T>
