@@ -1,6 +1,6 @@
 {
   "name": "typed-factorio",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Featureful typescript definitions for the the Factorio modding lua api.",
   "keywords": [
     "factorio",
@@ -28,12 +28,12 @@
     "typescript-to-lua": "^1.0.0"
   },
   "devDependencies": {
-    "typescript": "~4.3.5",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.4.13",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.4",
-    "ts-node": "^10.1.0"
+    "ts-node": "^10.1.0",
+    "typescript": "~4.3.5"
   }
 }
