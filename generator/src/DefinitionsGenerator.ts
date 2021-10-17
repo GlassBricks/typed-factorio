@@ -65,9 +65,10 @@ class Statements {
 }
 
 export default class DefinitionsGenerator {
+  private static keywords = new Set(["function", "interface"])
+  private static noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
   private outFiles = new Map<string, ts.Statement[]>()
   private readonly manualDefinitions: Record<string, RootDef | undefined>
-
   private builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
   private defines = new Map<string, Define>()
   private events = new Map<string, Event>(this.apiDocs.events.map((e) => [e.name, e]))
@@ -75,29 +76,21 @@ export default class DefinitionsGenerator {
   // private classMembers = new Map<string, Map<string, Attribute | Method>>()
   private concepts = new Set<string>(this.apiDocs.concepts.map((e) => e.name))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
-
+  // original -> mapped
   private tableOrArrayConcepts = new Set<string>()
   private numericTypes = new Set<string>()
-  // original -> mapped
   // also a record of which types exists
   private typeNames: Record<string, string> = {}
-
   private addBefore = new Map<string, ts.Statement[]>()
   private addTo = new Map<string, ts.Statement[]>()
-
   private readonly rootDefine: Define = {
     order: 0,
     name: "defines",
     description: "",
     subkeys: this.apiDocs.defines,
   }
-
   private readonly docUrlBase = "https://lua-api.factorio.com/next/"
-
   private readonly warnings: string[] = []
-
-  private static keywords = new Set(["function", "interface"])
-  private static noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
 
   constructor(
     private readonly apiDocs: FactorioApiJson,
@@ -113,6 +106,31 @@ export default class DefinitionsGenerator {
       throw new Error("Unsupported api version " + apiDocs.api_version)
     }
     this.manualDefinitions = processManualDefinitions(manualDefinitionsSource)
+  }
+
+  private static getMappedEventName(eventName: string): string {
+    let name = toPascalCase(eventName)
+    if (!name.endsWith("Event")) name += "Event"
+    return name
+  }
+
+  private static escapePropertyName(name: string): ts.PropertyName {
+    if (name.includes("-")) {
+      return ts.factory.createStringLiteral(name)
+    }
+    return ts.factory.createIdentifier(name)
+  }
+
+  private static escapeParameterName(name: string): string {
+    if (DefinitionsGenerator.keywords.has(name)) {
+      return "_" + name
+    }
+    return name
+  }
+
+  private static addNoSelfAnnotationOnly(node: ts.Node) {
+    const jsDoc = ts.factory.createJSDocComment(undefined, [DefinitionsGenerator.noSelfAnnotation])
+    addFakeJSDoc(node, jsDoc)
   }
 
   generateDeclarations(): Map<string, string> {
@@ -377,12 +395,6 @@ export default class DefinitionsGenerator {
     }
 
     this.addFile("events", statements)
-  }
-
-  private static getMappedEventName(eventName: string): string {
-    let name = toPascalCase(eventName)
-    if (!name.endsWith("Event")) name += "Event"
-    return name
   }
 
   private generateClasses() {
@@ -1213,7 +1225,7 @@ export default class DefinitionsGenerator {
     parent: string,
     outOnly: boolean
   ): ts.TypeNode {
-    const type = DefinitionsGenerator.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType, outOnly)
+    const type = this.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType, outOnly)
     const isNullable = !(member as Parameter).optional && this.isNullableFromDescription(member, parent)
     if (isNullable) {
       return mergeUnion(type, Types.undefined)
@@ -1238,13 +1250,13 @@ export default class DefinitionsGenerator {
     return undefined
   }
 
-  private static tryMakeStringEnum(
-    member: { description: string; name?: string },
-    type: Type
-  ): ts.UnionTypeNode | undefined {
+  private tryMakeStringEnum(member: { description: string; name?: string }, type: Type): ts.UnionTypeNode | undefined {
     if (type === "string") {
       const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
-      if (matches.size >= 2 || (matches.size === 1 && member.description.match(/One of `"[a-zA-Z-_]+?"`/))) {
+      if (
+        (matches.size >= 2 && !member.description.match(/e\.g\. /i)) ||
+        (matches.size === 1 && member.description.match(/One of `"[a-zA-Z-_]+?"`/))
+      ) {
         return ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
       }
     }
@@ -1487,20 +1499,6 @@ export default class DefinitionsGenerator {
     return ts.factory.createTypeReferenceNode(name)
   }
 
-  private static escapePropertyName(name: string): ts.PropertyName {
-    if (name.includes("-")) {
-      return ts.factory.createStringLiteral(name)
-    }
-    return ts.factory.createIdentifier(name)
-  }
-
-  private static escapeParameterName(name: string): string {
-    if (DefinitionsGenerator.keywords.has(name)) {
-      return "_" + name
-    }
-    return name
-  }
-
   private mapLink(origLink: string): string {
     if (origLink.match(/^http(s?):\/\//)) {
       return origLink
@@ -1630,11 +1628,6 @@ export default class DefinitionsGenerator {
     addFakeJSDoc(node, jsDoc)
 
     return node
-  }
-
-  private static addNoSelfAnnotationOnly(node: ts.Node) {
-    const jsDoc = ts.factory.createJSDocComment(undefined, [DefinitionsGenerator.noSelfAnnotation])
-    addFakeJSDoc(node, jsDoc)
   }
 
   private warnIncompleteDefinition(...args: unknown[]) {
