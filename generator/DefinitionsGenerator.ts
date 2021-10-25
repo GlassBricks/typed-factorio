@@ -11,6 +11,22 @@ import {
   TypeAliasDef,
 } from "./manualDefinitionsProcessing"
 import chalk from "chalk"
+import {
+  Attribute,
+  BasicMember,
+  CallOperator,
+  Class,
+  Define,
+  Event,
+  FactorioApiJson,
+  IndexOperator,
+  LengthOperator,
+  Method,
+  Parameter,
+  Type,
+  WithNotes,
+  WithParameterVariants,
+} from "./FactorioApiJson"
 
 interface MemberAndOriginal {
   original: Method | Attribute
@@ -79,7 +95,7 @@ export default class DefinitionsGenerator {
   // original -> mapped
   private tableOrArrayConcepts = new Set<string>()
   private numericTypes = new Set<string>()
-  // also a record of which types exists
+  // This is also a record of which types exist
   private typeNames: Record<string, string> = {}
   private addBefore = new Map<string, ts.Statement[]>()
   private addTo = new Map<string, ts.Statement[]>()
@@ -89,6 +105,7 @@ export default class DefinitionsGenerator {
     description: "",
     subkeys: this.apiDocs.defines,
   }
+
   private readonly docUrlBase = "https://lua-api.factorio.com/next/"
   private readonly warnings: string[] = []
 
@@ -1250,6 +1267,7 @@ export default class DefinitionsGenerator {
     return undefined
   }
 
+  // noinspection JSMethodCanBeStatic
   private tryMakeStringEnum(member: { description: string; name?: string }, type: Type): ts.UnionTypeNode | undefined {
     if (type === "string") {
       const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))

@@ -3,18 +3,9 @@
     "strict": true,
     "target": "es2019",
     "module": "commonjs",
-    "lib": [
-      "esnext"
-    ],
-    "skipLibCheck": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": [
-    "./**/*.ts"
-  ],
-  "ts-node": {
-    "files": true
-  }
+  "include": ["./**/*.ts", "../runtime/index.d.ts"]
 }

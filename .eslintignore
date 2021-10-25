@@ -1,0 +1,5 @@
+**/*.d.ts
+**/*.js
+generatorSrc/manualDefinitions.ts
+scripts/**
+test/**

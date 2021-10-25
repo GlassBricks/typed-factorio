@@ -6,6 +6,7 @@ import ts from "typescript"
 import * as console from "console"
 import { program } from "commander"
 import * as process from "process"
+import { FactorioApiJson } from "./FactorioApiJson"
 
 program
   .option("--in <path>", "Source folder containing manualDefinitions(.d).ts and runtime-api(-version).json")
@@ -100,11 +101,9 @@ main().catch((e) => {
   process.exit(1)
 })
 
-async function exists(path: string): Promise<boolean> {
-  try {
-    await fs.promises.access(path)
-    return true
-  } catch {
-    return false
-  }
+function exists(dir: string): Promise<boolean> {
+  return fs.promises.access(dir).then(
+    () => true,
+    () => false
+  )
 }

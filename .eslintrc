@@ -5,16 +5,14 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": [
+      "./tsconfig.json",
+      "./generator/tsconfig.json",
+      "./generatorSrc/tsconfig.json"
+    ]
   },
-  "extends": [
-    "standard",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
-  ],
-  "plugins": [
-    "@typescript-eslint"
-  ],
+  "extends": ["standard", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+  "plugins": ["@typescript-eslint"],
   "settings": {
     "import/resolver": {
       "typescript": {}
@@ -24,17 +22,10 @@
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "no-shadow": "off",
-    "@typescript-eslint/no-shadow": [
-      "warn"
-    ],
+    "@typescript-eslint/no-shadow": ["warn"],
     "no-useless-constructor": "off",
     "@typescript-eslint/no-useless-constructor": "warn",
-    "max-len": [
-      "warn",
-      {
-        "code": 120
-      }
-    ],
+    "max-len": "off",
     "camelcase": "off",
     "spaced-comment": "warn",
     "lines-between-class-members": "warn",

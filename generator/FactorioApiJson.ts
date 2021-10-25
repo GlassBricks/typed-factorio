@@ -1,4 +1,4 @@
-interface FactorioApiJson {
+export interface FactorioApiJson {
   application: "factorio"
   stage: "runtime"
   application_version: string
@@ -12,80 +12,80 @@ interface FactorioApiJson {
   global_objects: GlobalObject[]
 }
 
-interface BasicMember {
+export interface BasicMember {
   name: string
   order: number
   description: string
 }
 
-interface WithNotes {
+export interface WithNotes {
   notes?: string[]
   examples?: string[]
   see_also?: string[]
 }
 
-interface WithParameterVariants {
+export interface WithParameterVariants {
   parameters: Parameter[]
   variant_parameter_groups?: ParameterGroup[]
   variant_parameter_description: string
 }
 
-interface Class extends BasicMember, WithNotes {
+export interface Class extends BasicMember, WithNotes {
   methods: Method[]
   attributes: Attribute[]
   operators: Operator[]
   base_classes?: string[]
 }
 
-interface CallOperator extends Method {
+export interface CallOperator extends Method {
   name: "call"
 }
 
-interface IndexOperator extends Attribute {
+export interface IndexOperator extends Attribute {
   name: "index"
 }
 
-interface LengthOperator extends Attribute {
+export interface LengthOperator extends Attribute {
   name: "length"
 }
 
-type Operator = CallOperator | IndexOperator | LengthOperator
+export type Operator = CallOperator | IndexOperator | LengthOperator
 
-interface Event extends BasicMember, WithNotes {
+export interface Event extends BasicMember, WithNotes {
   data: Parameter[]
 }
 
-interface Define extends BasicMember {
+export interface Define extends BasicMember {
   values?: BasicMember[]
   subkeys?: Define[]
 }
 
-type BuiltinType = BasicMember
+export type BuiltinType = BasicMember
 
-interface BaseConcept extends BasicMember, WithNotes {
+export interface BaseConcept extends BasicMember, WithNotes {
   category: string
 }
 
-interface TableConcept extends BaseConcept, WithParameterVariants {
+export interface TableConcept extends BaseConcept, WithParameterVariants {
   category: "table"
 }
 
-interface TableOrArrayConcept extends BaseConcept {
+export interface TableOrArrayConcept extends BaseConcept {
   category: "table_or_array"
   parameters: Parameter[]
 }
 
-interface EnumConcept extends BaseConcept {
+export interface EnumConcept extends BaseConcept {
   category: "enum"
   options: BasicMember[]
 }
 
-interface FlagConcept extends BaseConcept {
+export interface FlagConcept extends BaseConcept {
   category: "flag"
   options: BasicMember[]
 }
 
-interface UnionConcept extends BaseConcept {
+export interface UnionConcept extends BaseConcept {
   category: "union"
   options: {
     type: Type
@@ -94,20 +94,20 @@ interface UnionConcept extends BaseConcept {
   }[]
 }
 
-interface FilterConcept extends BaseConcept, WithParameterVariants {
+export interface FilterConcept extends BaseConcept, WithParameterVariants {
   category: "filter"
 }
 
-interface StructConcept extends BaseConcept {
+export interface StructConcept extends BaseConcept {
   category: "struct"
   attributes: Attribute[]
 }
 
-interface ConceptConcept extends BaseConcept {
+export interface ConceptConcept extends BaseConcept {
   category: "concept"
 }
 
-type Concept =
+export type Concept =
   | TableConcept
   | TableOrArrayConcept
   | EnumConcept
@@ -117,51 +117,51 @@ type Concept =
   | StructConcept
   | ConceptConcept
 
-interface GlobalObject extends BasicMember {
+export interface GlobalObject extends BasicMember {
   type: string
 }
 
-interface BaseComplexType {
+export interface BaseComplexType {
   complex_type: string
 }
 
-interface VariantComplexType extends BaseComplexType {
+export interface VariantComplexType extends BaseComplexType {
   complex_type: "variant"
   options: Type[]
 }
 
-interface ArrayComplexType extends BaseComplexType {
+export interface ArrayComplexType extends BaseComplexType {
   complex_type: "array"
   value: Type
 }
 
-interface DictionaryComplexType extends BaseComplexType {
+export interface DictionaryComplexType extends BaseComplexType {
   complex_type: "dictionary"
   key: Type
   value: Type
 }
 
-interface LuaCustomTableComplexType extends BaseComplexType {
+export interface LuaCustomTableComplexType extends BaseComplexType {
   complex_type: "LuaCustomTable"
   key: Type
   value: Type
 }
 
-interface FunctionComplexType extends BaseComplexType {
+export interface FunctionComplexType extends BaseComplexType {
   complex_type: "function"
   parameters: Type[]
 }
 
-interface LuaLazyLoadedValueComplexType extends BaseComplexType {
+export interface LuaLazyLoadedValueComplexType extends BaseComplexType {
   complex_type: "LuaLazyLoadedValue"
   value: Type
 }
 
-interface TableComplexType extends BaseComplexType, WithParameterVariants {
+export interface TableComplexType extends BaseComplexType, WithParameterVariants {
   complex_type: "table"
 }
 
-type ComplexType =
+export type ComplexType =
   | VariantComplexType
   | ArrayComplexType
   | DictionaryComplexType
@@ -170,18 +170,18 @@ type ComplexType =
   | LuaLazyLoadedValueComplexType
   | TableComplexType
 
-type Type = string | ComplexType
+export type Type = string | ComplexType
 
-interface Parameter extends BasicMember {
+export interface Parameter extends BasicMember {
   type: Type
   optional: boolean
 }
 
-interface ParameterGroup extends BasicMember {
+export interface ParameterGroup extends BasicMember {
   parameters: Parameter[]
 }
 
-interface Method extends BasicMember, WithNotes, WithParameterVariants {
+export interface Method extends BasicMember, WithNotes, WithParameterVariants {
   subclasses?: string[]
   variadic_type?: Type
   variadic_description?: string
@@ -191,7 +191,7 @@ interface Method extends BasicMember, WithNotes, WithParameterVariants {
   return_description?: string
 }
 
-interface Attribute extends BasicMember, WithNotes {
+export interface Attribute extends BasicMember, WithNotes {
   subclasses: string[]
   type: Type
   read: boolean
