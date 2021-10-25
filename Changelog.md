@@ -1,3 +1,7 @@
+# v0.8.0
+- All event types now explicitly extend `EventData`
+- Variant parameter groups without additional fields now have their own type, instead of all being grouped into `Other<Type>`
+
 # v0.7.3
 
 - Update to factorio version 1.1.42
