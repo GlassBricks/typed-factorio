@@ -1445,13 +1445,19 @@ export default class DefinitionsGenerator {
     if (otherTypes) {
       otherTypes.order = variants.variant_parameter_groups!.length + 1
       otherTypes.name = "Other"
-    } else {
-      variants.variant_parameter_groups!.push({
-        name: "Other",
-        order: variants.variant_parameter_groups!.length + 1,
-        description: "",
-        parameters: [],
-      })
+    } else if (unusedTypes) {
+      for (const group of variants.variant_parameter_groups!) {
+        unusedTypes.delete(group.name)
+      }
+      let order = variants.variant_parameter_groups!.length + 1
+      for (const unusedType of unusedTypes) {
+        variants.variant_parameter_groups!.push({
+          name: unusedType,
+          order: order++,
+          description: "",
+          parameters: [],
+        })
+      }
     }
 
     function getType(groupName: string) {
@@ -1460,10 +1466,9 @@ export default class DefinitionsGenerator {
 
     for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
       const isOtherTypes = group.name === "Other"
-      if (!isOtherTypes) {
-        unusedTypes?.delete(group.name)
-      } else {
-        if (!unusedTypes || unusedTypes.size === 0) continue
+      if (isOtherTypes && (!unusedTypes || unusedTypes.size === 0)) {
+        this.warnIncompleteDefinition('"Other" variant parameter group with no other values')
+        continue
       }
       const fullName =
         toPascalCase(isDefine ? group.name.substr(group.name.lastIndexOf(".") + 1) : group.name) + shortName
