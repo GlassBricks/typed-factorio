@@ -388,7 +388,7 @@ type RaiseableEvents =
   | typeof defines.events.script_raised_set_tiles
 
 interface EventData {
-  readonly name: EventId<EventData>
+  readonly name: EventId<EventData> | string
 }
 
 interface CustomInputEvent {

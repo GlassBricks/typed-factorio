@@ -388,6 +388,9 @@ export default class DefinitionsGenerator {
 
   private generateEvents() {
     const statements = this.newStatements()
+    const heritageClause = ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
+      ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier("EventData"), undefined),
+    ])
     for (const event of this.apiDocs.events.sort(sortByOrder)) {
       const name = DefinitionsGenerator.getMappedEventName(event.name)
       const existing = this.manualDefinitions[name]
@@ -399,7 +402,7 @@ export default class DefinitionsGenerator {
         undefined,
         name,
         undefined,
-        undefined,
+        [heritageClause],
         event.data.sort(sortByOrder).map((p) => {
           if (p.name === "name" && event.name !== "CustomInputEvent") {
             p.type = "typeof " + p.type + "." + event.name
