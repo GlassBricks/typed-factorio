@@ -56,3 +56,15 @@ describe("adding choose-elem-button", () => {
     `.expectToHaveDiagnostics()
   })
 })
+
+test("Properties only exist in proper type", () => {
+  tstl`
+    declare const el: ListBoxGuiElementMembers
+    const bar = el.entity
+  `.expectToHaveDiagnostics()
+
+  tstl`
+    declare const el: CameraGuiElementMembers
+    const bar = el.entity
+  `.expectToHaveNoDiagnostics()
+})

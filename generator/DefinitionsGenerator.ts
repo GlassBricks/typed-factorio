@@ -697,7 +697,7 @@ export default class DefinitionsGenerator {
 
       for (const memberAndOriginal of generated.members) {
         const original = memberAndOriginal.original
-        const existingMember = existing.members[original.name]
+        const existingMember = existing.members[original.name]?.[0]
         const subclasses =
           (existingMember && getAnnotations(existingMember as ts.JSDocContainer).subclasses) ?? original.subclasses
         if (subclasses) {
