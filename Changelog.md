@@ -1,6 +1,12 @@
+# v0.9.0
+
+- Update to factorio version 1.1.43
+- The `defines.events `_type_ was renamed to `defines.Events`, to reduce confusion between the namespace/type
+
 # v0.8.0
+
 - All event types now explicitly extend `EventData`
-- Variant parameter groups without additional fields now have their own type, instead of all being grouped into `Other<Type>`
+- Variant parameter groups without additional fields now have their own type, instead of all being grouped into `Other`
 
 # v0.7.3
 
@@ -28,8 +34,7 @@
 # v0.5.0
 
 - Updated to factorio version 1.1.39
-- Documentation links now point to the new API docs website. More info
-  here: https://forums.factorio.com/viewtopic.php?f=34&t=99797
+- Documentation links now point to the new API docs website. More info here: https://forums.factorio.com/viewtopic.php?f=34&t=99797
 
 # v0.4.1
 
