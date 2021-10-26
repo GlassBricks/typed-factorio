@@ -319,7 +319,7 @@ export default class DefinitionsGenerator {
       const type = ts.factory.createTypeAliasDeclaration(
         undefined,
         undefined,
-        define.name,
+        "Events",
         undefined,
         ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof)
       )

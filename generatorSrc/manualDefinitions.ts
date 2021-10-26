@@ -18,7 +18,6 @@ declare namespace defines {
   enum circuit_connector_id {}
   enum gui_type {}
   enum rail_direction {}
-  type events = typeof events[keyof typeof events]
   namespace events {
     const on_console_chat: EventId<any>
     const on_player_crafted_item: EventId<any>
