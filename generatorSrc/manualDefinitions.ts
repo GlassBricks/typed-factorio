@@ -343,10 +343,9 @@ type LuaGuiElement = {
 interface LuaPlayer {}
 
 interface LuaEntity {
+  initial_amount: uint | undefined
   get_driver(): LuaEntity | LuaPlayer | undefined
   get_passenger(): LuaEntity | LuaPlayer | undefined
-  initial_amount: uint | undefined
-
   revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
   silent_revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
 
@@ -435,7 +434,7 @@ interface LuaBootstrap {
 
 //  -- Concepts --
 
-type LocalisedString = [string, ...LocalisedString[]] | string | number
+type LocalisedString = readonly [string, ...LocalisedString[]] | string | number
 
 type RealOrientation = float
 
