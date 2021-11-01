@@ -30,7 +30,7 @@ import {
 
 interface MemberAndOriginal {
   original: Method | Attribute
-  member: ts.TypeElement | ts.MethodSignature[]
+  member: ts.TypeElement | ts.TypeElement[]
 }
 
 interface GeneratedClass {
@@ -1007,7 +1007,7 @@ export default class DefinitionsGenerator {
           concept.name,
           undefined,
           undefined,
-          concept.attributes.sort(sortByOrder).map((attr) => this.mapAttribute(attr, concept.name, existing))
+          concept.attributes.sort(sortByOrder).flatMap((attr) => this.mapAttribute(attr, concept.name, existing))
         )
       } else if (concept.category === "flag") {
         declaration = ts.factory.createInterfaceDeclaration(
@@ -1160,25 +1160,55 @@ export default class DefinitionsGenerator {
     attribute: Attribute,
     parent: string,
     existingContainer: InterfaceDef | TypeAliasDef | undefined
-  ): ts.TypeElement {
-    let member: ts.TypeElement
+  ): ts.TypeElement | ts.TypeElement[] {
+    let member: ts.TypeElement | ts.TypeElement[]
     const type = this.mapTypeWithTransforms(attribute, attribute.type, parent, !attribute.write)
-    const existingProperty = existingContainer?.members[attribute.name]?.[0]
-    if (existingProperty) {
-      if (!ts.isPropertySignature(existingProperty)) {
+    const existing = existingContainer?.members[attribute.name]
+    if (existing) {
+      const first = existing[0]
+      if (ts.isPropertySignature(first)) {
+        member = ts.factory.createPropertySignature(
+          first.modifiers,
+          first.name,
+          first.questionToken,
+          first.type ?? type
+        )
+        ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
+      } else if (existing.every((v) => ts.isGetAccessorDeclaration(v) || ts.isSetAccessorDeclaration(v))) {
+        member = []
+        for (const element of existing) {
+          if (ts.isGetAccessorDeclaration(element)) {
+            if (!attribute.read) throw new Error("Get accessor defined for non-readable attribute")
+            const newMember = ts.factory.createGetAccessorDeclaration(
+              element.decorators,
+              element.modifiers,
+              element.name,
+              element.parameters,
+              element.type ?? type,
+              undefined
+            )
+            ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
+            member.push(newMember)
+          } else if (ts.isSetAccessorDeclaration(element)) {
+            if (!attribute.write) throw new Error("Set accessor defined for non-writable attribute")
+            const newMember = ts.factory.createSetAccessorDeclaration(
+              element.decorators,
+              element.modifiers,
+              element.name,
+              element.parameters,
+              undefined
+            )
+            ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
+            member.push(newMember)
+          }
+        }
+      } else {
         throw new Error(
-          `Manual define for ${parent}.${attribute.name} should be a property signature, got ${
-            ts.SyntaxKind[existingProperty.kind]
-          } instead`
+          `Unknown type for manual define for ${parent}.${attribute.name}, got kinds ${existing
+            .map((x) => ts.SyntaxKind[x.kind])
+            .join()} instead`
         )
       }
-      member = ts.factory.createPropertySignature(
-        existingProperty.modifiers,
-        existingProperty.name,
-        existingProperty.questionToken,
-        existingProperty.type ?? type
-      )
-      ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
     } else if (!attribute.read) {
       member = ts.factory.createSetAccessorDeclaration(
         undefined,
@@ -1195,7 +1225,8 @@ export default class DefinitionsGenerator {
         type
       )
     }
-    this.addJsDoc(member, attribute, parent + "." + attribute.name)
+    const first = Array.isArray(member) ? member[0] : member
+    this.addJsDoc(first, attribute, parent + "." + attribute.name)
     return member
   }
 

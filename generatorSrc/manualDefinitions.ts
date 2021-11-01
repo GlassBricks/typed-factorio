@@ -77,6 +77,10 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
 
 // Gui element
 
+interface LuaStyle {}
+interface LuaEquipment {}
+interface LuaEquipmentGrid {}
+
 /** @addBefore BaseGuiSpec */
 type GuiElementType =
   | "choose-elem-button"
@@ -336,9 +340,27 @@ type LuaGuiElement = {
   readonly tabs
   /** @subclasses entity-preview camera minimap */
   entity
+
+  set style(style: LuaStyle | string)
+  get style(): LuaStyle
 }
 
-// nullability, multi-return
+// nullability, multi-return, different read/write types
+
+interface LuaControl {
+  set opened(
+    value:
+      | LuaEntity
+      | LuaItemStack
+      | LuaEquipment
+      | LuaEquipmentGrid
+      | LuaPlayer
+      | LuaGuiElement
+      | defines.gui_type
+      | undefined
+  )
+  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | undefined
+}
 
 interface LuaPlayer {}
 
