@@ -1,3 +1,8 @@
+# v0.10.0
+
+- LuaGuiElement.style and LuaControl.opened now have different get/set types (more specific get type).
+- The array form of LocalizedString is now readonly.
+
 # v0.9.0
 
 - Update to factorio version 1.1.43
