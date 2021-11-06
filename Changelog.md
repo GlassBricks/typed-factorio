@@ -1,3 +1,7 @@
+# v0.11.0
+
+- Update to factorio version 1.1.46
+
 # v0.10.0
 
 - LuaGuiElement.style and LuaControl.opened now have different get/set types (more specific get type).
