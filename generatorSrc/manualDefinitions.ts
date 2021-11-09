@@ -454,7 +454,7 @@ interface LuaBootstrap {
 
 //  -- Concepts --
 
-type LocalisedString = readonly [string, ...LocalisedString[]] | string | number
+type LocalisedString = readonly [string, ...LocalisedString[]] | string | number | boolean | undefined
 
 type RealOrientation = float
 
