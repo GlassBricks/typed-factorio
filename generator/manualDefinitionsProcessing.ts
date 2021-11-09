@@ -157,6 +157,9 @@ export function processManualDefinitions(file: ts.SourceFile | undefined): Recor
     const def = createDef(statement)
     if (def) {
       if (def.kind === "namespace" || def.kind === "interface" || def.kind === "type") {
+        if (result[def.name]) {
+          console.log("Warning: duplicate definition for " + def.name)
+        }
         result[def.name] = def
       }
     }

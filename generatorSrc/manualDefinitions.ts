@@ -362,8 +362,6 @@ interface LuaControl {
   get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | undefined
 }
 
-interface LuaPlayer {}
-
 interface LuaEntity {
   initial_amount: uint | undefined
   get_driver(): LuaEntity | LuaPlayer | undefined
