@@ -1,3 +1,7 @@
+# v0.12.0
+
+- Update to factorio version 1.1.48
+
 # v0.11.1
 
 - Localised strings now accept boolean and undefined.
