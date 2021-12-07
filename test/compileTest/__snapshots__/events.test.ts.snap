@@ -10,9 +10,7 @@ exports[`on_event set handler 1`] = `
 script.on_event(
     \\"someInput\\",
     function(e)
-        log(
-            serpent.block(e)
-        )
+        log(serpent.block(e))
     end
 )
 script.on_event(defines.events.on_area_cloned, nil)
