@@ -1502,7 +1502,7 @@ export default class DefinitionsGenerator {
         continue
       }
       const fullName =
-        toPascalCase(isDefine ? group.name.substr(group.name.lastIndexOf(".") + 1) : group.name) + shortName
+        toPascalCase(isDefine ? group.name.substring(group.name.lastIndexOf(".") + 1) : group.name) + shortName
       const existing = this.manualDefinitions[fullName]
       if (existing?.kind === "namespace") {
         throw new Error(`Manual definition for variant parameter type ${fullName} cannot be a namespace`)
