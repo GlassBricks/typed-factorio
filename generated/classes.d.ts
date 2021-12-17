@@ -10161,12 +10161,6 @@ interface SpriteButtonGuiElementMembers extends BaseGuiElement {
    */
   sprite: SpritePath
   /**
-   * Whether the image widget should resize according to the sprite in it. Defaults to `true`.
-   *
-   * {@link https://lua-api.factorio.com/next/LuaGuiElement.html#LuaGuiElement.resize_to_sprite View documentation}
-   */
-  resize_to_sprite: boolean
-  /**
    * The image to display on this sprite-button when it is hovered.
    *
    * *Can only be used if this is sprite-button*

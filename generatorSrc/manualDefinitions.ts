@@ -312,7 +312,7 @@ type LuaGuiElement = {
   set_slider_discrete_values()
   /** @subclasses sprite-button sprite */
   sprite
-  /** @subclasses sprite-button sprite */
+  /** @subclasses sprite */
   resize_to_sprite
   /** @subclasses sprite-button */
   clicked_sprite
