@@ -81,6 +81,8 @@ class Statements {
 }
 
 export default class DefinitionsGenerator {
+  private static header = "// This is an auto-generated file. Do not edit directly!\n\n"
+
   private static keywords = new Set(["function", "interface"])
   private static noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
   private outFiles = new Map<string, ts.Statement[]>()
@@ -157,7 +159,7 @@ export default class DefinitionsGenerator {
     }
     const result = new Map<string, string>()
     for (const [fileName, statements] of this.outFiles) {
-      let content = ""
+      let content = DefinitionsGenerator.header
       for (const statement of statements) {
         content += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource)
         content += "\n\n"
