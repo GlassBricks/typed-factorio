@@ -1,3 +1,7 @@
+# v0.13.1
+
+- Fix: resize_to_sprite property should not be on subclass sprite-button
+
 # v0.13.0
 
 - Update to factorio version 1.1.49
