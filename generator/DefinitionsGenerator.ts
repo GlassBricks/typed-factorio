@@ -108,7 +108,7 @@ export default class DefinitionsGenerator {
     subkeys: this.apiDocs.defines,
   }
 
-  private readonly docUrlBase = "https://lua-api.factorio.com/next/"
+  private readonly docUrlBase = "https://lua-api.factorio.com/latest/"
   private readonly warnings: string[] = []
 
   constructor(
