@@ -2,6 +2,9 @@
 
 - Fix: resize_to_sprite property should not be on subclass sprite-button
 - Fix: ChooseElemButtonSpec filters should be named elem_filters
+- Switch back to `/latest` api docs link
+    - New version of web api docs is now active
+
 # v0.13.0
 
 - Update to factorio version 1.1.49
