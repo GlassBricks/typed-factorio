@@ -169,7 +169,7 @@ interface BaseChooseElemButtonSpec extends BaseGuiSpec {
   /** The type of the button - one of the following values. */
   readonly elem_type: ChooseElemButtonType
   /** Filters describing what to show in the selection window. See {@link LuaGuiElement.elem_filters LuaGuiElement::elem_filters}. */
-  readonly filters?: ChooseElemButtonFilters[this["elem_type"]]
+  readonly elem_filters?: ChooseElemButtonFilters[this["elem_type"]]
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
