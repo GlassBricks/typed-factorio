@@ -15,7 +15,7 @@
   ],
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "scripts": {
-    "gen": "ts-node -P generator/tsconfig.json generator/index.ts",
+    "gen": "ts-node -P generator/tsconfig.json generator/main.ts",
     "generate": "yarn run gen --in ./generatorSrc --out ./generated --warn-as-error",
     "generate:dev": "yarn run gen --in ./generatorSrc --out ./generated --no-format",
     "clean": "rimraf generated",
