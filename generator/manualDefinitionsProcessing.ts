@@ -8,12 +8,31 @@ export interface BaseDef {
   readonly name: string
 }
 
+export enum AnnotationKind {
+  AddTo = "addTo",
+  AddBefore = "addBefore",
+  Omit = "omit",
+  NumericEnum = "numericEnum",
+
+  Subclasses = "subclasses",
+  SeparateSubclasses = "separateSubclasses",
+  DiscriminatedUnion = "discriminatedUnion",
+  IgnoreSubclasses = "ignoreSubclasses",
+  VariantsName = "variantsName",
+
+  TableOrArray = "tableOrArray",
+}
+
+const annotationValues = new Set<string>(Object.values(AnnotationKind))
+
+export type AnnotationMap = Partial<Record<AnnotationKind, string[]>>
+
 export interface InterfaceDef extends BaseDef {
   readonly kind: "interface"
   readonly node: ts.InterfaceDeclaration
   readonly supertypes: readonly ts.ExpressionWithTypeArguments[]
   readonly members: Record<string, ts.TypeElement[] | undefined>
-  readonly annotations: Record<string, string[] | undefined>
+  readonly annotations: AnnotationMap
 }
 
 export interface TypeAliasDef extends BaseDef {
@@ -22,14 +41,14 @@ export interface TypeAliasDef extends BaseDef {
   readonly supertypes: readonly ts.TypeNode[]
   readonly indexOperator: ts.MappedTypeNode | ts.TypeLiteralNode | undefined
   readonly members: Record<string, ts.TypeElement[] | undefined>
-  readonly annotations: Record<string, string[] | undefined>
+  readonly annotations: AnnotationMap
 }
 
 export interface NamespaceDef extends BaseDef {
   readonly kind: "namespace"
   readonly node: ts.NamespaceDeclaration
   readonly members: Record<string, NamespaceDef | ConstDef | EnumDef>
-  readonly annotations: Record<string, string[]>
+  readonly annotations: AnnotationMap
 }
 
 export interface ConstDef extends BaseDef {
@@ -41,7 +60,7 @@ export interface ConstDef extends BaseDef {
 export interface EnumDef extends BaseDef {
   readonly kind: "enum"
   readonly node: ts.EnumDeclaration
-  readonly annotations: Record<string, string[]>
+  readonly annotations: AnnotationMap
 }
 
 export type RootDef = InterfaceDef | TypeAliasDef | NamespaceDef
@@ -167,11 +186,15 @@ export function processManualDefinitions(file: ts.SourceFile | undefined): Recor
   return result
 }
 
-export function getAnnotations(node: ts.JSDocContainer): Record<string, string[]> {
-  const result: Record<string, string[]> = {}
+export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
+  const result: AnnotationMap = {}
   node.jsDoc?.forEach((value) =>
     value.tags?.forEach((tag) => {
-      result[tag.tagName.text] = !tag.comment
+      const annotationName = tag.tagName.text
+      if (!annotationValues.has(annotationName)) {
+        throw new Error(`Unknown annotation ${annotationName}`)
+      }
+      result[annotationName as AnnotationKind] = !tag.comment
         ? []
         : typeof tag.comment === "string"
         ? tag.comment.split(" ")

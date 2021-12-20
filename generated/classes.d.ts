@@ -9813,6 +9813,7 @@ interface ChooseElemButtonGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "choose-elem-button"
+  get style(): ChooseElemButtonStyle
   /**
    * The elem type of this choose-elem-button.
    *
@@ -9896,6 +9897,7 @@ interface DropDownGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "drop-down"
+  get style(): DropDownStyle
   /**
    * Removes the items in this dropdown or listbox.
    *
@@ -9959,6 +9961,7 @@ interface EmptyWidgetGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "empty-widget"
+  get style(): EmptyWidgetStyle
   /**
    * The frame drag target for this flow, frame, label, table, or empty-widget.
    *
@@ -9983,6 +9986,7 @@ interface EntityPreviewGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "entity-preview"
+  get style(): EntityPreviewStyle
   /**
    * The entity associated with this entity-preview, camera, minimap or `nil` if no entity is associated.
    *
@@ -10001,6 +10005,7 @@ interface ListBoxGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "list-box"
+  get style(): ListBoxStyle
   /**
    * Removes the items in this dropdown or listbox.
    *
@@ -10077,6 +10082,7 @@ interface ScrollPaneGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "scroll-pane"
+  get style(): ScrollPaneStyle
   /**
    * Scrolls this scroll bar to the top.
    *
@@ -10150,6 +10156,7 @@ interface SpriteButtonGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "sprite-button"
+  get style(): SpriteButtonStyle
   /**
    * The image to display on this sprite-button or sprite in the default state.
    *
@@ -10202,6 +10209,7 @@ interface TabbedPaneGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "tabbed-pane"
+  get style(): TabbedPaneStyle
   /**
    * Adds the given tab and content widgets to this tabbed pane as a new tab.
    *
@@ -10254,6 +10262,7 @@ interface TextBoxGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "text-box"
+  get style(): TextBoxStyle
   /**
    * Scrolls this scroll bar to the top.
    *
@@ -10370,6 +10379,7 @@ interface ButtonGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "button"
+  get style(): ButtonStyle
   /**
    * The mouse button filters for this button or sprite-button.
    *
@@ -10387,6 +10397,7 @@ interface CameraGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "camera"
+  get style(): CameraStyle
   /**
    * The position this camera or minimap is focused on, if any.
    *
@@ -10422,6 +10433,7 @@ interface CheckboxGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "checkbox"
+  get style(): CheckboxStyle
   /**
    * Is this checkbox or radiobutton checked?
    *
@@ -10441,6 +10453,7 @@ interface FlowGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "flow"
+  get style(): FlowStyle
   /**
    * Direction of this element's layout. May be either `"horizontal"` or `"vertical"`.
    *
@@ -10474,6 +10487,7 @@ interface FrameGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "frame"
+  get style(): FrameStyle
   /**
    * Forces this frame to re-auto-center. Only works on frames stored directly in {@link LuaGui.screen LuaGui::screen}.
    *
@@ -10522,6 +10536,7 @@ interface LabelGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "label"
+  get style(): LabelStyle
   /**
    * The frame drag target for this flow, frame, label, table, or empty-widget.
    *
@@ -10546,6 +10561,7 @@ interface LineGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "line"
+  get style(): LineStyle
   /**
    * Direction of this element's layout. May be either `"horizontal"` or `"vertical"`.
    *
@@ -10565,6 +10581,7 @@ interface MinimapGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "minimap"
+  get style(): MinimapStyle
   /**
    * The position this camera or minimap is focused on, if any.
    *
@@ -10614,6 +10631,7 @@ interface ProgressbarGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "progressbar"
+  get style(): ProgressbarStyle
   /**
    * How much this progress bar is filled. It is a value in the range [0, 1].
    *
@@ -10633,6 +10651,7 @@ interface RadiobuttonGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "radiobutton"
+  get style(): RadiobuttonStyle
   /**
    * Is this checkbox or radiobutton checked?
    *
@@ -10653,6 +10672,7 @@ interface SliderGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "slider"
+  get style(): SliderStyle
   /**
    * Gets this sliders minimum value.
    *
@@ -10739,6 +10759,7 @@ interface SpriteGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "sprite"
+  get style(): SpriteStyle
   /**
    * The image to display on this sprite-button or sprite in the default state.
    *
@@ -10762,6 +10783,7 @@ interface SwitchGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "switch"
+  get style(): SwitchStyle
   /**
    * The switch state (left, none, right) for this switch.
    *
@@ -10825,6 +10847,7 @@ interface TabGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "tab"
+  get style(): TabStyle
   /**
    * The text to display after the normal tab text (designed to work with numbers)
    *
@@ -10844,6 +10867,7 @@ interface TableGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "table"
+  get style(): TableStyle
   /**
    * Whether this table should draw vertical grid lines.
    *
@@ -10903,13 +10927,14 @@ interface TableGuiElementMembers extends BaseGuiElement {
 type TableGuiElement = TableGuiElementMembers & GuiElementIndex
 
 /** @noSelf */
-interface TextfieldGuiElementMembers extends BaseGuiElement {
+interface TextFieldGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "textfield"
+  get style(): TextFieldStyle
   /**
    * Selects all the text in this textbox.
    *
@@ -11001,7 +11026,7 @@ interface TextfieldGuiElementMembers extends BaseGuiElement {
   clear_and_focus_on_right_click: boolean
 }
 
-type TextfieldGuiElement = TextfieldGuiElementMembers & GuiElementIndex
+type TextFieldGuiElement = TextFieldGuiElementMembers & GuiElementIndex
 
 type GuiElementMembers =
   | ChooseElemButtonGuiElementMembers
@@ -11028,7 +11053,7 @@ type GuiElementMembers =
   | SwitchGuiElementMembers
   | TabGuiElementMembers
   | TableGuiElementMembers
-  | TextfieldGuiElementMembers
+  | TextFieldGuiElementMembers
 
 /**
  * An element of a custom GUI. This type is used to represent any kind of a GUI element - labels, buttons and frames are
@@ -17013,14 +17038,8 @@ interface LuaStorageTankControlBehavior extends LuaControlBehavior {
   help(): string
 }
 
-/**
- * Style of a GUI element. All of the attributes listed here may be `nil` if not available for a particular GUI element.
- *
- * {@link https://lua-api.factorio.com/latest/LuaStyle.html View documentation}
- *
- * @noSelf
- */
-interface LuaStyle {
+/** @noSelf */
+interface BaseStyle {
   /**
    * Gui of the {@link LuaGuiElement} of this style.
    *
@@ -17094,38 +17113,6 @@ interface LuaStyle {
   font_color: Color
   font: string
   /**
-   * Space between the table cell contents top and border.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.top_cell_padding View documentation}
-   */
-  top_cell_padding: int
-  /**
-   * Space between the table cell contents right and border.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.right_cell_padding View documentation}
-   */
-  right_cell_padding: int
-  /**
-   * Space between the table cell contents bottom and border.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.bottom_cell_padding View documentation}
-   */
-  bottom_cell_padding: int
-  /**
-   * Space between the table cell contents left and border.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.left_cell_padding View documentation}
-   */
-  left_cell_padding: int
-  /**
    * If the GUI element stretches its size horizontally to other elements.
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontally_stretchable View documentation}
@@ -17152,6 +17139,160 @@ interface LuaStyle {
    */
   vertically_squashable: boolean
   /**
+   * Array containing the alignment for every column of this table element. Even though this property is marked as
+   * read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.column_alignments View documentation}
+   *
+   * @example
+   *   ```lua
+   *     table_element.style.column_alignments[1] = "center"
+   *     ```
+   */
+  readonly column_alignments: LuaCustomTable<uint, Alignment>
+  /**
+   * Sets both minimal and maximal width to the given value.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.width View documentation}
+   */
+  set width(value: int)
+  /**
+   * Sets both minimal and maximal height to the given value.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.height View documentation}
+   */
+  set height(value: int)
+  /**
+   * Sets both width and height to the given value. Also accepts an array with two values, setting width to the first
+   * and height to the second one.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.size View documentation}
+   */
+  set size(value: int | int[])
+  /**
+   * Sets top/right/bottom/left paddings to this value. An array with two values sets top/bottom padding to the first
+   * value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding
+   * respectively.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.padding View documentation}
+   */
+  set padding(value: int | int[])
+  /**
+   * Sets top/right/bottom/left margins to this value. An array with two values sets top/bottom margin to the first
+   * value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin
+   * respectively.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.margin View documentation}
+   */
+  set margin(value: int | int[])
+  /**
+   * Sets extra_top/right/bottom/left_padding_when_actived to this value. An array with two values sets top/bottom
+   * padding to the first value and left/right padding to the second value. An array with four values sets top, right,
+   * bottom, left padding respectively.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_padding_when_activated View documentation}
+   */
+  set extra_padding_when_activated(value: int | int[])
+  /**
+   * Sets extra_top/right/bottom/left_margin_when_activated to this value. An array with two values sets top/bottom
+   * margin to the first value and left/right margin to the second value. An array with four values sets top, right,
+   * bottom, left margin respectively.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_margin_when_activated View documentation}
+   */
+  set extra_margin_when_activated(value: int | int[])
+  /**
+   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
+   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
+   * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
+   * change to the game state might have occurred between the creation of the Lua object and its access.
+   */
+  readonly valid: boolean
+  /**
+   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be
+   * suffixed with a dotted path to a member of the struct.
+   */
+  readonly object_name: "LuaStyle"
+  /** All methods and properties that this object supports. */
+  help(): string
+}
+
+interface ChooseElemButtonStyle extends BaseStyle {}
+
+interface DropDownStyle extends BaseStyle {}
+
+interface EmptyWidgetStyle extends BaseStyle {}
+
+interface EntityPreviewStyle extends BaseStyle {}
+
+interface ListBoxStyle extends BaseStyle {}
+
+interface ScrollPaneStyle extends BaseStyle {
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_top_padding_when_activated View documentation}
+   */
+  extra_top_padding_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_bottom_padding_when_activated View documentation}
+   */
+  extra_bottom_padding_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_left_padding_when_activated View documentation}
+   */
+  extra_left_padding_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_padding_when_activated View documentation}
+   */
+  extra_right_padding_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_top_margin_when_activated View documentation}
+   */
+  extra_top_margin_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_bottom_margin_when_activated View documentation}
+   */
+  extra_bottom_margin_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_left_margin_when_activated View documentation}
+   */
+  extra_left_margin_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_margin_when_activated View documentation}
+   */
+  extra_right_margin_when_activated: int
+}
+
+interface SpriteButtonStyle extends BaseStyle {}
+
+interface TabbedPaneStyle extends BaseStyle {
+  /**
+   * Vertical space between individual cells.
+   *
+   * *Can only be used if this is LuaTableStyle, LuaFlowStyle, LuaVerticalFlowStyle or LuaTabbedPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_spacing View documentation}
+   */
+  vertical_spacing: int
+}
+
+interface TextBoxStyle extends BaseStyle {
+  /**
    * How this GUI element handles rich text.
    *
    * *Can only be used if this is LuaLabelStyle, LuaTextBoxStyle or LuaTextFieldStyle*
@@ -17159,6 +17300,9 @@ interface LuaStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.rich_text_setting View documentation}
    */
   rich_text_setting: defines.rich_text_setting
+}
+
+interface ButtonStyle extends BaseStyle {
   /**
    * *Can only be used if this is LuaButtonStyle*
    *
@@ -17213,6 +17357,13 @@ interface LuaStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.strikethrough_color View documentation}
    */
   strikethrough_color: Color
+}
+
+interface CameraStyle extends BaseStyle {}
+
+interface CheckboxStyle extends BaseStyle {}
+
+interface FlowStyle extends BaseStyle {
   /**
    * Horizontal space between individual cells.
    *
@@ -17229,12 +17380,39 @@ interface LuaStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_spacing View documentation}
    */
   vertical_spacing: int
+}
+
+interface FrameStyle extends BaseStyle {
   /**
    * *Can only be used if this is LuaFrameStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.use_header_filler View documentation}
    */
   use_header_filler: boolean
+}
+
+interface LabelStyle extends BaseStyle {
+  /**
+   * How this GUI element handles rich text.
+   *
+   * *Can only be used if this is LuaLabelStyle, LuaTextBoxStyle or LuaTextFieldStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.rich_text_setting View documentation}
+   */
+  rich_text_setting: defines.rich_text_setting
+  /**
+   * *Can only be used if this is LabelStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.single_line View documentation}
+   */
+  single_line: boolean
+}
+
+interface LineStyle extends BaseStyle {}
+
+interface MinimapStyle extends BaseStyle {}
+
+interface ProgressbarStyle extends BaseStyle {
   /**
    * *Can only be used if this is LuaProgressBarStyle*
    *
@@ -17247,78 +17425,30 @@ interface LuaStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.color View documentation}
    */
   color: Color
-  /**
-   * Array containing the alignment for every column of this table element. Even though this property is marked as
-   * read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.column_alignments View documentation}
-   *
-   * @example
-   *   ```lua
-   *     table_element.style.column_alignments[1] = "center"
-   *     ```
-   */
-  readonly column_alignments: LuaCustomTable<uint, Alignment>
-  /**
-   * *Can only be used if this is LabelStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.single_line View documentation}
-   */
-  single_line: boolean
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_top_padding_when_activated View documentation}
-   */
-  extra_top_padding_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_bottom_padding_when_activated View documentation}
-   */
-  extra_bottom_padding_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_left_padding_when_activated View documentation}
-   */
-  extra_left_padding_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_padding_when_activated View documentation}
-   */
-  extra_right_padding_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_top_margin_when_activated View documentation}
-   */
-  extra_top_margin_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_bottom_margin_when_activated View documentation}
-   */
-  extra_bottom_margin_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_left_margin_when_activated View documentation}
-   */
-  extra_left_margin_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_margin_when_activated View documentation}
-   */
-  extra_right_margin_when_activated: int
+}
+
+interface RadiobuttonStyle extends BaseStyle {}
+
+interface SliderStyle extends BaseStyle {}
+
+interface SpriteStyle extends BaseStyle {
   /**
    * *Can only be used if this is ImageStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.stretch_image_to_widget_size View documentation}
    */
   stretch_image_to_widget_size: boolean
+}
+
+interface SwitchStyle extends BaseStyle {}
+
+interface TabStyle extends BaseStyle {
+  /**
+   * *Can only be used if this is LuaButtonStyle or LuaTabStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.disabled_font_color View documentation}
+   */
+  disabled_font_color: Color
   /**
    * *Can only be used if this is TabStyle*
    *
@@ -17349,41 +17479,57 @@ interface LuaStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.disabled_badge_font_color View documentation}
    */
   disabled_badge_font_color: Color
+}
+
+interface TableStyle extends BaseStyle {
   /**
-   * Sets both minimal and maximal width to the given value.
+   * Space between the table cell contents top and border.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.width View documentation}
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.top_cell_padding View documentation}
    */
-  set width(value: int)
+  top_cell_padding: int
   /**
-   * Sets both minimal and maximal height to the given value.
+   * Space between the table cell contents right and border.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.height View documentation}
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.right_cell_padding View documentation}
    */
-  set height(value: int)
+  right_cell_padding: int
   /**
-   * Sets both width and height to the given value. Also accepts an array with two values, setting width to the first
-   * and height to the second one.
+   * Space between the table cell contents bottom and border.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.size View documentation}
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.bottom_cell_padding View documentation}
    */
-  set size(value: int | int[])
+  bottom_cell_padding: int
   /**
-   * Sets top/right/bottom/left paddings to this value. An array with two values sets top/bottom padding to the first
-   * value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding
-   * respectively.
+   * Space between the table cell contents left and border.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.padding View documentation}
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.left_cell_padding View documentation}
    */
-  set padding(value: int | int[])
+  left_cell_padding: int
   /**
-   * Sets top/right/bottom/left margins to this value. An array with two values sets top/bottom margin to the first
-   * value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin
-   * respectively.
+   * Horizontal space between individual cells.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.margin View documentation}
+   * *Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlow*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontal_spacing View documentation}
    */
-  set margin(value: int | int[])
+  horizontal_spacing: int
+  /**
+   * Vertical space between individual cells.
+   *
+   * *Can only be used if this is LuaTableStyle, LuaFlowStyle, LuaVerticalFlowStyle or LuaTabbedPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_spacing View documentation}
+   */
+  vertical_spacing: int
   /**
    * Space between the table cell contents and border. Sets top/right/bottom/left cell paddings to this value.
    *
@@ -17392,37 +17538,50 @@ interface LuaStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.cell_padding View documentation}
    */
   set cell_padding(value: int)
-  /**
-   * Sets extra_top/right/bottom/left_padding_when_actived to this value. An array with two values sets top/bottom
-   * padding to the first value and left/right padding to the second value. An array with four values sets top, right,
-   * bottom, left padding respectively.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_padding_when_activated View documentation}
-   */
-  set extra_padding_when_activated(value: int | int[])
-  /**
-   * Sets extra_top/right/bottom/left_margin_when_activated to this value. An array with two values sets top/bottom
-   * margin to the first value and left/right margin to the second value. An array with four values sets top, right,
-   * bottom, left margin respectively.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_margin_when_activated View documentation}
-   */
-  set extra_margin_when_activated(value: int | int[])
-  /**
-   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
-   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
-   * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
-   * change to the game state might have occurred between the creation of the Lua object and its access.
-   */
-  readonly valid: boolean
-  /**
-   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be
-   * suffixed with a dotted path to a member of the struct.
-   */
-  readonly object_name: "LuaStyle"
-  /** All methods and properties that this object supports. */
-  help(): string
 }
+
+interface TextFieldStyle extends BaseStyle {
+  /**
+   * How this GUI element handles rich text.
+   *
+   * *Can only be used if this is LuaLabelStyle, LuaTextBoxStyle or LuaTextFieldStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.rich_text_setting View documentation}
+   */
+  rich_text_setting: defines.rich_text_setting
+}
+
+/**
+ * Style of a GUI element. All of the attributes listed here may be `nil` if not available for a particular GUI element.
+ *
+ * {@link https://lua-api.factorio.com/latest/LuaStyle.html View documentation}
+ */
+type LuaStyle =
+  | ChooseElemButtonStyle
+  | DropDownStyle
+  | EmptyWidgetStyle
+  | EntityPreviewStyle
+  | ListBoxStyle
+  | ScrollPaneStyle
+  | SpriteButtonStyle
+  | TabbedPaneStyle
+  | TextBoxStyle
+  | ButtonStyle
+  | CameraStyle
+  | CheckboxStyle
+  | FlowStyle
+  | FrameStyle
+  | LabelStyle
+  | LineStyle
+  | MinimapStyle
+  | ProgressbarStyle
+  | RadiobuttonStyle
+  | SliderStyle
+  | SpriteStyle
+  | SwitchStyle
+  | TabStyle
+  | TableStyle
+  | TextFieldStyle
 
 interface BaseSurfaceCreateEntity {
   /** The entity prototype name to create. */

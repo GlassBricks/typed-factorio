@@ -54,9 +54,9 @@ export function createNamespace(
   )
 }
 
-export function createConst(name: string, type: ts.TypeNode): ts.VariableStatement {
+export function createConst(name: string, type: ts.TypeNode, modifiers?: ts.Modifier[]): ts.VariableStatement {
   return ts.factory.createVariableStatement(
-    undefined,
+    modifiers,
     ts.factory.createVariableDeclarationList(
       [ts.factory.createVariableDeclaration(name, undefined, type)],
       ts.NodeFlags.Const

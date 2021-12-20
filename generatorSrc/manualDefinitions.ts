@@ -77,10 +77,6 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
 
 // Gui element
 
-interface LuaStyle {}
-interface LuaEquipment {}
-interface LuaEquipmentGrid {}
-
 /** @addBefore BaseGuiSpec */
 type GuiElementType =
   | "choose-elem-button"
@@ -108,6 +104,16 @@ type GuiElementType =
   | "tab"
   | "table"
   | "textfield"
+
+/**
+ * @separateSubclasses
+ * @ignoreSubclasses horizontalflow verticalflow
+ */
+interface LuaStyle {
+  __subclasses: GuiElementType
+}
+interface LuaEquipment {}
+interface LuaEquipmentGrid {}
 
 interface BaseGuiSpec {
   readonly type: GuiElementType
