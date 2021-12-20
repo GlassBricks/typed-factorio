@@ -2,6 +2,7 @@ type uint = number
 type double = number
 type float = number
 type table = object
+type int = number
 
 declare namespace defines {
   const prototypes: {
@@ -105,13 +106,27 @@ type GuiElementType =
   | "table"
   | "textfield"
 
+/** @addTo concepts */
+type StyleValuesArray =
+  | readonly [topBottom: number, leftRight: number]
+  | readonly [top: number, right: number, bottom: number, left: number]
+/** @addTo concepts */
+type SizeArray = readonly [width: int, height: int]
+
 /**
  * @separateSubclasses
  * @ignoreSubclasses horizontalflow verticalflow
  */
 interface LuaStyle {
   __subclasses: GuiElementType
+
+  set size(value: int | SizeArray)
+  set padding(value: int | StyleValuesArray)
+  set margin(value: int | StyleValuesArray)
+  set extra_padding_when_activated(value: int | StyleValuesArray)
+  set extra_margin_when_activated(value: int | StyleValuesArray)
 }
+
 interface LuaEquipment {}
 interface LuaEquipmentGrid {}
 

@@ -17168,7 +17168,7 @@ interface BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.size View documentation}
    */
-  set size(value: int | int[])
+  set size(value: int | SizeArray)
   /**
    * Sets top/right/bottom/left paddings to this value. An array with two values sets top/bottom padding to the first
    * value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding
@@ -17176,7 +17176,7 @@ interface BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.padding View documentation}
    */
-  set padding(value: int | int[])
+  set padding(value: int | StyleValuesArray)
   /**
    * Sets top/right/bottom/left margins to this value. An array with two values sets top/bottom margin to the first
    * value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin
@@ -17184,7 +17184,7 @@ interface BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.margin View documentation}
    */
-  set margin(value: int | int[])
+  set margin(value: int | StyleValuesArray)
   /**
    * Sets extra_top/right/bottom/left_padding_when_actived to this value. An array with two values sets top/bottom
    * padding to the first value and left/right padding to the second value. An array with four values sets top, right,
@@ -17192,7 +17192,7 @@ interface BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_padding_when_activated View documentation}
    */
-  set extra_padding_when_activated(value: int | int[])
+  set extra_padding_when_activated(value: int | StyleValuesArray)
   /**
    * Sets extra_top/right/bottom/left_margin_when_activated to this value. An array with two values sets top/bottom
    * margin to the first value and left/right margin to the second value. An array with four values sets top, right,
@@ -17200,7 +17200,7 @@ interface BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_margin_when_activated View documentation}
    */
-  set extra_margin_when_activated(value: int | int[])
+  set extra_margin_when_activated(value: int | StyleValuesArray)
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
    * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the

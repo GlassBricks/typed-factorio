@@ -6543,6 +6543,12 @@ type LuaSectorScannedEventFilter =
   | TransportBeltConnectableSectorScannedEventFilter
   | CircuitNetworkConnectableSectorScannedEventFilter
 
+type StyleValuesArray =
+  | readonly [topBottom: number, leftRight: number]
+  | readonly [top: number, right: number, bottom: number, left: number]
+
+type SizeArray = readonly [width: int, height: int]
+
 /**
  * A map gen preset. Used in {@link https://wiki.factorio.com/Prototype/MapGenPresets Prototype/MapGenPresets}.
  *
