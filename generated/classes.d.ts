@@ -9806,7 +9806,6 @@ interface BaseGuiElement {
   help(): string
 }
 
-/** @noSelf */
 interface ChooseElemButtonGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -9953,7 +9952,6 @@ interface DropDownGuiElementMembers extends BaseGuiElement {
 
 type DropDownGuiElement = DropDownGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface EmptyWidgetGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -9978,7 +9976,6 @@ interface EmptyWidgetGuiElementMembers extends BaseGuiElement {
 
 type EmptyWidgetGuiElement = EmptyWidgetGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface EntityPreviewGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10146,7 +10143,6 @@ interface ScrollPaneGuiElementMembers extends BaseGuiElement {
 
 type ScrollPaneGuiElement = ScrollPaneGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface SpriteButtonGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10367,7 +10363,6 @@ interface TextBoxGuiElementMembers extends BaseGuiElement {
 
 type TextBoxGuiElement = TextBoxGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface ButtonGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10385,7 +10380,6 @@ interface ButtonGuiElementMembers extends BaseGuiElement {
 
 type ButtonGuiElement = ButtonGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface CameraGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10421,7 +10415,6 @@ interface CameraGuiElementMembers extends BaseGuiElement {
 
 type CameraGuiElement = CameraGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface CheckboxGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10441,7 +10434,6 @@ interface CheckboxGuiElementMembers extends BaseGuiElement {
 
 type CheckboxGuiElement = CheckboxGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface FlowGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10523,7 +10515,6 @@ interface FrameGuiElementMembers extends BaseGuiElement {
 
 type FrameGuiElement = FrameGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface LabelGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10548,7 +10539,6 @@ interface LabelGuiElementMembers extends BaseGuiElement {
 
 type LabelGuiElement = LabelGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface LineGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10568,7 +10558,6 @@ interface LineGuiElementMembers extends BaseGuiElement {
 
 type LineGuiElement = LineGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface MinimapGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10618,7 +10607,6 @@ interface MinimapGuiElementMembers extends BaseGuiElement {
 
 type MinimapGuiElement = MinimapGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface ProgressbarGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10638,7 +10626,6 @@ interface ProgressbarGuiElementMembers extends BaseGuiElement {
 
 type ProgressbarGuiElement = ProgressbarGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface RadiobuttonGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10745,7 +10732,6 @@ interface SliderGuiElementMembers extends BaseGuiElement {
 
 type SliderGuiElement = SliderGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface SpriteGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10769,7 +10755,6 @@ interface SpriteGuiElementMembers extends BaseGuiElement {
 
 type SpriteGuiElement = SpriteGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface SwitchGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10833,7 +10818,6 @@ interface SwitchGuiElementMembers extends BaseGuiElement {
 
 type SwitchGuiElement = SwitchGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface TabGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
@@ -10853,7 +10837,6 @@ interface TabGuiElementMembers extends BaseGuiElement {
 
 type TabGuiElement = TabGuiElementMembers & GuiElementIndex
 
-/** @noSelf */
 interface TableGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.

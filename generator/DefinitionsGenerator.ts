@@ -147,7 +147,12 @@ export default class DefinitionsGenerator {
     return name
   }
 
-  private static addNoSelfAnnotationOnly(node: ts.Node) {
+  private static needsNoSelfAnnotation(node: ts.Node) {
+    return ts.isInterfaceDeclaration(node) && node.members.some((m) => ts.isMethodSignature(m))
+  }
+
+  private static addNoSelfAnnotationOnly(node: ts.InterfaceDeclaration) {
+    if (!DefinitionsGenerator.needsNoSelfAnnotation(node)) return
     const jsDoc = ts.factory.createJSDocComment(undefined, [DefinitionsGenerator.noSelfAnnotation])
     addFakeJSDoc(node, jsDoc)
   }
@@ -823,7 +828,12 @@ export default class DefinitionsGenerator {
 
       if (!indexTypeName) {
         if (classForDocs) {
-          this.addJsDoc(baseDeclaration, classForDocs, classForDocs.name, [DefinitionsGenerator.noSelfAnnotation])
+          this.addJsDoc(
+            baseDeclaration,
+            classForDocs,
+            classForDocs.name,
+            DefinitionsGenerator.needsNoSelfAnnotation(baseDeclaration) ? [DefinitionsGenerator.noSelfAnnotation] : []
+          )
         } else {
           DefinitionsGenerator.addNoSelfAnnotationOnly(baseDeclaration)
         }
