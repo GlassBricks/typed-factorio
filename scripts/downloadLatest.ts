@@ -1,7 +1,7 @@
 import * as https from "https"
 import * as fs from "fs"
 import * as path from "path"
-import * as process from "process"
+import * as child_process from "child_process"
 
 const url = "https://lua-api.factorio.com/latest/runtime-api.json"
 
@@ -43,10 +43,12 @@ async function main() {
   }
   const version = contents.application_version
   console.log(`downloaded runtime api for version ${version}`)
-  await fs.promises.rename(destination, path.resolve(destinationFolder, `runtime-api-${version}.json`))
+  const resultPath = path.resolve(destinationFolder, `runtime-api-${version}.json`)
+  await fs.promises.rename(destination, resultPath)
+  const projectDir = path.resolve(__dirname, "..")
+  child_process.spawnSync("git", ["add", path.relative(projectDir, resultPath)], {
+    cwd: projectDir,
+    stdio: "inherit",
+  })
 }
-
-main().catch((error) => {
-  console.error(error)
-  process.exit(1)
-})
+void main()

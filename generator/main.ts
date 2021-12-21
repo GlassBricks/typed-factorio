@@ -47,6 +47,7 @@ if (!jsonFile) {
 
 console.log("reading files")
 const jsonApi = JSON.parse(fs.readFileSync(path.join(srcFolder, jsonFile!), "utf-8")) as FactorioApiJson
+console.log(`  factorio version ${version}`)
 const tsProgram = ts.createProgram({
   rootNames: [manualDefinesFile],
   options: {},
