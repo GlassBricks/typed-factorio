@@ -1,4 +1,4 @@
-import ts from "typescript"
+import ts, { SyntaxKind } from "typescript"
 import { createConst, createNamespace, mergeUnion, Modifiers, Tokens, toPascalCase, Types } from "./genUtil"
 import { assertNever, getFirst, sortByOrder } from "./util"
 import { emptySourceFile, printer } from "./printer"
@@ -46,8 +46,7 @@ interface GeneratedClass {
   indexType?: ts.TypeAliasDeclaration | ts.InterfaceDeclaration | undefined
 
   subclassesInfo?: {
-    property?: string
-    subclasses: string[]
+    discriminantProperty?: string
     // empty string == base
     membersBySubclass: Map<string, MemberAndOriginal[]>
   }
@@ -679,16 +678,8 @@ export default class DefinitionsGenerator {
       function normalizeName(origName: string) {
         return origName.replace(/[-_ ]/g, "").toLowerCase() as MapName
       }
-      function getUseName(origName: string) {
-        if (origName === "textfield") {
-          return "TextField" as UseName
-        } else {
-          return toPascalCase(origName) as UseName
-        }
-      }
-
-      const subclassNames = new Map<MapName, UseName>()
       const membersBySubclass = new Map<MapName, MemberAndOriginal[]>()
+      const useNames = new Map<MapName, UseName>()
 
       const discriminantProperty = existing.annotations.discriminatedUnion?.[0]
       if (discriminantProperty) {
@@ -708,9 +699,7 @@ export default class DefinitionsGenerator {
         getMapName = normalizeName
         for (const type of types) {
           const mapName = getMapName(type)
-          const useName = getUseName(type) as UseName
-
-          subclassNames.set(mapName, useName)
+          useNames.set(mapName, toPascalCase(type) as UseName)
           membersBySubclass.set(mapName, [
             {
               member: ts.factory.updatePropertySignature(
@@ -724,66 +713,43 @@ export default class DefinitionsGenerator {
             },
           ])
         }
+      } else {
+        const words = clazz.name.match(/($[a-z])|[A-Z][a-z]+/g)!.reverse()
 
-        // hardcoded:
-        if (clazz.name === "LuaGuiElement") {
-          const styleAttribute = generated.members.find((m) => m.original.name === "style")
-          if (!styleAttribute) throw new Error("LuaGuiElement does not have style attribute")
-          for (const [mapName, useName] of subclassNames) {
-            // get style(): <useName>Style
-            membersBySubclass.get(mapName)!.push({
-              member: ts.factory.createGetAccessorDeclaration(
-                undefined,
-                undefined,
-                "style",
-                [],
-                ts.factory.createTypeReferenceNode(`${useName}Style`),
-                undefined
-              ),
-              original: styleAttribute.original,
-            })
+        function trimName(name: string) {
+          name = removeLuaPrefix(name)
+          for (const word of words) {
+            if (name.endsWith(word)) name = name.substring(0, name.length - word.length)
+          }
+          return name
+        }
+        getMapName = (name: string) => trimName(name).toLowerCase() as MapName
+
+        for (const memberAndOriginal of generated.members) {
+          const subclasses = getSubclasses(memberAndOriginal.original, existing)
+          if (!subclasses) continue
+          for (const subclass of subclasses) {
+            const baseName = trimName(subclass)
+            const mapName = baseName.toLowerCase() as MapName
+            const existingUseName = useNames.get(mapName)
+            const useName = toPascalCase(baseName) as UseName
+            if (existingUseName !== undefined) {
+              if (useName !== existingUseName) {
+                throw new Error(`Multiple derived names for ${subclass} (${mapName}): ${existingUseName}, ${useName}`)
+              }
+            } else {
+              useNames.set(mapName, useName)
+              membersBySubclass.set(mapName, [])
+            }
           }
         }
-      } else if (existing.annotations.separateSubclasses) {
-        // TODO: currently hardcoded for LuaStyle
-        const nameRegex = /(?:Lua)?(.+?)(?:Style)?$/
-        getMapName = (name: string) => {
-          let mapName = name.match(nameRegex)?.[1]?.toLowerCase()
-          if (!mapName) throw new Error(`Unknown subclass ${name}`)
-          if (mapName === "image") mapName = "sprite"
-          return mapName as MapName
-        }
-        // for (const memberAndOriginal of generated.members) {
-        //   const subclasses = getSubclasses(memberAndOriginal.original, existing)
-        //   if (!subclasses) continue
-        //   for (const subclass of subclasses) {
-        //     const mapName = getMapName(subclass)
-        //     const existingUseName = subclassNames.get(mapName)
-        //     if (existingUseName === undefined) {
-        //       const useName = toPascalCase(subclass.match(nameRegex)![1]) as UseName
-        //       subclassNames.set(mapName, useName)
-        //       membersBySubclass.set(mapName, [])
-        //     }
-        //   }
-        // }
-
-        const subclassesField = existing.members.__subclasses?.[0] as ts.PropertySignature
-        if (!subclassesField) throw new Error("LuaStyle missing __subclasses field")
-        const types = this.tryGetUnionTypeStringLiterals(subclassesField.type!)!
-        for (const type of types) {
-          const mapName = normalizeName(type)
-          const useName = getUseName(type)
-          subclassNames.set(mapName, useName)
-          membersBySubclass.set(mapName, [])
-        }
-      } else {
-        return
+        if (membersBySubclass.size <= 1) return // no or only one subclasses
       }
 
       membersBySubclass.set("" as MapName, [])
-      subclassNames.set("" as MapName, "" as UseName)
+      useNames.set("" as MapName, "" as UseName)
 
-      const ignoreSubclasses = new Set(existing.annotations.ignoreSubclasses)
+      // const ignoreSubclasses = new Set(existing.annotations.ignoreSubclasses)
 
       for (const memberAndOriginal of generated.members) {
         const { original } = memberAndOriginal
@@ -796,7 +762,7 @@ export default class DefinitionsGenerator {
           const mapName = getMapName(subclass)
           const members = membersBySubclass.get(mapName)
           if (members === undefined) {
-            if (ignoreSubclasses.has(mapName)) continue
+            // if (ignoreSubclasses.has(mapName)) continue
             throw new Error(
               `Subclass restriction ${subclass} (${mapName}) for ${clazz.name}.${
                 original.name
@@ -808,10 +774,9 @@ export default class DefinitionsGenerator {
       }
 
       generated.subclassesInfo = {
-        property: discriminantProperty,
-        subclasses: Array.from(subclassNames.values()).filter((x) => x !== ""),
+        discriminantProperty,
         membersBySubclass: new Map(
-          Array.from(membersBySubclass.entries()).map(([mapName, v]) => [subclassNames.get(mapName)!, v])
+          Array.from(membersBySubclass.entries()).map(([mapName, v]) => [useNames.get(mapName)!, v])
         ),
       }
     }
@@ -827,62 +792,102 @@ export default class DefinitionsGenerator {
       const indexTypeName = indexType ? shortName + "Index" : undefined
       if (!subclassesInfo) {
         createDeclaration.call(this, existing, indexTypeName, clazz, clazz.name, superTypes, allMembers)
-      } else {
-        const baseName = "Base" + shortName
+        return
+      }
+      const baseName = "Base" + shortName
+      createDeclaration.call(
+        this,
+        existing,
+        undefined,
+        undefined,
+        baseName,
+        superTypes,
+        subclassesInfo.membersBySubclass.get("")!
+      )
+      const groupSupertypes = [
+        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
+      ]
+      for (const [groupName, members] of subclassesInfo.membersBySubclass) {
+        if (groupName === "") continue
         createDeclaration.call(
           this,
           existing,
+          indexTypeName,
           undefined,
-          undefined,
-          baseName,
-          superTypes,
-          subclassesInfo.membersBySubclass.get("")!
+          toPascalCase(groupName) + shortName,
+          groupSupertypes,
+          members
         )
-        const groupSupertypes = [
-          ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
-        ]
-        for (const [groupName, members] of subclassesInfo.membersBySubclass) {
-          if (groupName === "") continue
-          createDeclaration.call(
-            this,
-            existing,
-            indexTypeName,
-            undefined,
-            toPascalCase(groupName) + shortName,
-            groupSupertypes,
-            members
-          )
-        }
+      }
 
-        const types = subclassesInfo.subclasses.map((groupName) =>
-          ts.factory.createTypeReferenceNode(
-            toPascalCase(groupName) + (indexTypeName ? shortName + "Members" : shortName)
-          )
-        )
+      const allSubclassTypes = Array.from(subclassesInfo.membersBySubclass.keys())
+        .filter((x) => x !== "")
+        .map((subclass) => toPascalCase(subclass) + (indexTypeName ? shortName + "Members" : shortName))
+      if (subclassesInfo.discriminantProperty) {
+        // union
         const unionDeclaration = ts.factory.createTypeAliasDeclaration(
           undefined,
           undefined,
           indexTypeName ? shortName + "Members" : clazz.name,
           undefined,
-          ts.factory.createUnionTypeNode(types)
+          ts.factory.createUnionTypeNode(allSubclassTypes.map((x) => ts.factory.createTypeReferenceNode(x)))
         )
         if (!indexTypeName) this.addJsDoc(unionDeclaration, clazz, clazz.name)
         statements.add(unionDeclaration)
+      } else {
+        // intersection; an interface that inherits from all
+        if (indexType) throw new Error("TODO: index type AND subclasses")
 
-        if (indexTypeName) {
-          const declaration = ts.factory.createTypeAliasDeclaration(
-            undefined,
-            undefined,
-            clazz.name,
-            existing?.node.typeParameters,
-            ts.factory.createIntersectionTypeNode([
-              ts.factory.createTypeReferenceNode(shortName + "Members"),
-              ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName)),
-            ])
+        allSubclassTypes.unshift("Base" + shortName)
+        const heritageClause = ts.factory.createHeritageClause(
+          SyntaxKind.ExtendsKeyword,
+          allSubclassTypes.map((x) =>
+            ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(x), undefined)
           )
-          this.addJsDoc(declaration, clazz, clazz.name)
-          statements.add(declaration)
-        }
+        )
+
+        const intersectionDeclaration = ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          clazz.name,
+          undefined,
+          [heritageClause],
+          []
+        )
+        statements.add(intersectionDeclaration)
+        this.addJsDoc(intersectionDeclaration, clazz, clazz.name)
+      }
+
+      // if (existing?.annotations.generateByTypeIndex) {
+      //   const typeMembers = Array.from(subclassesInfo.originalSubclassNames.entries()).map(
+      //     ([subclassName, origName]) =>
+      //       ts.factory.createPropertySignature(
+      //         undefined,
+      //         DefinitionsGenerator.escapePropertyName(origName),
+      //         undefined,
+      //         ts.factory.createTypeReferenceNode(toPascalCase(subclassName) + shortName)
+      //       )
+      //   )
+      //   const outName = shortName + "ByType"
+      //   statements.add(
+      //     ts.factory.createInterfaceDeclaration(undefined, undefined, outName, undefined, undefined, typeMembers)
+      //   )
+      //   this.typeNames[outName] = outName
+      // }
+
+      if (indexTypeName) {
+        const declaration = ts.factory.createTypeAliasDeclaration(
+          undefined,
+          undefined,
+          clazz.name,
+          existing?.node.typeParameters,
+          ts.factory.createIntersectionTypeNode([
+            ts.factory.createTypeReferenceNode(shortName + "Members"),
+            ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName)),
+          ])
+        )
+        this.addJsDoc(declaration, clazz, clazz.name)
+        statements.add(declaration)
       }
     }
 
@@ -1357,7 +1362,10 @@ export default class DefinitionsGenerator {
   }
 
   private mapTypeWithTransforms(
-    member: { description: string; name?: string },
+    member: {
+      description: string
+      name?: string
+    },
     baseType: Type,
     parent: string,
     outOnly: boolean
@@ -1388,7 +1396,13 @@ export default class DefinitionsGenerator {
   }
 
   // noinspection JSMethodCanBeStatic
-  private tryMakeStringEnum(member: { description: string; name?: string }, type: Type): ts.UnionTypeNode | undefined {
+  private tryMakeStringEnum(
+    member: {
+      description: string
+      name?: string
+    },
+    type: Type
+  ): ts.UnionTypeNode | undefined {
     if (type === "string") {
       const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
       if (
@@ -1409,7 +1423,13 @@ export default class DefinitionsGenerator {
     return undefined
   }
 
-  private isNullableFromDescription(member: { description: string; name?: string }, parent: string): boolean {
+  private isNullableFromDescription(
+    member: {
+      description: string
+      name?: string
+    },
+    parent: string
+  ): boolean {
     const description = member.description + " " + (member as Method).return_description ?? ""
     const nullableRegex = /(returns|or|be|possibly|otherwise|else|) [`']?nil[`']?|`?nil`? (if|when|otherwise)/i
     const nullable = description.match(nullableRegex)
@@ -1722,7 +1742,11 @@ export default class DefinitionsGenerator {
 
   private addJsDoc<T extends ts.Node>(
     node: T,
-    element: { description: string; subclasses?: string[]; variant_parameter_description?: string } & WithNotes,
+    element: {
+      description: string
+      subclasses?: string[]
+      variant_parameter_description?: string
+    } & WithNotes,
     reference: string | undefined,
     tags?: ts.JSDocTag[]
   ): T {

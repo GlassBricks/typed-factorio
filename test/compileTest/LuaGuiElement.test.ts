@@ -84,10 +84,11 @@ describe("style", () => {
     `.expectToHaveNoDiagnostics()
   })
 
-  test("not on subclass-specific styles", () => {
-    tstl`
-       declare const el: FrameGuiElement
-       el.style.vertical_spacing = 3
-    `.expectToHaveDiagnostics()
-  })
+  // not possible with current typescript features
+  // test("not on subclass-specific styles", () => {
+  //   tstl`
+  //      declare const el: FrameGuiElement
+  //      el.style.vertical_spacing = 3
+  //   `.expectToHaveDiagnostics()
+  // })
 })

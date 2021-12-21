@@ -15,9 +15,7 @@ export enum AnnotationKind {
   NumericEnum = "numericEnum",
 
   Subclasses = "subclasses",
-  SeparateSubclasses = "separateSubclasses",
   DiscriminatedUnion = "discriminatedUnion",
-  IgnoreSubclasses = "ignoreSubclasses",
   VariantsName = "variantsName",
 
   TableOrArray = "tableOrArray",

@@ -2172,17 +2172,8 @@ interface LuaElectricEnergySourcePrototype {
   help(): string
 }
 
-/**
- * The primary interface for interacting with entities through the Lua API. Entities are everything that exists on the
- * map except for tiles (see {@link LuaTile}).
- *
- * Most functions on LuaEntity also work when the entity is contained in a ghost.
- *
- * {@link https://lua-api.factorio.com/latest/LuaEntity.html View documentation}
- *
- * @noSelf
- */
-interface LuaEntity extends LuaControl {
+/** @noSelf */
+interface BaseEntity extends LuaControl {
   /**
    * Gets the entities output inventory if it has one.
    *
@@ -2210,20 +2201,6 @@ interface LuaEntity extends LuaControl {
    */
   get_burnt_result_inventory(): LuaInventory | undefined
   /**
-   * Damages the entity.
-   *
-   * *Can only be used if this is EntityWithHealth*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.damage View documentation}
-   *
-   * @param damage - The amount of damage to be done
-   * @param force - The force that will be doing the damage.
-   * @param type - The type of damage to be done, defaults to "impact".
-   * @param dealer - The entity to consider as the damage dealer.
-   * @returns The total damage actually applied after resistances.
-   */
-  damage(damage: float, force: ForceIdentification, type?: string, dealer?: LuaEntity): float
-  /**
    * Checks if the entity can be destroyed
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.can_be_destroyed View documentation}
@@ -2247,34 +2224,6 @@ interface LuaEntity extends LuaControl {
     /** If `true`, {@link ScriptRaisedDestroyEvent script_raised_destroy} will be called. Defaults to `false`. */
     readonly raise_destroy?: boolean
   }): boolean
-  /**
-   * Give the entity a command.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_command View documentation}
-   *
-   * @param command
-   */
-  set_command(command: Command): void
-  /**
-   * Give the entity a distraction command.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_distraction_command View documentation}
-   *
-   * @param command
-   */
-  set_distraction_command(command: Command): void
-  /**
-   * Has this unit been assigned a command?
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.has_command View documentation}
-   */
-  has_command(): boolean
   /**
    * Immediately kills the entity. Does nothing if the entity doesn't have health.
    *
@@ -2308,71 +2257,6 @@ interface LuaEntity extends LuaControl {
    * @returns `true` if this entity has the given flag set.
    */
   has_flag(flag: string): boolean
-  /**
-   * Same as {@link LuaEntity.has_flag LuaEntity::has_flag}, but targets the inner entity on a entity ghost.
-   *
-   * *Can only be used if this is EntityGhost*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_has_flag View documentation}
-   *
-   * @param flag - The flag to test. See {@link EntityPrototypeFlags} for a list of flags.
-   * @returns `true` if the entity has the given flag set.
-   */
-  ghost_has_flag(flag: string): boolean
-  /**
-   * Offer a thing on the market.
-   *
-   * *Can only be used if this is Market*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.add_market_item View documentation}
-   *
-   * @example
-   *   Adds market offer, 1 copper ore for 10 iron ore.
-   *
-   *   ```lua
-   *   market.add_market_item{price={{"iron-ore", 10}}, offer={type="give-item", item="copper-ore"}}
-   *   ```
-   *
-   * @example
-   *   Adds market offer, 1 copper ore for 5 iron ore and 5 stone ore.
-   *
-   *   ```lua
-   *   market.add_market_item{price={{"iron-ore", 5}, {"stone", 5}}, offer={type="give-item", item="copper-ore"}}
-   *   ```
-   *
-   * @param offer
-   */
-  add_market_item(offer: Offer): void
-  /**
-   * Remove an offer from a market.
-   *
-   * **Note**: The other offers are moved down to fill the gap created by removing the offer, which decrements the
-   * overall size of the offer array.
-   *
-   * *Can only be used if this is Market*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.remove_market_item View documentation}
-   *
-   * @param offer - Index of offer to remove.
-   * @returns `true` if the offer was successfully removed; `false` when the given index was not valid.
-   */
-  remove_market_item(offer: uint): boolean
-  /**
-   * Get all offers in a market as an array.
-   *
-   * *Can only be used if this is Market*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_market_items View documentation}
-   */
-  get_market_items(): Offer[]
-  /**
-   * Removes all offers from a market.
-   *
-   * *Can only be used if this is Market*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.clear_market_items View documentation}
-   */
-  clear_market_items(): void
   /**
    * Connect two devices with a circuit wire or copper cable. Depending on which type of connection should be made,
    * there are different procedures:
@@ -2493,90 +2377,6 @@ interface LuaEntity extends LuaControl {
    */
   clear_request_slot(slot: uint): void
   /**
-   * Returns whether a craft is currently in process. It does not indicate whether progress is currently being made,
-   * but whether any crafting action has made progress in this machine.
-   *
-   * *Can only be used if this is CraftingMachine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_crafting View documentation}
-   */
-  is_crafting(): void
-  /**
-   * *Can only be used if this is Gate*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_opened View documentation}
-   *
-   * @returns `true` if this gate is currently opened.
-   */
-  is_opened(): boolean
-  /**
-   * *Can only be used if this is Gate*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_opening View documentation}
-   *
-   * @returns `true` if this gate is currently opening.
-   */
-  is_opening(): boolean
-  /**
-   * *Can only be used if this is Gate*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_closed View documentation}
-   *
-   * @returns `true` if this gate is currently closed.
-   */
-  is_closed(): boolean
-  /**
-   * *Can only be used if this is Gate*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_closing View documentation}
-   *
-   * @returns `true` if this gate is currently closing
-   */
-  is_closing(): boolean
-  /**
-   * *Can only be used if this is Gate*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.request_to_open View documentation}
-   *
-   * @param force - The force that requests the gate to be open.
-   * @param extra_time - Extra ticks to stay open.
-   */
-  request_to_open(force: ForceIdentification, extra_time?: uint): void
-  /**
-   * *Can only be used if this is Gate*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.request_to_close View documentation}
-   *
-   * @param force - The force that requests the gate to be closed.
-   */
-  request_to_close(force: ForceIdentification): void
-  /**
-   * Get a transport line of a belt or belt connectable entity.
-   *
-   * *Can only be used if this is TransportBeltConnectable*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_transport_line View documentation}
-   *
-   * @param index - Index of the requested transport line. Transport lines are 1-indexed.
-   */
-  get_transport_line(index: uint): LuaTransportLine
-  /**
-   * Get the maximum transport line index of a belt or belt connectable entity.
-   *
-   * *Can only be used if this is TransportBeltConnectable*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_max_transport_line_index View documentation}
-   */
-  get_max_transport_line_index(): uint
-  /**
-   * *Can only be used if this is RocketSilo*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.launch_rocket View documentation}
-   *
-   * @returns `true` if the rocket was successfully launched. Return value of `false` means the silo is not ready for launch.
-   */
-  launch_rocket(): boolean
-  /**
    * Revive a ghost. I.e. turn it from a ghost to a real entity or tile.
    *
    * **Note**: If this is an entity ghost and it is successfully revived this will also return the revived entity or
@@ -2617,75 +2417,6 @@ interface LuaEntity extends LuaControl {
     readonly raise_revive?: boolean
   }): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
   /**
-   * *Can only be used if this is Rail*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_connected_rail View documentation}
-   *
-   * @returns Rail connected in the specified manner to this one.
-   */
-  get_connected_rail(params: {
-    readonly rail_direction: defines.rail_direction
-    readonly rail_connection_direction: defines.rail_connection_direction
-  }): LuaEntity
-  /**
-   * Get the rails that this signal is connected to.
-   *
-   * *Can only be used if this is RailSignal or RailChainSignal*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_connected_rails View documentation}
-   */
-  get_connected_rails(): LuaEntity[]
-  /**
-   * Get the rail signal or train stop at the start/end of the rail segment this rail is in, or `nil` if the rail
-   * segment doesn't start/end with a signal nor a train stop.
-   *
-   * **Note**: A rail segment is a continuous section of rail with no branches, signals, nor train stops.
-   *
-   * *Can only be used if this is Rail*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_rail_segment_entity View documentation}
-   *
-   * @param direction - The direction of travel relative to this rail.
-   * @param in_else_out - If true, gets the entity at the entrance of the rail segment, otherwise gets the entity at
-   *   the exit of the rail segment.
-   */
-  get_rail_segment_entity(direction: defines.rail_direction, in_else_out: boolean): LuaEntity | undefined
-  /**
-   * Get the rail at the end of the rail segment this rail is in.
-   *
-   * **Note**: A rail segment is a continuous section of rail with no branches, signals, nor train stops.
-   *
-   * **Note**: This function has a second return value. A {@link defines.rail_direction} that points out of the rail
-   * segment from the end rail.
-   *
-   * *Can only be used if this is Rail*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_rail_segment_end View documentation}
-   *
-   * @param direction
-   */
-  get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
-  /**
-   * Get the length of the rail segment this rail is in.
-   *
-   * **Note**: A rail segment is a continuous section of rail with no branches, signals, nor train stops.
-   *
-   * *Can only be used if this is Rail*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_rail_segment_length View documentation}
-   */
-  get_rail_segment_length(): double
-  /**
-   * Get a rail from each rail segment that overlaps with this rail's rail segment.
-   *
-   * **Note**: A rail segment is a continuous section of rail with no branches, signals, nor train stops.
-   *
-   * *Can only be used if this is Rail*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_rail_segment_overlaps View documentation}
-   */
-  get_rail_segment_overlaps(): LuaEntity[]
-  /**
    * Get the filter for a slot in an inserter, loader, or logistic storage container.
    *
    * **Note**: The entity must allow filters.
@@ -2707,63 +2438,6 @@ interface LuaEntity extends LuaControl {
    * @param item - Prototype name of the item to filter.
    */
   set_filter(slot_index: uint, item: string): void
-  /**
-   * Gets the filter for this infinity container at the given index or `nil` if the filter index doesn't exist or is empty.
-   *
-   * *Can only be used if this is InfinityContainer*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_infinity_container_filter View documentation}
-   *
-   * @param index - The index to get.
-   */
-  get_infinity_container_filter(index: uint): InfinityInventoryFilter | undefined
-  /**
-   * Sets the filter for this infinity container at the given index.
-   *
-   * *Can only be used if this is InfinityContainer*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_infinity_container_filter View documentation}
-   *
-   * @param index - The index to set.
-   * @param filter - The new filter or `nil` to clear the filter.
-   */
-  set_infinity_container_filter(index: uint, filter: InfinityInventoryFilter | undefined): void
-  /**
-   * Gets the filter for this infinity pipe or `nil` if the filter is empty.
-   *
-   * *Can only be used if this is InfinityPipe*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_infinity_pipe_filter View documentation}
-   */
-  get_infinity_pipe_filter(): InfinityPipeFilter | undefined
-  /**
-   * Sets the filter for this infinity pipe.
-   *
-   * *Can only be used if this is InfinityPipe*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_infinity_pipe_filter View documentation}
-   *
-   * @param filter - The new filter or `nil` to clear the filter.
-   */
-  set_infinity_pipe_filter(filter: InfinityPipeFilter | undefined): void
-  /**
-   * Gets the heat setting for this heat interface.
-   *
-   * *Can only be used if this is HeatInterface*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_heat_setting View documentation}
-   */
-  get_heat_setting(): HeatSetting
-  /**
-   * Sets the heat setting for this heat interface.
-   *
-   * *Can only be used if this is HeatInterface*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_heat_setting View documentation}
-   *
-   * @param filter - The new setting.
-   */
-  set_heat_setting(filter: HeatSetting): void
   /**
    * Gets the control behavior of the entity (if any).
    *
@@ -2842,18 +2516,6 @@ interface LuaEntity extends LuaControl {
    */
   get_logistic_point(index?: defines.logistic_member_index): LuaLogisticPoint | LuaLogisticPoint[]
   /**
-   * Plays a note with the given instrument and note.
-   *
-   * *Can only be used if this is ProgrammableSpeaker*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.play_note View documentation}
-   *
-   * @param instrument
-   * @param note
-   * @returns If the request is valid. The sound may or may not be played depending on polyphony settings.
-   */
-  play_note(instrument: uint, note: uint): boolean
-  /**
    * Connects the rolling stock in the given direction.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.connect_rolling_stock View documentation}
@@ -2880,25 +2542,6 @@ interface LuaEntity extends LuaControl {
    */
   update_connections(): void
   /**
-   * Current recipe being assembled by this machine or `nil` if no recipe is set.
-   *
-   * *Can only be used if this is CraftingMachine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_recipe View documentation}
-   */
-  get_recipe(): LuaRecipe | undefined
-  /**
-   * Sets the current recipe in this assembly machine.
-   *
-   * *Can only be used if this is AssemblingMachine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_recipe View documentation}
-   *
-   * @param recipe - The new recipe or `nil` to clear the recipe.
-   * @returns Any items removed from this entity as a result of setting the recipe.
-   */
-  set_recipe(recipe: string | LuaRecipe | undefined): Record<string, uint>
-  /**
    * Rotates this entity as if the player rotated it.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.rotate View documentation}
@@ -2917,76 +2560,11 @@ interface LuaEntity extends LuaControl {
     readonly force?: LuaForce | string
   }): boolean
   /**
-   * Gets the driver of this vehicle if any.
-   *
-   * **Note**: May be `nil` if the vehicle contains no driver. To check if there's a passenger see
-   * {@link LuaEntity.get_passenger LuaEntity::get_passenger}.
-   *
-   * *Can only be used if this is Vehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_driver View documentation}
-   */
-  get_driver(): LuaEntity | LuaPlayer | undefined
-  /**
-   * Sets the driver of this vehicle.
-   *
-   * **Note**: This differs over {@link LuaEntity.set_passenger LuaEntity::set_passenger} in that the passenger can't
-   * drive the vehicle.
-   *
-   * *Can only be used if this is Vehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_driver View documentation}
-   *
-   * @param driver - The new driver or `nil` to eject the current driver if any.
-   */
-  set_driver(driver: LuaEntity | PlayerIdentification | undefined): void
-  /**
-   * Gets the passenger of this car or spidertron if any.
-   *
-   * **Note**: May be `nil` if the vehicle contains no passenger. To check if there's a driver see
-   * {@link LuaEntity.get_driver LuaEntity::get_driver}.
-   *
-   * **Note**: This differs over {@link LuaEntity.get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
-   *
-   * *Can only be used if this is Vehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_passenger View documentation}
-   */
-  get_passenger(): LuaEntity | LuaPlayer | undefined
-  /**
-   * Sets the passenger of this car or spidertron.
-   *
-   * **Note**: This differs over {@link LuaEntity.get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
-   *
-   * *Can only be used if this is Vehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_passenger View documentation}
-   *
-   * @param passenger
-   */
-  set_passenger(passenger: LuaEntity | PlayerIdentification): void
-  /**
    * Returns true if this entity is connected to an electric network.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_connected_to_electric_network View documentation}
    */
   is_connected_to_electric_network(): boolean
-  /**
-   * The trains scheduled to stop at this train stop.
-   *
-   * *Can only be used if this is TrainStop*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_train_stop_trains View documentation}
-   */
-  get_train_stop_trains(): LuaTrain[]
-  /**
-   * The train currently stopped at this train stop or `nil` if none.
-   *
-   * *Can only be used if this is TrainStop*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_stopped_train View documentation}
-   */
-  get_stopped_train(): LuaTrain | undefined
   /**
    * Clones this entity.
    *
@@ -3062,42 +2640,6 @@ interface LuaEntity extends LuaControl {
    */
   clear_fluid_inside(): void
   /**
-   * Get the source of this beam.
-   *
-   * *Can only be used if this is Beam*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_beam_source View documentation}
-   */
-  get_beam_source(): BeamTarget
-  /**
-   * Set the source of this beam.
-   *
-   * *Can only be used if this is Beam*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_beam_source View documentation}
-   *
-   * @param source
-   */
-  set_beam_source(source: LuaEntity | Position): void
-  /**
-   * Get the target of this beam.
-   *
-   * *Can only be used if this is Beam*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_beam_target View documentation}
-   */
-  get_beam_target(): BeamTarget
-  /**
-   * Set the target of this beam.
-   *
-   * *Can only be used if this is Beam*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_beam_target View documentation}
-   *
-   * @param target
-   */
-  set_beam_target(target: LuaEntity | Position): void
-  /**
    * The radius of this entity.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_radius View documentation}
@@ -3117,14 +2659,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.create_build_effect_smoke View documentation}
    */
   create_build_effect_smoke(): void
-  /**
-   * Release the unit from the spawner which spawned it. This allows the spawner to continue spawning additional units.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.release_from_spawner View documentation}
-   */
-  release_from_spawner(): void
   /**
    * Toggle this entity's equipment movement bonus. Does nothing if the entity does not have an equipment grid.
    *
@@ -3171,14 +2705,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_damage_to_be_taken View documentation}
    */
   get_damage_to_be_taken(): float
-  /**
-   * Depletes and destroys this resource entity.
-   *
-   * *Can only be used if this is ResourceEntity*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.deplete View documentation}
-   */
-  deplete(): void
   /**
    * Mines this entity.
    *
@@ -3273,55 +2799,11 @@ interface LuaEntity extends LuaControl {
    */
   is_registered_for_repair(): boolean
   /**
-   * Adds the given position to this spidertron's autopilot's queue of destinations.
-   *
-   * *Can only be used if this is SpiderVehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.add_autopilot_destination View documentation}
-   *
-   * @param position - The position the spidertron should move to.
-   */
-  add_autopilot_destination(position: MapPosition): void
-  /**
-   * Connects current linked belt with another one.
-   *
-   * Neighbours have to be of different type. If given linked belt is connected to something else it will be
-   * disconnected first. If provided neighbour is connected to something else it will also be disconnected first.
-   * Automatically updates neighbour to be connected back to this one.
-   *
-   * **Note**: Can also be used on entity ghost if it contains linked-belt
-   *
-   * *Can only be used if this is LinkedBelt*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.connect_linked_belts View documentation}
-   *
-   * @param neighbour - Another linked belt or entity ghost containing linked belt to connect or nil to disconnect
-   */
-  connect_linked_belts(neighbour: LuaEntity | undefined): void
-  /**
-   * Disconnects linked belt from its neighbour.
-   *
-   * **Note**: Can also be used on entity ghost if it contains linked-belt
-   *
-   * *Can only be used if this is LinkedBelt*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.disconnect_linked_belts View documentation}
-   */
-  disconnect_linked_belts(): void
-  /**
    * Name of the entity prototype. E.g. "inserter" or "filter-inserter".
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.name View documentation}
    */
   readonly name: string
-  /**
-   * Name of the entity or tile contained in this ghost
-   *
-   * *Can only be used if this is Ghost*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_name View documentation}
-   */
-  readonly ghost_name: string
   /**
    * Localised name of the entity.
    *
@@ -3330,33 +2812,11 @@ interface LuaEntity extends LuaControl {
   readonly localised_name: LocalisedString
   readonly localised_description: LocalisedString
   /**
-   * Localised name of the entity or tile contained in this ghost.
-   *
-   * *Can only be used if this is Ghost*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_localised_name View documentation}
-   */
-  readonly ghost_localised_name: LocalisedString
-  /**
-   * *Can only be used if this is Ghost*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_localised_description View documentation}
-   */
-  readonly ghost_localised_description: LocalisedString
-  /**
    * The entity prototype type of this entity.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.type View documentation}
    */
   readonly type: string
-  /**
-   * The prototype type of the entity or tile contained in this ghost.
-   *
-   * *Can only be used if this is Ghost*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_type View documentation}
-   */
-  readonly ghost_type: string
   /**
    * Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will
    * stop moving etc).
@@ -3447,76 +2907,11 @@ interface LuaEntity extends LuaControl {
    */
   relative_turret_orientation: RealOrientation | undefined
   /**
-   * The torso orientation of this spider vehicle.
-   *
-   * *Can only be used if this is SpiderVehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.torso_orientation View documentation}
-   */
-  torso_orientation: RealOrientation
-  /**
-   * Count of resource units contained.
-   *
-   * *Can only be used if this is ResourceEntity*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.amount View documentation}
-   */
-  amount: uint
-  /**
-   * Count of initial resource units contained.
-   *
-   * **Note**: If this is not an infinite resource reading will give `nil` and writing will give an error.
-   *
-   * *Can only be used if this is ResourceEntity*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.initial_amount View documentation}
-   */
-  initial_amount: uint | undefined
-  /**
-   * Multiplies the acceleration the vehicle can create for one unit of energy. By default is `1`.
-   *
-   * *Can only be used if this is Car*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.effectivity_modifier View documentation}
-   */
-  effectivity_modifier: float
-  /**
-   * Multiplies the energy consumption.
-   *
-   * *Can only be used if this is Car*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.consumption_modifier View documentation}
-   */
-  consumption_modifier: float
-  /**
-   * Multiplies the car friction rate.
-   *
-   * *Can only be used if this is Car*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.friction_modifier View documentation}
-   *
-   * @example
-   *   This will allow the car to go much faster
-   *
-   *   ```lua
-   *   game.player.vehicle.friction_modifier = 0.5
-   *   ```
-   */
-  friction_modifier: float
-  /**
    * Whether the driver of this car or spidertron is the gunner, if false, the passenger is the gunner.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.driver_is_gunner View documentation}
    */
   driver_is_gunner: boolean
-  /**
-   * Read when this spidertron auto-targets enemies
-   *
-   * *Can only be used if this is SpiderVehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.vehicle_automatic_targeting_parameters View documentation}
-   */
-  vehicle_automatic_targeting_parameters: VehicleAutomaticTargetingParameters
   /**
    * The current speed of this car in tiles per tick, rolling stock, projectile or spider vehicle, or current max
    * speed of the unit. Only the speed of units, cars, and projectiles are writable.
@@ -3525,34 +2920,11 @@ interface LuaEntity extends LuaControl {
    */
   speed: float
   /**
-   * The current speed of this unit in tiles per tick, taking into account any walking speed modifier given by the
-   * tile the unit is standing on.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.effective_speed View documentation}
-   */
-  readonly effective_speed: float
-  /**
-   * *Can only be used if this is ItemEntity*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.stack View documentation}
-   */
-  readonly stack: LuaItemStack
-  /**
    * The entity prototype of this entity.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.prototype View documentation}
    */
   readonly prototype: LuaEntityPrototype
-  /**
-   * The prototype of the entity or tile contained in this ghost.
-   *
-   * *Can only be used if this is Ghost*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_prototype View documentation}
-   */
-  readonly ghost_prototype: LuaEntityPrototype | LuaTilePrototype
   /**
    * Position where the entity puts its stuff.
    *
@@ -3564,16 +2936,6 @@ interface LuaEntity extends LuaControl {
    */
   drop_position: Position
   /**
-   * Where the inserter will pick up items from.
-   *
-   * **Note**: Inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the pickup position.
-   *
-   * *Can only be used if this is Inserter*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.pickup_position View documentation}
-   */
-  pickup_position: Position
-  /**
    * The entity this entity is putting its items to, or `nil` if there is no such entity. If there are multiple
    * possible entities at the drop-off point, writing to this attribute allows a mod to choose which one to drop off
    * items to. The entity needs to collide with the tile box under the drop-off position.
@@ -3584,25 +2946,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.drop_target View documentation}
    */
   drop_target: LuaEntity | undefined
-  /**
-   * The entity this inserter will attempt to pick up items from, or `nil` if there is no such entity. If there are
-   * multiple possible entities at the pick-up point, writing to this attribute allows a mod to choose which one to
-   * pick up items from. The entity needs to collide with the tile box under the pick-up position.
-   *
-   * *Can only be used if this is Inserter*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.pickup_target View documentation}
-   */
-  pickup_target: LuaEntity | undefined
-  /**
-   * Index of the currently selected weapon slot of this character, car, or spidertron, or `nil` if the car/spidertron
-   * doesn't have guns.
-   *
-   * *Can only be used if this is Character or Car*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.selected_gun_index View documentation}
-   */
-  selected_gun_index: uint | undefined
   /**
    * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities
    * that don't have the concept of energy stored inside.
@@ -3623,30 +2966,6 @@ interface LuaEntity extends LuaControl {
    */
   temperature: double | undefined
   /**
-   * The previous recipe this furnace was using or nil if the furnace had no previous recipe.
-   *
-   * *Can only be used if this is Furnace*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.previous_recipe View documentation}
-   */
-  readonly previous_recipe: LuaRecipe | undefined
-  /**
-   * The item stack currently held in an inserter's hand.
-   *
-   * *Can only be used if this is Inserter*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.held_stack View documentation}
-   */
-  readonly held_stack: LuaItemStack
-  /**
-   * Current position of the inserter's "hand".
-   *
-   * *Can only be used if this is Inserter*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.held_stack_position View documentation}
-   */
-  readonly held_stack_position: PositionTable
-  /**
    * The train this rolling stock belongs to or nil if not rolling stock.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.train View documentation}
@@ -3664,17 +2983,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.neighbours View documentation}
    */
   readonly neighbours: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity | undefined
-  /**
-   * The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of
-   * this entity. Does not contain the other end of an underground belt, see
-   * {@link LuaEntity.neighbours LuaEntity::neighbours} for that. This is a dictionary with `"inputs"`, `"outputs"`
-   * entries that are arrays of transport belt connectable entities, or empty tables if no entities.
-   *
-   * *Can only be used if this is TransportBeltConnectable*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.belt_neighbours View documentation}
-   */
-  readonly belt_neighbours: Record<string, LuaEntity[]>
   /**
    * Fluidboxes of this entity.
    *
@@ -3718,62 +3026,6 @@ interface LuaEntity extends LuaControl {
    */
   color: Color | undefined
   /**
-   * The text of this flying-text entity.
-   *
-   * *Can only be used if this is FlyingText*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.text View documentation}
-   */
-  text: LocalisedString
-  /**
-   * The state of this rail signal.
-   *
-   * *Can only be used if this is RailSignal or RailChainSignal*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.signal_state View documentation}
-   */
-  readonly signal_state: defines.signal_state
-  /**
-   * The state of this chain signal.
-   *
-   * *Can only be used if this is RailChainSignal*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.chain_signal_state View documentation}
-   */
-  readonly chain_signal_state: defines.chain_signal_state
-  /**
-   * Will this entity be picked up automatically when the player walks over it?
-   *
-   * *Can only be used if this is ItemEntity*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.to_be_looted View documentation}
-   */
-  to_be_looted: boolean
-  /**
-   * The current crafting speed, including speed bonuses from modules and beacons.
-   *
-   * *Can only be used if this is CraftingMachine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.crafting_speed View documentation}
-   */
-  readonly crafting_speed: double
-  /**
-   * The current crafting progress, as a number in range [0, 1].
-   *
-   * *Can only be used if this is CraftingMachine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.crafting_progress View documentation}
-   */
-  crafting_progress: float
-  /**
-   * The current productivity bonus progress, as a number in range [0, 1].
-   *
-   * *Can only be used if this is CraftingMachine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.bonus_progress View documentation}
-   */
-  bonus_progress: double
-  /**
    * The productivity bonus of this entity.
    *
    * **Note**: This includes force based bonuses as well as beacon/module bonuses.
@@ -3802,30 +3054,6 @@ interface LuaEntity extends LuaControl {
    */
   readonly consumption_bonus: double
   /**
-   * `"input"` or `"output"`, depending on whether this underground belt goes down or up.
-   *
-   * *Can only be used if this is TransportBeltToGround*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.belt_to_ground_type View documentation}
-   */
-  readonly belt_to_ground_type: "input" | "output"
-  /**
-   * `"input"` or `"output"`, depending on whether this loader puts to or gets from a container.
-   *
-   * *Can only be used if this is Loader*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.loader_type View documentation}
-   */
-  loader_type: "input" | "output"
-  /**
-   * Number of rocket parts in the silo.
-   *
-   * *Can only be used if this is RocketSilo*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.rocket_parts View documentation}
-   */
-  rocket_parts: uint
-  /**
    * The logistic network this entity is a part of.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.logistic_network View documentation}
@@ -3844,48 +3072,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.item_requests View documentation}
    */
   item_requests: Record<string, uint>
-  /**
-   * The player connected to this character or `nil` if none.
-   *
-   * *Can only be used if this is Character*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.player View documentation}
-   */
-  readonly player: LuaPlayer | undefined
-  /**
-   * The unit group this unit is a member of, or `nil` if none.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.unit_group View documentation}
-   */
-  readonly unit_group: LuaUnitGroup | undefined
-  /**
-   * The damage dealt by this turret, artillery turret, or artillery wagon.
-   *
-   * *Can only be used if this is Turret*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.damage_dealt View documentation}
-   */
-  damage_dealt: double
-  /**
-   * The number of units killed by this turret, artillery turret, or artillery wagon.
-   *
-   * *Can only be used if this is Turret*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.kills View documentation}
-   */
-  kills: uint
-  /**
-   * The last player that changed any setting on this entity. This includes building the entity, changing its color,
-   * or configuring its circuit network. Can be `nil` if the last user is not part of the save anymore. Mods can
-   * overwrite it if desired.
-   *
-   * *Can only be used if this is EntityWithOwner*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.last_user View documentation}
-   */
-  last_user: LuaPlayer | undefined
   /**
    * The buffer size for the electric energy source or nil if the entity doesn't have an electric energy source.
    *
@@ -3926,14 +3112,6 @@ interface LuaEntity extends LuaControl {
    */
   readonly unit_number: uint | undefined
   /**
-   * The unit number of the entity contained in this ghost or nil if the entity doesn't have one.
-   *
-   * *Can only be used if this is EntityGhost*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_unit_number View documentation}
-   */
-  readonly ghost_unit_number: uint | undefined
-  /**
    * The mining progress for this mining drill or `nil` if this isn't a mining drill. Is a number in range [0,
    * mining_target.prototype.mineable_properties.mining_time]
    *
@@ -3947,22 +3125,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.bonus_mining_progress View documentation}
    */
   bonus_mining_progress: double | undefined
-  /**
-   * The power production specific to the ElectricEnergyInterface entity type.
-   *
-   * *Can only be used if this is ElectricEnergyInterface*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.power_production View documentation}
-   */
-  power_production: double
-  /**
-   * The power usage specific to the ElectricEnergyInterface entity type.
-   *
-   * *Can only be used if this is ElectricEnergyInterface*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.power_usage View documentation}
-   */
-  power_usage: double
   /**
    * {@link LuaEntityPrototype.collision_box LuaEntityPrototype::collision_box} around entity's given position and
    * respecting the current entity orientation.
@@ -3989,14 +3151,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.secondary_selection_box View documentation}
    */
   readonly secondary_selection_box: BoundingBoxTable | undefined
-  /**
-   * The mining target or `nil` if none
-   *
-   * *Can only be used if this is MiningDrill*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.mining_target View documentation}
-   */
-  readonly mining_target: LuaEntity | undefined
   /**
    * Entities that are directly connected to this entity via the circuit network.
    *
@@ -4027,15 +3181,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.filter_slot_count View documentation}
    */
   readonly filter_slot_count: uint
-  /**
-   * The container entity this loader is pointing at/pulling from depending on the
-   * {@link LuaEntity.loader_type LuaEntity::loader_type}.
-   *
-   * *Can only be used if this is Loader*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.loader_container View documentation}
-   */
-  readonly loader_container: LuaEntity
   /**
    * The equipment grid or `nil` if this entity doesn't have an equipment grid.
    *
@@ -4115,26 +3260,6 @@ interface LuaEntity extends LuaControl {
    */
   readonly sticked_to: LuaEntity
   /**
-   * *Can only be used if this is ProgrammableSpeaker*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.parameters View documentation}
-   */
-  parameters: ProgrammableSpeakerParameters
-  /**
-   * *Can only be used if this is ProgrammableSpeaker*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.alert_parameters View documentation}
-   */
-  alert_parameters: ProgrammableSpeakerAlertParameters
-  /**
-   * The electric network statistics for this electric pole.
-   *
-   * *Can only be used if this is ElectricPole*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.electric_network_statistics View documentation}
-   */
-  readonly electric_network_statistics: LuaFlowStatistics
-  /**
    * Sets the stack size limit on this inserter. If the stack size is > than the force stack size limit the value is ignored.
    *
    * **Note**: Set to 0 to reset.
@@ -4142,14 +3267,6 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.inserter_stack_size_override View documentation}
    */
   inserter_stack_size_override: uint
-  /**
-   * The number of products this machine finished crafting in its lifetime.
-   *
-   * *Can only be used if this is CraftingMachine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.products_finished View documentation}
-   */
-  products_finished: uint
   /**
    * The spawner associated with this unit entity or `nil` if the unit has no associated spawner.
    *
@@ -4175,204 +3292,11 @@ interface LuaEntity extends LuaControl {
    */
   readonly effects: ModuleEffects | undefined
   /**
-   * The filters for this infinity container.
-   *
-   * *Can only be used if this is InfinityContainer*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.infinity_container_filters View documentation}
-   */
-  infinity_container_filters: InfinityInventoryFilter[]
-  /**
-   * If items not included in this infinity container filters should be removed from the container.
-   *
-   * *Can only be used if this is InfinityContainer*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.remove_unfiltered_items View documentation}
-   */
-  remove_unfiltered_items: boolean
-  /**
-   * The player index associated with this character corpse.
-   *
-   * **Note**: The index is not guaranteed to be valid so it should always be checked first if a player with that
-   * index actually exists.
-   *
-   * *Can only be used if this is CharacterCorpse*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.character_corpse_player_index View documentation}
-   */
-  character_corpse_player_index: uint
-  /**
-   * The tick this character corpse died at.
-   *
-   * *Can only be used if this is CharacterCorpse*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.character_corpse_tick_of_death View documentation}
-   */
-  character_corpse_tick_of_death: uint
-  /**
-   * The reason this character corpse character died (if any).
-   *
-   * *Can only be used if this is CharacterCorpse*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.character_corpse_death_cause View documentation}
-   */
-  character_corpse_death_cause: LocalisedString
-  /**
-   * The player this character is associated with or `nil` if none. When the player logs off in multiplayer all of the
-   * associated characters will be logged off with him.
-   *
-   * **Note**: A character associated with a player is not directly controlled by any player.
-   *
-   * **Note**: Set to `nil` to clear. The player will be automatically disassociated when a controller is set on the character.
-   *
-   * *Can only be used if this is Character*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.associated_player View documentation}
-   */
-  associated_player: LuaPlayer | undefined
-  /**
-   * The last tick this character entity was attacked.
-   *
-   * *Can only be used if this is Character*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.tick_of_last_attack View documentation}
-   */
-  tick_of_last_attack: uint
-  /**
-   * The last tick this character entity was damaged.
-   *
-   * *Can only be used if this is Character*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.tick_of_last_damage View documentation}
-   */
-  tick_of_last_damage: uint
-  /**
-   * The filter for this splitter or `nil` if no filter is set.
-   *
-   * *Can only be used if this is Splitter*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.splitter_filter View documentation}
-   */
-  splitter_filter: LuaItemPrototype | undefined
-  /**
-   * The filter mode for this filter inserter: "whitelist", "blacklist", or `nil` if this inserter doesn't use filters.
-   *
-   * *Can only be used if this is Inserter*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.inserter_filter_mode View documentation}
-   */
-  inserter_filter_mode: "whitelist" | "blacklist" | undefined
-  /**
-   * The input priority for this splitter : "left", "none", or "right".
-   *
-   * *Can only be used if this is Splitter*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.splitter_input_priority View documentation}
-   */
-  splitter_input_priority: "left" | "none" | "right"
-  /**
-   * The output priority for this splitter : "left", "none", or "right".
-   *
-   * *Can only be used if this is Splitter*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.splitter_output_priority View documentation}
-   */
-  splitter_output_priority: "left" | "none" | "right"
-  /**
-   * If this land mine is armed.
-   *
-   * *Can only be used if this is LandMine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.armed View documentation}
-   */
-  readonly armed: boolean
-  /**
-   * When locked; the recipe in this assembling machine can't be changed by the player.
-   *
-   * *Can only be used if this is AssemblingMachine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.recipe_locked View documentation}
-   */
-  recipe_locked: boolean
-  /**
-   * The rail entity this train stop is connected to or `nil` if there is none.
-   *
-   * *Can only be used if this is TrainStop*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.connected_rail View documentation}
-   */
-  readonly connected_rail: LuaEntity | undefined
-  /**
-   * Rail direction to which this train stop is binding. This returns a value even when no rails are present.
-   *
-   * *Can only be used if this is TrainStop*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.connected_rail_direction View documentation}
-   */
-  readonly connected_rail_direction: defines.rail_direction
-  /**
-   * The number of trains in this rail block for this rail entity.
-   *
-   * *Can only be used if this is Rail*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_in_block View documentation}
-   */
-  readonly trains_in_block: uint
-  /**
-   * The timeout that's left on this landmine in ticks. It describes the time between the landmine being placed and it
-   * being armed.
-   *
-   * *Can only be used if this is LandMine*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.timeout View documentation}
-   */
-  timeout: uint
-  /**
-   * The current total neighbour bonus of this reactor.
-   *
-   * *Can only be used if this is Reactor*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.neighbour_bonus View documentation}
-   */
-  readonly neighbour_bonus: double
-  /**
-   * The ai settings of this unit.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ai_settings View documentation}
-   */
-  readonly ai_settings: LuaAISettings
-  /**
-   * The hightlight box type of this highlight box entity.
-   *
-   * *Can only be used if this is HighlightBox*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.highlight_box_type View documentation}
-   */
-  highlight_box_type: string
-  /**
-   * The blink interval of this highlight box entity. 0 indicates no blink.
-   *
-   * *Can only be used if this is HighlightBox*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.highlight_box_blink_interval View documentation}
-   */
-  highlight_box_blink_interval: uint
-  /**
    * The status of this entity or `nil` if no status.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.status View documentation}
    */
   readonly status: defines.entity_status | undefined
-  /**
-   * If equipment grid logistics are enabled while this vehicle is moving.
-   *
-   * *Can only be used if this is Vehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.enable_logistics_while_moving View documentation}
-   */
-  enable_logistics_while_moving: boolean
   /**
    * The player that this `simple-entity-with-owner`, `simple-entity-with-force`, `flying-text`, or `highlight-box` is
    * visible to. `nil` means it is rendered for every player.
@@ -4390,51 +3314,11 @@ interface LuaEntity extends LuaControl {
    */
   render_to_forces: ForceIdentification[] | undefined
   /**
-   * The rail target of this pump or `nil`.
-   *
-   * *Can only be used if this is Pump*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.pump_rail_target View documentation}
-   */
-  readonly pump_rail_target: LuaEntity | undefined
-  /**
-   * Returns true if this unit is moving.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.moving View documentation}
-   */
-  readonly moving: boolean
-  /**
    * Returns the id of the electric network that this entity is connected to or `nil`.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.electric_network_id View documentation}
    */
   readonly electric_network_id: uint | undefined
-  /**
-   * Whether this character's personal roboports are allowed to dispatch robots.
-   *
-   * *Can only be used if this is Character*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.allow_dispatching_robots View documentation}
-   */
-  allow_dispatching_robots: boolean
-  /**
-   * Whether this rocket silo automatically launches the rocket when cargo is inserted.
-   *
-   * *Can only be used if this is RocketSilo*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.auto_launch View documentation}
-   */
-  auto_launch: boolean
-  /**
-   * How much energy this generator generated in the last tick.
-   *
-   * *Can only be used if this is Generator*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.energy_generated_last_tick View documentation}
-   */
-  readonly energy_generated_last_tick: double
   /**
    * The storage filter for this logistic storage container.
    *
@@ -4473,71 +3357,6 @@ interface LuaEntity extends LuaControl {
    */
   tags: Tags | undefined
   /**
-   * The command given to this unit or `nil` is the unit has no command.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.command View documentation}
-   */
-  readonly command: Command | undefined
-  /**
-   * The distraction command given to this unit or `nil` is the unit currently isn't distracted.
-   *
-   * *Can only be used if this is Unit*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.distraction_command View documentation}
-   */
-  readonly distraction_command: Command | undefined
-  /**
-   * The ticks until the next trigger effect of this smoke-with-trigger.
-   *
-   * *Can only be used if this is SmokeWithTrigger*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.time_to_next_effect View documentation}
-   */
-  time_to_next_effect: uint
-  /**
-   * Destination position of spidertron's autopilot. Returns `nil` if autopilot doesn't have destination set.
-   *
-   * *Can only be used if this is SpiderVehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destination View documentation}
-   */
-  autopilot_destination: MapPosition | undefined
-  /**
-   * The queued destination positions of spidertron's autopilot.
-   *
-   * *Can only be used if this is SpiderVehicle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destinations View documentation}
-   */
-  readonly autopilot_destinations: MapPosition[]
-  /**
-   * Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds
-   * a path to next target) and trains having this train stop as goal or waypoint. Writing nil will disable the limit
-   * (will set a maximum possible value).
-   *
-   * **Note**: Train may be included multiple times when braking distance covers this train stop multiple times
-   *
-   * **Note**: Value may be read even when train stop has no control behavior
-   *
-   * *Can only be used if this is TrainStop*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_count View documentation}
-   */
-  readonly trains_count: uint | undefined
-  /**
-   * Amount of trains above which no new trains will be sent to this train stop.
-   *
-   * **Note**: When a train stop has a control behavior with wire connected and set_trains_limit enabled, this value
-   * will be overwritten by it
-   *
-   * *Can only be used if this is TrainStop*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_limit View documentation}
-   */
-  trains_limit: uint
-  /**
    * If this entity is EntityWithForce
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_entity_with_force View documentation}
@@ -4568,6 +3387,870 @@ interface LuaEntity extends LuaControl {
    */
   link_id: uint
   /**
+   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
+   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
+   * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
+   * change to the game state might have occurred between the creation of the Lua object and its access.
+   */
+  readonly valid: boolean
+  /**
+   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be
+   * suffixed with a dotted path to a member of the struct.
+   */
+  readonly object_name: "LuaEntity"
+  /** All methods and properties that this object supports. */
+  help(): string
+}
+
+/** @noSelf */
+interface EntityWithHealthEntity extends BaseEntity {
+  /**
+   * Damages the entity.
+   *
+   * *Can only be used if this is EntityWithHealth*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.damage View documentation}
+   *
+   * @param damage - The amount of damage to be done
+   * @param force - The force that will be doing the damage.
+   * @param type - The type of damage to be done, defaults to "impact".
+   * @param dealer - The entity to consider as the damage dealer.
+   * @returns The total damage actually applied after resistances.
+   */
+  damage(damage: float, force: ForceIdentification, type?: string, dealer?: LuaEntity): float
+}
+
+/** @noSelf */
+interface UnitEntity extends BaseEntity {
+  /**
+   * Give the entity a command.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_command View documentation}
+   *
+   * @param command
+   */
+  set_command(command: Command): void
+  /**
+   * Give the entity a distraction command.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_distraction_command View documentation}
+   *
+   * @param command
+   */
+  set_distraction_command(command: Command): void
+  /**
+   * Has this unit been assigned a command?
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.has_command View documentation}
+   */
+  has_command(): boolean
+  /**
+   * Release the unit from the spawner which spawned it. This allows the spawner to continue spawning additional units.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.release_from_spawner View documentation}
+   */
+  release_from_spawner(): void
+  /**
+   * The current speed of this unit in tiles per tick, taking into account any walking speed modifier given by the
+   * tile the unit is standing on.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.effective_speed View documentation}
+   */
+  readonly effective_speed: float
+  /**
+   * The unit group this unit is a member of, or `nil` if none.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.unit_group View documentation}
+   */
+  readonly unit_group: LuaUnitGroup | undefined
+  /**
+   * The ai settings of this unit.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ai_settings View documentation}
+   */
+  readonly ai_settings: LuaAISettings
+  /**
+   * Returns true if this unit is moving.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.moving View documentation}
+   */
+  readonly moving: boolean
+  /**
+   * The command given to this unit or `nil` is the unit has no command.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.command View documentation}
+   */
+  readonly command: Command | undefined
+  /**
+   * The distraction command given to this unit or `nil` is the unit currently isn't distracted.
+   *
+   * *Can only be used if this is Unit*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.distraction_command View documentation}
+   */
+  readonly distraction_command: Command | undefined
+}
+
+/** @noSelf */
+interface EntityGhostEntity extends BaseEntity {
+  /**
+   * Same as {@link LuaEntity.has_flag LuaEntity::has_flag}, but targets the inner entity on a entity ghost.
+   *
+   * *Can only be used if this is EntityGhost*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_has_flag View documentation}
+   *
+   * @param flag - The flag to test. See {@link EntityPrototypeFlags} for a list of flags.
+   * @returns `true` if the entity has the given flag set.
+   */
+  ghost_has_flag(flag: string): boolean
+  /**
+   * The unit number of the entity contained in this ghost or nil if the entity doesn't have one.
+   *
+   * *Can only be used if this is EntityGhost*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_unit_number View documentation}
+   */
+  readonly ghost_unit_number: uint | undefined
+}
+
+/** @noSelf */
+interface MarketEntity extends BaseEntity {
+  /**
+   * Offer a thing on the market.
+   *
+   * *Can only be used if this is Market*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.add_market_item View documentation}
+   *
+   * @example
+   *   Adds market offer, 1 copper ore for 10 iron ore.
+   *
+   *   ```lua
+   *   market.add_market_item{price={{"iron-ore", 10}}, offer={type="give-item", item="copper-ore"}}
+   *   ```
+   *
+   * @example
+   *   Adds market offer, 1 copper ore for 5 iron ore and 5 stone ore.
+   *
+   *   ```lua
+   *   market.add_market_item{price={{"iron-ore", 5}, {"stone", 5}}, offer={type="give-item", item="copper-ore"}}
+   *   ```
+   *
+   * @param offer
+   */
+  add_market_item(offer: Offer): void
+  /**
+   * Remove an offer from a market.
+   *
+   * **Note**: The other offers are moved down to fill the gap created by removing the offer, which decrements the
+   * overall size of the offer array.
+   *
+   * *Can only be used if this is Market*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.remove_market_item View documentation}
+   *
+   * @param offer - Index of offer to remove.
+   * @returns `true` if the offer was successfully removed; `false` when the given index was not valid.
+   */
+  remove_market_item(offer: uint): boolean
+  /**
+   * Get all offers in a market as an array.
+   *
+   * *Can only be used if this is Market*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_market_items View documentation}
+   */
+  get_market_items(): Offer[]
+  /**
+   * Removes all offers from a market.
+   *
+   * *Can only be used if this is Market*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.clear_market_items View documentation}
+   */
+  clear_market_items(): void
+}
+
+/** @noSelf */
+interface CraftingMachineEntity extends BaseEntity {
+  /**
+   * Returns whether a craft is currently in process. It does not indicate whether progress is currently being made,
+   * but whether any crafting action has made progress in this machine.
+   *
+   * *Can only be used if this is CraftingMachine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_crafting View documentation}
+   */
+  is_crafting(): void
+  /**
+   * Current recipe being assembled by this machine or `nil` if no recipe is set.
+   *
+   * *Can only be used if this is CraftingMachine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_recipe View documentation}
+   */
+  get_recipe(): LuaRecipe | undefined
+  /**
+   * The current crafting speed, including speed bonuses from modules and beacons.
+   *
+   * *Can only be used if this is CraftingMachine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.crafting_speed View documentation}
+   */
+  readonly crafting_speed: double
+  /**
+   * The current crafting progress, as a number in range [0, 1].
+   *
+   * *Can only be used if this is CraftingMachine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.crafting_progress View documentation}
+   */
+  crafting_progress: float
+  /**
+   * The current productivity bonus progress, as a number in range [0, 1].
+   *
+   * *Can only be used if this is CraftingMachine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.bonus_progress View documentation}
+   */
+  bonus_progress: double
+  /**
+   * The number of products this machine finished crafting in its lifetime.
+   *
+   * *Can only be used if this is CraftingMachine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.products_finished View documentation}
+   */
+  products_finished: uint
+}
+
+/** @noSelf */
+interface GateEntity extends BaseEntity {
+  /**
+   * *Can only be used if this is Gate*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_opened View documentation}
+   *
+   * @returns `true` if this gate is currently opened.
+   */
+  is_opened(): boolean
+  /**
+   * *Can only be used if this is Gate*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_opening View documentation}
+   *
+   * @returns `true` if this gate is currently opening.
+   */
+  is_opening(): boolean
+  /**
+   * *Can only be used if this is Gate*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_closed View documentation}
+   *
+   * @returns `true` if this gate is currently closed.
+   */
+  is_closed(): boolean
+  /**
+   * *Can only be used if this is Gate*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_closing View documentation}
+   *
+   * @returns `true` if this gate is currently closing
+   */
+  is_closing(): boolean
+  /**
+   * *Can only be used if this is Gate*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.request_to_open View documentation}
+   *
+   * @param force - The force that requests the gate to be open.
+   * @param extra_time - Extra ticks to stay open.
+   */
+  request_to_open(force: ForceIdentification, extra_time?: uint): void
+  /**
+   * *Can only be used if this is Gate*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.request_to_close View documentation}
+   *
+   * @param force - The force that requests the gate to be closed.
+   */
+  request_to_close(force: ForceIdentification): void
+}
+
+/** @noSelf */
+interface TransportBeltConnectableEntity extends BaseEntity {
+  /**
+   * Get a transport line of a belt or belt connectable entity.
+   *
+   * *Can only be used if this is TransportBeltConnectable*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_transport_line View documentation}
+   *
+   * @param index - Index of the requested transport line. Transport lines are 1-indexed.
+   */
+  get_transport_line(index: uint): LuaTransportLine
+  /**
+   * Get the maximum transport line index of a belt or belt connectable entity.
+   *
+   * *Can only be used if this is TransportBeltConnectable*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_max_transport_line_index View documentation}
+   */
+  get_max_transport_line_index(): uint
+  /**
+   * The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of
+   * this entity. Does not contain the other end of an underground belt, see
+   * {@link LuaEntity.neighbours LuaEntity::neighbours} for that. This is a dictionary with `"inputs"`, `"outputs"`
+   * entries that are arrays of transport belt connectable entities, or empty tables if no entities.
+   *
+   * *Can only be used if this is TransportBeltConnectable*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.belt_neighbours View documentation}
+   */
+  readonly belt_neighbours: Record<string, LuaEntity[]>
+}
+
+/** @noSelf */
+interface RocketSiloEntity extends BaseEntity {
+  /**
+   * *Can only be used if this is RocketSilo*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.launch_rocket View documentation}
+   *
+   * @returns `true` if the rocket was successfully launched. Return value of `false` means the silo is not ready for launch.
+   */
+  launch_rocket(): boolean
+  /**
+   * Number of rocket parts in the silo.
+   *
+   * *Can only be used if this is RocketSilo*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.rocket_parts View documentation}
+   */
+  rocket_parts: uint
+  /**
+   * Whether this rocket silo automatically launches the rocket when cargo is inserted.
+   *
+   * *Can only be used if this is RocketSilo*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.auto_launch View documentation}
+   */
+  auto_launch: boolean
+}
+
+/** @noSelf */
+interface RailEntity extends BaseEntity {
+  /**
+   * *Can only be used if this is Rail*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_connected_rail View documentation}
+   *
+   * @returns Rail connected in the specified manner to this one.
+   */
+  get_connected_rail(params: {
+    readonly rail_direction: defines.rail_direction
+    readonly rail_connection_direction: defines.rail_connection_direction
+  }): LuaEntity
+  /**
+   * Get the rail signal or train stop at the start/end of the rail segment this rail is in, or `nil` if the rail
+   * segment doesn't start/end with a signal nor a train stop.
+   *
+   * **Note**: A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+   *
+   * *Can only be used if this is Rail*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_rail_segment_entity View documentation}
+   *
+   * @param direction - The direction of travel relative to this rail.
+   * @param in_else_out - If true, gets the entity at the entrance of the rail segment, otherwise gets the entity at
+   *   the exit of the rail segment.
+   */
+  get_rail_segment_entity(direction: defines.rail_direction, in_else_out: boolean): LuaEntity | undefined
+  /**
+   * Get the rail at the end of the rail segment this rail is in.
+   *
+   * **Note**: A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+   *
+   * **Note**: This function has a second return value. A {@link defines.rail_direction} that points out of the rail
+   * segment from the end rail.
+   *
+   * *Can only be used if this is Rail*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_rail_segment_end View documentation}
+   *
+   * @param direction
+   */
+  get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
+  /**
+   * Get the length of the rail segment this rail is in.
+   *
+   * **Note**: A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+   *
+   * *Can only be used if this is Rail*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_rail_segment_length View documentation}
+   */
+  get_rail_segment_length(): double
+  /**
+   * Get a rail from each rail segment that overlaps with this rail's rail segment.
+   *
+   * **Note**: A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+   *
+   * *Can only be used if this is Rail*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_rail_segment_overlaps View documentation}
+   */
+  get_rail_segment_overlaps(): LuaEntity[]
+  /**
+   * The number of trains in this rail block for this rail entity.
+   *
+   * *Can only be used if this is Rail*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_in_block View documentation}
+   */
+  readonly trains_in_block: uint
+}
+
+/** @noSelf */
+interface RailSignalEntity extends BaseEntity {
+  /**
+   * Get the rails that this signal is connected to.
+   *
+   * *Can only be used if this is RailSignal or RailChainSignal*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_connected_rails View documentation}
+   */
+  get_connected_rails(): LuaEntity[]
+  /**
+   * The state of this rail signal.
+   *
+   * *Can only be used if this is RailSignal or RailChainSignal*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.signal_state View documentation}
+   */
+  readonly signal_state: defines.signal_state
+}
+
+/** @noSelf */
+interface RailChainSignalEntity extends BaseEntity {
+  /**
+   * Get the rails that this signal is connected to.
+   *
+   * *Can only be used if this is RailSignal or RailChainSignal*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_connected_rails View documentation}
+   */
+  get_connected_rails(): LuaEntity[]
+  /**
+   * The state of this rail signal.
+   *
+   * *Can only be used if this is RailSignal or RailChainSignal*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.signal_state View documentation}
+   */
+  readonly signal_state: defines.signal_state
+  /**
+   * The state of this chain signal.
+   *
+   * *Can only be used if this is RailChainSignal*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.chain_signal_state View documentation}
+   */
+  readonly chain_signal_state: defines.chain_signal_state
+}
+
+/** @noSelf */
+interface InfinityContainerEntity extends BaseEntity {
+  /**
+   * Gets the filter for this infinity container at the given index or `nil` if the filter index doesn't exist or is empty.
+   *
+   * *Can only be used if this is InfinityContainer*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_infinity_container_filter View documentation}
+   *
+   * @param index - The index to get.
+   */
+  get_infinity_container_filter(index: uint): InfinityInventoryFilter | undefined
+  /**
+   * Sets the filter for this infinity container at the given index.
+   *
+   * *Can only be used if this is InfinityContainer*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_infinity_container_filter View documentation}
+   *
+   * @param index - The index to set.
+   * @param filter - The new filter or `nil` to clear the filter.
+   */
+  set_infinity_container_filter(index: uint, filter: InfinityInventoryFilter | undefined): void
+  /**
+   * The filters for this infinity container.
+   *
+   * *Can only be used if this is InfinityContainer*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.infinity_container_filters View documentation}
+   */
+  infinity_container_filters: InfinityInventoryFilter[]
+  /**
+   * If items not included in this infinity container filters should be removed from the container.
+   *
+   * *Can only be used if this is InfinityContainer*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.remove_unfiltered_items View documentation}
+   */
+  remove_unfiltered_items: boolean
+}
+
+/** @noSelf */
+interface InfinityPipeEntity extends BaseEntity {
+  /**
+   * Gets the filter for this infinity pipe or `nil` if the filter is empty.
+   *
+   * *Can only be used if this is InfinityPipe*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_infinity_pipe_filter View documentation}
+   */
+  get_infinity_pipe_filter(): InfinityPipeFilter | undefined
+  /**
+   * Sets the filter for this infinity pipe.
+   *
+   * *Can only be used if this is InfinityPipe*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_infinity_pipe_filter View documentation}
+   *
+   * @param filter - The new filter or `nil` to clear the filter.
+   */
+  set_infinity_pipe_filter(filter: InfinityPipeFilter | undefined): void
+}
+
+/** @noSelf */
+interface HeatInterfaceEntity extends BaseEntity {
+  /**
+   * Gets the heat setting for this heat interface.
+   *
+   * *Can only be used if this is HeatInterface*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_heat_setting View documentation}
+   */
+  get_heat_setting(): HeatSetting
+  /**
+   * Sets the heat setting for this heat interface.
+   *
+   * *Can only be used if this is HeatInterface*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_heat_setting View documentation}
+   *
+   * @param filter - The new setting.
+   */
+  set_heat_setting(filter: HeatSetting): void
+}
+
+/** @noSelf */
+interface ProgrammableSpeakerEntity extends BaseEntity {
+  /**
+   * Plays a note with the given instrument and note.
+   *
+   * *Can only be used if this is ProgrammableSpeaker*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.play_note View documentation}
+   *
+   * @param instrument
+   * @param note
+   * @returns If the request is valid. The sound may or may not be played depending on polyphony settings.
+   */
+  play_note(instrument: uint, note: uint): boolean
+  /**
+   * *Can only be used if this is ProgrammableSpeaker*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.parameters View documentation}
+   */
+  parameters: ProgrammableSpeakerParameters
+  /**
+   * *Can only be used if this is ProgrammableSpeaker*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.alert_parameters View documentation}
+   */
+  alert_parameters: ProgrammableSpeakerAlertParameters
+}
+
+/** @noSelf */
+interface AssemblingMachineEntity extends BaseEntity {
+  /**
+   * Sets the current recipe in this assembly machine.
+   *
+   * *Can only be used if this is AssemblingMachine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_recipe View documentation}
+   *
+   * @param recipe - The new recipe or `nil` to clear the recipe.
+   * @returns Any items removed from this entity as a result of setting the recipe.
+   */
+  set_recipe(recipe: string | LuaRecipe | undefined): Record<string, uint>
+  /**
+   * When locked; the recipe in this assembling machine can't be changed by the player.
+   *
+   * *Can only be used if this is AssemblingMachine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.recipe_locked View documentation}
+   */
+  recipe_locked: boolean
+}
+
+/** @noSelf */
+interface VehicleEntity extends BaseEntity {
+  /**
+   * Gets the driver of this vehicle if any.
+   *
+   * **Note**: May be `nil` if the vehicle contains no driver. To check if there's a passenger see
+   * {@link LuaEntity.get_passenger LuaEntity::get_passenger}.
+   *
+   * *Can only be used if this is Vehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_driver View documentation}
+   */
+  get_driver(): LuaEntity | LuaPlayer | undefined
+  /**
+   * Sets the driver of this vehicle.
+   *
+   * **Note**: This differs over {@link LuaEntity.set_passenger LuaEntity::set_passenger} in that the passenger can't
+   * drive the vehicle.
+   *
+   * *Can only be used if this is Vehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_driver View documentation}
+   *
+   * @param driver - The new driver or `nil` to eject the current driver if any.
+   */
+  set_driver(driver: LuaEntity | PlayerIdentification | undefined): void
+  /**
+   * Gets the passenger of this car or spidertron if any.
+   *
+   * **Note**: May be `nil` if the vehicle contains no passenger. To check if there's a driver see
+   * {@link LuaEntity.get_driver LuaEntity::get_driver}.
+   *
+   * **Note**: This differs over {@link LuaEntity.get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
+   *
+   * *Can only be used if this is Vehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_passenger View documentation}
+   */
+  get_passenger(): LuaEntity | LuaPlayer | undefined
+  /**
+   * Sets the passenger of this car or spidertron.
+   *
+   * **Note**: This differs over {@link LuaEntity.get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
+   *
+   * *Can only be used if this is Vehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_passenger View documentation}
+   *
+   * @param passenger
+   */
+  set_passenger(passenger: LuaEntity | PlayerIdentification): void
+  /**
+   * If equipment grid logistics are enabled while this vehicle is moving.
+   *
+   * *Can only be used if this is Vehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.enable_logistics_while_moving View documentation}
+   */
+  enable_logistics_while_moving: boolean
+}
+
+/** @noSelf */
+interface TrainStopEntity extends BaseEntity {
+  /**
+   * The trains scheduled to stop at this train stop.
+   *
+   * *Can only be used if this is TrainStop*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_train_stop_trains View documentation}
+   */
+  get_train_stop_trains(): LuaTrain[]
+  /**
+   * The train currently stopped at this train stop or `nil` if none.
+   *
+   * *Can only be used if this is TrainStop*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_stopped_train View documentation}
+   */
+  get_stopped_train(): LuaTrain | undefined
+  /**
+   * The rail entity this train stop is connected to or `nil` if there is none.
+   *
+   * *Can only be used if this is TrainStop*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.connected_rail View documentation}
+   */
+  readonly connected_rail: LuaEntity | undefined
+  /**
+   * Rail direction to which this train stop is binding. This returns a value even when no rails are present.
+   *
+   * *Can only be used if this is TrainStop*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.connected_rail_direction View documentation}
+   */
+  readonly connected_rail_direction: defines.rail_direction
+  /**
+   * Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds
+   * a path to next target) and trains having this train stop as goal or waypoint. Writing nil will disable the limit
+   * (will set a maximum possible value).
+   *
+   * **Note**: Train may be included multiple times when braking distance covers this train stop multiple times
+   *
+   * **Note**: Value may be read even when train stop has no control behavior
+   *
+   * *Can only be used if this is TrainStop*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_count View documentation}
+   */
+  readonly trains_count: uint | undefined
+  /**
+   * Amount of trains above which no new trains will be sent to this train stop.
+   *
+   * **Note**: When a train stop has a control behavior with wire connected and set_trains_limit enabled, this value
+   * will be overwritten by it
+   *
+   * *Can only be used if this is TrainStop*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_limit View documentation}
+   */
+  trains_limit: uint
+}
+
+/** @noSelf */
+interface BeamEntity extends BaseEntity {
+  /**
+   * Get the source of this beam.
+   *
+   * *Can only be used if this is Beam*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_beam_source View documentation}
+   */
+  get_beam_source(): BeamTarget
+  /**
+   * Set the source of this beam.
+   *
+   * *Can only be used if this is Beam*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_beam_source View documentation}
+   *
+   * @param source
+   */
+  set_beam_source(source: LuaEntity | Position): void
+  /**
+   * Get the target of this beam.
+   *
+   * *Can only be used if this is Beam*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_beam_target View documentation}
+   */
+  get_beam_target(): BeamTarget
+  /**
+   * Set the target of this beam.
+   *
+   * *Can only be used if this is Beam*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_beam_target View documentation}
+   *
+   * @param target
+   */
+  set_beam_target(target: LuaEntity | Position): void
+}
+
+/** @noSelf */
+interface ResourceEntity extends BaseEntity {
+  /**
+   * Depletes and destroys this resource entity.
+   *
+   * *Can only be used if this is ResourceEntity*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.deplete View documentation}
+   */
+  deplete(): void
+  /**
+   * Count of resource units contained.
+   *
+   * *Can only be used if this is ResourceEntity*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.amount View documentation}
+   */
+  amount: uint
+  /**
+   * Count of initial resource units contained.
+   *
+   * **Note**: If this is not an infinite resource reading will give `nil` and writing will give an error.
+   *
+   * *Can only be used if this is ResourceEntity*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.initial_amount View documentation}
+   */
+  initial_amount: uint | undefined
+}
+
+/** @noSelf */
+interface SpiderVehicleEntity extends BaseEntity {
+  /**
+   * Adds the given position to this spidertron's autopilot's queue of destinations.
+   *
+   * *Can only be used if this is SpiderVehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.add_autopilot_destination View documentation}
+   *
+   * @param position - The position the spidertron should move to.
+   */
+  add_autopilot_destination(position: MapPosition): void
+  /**
+   * The torso orientation of this spider vehicle.
+   *
+   * *Can only be used if this is SpiderVehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.torso_orientation View documentation}
+   */
+  torso_orientation: RealOrientation
+  /**
+   * Read when this spidertron auto-targets enemies
+   *
+   * *Can only be used if this is SpiderVehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.vehicle_automatic_targeting_parameters View documentation}
+   */
+  vehicle_automatic_targeting_parameters: VehicleAutomaticTargetingParameters
+  /**
+   * Destination position of spidertron's autopilot. Returns `nil` if autopilot doesn't have destination set.
+   *
+   * *Can only be used if this is SpiderVehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destination View documentation}
+   */
+  autopilot_destination: MapPosition | undefined
+  /**
+   * The queued destination positions of spidertron's autopilot.
+   *
+   * *Can only be used if this is SpiderVehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destinations View documentation}
+   */
+  readonly autopilot_destinations: MapPosition[]
+  /**
    * The follow target of this spidertron if any.
    *
    * *Can only be used if this is SpiderVehicle*
@@ -4584,6 +4267,36 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.follow_offset View documentation}
    */
   follow_offset: Position | undefined
+}
+
+/** @noSelf */
+interface LinkedBeltEntity extends BaseEntity {
+  /**
+   * Connects current linked belt with another one.
+   *
+   * Neighbours have to be of different type. If given linked belt is connected to something else it will be
+   * disconnected first. If provided neighbour is connected to something else it will also be disconnected first.
+   * Automatically updates neighbour to be connected back to this one.
+   *
+   * **Note**: Can also be used on entity ghost if it contains linked-belt
+   *
+   * *Can only be used if this is LinkedBelt*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.connect_linked_belts View documentation}
+   *
+   * @param neighbour - Another linked belt or entity ghost containing linked belt to connect or nil to disconnect
+   */
+  connect_linked_belts(neighbour: LuaEntity | undefined): void
+  /**
+   * Disconnects linked belt from its neighbour.
+   *
+   * **Note**: Can also be used on entity ghost if it contains linked-belt
+   *
+   * *Can only be used if this is LinkedBelt*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.disconnect_linked_belts View documentation}
+   */
+  disconnect_linked_belts(): void
   /**
    * Type of linked belt: it is either `"input"` or `"output"`. Changing type will also flip direction so the belt is
    * out of the same side
@@ -4609,21 +4322,533 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.linked_belt_neighbour View documentation}
    */
   readonly linked_belt_neighbour: LuaEntity | undefined
-  /**
-   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
-   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
-   * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
-   * change to the game state might have occurred between the creation of the Lua object and its access.
-   */
-  readonly valid: boolean
-  /**
-   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be
-   * suffixed with a dotted path to a member of the struct.
-   */
-  readonly object_name: "LuaEntity"
-  /** All methods and properties that this object supports. */
-  help(): string
 }
+
+interface GhostEntity extends BaseEntity {
+  /**
+   * Name of the entity or tile contained in this ghost
+   *
+   * *Can only be used if this is Ghost*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_name View documentation}
+   */
+  readonly ghost_name: string
+  /**
+   * Localised name of the entity or tile contained in this ghost.
+   *
+   * *Can only be used if this is Ghost*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_localised_name View documentation}
+   */
+  readonly ghost_localised_name: LocalisedString
+  /**
+   * *Can only be used if this is Ghost*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_localised_description View documentation}
+   */
+  readonly ghost_localised_description: LocalisedString
+  /**
+   * The prototype type of the entity or tile contained in this ghost.
+   *
+   * *Can only be used if this is Ghost*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_type View documentation}
+   */
+  readonly ghost_type: string
+  /**
+   * The prototype of the entity or tile contained in this ghost.
+   *
+   * *Can only be used if this is Ghost*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_prototype View documentation}
+   */
+  readonly ghost_prototype: LuaEntityPrototype | LuaTilePrototype
+}
+
+interface CarEntity extends BaseEntity {
+  /**
+   * Multiplies the acceleration the vehicle can create for one unit of energy. By default is `1`.
+   *
+   * *Can only be used if this is Car*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.effectivity_modifier View documentation}
+   */
+  effectivity_modifier: float
+  /**
+   * Multiplies the energy consumption.
+   *
+   * *Can only be used if this is Car*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.consumption_modifier View documentation}
+   */
+  consumption_modifier: float
+  /**
+   * Multiplies the car friction rate.
+   *
+   * *Can only be used if this is Car*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.friction_modifier View documentation}
+   *
+   * @example
+   *   This will allow the car to go much faster
+   *
+   *   ```lua
+   *   game.player.vehicle.friction_modifier = 0.5
+   *   ```
+   */
+  friction_modifier: float
+  /**
+   * Index of the currently selected weapon slot of this character, car, or spidertron, or `nil` if the car/spidertron
+   * doesn't have guns.
+   *
+   * *Can only be used if this is Character or Car*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.selected_gun_index View documentation}
+   */
+  selected_gun_index: uint | undefined
+}
+
+interface ItemEntity extends BaseEntity {
+  /**
+   * *Can only be used if this is ItemEntity*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.stack View documentation}
+   */
+  readonly stack: LuaItemStack
+  /**
+   * Will this entity be picked up automatically when the player walks over it?
+   *
+   * *Can only be used if this is ItemEntity*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.to_be_looted View documentation}
+   */
+  to_be_looted: boolean
+}
+
+interface InserterEntity extends BaseEntity {
+  /**
+   * Where the inserter will pick up items from.
+   *
+   * **Note**: Inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the pickup position.
+   *
+   * *Can only be used if this is Inserter*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.pickup_position View documentation}
+   */
+  pickup_position: Position
+  /**
+   * The entity this inserter will attempt to pick up items from, or `nil` if there is no such entity. If there are
+   * multiple possible entities at the pick-up point, writing to this attribute allows a mod to choose which one to
+   * pick up items from. The entity needs to collide with the tile box under the pick-up position.
+   *
+   * *Can only be used if this is Inserter*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.pickup_target View documentation}
+   */
+  pickup_target: LuaEntity | undefined
+  /**
+   * The item stack currently held in an inserter's hand.
+   *
+   * *Can only be used if this is Inserter*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.held_stack View documentation}
+   */
+  readonly held_stack: LuaItemStack
+  /**
+   * Current position of the inserter's "hand".
+   *
+   * *Can only be used if this is Inserter*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.held_stack_position View documentation}
+   */
+  readonly held_stack_position: PositionTable
+  /**
+   * The filter mode for this filter inserter: "whitelist", "blacklist", or `nil` if this inserter doesn't use filters.
+   *
+   * *Can only be used if this is Inserter*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.inserter_filter_mode View documentation}
+   */
+  inserter_filter_mode: "whitelist" | "blacklist" | undefined
+}
+
+interface CharacterEntity extends BaseEntity {
+  /**
+   * Index of the currently selected weapon slot of this character, car, or spidertron, or `nil` if the car/spidertron
+   * doesn't have guns.
+   *
+   * *Can only be used if this is Character or Car*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.selected_gun_index View documentation}
+   */
+  selected_gun_index: uint | undefined
+  /**
+   * The player connected to this character or `nil` if none.
+   *
+   * *Can only be used if this is Character*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.player View documentation}
+   */
+  readonly player: LuaPlayer | undefined
+  /**
+   * The player this character is associated with or `nil` if none. When the player logs off in multiplayer all of the
+   * associated characters will be logged off with him.
+   *
+   * **Note**: A character associated with a player is not directly controlled by any player.
+   *
+   * **Note**: Set to `nil` to clear. The player will be automatically disassociated when a controller is set on the character.
+   *
+   * *Can only be used if this is Character*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.associated_player View documentation}
+   */
+  associated_player: LuaPlayer | undefined
+  /**
+   * The last tick this character entity was attacked.
+   *
+   * *Can only be used if this is Character*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.tick_of_last_attack View documentation}
+   */
+  tick_of_last_attack: uint
+  /**
+   * The last tick this character entity was damaged.
+   *
+   * *Can only be used if this is Character*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.tick_of_last_damage View documentation}
+   */
+  tick_of_last_damage: uint
+  /**
+   * Whether this character's personal roboports are allowed to dispatch robots.
+   *
+   * *Can only be used if this is Character*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.allow_dispatching_robots View documentation}
+   */
+  allow_dispatching_robots: boolean
+}
+
+interface FurnaceEntity extends BaseEntity {
+  /**
+   * The previous recipe this furnace was using or nil if the furnace had no previous recipe.
+   *
+   * *Can only be used if this is Furnace*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.previous_recipe View documentation}
+   */
+  readonly previous_recipe: LuaRecipe | undefined
+}
+
+interface FlyingTextEntity extends BaseEntity {
+  /**
+   * The text of this flying-text entity.
+   *
+   * *Can only be used if this is FlyingText*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.text View documentation}
+   */
+  text: LocalisedString
+}
+
+interface TransportBeltToGroundEntity extends BaseEntity {
+  /**
+   * `"input"` or `"output"`, depending on whether this underground belt goes down or up.
+   *
+   * *Can only be used if this is TransportBeltToGround*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.belt_to_ground_type View documentation}
+   */
+  readonly belt_to_ground_type: "input" | "output"
+}
+
+interface LoaderEntity extends BaseEntity {
+  /**
+   * `"input"` or `"output"`, depending on whether this loader puts to or gets from a container.
+   *
+   * *Can only be used if this is Loader*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.loader_type View documentation}
+   */
+  loader_type: "input" | "output"
+  /**
+   * The container entity this loader is pointing at/pulling from depending on the
+   * {@link LuaEntity.loader_type LuaEntity::loader_type}.
+   *
+   * *Can only be used if this is Loader*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.loader_container View documentation}
+   */
+  readonly loader_container: LuaEntity
+}
+
+interface TurretEntity extends BaseEntity {
+  /**
+   * The damage dealt by this turret, artillery turret, or artillery wagon.
+   *
+   * *Can only be used if this is Turret*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.damage_dealt View documentation}
+   */
+  damage_dealt: double
+  /**
+   * The number of units killed by this turret, artillery turret, or artillery wagon.
+   *
+   * *Can only be used if this is Turret*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.kills View documentation}
+   */
+  kills: uint
+}
+
+interface EntityWithOwnerEntity extends BaseEntity {
+  /**
+   * The last player that changed any setting on this entity. This includes building the entity, changing its color,
+   * or configuring its circuit network. Can be `nil` if the last user is not part of the save anymore. Mods can
+   * overwrite it if desired.
+   *
+   * *Can only be used if this is EntityWithOwner*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.last_user View documentation}
+   */
+  last_user: LuaPlayer | undefined
+}
+
+interface ElectricEnergyInterfaceEntity extends BaseEntity {
+  /**
+   * The power production specific to the ElectricEnergyInterface entity type.
+   *
+   * *Can only be used if this is ElectricEnergyInterface*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.power_production View documentation}
+   */
+  power_production: double
+  /**
+   * The power usage specific to the ElectricEnergyInterface entity type.
+   *
+   * *Can only be used if this is ElectricEnergyInterface*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.power_usage View documentation}
+   */
+  power_usage: double
+}
+
+interface MiningDrillEntity extends BaseEntity {
+  /**
+   * The mining target or `nil` if none
+   *
+   * *Can only be used if this is MiningDrill*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.mining_target View documentation}
+   */
+  readonly mining_target: LuaEntity | undefined
+}
+
+interface ElectricPoleEntity extends BaseEntity {
+  /**
+   * The electric network statistics for this electric pole.
+   *
+   * *Can only be used if this is ElectricPole*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.electric_network_statistics View documentation}
+   */
+  readonly electric_network_statistics: LuaFlowStatistics
+}
+
+interface CharacterCorpseEntity extends BaseEntity {
+  /**
+   * The player index associated with this character corpse.
+   *
+   * **Note**: The index is not guaranteed to be valid so it should always be checked first if a player with that
+   * index actually exists.
+   *
+   * *Can only be used if this is CharacterCorpse*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.character_corpse_player_index View documentation}
+   */
+  character_corpse_player_index: uint
+  /**
+   * The tick this character corpse died at.
+   *
+   * *Can only be used if this is CharacterCorpse*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.character_corpse_tick_of_death View documentation}
+   */
+  character_corpse_tick_of_death: uint
+  /**
+   * The reason this character corpse character died (if any).
+   *
+   * *Can only be used if this is CharacterCorpse*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.character_corpse_death_cause View documentation}
+   */
+  character_corpse_death_cause: LocalisedString
+}
+
+interface SplitterEntity extends BaseEntity {
+  /**
+   * The filter for this splitter or `nil` if no filter is set.
+   *
+   * *Can only be used if this is Splitter*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.splitter_filter View documentation}
+   */
+  splitter_filter: LuaItemPrototype | undefined
+  /**
+   * The input priority for this splitter : "left", "none", or "right".
+   *
+   * *Can only be used if this is Splitter*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.splitter_input_priority View documentation}
+   */
+  splitter_input_priority: "left" | "none" | "right"
+  /**
+   * The output priority for this splitter : "left", "none", or "right".
+   *
+   * *Can only be used if this is Splitter*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.splitter_output_priority View documentation}
+   */
+  splitter_output_priority: "left" | "none" | "right"
+}
+
+interface LandMineEntity extends BaseEntity {
+  /**
+   * If this land mine is armed.
+   *
+   * *Can only be used if this is LandMine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.armed View documentation}
+   */
+  readonly armed: boolean
+  /**
+   * The timeout that's left on this landmine in ticks. It describes the time between the landmine being placed and it
+   * being armed.
+   *
+   * *Can only be used if this is LandMine*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.timeout View documentation}
+   */
+  timeout: uint
+}
+
+interface ReactorEntity extends BaseEntity {
+  /**
+   * The current total neighbour bonus of this reactor.
+   *
+   * *Can only be used if this is Reactor*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.neighbour_bonus View documentation}
+   */
+  readonly neighbour_bonus: double
+}
+
+interface HighlightBoxEntity extends BaseEntity {
+  /**
+   * The hightlight box type of this highlight box entity.
+   *
+   * *Can only be used if this is HighlightBox*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.highlight_box_type View documentation}
+   */
+  highlight_box_type: string
+  /**
+   * The blink interval of this highlight box entity. 0 indicates no blink.
+   *
+   * *Can only be used if this is HighlightBox*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.highlight_box_blink_interval View documentation}
+   */
+  highlight_box_blink_interval: uint
+}
+
+interface PumpEntity extends BaseEntity {
+  /**
+   * The rail target of this pump or `nil`.
+   *
+   * *Can only be used if this is Pump*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.pump_rail_target View documentation}
+   */
+  readonly pump_rail_target: LuaEntity | undefined
+}
+
+interface GeneratorEntity extends BaseEntity {
+  /**
+   * How much energy this generator generated in the last tick.
+   *
+   * *Can only be used if this is Generator*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.energy_generated_last_tick View documentation}
+   */
+  readonly energy_generated_last_tick: double
+}
+
+interface SmokeWithTriggerEntity extends BaseEntity {
+  /**
+   * The ticks until the next trigger effect of this smoke-with-trigger.
+   *
+   * *Can only be used if this is SmokeWithTrigger*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.time_to_next_effect View documentation}
+   */
+  time_to_next_effect: uint
+}
+
+/**
+ * The primary interface for interacting with entities through the Lua API. Entities are everything that exists on the
+ * map except for tiles (see {@link LuaTile}).
+ *
+ * Most functions on LuaEntity also work when the entity is contained in a ghost.
+ *
+ * {@link https://lua-api.factorio.com/latest/LuaEntity.html View documentation}
+ */
+interface LuaEntity
+  extends BaseEntity,
+    EntityWithHealthEntity,
+    UnitEntity,
+    EntityGhostEntity,
+    MarketEntity,
+    CraftingMachineEntity,
+    GateEntity,
+    TransportBeltConnectableEntity,
+    RocketSiloEntity,
+    RailEntity,
+    RailSignalEntity,
+    RailChainSignalEntity,
+    InfinityContainerEntity,
+    InfinityPipeEntity,
+    HeatInterfaceEntity,
+    ProgrammableSpeakerEntity,
+    AssemblingMachineEntity,
+    VehicleEntity,
+    TrainStopEntity,
+    BeamEntity,
+    ResourceEntity,
+    SpiderVehicleEntity,
+    LinkedBeltEntity,
+    GhostEntity,
+    CarEntity,
+    ItemEntity,
+    InserterEntity,
+    CharacterEntity,
+    FurnaceEntity,
+    FlyingTextEntity,
+    TransportBeltToGroundEntity,
+    LoaderEntity,
+    TurretEntity,
+    EntityWithOwnerEntity,
+    ElectricEnergyInterfaceEntity,
+    MiningDrillEntity,
+    ElectricPoleEntity,
+    CharacterCorpseEntity,
+    SplitterEntity,
+    LandMineEntity,
+    ReactorEntity,
+    HighlightBoxEntity,
+    PumpEntity,
+    GeneratorEntity,
+    SmokeWithTriggerEntity {}
 
 /**
  * Prototype of an entity.
@@ -9813,7 +10038,6 @@ interface ChooseElemButtonGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "choose-elem-button"
-  get style(): ChooseElemButtonStyle
   /**
    * The elem type of this choose-elem-button.
    *
@@ -9897,7 +10121,6 @@ interface DropDownGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "drop-down"
-  get style(): DropDownStyle
   /**
    * Removes the items in this dropdown or listbox.
    *
@@ -9961,7 +10184,6 @@ interface EmptyWidgetGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "empty-widget"
-  get style(): EmptyWidgetStyle
   /**
    * The frame drag target for this flow, frame, label, table, or empty-widget.
    *
@@ -9986,7 +10208,6 @@ interface EntityPreviewGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "entity-preview"
-  get style(): EntityPreviewStyle
   /**
    * The entity associated with this entity-preview, camera, minimap or `nil` if no entity is associated.
    *
@@ -10005,7 +10226,6 @@ interface ListBoxGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "list-box"
-  get style(): ListBoxStyle
   /**
    * Removes the items in this dropdown or listbox.
    *
@@ -10082,7 +10302,6 @@ interface ScrollPaneGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "scroll-pane"
-  get style(): ScrollPaneStyle
   /**
    * Scrolls this scroll bar to the top.
    *
@@ -10156,7 +10375,6 @@ interface SpriteButtonGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "sprite-button"
-  get style(): SpriteButtonStyle
   /**
    * The image to display on this sprite-button or sprite in the default state.
    *
@@ -10209,7 +10427,6 @@ interface TabbedPaneGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "tabbed-pane"
-  get style(): TabbedPaneStyle
   /**
    * Adds the given tab and content widgets to this tabbed pane as a new tab.
    *
@@ -10262,7 +10479,6 @@ interface TextBoxGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "text-box"
-  get style(): TextBoxStyle
   /**
    * Scrolls this scroll bar to the top.
    *
@@ -10379,7 +10595,6 @@ interface ButtonGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "button"
-  get style(): ButtonStyle
   /**
    * The mouse button filters for this button or sprite-button.
    *
@@ -10397,7 +10612,6 @@ interface CameraGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "camera"
-  get style(): CameraStyle
   /**
    * The position this camera or minimap is focused on, if any.
    *
@@ -10433,7 +10647,6 @@ interface CheckboxGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "checkbox"
-  get style(): CheckboxStyle
   /**
    * Is this checkbox or radiobutton checked?
    *
@@ -10453,7 +10666,6 @@ interface FlowGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "flow"
-  get style(): FlowStyle
   /**
    * Direction of this element's layout. May be either `"horizontal"` or `"vertical"`.
    *
@@ -10487,7 +10699,6 @@ interface FrameGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "frame"
-  get style(): FrameStyle
   /**
    * Forces this frame to re-auto-center. Only works on frames stored directly in {@link LuaGui.screen LuaGui::screen}.
    *
@@ -10536,7 +10747,6 @@ interface LabelGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "label"
-  get style(): LabelStyle
   /**
    * The frame drag target for this flow, frame, label, table, or empty-widget.
    *
@@ -10561,7 +10771,6 @@ interface LineGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "line"
-  get style(): LineStyle
   /**
    * Direction of this element's layout. May be either `"horizontal"` or `"vertical"`.
    *
@@ -10581,7 +10790,6 @@ interface MinimapGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "minimap"
-  get style(): MinimapStyle
   /**
    * The position this camera or minimap is focused on, if any.
    *
@@ -10631,7 +10839,6 @@ interface ProgressBarGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "progressbar"
-  get style(): ProgressBarStyle
   /**
    * How much this progress bar is filled. It is a value in the range [0, 1].
    *
@@ -10651,7 +10858,6 @@ interface RadioButtonGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "radiobutton"
-  get style(): RadioButtonStyle
   /**
    * Is this checkbox or radiobutton checked?
    *
@@ -10672,7 +10878,6 @@ interface SliderGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "slider"
-  get style(): SliderStyle
   /**
    * Gets this sliders minimum value.
    *
@@ -10759,7 +10964,6 @@ interface SpriteGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "sprite"
-  get style(): SpriteStyle
   /**
    * The image to display on this sprite-button or sprite in the default state.
    *
@@ -10783,7 +10987,6 @@ interface SwitchGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "switch"
-  get style(): SwitchStyle
   /**
    * The switch state (left, none, right) for this switch.
    *
@@ -10847,7 +11050,6 @@ interface TabGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "tab"
-  get style(): TabStyle
   /**
    * The text to display after the normal tab text (designed to work with numbers)
    *
@@ -10867,7 +11069,6 @@ interface TableGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "table"
-  get style(): TableStyle
   /**
    * Whether this table should draw vertical grid lines.
    *
@@ -10934,7 +11135,6 @@ interface TextFieldGuiElementMembers extends BaseGuiElement {
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "textfield"
-  get style(): TextFieldStyle
   /**
    * Selects all the text in this textbox.
    *
@@ -12051,84 +12251,14 @@ interface LuaItemPrototype {
   help(): string
 }
 
-/**
- * A reference to an item and count owned by some external entity.
- *
- * **Note**: In most instances this is a simple reference as in: it points at a specific slot in an inventory and not
- * the item in the slot.
- *
- * **Note**: In the instance this references an item on a {@link LuaTransportLine} the reference is only guaranteed to
- * stay valid (and refer to the same item) as long as nothing changes the transport line.
- *
- * {@link https://lua-api.factorio.com/latest/LuaItemStack.html View documentation}
- *
- * @noSelf
- */
-interface LuaItemStack {
+/** @noSelf */
+interface BaseItemStack {
   /**
    * Is this blueprint item setup? I.e. is it a non-empty blueprint?
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.is_blueprint_setup View documentation}
    */
   is_blueprint_setup(): boolean
-  /**
-   * The entities in this blueprint.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entities View documentation}
-   */
-  get_blueprint_entities(): BlueprintEntity[]
-  /**
-   * Set new entities to be a part of this blueprint.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_blueprint_entities View documentation}
-   *
-   * @param entities - The new blueprint entities.
-   */
-  set_blueprint_entities(entities: BlueprintEntity[]): void
-  /**
-   * Add ammo to this ammo item.
-   *
-   * *Can only be used if this is AmmoItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.add_ammo View documentation}
-   *
-   * @param amount - Amount of ammo to add.
-   */
-  add_ammo(amount: float): void
-  /**
-   * Remove ammo from this ammo item.
-   *
-   * *Can only be used if this is AmmoItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.drain_ammo View documentation}
-   *
-   * @param amount - Amount of ammo to remove.
-   */
-  drain_ammo(amount: float): void
-  /**
-   * Add durability to this tool item.
-   *
-   * *Can only be used if this is ToolItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.add_durability View documentation}
-   *
-   * @param amount - Amount of durability to add.
-   */
-  add_durability(amount: double): void
-  /**
-   * Remove durability from this tool item.
-   *
-   * *Can only be used if this is ToolItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.drain_durability View documentation}
-   *
-   * @param amount - Amount of durability to remove.
-   */
-  drain_durability(amount: double): void
   /**
    * Would a call to {@link LuaItemStack.set_stack LuaItemStack::set_stack} succeed?
    *
@@ -12188,24 +12318,6 @@ interface LuaItemStack {
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.clear View documentation}
    */
   clear(): void
-  /**
-   * A list of the tiles in this blueprint.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_tiles View documentation}
-   */
-  get_blueprint_tiles(): Tile[]
-  /**
-   * Set specific tiles in this blueprint.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_blueprint_tiles View documentation}
-   *
-   * @param tiles - Tiles to be a part of the blueprint.
-   */
-  set_blueprint_tiles(tiles: Tile[]): void
   /**
    * Access the inner inventory of an item.
    *
@@ -12312,190 +12424,6 @@ interface LuaItemStack {
     readonly include_fuel?: boolean
   }): Record<uint, LuaEntity>
   /**
-   * Gets the tag with the given name or returns `nil` if it doesn't exist.
-   *
-   * *Can only be used if this is ItemWithTags*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_tag View documentation}
-   *
-   * @param tag_name
-   */
-  get_tag(tag_name: string): AnyBasic | undefined
-  /**
-   * Sets the tag with the given name and value.
-   *
-   * *Can only be used if this is ItemWithTags*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_tag View documentation}
-   *
-   * @param tag_name
-   * @param tag
-   */
-  set_tag(tag_name: string, tag: AnyBasic): AnyBasic
-  /**
-   * Removes a tag with the given name.
-   *
-   * *Can only be used if this is ItemWithTags*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.remove_tag View documentation}
-   *
-   * @param tag
-   * @returns If the tag existed and was removed.
-   */
-  remove_tag(tag: string): boolean
-  /**
-   * Clears this blueprint item.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.clear_blueprint View documentation}
-   */
-  clear_blueprint(): void
-  /**
-   * Gets the entity filter at the given index for this deconstruction item.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_entity_filter View documentation}
-   *
-   * @param index
-   */
-  get_entity_filter(index: uint): string
-  /**
-   * Sets the entity filter at the given index for this deconstruction item.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_entity_filter View documentation}
-   *
-   * @param index
-   * @param filter - Setting to nil erases the filter.
-   * @returns If the new filter was set (was valid.)
-   */
-  set_entity_filter(index: uint, filter: string | LuaEntityPrototype | LuaEntity | undefined): boolean
-  /**
-   * Gets the tile filter at the given index for this deconstruction item.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_tile_filter View documentation}
-   *
-   * @param index
-   */
-  get_tile_filter(index: uint): string
-  /**
-   * Sets the tile filter at the given index for this deconstruction item.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_tile_filter View documentation}
-   *
-   * @param index
-   * @param filter - Setting to nil erases the filter.
-   * @returns If the new filter was set (was valid.)
-   */
-  set_tile_filter(index: uint, filter: string | LuaTilePrototype | LuaTile | undefined): boolean
-  /**
-   * Clears all settings/filters on this deconstruction item resetting it to default values.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.clear_deconstruction_item View documentation}
-   */
-  clear_deconstruction_item(): void
-  /**
-   * Clears all settings/filters on this upgrade item resetting it to default values.
-   *
-   * *Can only be used if this is UpgradeItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.clear_upgrade_item View documentation}
-   */
-  clear_upgrade_item(): void
-  /**
-   * Gets the filter at the given index for this upgrade item.
-   *
-   * *Can only be used if this is UpgradeItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_mapper View documentation}
-   *
-   * @param index - The index of the mapper to read.
-   * @param type - 'from' or 'to'.
-   */
-  get_mapper(index: uint, type: "from" | "to"): UpgradeFilter
-  /**
-   * Sets the module filter at the given index for this upgrade item.
-   *
-   * *Can only be used if this is UpgradeItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_mapper View documentation}
-   *
-   * @param index - The index of the mapper to set.
-   * @param type - `from` or `to`.
-   * @param filter - The filter to set or `nil`
-   */
-  set_mapper(index: uint, type: string, filter: UpgradeFilter | undefined): void
-  /**
-   * Gets the number of entities in this blueprint item.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entity_count View documentation}
-   */
-  get_blueprint_entity_count(): uint
-  /**
-   * Gets the tags for the given blueprint entity index in this blueprint item.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entity_tags View documentation}
-   *
-   * @param index
-   */
-  get_blueprint_entity_tags(index: uint): Tags
-  /**
-   * Sets the tags on the given blueprint entity index in this blueprint item.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_blueprint_entity_tags View documentation}
-   *
-   * @param index - The entity index
-   * @param tags
-   */
-  set_blueprint_entity_tags(index: uint, tags: Tags): void
-  /**
-   * Gets the given tag on the given blueprint entity index in this blueprint item.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entity_tag View documentation}
-   *
-   * @param index - The entity index.
-   * @param tag - The tag to get.
-   */
-  get_blueprint_entity_tag(index: uint, tag: string): AnyBasic
-  /**
-   * Sets the given tag on the given blueprint entity index in this blueprint item.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_blueprint_entity_tag View documentation}
-   *
-   * @param index - The entity index.
-   * @param tag - The tag to set.
-   * @param value - The tag value to set or `nil` to clear the tag.
-   */
-  set_blueprint_entity_tag(index: uint, tag: string, value: AnyBasic | undefined): void
-  /**
-   * Creates the equipment grid for this item if it doesn't exist and this is an item-with-entity-data that supports
-   * equipment grids.
-   *
-   * *Can only be used if this is ItemWithEntityData*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.create_grid View documentation}
-   */
-  create_grid(): LuaEquipmentGrid
-  /**
    * Is this valid for reading? Differs from the usual `valid` in that `valid` will be `true` even if the item stack
    * is blank but the entity that holds it is still valid.
    *
@@ -12547,112 +12475,6 @@ interface LuaItemStack {
    */
   durability: double | undefined
   /**
-   * Number of bullets left in the magazine.
-   *
-   * *Can only be used if this is AmmoItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.ammo View documentation}
-   */
-  ammo: uint
-  /**
-   * Icons of a blueprint item, blueprint book, deconstruction item or upgrade planner. An item that doesn't have
-   * icons returns nil on read and throws error on write.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_icons View documentation}
-   */
-  blueprint_icons: BlueprintSignalIcon[] | undefined
-  /**
-   * The snapping grid size in this blueprint item or nil if snapping is not enabled.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_snap_to_grid View documentation}
-   */
-  blueprint_snap_to_grid: Position | undefined
-  /**
-   * The offset from the absolute grid or nil if absolute snapping is not enabled.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_position_relative_to_grid View documentation}
-   */
-  blueprint_position_relative_to_grid: Position | undefined
-  /**
-   * If absolute snapping is enabled on this blueprint item.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_absolute_snapping View documentation}
-   */
-  blueprint_absolute_snapping: boolean
-  /**
-   * The current label for this item. Nil when none.
-   *
-   * *Can only be used if this is ItemWithLabel*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.label View documentation}
-   */
-  label: string | undefined
-  /**
-   * The current label color for this item. Nil when none.
-   *
-   * *Can only be used if this is ItemWithLabel*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.label_color View documentation}
-   */
-  label_color: Color | undefined
-  /**
-   * If the label for this item can be manually changed. When false the label can only be changed through the API.
-   *
-   * *Can only be used if this is ItemWithLabel*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.allow_manual_label_change View documentation}
-   */
-  allow_manual_label_change: boolean
-  /**
-   * Raw materials required to build this blueprint. Result is a dictionary mapping each item prototype name to the
-   * required count.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.cost_to_build View documentation}
-   */
-  readonly cost_to_build: Record<string, uint>
-  /**
-   * If this item extends the inventory it resides in (provides its contents for counts, crafting, insertion). Only
-   * callable on items with inventories.
-   *
-   * *Can only be used if this is ItemWithInventory*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.extends_inventory View documentation}
-   */
-  extends_inventory: boolean
-  /**
-   * The insertion mode priority this ItemWithInventory uses when items are inserted into an inventory it resides in.
-   * Only callable on items with inventories.
-   *
-   * *Can only be used if this is ItemWithInventory*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.prioritize_insertion_mode View documentation}
-   */
-  prioritize_insertion_mode: string
-  /**
-   * The default icons for a blueprint item.
-   *
-   * *Can only be used if this is BlueprintItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.default_icons View documentation}
-   */
-  readonly default_icons: BlueprintItemIcon[]
-  /**
-   * *Can only be used if this is ItemWithTags*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tags View documentation}
-   */
-  tags: Tags
-  /**
    * The custom description this item-with-tags. This is shown over the normal item description if this is set to a
    * non-empty value.
    *
@@ -12674,62 +12496,6 @@ interface LuaItemStack {
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tile_filters View documentation}
    */
   tile_filters: string[]
-  /**
-   * The blacklist/whitelist entity filter mode for this deconstruction item.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.entity_filter_mode View documentation}
-   */
-  entity_filter_mode: defines.deconstruction_item.entity_filter_mode
-  /**
-   * The blacklist/whitelist tile filter mode for this deconstruction item.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tile_filter_mode View documentation}
-   */
-  tile_filter_mode: defines.deconstruction_item.tile_filter_mode
-  /**
-   * The tile selection mode for this deconstruction item.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tile_selection_mode View documentation}
-   */
-  tile_selection_mode: defines.deconstruction_item.tile_selection_mode
-  /**
-   * If this deconstruction item is set to allow trees and rocks only.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.trees_and_rocks_only View documentation}
-   */
-  trees_and_rocks_only: boolean
-  /**
-   * The number of entity filters this deconstruction item supports.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.entity_filter_count View documentation}
-   */
-  readonly entity_filter_count: uint
-  /**
-   * The number of tile filters this deconstruction item supports.
-   *
-   * *Can only be used if this is DeconstructionItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tile_filter_count View documentation}
-   */
-  readonly tile_filter_count: uint
-  /**
-   * The active blueprint index for this blueprint book. May be `nil`.
-   *
-   * *Can only be used if this is BlueprintBookItem*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.active_index View documentation}
-   */
-  active_index: uint | undefined
   /**
    * The unique identifier for this item if it has one, `nil` otherwise. Note that this ID stays the same no matter
    * where the item is moved to.
@@ -12857,6 +12623,489 @@ interface LuaItemStack {
   /** All methods and properties that this object supports. */
   help(): string
 }
+
+/** @noSelf */
+interface BlueprintItemStack extends BaseItemStack {
+  /**
+   * The entities in this blueprint.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entities View documentation}
+   */
+  get_blueprint_entities(): BlueprintEntity[]
+  /**
+   * Set new entities to be a part of this blueprint.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_blueprint_entities View documentation}
+   *
+   * @param entities - The new blueprint entities.
+   */
+  set_blueprint_entities(entities: BlueprintEntity[]): void
+  /**
+   * A list of the tiles in this blueprint.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_tiles View documentation}
+   */
+  get_blueprint_tiles(): Tile[]
+  /**
+   * Set specific tiles in this blueprint.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_blueprint_tiles View documentation}
+   *
+   * @param tiles - Tiles to be a part of the blueprint.
+   */
+  set_blueprint_tiles(tiles: Tile[]): void
+  /**
+   * Clears this blueprint item.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.clear_blueprint View documentation}
+   */
+  clear_blueprint(): void
+  /**
+   * Gets the number of entities in this blueprint item.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entity_count View documentation}
+   */
+  get_blueprint_entity_count(): uint
+  /**
+   * Gets the tags for the given blueprint entity index in this blueprint item.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entity_tags View documentation}
+   *
+   * @param index
+   */
+  get_blueprint_entity_tags(index: uint): Tags
+  /**
+   * Sets the tags on the given blueprint entity index in this blueprint item.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_blueprint_entity_tags View documentation}
+   *
+   * @param index - The entity index
+   * @param tags
+   */
+  set_blueprint_entity_tags(index: uint, tags: Tags): void
+  /**
+   * Gets the given tag on the given blueprint entity index in this blueprint item.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entity_tag View documentation}
+   *
+   * @param index - The entity index.
+   * @param tag - The tag to get.
+   */
+  get_blueprint_entity_tag(index: uint, tag: string): AnyBasic
+  /**
+   * Sets the given tag on the given blueprint entity index in this blueprint item.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_blueprint_entity_tag View documentation}
+   *
+   * @param index - The entity index.
+   * @param tag - The tag to set.
+   * @param value - The tag value to set or `nil` to clear the tag.
+   */
+  set_blueprint_entity_tag(index: uint, tag: string, value: AnyBasic | undefined): void
+  /**
+   * Icons of a blueprint item, blueprint book, deconstruction item or upgrade planner. An item that doesn't have
+   * icons returns nil on read and throws error on write.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_icons View documentation}
+   */
+  blueprint_icons: BlueprintSignalIcon[] | undefined
+  /**
+   * The snapping grid size in this blueprint item or nil if snapping is not enabled.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_snap_to_grid View documentation}
+   */
+  blueprint_snap_to_grid: Position | undefined
+  /**
+   * The offset from the absolute grid or nil if absolute snapping is not enabled.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_position_relative_to_grid View documentation}
+   */
+  blueprint_position_relative_to_grid: Position | undefined
+  /**
+   * If absolute snapping is enabled on this blueprint item.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_absolute_snapping View documentation}
+   */
+  blueprint_absolute_snapping: boolean
+  /**
+   * Raw materials required to build this blueprint. Result is a dictionary mapping each item prototype name to the
+   * required count.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.cost_to_build View documentation}
+   */
+  readonly cost_to_build: Record<string, uint>
+  /**
+   * The default icons for a blueprint item.
+   *
+   * *Can only be used if this is BlueprintItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.default_icons View documentation}
+   */
+  readonly default_icons: BlueprintItemIcon[]
+}
+
+/** @noSelf */
+interface AmmoItemStack extends BaseItemStack {
+  /**
+   * Add ammo to this ammo item.
+   *
+   * *Can only be used if this is AmmoItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.add_ammo View documentation}
+   *
+   * @param amount - Amount of ammo to add.
+   */
+  add_ammo(amount: float): void
+  /**
+   * Remove ammo from this ammo item.
+   *
+   * *Can only be used if this is AmmoItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.drain_ammo View documentation}
+   *
+   * @param amount - Amount of ammo to remove.
+   */
+  drain_ammo(amount: float): void
+  /**
+   * Number of bullets left in the magazine.
+   *
+   * *Can only be used if this is AmmoItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.ammo View documentation}
+   */
+  ammo: uint
+}
+
+/** @noSelf */
+interface ToolItemStack extends BaseItemStack {
+  /**
+   * Add durability to this tool item.
+   *
+   * *Can only be used if this is ToolItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.add_durability View documentation}
+   *
+   * @param amount - Amount of durability to add.
+   */
+  add_durability(amount: double): void
+  /**
+   * Remove durability from this tool item.
+   *
+   * *Can only be used if this is ToolItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.drain_durability View documentation}
+   *
+   * @param amount - Amount of durability to remove.
+   */
+  drain_durability(amount: double): void
+}
+
+/** @noSelf */
+interface ItemWithTagsItemStack extends BaseItemStack {
+  /**
+   * Gets the tag with the given name or returns `nil` if it doesn't exist.
+   *
+   * *Can only be used if this is ItemWithTags*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_tag View documentation}
+   *
+   * @param tag_name
+   */
+  get_tag(tag_name: string): AnyBasic | undefined
+  /**
+   * Sets the tag with the given name and value.
+   *
+   * *Can only be used if this is ItemWithTags*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_tag View documentation}
+   *
+   * @param tag_name
+   * @param tag
+   */
+  set_tag(tag_name: string, tag: AnyBasic): AnyBasic
+  /**
+   * Removes a tag with the given name.
+   *
+   * *Can only be used if this is ItemWithTags*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.remove_tag View documentation}
+   *
+   * @param tag
+   * @returns If the tag existed and was removed.
+   */
+  remove_tag(tag: string): boolean
+  /**
+   * *Can only be used if this is ItemWithTags*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tags View documentation}
+   */
+  tags: Tags
+}
+
+/** @noSelf */
+interface DeconstructionItemStack extends BaseItemStack {
+  /**
+   * Gets the entity filter at the given index for this deconstruction item.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_entity_filter View documentation}
+   *
+   * @param index
+   */
+  get_entity_filter(index: uint): string
+  /**
+   * Sets the entity filter at the given index for this deconstruction item.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_entity_filter View documentation}
+   *
+   * @param index
+   * @param filter - Setting to nil erases the filter.
+   * @returns If the new filter was set (was valid.)
+   */
+  set_entity_filter(index: uint, filter: string | LuaEntityPrototype | LuaEntity | undefined): boolean
+  /**
+   * Gets the tile filter at the given index for this deconstruction item.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_tile_filter View documentation}
+   *
+   * @param index
+   */
+  get_tile_filter(index: uint): string
+  /**
+   * Sets the tile filter at the given index for this deconstruction item.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_tile_filter View documentation}
+   *
+   * @param index
+   * @param filter - Setting to nil erases the filter.
+   * @returns If the new filter was set (was valid.)
+   */
+  set_tile_filter(index: uint, filter: string | LuaTilePrototype | LuaTile | undefined): boolean
+  /**
+   * Clears all settings/filters on this deconstruction item resetting it to default values.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.clear_deconstruction_item View documentation}
+   */
+  clear_deconstruction_item(): void
+  /**
+   * The blacklist/whitelist entity filter mode for this deconstruction item.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.entity_filter_mode View documentation}
+   */
+  entity_filter_mode: defines.deconstruction_item.entity_filter_mode
+  /**
+   * The blacklist/whitelist tile filter mode for this deconstruction item.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tile_filter_mode View documentation}
+   */
+  tile_filter_mode: defines.deconstruction_item.tile_filter_mode
+  /**
+   * The tile selection mode for this deconstruction item.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tile_selection_mode View documentation}
+   */
+  tile_selection_mode: defines.deconstruction_item.tile_selection_mode
+  /**
+   * If this deconstruction item is set to allow trees and rocks only.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.trees_and_rocks_only View documentation}
+   */
+  trees_and_rocks_only: boolean
+  /**
+   * The number of entity filters this deconstruction item supports.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.entity_filter_count View documentation}
+   */
+  readonly entity_filter_count: uint
+  /**
+   * The number of tile filters this deconstruction item supports.
+   *
+   * *Can only be used if this is DeconstructionItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tile_filter_count View documentation}
+   */
+  readonly tile_filter_count: uint
+}
+
+/** @noSelf */
+interface UpgradeItemStack extends BaseItemStack {
+  /**
+   * Clears all settings/filters on this upgrade item resetting it to default values.
+   *
+   * *Can only be used if this is UpgradeItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.clear_upgrade_item View documentation}
+   */
+  clear_upgrade_item(): void
+  /**
+   * Gets the filter at the given index for this upgrade item.
+   *
+   * *Can only be used if this is UpgradeItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_mapper View documentation}
+   *
+   * @param index - The index of the mapper to read.
+   * @param type - 'from' or 'to'.
+   */
+  get_mapper(index: uint, type: "from" | "to"): UpgradeFilter
+  /**
+   * Sets the module filter at the given index for this upgrade item.
+   *
+   * *Can only be used if this is UpgradeItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_mapper View documentation}
+   *
+   * @param index - The index of the mapper to set.
+   * @param type - `from` or `to`.
+   * @param filter - The filter to set or `nil`
+   */
+  set_mapper(index: uint, type: string, filter: UpgradeFilter | undefined): void
+}
+
+/** @noSelf */
+interface ItemWithEntityDataItemStack extends BaseItemStack {
+  /**
+   * Creates the equipment grid for this item if it doesn't exist and this is an item-with-entity-data that supports
+   * equipment grids.
+   *
+   * *Can only be used if this is ItemWithEntityData*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.create_grid View documentation}
+   */
+  create_grid(): LuaEquipmentGrid
+}
+
+interface ItemWithLabelItemStack extends BaseItemStack {
+  /**
+   * The current label for this item. Nil when none.
+   *
+   * *Can only be used if this is ItemWithLabel*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.label View documentation}
+   */
+  label: string | undefined
+  /**
+   * The current label color for this item. Nil when none.
+   *
+   * *Can only be used if this is ItemWithLabel*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.label_color View documentation}
+   */
+  label_color: Color | undefined
+  /**
+   * If the label for this item can be manually changed. When false the label can only be changed through the API.
+   *
+   * *Can only be used if this is ItemWithLabel*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.allow_manual_label_change View documentation}
+   */
+  allow_manual_label_change: boolean
+}
+
+interface ItemWithInventoryItemStack extends BaseItemStack {
+  /**
+   * If this item extends the inventory it resides in (provides its contents for counts, crafting, insertion). Only
+   * callable on items with inventories.
+   *
+   * *Can only be used if this is ItemWithInventory*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.extends_inventory View documentation}
+   */
+  extends_inventory: boolean
+  /**
+   * The insertion mode priority this ItemWithInventory uses when items are inserted into an inventory it resides in.
+   * Only callable on items with inventories.
+   *
+   * *Can only be used if this is ItemWithInventory*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.prioritize_insertion_mode View documentation}
+   */
+  prioritize_insertion_mode: string
+}
+
+interface BlueprintBookItemStack extends BaseItemStack {
+  /**
+   * The active blueprint index for this blueprint book. May be `nil`.
+   *
+   * *Can only be used if this is BlueprintBookItem*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.active_index View documentation}
+   */
+  active_index: uint | undefined
+}
+
+/**
+ * A reference to an item and count owned by some external entity.
+ *
+ * **Note**: In most instances this is a simple reference as in: it points at a specific slot in an inventory and not
+ * the item in the slot.
+ *
+ * **Note**: In the instance this references an item on a {@link LuaTransportLine} the reference is only guaranteed to
+ * stay valid (and refer to the same item) as long as nothing changes the transport line.
+ *
+ * {@link https://lua-api.factorio.com/latest/LuaItemStack.html View documentation}
+ */
+interface LuaItemStack
+  extends BaseItemStack,
+    BlueprintItemStack,
+    AmmoItemStack,
+    ToolItemStack,
+    ItemWithTagsItemStack,
+    DeconstructionItemStack,
+    UpgradeItemStack,
+    ItemWithEntityDataItemStack,
+    ItemWithLabelItemStack,
+    ItemWithInventoryItemStack,
+    BlueprintBookItemStack {}
 
 /**
  * Control behavior for lamps.
@@ -17217,70 +17466,47 @@ interface BaseStyle {
   help(): string
 }
 
-interface ChooseElemButtonStyle extends BaseStyle {}
-
-interface DropDownStyle extends BaseStyle {}
-
-interface EmptyWidgetStyle extends BaseStyle {}
-
-interface EntityPreviewStyle extends BaseStyle {}
-
-interface ListBoxStyle extends BaseStyle {}
-
-interface ScrollPaneStyle extends BaseStyle {
+interface TableStyle extends BaseStyle {
   /**
-   * *Can only be used if this is ScrollPaneStyle*
+   * Space between the table cell contents top and border.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_top_padding_when_activated View documentation}
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.top_cell_padding View documentation}
    */
-  extra_top_padding_when_activated: int
+  top_cell_padding: int
   /**
-   * *Can only be used if this is ScrollPaneStyle*
+   * Space between the table cell contents right and border.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_bottom_padding_when_activated View documentation}
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.right_cell_padding View documentation}
    */
-  extra_bottom_padding_when_activated: int
+  right_cell_padding: int
   /**
-   * *Can only be used if this is ScrollPaneStyle*
+   * Space between the table cell contents bottom and border.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_left_padding_when_activated View documentation}
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.bottom_cell_padding View documentation}
    */
-  extra_left_padding_when_activated: int
+  bottom_cell_padding: int
   /**
-   * *Can only be used if this is ScrollPaneStyle*
+   * Space between the table cell contents left and border.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_padding_when_activated View documentation}
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.left_cell_padding View documentation}
    */
-  extra_right_padding_when_activated: int
+  left_cell_padding: int
   /**
-   * *Can only be used if this is ScrollPaneStyle*
+   * Horizontal space between individual cells.
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_top_margin_when_activated View documentation}
-   */
-  extra_top_margin_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
+   * *Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlow*
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_bottom_margin_when_activated View documentation}
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontal_spacing View documentation}
    */
-  extra_bottom_margin_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_left_margin_when_activated View documentation}
-   */
-  extra_left_margin_when_activated: int
-  /**
-   * *Can only be used if this is ScrollPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_margin_when_activated View documentation}
-   */
-  extra_right_margin_when_activated: int
-}
-
-interface SpriteButtonStyle extends BaseStyle {}
-
-interface TabbedPaneStyle extends BaseStyle {
+  horizontal_spacing: int
   /**
    * Vertical space between individual cells.
    *
@@ -17289,9 +17515,45 @@ interface TabbedPaneStyle extends BaseStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_spacing View documentation}
    */
   vertical_spacing: int
+  /**
+   * Space between the table cell contents and border. Sets top/right/bottom/left cell paddings to this value.
+   *
+   * *Can only be used if this is LuaTableStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.cell_padding View documentation}
+   */
+  set cell_padding(value: int)
+}
+
+interface LabelStyle extends BaseStyle {
+  /**
+   * How this GUI element handles rich text.
+   *
+   * *Can only be used if this is LuaLabelStyle, LuaTextBoxStyle or LuaTextFieldStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.rich_text_setting View documentation}
+   */
+  rich_text_setting: defines.rich_text_setting
+  /**
+   * *Can only be used if this is LabelStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.single_line View documentation}
+   */
+  single_line: boolean
 }
 
 interface TextBoxStyle extends BaseStyle {
+  /**
+   * How this GUI element handles rich text.
+   *
+   * *Can only be used if this is LuaLabelStyle, LuaTextBoxStyle or LuaTextFieldStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.rich_text_setting View documentation}
+   */
+  rich_text_setting: defines.rich_text_setting
+}
+
+interface TextFieldStyle extends BaseStyle {
   /**
    * How this GUI element handles rich text.
    *
@@ -17359,89 +17621,6 @@ interface ButtonStyle extends BaseStyle {
   strikethrough_color: Color
 }
 
-interface CameraStyle extends BaseStyle {}
-
-interface CheckboxStyle extends BaseStyle {}
-
-interface FlowStyle extends BaseStyle {
-  /**
-   * Horizontal space between individual cells.
-   *
-   * *Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlow*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontal_spacing View documentation}
-   */
-  horizontal_spacing: int
-  /**
-   * Vertical space between individual cells.
-   *
-   * *Can only be used if this is LuaTableStyle, LuaFlowStyle, LuaVerticalFlowStyle or LuaTabbedPaneStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_spacing View documentation}
-   */
-  vertical_spacing: int
-}
-
-interface FrameStyle extends BaseStyle {
-  /**
-   * *Can only be used if this is LuaFrameStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.use_header_filler View documentation}
-   */
-  use_header_filler: boolean
-}
-
-interface LabelStyle extends BaseStyle {
-  /**
-   * How this GUI element handles rich text.
-   *
-   * *Can only be used if this is LuaLabelStyle, LuaTextBoxStyle or LuaTextFieldStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.rich_text_setting View documentation}
-   */
-  rich_text_setting: defines.rich_text_setting
-  /**
-   * *Can only be used if this is LabelStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.single_line View documentation}
-   */
-  single_line: boolean
-}
-
-interface LineStyle extends BaseStyle {}
-
-interface MinimapStyle extends BaseStyle {}
-
-interface ProgressBarStyle extends BaseStyle {
-  /**
-   * *Can only be used if this is LuaProgressBarStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.bar_width View documentation}
-   */
-  bar_width: uint
-  /**
-   * *Can only be used if this is LuaProgressBarStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.color View documentation}
-   */
-  color: Color
-}
-
-interface RadioButtonStyle extends BaseStyle {}
-
-interface SliderStyle extends BaseStyle {}
-
-interface SpriteStyle extends BaseStyle {
-  /**
-   * *Can only be used if this is ImageStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.stretch_image_to_widget_size View documentation}
-   */
-  stretch_image_to_widget_size: boolean
-}
-
-interface SwitchStyle extends BaseStyle {}
-
 interface TabStyle extends BaseStyle {
   /**
    * *Can only be used if this is LuaButtonStyle or LuaTabStyle*
@@ -17481,39 +17660,7 @@ interface TabStyle extends BaseStyle {
   disabled_badge_font_color: Color
 }
 
-interface TableStyle extends BaseStyle {
-  /**
-   * Space between the table cell contents top and border.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.top_cell_padding View documentation}
-   */
-  top_cell_padding: int
-  /**
-   * Space between the table cell contents right and border.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.right_cell_padding View documentation}
-   */
-  right_cell_padding: int
-  /**
-   * Space between the table cell contents bottom and border.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.bottom_cell_padding View documentation}
-   */
-  bottom_cell_padding: int
-  /**
-   * Space between the table cell contents left and border.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.left_cell_padding View documentation}
-   */
-  left_cell_padding: int
+interface FlowStyle extends BaseStyle {
   /**
    * Horizontal space between individual cells.
    *
@@ -17530,25 +17677,123 @@ interface TableStyle extends BaseStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_spacing View documentation}
    */
   vertical_spacing: int
-  /**
-   * Space between the table cell contents and border. Sets top/right/bottom/left cell paddings to this value.
-   *
-   * *Can only be used if this is LuaTableStyle*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.cell_padding View documentation}
-   */
-  set cell_padding(value: int)
 }
 
-interface TextFieldStyle extends BaseStyle {
+interface HorizontalFlowStyle extends BaseStyle {
   /**
-   * How this GUI element handles rich text.
+   * Horizontal space between individual cells.
    *
-   * *Can only be used if this is LuaLabelStyle, LuaTextBoxStyle or LuaTextFieldStyle*
+   * *Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlow*
    *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.rich_text_setting View documentation}
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontal_spacing View documentation}
    */
-  rich_text_setting: defines.rich_text_setting
+  horizontal_spacing: int
+}
+
+interface VerticalFlowStyle extends BaseStyle {
+  /**
+   * Vertical space between individual cells.
+   *
+   * *Can only be used if this is LuaTableStyle, LuaFlowStyle, LuaVerticalFlowStyle or LuaTabbedPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_spacing View documentation}
+   */
+  vertical_spacing: int
+}
+
+interface TabbedPaneStyle extends BaseStyle {
+  /**
+   * Vertical space between individual cells.
+   *
+   * *Can only be used if this is LuaTableStyle, LuaFlowStyle, LuaVerticalFlowStyle or LuaTabbedPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_spacing View documentation}
+   */
+  vertical_spacing: int
+}
+
+interface FrameStyle extends BaseStyle {
+  /**
+   * *Can only be used if this is LuaFrameStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.use_header_filler View documentation}
+   */
+  use_header_filler: boolean
+}
+
+interface ProgressBarStyle extends BaseStyle {
+  /**
+   * *Can only be used if this is LuaProgressBarStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.bar_width View documentation}
+   */
+  bar_width: uint
+  /**
+   * *Can only be used if this is LuaProgressBarStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.color View documentation}
+   */
+  color: Color
+}
+
+interface ScrollPaneStyle extends BaseStyle {
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_top_padding_when_activated View documentation}
+   */
+  extra_top_padding_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_bottom_padding_when_activated View documentation}
+   */
+  extra_bottom_padding_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_left_padding_when_activated View documentation}
+   */
+  extra_left_padding_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_padding_when_activated View documentation}
+   */
+  extra_right_padding_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_top_margin_when_activated View documentation}
+   */
+  extra_top_margin_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_bottom_margin_when_activated View documentation}
+   */
+  extra_bottom_margin_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_left_margin_when_activated View documentation}
+   */
+  extra_left_margin_when_activated: int
+  /**
+   * *Can only be used if this is ScrollPaneStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_margin_when_activated View documentation}
+   */
+  extra_right_margin_when_activated: int
+}
+
+interface ImageStyle extends BaseStyle {
+  /**
+   * *Can only be used if this is ImageStyle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.stretch_image_to_widget_size View documentation}
+   */
+  stretch_image_to_widget_size: boolean
 }
 
 /**
@@ -17556,32 +17801,22 @@ interface TextFieldStyle extends BaseStyle {
  *
  * {@link https://lua-api.factorio.com/latest/LuaStyle.html View documentation}
  */
-type LuaStyle =
-  | ChooseElemButtonStyle
-  | DropDownStyle
-  | EmptyWidgetStyle
-  | EntityPreviewStyle
-  | ListBoxStyle
-  | ScrollPaneStyle
-  | SpriteButtonStyle
-  | TabbedPaneStyle
-  | TextBoxStyle
-  | ButtonStyle
-  | CameraStyle
-  | CheckboxStyle
-  | FlowStyle
-  | FrameStyle
-  | LabelStyle
-  | LineStyle
-  | MinimapStyle
-  | ProgressBarStyle
-  | RadioButtonStyle
-  | SliderStyle
-  | SpriteStyle
-  | SwitchStyle
-  | TabStyle
-  | TableStyle
-  | TextFieldStyle
+interface LuaStyle
+  extends BaseStyle,
+    TableStyle,
+    LabelStyle,
+    TextBoxStyle,
+    TextFieldStyle,
+    ButtonStyle,
+    TabStyle,
+    FlowStyle,
+    HorizontalFlowStyle,
+    VerticalFlowStyle,
+    TabbedPaneStyle,
+    FrameStyle,
+    ProgressBarStyle,
+    ScrollPaneStyle,
+    ImageStyle {}
 
 interface BaseSurfaceCreateEntity {
   /** The entity prototype name to create. */

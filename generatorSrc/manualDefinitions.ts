@@ -113,13 +113,7 @@ type StyleValuesArray =
 /** @addTo concepts */
 type SizeArray = readonly [width: int, height: int]
 
-/**
- * @separateSubclasses
- * @ignoreSubclasses horizontalflow verticalflow
- */
 interface LuaStyle {
-  __subclasses: GuiElementType
-
   set size(value: int | SizeArray)
   set padding(value: int | StyleValuesArray)
   set margin(value: int | StyleValuesArray)
