@@ -27,8 +27,14 @@ export function capitalize(str: string): string {
   return str[0].toUpperCase() + str.slice(1)
 }
 
+const toPascalDictionary: Record<string, string> = {
+  progressbar: "ProgressBar",
+  radiobutton: "RadioButton",
+  textfield: "TextField",
+}
+
 export function toPascalCase(str: string): string {
-  return str.split(/[-_ ]/g).map(capitalize).join("")
+  return toPascalDictionary[str] ?? str.split(/[-_ ]/g).map(capitalize).join("")
 }
 
 export function mergeUnion(a: ts.TypeNode, b: ts.TypeNode): ts.UnionTypeNode {

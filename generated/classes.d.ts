@@ -9250,7 +9250,7 @@ interface TableGuiSpec extends BaseGuiSpec {
   readonly vertical_centering?: boolean
 }
 
-interface TextfieldGuiSpec extends BaseGuiSpec {
+interface TextFieldGuiSpec extends BaseGuiSpec {
   readonly type: "textfield"
   /** The initial text contained in the textfield. */
   readonly text?: string
@@ -9268,7 +9268,7 @@ interface TextfieldGuiSpec extends BaseGuiSpec {
   readonly clear_and_focus_on_right_click?: boolean
 }
 
-interface ProgressbarGuiSpec extends BaseGuiSpec {
+interface ProgressBarGuiSpec extends BaseGuiSpec {
   readonly type: "progressbar"
   /** The initial value of the progressbar, in the range [0, 1]. Defaults to `0`. */
   readonly value?: double
@@ -9280,7 +9280,7 @@ interface CheckboxGuiSpec extends BaseGuiSpec {
   readonly state: boolean
 }
 
-interface RadiobuttonGuiSpec extends BaseGuiSpec {
+interface RadioButtonGuiSpec extends BaseGuiSpec {
   readonly type: "radiobutton"
   /** The initial checked-state of the radiobutton. */
   readonly state: boolean
@@ -9560,10 +9560,10 @@ type GuiSpec =
   | FlowGuiSpec
   | FrameGuiSpec
   | TableGuiSpec
-  | TextfieldGuiSpec
-  | ProgressbarGuiSpec
+  | TextFieldGuiSpec
+  | ProgressBarGuiSpec
   | CheckboxGuiSpec
-  | RadiobuttonGuiSpec
+  | RadioButtonGuiSpec
   | SpriteButtonGuiSpec
   | SpriteGuiSpec
   | ScrollPaneGuiSpec
@@ -10624,14 +10624,14 @@ interface MinimapGuiElementMembers extends BaseGuiElement {
 
 type MinimapGuiElement = MinimapGuiElementMembers & GuiElementIndex
 
-interface ProgressbarGuiElementMembers extends BaseGuiElement {
+interface ProgressBarGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "progressbar"
-  get style(): ProgressbarStyle
+  get style(): ProgressBarStyle
   /**
    * How much this progress bar is filled. It is a value in the range [0, 1].
    *
@@ -10642,16 +10642,16 @@ interface ProgressbarGuiElementMembers extends BaseGuiElement {
   value: double
 }
 
-type ProgressbarGuiElement = ProgressbarGuiElementMembers & GuiElementIndex
+type ProgressBarGuiElement = ProgressBarGuiElementMembers & GuiElementIndex
 
-interface RadiobuttonGuiElementMembers extends BaseGuiElement {
+interface RadioButtonGuiElementMembers extends BaseGuiElement {
   /**
    * The type of this GUI element.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type View documentation}
    */
   readonly type: "radiobutton"
-  get style(): RadiobuttonStyle
+  get style(): RadioButtonStyle
   /**
    * Is this checkbox or radiobutton checked?
    *
@@ -10662,7 +10662,7 @@ interface RadiobuttonGuiElementMembers extends BaseGuiElement {
   state: boolean
 }
 
-type RadiobuttonGuiElement = RadiobuttonGuiElementMembers & GuiElementIndex
+type RadioButtonGuiElement = RadioButtonGuiElementMembers & GuiElementIndex
 
 /** @noSelf */
 interface SliderGuiElementMembers extends BaseGuiElement {
@@ -11046,8 +11046,8 @@ type GuiElementMembers =
   | LabelGuiElementMembers
   | LineGuiElementMembers
   | MinimapGuiElementMembers
-  | ProgressbarGuiElementMembers
-  | RadiobuttonGuiElementMembers
+  | ProgressBarGuiElementMembers
+  | RadioButtonGuiElementMembers
   | SliderGuiElementMembers
   | SpriteGuiElementMembers
   | SwitchGuiElementMembers
@@ -17412,7 +17412,7 @@ interface LineStyle extends BaseStyle {}
 
 interface MinimapStyle extends BaseStyle {}
 
-interface ProgressbarStyle extends BaseStyle {
+interface ProgressBarStyle extends BaseStyle {
   /**
    * *Can only be used if this is LuaProgressBarStyle*
    *
@@ -17427,7 +17427,7 @@ interface ProgressbarStyle extends BaseStyle {
   color: Color
 }
 
-interface RadiobuttonStyle extends BaseStyle {}
+interface RadioButtonStyle extends BaseStyle {}
 
 interface SliderStyle extends BaseStyle {}
 
@@ -17574,8 +17574,8 @@ type LuaStyle =
   | LabelStyle
   | LineStyle
   | MinimapStyle
-  | ProgressbarStyle
-  | RadiobuttonStyle
+  | ProgressBarStyle
+  | RadioButtonStyle
   | SliderStyle
   | SpriteStyle
   | SwitchStyle
