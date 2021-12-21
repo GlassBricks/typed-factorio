@@ -117,7 +117,9 @@ interface LuaStyle {
   set size(value: int | SizeArray)
   set padding(value: int | StyleValuesArray)
   set margin(value: int | StyleValuesArray)
+  /** @subclasses scroll-pane */
   set extra_padding_when_activated(value: int | StyleValuesArray)
+  /** @subclasses scroll-pane */
   set extra_margin_when_activated(value: int | StyleValuesArray)
 }
 

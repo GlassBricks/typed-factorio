@@ -1,3 +1,7 @@
+# v0.14.1
+
+- LuaStyle: `extra_margin/padding_when_activated` is now for subclass scroll_pane
+
 # v0.14.0
 
 - LuaStyle size, margin/padding setters now have more specific array types. These array types are `SizeArray` and `StyleValuesArray` for size and margin/padding, respectively.

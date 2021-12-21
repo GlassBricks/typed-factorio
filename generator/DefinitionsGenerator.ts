@@ -723,14 +723,14 @@ export default class DefinitionsGenerator {
           }
           return name
         }
-        getMapName = (name: string) => trimName(name).toLowerCase() as MapName
+        getMapName = (name: string) => normalizeName(trimName(name))
 
         for (const memberAndOriginal of generated.members) {
           const subclasses = getSubclasses(memberAndOriginal.original, existing)
           if (!subclasses) continue
           for (const subclass of subclasses) {
             const baseName = trimName(subclass)
-            const mapName = baseName.toLowerCase() as MapName
+            const mapName = normalizeName(baseName)
             const existingUseName = useNames.get(mapName)
             const useName = toPascalCase(baseName) as UseName
             if (existingUseName !== undefined) {

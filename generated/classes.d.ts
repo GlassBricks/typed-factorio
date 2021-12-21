@@ -17427,22 +17427,6 @@ interface BaseStyle {
    */
   set margin(value: int | StyleValuesArray)
   /**
-   * Sets extra_top/right/bottom/left_padding_when_actived to this value. An array with two values sets top/bottom
-   * padding to the first value and left/right padding to the second value. An array with four values sets top, right,
-   * bottom, left padding respectively.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_padding_when_activated View documentation}
-   */
-  set extra_padding_when_activated(value: int | StyleValuesArray)
-  /**
-   * Sets extra_top/right/bottom/left_margin_when_activated to this value. An array with two values sets top/bottom
-   * margin to the first value and left/right margin to the second value. An array with four values sets top, right,
-   * bottom, left margin respectively.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_margin_when_activated View documentation}
-   */
-  set extra_margin_when_activated(value: int | StyleValuesArray)
-  /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
    * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
    * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
@@ -17777,6 +17761,22 @@ interface ScrollPaneStyle extends BaseStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_right_margin_when_activated View documentation}
    */
   extra_right_margin_when_activated: int
+  /**
+   * Sets extra_top/right/bottom/left_padding_when_actived to this value. An array with two values sets top/bottom
+   * padding to the first value and left/right padding to the second value. An array with four values sets top, right,
+   * bottom, left padding respectively.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_padding_when_activated View documentation}
+   */
+  set extra_padding_when_activated(value: int | StyleValuesArray)
+  /**
+   * Sets extra_top/right/bottom/left_margin_when_activated to this value. An array with two values sets top/bottom
+   * margin to the first value and left/right margin to the second value. An array with four values sets top, right,
+   * bottom, left margin respectively.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_margin_when_activated View documentation}
+   */
+  set extra_margin_when_activated(value: int | StyleValuesArray)
 }
 
 interface ImageStyle extends BaseStyle {
