@@ -73,6 +73,7 @@ if (!fs.existsSync(outDir)) {
 }
 for (let [name, content] of outFiles) {
   if (opts.format) {
+    console.log(`Formatting ${name}.d.ts`)
     content = prettier
       .format(content, {
         parser: "typescript",
