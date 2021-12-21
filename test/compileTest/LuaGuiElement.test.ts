@@ -68,3 +68,26 @@ test("Properties only exist in proper type", () => {
   const bar = el.entity
   `.expectToHaveNoDiagnostics()
 })
+
+describe("style", () => {
+  test("Can set and get", () => {
+    tstl`
+      declare const el: LuaGuiElement
+      el.style = "foo_style"
+      el.style.padding = 3
+    `.expectToHaveNoDiagnostics()
+  })
+  test("can set subclass-specific styles", () => {
+    tstl`
+       declare const el: FlowGuiElement
+       el.style.vertical_spacing = 3
+    `.expectToHaveNoDiagnostics()
+  })
+
+  test("not on subclass-specific styles", () => {
+    tstl`
+       declare const el: FrameGuiElement
+       el.style.vertical_spacing = 3
+    `.expectToHaveDiagnostics()
+  })
+})
