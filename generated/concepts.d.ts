@@ -874,16 +874,32 @@ interface DifficultySettings {
 }
 
 /**
+ * All regular {@link MapSettings} plus an additional table that contains the {@link DifficultySettings}.
+ *
+ * {@link https://lua-api.factorio.com/latest/Concepts.html#MapAndDifficultySettings View documentation}
+ */
+interface MapAndDifficultySettings {
+  readonly pollution: PollutionMapSettings
+  readonly enemy_evolution: EnemyEvolutionMapSettings
+  readonly enemy_expansion: EnemyExpansionMapSettings
+  readonly unit_group: UnitGroupMapSettings
+  readonly steering: SteeringMapSettings
+  readonly path_finder: PathFinderMapSettings
+  /**
+   * If a behavior fails this many times, the enemy (or enemy group) is destroyed. This solves biters getting stuck
+   * within their own base.
+   */
+  readonly max_failed_behavior_count: uint
+  readonly difficulty_settings: DifficultySettings
+}
+
+/**
  * The data that can be extracted from a map exchange string, as a plain table.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#MapExchangeStringData View documentation}
  */
 interface MapExchangeStringData {
-  /**
-   * All the regular map settings plus an additional table called `difficulty_settings` that contains the
-   * {@link DifficultySettings}.
-   */
-  readonly map_settings: MapSettings
+  readonly map_settings: MapAndDifficultySettings
   readonly map_gen_settings: MapGenSettings
 }
 

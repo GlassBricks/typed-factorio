@@ -5766,14 +5766,6 @@ interface LuaEntityPrototype {
    */
   readonly neighbour_bonus: double
   /**
-   * Controls how much a reactor extends when connected to other reactors.
-   *
-   * *Can only be used if this is Reactor*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.neighbour_collision_increase View documentation}
-   */
-  readonly neighbour_collision_increase: double
-  /**
    * *Can only be used if this is Loader*
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.container_distance View documentation}
@@ -19772,6 +19764,13 @@ interface LuaTilePrototype {
    * {@link https://lua-api.factorio.com/latest/LuaTilePrototype.html#LuaTilePrototype.emissions_per_second View documentation}
    */
   readonly emissions_per_second: double
+  /**
+   * True if building this tile should check for colliding entities above and prevent building if such are found. Also
+   * during mining tiles above this tile checks for entities colliding with this tile and prevents mining if such are found.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaTilePrototype.html#LuaTilePrototype.check_collision_with_entities View documentation}
+   */
+  readonly check_collision_with_entities: boolean
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
    * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
