@@ -1,3 +1,5 @@
+// This is an auto-generated file. Do not edit directly!
+
 ///<reference types="lua-types/5.2" />
 ///<reference path="builtin-types.d.ts" />
 ///<reference path="defines.d.ts" />

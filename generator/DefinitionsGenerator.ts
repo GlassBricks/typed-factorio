@@ -1211,7 +1211,8 @@ export default class DefinitionsGenerator {
   }
 
   private generateIndex(): string {
-    let result = '///<reference types="lua-types/5.2" />\n'
+    let result = DefinitionsGenerator.header
+    result += '///<reference types="lua-types/5.2" />\n'
     for (const file of this.outFiles.keys()) {
       result += `///<reference path="${file}.d.ts" />\n`
     }
