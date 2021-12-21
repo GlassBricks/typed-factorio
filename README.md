@@ -2,7 +2,7 @@
 
 Complete and featureful typescript definitions for the Factorio modding lua api. This is intended to be used with [TypescriptToLua](https://typescripttolua.github.io/).
 
-This project aims to provide type definitions for the Factorio API that are as complete as possible. This means minimal `any`s and `unknown`s, correct nullability, and smart types where possible. The generator integrates both the Factorio JSON api docs and manually defined additions and overrides.
+This project aims to provide type definitions for the Factorio lua API that are as complete as possible. This means no `any`s or `unknown`s, correct nullability, and smart types where possible. The generator integrates both the Factorio JSON api docs and manually defined additions and overrides.
 
 ## Installation
 
@@ -62,16 +62,23 @@ Currently, there are types for the following modules:
 
 If you have a need for types to more lualib modules, feel free to open an issue or pull request on GitHub.
 
+### The `global` table
+
+The `global` table is just a lua table which can have any shape the mod desires, so it is not defined in typed-factorio. Instead, you can either:
+
+- add `declare const global: <Your type>` in a `.d.ts` file included in your project, to apply it project-wide, or
+- add `declare const global: {...}` to each module/file where needed. This way, you can also only define attributes that each module/file specifically uses.
+
 ## Type features
 
 Typed-factorio has 100% complete types for the runtime stage. Description-only concepts and some not documented types are filled in manually.
+
+Here are some details on particular type features in the definitions:
 
 ### Lua features
 
 The types include [TypescriptToLua language extensions](https://typescripttolua.github.io/docs/advanced/language-extensions/)
 and [lua-types](https://github.com/TypeScriptToLua/lua-types) (for v5.2) as dependencies.
-
-This is to use tstl features such as `LuaLengthMethod` and `LuaMultiReturn`.
 
 ### `nil`
 
@@ -82,15 +89,23 @@ A class attribute is marked as possibly undefined only if the _read_ type is pos
 
 ### Variant parameter types
 
-Variant parameter types (types with "additional fields can be specified depending on ...") are handled as discriminated unions. This gives proper type checking for individual variants.
+Variant parameter types (types with "additional fields can be specified depending on type") are handled as a union of all variants (which is often a [discriminated union](https://basarat.gitbook.io/typescript/type-system/discriminated-unions#discriminated-union)). This gives proper type checking for each variant.
 
-The type for a specific variant is prefixed with the either variant name or "Other" for variants without additional fields, e.g. `AmmoDamageTechnologyModifier`, `OtherTechnologyModifier`
+The type for a specific variant is prefixed with the variant name, or with "Other" for variants without additional fields (e.g. `AmmoDamageTechnologyModifier`, `OtherTechnologyModifier`).
+
+### Types with subclasses
+
+Some classes have attributes that are documented to only work on particular subclasses. For these classes, e.g. `LuaEntity`, there are also these other types that you can _optionally_ use:
+- a "Base" type, e.g. `BaseEntity`, which only contains members usable by all subclasses
+- individual subclass types, e.g. `CraftingMachineEntity`, which extends the base type with members specific to that subclass
+
+The simple class name, `LuaEntity` in this example, still contains attributes for _all_ subclasses.
 
 ### Events
 
 `script.on_event()`, `script.get/set_filters()`, and `script.raise_event()` all have type checking on the event data/filter type, inferred from what is passed as the event name/id.
 
-You can pass a type parameter to `script.generate_event_name()`, and it will return an `EventId` that holds type info of the event data. Event functions on `script` can then use the type data when the `EventId` is passed.
+You can pass a type parameter to `script.generate_event_name<T>()`, and it will return an `EventId` that holds type info of the event data. Event functions on `script` can then use the type data when the `EventId` is passed.
 
 ### Array-like types
 
@@ -102,9 +117,9 @@ For table or array types (e.g. Position), there also are types such as `Position
 
 ### LuaGuiElement
 
-`LuaGuiElement` is broken up into a discriminated union for each gui element type (See [here](https://basarat.gitbook.io/typescript/type-system/discriminated-unions) for information on discriminated unions). The type for a specific GuiElement type is `<Type>GuiElement`, e.g. `ButtonGuiElement`.
+`LuaGuiElement` is broken up into a [discriminated union](https://basarat.gitbook.io/typescript/type-system/discriminated-unions), with a separate type for each gui element type. Individual gui element types can be referred to by `<Type>GuiElement`, e.g. `ButtonGuiElement`.
 
-Similarly, the table passed to `LuaGuiElement.add`, referred to as `GuiSpec`, is also broken up into a discriminated union for each gui element type. The type for a specific GuiSpec type is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`.
+Similarly, the table passed to `LuaGuiElement.add`, referred to as `GuiSpec`, is also broken up into a discriminated union for each gui element type. The type for a specific GuiSpec type is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`. `LuaGuiElement.add` will return the appropriate gui element type corresponding to the gui spec type received.
 
 This is done both to provide more accurate types, and for possible integration with [JSX](https://typescripttolua.github.io/docs/jsx/).
 

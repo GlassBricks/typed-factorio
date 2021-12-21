@@ -1,3 +1,13 @@
+# v0.14.0
+
+- LuaStyle size, margin/padding setters now have more specific array types. These array types are `SizeArray` and `StyleValuesArray` for size and margin/padding, respectively.
+- `@noSelf` annotation is now only present when necessary.
+- For classes with subclasses:
+    - The original class name (e.g. `LuaItemStack`) still contains attributes of all subclasses (same as before).
+    - There is now a `Base` type (e.g. `BaseItemStack`) which only includes attributes common to all subclasses.
+    - There is a separate type definition for each subclass, e.g. `BlueprintItem`. Note that one instance may still belong to multiple subclasses (the subclasses are not mutually exclusive).
+    - The above two can be optionally used for stricter types.
+
 # v0.13.2
 
 - Fix: resize_to_sprite property should not be on subclass sprite-button
