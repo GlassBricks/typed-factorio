@@ -163,7 +163,7 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = generator.mapTypeRaw(lengthOperator.type, true)
+      const type = generator.mapTypeRaw(lengthOperator.type, true, false).read
       const lengthProperty = generator.addJsDoc(
         ts.factory.createPropertySignature(
           [Modifiers.readonly],
@@ -496,7 +496,7 @@ function generateClass(
     }
   }
   function mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
-    const type = generator.mapTypeWithTransforms(parameter, parameter.type, parent, false)
+    const type = generator.mapTypeWithTransforms(parameter, parent, parameter.type, false, true).write
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
@@ -527,35 +527,32 @@ function generateClass(
                   statements
                 )
               : ts.factory.createTypeLiteralNode(
-                  method.parameters.sort(sortByOrder).map((m) => generator.mapParameterToProperty(m, thisPath))
+                  method.parameters
+                    .sort(sortByOrder)
+                    .map((m) => generator.mapParameterToProperty(m, thisPath, false, true))
                 )
           ),
         ]
       : method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(m, thisPath))
 
     if (method.variadic_type) {
+      const type = generator.mapTypeRaw(
+        {
+          complex_type: "array",
+          value: method.variadic_type,
+        },
+        false,
+        true
+      ).write
       parameters.push(
-        ts.factory.createParameterDeclaration(
-          undefined,
-          undefined,
-          Tokens.dotDotDot,
-          "args",
-          undefined,
-          generator.mapTypeRaw(
-            {
-              complex_type: "array",
-              value: method.variadic_type,
-            },
-            false
-          )
-        )
+        ts.factory.createParameterDeclaration(undefined, undefined, Tokens.dotDotDot, "args", undefined, type)
       )
     }
 
     let signatures: ts.MethodSignature[] | ts.MethodSignature
     const returnType = !method.return_type
       ? Types.void
-      : generator.mapTypeWithTransforms(method, method.return_type, clazz.name, true)
+      : generator.mapTypeWithTransforms(method, clazz.name, method.return_type, true, false).read
     if (existingMethods) {
       existingMethods.forEach((m) => {
         if (!ts.isMethodSignature(m)) {

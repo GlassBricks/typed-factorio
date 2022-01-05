@@ -1,10 +1,15 @@
 import ts from "typescript"
+import { RWType } from "./DefinitionsGenerator"
 
 export const printer = ts.createPrinter({
   omitTrailingSemicolon: true,
   newLine: ts.NewLineKind.LineFeed,
 })
 export const emptySourceFile = ts.createSourceFile("", "", ts.ScriptTarget.ESNext)
+
+export function printNode(node: ts.Node) {
+  return printer.printNode(ts.EmitHint.Unspecified, node, emptySourceFile)
+}
 
 export const Modifiers = {
   declare: ts.factory.createModifier(ts.SyntaxKind.DeclareKeyword),
@@ -43,13 +48,16 @@ export function toPascalCase(str: string): string {
   return toPascalDictionary[str] ?? str.split(/[-_ ]/g).map(capitalize).join("")
 }
 
-export function mergeUnion(a: ts.TypeNode, b: ts.TypeNode): ts.UnionTypeNode {
+export function mergeUnion(a: RWType, b: ts.TypeNode): RWType {
   function getTypes(t: ts.TypeNode): readonly ts.TypeNode[] {
     if (ts.isUnionTypeNode(t)) return t.types
     return [t]
   }
 
-  return ts.factory.createUnionTypeNode([...getTypes(a), ...getTypes(b)])
+  const readType = a.read && ts.factory.createUnionTypeNode([...getTypes(a.read), ...getTypes(b)])
+  const writeType =
+    a.write && (a.read === a.write ? readType : ts.factory.createUnionTypeNode([...getTypes(a.write), ...getTypes(b)]))
+  return { read: readType, write: writeType }
 }
 
 export function createNamespace(

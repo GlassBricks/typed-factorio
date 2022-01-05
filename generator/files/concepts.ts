@@ -30,7 +30,7 @@ export default function generateConcepts(generator: DefinitionsGenerator) {
     } else if (concept.category === "union") {
       const types = concept.options
         .sort(sortByOrder)
-        .map((option) => generator.mapTypeWithTransforms(option, option.type, concept.name, false))
+        .map((option) => generator.mapTypeWithTransforms(option, concept.name, option.type, false, true).write)
       declaration = createTypeAlias(ts.factory.createUnionTypeNode(types))
       concept.description += concept.options
         .map(
@@ -67,7 +67,9 @@ export default function generateConcepts(generator: DefinitionsGenerator) {
               type: "boolean",
               optional: true,
             },
-            concept.name
+            concept.name,
+            true,
+            false
           )
         )
       )
@@ -82,7 +84,9 @@ export default function generateConcepts(generator: DefinitionsGenerator) {
           concept.name,
           undefined,
           undefined,
-          concept.parameters.sort(sortByOrder).map((m) => generator.mapParameterToProperty(m, concept.name, existing))
+          concept.parameters
+            .sort(sortByOrder)
+            .map((m) => generator.mapParameterToProperty(m, concept.name, true, true, existing))
         )
       }
     } else if (concept.category === "enum") {
@@ -96,7 +100,7 @@ export default function generateConcepts(generator: DefinitionsGenerator) {
     } else if (concept.category === "table_or_array") {
       const parameters = concept.parameters
         .sort(sortByOrder)
-        .map((param) => generator.mapParameterToProperty(param, concept.name))
+        .map((param) => generator.mapParameterToProperty(param, concept.name, true, true))
 
       statements.add(
         ts.factory.createInterfaceDeclaration(

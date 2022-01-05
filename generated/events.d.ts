@@ -13,7 +13,7 @@ interface CustomInputEvent extends EventData {
   /** The prototype name of the custom input that was activated. */
   readonly input_name: string
   /** The mouse cursor position when the custom input was activated. */
-  readonly cursor_position: Position
+  readonly cursor_position: PositionTable
   /** Information about the prototype that is selected when the custom input is used. `nil` if none is selected. */
   readonly selected_prototype?: SelectedPrototypeData
   /** Identifier of the event */
@@ -46,9 +46,9 @@ interface OnAiCommandCompletedEvent extends EventData {
  */
 interface OnAreaClonedEvent extends EventData {
   readonly source_surface: LuaSurface
-  readonly source_area: BoundingBox
+  readonly source_area: BoundingBoxTable
   readonly destination_surface: LuaSurface
-  readonly destination_area: BoundingBox
+  readonly destination_area: BoundingBoxTable
   readonly destination_force?: LuaForce
   readonly clone_tiles: boolean
   readonly clone_entities: boolean
@@ -84,10 +84,10 @@ interface OnBiterBaseBuiltEvent extends EventData {
  * {@link https://lua-api.factorio.com/latest/Events.html#on_brush_cloned View documentation}
  */
 interface OnBrushClonedEvent extends EventData {
-  readonly source_offset: TilePosition
-  readonly destination_offset: TilePosition
+  readonly source_offset: TilePositionTable
+  readonly destination_offset: TilePositionTable
   readonly source_surface: LuaSurface
-  readonly source_positions: TilePosition[]
+  readonly source_positions: TilePositionTable[]
   readonly destination_surface: LuaSurface
   readonly destination_force?: LuaForce
   readonly clone_tiles: boolean
@@ -236,9 +236,9 @@ interface OnChartTagRemovedEvent extends EventData {
  */
 interface OnChunkChartedEvent extends EventData {
   readonly surface_index: uint
-  readonly position: ChunkPosition
+  readonly position: ChunkPositionTable
   /** Area of the chunk. */
-  readonly area: BoundingBox
+  readonly area: BoundingBoxTable
   readonly force: LuaForce
   /** Identifier of the event */
   readonly name: typeof defines.events.on_chunk_charted
@@ -254,7 +254,7 @@ interface OnChunkChartedEvent extends EventData {
 interface OnChunkDeletedEvent extends EventData {
   readonly surface_index: uint
   /** The chunks deleted. */
-  readonly positions: ChunkPosition[]
+  readonly positions: ChunkPositionTable[]
   /** Identifier of the event */
   readonly name: typeof defines.events.on_chunk_deleted
   /** Tick the event was generated. */
@@ -268,9 +268,9 @@ interface OnChunkDeletedEvent extends EventData {
  */
 interface OnChunkGeneratedEvent extends EventData {
   /** Area of the chunk. */
-  readonly area: BoundingBox
+  readonly area: BoundingBoxTable
   /** Position of the chunk. */
-  readonly position: ChunkPosition
+  readonly position: ChunkPositionTable
   /** The surface the chunk is on. */
   readonly surface: LuaSurface
   /** Identifier of the event */
@@ -748,7 +748,7 @@ interface OnGuiClosedEvent extends EventData {
   /** The technology that was automatically selected when opening the research GUI */
   readonly technology?: LuaTechnology
   /** The tile position that was open */
-  readonly tile_position?: TilePosition
+  readonly tile_position?: TilePositionTable
   /** Identifier of the event */
   readonly name: typeof defines.events.on_gui_closed
   /** Tick the event was generated. */
@@ -1120,7 +1120,7 @@ interface OnPlayerAltSelectedAreaEvent extends EventData {
   /** The surface selected. */
   readonly surface: LuaSurface
   /** The area selected. */
-  readonly area: BoundingBox
+  readonly area: BoundingBoxTable
   /** The item used to select the area. */
   readonly item: string
   /** The entities selected. */
@@ -1307,7 +1307,7 @@ interface OnPlayerClickedGpsTagEvent extends EventData {
   /** Index of the player */
   readonly player_index: uint
   /** Map position contained in gps tag */
-  readonly position: Position
+  readonly position: PositionTable
   /** Surface name contained in gps tag, even when such surface does not exists */
   readonly surface: string
   /** Identifier of the event */
@@ -1402,7 +1402,7 @@ interface OnPlayerDeconstructedAreaEvent extends EventData {
   /** The surface selected. */
   readonly surface: LuaSurface
   /** The area selected. */
-  readonly area: BoundingBox
+  readonly area: BoundingBoxTable
   /** The item used to select the area. */
   readonly item: string
   /** If normal selection or alt selection was used. */
@@ -1824,7 +1824,7 @@ interface OnPlayerSelectedAreaEvent extends EventData {
   /** The surface selected. */
   readonly surface: LuaSurface
   /** The area selected. */
-  readonly area: BoundingBox
+  readonly area: BoundingBoxTable
   /** The item used to select the area. */
   readonly item: string
   /** The entities selected. */
@@ -1861,7 +1861,7 @@ interface OnPlayerSetupBlueprintEvent extends EventData {
   /** The surface selected. */
   readonly surface: LuaSurface
   /** The area selected. */
-  readonly area: BoundingBox
+  readonly area: BoundingBoxTable
   /** The item used to select the area. */
   readonly item: string
   /** If normal selection or alt selection was used. */
@@ -1963,7 +1963,7 @@ interface OnPlayerUsedCapsuleEvent extends EventData {
   /** The capsule item used. */
   readonly item: LuaItemPrototype
   /** The position the capsule was used. */
-  readonly position: Position
+  readonly position: PositionTable
   /** Identifier of the event */
   readonly name: typeof defines.events.on_player_used_capsule
   /** Tick the event was generated. */
@@ -1981,7 +1981,7 @@ interface OnPlayerUsedSpiderRemoteEvent extends EventData {
   /** Spider vehicle which was requested to move. */
   readonly vehicle: LuaEntity
   /** Goal position to which spidertron was sent to. */
-  readonly position: Position
+  readonly position: PositionTable
   /** If the use was successful. It may fail when spidertron has different driver or when player is on different surface. */
   readonly success: boolean
   /** Identifier of the event */
@@ -2001,7 +2001,7 @@ interface OnPostEntityDiedEvent extends EventData {
   /** The force that did the killing if any. */
   readonly force?: LuaForce
   /** Position where the entity died. */
-  readonly position: Position
+  readonly position: PositionTable
   /** The entity prototype of the entity that died. */
   readonly prototype: LuaEntityPrototype
   /** The damage type if any. */
@@ -2027,7 +2027,7 @@ interface OnPreBuildEvent extends EventData {
   /** The player who did the placing. */
   readonly player_index: uint
   /** Where the item was placed. */
-  readonly position: Position
+  readonly position: PositionTable
   /** Item was placed using shift building. */
   readonly shift_build: boolean
   /** The direction the item was facing when placed. */
@@ -2052,7 +2052,7 @@ interface OnPreBuildEvent extends EventData {
 interface OnPreChunkDeletedEvent extends EventData {
   readonly surface_index: uint
   /** The chunks to be deleted. */
-  readonly positions: ChunkPosition[]
+  readonly positions: ChunkPositionTable[]
   /** Identifier of the event */
   readonly name: typeof defines.events.on_pre_chunk_deleted
   /** Tick the event was generated. */
@@ -2574,9 +2574,9 @@ interface OnScriptTriggerEffectEvent extends EventData {
   readonly effect_id: string
   /** The surface the effect happened on. */
   readonly surface_index: uint
-  readonly source_position?: Position
+  readonly source_position?: PositionTable
   readonly source_entity?: LuaEntity
-  readonly target_position?: Position
+  readonly target_position?: PositionTable
   readonly target_entity?: LuaEntity
   /** Identifier of the event */
   readonly name: typeof defines.events.on_script_trigger_effect
@@ -2594,9 +2594,9 @@ interface OnSectorScannedEvent extends EventData {
   /** The radar that did the scanning. */
   readonly radar: LuaEntity
   /** The chunk scanned. */
-  readonly chunk_position: ChunkPosition
+  readonly chunk_position: ChunkPositionTable
   /** Area of the scanned chunk. */
-  readonly area: BoundingBox
+  readonly area: BoundingBoxTable
   /** Identifier of the event */
   readonly name: typeof defines.events.on_sector_scanned
   /** Tick the event was generated. */

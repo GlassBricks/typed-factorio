@@ -23,7 +23,7 @@ export default function generateEvents(generator: DefinitionsGenerator) {
         if (p.name === "name" && event.name !== "CustomInputEvent") {
           p.type = "typeof " + p.type + "." + event.name
         }
-        return generator.mapParameterToProperty(p, name, existing)
+        return generator.mapParameterToProperty(p, name, true, false, existing)
       })
     )
     generator.addJsDoc(declaration, event, event.name)

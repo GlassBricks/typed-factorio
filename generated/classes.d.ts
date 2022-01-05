@@ -705,7 +705,7 @@ interface LuaBurnerPrototype {
     readonly border_fix_speed: float
     readonly minimum_light_size: float
     readonly light_intensity_to_size_coefficient: float
-    readonly color: Color
+    readonly color: ColorTable
   }
   /**
    * **Note**: The value in the dictionary is meaningless and exists just to allow the dictionary type for easy lookup.
@@ -2934,7 +2934,8 @@ interface BaseEntity extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.drop_position View documentation}
    */
-  drop_position: Position
+  get drop_position(): PositionTable
+  set drop_position(value: Position)
   /**
    * The entity this entity is putting its items to, or `nil` if there is no such entity. If there are multiple
    * possible entities at the drop-off point, writing to this attribute allows a mod to choose which one to drop off
@@ -3024,7 +3025,8 @@ interface BaseEntity extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.color View documentation}
    */
-  color: Color | undefined
+  get color(): ColorTable | undefined
+  set color(value: Color | undefined)
   /**
    * The productivity bonus of this entity.
    *
@@ -4266,7 +4268,8 @@ interface SpiderVehicleEntity extends BaseEntity {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.follow_offset View documentation}
    */
-  follow_offset: Position | undefined
+  get follow_offset(): PositionTable | undefined
+  set follow_offset(value: Position | undefined)
 }
 
 /** @noSelf */
@@ -4435,7 +4438,8 @@ interface InserterEntity extends BaseEntity {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.pickup_position View documentation}
    */
-  pickup_position: Position
+  get pickup_position(): PositionTable
+  set pickup_position(value: Position)
   /**
    * The entity this inserter will attempt to pick up items from, or `nil` if there is no such entity. If there are
    * multiple possible entities at the pick-up point, writing to this attribute allows a mod to choose which one to
@@ -5213,7 +5217,7 @@ interface BaseEntityPrototype {
     | {
         readonly smoke_name: string
         readonly offsets: Vector[]
-        readonly offset_deviation: BoundingBox
+        readonly offset_deviation: BoundingBoxTable
         readonly initial_height: float
         readonly max_radius?: float
         readonly speed: Vector
@@ -10003,7 +10007,8 @@ interface BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.location View documentation}
    */
-  location: GuiLocation | undefined
+  get location(): GuiLocationTable | undefined
+  set location(value: GuiLocation | undefined)
   /**
    * Whether this GUI element is enabled. Disabled GUI elements don't trigger events when clicked.
    *
@@ -10428,7 +10433,8 @@ interface SpriteButtonGuiElementMembers extends BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.mouse_button_filter View documentation}
    */
-  mouse_button_filter: MouseButtonFlags
+  get mouse_button_filter(): MouseButtonFlagsTable
+  set mouse_button_filter(value: MouseButtonFlags)
 }
 
 type SpriteButtonGuiElement = SpriteButtonGuiElementMembers & GuiElementIndex
@@ -10614,7 +10620,8 @@ interface ButtonGuiElementMembers extends BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.mouse_button_filter View documentation}
    */
-  mouse_button_filter: MouseButtonFlags
+  get mouse_button_filter(): MouseButtonFlagsTable
+  set mouse_button_filter(value: MouseButtonFlags)
 }
 
 type ButtonGuiElement = ButtonGuiElementMembers & GuiElementIndex
@@ -10631,7 +10638,8 @@ interface CameraGuiElementMembers extends BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.position View documentation}
    */
-  position: Position
+  get position(): PositionTable
+  set position(value: Position)
   /**
    * The surface index this camera or minimap is using.
    *
@@ -10809,7 +10817,8 @@ interface MinimapGuiElementMembers extends BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.position View documentation}
    */
-  position: Position
+  get position(): PositionTable
+  set position(value: Position)
   /**
    * The surface index this camera or minimap is using.
    *
@@ -12794,7 +12803,8 @@ interface BlueprintItemStack extends BaseItemStack {
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_snap_to_grid View documentation}
    */
-  blueprint_snap_to_grid: Position | undefined
+  get blueprint_snap_to_grid(): PositionTable | undefined
+  set blueprint_snap_to_grid(value: Position | undefined)
   /**
    * The offset from the absolute grid or nil if absolute snapping is not enabled.
    *
@@ -12802,7 +12812,8 @@ interface BlueprintItemStack extends BaseItemStack {
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_position_relative_to_grid View documentation}
    */
-  blueprint_position_relative_to_grid: Position | undefined
+  get blueprint_position_relative_to_grid(): PositionTable | undefined
+  set blueprint_position_relative_to_grid(value: Position | undefined)
   /**
    * If absolute snapping is enabled on this blueprint item.
    *
@@ -13096,7 +13107,8 @@ interface ItemWithLabelItemStack extends BaseItemStack {
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.label_color View documentation}
    */
-  label_color: Color | undefined
+  get label_color(): ColorTable | undefined
+  set label_color(value: Color | undefined)
   /**
    * If the label for this item can be manually changed. When false the label can only be changed through the API.
    *
@@ -14883,13 +14895,15 @@ interface LuaPlayer extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.color View documentation}
    */
-  color: Color
+  get color(): ColorTable
+  set color(value: Color)
   /**
    * The color used when this player talks in game.
    *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.chat_color View documentation}
    */
-  chat_color: Color
+  get chat_color(): ColorTable
+  set chat_color(value: Color)
   /**
    * The player's username.
    *
@@ -17415,7 +17429,8 @@ interface BaseStyle {
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.vertical_align View documentation}
    */
   vertical_align: "top" | "center" | "bottom"
-  font_color: Color
+  get font_color(): ColorTable
+  set font_color(value: Color)
   font: string
   /**
    * If the GUI element stretches its size horizontally to other elements.
@@ -17610,25 +17625,29 @@ interface ButtonStyle extends BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.hovered_font_color View documentation}
    */
-  hovered_font_color: Color
+  get hovered_font_color(): ColorTable
+  set hovered_font_color(value: Color)
   /**
    * *Can only be used if this is LuaButtonStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.clicked_font_color View documentation}
    */
-  clicked_font_color: Color
+  get clicked_font_color(): ColorTable
+  set clicked_font_color(value: Color)
   /**
    * *Can only be used if this is LuaButtonStyle or LuaTabStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.disabled_font_color View documentation}
    */
-  disabled_font_color: Color
+  get disabled_font_color(): ColorTable
+  set disabled_font_color(value: Color)
   /**
    * *Can only be used if this is LuaButtonStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.pie_progress_color View documentation}
    */
-  pie_progress_color: Color
+  get pie_progress_color(): ColorTable
+  set pie_progress_color(value: Color)
   /**
    * *Can only be used if this is LuaButtonStyle*
    *
@@ -17640,25 +17659,29 @@ interface ButtonStyle extends BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.selected_font_color View documentation}
    */
-  selected_font_color: Color
+  get selected_font_color(): ColorTable
+  set selected_font_color(value: Color)
   /**
    * *Can only be used if this is LuaButtonStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.selected_hovered_font_color View documentation}
    */
-  selected_hovered_font_color: Color
+  get selected_hovered_font_color(): ColorTable
+  set selected_hovered_font_color(value: Color)
   /**
    * *Can only be used if this is LuaButtonStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.selected_clicked_font_color View documentation}
    */
-  selected_clicked_font_color: Color
+  get selected_clicked_font_color(): ColorTable
+  set selected_clicked_font_color(value: Color)
   /**
    * *Can only be used if this is LuaButtonStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.strikethrough_color View documentation}
    */
-  strikethrough_color: Color
+  get strikethrough_color(): ColorTable
+  set strikethrough_color(value: Color)
 }
 
 interface TabStyle extends BaseStyle {
@@ -17667,7 +17690,8 @@ interface TabStyle extends BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.disabled_font_color View documentation}
    */
-  disabled_font_color: Color
+  get disabled_font_color(): ColorTable
+  set disabled_font_color(value: Color)
   /**
    * *Can only be used if this is TabStyle*
    *
@@ -17685,19 +17709,22 @@ interface TabStyle extends BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.default_badge_font_color View documentation}
    */
-  default_badge_font_color: Color
+  get default_badge_font_color(): ColorTable
+  set default_badge_font_color(value: Color)
   /**
    * *Can only be used if this is TabStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.selected_badge_font_color View documentation}
    */
-  selected_badge_font_color: Color
+  get selected_badge_font_color(): ColorTable
+  set selected_badge_font_color(value: Color)
   /**
    * *Can only be used if this is TabStyle*
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.disabled_badge_font_color View documentation}
    */
-  disabled_badge_font_color: Color
+  get disabled_badge_font_color(): ColorTable
+  set disabled_badge_font_color(value: Color)
 }
 
 interface FlowStyle extends BaseStyle {
@@ -17773,7 +17800,8 @@ interface ProgressBarStyle extends BaseStyle {
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.color View documentation}
    */
-  color: Color
+  get color(): ColorTable
+  set color(value: Color)
 }
 
 interface ScrollPaneStyle extends BaseStyle {
@@ -19349,7 +19377,8 @@ interface LuaSurface {
    *   game.surfaces[1].brightness_visual_weights = { 1 / 0.85, 1 / 0.85, 1 / 0.85 }
    *   ```
    */
-  brightness_visual_weights: ColorModifier
+  get brightness_visual_weights(): ColorModifierTable
+  set brightness_visual_weights(value: ColorModifier)
   /**
    * If clouds are shown on this surface.
    *

@@ -6,6 +6,7 @@ import {
   mergeUnion,
   Modifiers,
   printer,
+  printNode,
   removeLuaPrefix,
   Tokens,
   toPascalCase,
@@ -58,6 +59,11 @@ export class Statements {
     }
     this.statements.push(statement)
   }
+}
+
+export type RWType = {
+  read?: ts.TypeNode
+  write?: ts.TypeNode
 }
 
 export default class DefinitionsGenerator {
@@ -131,7 +137,7 @@ export default class DefinitionsGenerator {
   generateDeclarations(): Map<string, string> {
     this.generateAll()
     if (this.errorOnWarnings && this.warnings.length !== 0) {
-      throw new Error(this.warnings.join("\n"))
+      throw new Error("There are incomplete definition warnings:\n" + this.warnings.join("\n"))
     }
     const result = new Map<string, string>()
     for (const [fileName, statements] of this.outFiles) {
@@ -283,18 +289,45 @@ export default class DefinitionsGenerator {
     existingContainer: InterfaceDef | TypeAliasDef | undefined
   ): ts.TypeElement | ts.TypeElement[] {
     let member: ts.TypeElement | ts.TypeElement[]
-    const type = this.mapTypeWithTransforms(attribute, attribute.type, parent, !attribute.write)
+    const type = this.mapTypeWithTransforms(attribute, parent, attribute.type, attribute.read, attribute.write)
     const existing = existingContainer?.members[attribute.name]
     if (existing) {
       const first = existing[0]
       if (ts.isPropertySignature(first)) {
-        member = ts.factory.createPropertySignature(
-          first.modifiers,
-          first.name,
-          first.questionToken,
-          first.type ?? type
-        )
-        ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
+        if (attribute.read && attribute.write && type.read !== type.write) {
+          if (first.type)
+            this.warnIncompleteDefinition(
+              `Attribute ${parent}.${attribute.type} has different read/write type, but manually defined as one type`
+            )
+          member = [
+            ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], type.read, undefined),
+            ts.factory.createSetAccessorDeclaration(
+              undefined,
+              undefined,
+              attribute.name,
+              [
+                ts.factory.createParameterDeclaration(
+                  undefined,
+                  undefined,
+                  undefined,
+                  "value",
+                  undefined,
+                  type.write,
+                  undefined
+                ),
+              ],
+              undefined
+            ),
+          ]
+        } else {
+          member = ts.factory.createPropertySignature(
+            first.modifiers,
+            first.name,
+            first.questionToken,
+            first.type ?? type.read
+          )
+          ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
+        }
       } else if (existing.every((v) => ts.isGetAccessorDeclaration(v) || ts.isSetAccessorDeclaration(v))) {
         member = []
         for (const element of existing) {
@@ -305,7 +338,7 @@ export default class DefinitionsGenerator {
               element.modifiers,
               element.name,
               element.parameters,
-              element.type ?? type,
+              element.type ?? type.read,
               undefined
             )
             ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
@@ -335,16 +368,49 @@ export default class DefinitionsGenerator {
         undefined,
         undefined,
         attribute.name,
-        [ts.factory.createParameterDeclaration(undefined, undefined, undefined, "value", undefined, type, undefined)],
+        [
+          ts.factory.createParameterDeclaration(
+            undefined,
+            undefined,
+            undefined,
+            "value",
+            undefined,
+            type.write ?? type.read,
+            undefined
+          ),
+        ],
         undefined
       )
     } else {
-      member = ts.factory.createPropertySignature(
-        attribute.write ? undefined : [Modifiers.readonly],
-        attribute.name,
-        undefined,
-        type
-      )
+      if (attribute.write && type.read !== type.write) {
+        member = [
+          ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], type.read, undefined),
+          ts.factory.createSetAccessorDeclaration(
+            undefined,
+            undefined,
+            attribute.name,
+            [
+              ts.factory.createParameterDeclaration(
+                undefined,
+                undefined,
+                undefined,
+                "value",
+                undefined,
+                type.write,
+                undefined
+              ),
+            ],
+            undefined
+          ),
+        ]
+      } else {
+        member = ts.factory.createPropertySignature(
+          attribute.write ? undefined : [Modifiers.readonly],
+          attribute.name,
+          undefined,
+          type.read
+        )
+      }
     }
     const first = Array.isArray(member) ? member[0] : member
     this.addJsDoc(first, attribute, parent + "." + attribute.name)
@@ -354,6 +420,8 @@ export default class DefinitionsGenerator {
   mapParameterToProperty(
     parameter: Parameter,
     parent: string,
+    read: boolean,
+    write: boolean,
     existingContainer?: InterfaceDef | TypeAliasDef
   ): ts.PropertySignature {
     let member: ts.PropertySignature
@@ -368,27 +436,58 @@ export default class DefinitionsGenerator {
       }
       member = existingProperty
     } else {
-      const type = this.mapTypeWithTransforms(parameter, parameter.type, parent, false)
+      const type = this.mapTypeWithTransforms(parameter, parent, parameter.type, read, write)
+      // todo: maybe different read/write types for these, too?
+      // if (read && write && type.read !== type.write) {
+      //   this.warnIncompleteDefinition(
+      //     "Read and write types different in reading parameter as property: " +
+      //       printNode(type.read!) +
+      //       " " +
+      //       printNode(type.write!)
+      //   )
+      // }
       member = ts.factory.createPropertySignature(
         [Modifiers.readonly],
         DefinitionsGenerator.escapePropertyName(parameter.name),
         parameter.optional ? Tokens.question : undefined,
-        type
+        type.write ?? type.read
       )
     }
     return this.addJsDoc(member, parameter, undefined)
   }
 
   mapTypeWithTransforms(
-    member: {
-      description: string
-      name?: string
-    },
-    baseType: Type,
+    member: { description: string; name?: string },
     parent: string,
-    outOnly: boolean
-  ): ts.TypeNode {
-    const type = this.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType, outOnly)
+    type: Type,
+    read: true,
+    write: false
+  ): { read: ts.TypeNode }
+
+  mapTypeWithTransforms(
+    member: { description: string; name?: string },
+    parent: string,
+    type: Type,
+    read: false,
+    write: true
+  ): { write: ts.TypeNode }
+
+  mapTypeWithTransforms(
+    member: { description: string; name?: string },
+    parent: string,
+    type: Type,
+    read: boolean,
+    write: boolean
+  ): { read?: ts.TypeNode; write?: ts.TypeNode }
+
+  mapTypeWithTransforms(
+    member: { description: string; name?: string },
+    parent: string,
+    baseType: Type,
+    read: boolean,
+    write: boolean
+  ): RWType {
+    const type = this.tryMakeStringEnum(member, baseType) ?? this.mapTypeRaw(baseType, read, write)
     const isNullable = !(member as Parameter).optional && this.isNullableFromDescription(member, parent)
     if (isNullable) {
       return mergeUnion(type, Types.undefined)
@@ -396,18 +495,43 @@ export default class DefinitionsGenerator {
     return type
   }
 
-  mapTypeRaw(type: Type, outOnly: boolean): ts.TypeNode {
+  mapTypeRaw(type: Type, read: true, write: false): { read: ts.TypeNode }
+  mapTypeRaw(type: Type, read: false, write: true): { write: ts.TypeNode }
+  mapTypeRaw(type: Type, read: true, write: true): { read: ts.TypeNode; write: ts.TypeNode }
+  mapTypeRaw(type: Type, read: boolean, write: boolean): { read?: ts.TypeNode; write?: ts.TypeNode }
+
+  mapTypeRaw(type: Type, read: boolean, write: boolean): RWType {
     if (typeof type === "string") {
-      if (outOnly && this.tableOrArrayConcepts.has(type)) {
-        return ts.factory.createTypeReferenceNode(type + "Table")
+      if (this.tableOrArrayConcepts.has(type)) {
+        return {
+          read: read ? ts.factory.createTypeReferenceNode(type + "Table") : undefined,
+          write: write ? ts.factory.createTypeReferenceNode(type) : undefined,
+        }
       }
-      return ts.factory.createTypeReferenceNode(type)
+      const outType = ts.factory.createTypeReferenceNode(type)
+      return { read: read ? outType : undefined, write: write ? outType : undefined }
     }
     if (type.complex_type === "variant") {
-      return ts.factory.createUnionTypeNode(type.options.map((m) => this.mapTypeRaw(m, outOnly)))
+      const types = type.options.map((m) => this.mapTypeRaw(m, read, write))
+      const readType = read ? ts.factory.createUnionTypeNode(types.map((x) => x.read!)) : undefined
+      if (read && write) {
+        if (types.every((x) => x.read === x.write)) return { read: readType, write: readType }
+      }
+      const writeType = write ? ts.factory.createUnionTypeNode(types.map((x) => x.write!)) : undefined
+      return { read: readType, write: writeType }
     }
     if (type.complex_type === "array") {
-      return ts.factory.createArrayTypeNode(this.mapTypeRaw(type.value, outOnly))
+      const valueType = this.mapTypeRaw(type.value, read, write)
+      const readType = read ? ts.factory.createArrayTypeNode(valueType.read!) : undefined
+      if (read && write) {
+        if (valueType.read === valueType.write) {
+          return { read: readType, write: readType }
+        }
+      }
+      return {
+        read: readType,
+        write: write ? ts.factory.createArrayTypeNode(valueType.write!) : undefined,
+      }
     }
     if (type.complex_type === "dictionary") {
       let recordType = "Record"
@@ -415,43 +539,73 @@ export default class DefinitionsGenerator {
         this.warnIncompleteDefinition("Not typescript indexable type for key in dictionary complex type: ", type)
         recordType = "LuaTable"
       }
-      return ts.factory.createTypeReferenceNode(recordType, [
-        this.mapTypeRaw(type.key, outOnly),
-        this.mapTypeRaw(type.value, outOnly),
-      ])
+      const keyType = this.mapTypeRaw(type.key, true, false).read
+      const valueType = this.mapTypeRaw(type.value, read, write)
+      if (read && write) {
+        if (valueType.read !== valueType.write) {
+          this.warnIncompleteDefinition(
+            "Different read/write type for record value: " + printNode(valueType.write!),
+            type
+          )
+        }
+        const readType = ts.factory.createTypeReferenceNode(recordType, [keyType, valueType.read!])
+        return { read: readType, write: readType }
+      }
+
+      return {
+        read: read ? ts.factory.createTypeReferenceNode(recordType, [keyType, valueType.read!]) : undefined,
+        write: write ? ts.factory.createTypeReferenceNode(recordType, [keyType, valueType.write!]) : undefined,
+      }
     }
+
     if (type.complex_type === "LuaCustomTable") {
-      return ts.factory.createTypeReferenceNode("LuaCustomTable", [
-        this.mapTypeRaw(type.key, outOnly),
-        this.mapTypeRaw(type.value, outOnly),
-      ])
+      if (write) {
+        throw new Error("Cannot have write LuaCustomTable")
+      }
+      const keyType = this.mapTypeRaw(type.key, true, false).read
+      const valueType = this.mapTypeRaw(type.value, true, false).read
+      return { read: ts.factory.createTypeReferenceNode("LuaCustomTable", [keyType, valueType]) }
     }
     if (type.complex_type === "function") {
-      return ts.factory.createFunctionTypeNode(
+      const outType = ts.factory.createFunctionTypeNode(
         undefined,
-        type.parameters.map((value, index) =>
-          ts.factory.createParameterDeclaration(
+        type.parameters.map((value, index) => {
+          const paramType = this.mapTypeRaw(value, true, false).read
+          return ts.factory.createParameterDeclaration(
             undefined,
             undefined,
             undefined,
             `param${index + 1}`,
             undefined,
-            this.mapTypeRaw(value, false)
+            paramType
           )
-        ),
+        }),
         Types.void
       )
+      return {
+        read: read ? outType : undefined,
+        write: write ? outType : undefined,
+      }
     }
     if (type.complex_type === "LuaLazyLoadedValue") {
-      return ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [this.mapTypeRaw(type.value, true)])
+      if (write) {
+        throw new Error("Cannot have write LuaLazyLoadedValue")
+      }
+      return {
+        read: ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [this.mapTypeRaw(type.value, true, false).read]),
+      }
     }
     if (type.complex_type === "table") {
       if (type.variant_parameter_groups) {
         throw new Error("Variant parameter complex type not yet supported")
       }
-      return ts.factory.createTypeLiteralNode(
-        type.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, "<<table type>>"))
+      const outType = ts.factory.createTypeLiteralNode(
+        type.parameters.sort(sortByOrder).map((m) => this.mapParameterToProperty(m, "<<table type>>", read, write))
       )
+      return {
+        read: read ? outType : undefined,
+        write: write ? outType : undefined,
+      }
     }
     assertNever(type)
   }
@@ -487,14 +641,15 @@ export default class DefinitionsGenerator {
       name?: string
     },
     type: Type
-  ): ts.UnionTypeNode | undefined {
+  ): RWType | undefined {
     if (type === "string") {
       const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
       if (
         (matches.size >= 2 && !member.description.match(/e\.g\. /i)) ||
         (matches.size === 1 && member.description.match(/One of `"[a-zA-Z-_]+?"`/))
       ) {
-        return ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
+        const outType = ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
+        return { read: outType, write: outType }
       }
     }
     /*
@@ -533,6 +688,7 @@ export default class DefinitionsGenerator {
     return false
   }
 
+  // assumed as write-values
   createVariantParameterTypes(
     name: string,
     variants: WithParameterVariants,
@@ -549,7 +705,7 @@ export default class DefinitionsGenerator {
 
     const baseProperties = variants.parameters.sort(sortByOrder).map((p) => ({
       original: p,
-      member: this.mapParameterToProperty(p, baseName, existingBase),
+      member: this.mapParameterToProperty(p, baseName, false, true, existingBase),
     }))
     statements.add(
       ts.factory.createInterfaceDeclaration(
@@ -648,7 +804,9 @@ export default class DefinitionsGenerator {
           )
         }
         members.push(
-          ...group.parameters.sort(sortByOrder).map((p) => this.mapParameterToProperty(p, fullName, existing))
+          ...group.parameters
+            .sort(sortByOrder)
+            .map((p) => this.mapParameterToProperty(p, fullName, false, true, existing))
         )
         declaration = ts.factory.createInterfaceDeclaration(
           undefined,
