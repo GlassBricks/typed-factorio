@@ -4850,14 +4850,8 @@ interface LuaEntity
     GeneratorEntity,
     SmokeWithTriggerEntity {}
 
-/**
- * Prototype of an entity.
- *
- * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html View documentation}
- *
- * @noSelf
- */
-interface LuaEntityPrototype {
+/** @noSelf */
+interface BaseEntityPrototype {
   /**
    * Test whether this entity prototype has a certain flag set.
    *
@@ -5759,30 +5753,6 @@ interface LuaEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.fluidbox_prototypes View documentation}
    */
   readonly fluidbox_prototypes: LuaFluidBoxPrototype[]
-  /**
-   * *Can only be used if this is Reactor*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.neighbour_bonus View documentation}
-   */
-  readonly neighbour_bonus: double
-  /**
-   * *Can only be used if this is Loader*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.container_distance View documentation}
-   */
-  readonly container_distance: double
-  /**
-   * *Can only be used if this is Loader*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.belt_distance View documentation}
-   */
-  readonly belt_distance: double
-  /**
-   * *Can only be used if this is Loader*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.belt_length View documentation}
-   */
-  readonly belt_length: double
   readonly is_building: boolean
   /**
    * The amount of ammo that inserters automatically insert into this ammo-turret or artillery-turret or `nil`.
@@ -6003,6 +5973,66 @@ interface LuaEntityPrototype {
    */
   readonly max_distance_of_nearby_sector_revealed: uint
   /**
+   * The equipment grid prototype for this entity or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.grid_prototype View documentation}
+   */
+  readonly grid_prototype: LuaEquipmentGridPrototype | undefined
+  readonly remove_decoratives: string
+  /**
+   * Gets the built-in stack size bonus of this inserter prototype. `nil` if this is not an inserter.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.inserter_stack_size_bonus View documentation}
+   */
+  readonly inserter_stack_size_bonus: double | undefined
+  /**
+   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
+   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
+   * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
+   * change to the game state might have occurred between the creation of the Lua object and its access.
+   */
+  readonly valid: boolean
+  /**
+   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be
+   * suffixed with a dotted path to a member of the struct.
+   */
+  readonly object_name: "LuaEntityPrototype"
+  /** All methods and properties that this object supports. */
+  help(): string
+}
+
+interface ReactorEntityPrototype extends BaseEntityPrototype {
+  /**
+   * *Can only be used if this is Reactor*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.neighbour_bonus View documentation}
+   */
+  readonly neighbour_bonus: double
+}
+
+interface LoaderEntityPrototype extends BaseEntityPrototype {
+  /**
+   * *Can only be used if this is Loader*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.container_distance View documentation}
+   */
+  readonly container_distance: double
+  /**
+   * *Can only be used if this is Loader*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.belt_distance View documentation}
+   */
+  readonly belt_distance: double
+  /**
+   * *Can only be used if this is Loader*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.belt_length View documentation}
+   */
+  readonly belt_length: double
+}
+
+interface OffshorePumpEntityPrototype extends BaseEntityPrototype {
+  /**
    * The bounding box that specifies which tiles adjacent to the offshore pump should be checked.
    *
    * *Can only be used if this is OffshorePump*
@@ -6034,25 +6064,18 @@ interface LuaEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.center_collision_mask View documentation}
    */
   readonly center_collision_mask: CollisionMask
-  /**
-   * The equipment grid prototype for this entity or `nil`.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.grid_prototype View documentation}
-   */
-  readonly grid_prototype: LuaEquipmentGridPrototype | undefined
-  readonly remove_decoratives: string
+}
+
+interface TransportBeltEntityPrototype extends BaseEntityPrototype {
   /**
    * *Can only be used if this is TransportBelt*
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.related_underground_belt View documentation}
    */
   readonly related_underground_belt: LuaEntityPrototype
-  /**
-   * Gets the built-in stack size bonus of this inserter prototype. `nil` if this is not an inserter.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.inserter_stack_size_bonus View documentation}
-   */
-  readonly inserter_stack_size_bonus: double | undefined
+}
+
+interface CharacterEntityPrototype extends BaseEntityPrototype {
   /**
    * Gets the current movement speed of this character, including effects from exoskeletons, tiles, stickers and shooting.
    *
@@ -6145,21 +6168,20 @@ interface LuaEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.character_corpse View documentation}
    */
   readonly character_corpse: LuaEntityPrototype
-  /**
-   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
-   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
-   * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
-   * change to the game state might have occurred between the creation of the Lua object and its access.
-   */
-  readonly valid: boolean
-  /**
-   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be
-   * suffixed with a dotted path to a member of the struct.
-   */
-  readonly object_name: "LuaEntityPrototype"
-  /** All methods and properties that this object supports. */
-  help(): string
 }
+
+/**
+ * Prototype of an entity.
+ *
+ * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html View documentation}
+ */
+interface LuaEntityPrototype
+  extends BaseEntityPrototype,
+    ReactorEntityPrototype,
+    LoaderEntityPrototype,
+    OffshorePumpEntityPrototype,
+    TransportBeltEntityPrototype,
+    CharacterEntityPrototype {}
 
 /**
  * An item in a {@link LuaEquipmentGrid}, for example one's power armor.
@@ -11693,19 +11715,8 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
   help(): string
 }
 
-/**
- * Prototype of an item.
- *
- * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html View documentation}
- *
- * @example
- *   ```lua
- *   game.item_prototypes["iron-plate"]
- *   ```
- *
- * @noSelf
- */
-interface LuaItemPrototype {
+/** @noSelf */
+interface BaseItemPrototype {
   /**
    * Test whether this item prototype has a certain flag set.
    *
@@ -11878,14 +11889,6 @@ interface LuaItemPrototype {
    */
   readonly resistances: Record<string, Resistance> | undefined
   /**
-   * The inventory size bonus for this armor prototype. `nil` if this isn't an armor prototype.
-   *
-   * *Can only be used if this is ArmorPrototype*
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.inventory_size_bonus View documentation}
-   */
-  readonly inventory_size_bonus: uint | undefined
-  /**
    * The capsule action for this capsule item prototype or `nil` if this isn't a capsule item prototype.
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.capsule_action View documentation}
@@ -11897,6 +11900,40 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.attack_parameters View documentation}
    */
   readonly attack_parameters: AttackParameters | undefined
+  /**
+   * The repairing speed if this is a repairing tool; otherwise `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.speed View documentation}
+   */
+  readonly speed: float | undefined
+  /**
+   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
+   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
+   * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
+   * change to the game state might have occurred between the creation of the Lua object and its access.
+   */
+  readonly valid: boolean
+  /**
+   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be
+   * suffixed with a dotted path to a member of the struct.
+   */
+  readonly object_name: "LuaItemPrototype"
+  /** All methods and properties that this object supports. */
+  help(): string
+}
+
+interface ArmorItemPrototype extends BaseItemPrototype {
+  /**
+   * The inventory size bonus for this armor prototype. `nil` if this isn't an armor prototype.
+   *
+   * *Can only be used if this is ArmorPrototype*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.inventory_size_bonus View documentation}
+   */
+  readonly inventory_size_bonus: uint | undefined
+}
+
+interface ItemWithInventoryItemPrototype extends BaseItemPrototype {
   /**
    * The main inventory size for item-with-inventory-prototype. `nil` if not an item-with-inventory-prototype.
    *
@@ -11955,6 +11992,9 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.extend_inventory_by_default View documentation}
    */
   readonly extend_inventory_by_default: boolean
+}
+
+interface ItemWithLabelItemPrototype extends BaseItemPrototype {
   /**
    * The default label color used for this item with label. `nil` if not defined or if this isn't an item with label.
    *
@@ -11971,12 +12011,9 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.draw_label_for_cursor_render View documentation}
    */
   readonly draw_label_for_cursor_render: boolean
-  /**
-   * The repairing speed if this is a repairing tool; otherwise `nil`.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.speed View documentation}
-   */
-  readonly speed: float | undefined
+}
+
+interface ModuleItemPrototype extends BaseItemPrototype {
   /**
    * Effects of this module; `nil` if this is not a module.
    *
@@ -12019,6 +12056,9 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.limitation_message_key View documentation}
    */
   readonly limitation_message_key: string
+}
+
+interface RailPlannerItemPrototype extends BaseItemPrototype {
   /**
    * The straight rail prototype used for this rail planner prototype.
    *
@@ -12035,6 +12075,9 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.curved_rail View documentation}
    */
   readonly curved_rail: LuaEntityPrototype
+}
+
+interface RepairToolItemPrototype extends BaseItemPrototype {
   /**
    * The repair result of this repair tool prototype or `nil` if this isn't a repair tool prototype.
    *
@@ -12043,6 +12086,9 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.repair_result View documentation}
    */
   readonly repair_result: TriggerItem[] | undefined
+}
+
+interface SelectionToolItemPrototype extends BaseItemPrototype {
   /**
    * The color used when doing normal selection with this selection tool prototype.
    *
@@ -12179,6 +12225,9 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_tile_filters View documentation}
    */
   readonly alt_tile_filters: Record<string, LuaTilePrototype>
+}
+
+interface DeconstructionItemPrototype extends BaseItemPrototype {
   /**
    * The number of entity filters this deconstruction item has or `nil` if this isn't a deconstruction item prototype.
    *
@@ -12195,6 +12244,9 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.tile_filter_slots View documentation}
    */
   readonly tile_filter_slots: uint | undefined
+}
+
+interface ToolItemPrototype extends BaseItemPrototype {
   /**
    * The durability message key used when displaying the durability of this tool.
    *
@@ -12219,6 +12271,9 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.infinite View documentation}
    */
   readonly infinite: boolean | undefined
+}
+
+interface UpgradeItemPrototype extends BaseItemPrototype {
   /**
    * How many filters an upgrade item has. `nil` if not a upgrade item.
    *
@@ -12227,21 +12282,30 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.mapper_count View documentation}
    */
   readonly mapper_count: uint | undefined
-  /**
-   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
-   * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
-   * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
-   * change to the game state might have occurred between the creation of the Lua object and its access.
-   */
-  readonly valid: boolean
-  /**
-   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be
-   * suffixed with a dotted path to a member of the struct.
-   */
-  readonly object_name: "LuaItemPrototype"
-  /** All methods and properties that this object supports. */
-  help(): string
 }
+
+/**
+ * Prototype of an item.
+ *
+ * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html View documentation}
+ *
+ * @example
+ *   ```lua
+ *   game.item_prototypes["iron-plate"]
+ *   ```
+ */
+interface LuaItemPrototype
+  extends BaseItemPrototype,
+    ArmorItemPrototype,
+    ItemWithInventoryItemPrototype,
+    ItemWithLabelItemPrototype,
+    ModuleItemPrototype,
+    RailPlannerItemPrototype,
+    RepairToolItemPrototype,
+    SelectionToolItemPrototype,
+    DeconstructionItemPrototype,
+    ToolItemPrototype,
+    UpgradeItemPrototype {}
 
 /** @noSelf */
 interface BaseItemStack {

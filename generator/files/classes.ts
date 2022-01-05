@@ -242,7 +242,6 @@ function generateClass(
 
   function processSubclasses() {
     /// hardcoded for now
-    if (!existing) return
     if (clazz.name === "LuaRendering") return
     type MapName = string & { _mapNameBrand: never }
     type UseName = string & { _useNameBrand: never }
