@@ -10,7 +10,6 @@ import { FactorioApiJson } from "./FactorioApiJson"
 program
   .option("--in <path>", "Source folder containing manualDefinitions(.d).ts and runtime-api(-version).json")
   .option("--out <path>", "output directory")
-  .option("--no-docs", "Do not output docs")
   .option("--no-format", "Do not format with prettier (significant speedup)")
   .option("--warn-as-error", "Treat warnings as errors")
 
@@ -18,7 +17,6 @@ program.parse()
 const opts = program.opts<{
   in: string
   out: string
-  docs: boolean
   format: boolean
   warnAsError: boolean
 }>()
@@ -45,8 +43,8 @@ if (!jsonFile) {
   throw new Error(`could not find json api file in ${srcFolder}`)
 }
 
-console.log("reading files")
-const jsonApi = JSON.parse(fs.readFileSync(path.join(srcFolder, jsonFile!), "utf-8")) as FactorioApiJson
+console.log("reading input")
+const apiJson = JSON.parse(fs.readFileSync(path.join(srcFolder, jsonFile!), "utf-8")) as FactorioApiJson
 console.log(`  factorio version ${version}`)
 const tsProgram = ts.createProgram({
   rootNames: [manualDefinesFile],
@@ -58,14 +56,8 @@ if (!manualDefines) {
 }
 const typeChecker = tsProgram.getTypeChecker()
 
-console.log("generating docs")
-const outFiles = new DefinitionsGenerator(
-  jsonApi,
-  manualDefines,
-  typeChecker,
-  opts.docs,
-  opts.warnAsError
-).generateDeclarations()
+console.log("generating files")
+const outFiles = new DefinitionsGenerator(apiJson, manualDefines, typeChecker, opts.warnAsError).generateDeclarations()
 
 console.log("writing files")
 const outDir = path.resolve(opts.out)

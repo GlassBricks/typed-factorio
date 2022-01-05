@@ -1,5 +1,11 @@
 import ts from "typescript"
 
+export const printer = ts.createPrinter({
+  omitTrailingSemicolon: true,
+  newLine: ts.NewLineKind.LineFeed,
+})
+export const emptySourceFile = ts.createSourceFile("", "", ts.ScriptTarget.ESNext)
+
 export const Modifiers = {
   declare: ts.factory.createModifier(ts.SyntaxKind.DeclareKeyword),
   readonly: ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
@@ -67,5 +73,38 @@ export function createConst(name: string, type: ts.TypeNode, modifiers?: ts.Modi
       [ts.factory.createVariableDeclaration(name, undefined, type)],
       ts.NodeFlags.Const
     )
+  )
+}
+
+export function indent(str: string): string {
+  return "    " + str.split("\n").join("\n    ")
+}
+
+export function removeLuaPrefix(str: string): string {
+  if (str.startsWith("Lua")) str = str.substring(3)
+
+  return str
+}
+
+export function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc, sourceFile?: ts.SourceFile) {
+  const text: string = sourceFile
+    ? jsDoc.getText(sourceFile)
+    : printer.printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
+  node.emitNode = node.emitNode ?? {}
+  ts.addSyntheticLeadingComment(
+    node,
+    ts.SyntaxKind.MultiLineCommentTrivia,
+    text.trim().replace(/^\/\*|\*\/$/g, ""),
+    true
+  )
+  return node
+}
+
+export function createComment(text: string, multiline?: boolean): ts.EmptyStatement {
+  return ts.addSyntheticLeadingComment(
+    ts.factory.createEmptyStatement(),
+    multiline ? ts.SyntaxKind.MultiLineCommentTrivia : ts.SyntaxKind.SingleLineCommentTrivia,
+    text,
+    true
   )
 }

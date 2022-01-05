@@ -6920,12 +6920,6 @@ interface LuaFluidBox extends Array<Fluid | undefined> {
    */
   readonly length: uint
   /**
-   * The entity that owns this fluidbox.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.owner View documentation}
-   */
-  readonly owner: LuaEntity
-  /**
    * Access, set or clear a fluid box. The index must always be in bounds (see
    * {@link LuaFluidBox.length LuaFluidBox::operator #}). New fluidboxes may not be added or removed using this
    * operator. If the given fluid box doesn't contain any fluid, `nil` is returned. Similarly, `nil` can be written to
@@ -6934,6 +6928,12 @@ interface LuaFluidBox extends Array<Fluid | undefined> {
    * {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.operator%20[] View documentation}
    */
   [index: number]: Fluid | undefined
+  /**
+   * The entity that owns this fluidbox.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.owner View documentation}
+   */
+  readonly owner: LuaEntity
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
    * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
@@ -11635,6 +11635,19 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
    */
   readonly length: uint
   /**
+   * The indexing operator.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.operator%20[] View documentation}
+   *
+   * @example
+   *   Will get the first item in the player's inventory.
+   *
+   *   ```lua
+   *   game.player.get_main_inventory()[1]
+   *   ```
+   */
+  readonly [index: number]: LuaItemStack
+  /**
    * The inventory index this inventory uses, or `nil` if the inventory doesn't have an index.
    *
    * {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.index View documentation}
@@ -11664,19 +11677,6 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
    * {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.mod_owner View documentation}
    */
   readonly mod_owner: string | undefined
-  /**
-   * The indexing operator.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.operator%20[] View documentation}
-   *
-   * @example
-   *   Will get the first item in the player's inventory.
-   *
-   *   ```lua
-   *   game.player.get_main_inventory()[1]
-   *   ```
-   */
-  readonly [index: number]: LuaItemStack
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
    * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
@@ -20297,6 +20297,12 @@ interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {
    */
   readonly length: uint
   /**
+   * The indexing operator.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaTransportLine.html#LuaTransportLine.operator%20[] View documentation}
+   */
+  readonly [index: number]: LuaItemStack
+  /**
    * The entity this transport line belongs to.
    *
    * {@link https://lua-api.factorio.com/latest/LuaTransportLine.html#LuaTransportLine.owner View documentation}
@@ -20314,12 +20320,6 @@ interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {
    * {@link https://lua-api.factorio.com/latest/LuaTransportLine.html#LuaTransportLine.input_lines View documentation}
    */
   readonly input_lines: LuaTransportLine[]
-  /**
-   * The indexing operator.
-   *
-   * {@link https://lua-api.factorio.com/latest/LuaTransportLine.html#LuaTransportLine.operator%20[] View documentation}
-   */
-  readonly [index: number]: LuaItemStack
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
    * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
