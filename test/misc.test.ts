@@ -27,3 +27,28 @@ test("Lua lazy loaded value", () => {
   })
   `.expectToHaveNoDiagnostics()
 })
+
+test("array-like", () => {
+  tstl`
+  const myInventory = game.create_inventory(4)
+
+  const slot1 = myInventory[0]
+  const slot2 = myInventory[1]
+  const len = myInventory.length
+  `.expectToMatchSnapshot()
+})
+
+test("pairs iteration on lua custom tables", () => {
+  tstl`
+  for (const [id, player] of pairs(game.players)) {
+    const num: number = id
+    const p: LuaPlayer = player
+  }
+  const bar: Record<string, object> = { foo: {} }
+
+  for (const [key, value] of pairs(bar)) {
+    const num: string = key
+    const p: object = value
+  }
+  `.expectToHaveNoDiagnostics()
+})
