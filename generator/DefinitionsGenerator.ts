@@ -39,6 +39,7 @@ import generateEvents, { preprocessEvents } from "./files/events"
 import { generateBuiltins, generateGlobalObjects, preprocessBuiltins, preprocessGlobalObjects } from "./files/others"
 import { generateConcepts, preprocessConcepts } from "./files/concepts"
 import { generateClasses, preprocessClasses } from "./files/classes"
+import assert from "node:assert"
 
 export class Statements {
   statements: ts.Statement[] = [createComment("* @noSelfInFile ", true)]
@@ -100,8 +101,6 @@ export default class DefinitionsGenerator {
     {
       read: boolean
       write: boolean
-      readProcessed?: boolean
-      writeProcessed?: boolean
     }
   >(Array.from(this.concepts.keys()).map((c) => [c, { read: false, write: false }]))
 
@@ -196,7 +195,7 @@ export default class DefinitionsGenerator {
         if (attribute.read && attribute.write && type.read !== type.write) {
           if (first.type)
             this.warnIncompleteDefinition(
-              `Attribute ${parent}.${attribute.type} has different read/write type, but manually defined as one type`
+              `Attribute ${parent}.${attribute.name} has different read/write type, but manually defined as one type`
             )
           member = [
             ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], type.read, undefined),
@@ -331,12 +330,12 @@ export default class DefinitionsGenerator {
       existingContainer
     )
     if (readProp && writeProp && readProp !== writeProp) {
-      // this.warnIncompleteDefinition(
-      //   "Read/write types different in reading parameter as property: " +
-      //     printNode(readProp.type!) +
-      //     " " +
-      //     printNode(writeProp.type!)
-      // )
+      this.warnIncompleteDefinition(
+        "Read/write types different in reading parameter as property: " +
+          printNode(readProp.type!) +
+          " " +
+          printNode(writeProp.type!)
+      )
     }
     return writeProp ?? readProp!
   }
@@ -503,8 +502,9 @@ export default class DefinitionsGenerator {
       if (read && write) {
         if (valueType.read !== valueType.write) {
           this.warnIncompleteDefinition(
-            "Different read/write type for record value: " + printNode(valueType.write!),
-            type
+            "Different read/write type for record value:",
+            printNode(valueType.write!),
+            printNode(valueType.read!)
           )
         }
         const readType = ts.factory.createTypeReferenceNode(recordType, [keyType, valueType.read!])
@@ -656,13 +656,13 @@ export default class DefinitionsGenerator {
     return false
   }
 
-  // assumed as write-values
   createVariantParameterTypes(
     name: string,
     variants: WithParameterVariants,
     statements: Statements,
     read: boolean,
     write: boolean,
+    readWriteNames?: { read: string; write: string },
     memberForDocs?: BasicMember
   ): ts.TypeReferenceNode {
     const shortName = removeLuaPrefix(name)
@@ -675,8 +675,12 @@ export default class DefinitionsGenerator {
 
     const baseProperties = variants.parameters.sort(sortByOrder).map((p) => ({
       original: p,
-      member: this.mapParameterToProperty(p, baseName, read, write, existingBase),
+      member: this.mapParameterToRWProperties(p, baseName, read, write, existingBase),
     }))
+
+    // not supported right now
+    if (read && write) assert(baseProperties.every((p) => p.member.read === p.member.write))
+
     statements.add(
       ts.factory.createInterfaceDeclaration(
         undefined,
@@ -684,7 +688,7 @@ export default class DefinitionsGenerator {
         baseName,
         undefined,
         undefined,
-        baseProperties.map((g) => g.member)
+        baseProperties.map((g) => g.member.write ?? g.member.read!)
       )
     )
     this.typeNames[baseName] = name
@@ -708,7 +712,8 @@ export default class DefinitionsGenerator {
           )
         }
       } else {
-        types = this.tryGetUnionTypeStringLiterals(property.member.type!)
+        const memberType = property.member.write ?? property.member.read!
+        types = this.tryGetUnionTypeStringLiterals(memberType.type!)
         if (!types) {
           throw new Error(`Discriminant property ${name}.${discriminantProperty} is not a string literal union`)
         }
@@ -716,7 +721,6 @@ export default class DefinitionsGenerator {
       unusedTypes = new Set<string>(types)
     }
 
-    const groupNames: ts.TypeNode[] = []
     const heritageClause = [
       ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
         ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
@@ -745,14 +749,18 @@ export default class DefinitionsGenerator {
       return isDefine ? ts.factory.createTypeReferenceNode(groupName) : Types.stringLiteral(groupName)
     }
 
+    // also default
+    const readGroupNames: string[] = []
+    const writeGroupNames: string[] = []
+
     for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
       const isOtherTypes = group.name === "Other"
       if (isOtherTypes && (!unusedTypes || unusedTypes.size === 0)) {
         this.warnIncompleteDefinition('"Other" variant parameter group with no other values')
         continue
       }
-      const fullName =
-        toPascalCase(isDefine ? group.name.substring(group.name.lastIndexOf(".") + 1) : group.name) + shortName
+      const prefix = toPascalCase(isDefine ? group.name.substring(group.name.lastIndexOf(".") + 1) : group.name)
+      const fullName = prefix + shortName
       const existing = this.manualDefinitions[fullName]
       if (existing?.kind === "namespace") {
         throw new Error(`Manual definition for variant parameter type ${fullName} cannot be a namespace`)
@@ -761,6 +769,8 @@ export default class DefinitionsGenerator {
       let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
       if (existing?.kind === "type") {
         declaration = existing.node
+        readGroupNames.push(fullName)
+        writeGroupNames.push(fullName)
       } else {
         const members: ts.PropertySignature[] = []
         if (discriminantProperty) {
@@ -773,33 +783,85 @@ export default class DefinitionsGenerator {
             )
           )
         }
-        members.push(
-          ...group.parameters
-            .sort(sortByOrder)
-            .map((p) => this.mapParameterToProperty(p, fullName, read, write, existing))
-        )
-        declaration = ts.factory.createInterfaceDeclaration(
-          undefined,
-          undefined,
-          fullName,
-          undefined,
-          heritageClause,
-          members
-        )
+        const properties = group.parameters
+          .sort(sortByOrder)
+          .map((p) => this.mapParameterToRWProperties(p, fullName, read, write, existing))
+
+        if (readWriteNames && properties.some((x) => x.read !== x.write)) {
+          const readMembers = members.concat(properties.map((x) => x.read!))
+          const writeMembers = members.concat(properties.map((x) => x.write!))
+          const readName = prefix + readWriteNames.read
+          const writeName = prefix + readWriteNames.write
+          const readDeclaration = ts.factory.createInterfaceDeclaration(
+            undefined,
+            undefined,
+            readName,
+            undefined,
+            heritageClause,
+            readMembers
+          )
+          const writeDeclaration = ts.factory.createInterfaceDeclaration(
+            undefined,
+            undefined,
+            writeName,
+            undefined,
+            heritageClause,
+            writeMembers
+          )
+          statements.add(readDeclaration)
+          declaration = writeDeclaration
+          readGroupNames.push(readName)
+          writeGroupNames.push(writeName)
+        } else {
+          members.push(...properties.map((x) => x.write ?? x.read!))
+          declaration = ts.factory.createInterfaceDeclaration(
+            undefined,
+            undefined,
+            fullName,
+            undefined,
+            heritageClause,
+            members
+          )
+          readGroupNames.push(fullName)
+          writeGroupNames.push(fullName)
+        }
       }
       this.addJsDoc(declaration, group, undefined)
       statements.add(declaration)
 
       this.typeNames[fullName] = fullName
-      groupNames.push(ts.factory.createTypeReferenceNode(fullName))
     }
-    const declaration = ts.factory.createTypeAliasDeclaration(
-      undefined,
-      undefined,
-      name,
-      undefined,
-      ts.factory.createUnionTypeNode(groupNames)
-    )
+
+    let declaration: ts.TypeAliasDeclaration
+
+    if (readWriteNames) {
+      statements.add(
+        ts.factory.createTypeAliasDeclaration(
+          undefined,
+          undefined,
+          readWriteNames.read,
+          undefined,
+          ts.factory.createUnionTypeNode(readGroupNames.map((x) => ts.factory.createTypeReferenceNode(x)))
+        )
+      )
+
+      declaration = ts.factory.createTypeAliasDeclaration(
+        undefined,
+        undefined,
+        readWriteNames.write,
+        undefined,
+        ts.factory.createUnionTypeNode(writeGroupNames.map((x) => ts.factory.createTypeReferenceNode(x)))
+      )
+    } else {
+      declaration = ts.factory.createTypeAliasDeclaration(
+        undefined,
+        undefined,
+        name,
+        undefined,
+        ts.factory.createUnionTypeNode(readGroupNames.map((x) => ts.factory.createTypeReferenceNode(x)))
+      )
+    }
+
     statements.add(declaration)
     if (memberForDocs) {
       this.addJsDoc(declaration, memberForDocs, memberForDocs.name)

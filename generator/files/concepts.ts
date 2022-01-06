@@ -27,28 +27,39 @@ export function preprocessConcepts(generator: DefinitionsGenerator) {
       generator.typeNames[concept.name + "Array"] = concept.name
     }
     if (readType) {
-      assert(writeType, "Read and write types should be specified together")
+      if (!writeType) throw new Error("Read and write types should be specified together")
       generator.readWriteConcepts.set(concept.name, { read: readType, write: writeType })
     }
   }
+
   preprocessConceptUsages(generator)
-}
 
-export function generateConcepts(generator: DefinitionsGenerator) {
-  generator.apiDocs.concepts.sort(sortByOrder)
-
-  const statements = generator.newStatements()
-  for (const concept of generator.apiDocs.concepts) {
-    const declaration = generateConcept(generator, concept, statements)
-    if (declaration) {
-      generator.addJsDoc(declaration, concept, concept.name)
-      statements.add(declaration)
+  for (const concept of generator.apiDocs.concepts.filter((x) => x.category === "table")) {
+    assert(concept.category === "table")
+    const usage = generator.conceptUsage.get(concept.name)!
+    let allParameters = concept.parameters
+    if (concept.variant_parameter_groups) {
+      allParameters = allParameters.concat(concept.variant_parameter_groups.flatMap((x) => x.parameters))
+    }
+    if (
+      usage.read &&
+      usage.write &&
+      allParameters.some((x) => {
+        const type = generator.mapTypeBasic(x.type, true, true)
+        return type.write !== type.read
+      })
+    ) {
+      generator.readWriteConcepts.set(concept.name, {
+        read: concept.name + "Read",
+        write: concept.name,
+      })
+      generator.typeNames[concept.name + "Read"] = concept.name
     }
   }
-  generator.addFile("concepts", statements)
 }
 
 function preprocessConceptUsages(generator: DefinitionsGenerator) {
+  const usagePropagated = new Map(generator.apiDocs.concepts.map((x) => [x.name, { read: false, write: false }]))
   propagateConceptUsages(generator.apiDocs.concepts)
   const variedUsageConcepts = generator.apiDocs.concepts.filter((x) => x.category === "table" || x.category === "union")
   for (let i = 0; i < 30; i++) {
@@ -84,8 +95,12 @@ function preprocessConceptUsages(generator: DefinitionsGenerator) {
           write = true
         } else {
           assert(rwUsage)
-          read = rwUsage.read && !rwUsage.readProcessed
-          write = rwUsage.write && !rwUsage.writeProcessed
+          const thisPropagated = usagePropagated.get(concept.name)!
+          read = rwUsage.read && !thisPropagated.read
+          write = rwUsage.write && !thisPropagated.write
+
+          if (read) thisPropagated.read = true
+          if (write) thisPropagated.write = true
         }
 
         if (!read && !write) continue
@@ -105,15 +120,25 @@ function preprocessConceptUsages(generator: DefinitionsGenerator) {
         } else {
           assertNever(concept)
         }
-        if (rwUsage) {
-          if (read) rwUsage.readProcessed = true
-          if (write) rwUsage.writeProcessed = true
-        }
         anyPropagated = true
       }
     }
     return anyPropagated
   }
+}
+
+export function generateConcepts(generator: DefinitionsGenerator) {
+  generator.apiDocs.concepts.sort(sortByOrder)
+
+  const statements = generator.newStatements()
+  for (const concept of generator.apiDocs.concepts) {
+    const declaration = generateConcept(generator, concept, statements)
+    if (declaration) {
+      generator.addJsDoc(declaration, concept, concept.name)
+      statements.add(declaration)
+    }
+  }
+  generator.addFile("concepts", statements)
 }
 
 function generateConcept(generator: DefinitionsGenerator, concept: Concept, statements: Statements) {
@@ -207,20 +232,40 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
     if (!rwUsage.read && !rwUsage.write) {
       generator.warnIncompleteDefinition(`Concept ${concept.name} was found to be neither read nor write`)
     }
+    const readWriteNames = generator.readWriteConcepts.get(concept.name)
     if (concept.variant_parameter_groups) {
-      generator.createVariantParameterTypes(concept.name, concept, statements, rwUsage.read, rwUsage.write, concept)
+      generator.createVariantParameterTypes(
+        concept.name,
+        concept,
+        statements,
+        rwUsage.read,
+        rwUsage.write,
+        readWriteNames,
+        concept
+      )
       return undefined
     } else {
-      return ts.factory.createInterfaceDeclaration(
-        undefined,
-        undefined,
-        concept.name,
-        undefined,
-        undefined,
-        concept.parameters
-          .sort(sortByOrder)
-          .map((m) => generator.mapParameterToProperty(m, concept.name, rwUsage.read, rwUsage.write, existing))
-      )
+      const createDeclaration = (name: string, read: boolean, write: boolean) => {
+        return ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          name,
+          undefined,
+          undefined,
+          concept.parameters
+            .sort(sortByOrder)
+            .map((m) => generator.mapParameterToProperty(m, concept.name, read, write, existing))
+        )
+      }
+
+      if (readWriteNames) {
+        assert(rwUsage.read && rwUsage.write)
+        const readDeclaration = createDeclaration(readWriteNames.read, true, false)
+        const writeDeclaration = createDeclaration(readWriteNames.write, false, true)
+        statements.add(readDeclaration)
+        return writeDeclaration
+      }
+      return createDeclaration(concept.name, rwUsage.read, rwUsage.write)
     }
   } else if (concept.category === "enum") {
     return createTypeAlias(

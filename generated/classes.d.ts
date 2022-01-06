@@ -1361,7 +1361,7 @@ interface LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.get_blueprint_entities View documentation}
    */
-  get_blueprint_entities(): BlueprintEntity[] | undefined
+  get_blueprint_entities(): BlueprintEntityRead[] | undefined
   /**
    * Returns whether the player is holding something in the cursor. It takes into account items from the blueprint
    * library, as well as items and ghost cursor.
@@ -3518,7 +3518,7 @@ interface UnitEntity extends BaseEntity {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.command View documentation}
    */
-  readonly command: Command | undefined
+  readonly command: CommandRead | undefined
   /**
    * The distraction command given to this unit or `nil` is the unit currently isn't distracted.
    *
@@ -3526,7 +3526,7 @@ interface UnitEntity extends BaseEntity {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.distraction_command View documentation}
    */
-  readonly distraction_command: Command | undefined
+  readonly distraction_command: CommandRead | undefined
 }
 
 /** @noSelf */
@@ -9170,7 +9170,7 @@ interface LuaGameScript {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.default_map_gen_settings View documentation}
    */
-  readonly default_map_gen_settings: MapGenSettings
+  readonly default_map_gen_settings: MapGenSettingsRead
   /**
    * Determines if enemy land mines are completely invisible or not.
    *
@@ -12717,7 +12717,7 @@ interface BlueprintItemStack extends BaseItemStack {
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_entities View documentation}
    */
-  get_blueprint_entities(): BlueprintEntity[]
+  get_blueprint_entities(): BlueprintEntityRead[]
   /**
    * Set new entities to be a part of this blueprint.
    *
@@ -12735,7 +12735,7 @@ interface BlueprintItemStack extends BaseItemStack {
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.get_blueprint_tiles View documentation}
    */
-  get_blueprint_tiles(): Tile[]
+  get_blueprint_tiles(): TileRead[]
   /**
    * Set specific tiles in this blueprint.
    *
@@ -19098,7 +19098,7 @@ interface LuaSurface {
    *
    * @param name
    */
-  get_script_areas(name?: string): ScriptArea[]
+  get_script_areas(name?: string): ScriptAreaRead[]
   /**
    * Gets the first script area by name or id.
    *
@@ -19106,7 +19106,7 @@ interface LuaSurface {
    *
    * @param key - The name or id of the area to get.
    */
-  get_script_area(key?: string | uint): ScriptArea
+  get_script_area(key?: string | uint): ScriptAreaRead
   /**
    * Sets the given script area to the new values.
    *
@@ -19141,7 +19141,7 @@ interface LuaSurface {
    *
    * @param name
    */
-  get_script_positions(name?: string): ScriptPosition[]
+  get_script_positions(name?: string): ScriptPositionRead[]
   /**
    * Gets the first script position by name or id.
    *
@@ -19149,7 +19149,7 @@ interface LuaSurface {
    *
    * @param key - The name or id of the position to get.
    */
-  get_script_position(key?: string | uint): ScriptPosition
+  get_script_position(key?: string | uint): ScriptPositionRead
   /**
    * Sets the given script position to the new values.
    *
@@ -19280,7 +19280,8 @@ interface LuaSurface {
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.map_gen_settings View documentation}
    */
-  map_gen_settings: MapGenSettings
+  get map_gen_settings(): MapGenSettingsRead
+  set map_gen_settings(value: MapGenSettings)
   /**
    * When set to true, new chunks will be generated with lab tiles, instead of using the surface's map generation settings.
    *
@@ -20609,13 +20610,13 @@ interface LuaUnitGroup {
    *
    * {@link https://lua-api.factorio.com/latest/LuaUnitGroup.html#LuaUnitGroup.command View documentation}
    */
-  readonly command: Command | undefined
+  readonly command: CommandRead | undefined
   /**
    * The distraction command given to this group or `nil` is the group currently isn't distracted.
    *
    * {@link https://lua-api.factorio.com/latest/LuaUnitGroup.html#LuaUnitGroup.distraction_command View documentation}
    */
-  readonly distraction_command: Command | undefined
+  readonly distraction_command: CommandRead | undefined
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
    * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the

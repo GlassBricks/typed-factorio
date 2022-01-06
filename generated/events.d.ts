@@ -2958,7 +2958,7 @@ interface ScriptRaisedSetTilesEvent extends EventData {
   /** The surface whose tiles were changed. */
   readonly surface_index: uint
   /** The tiles that were changed. */
-  readonly tiles: Tile[]
+  readonly tiles: TileRead[]
   /** Identifier of the event */
   readonly name: typeof defines.events.script_raised_set_tiles
   /** Tick the event was generated. */
