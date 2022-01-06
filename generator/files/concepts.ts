@@ -11,13 +11,24 @@ export function preprocessConcepts(generator: DefinitionsGenerator) {
     generator.typeNames[concept.name] = concept.name
 
     const existing = generator.manualDefinitions[concept.name]
+
+    let readType: string | undefined
+    let writeType: string | undefined
+
+    readType = existing?.annotations.readType?.[0]
     const isTableOrArrayConcept = concept.category === "table_or_array"
+
     if (isTableOrArrayConcept || existing?.annotations.tableOrArray) {
-      generator.tableOrArrayConcepts.add(concept.name)
+      readType ??= concept.name + "Table"
+      writeType ??= concept.name
     }
     if (isTableOrArrayConcept) {
       generator.typeNames[concept.name + "Table"] = concept.name
       generator.typeNames[concept.name + "Array"] = concept.name
+    }
+    if (readType) {
+      assert(writeType, "Read and write types should be specified together")
+      generator.readWriteConcepts.set(concept.name, { read: readType, write: writeType })
     }
   }
   preprocessConceptUsages(generator)

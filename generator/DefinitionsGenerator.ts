@@ -86,6 +86,8 @@ export default class DefinitionsGenerator {
   private concepts = new Set<string>(this.apiDocs.concepts.map((e) => e.name))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
 
+  private preprocessDone = false
+
   numericTypes = new Set<string>()
   // This is also a record of which types exist
   typeNames: Record<string, string> = {}
@@ -102,6 +104,7 @@ export default class DefinitionsGenerator {
       writeProcessed?: boolean
     }
   >(Array.from(this.concepts.keys()).map((c) => [c, { read: false, write: false }]))
+
   hasWarnings: boolean = false
 
   constructor(
@@ -328,12 +331,12 @@ export default class DefinitionsGenerator {
       existingContainer
     )
     if (readProp && writeProp && readProp !== writeProp) {
-      this.warnIncompleteDefinition(
-        "Read/write types different in reading parameter as property: " +
-          printNode(readProp.type!) +
-          " " +
-          printNode(writeProp.type!)
-      )
+      // this.warnIncompleteDefinition(
+      //   "Read/write types different in reading parameter as property: " +
+      //     printNode(readProp.type!) +
+      //     " " +
+      //     printNode(writeProp.type!)
+      // )
     }
     return writeProp ?? readProp!
   }
@@ -371,7 +374,7 @@ export default class DefinitionsGenerator {
       const createProp = (type: ts.TypeNode) => {
         const result = ts.factory.createPropertySignature(
           [Modifiers.readonly],
-          DefinitionsGenerator.escapePropertyName(parameter.name),
+          escapePropertyName(parameter.name),
           parameter.optional ? Tokens.question : undefined,
           type
         )
@@ -391,6 +394,13 @@ export default class DefinitionsGenerator {
           write: writeType && createProp(writeType),
         }
       }
+    }
+
+    function escapePropertyName(name: string): ts.PropertyName {
+      if (name.includes("-")) {
+        return ts.factory.createStringLiteral(name)
+      }
+      return ts.factory.createIdentifier(name)
     }
   }
 
@@ -450,15 +460,11 @@ export default class DefinitionsGenerator {
         conceptReadWrite.read ||= read
         conceptReadWrite.write ||= write
       }
-
-      if (this.tableOrArrayConcepts.has(type)) {
+      const readWriteTypes = this.readWriteConcepts.get(type)
+      if (readWriteTypes) {
         return {
-          read: read
-            ? ts.factory.createTypeReferenceNode(
-                this.manualDefinitions[type]?.annotations?.readType?.[0] ?? type + "Table"
-              )
-            : undefined,
-          write: write ? ts.factory.createTypeReferenceNode(type) : undefined,
+          read: read ? ts.factory.createTypeReferenceNode(readWriteTypes.read!) : undefined,
+          write: write ? ts.factory.createTypeReferenceNode(readWriteTypes.write!) : undefined,
         }
       }
       const outType = ts.factory.createTypeReferenceNode(type)
@@ -806,7 +812,7 @@ export default class DefinitionsGenerator {
     if (origLink.match(/^http(s?):\/\//)) {
       return origLink
     } else if (origLink.match(/\.html($|#)/)) {
-      return this.docUrlBase + origLink
+      return DefinitionsGenerator.docUrlBase + origLink
     } else if (this.typeNames[origLink]) {
       return this.typeNames[origLink]
     }
@@ -877,7 +883,7 @@ export default class DefinitionsGenerator {
       this.warnIncompleteDefinition("Could not get documentation url:", reference)
       relative_link = ""
     }
-    return this.docUrlBase + relative_link
+    return DefinitionsGenerator.docUrlBase + relative_link
   }
 
   addJsDoc<T extends ts.Node>(
