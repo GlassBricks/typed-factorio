@@ -65,7 +65,6 @@ const outDir = path.resolve(opts.out)
 if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir)
 }
-const promises: Promise<unknown>[] = []
 for (let [name, content] of outFiles) {
   if (opts.format) {
     console.log(`Formatting ${name}.d.ts`)
@@ -79,15 +78,9 @@ for (let [name, content] of outFiles) {
       .replace(/;```/g, "```") // workaround for prettier plugin jsdoc bug
   }
   const fileName = path.join(outDir, name + ".d.ts")
-  promises.push(
-    fs.promises.writeFile(fileName, content).catch((e) => {
-      console.error(e)
-    })
-  )
+  fs.writeFileSync(fileName, content)
 }
 
-Promise.all(promises).then(() => {
-  if (opts.warnAsError && generator.hasWarnings) {
-    throw new Error("Fail due to warnings")
-  }
-})
+if (opts.warnAsError && generator.hasWarnings) {
+  throw new Error("Fail due to warnings")
+}

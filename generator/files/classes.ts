@@ -456,10 +456,11 @@ function generateClass(
     }
     const shortName = removeLuaPrefix(clazz.name)
     const indexTypeName = indexType ? shortName + "Index" : undefined
-    if (!membersBySubclass) {
+    if (!membersBySubclass || !discriminantProperty) {
+      // if no discriminant property, generate normal class as well as subclasses
       createDeclaration(clazz.name, superTypes, members, indexTypeName, clazz)
-      return
     }
+    if (!membersBySubclass) return
     const baseName = "Base" + shortName
     createDeclaration(baseName, superTypes, membersBySubclass.get("")!, undefined, undefined)
     const groupSupertypes = [
@@ -484,28 +485,6 @@ function generateClass(
       )
       if (!indexTypeName) generator.addJsDoc(unionDeclaration, clazz, clazz.name)
       statements.add(unionDeclaration)
-    } else {
-      // intersection; an interface that inherits from all
-      if (indexType) throw new Error("TODO: index type AND subclasses")
-
-      allSubclassTypes.unshift("Base" + shortName)
-      const heritageClause = ts.factory.createHeritageClause(
-        ts.SyntaxKind.ExtendsKeyword,
-        allSubclassTypes.map((x) =>
-          ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(x), undefined)
-        )
-      )
-
-      const intersectionDeclaration = ts.factory.createInterfaceDeclaration(
-        undefined,
-        undefined,
-        clazz.name,
-        undefined,
-        [heritageClause],
-        []
-      )
-      statements.add(intersectionDeclaration)
-      generator.addJsDoc(intersectionDeclaration, clazz, clazz.name)
     }
 
     // if (existing?.annotations.generateByTypeIndex) {
