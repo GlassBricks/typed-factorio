@@ -167,7 +167,7 @@ type GuiLocation = GuiLocationTable | GuiLocationArray
 interface ChunkPositionAndArea {
   readonly x: int
   readonly y: int
-  readonly area: BoundingBox
+  readonly area: BoundingBoxTable
 }
 
 /**
@@ -201,7 +201,7 @@ interface TabAndContent {
 
 interface OldTileAndPosition {
   readonly old_tile: LuaTilePrototype
-  readonly position: TilePosition
+  readonly position: TilePositionTable
 }
 
 /**
@@ -230,7 +230,7 @@ interface SmokeSource {
   readonly east_position?: PositionTable
   readonly south_position?: PositionTable
   readonly west_position?: PositionTable
-  readonly deviation?: Position
+  readonly deviation?: PositionTable
   readonly starting_frame_speed: uint16
   readonly starting_frame_speed_deviation: double
   readonly starting_frame: uint16
@@ -368,7 +368,7 @@ interface Alert {
   readonly tick: uint
   readonly target?: LuaEntity
   readonly prototype?: LuaEntityPrototype
-  readonly position?: Position
+  readonly position?: PositionTable
   /** The SignalID used for a custom alert. Only present for custom alerts. */
   readonly icon?: SignalID
   /** The message for a custom alert. Only present for custom alerts. */
@@ -388,7 +388,7 @@ interface ScriptRenderVertexTarget {
 
 interface PathfinderWaypoint {
   /** The position of the waypoint on its surface. */
-  readonly position: Position
+  readonly position: PositionTable
   /** `true` if the path from the previous waypoint to this one goes through an entity that must be destroyed. */
   readonly needs_destroy_to_reach: boolean
 }
@@ -414,7 +414,7 @@ interface Decorative {
 }
 
 interface DecorativeResult {
-  readonly position: TilePosition
+  readonly position: TilePositionTable
   readonly decorative: LuaDecorativePrototype
   readonly amount: uint
 }
@@ -2259,7 +2259,7 @@ interface BeamTarget {
   /** The target entity. */
   readonly entity?: LuaEntity
   /** The target position. */
-  readonly position?: Position
+  readonly position?: PositionTable
 }
 
 interface RidingState {
@@ -2853,7 +2853,7 @@ interface SelectedPrototypeData {
 interface ScriptRenderTarget {
   readonly entity?: LuaEntity
   readonly entity_offset?: Vector
-  readonly position?: Position
+  readonly position?: PositionTable
 }
 
 type MouseButtonFlag =

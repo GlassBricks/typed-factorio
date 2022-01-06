@@ -524,7 +524,9 @@ function generateClass(
                   (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
                     removeLuaPrefix(clazz.name) + toPascalCase(method.name),
                   method,
-                  statements
+                  statements,
+                  false,
+                  true
                 )
               : ts.factory.createTypeLiteralNode(
                   method.parameters

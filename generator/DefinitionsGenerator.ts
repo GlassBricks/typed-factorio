@@ -29,10 +29,10 @@ import {
   WithParameterVariants,
 } from "./FactorioApiJson"
 import generateClasses from "./files/classes"
-import generateConcepts from "./files/concepts"
 import generateDefines from "./files/defines"
 import generateEvents from "./files/events"
 import { generateBuiltins, generateGlobalObjects } from "./files/others"
+import { generateConcepts, preprocessConcepts } from "./files/concepts"
 
 export class Statements {
   statements: ts.Statement[] = [createComment("* @noSelfInFile ", true)]
@@ -80,10 +80,22 @@ export default class DefinitionsGenerator {
   private concepts = new Set<string>(this.apiDocs.concepts.map((e) => e.name))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
   // original -> mapped
-  private tableOrArrayConcepts = new Set<string>()
+  tableOrArrayConcepts = new Set<string>()
+  conceptUsage = new Map<
+    string,
+    {
+      read: boolean
+      write: boolean
+      readProcessed?: boolean
+      writeProcessed?: boolean
+    }
+  >()
+
+  usedConceptReadWrite = new Set<string>()
+
   numericTypes = new Set<string>()
   // This is also a record of which types exist
-  private typeNames: Record<string, string> = {}
+  typeNames: Record<string, string> = {}
   private addBefore = new Map<string, ts.Statement[]>()
   private addTo = new Map<string, ts.Statement[]>()
   readonly rootDefine: Define = {
@@ -158,8 +170,8 @@ export default class DefinitionsGenerator {
     generateDefines(this)
     generateEvents(this)
     generateClasses(this)
-    generateConcepts(this)
     generateGlobalObjects(this)
+    generateConcepts(this)
     this.checkManuallyDefined()
   }
 
@@ -194,19 +206,7 @@ export default class DefinitionsGenerator {
     }
     addDefine(this.rootDefine, "")
 
-    for (const concept of this.apiDocs.concepts) {
-      this.typeNames[concept.name] = concept.name
-
-      const existing = this.manualDefinitions[concept.name]
-      const isTableOrArrayConcept = concept.category === "table_or_array"
-      if (isTableOrArrayConcept || existing?.annotations.tableOrArray) {
-        this.tableOrArrayConcepts.add(concept.name)
-      }
-      if (isTableOrArrayConcept) {
-        this.typeNames[concept.name + "Table"] = concept.name
-        this.typeNames[concept.name + "Array"] = concept.name
-      }
-    }
+    preprocessConcepts(this)
 
     for (const def of Object.values(this.manualDefinitions as Record<string, RootDef>)) {
       const addBefore = def.annotations.addBefore?.[0]
@@ -502,6 +502,18 @@ export default class DefinitionsGenerator {
 
   mapTypeRaw(type: Type, read: boolean, write: boolean): RWType {
     if (typeof type === "string") {
+      const conceptReadWrite = this.conceptUsage.get(type)
+      if (conceptReadWrite) {
+        const used = this.usedConceptReadWrite.has(type)
+        if (used) {
+          if ((!conceptReadWrite.read && read) || (!conceptReadWrite.write && write)) {
+            this.warnIncompleteDefinition(`Concept ${type} usage changed after used`)
+          }
+        }
+        conceptReadWrite.read ||= read
+        conceptReadWrite.write ||= write
+      }
+
       if (this.tableOrArrayConcepts.has(type)) {
         return {
           read: read ? ts.factory.createTypeReferenceNode(type + "Table") : undefined,
@@ -559,8 +571,8 @@ export default class DefinitionsGenerator {
     }
 
     if (type.complex_type === "LuaCustomTable") {
-      if (write) {
-        throw new Error("Cannot have write LuaCustomTable")
+      if (write || !read) {
+        throw new Error("LuaCustomTable can only be readonly")
       }
       const keyType = this.mapTypeRaw(type.key, true, false).read
       const valueType = this.mapTypeRaw(type.value, true, false).read
@@ -693,6 +705,8 @@ export default class DefinitionsGenerator {
     name: string,
     variants: WithParameterVariants,
     statements: Statements,
+    read: boolean,
+    write: boolean,
     memberForDocs?: BasicMember
   ): ts.TypeReferenceNode {
     const shortName = removeLuaPrefix(name)
@@ -705,7 +719,7 @@ export default class DefinitionsGenerator {
 
     const baseProperties = variants.parameters.sort(sortByOrder).map((p) => ({
       original: p,
-      member: this.mapParameterToProperty(p, baseName, false, true, existingBase),
+      member: this.mapParameterToProperty(p, baseName, read, write, existingBase),
     }))
     statements.add(
       ts.factory.createInterfaceDeclaration(
@@ -806,7 +820,7 @@ export default class DefinitionsGenerator {
         members.push(
           ...group.parameters
             .sort(sortByOrder)
-            .map((p) => this.mapParameterToProperty(p, fullName, false, true, existing))
+            .map((p) => this.mapParameterToProperty(p, fullName, read, write, existing))
         )
         declaration = ts.factory.createInterfaceDeclaration(
           undefined,
