@@ -232,17 +232,6 @@ interface LuaAutoplaceControlPrototype {
   help(): string
 }
 
-type RaiseableEvents =
-  | typeof defines.events.on_console_chat
-  | typeof defines.events.on_player_crafted_item
-  | typeof defines.events.on_player_fast_transferred
-  | typeof defines.events.on_biter_base_built
-  | typeof defines.events.on_market_item_purchased
-  | typeof defines.events.script_raised_built
-  | typeof defines.events.script_raised_destroy
-  | typeof defines.events.script_raised_revive
-  | typeof defines.events.script_raised_set_tiles
-
 /**
  * Entry point for registering event handlers. It is accessible through the global object named `script`.
  *

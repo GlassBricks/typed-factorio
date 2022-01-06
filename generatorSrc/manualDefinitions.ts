@@ -410,7 +410,7 @@ interface LuaRemote {
 
 // events
 
-/** @addBefore LuaBootstrap */
+/** @addTo concepts */
 type RaiseableEvents =
   | typeof defines.events.on_console_chat
   | typeof defines.events.on_player_crafted_item
@@ -668,8 +668,10 @@ interface CircularParticleCreationSpecification {
   readonly center: PositionTable
 }
 
-/** @addBefore BoundingBox */
-interface BoundingBoxRead {
+interface BoundingBoxTable {}
+
+/** @addAfter BoundingBox */
+interface BoundingBoxRead extends BoundingBoxTable {
   readonly left_top: PositionTable
   readonly right_bottom: PositionTable
   readonly orientation?: RealOrientation

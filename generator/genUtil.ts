@@ -84,6 +84,17 @@ export function createConst(name: string, type: ts.TypeNode, modifiers?: ts.Modi
   )
 }
 
+export function createExtendsClause(...superTypes: string[]): [ts.HeritageClause] {
+  return [
+    ts.factory.createHeritageClause(
+      ts.SyntaxKind.ExtendsKeyword,
+      superTypes.map((name) =>
+        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(name), undefined)
+      )
+    ),
+  ]
+}
+
 export function indent(str: string): string {
   return "    " + str.split("\n").join("\n    ")
 }

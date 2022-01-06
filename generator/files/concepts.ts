@@ -1,7 +1,7 @@
 import { assertNever, sortByOrder } from "../util"
 import ts from "typescript"
 import { getAnnotations } from "../manualDefinitions"
-import { printer, Types } from "../genUtil"
+import { createExtendsClause, printer, Types } from "../genUtil"
 import DefinitionsGenerator, { Statements } from "../DefinitionsGenerator"
 import { Concept, TableOrArrayConcept } from "../FactorioApiJson"
 import assert from "node:assert"
@@ -245,27 +245,43 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
       )
       return undefined
     } else {
-      const createDeclaration = (name: string, read: boolean, write: boolean) => {
-        return ts.factory.createInterfaceDeclaration(
-          undefined,
-          undefined,
-          name,
-          undefined,
-          undefined,
-          concept.parameters
-            .sort(sortByOrder)
-            .map((m) => generator.mapParameterToProperty(m, concept.name, read, write, existing))
-        )
-      }
+      const properties = concept.parameters
+        .sort(sortByOrder)
+        .map((x) => generator.mapParameterToRWProperties(x, concept.name, rwUsage.read, rwUsage.write, existing))
 
-      if (readWriteNames) {
-        assert(rwUsage.read && rwUsage.write)
-        const readDeclaration = createDeclaration(readWriteNames.read, true, false)
-        const writeDeclaration = createDeclaration(readWriteNames.write, false, true)
-        statements.add(readDeclaration)
+      if (readWriteNames && properties.some((x) => x.read !== x.write)) {
+        const writeMembers = properties.map((x) => x.write!)
+        const readMembers = properties.filter((x) => x.read !== x.write).map((x) => x.read!)
+        const writeName = readWriteNames.write
+        const readName = readWriteNames.read
+        const writeDeclaration = ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          writeName,
+          undefined,
+          undefined,
+          writeMembers
+        )
+        const readDeclaration = ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          readName,
+          undefined,
+          createExtendsClause(writeName),
+          readMembers
+        )
+        statements.addAfter(writeDeclaration, readDeclaration)
         return writeDeclaration
       }
-      return createDeclaration(concept.name, rwUsage.read, rwUsage.write)
+
+      return ts.factory.createInterfaceDeclaration(
+        undefined,
+        undefined,
+        concept.name,
+        undefined,
+        undefined,
+        properties.map((x) => x.write ?? x.read!)
+      )
     }
   } else if (concept.category === "enum") {
     return createTypeAlias(

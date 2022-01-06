@@ -13,7 +13,9 @@ export interface BaseDef {
 export enum AnnotationKind {
   AddTo = "addTo",
   AddBefore = "addBefore",
+  AddAfter = "addAfter",
   Omit = "omit",
+
   NumericEnum = "numericEnum",
 
   Subclasses = "subclasses",
@@ -209,15 +211,25 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
 export function preprocessManualDefinitions(generator: DefinitionsGenerator) {
   for (const def of Object.values(generator.manualDefinitions as Record<string, RootDef>)) {
     const addBefore = def.annotations.addBefore?.[0]
+    const addAfter = def.annotations.addAfter?.[0]
     const addTo = def.annotations.addTo?.[0]
     const node = def.node
     if (addBefore) {
-      if (addTo) throw new Error(`Cannot specify both addBefore and addTo for ${node.name.text}`)
+      if (addTo || addAfter) throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
 
       if (!generator.addBefore.has(addBefore)) {
         generator.addBefore.set(addBefore, [])
       }
       generator.addBefore.get(addBefore)!.push(node)
+    }
+    if (addAfter) {
+      if (addTo || addBefore)
+        throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
+
+      if (!generator.addAfter.has(addAfter)) {
+        generator.addAfter.set(addAfter, [])
+      }
+      generator.addAfter.get(addAfter)!.push(node)
     }
     if (addTo) {
       if (!generator.addTo.has(addTo)) {
@@ -239,7 +251,7 @@ export function preprocessManualDefinitions(generator: DefinitionsGenerator) {
 export function checkManuallyDefined(generator: DefinitionsGenerator) {
   for (const [name, d] of Object.entries(generator.manualDefinitions)) {
     const def = d!
-    const hasAdd = def.annotations.addBefore || def.annotations.addTo
+    const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
     const isExisting = name in generator.typeNames
     if (!!hasAdd === isExisting) {
       generator.warnIncompleteDefinition(
@@ -252,6 +264,10 @@ export function checkManuallyDefined(generator: DefinitionsGenerator) {
   }
   for (const name of generator.addBefore.keys()) {
     generator.warnIncompleteDefinition("Could not find existing statement", name, "to add before")
+  }
+
+  for (const name of generator.addAfter.keys()) {
+    generator.warnIncompleteDefinition("Could not find existing statement", name, "to add after")
   }
 
   for (const name of generator.addTo.keys()) {

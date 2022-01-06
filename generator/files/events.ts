@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { sortByOrder } from "../util"
 import DefinitionsGenerator from "../DefinitionsGenerator"
-import { toPascalCase } from "../genUtil"
+import { createExtendsClause, toPascalCase } from "../genUtil"
 
 export function preprocessEvents(generator: DefinitionsGenerator) {
   for (const event of generator.apiDocs.events) {
@@ -14,9 +14,7 @@ export function preprocessEvents(generator: DefinitionsGenerator) {
 
 export default function generateEvents(generator: DefinitionsGenerator) {
   const statements = generator.newStatements()
-  const heritageClause = ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
-    ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier("EventData"), undefined),
-  ])
+  const heritageClause = createExtendsClause("EventData")
   for (const event of generator.apiDocs.events.sort(sortByOrder)) {
     const name = getMappedEventName(event.name)
     const existing = generator.manualDefinitions[name]
@@ -28,7 +26,7 @@ export default function generateEvents(generator: DefinitionsGenerator) {
       undefined,
       name,
       undefined,
-      [heritageClause],
+      heritageClause,
       event.data.sort(sortByOrder).map((p) => {
         if (p.name === "name" && event.name !== "CustomInputEvent") {
           p.type = "typeof " + p.type + "." + event.name

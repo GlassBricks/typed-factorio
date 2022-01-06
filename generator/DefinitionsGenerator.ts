@@ -2,6 +2,7 @@ import ts from "typescript"
 import {
   addFakeJSDoc,
   createComment,
+  createExtendsClause,
   indent,
   mergeUnion,
   Modifiers,
@@ -44,9 +45,39 @@ import assert from "node:assert"
 export class Statements {
   statements: ts.Statement[] = [createComment("* @noSelfInFile ", true)]
 
-  constructor(private addBefore: Map<string, ts.Statement[]>) {}
+  constructor(private addBefore: Map<string, ts.Statement[]>, private addLater: Map<string, ts.Statement[]>) {}
+
+  addAfter(first: ts.Statement, next: ts.Statement) {
+    const name = this.getName(first)
+    if (!name) throw new Error("First object statement does not have name to add after")
+
+    if (!this.addLater.has(name)) {
+      this.addLater.set(name, [])
+    }
+    this.addLater.get(name)!.push(next)
+  }
 
   add(statement: ts.Statement) {
+    const name = this.getName(statement)
+    if (name) {
+      const addBefore = this.addBefore.get(name)
+      if (addBefore) {
+        this.statements.push(...addBefore)
+        this.addBefore.delete(name)
+      }
+    }
+    this.statements.push(statement)
+
+    if (name) {
+      const addAfter = this.addLater.get(name)
+      if (addAfter) {
+        this.statements.push(...addAfter)
+        this.addLater.delete(name)
+      }
+    }
+  }
+
+  private getName(statement: ts.Statement) {
     let name: string | undefined
     if (
       ts.isInterfaceDeclaration(statement) ||
@@ -57,14 +88,7 @@ export class Statements {
     } else if (ts.isVariableStatement(statement)) {
       name = (statement.declarationList.declarations[0].name as ts.Identifier).text
     }
-    if (name) {
-      const addBefore = this.addBefore.get(name)
-      if (addBefore) {
-        this.statements.push(...addBefore)
-        this.addBefore.delete(name)
-      }
-    }
-    this.statements.push(statement)
+    return name
   }
 }
 
@@ -93,6 +117,7 @@ export default class DefinitionsGenerator {
   // This is also a record of which types exist
   typeNames: Record<string, string> = {}
   addBefore = new Map<string, ts.Statement[]>()
+  addAfter = new Map<string, ts.Statement[]>()
   addTo = new Map<string, ts.Statement[]>()
 
   readWriteConcepts = new Map<string, { read: string; write: string }>()
@@ -168,7 +193,7 @@ export default class DefinitionsGenerator {
   }
 
   newStatements() {
-    return new Statements(this.addBefore)
+    return new Statements(this.addBefore, this.addAfter)
   }
 
   addFile(name: string, statements: Statements) {
@@ -723,11 +748,6 @@ export default class DefinitionsGenerator {
       unusedTypes = new Set<string>(types)
     }
 
-    const heritageClause = [
-      ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
-        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(baseName), undefined),
-      ]),
-    ]
     const otherTypes = variants.variant_parameter_groups!.find((x) => x.name === "Other types")
     if (otherTypes) {
       otherTypes.order = variants.variant_parameter_groups!.length + 1
@@ -790,30 +810,30 @@ export default class DefinitionsGenerator {
           .map((p) => this.mapParameterToRWProperties(p, fullName, read, write, existing))
 
         if (readWriteNames && properties.some((x) => x.read !== x.write)) {
-          const readMembers = members.concat(properties.map((x) => x.read!))
           const writeMembers = members.concat(properties.map((x) => x.write!))
-          const readName = prefix + readWriteNames.read
+          const readMembers = members.concat(properties.filter((x) => x.read !== x.write).map((x) => x.read!))
           const writeName = prefix + readWriteNames.write
-          const readDeclaration = ts.factory.createInterfaceDeclaration(
-            undefined,
-            undefined,
-            readName,
-            undefined,
-            heritageClause,
-            readMembers
-          )
+          const readName = prefix + readWriteNames.read
           const writeDeclaration = ts.factory.createInterfaceDeclaration(
             undefined,
             undefined,
             writeName,
             undefined,
-            heritageClause,
+            createExtendsClause(baseName),
             writeMembers
           )
-          statements.add(readDeclaration)
+          const readDeclaration = ts.factory.createInterfaceDeclaration(
+            undefined,
+            undefined,
+            readName,
+            undefined,
+            createExtendsClause(baseName, writeName),
+            readMembers
+          )
           declaration = writeDeclaration
-          readGroupNames.push(readName)
+          statements.addAfter(writeDeclaration, readDeclaration)
           writeGroupNames.push(writeName)
+          readGroupNames.push(readName)
         } else {
           members.push(...properties.map((x) => x.write ?? x.read!))
           declaration = ts.factory.createInterfaceDeclaration(
@@ -821,7 +841,7 @@ export default class DefinitionsGenerator {
             undefined,
             fullName,
             undefined,
-            heritageClause,
+            createExtendsClause(baseName),
             members
           )
           readGroupNames.push(fullName)

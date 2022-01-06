@@ -268,12 +268,6 @@ interface BoundingBoxTable {
 
 type BoundingBoxArray = readonly [left_top: Position, right_bottom: Position, orientation?: RealOrientation]
 
-interface BoundingBoxRead {
-  readonly left_top: PositionTable
-  readonly right_bottom: PositionTable
-  readonly orientation?: RealOrientation
-}
-
 /**
  * Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with {@link Position},
  * the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is
@@ -295,11 +289,11 @@ interface BoundingBoxRead {
  */
 type BoundingBox = BoundingBoxTable | BoundingBoxArray
 
-interface ScriptAreaRead {
-  readonly area: BoundingBoxRead
-  readonly name: string
-  readonly color: ColorTable
-  readonly id: uint
+/** @addAfter BoundingBox */
+interface BoundingBoxRead extends BoundingBoxTable {
+  readonly left_top: PositionTable
+  readonly right_bottom: PositionTable
+  readonly orientation?: RealOrientation
 }
 
 /**
@@ -314,11 +308,9 @@ interface ScriptArea {
   readonly id: uint
 }
 
-interface ScriptPositionRead {
-  readonly position: PositionTable
-  readonly name: string
+interface ScriptAreaRead extends ScriptArea {
+  readonly area: BoundingBoxRead
   readonly color: ColorTable
-  readonly id: uint
 }
 
 /**
@@ -331,6 +323,11 @@ interface ScriptPosition {
   readonly name: string
   readonly color: Color
   readonly id: uint
+}
+
+interface ScriptPositionRead extends ScriptPosition {
+  readonly position: PositionTable
+  readonly color: ColorTable
 }
 
 interface ColorTable {
@@ -941,39 +938,6 @@ interface BlueprintSignalIcon {
   readonly index: uint
 }
 
-interface BlueprintEntityRead {
-  /** The entity's unique identifier in the blueprint. */
-  readonly entity_number: uint
-  /** The prototype name of the entity. */
-  readonly name: string
-  /** The position of the entity. */
-  readonly position: PositionTable
-  /**
-   * The direction the entity is facing. Only present for entities that can face in different directions and when the
-   * entity is not facing north.
-   */
-  readonly direction?: defines.direction
-  /** The entity tags of the entity, if there are any. Only relevant for entity ghosts. */
-  readonly tags?: Tags
-  /**
-   * The items that the entity will request when revived, if there are any. It's a mapping of prototype names to
-   * amounts. Only relevant for entity ghosts.
-   */
-  readonly items?: Record<string, uint>
-  /**
-   * The circuit network connections of the entity, if there are any. Only relevant for entities that support circuit
-   * connections.
-   */
-  readonly connections?: BlueprintCircuitConnection
-  /**
-   * The control behavior of the entity, if it has one. The format of the control behavior depends on the entity's
-   * type. Only relevant for entities that support control behaviors.
-   */
-  readonly control_behavior?: BlueprintControlBehavior
-  /** The schedule of the entity, if it has one. Only relevant for locomotives. */
-  readonly schedule?: TrainScheduleRecord[]
-}
-
 /**
  * Information about a single connection between two connection points.
  *
@@ -1052,14 +1016,12 @@ interface BlueprintEntity {
    */
   readonly control_behavior?: BlueprintControlBehavior
   /** The schedule of the entity, if it has one. Only relevant for locomotives. */
-  readonly schedule?: readonly TrainScheduleRecord[]
+  readonly schedule?: TrainScheduleRecord[]
 }
 
-interface TileRead {
-  /** The position of the tile. */
+interface BlueprintEntityRead extends BlueprintEntity {
+  /** The position of the entity. */
   readonly position: PositionTable
-  /** The prototype name of the tile. */
-  readonly name: string
 }
 
 interface Tile {
@@ -1067,6 +1029,11 @@ interface Tile {
   readonly position: Position
   /** The prototype name of the tile. */
   readonly name: string
+}
+
+interface TileRead extends Tile {
+  /** The position of the tile. */
+  readonly position: PositionTable
 }
 
 interface Fluid {
@@ -1557,85 +1524,6 @@ interface CliffPlacementSettings {
   readonly richness: MapGenSize
 }
 
-interface MapGenSettingsRead {
-  /**
-   * The inverse of 'water scale' in the map generator GUI. Lower `terrain_segmentation` increases the scale of
-   * elevation features (lakes, continents, etc). This behavior can be overridden with alternate elevation generators
-   * (see `property_expression_names`, below).
-   */
-  readonly terrain_segmentation: MapGenSize
-  /**
-   * The equivalent to 'water coverage' in the map generator GUI. Specifically, when this value is non-zero,
-   * `water_level = 10 * log2` (the value of this field), and the elevation generator subtracts water level from
-   * elevation before adding starting lakes. If water is set to 'none', elevation is clamped to a small positive value
-   * before adding starting lakes. This behavior can be overridden with alternate elevation generators (see
-   * `property_expression_names`, below).
-   */
-  readonly water: MapGenSize
-  /** Indexed by autoplace control prototype name. */
-  readonly autoplace_controls: Record<string, AutoplaceControl>
-  /** Whether undefined `autoplace_controls` should fall back to the default controls or not. Defaults to `true`. */
-  readonly default_enable_all_autoplace_controls: boolean
-  /**
-   * Each setting in this dictionary maps the string type to the settings for that type. Valid types are `"entity"`,
-   * `"tile"` and `"decorative"`.
-   */
-  readonly autoplace_settings: Record<string, AutoplaceSettings>
-  /** Map generation settings for entities of the type "cliff". */
-  readonly cliff_settings: CliffPlacementSettings
-  /** The random seed used to generated this map. */
-  readonly seed: uint
-  /**
-   * Width in tiles. If `0`, the map has 'infinite' width, with the actual limitation being one million tiles in each
-   * direction from the center.
-   */
-  readonly width: uint
-  /**
-   * Height in tiles. If `0`, the map has 'infinite' height, with the actual limitation being one million tiles in
-   * each direction from the center.
-   */
-  readonly height: uint
-  /** Size of the starting area. */
-  readonly starting_area: MapGenSize
-  /** Positions of the starting areas. */
-  readonly starting_points: PositionTable[]
-  /** Whether peaceful mode is enabled for this map. */
-  readonly peaceful_mode: boolean
-  /**
-   * Overrides for tile property value generators. Values either name a NamedNoiseExpression or can be literal
-   * numbers, stored as strings (e.g. `"5"`). All other controls can be overridden by a property expression names.
-   * Notable properties:
-   *
-   * - `moisture` - a value between 0 and 1 that determines whether a tile becomes sandy (low moisture) or grassy (high moisture).
-   * - `aux` - a value between 0 and 1 that determines whether low-moisture tiles become sand or red desert.
-   * - `temperature` - provides a value (vaguely representing degrees Celsius, varying between -20 and 50) that is used
-   *   (together with moisture and aux) as part of tree and decorative placement.
-   * - `elevation` - tiles values less than zero become water. Cliffs are placed along certain contours according to
-   *   {@link CliffPlacementSettings}.
-   * - `cliffiness` - determines whether (when >0.5) or not (when <0.5) a cliff will be placed at an otherwise suitable
-   *   (according to {@link CliffPlacementSettings}) location.
-   * - `enemy-base-intensity` - a number that is referenced by both `enemy-base-frequency` and `enemy-base-radius`. i.e.
-   *   if this is overridden, enemy base frequency and size will both be affected and do something reasonable. By
-   *   default, this expression returns a value proportional to distance from any starting point, clamped at about 7.
-   * - `enemy-base-frequency` - a number representing average number of enemy bases per tile for a region, by default in
-   *   terms of `enemy-base-intensity`.
-   * - `enemy-base-radius` - a number representing the radius of an enemy base, if one were to be placed on the given
-   *   tile, by default proportional to a constant plus `enemy-base-intensity`. Climate controls ('Moisture' and
-   *   'Terrain type' at the bottom of the Terrain tab in the map generator GUI) don't have their own dedicated
-   *   structures in MapGenSettings. Instead, their values are stored as property expression overrides with long names:
-   * - `control-setting:moisture:frequency:multiplier` - frequency (inverse of scale) multiplier for moisture noise. Default is 1.
-   * - `control-setting:moisture:bias` - global bias for moisture (which normally varies between 0 and 1). Default is 0.
-   * - `control-setting:aux:frequency:multiplier` - frequency (inverse of scale) multiplier for aux (called 'terrain
-   *   type' in the GUI) noise. Default is 1.
-   * - `control-setting:aux:bias` - global bias for aux/terrain type (which normally varies between 0 and 1). Default is
-   *   0. All other MapGenSettings feed into named noise expressions, and therefore placement can be overridden by
-   *   including the name of a property in this dictionary. The probability and richness functions for placing
-   *   specific tiles, entities, and decoratives can be overridden by including an entry named
-   *   `{tile|entity|decorative}:(prototype name):{probability|richness}`.
-   */
-  readonly property_expression_names: Record<string, string>
-}
-
 /**
  * The 'map type' dropdown in the map generation GUI is actually a selector for elevation generator. The base game sets
  * `property_expression_names.elevation` to `"0_16-elevation"` to reproduce terrain from 0.16 or to `"0_17-island"` for
@@ -1705,7 +1593,7 @@ interface MapGenSettings {
   /** Size of the starting area. */
   readonly starting_area: MapGenSize
   /** Positions of the starting areas. */
-  readonly starting_points: readonly Position[]
+  readonly starting_points: Position[]
   /** Whether peaceful mode is enabled for this map. */
   readonly peaceful_mode: boolean
   /**
@@ -1741,6 +1629,11 @@ interface MapGenSettings {
    *   `{tile|entity|decorative}:(prototype name):{probability|richness}`.
    */
   readonly property_expression_names: Record<string, string>
+}
+
+interface MapGenSettingsRead extends MapGenSettings {
+  /** Positions of the starting areas. */
+  readonly starting_points: PositionTable[]
 }
 
 interface SignalID {
@@ -1990,23 +1883,6 @@ interface AttackCommand extends BaseCommand {
   readonly distraction?: defines.distraction
 }
 
-interface GoToLocationCommandRead extends BaseCommand {
-  readonly type: defines.command.go_to_location
-  /**
-   * The position to path to. Either this or `destination_entity` need to be specified. If both are,
-   * `destination_entity` is used.
-   */
-  readonly destination?: PositionTable
-  /** The entity to path to. Either this or `destination` need to be specified. If both are, `destination_entity` is used. */
-  readonly destination_entity?: LuaEntity
-  /** Defaults to `defines.distraction.by_enemy`. */
-  readonly distraction?: defines.distraction
-  /** Flags that affect pathfinder behavior. */
-  readonly pathfind_flags?: PathfinderFlags
-  /** How close the pathfinder needs to get to its destination (in tiles). Defaults to `3`. */
-  readonly radius?: double
-}
-
 interface GoToLocationCommand extends BaseCommand {
   readonly type: defines.command.go_to_location
   /**
@@ -2024,12 +1900,13 @@ interface GoToLocationCommand extends BaseCommand {
   readonly radius?: double
 }
 
-interface CompoundCommandRead extends BaseCommand {
-  readonly type: defines.command.compound
-  /** How the commands should be chained together. */
-  readonly structure_type: defines.compound_command
-  /** The sub-commands. */
-  readonly commands: CommandRead[]
+interface GoToLocationCommandRead extends BaseCommand, GoToLocationCommand {
+  readonly type: defines.command.go_to_location
+  /**
+   * The position to path to. Either this or `destination_entity` need to be specified. If both are,
+   * `destination_entity` is used.
+   */
+  readonly destination?: PositionTable
 }
 
 interface CompoundCommand extends BaseCommand {
@@ -2038,6 +1915,12 @@ interface CompoundCommand extends BaseCommand {
   readonly structure_type: defines.compound_command
   /** The sub-commands. */
   readonly commands: Command[]
+}
+
+interface CompoundCommandRead extends BaseCommand, CompoundCommand {
+  readonly type: defines.command.compound
+  /** The sub-commands. */
+  readonly commands: CommandRead[]
 }
 
 interface GroupCommand extends BaseCommand {
@@ -2050,16 +1933,6 @@ interface GroupCommand extends BaseCommand {
   readonly use_group_distraction?: boolean
 }
 
-interface AttackAreaCommandRead extends BaseCommand {
-  readonly type: defines.command.attack_area
-  /** Center of the attack area. */
-  readonly destination: PositionTable
-  /** Radius of the attack area. */
-  readonly radius: double
-  /** Defaults to `defines.distraction.by_enemy`. */
-  readonly distraction?: defines.distraction
-}
-
 interface AttackAreaCommand extends BaseCommand {
   readonly type: defines.command.attack_area
   /** Center of the attack area. */
@@ -2068,6 +1941,12 @@ interface AttackAreaCommand extends BaseCommand {
   readonly radius: double
   /** Defaults to `defines.distraction.by_enemy`. */
   readonly distraction?: defines.distraction
+}
+
+interface AttackAreaCommandRead extends BaseCommand, AttackAreaCommand {
+  readonly type: defines.command.attack_area
+  /** Center of the attack area. */
+  readonly destination: PositionTable
 }
 
 interface WanderCommand extends BaseCommand {
@@ -2103,19 +1982,6 @@ interface FleeCommand extends BaseCommand {
   readonly distraction?: defines.distraction
 }
 
-interface BuildBaseCommandRead extends BaseCommand {
-  readonly type: defines.command.build_base
-  /** Where to build the base. */
-  readonly destination: PositionTable
-  /** Defaults to `defines.distraction.by_enemy`. */
-  readonly distraction?: defines.distraction
-  /**
-   * Whether the units should ignore expansion candidate chunks. When `false`, they will obey and not build a base in
-   * a non-candidate chunk. Defaults to `false`.
-   */
-  readonly ignore_planner?: boolean
-}
-
 interface BuildBaseCommand extends BaseCommand {
   readonly type: defines.command.build_base
   /** Where to build the base. */
@@ -2127,6 +1993,12 @@ interface BuildBaseCommand extends BaseCommand {
    * a non-candidate chunk. Defaults to `false`.
    */
   readonly ignore_planner?: boolean
+}
+
+interface BuildBaseCommandRead extends BaseCommand, BuildBaseCommand {
+  readonly type: defines.command.build_base
+  /** Where to build the base. */
+  readonly destination: PositionTable
 }
 
 type CommandRead =
@@ -6766,6 +6638,17 @@ type StyleValuesArray =
   | readonly [top: number, right: number, bottom: number, left: number]
 
 type SizeArray = readonly [width: int, height: int]
+
+type RaiseableEvents =
+  | typeof defines.events.on_console_chat
+  | typeof defines.events.on_player_crafted_item
+  | typeof defines.events.on_player_fast_transferred
+  | typeof defines.events.on_biter_base_built
+  | typeof defines.events.on_market_item_purchased
+  | typeof defines.events.script_raised_built
+  | typeof defines.events.script_raised_destroy
+  | typeof defines.events.script_raised_revive
+  | typeof defines.events.script_raised_set_tiles
 
 /**
  * A map gen preset. Used in {@link https://wiki.factorio.com/Prototype/MapGenPresets Prototype/MapGenPresets}.
