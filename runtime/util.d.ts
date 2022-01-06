@@ -33,11 +33,7 @@ declare module "util" {
     direction: defines.direction.north | defines.direction.east | defines.direction.south | defines.direction.west,
     distance: number
   ): Position
-  function moveposition(
-    position: Position,
-    direction: defines.direction, //todo: cardinal only
-    distance: number
-  ): Position | undefined
+  function moveposition(position: Position, direction: defines.direction, distance: number): Position | undefined
 
   function oppositedirection(direction: defines.direction): defines.direction
 
