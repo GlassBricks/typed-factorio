@@ -1052,7 +1052,7 @@ interface BlueprintEntity {
    */
   readonly control_behavior?: BlueprintControlBehavior
   /** The schedule of the entity, if it has one. Only relevant for locomotives. */
-  readonly schedule?: TrainScheduleRecord[]
+  readonly schedule?: readonly TrainScheduleRecord[]
 }
 
 interface TileRead {
@@ -1705,7 +1705,7 @@ interface MapGenSettings {
   /** Size of the starting area. */
   readonly starting_area: MapGenSize
   /** Positions of the starting areas. */
-  readonly starting_points: Position[]
+  readonly starting_points: readonly Position[]
   /** Whether peaceful mode is enabled for this map. */
   readonly peaceful_mode: boolean
   /**

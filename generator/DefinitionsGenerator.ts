@@ -486,9 +486,11 @@ export default class DefinitionsGenerator {
           return { read: readType, write: readType }
         }
       }
+      let writeType: ts.TypeNode | undefined = write ? ts.factory.createArrayTypeNode(valueType.write!) : undefined
+      if (write && !read) writeType = ts.factory.createTypeOperatorNode(ts.SyntaxKind.ReadonlyKeyword, writeType!)
       return {
         read: readType,
-        write: write ? ts.factory.createArrayTypeNode(valueType.write!) : undefined,
+        write: writeType,
       }
     }
     if (type.complex_type === "dictionary") {

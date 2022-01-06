@@ -349,7 +349,7 @@ interface LuaBootstrap {
    *   nth-tick handlers.
    * @param f - The handler to run. Passing `nil` will unregister it for the provided nth-tick(s).
    */
-  on_nth_tick(tick: uint | uint[] | undefined, f: ((param1: NthTickEventData) => void) | undefined): void
+  on_nth_tick(tick: uint | readonly uint[] | undefined, f: ((param1: NthTickEventData) => void) | undefined): void
   /**
    * Registers an entity so that after it's destroyed, {@link OnEntityDestroyedEvent on_entity_destroyed} is called.
    * Once an entity is registered, it stays registered until it is actually destroyed, even through save/load cycles.
@@ -562,7 +562,7 @@ interface LuaBootstrap {
     /** The surface whose tiles have been changed. */
     readonly surface_index: uint
     /** The tiles that have been changed. */
-    readonly tiles: Tile[]
+    readonly tiles: readonly Tile[]
   }): void
   /**
    * The name of the mod from the environment this is used in.
@@ -11331,7 +11331,10 @@ interface LuaForce {
    *
    * {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.get_train_stops View documentation}
    */
-  get_train_stops(params?: { readonly name?: string | string[]; readonly surface?: SurfaceIdentification }): LuaEntity[]
+  get_train_stops(params?: {
+    readonly name?: string | readonly string[]
+    readonly surface?: SurfaceIdentification
+  }): LuaEntity[]
   /**
    * Gets if the given recipe is explicitly disabled from being hand crafted.
    *
@@ -11877,7 +11880,7 @@ interface LuaGameScript {
    *
    * @param entities - Prototype names of entity or entities to autoplace.
    */
-  regenerate_entity(entities: string | string[]): void
+  regenerate_entity(entities: string | readonly string[]): void
   /**
    * Take a screenshot and save it to a file. The filename should include a file extension indicating the desired
    * image format. Supports `.png`, `.jpg` / `.jpeg`, `.tga` and `.bmp`.
@@ -12012,7 +12015,7 @@ interface LuaGameScript {
    *
    * @param players - List of players to remove. If not specified, remove all offline players.
    */
-  remove_offline_players(players?: (LuaPlayer | string)[]): void
+  remove_offline_players(players?: readonly (LuaPlayer | string)[]): void
   /**
    * Force a CRC check. Tells all peers to calculate their current map CRC; these CRC are then compared against each
    * other. If a mismatch is detected, the game is desynced and some peers are forced to reconnect.
@@ -12271,7 +12274,7 @@ interface LuaGameScript {
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.get_train_stops View documentation}
    */
   get_train_stops(params?: {
-    readonly name?: string | string[]
+    readonly name?: string | readonly string[]
     readonly surface?: SurfaceIdentification
     readonly force?: ForceIdentification
   }): LuaEntity[]
@@ -12337,7 +12340,7 @@ interface LuaGameScript {
    *
    * @param filters
    */
-  get_filtered_entity_prototypes(filters: EntityPrototypeFilter[]): LuaCustomTable<string, LuaEntityPrototype>
+  get_filtered_entity_prototypes(filters: readonly EntityPrototypeFilter[]): LuaCustomTable<string, LuaEntityPrototype>
   /**
    * Returns a dictionary of all LuaItemPrototypes that fit the given filters. The prototypes are indexed by `name`.
    *
@@ -12352,7 +12355,7 @@ interface LuaGameScript {
    *
    * @param filters
    */
-  get_filtered_item_prototypes(filters: ItemPrototypeFilter[]): LuaCustomTable<string, LuaItemPrototype>
+  get_filtered_item_prototypes(filters: readonly ItemPrototypeFilter[]): LuaCustomTable<string, LuaItemPrototype>
   /**
    * Returns a dictionary of all LuaEquipmentPrototypes that fit the given filters. The prototypes are indexed by `name`.
    *
@@ -12367,7 +12370,9 @@ interface LuaGameScript {
    *
    * @param filters
    */
-  get_filtered_equipment_prototypes(filters: EquipmentPrototypeFilter[]): LuaCustomTable<string, LuaEquipmentPrototype>
+  get_filtered_equipment_prototypes(
+    filters: readonly EquipmentPrototypeFilter[]
+  ): LuaCustomTable<string, LuaEquipmentPrototype>
   /**
    * Returns a dictionary of all LuaModSettingPrototypes that fit the given filters. The prototypes are indexed by `name`.
    *
@@ -12383,7 +12388,7 @@ interface LuaGameScript {
    * @param filters
    */
   get_filtered_mod_setting_prototypes(
-    filters: ModSettingPrototypeFilter[]
+    filters: readonly ModSettingPrototypeFilter[]
   ): LuaCustomTable<string, LuaModSettingPrototype>
   /**
    * Returns a dictionary of all LuaAchievementPrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12400,7 +12405,7 @@ interface LuaGameScript {
    * @param filters
    */
   get_filtered_achievement_prototypes(
-    filters: AchievementPrototypeFilter[]
+    filters: readonly AchievementPrototypeFilter[]
   ): LuaCustomTable<string, LuaAchievementPrototype>
   /**
    * Returns a dictionary of all LuaTilePrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12416,7 +12421,7 @@ interface LuaGameScript {
    *
    * @param filters
    */
-  get_filtered_tile_prototypes(filters: TilePrototypeFilter[]): LuaCustomTable<string, LuaTilePrototype>
+  get_filtered_tile_prototypes(filters: readonly TilePrototypeFilter[]): LuaCustomTable<string, LuaTilePrototype>
   /**
    * Returns a dictionary of all LuaDecorativePrototypes that fit the given filters. The prototypes are indexed by `name`.
    *
@@ -12432,7 +12437,7 @@ interface LuaGameScript {
    * @param filters
    */
   get_filtered_decorative_prototypes(
-    filters: DecorativePrototypeFilter[]
+    filters: readonly DecorativePrototypeFilter[]
   ): LuaCustomTable<string, LuaDecorativePrototype>
   /**
    * Returns a dictionary of all LuaFluidPrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12448,7 +12453,7 @@ interface LuaGameScript {
    *
    * @param filters
    */
-  get_filtered_fluid_prototypes(filters: FluidPrototypeFilter[]): LuaCustomTable<string, LuaFluidPrototype>
+  get_filtered_fluid_prototypes(filters: readonly FluidPrototypeFilter[]): LuaCustomTable<string, LuaFluidPrototype>
   /**
    * Returns a dictionary of all LuaRecipePrototypes that fit the given filters. The prototypes are indexed by `name`.
    *
@@ -12463,7 +12468,7 @@ interface LuaGameScript {
    *
    * @param filters
    */
-  get_filtered_recipe_prototypes(filters: RecipePrototypeFilter[]): LuaCustomTable<string, LuaRecipePrototype>
+  get_filtered_recipe_prototypes(filters: readonly RecipePrototypeFilter[]): LuaCustomTable<string, LuaRecipePrototype>
   /**
    * Returns a dictionary of all LuaTechnologyPrototypes that fit the given filters. The prototypes are indexed by `name`.
    *
@@ -12479,7 +12484,7 @@ interface LuaGameScript {
    * @param filters
    */
   get_filtered_technology_prototypes(
-    filters: TechnologyPrototypeFilter[]
+    filters: readonly TechnologyPrototypeFilter[]
   ): LuaCustomTable<string, LuaTechnologyPrototype>
   /**
    * Creates an inventory that is not owned by any game object. It can be resized later with
@@ -13300,7 +13305,7 @@ interface ScrollPaneGuiSpec extends BaseGuiSpec {
 interface DropDownGuiSpec extends BaseGuiSpec {
   readonly type: "drop-down"
   /** The initial items in the dropdown. */
-  readonly items?: LocalisedString[]
+  readonly items?: readonly LocalisedString[]
   /** The index of the initially selected item. Defaults to 0. */
   readonly selected_index?: uint
 }
@@ -13314,7 +13319,7 @@ interface LineGuiSpec extends BaseGuiSpec {
 interface ListBoxGuiSpec extends BaseGuiSpec {
   readonly type: "list-box"
   /** The initial items in the listbox. */
-  readonly items?: LocalisedString[]
+  readonly items?: readonly LocalisedString[]
   /** The index of the initially selected item. Defaults to 0. */
   readonly selected_index?: uint
 }
@@ -16600,7 +16605,7 @@ interface LuaItemStack {
    *
    * @param entities - The new blueprint entities.
    */
-  set_blueprint_entities(entities: BlueprintEntity[]): void
+  set_blueprint_entities(entities: readonly BlueprintEntity[]): void
   /**
    * Add ammo to this ammo item.
    *
@@ -16717,7 +16722,7 @@ interface LuaItemStack {
    *
    * @param tiles - Tiles to be a part of the blueprint.
    */
-  set_blueprint_tiles(tiles: Tile[]): void
+  set_blueprint_tiles(tiles: readonly Tile[]): void
   /**
    * Access the inner inventory of an item.
    *
@@ -17765,7 +17770,7 @@ interface BlueprintItemStack extends BaseItemStack {
    *
    * @param entities - The new blueprint entities.
    */
-  set_blueprint_entities(entities: BlueprintEntity[]): void
+  set_blueprint_entities(entities: readonly BlueprintEntity[]): void
   /**
    * A list of the tiles in this blueprint.
    *
@@ -17783,7 +17788,7 @@ interface BlueprintItemStack extends BaseItemStack {
    *
    * @param tiles - Tiles to be a part of the blueprint.
    */
-  set_blueprint_tiles(tiles: Tile[]): void
+  set_blueprint_tiles(tiles: readonly Tile[]): void
   /**
    * Clears this blueprint item.
    *
@@ -19354,7 +19359,7 @@ interface LuaPlayer extends LuaControl {
    *
    * @param entities - Entity prototypes to get statistics for. If not specified or empty, display statistics for all entities.
    */
-  print_entity_statistics(entities?: string[]): void
+  print_entity_statistics(entities?: readonly string[]): void
   /**
    * Print construction robot job counts to the players console.
    *
@@ -20810,7 +20815,7 @@ interface LuaRemote {
    * @param _function - Function name that belongs to `interface`.
    * @param args - Arguments to pass to the called function.
    */
-  call(_interface: string, _function: string, ...args: Any[]): Any
+  call(_interface: string, _function: string, ...args: readonly Any[]): Any
   /**
    * List of all registered interfaces. For each interface name, `remote.interfaces[name]` is a dictionary mapping the
    * interface's registered functions to the value `true`.
@@ -20880,9 +20885,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should be drawn below sprites and entities. */
@@ -20913,9 +20918,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should be drawn below sprites and entities. */
@@ -20956,9 +20961,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should be drawn below sprites and entities. */
@@ -20989,9 +20994,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should be drawn below sprites and entities. */
@@ -21023,9 +21028,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should be drawn below sprites and entities. */
@@ -21042,7 +21047,7 @@ interface LuaRendering {
    */
   draw_polygon(params: {
     readonly color: Color
-    readonly vertices: ScriptRenderVertexTarget[]
+    readonly vertices: readonly ScriptRenderVertexTarget[]
     /** Acts like an offset applied to all vertices that are not set to an entity. */
     readonly target?: Position | LuaEntity
     /** Only used if `target` is a LuaEntity. */
@@ -21060,9 +21065,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should be drawn below sprites and entities. */
@@ -21115,9 +21120,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should only be rendered in alt mode. Defaults to false. */
@@ -21157,9 +21162,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should only be rendered in alt mode. Defaults to false. */
@@ -21207,9 +21212,9 @@ interface LuaRendering {
     /** In ticks. Defaults to living forever. */
     readonly time_to_live?: uint
     /** The forces that this object is rendered to. */
-    readonly forces?: ForceIdentification[]
+    readonly forces?: readonly ForceIdentification[]
     /** The players that this object is rendered to. */
-    readonly players?: PlayerIdentification[]
+    readonly players?: readonly PlayerIdentification[]
     /** If this is rendered to anyone at all. Defaults to true. */
     readonly visible?: boolean
     /** If this should only be rendered in alt mode. Defaults to false. */
@@ -21313,7 +21318,7 @@ interface LuaRendering {
    * @param id
    * @param forces - Providing an empty array will set the object to be visible to all forces.
    */
-  set_forces(id: uint64, forces: ForceIdentification[]): void
+  set_forces(id: uint64, forces: readonly ForceIdentification[]): void
   /**
    * Get the players that the object with this id is rendered to or `nil` if visible to all players.
    *
@@ -21330,7 +21335,7 @@ interface LuaRendering {
    * @param id
    * @param players - Providing an empty array will set the object to be visible to all players.
    */
-  set_players(id: uint64, players: PlayerIdentification[]): void
+  set_players(id: uint64, players: readonly PlayerIdentification[]): void
   /**
    * Get whether this is rendered to anyone at all.
    *
@@ -21921,7 +21926,7 @@ interface LuaRendering {
    * @param id
    * @param vertices
    */
-  set_vertices(id: uint64, vertices: ScriptRenderVertexTarget[]): void
+  set_vertices(id: uint64, vertices: readonly ScriptRenderVertexTarget[]): void
   /**
    * Get the sprite of the sprite or light with this id or `nil` if the object is not a sprite or light.
    *
@@ -23429,7 +23434,7 @@ interface FireSurfaceCreateEntity extends BaseSurfaceCreateEntity {
 
 interface InserterSurfaceCreateEntity extends BaseSurfaceCreateEntity {
   readonly conditions: InserterCircuitConditions
-  readonly filters: InventoryFilter[]
+  readonly filters: readonly InventoryFilter[]
 }
 
 interface ItemEntitySurfaceCreateEntity extends BaseSurfaceCreateEntity {
@@ -23457,7 +23462,7 @@ interface LocomotiveSurfaceCreateEntity extends BaseSurfaceCreateEntity {
 }
 
 interface LogisticContainerSurfaceCreateEntity extends BaseSurfaceCreateEntity {
-  readonly request_filters?: InventoryFilter[]
+  readonly request_filters?: readonly InventoryFilter[]
 }
 
 interface ParticleSurfaceCreateEntity extends BaseSurfaceCreateEntity {
@@ -23693,13 +23698,13 @@ interface LuaSurface {
     readonly position?: Position
     /** If given with position, will return all entities within the radius of the position. */
     readonly radius?: double
-    readonly name?: string | string[]
-    readonly type?: string | string[]
-    readonly ghost_name?: string | string[]
-    readonly ghost_type?: string | string[]
-    readonly direction?: defines.direction | defines.direction[]
-    readonly collision_mask?: CollisionMaskLayer | CollisionMaskLayer[]
-    readonly force?: ForceIdentification | ForceIdentification[]
+    readonly name?: string | readonly string[]
+    readonly type?: string | readonly string[]
+    readonly ghost_name?: string | readonly string[]
+    readonly ghost_type?: string | readonly string[]
+    readonly direction?: defines.direction | readonly defines.direction[]
+    readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
+    readonly force?: ForceIdentification | readonly ForceIdentification[]
     readonly to_be_deconstructed?: boolean
     readonly to_be_upgraded?: boolean
     readonly limit?: uint
@@ -23725,10 +23730,10 @@ interface LuaSurface {
     readonly position?: Position
     /** If given with position, will return all entities within the radius of the position. */
     readonly radius?: double
-    readonly name?: string | string[]
+    readonly name?: string | readonly string[]
     readonly limit?: uint
     readonly has_hidden_tile?: boolean
-    readonly collision_mask?: CollisionMaskLayer | CollisionMaskLayer[]
+    readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
   }): LuaTile[]
   /**
    * Count entities of given type or name in a given area. Works just like
@@ -23748,13 +23753,13 @@ interface LuaSurface {
     readonly position?: Position
     /** If given with position, will count all entities within the radius of the position. */
     readonly radius?: double
-    readonly name?: string | string[]
-    readonly type?: string | string[]
-    readonly ghost_name?: string | string[]
-    readonly ghost_type?: string | string[]
-    readonly direction?: defines.direction | defines.direction[]
-    readonly collision_mask?: CollisionMaskLayer | CollisionMaskLayer[]
-    readonly force?: ForceIdentification | ForceIdentification[]
+    readonly name?: string | readonly string[]
+    readonly type?: string | readonly string[]
+    readonly ghost_name?: string | readonly string[]
+    readonly ghost_type?: string | readonly string[]
+    readonly direction?: defines.direction | readonly defines.direction[]
+    readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
+    readonly force?: ForceIdentification | readonly ForceIdentification[]
     readonly to_be_deconstructed?: boolean
     readonly to_be_upgraded?: boolean
     readonly limit?: uint
@@ -23780,10 +23785,10 @@ interface LuaSurface {
     readonly position?: Position
     /** If given with position, will return all entities within the radius of the position. */
     readonly radius?: double
-    readonly name?: string | string[]
+    readonly name?: string | readonly string[]
     readonly limit?: uint
     readonly has_hidden_tile?: boolean
-    readonly collision_mask?: CollisionMaskLayer | CollisionMaskLayer[]
+    readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
   }): uint
   /**
    * Find a non-colliding position within a given radius.
@@ -24072,7 +24077,7 @@ interface LuaSurface {
    * @param raise_event - `true` or `false`. Defaults to `false`.
    */
   set_tiles(
-    tiles: Tile[],
+    tiles: readonly Tile[],
     correct_tiles?: boolean,
     remove_colliding_entities?: boolean | string,
     remove_colliding_decoratives?: boolean,
@@ -24243,7 +24248,7 @@ interface LuaSurface {
    * @param tiles - The tiles to search for.
    * @returns The resulting set of tiles.
    */
-  get_connected_tiles(position: Position, tiles: string[]): PositionTable[]
+  get_connected_tiles(position: Position, tiles: readonly string[]): PositionTable[]
   /**
    * **Note**: This won't delete the chunk immediately. Chunks are deleted at the end of the current tick.
    *
@@ -24264,7 +24269,7 @@ interface LuaSurface {
    * @param chunks - The chunk positions to regenerate the entities on. If not given all chunks are regenerated. Note
    *   chunks with status < entities are ignored.
    */
-  regenerate_entity(entities?: string | string[], chunks?: ChunkPosition[]): void
+  regenerate_entity(entities?: string | readonly string[], chunks?: readonly ChunkPosition[]): void
   /**
    * Regenerate autoplacement of some decoratives on this surface. This can be used to autoplace newly-added decoratives.
    *
@@ -24278,7 +24283,7 @@ interface LuaSurface {
    * @param chunks - The chunk positions to regenerate the entities on. If not given all chunks are regenerated. Note
    *   chunks with status < entities are ignored.
    */
-  regenerate_decorative(decoratives?: string | string[], chunks?: ChunkPosition[]): void
+  regenerate_decorative(decoratives?: string | readonly string[], chunks?: readonly ChunkPosition[]): void
   /**
    * Print text to the chat console of all players on this surface.
    *
@@ -24298,7 +24303,7 @@ interface LuaSurface {
   destroy_decoratives(params: {
     readonly area?: BoundingBox
     readonly position?: TilePosition
-    readonly name?: string | string[] | LuaDecorativePrototype | LuaDecorativePrototype[]
+    readonly name?: string | readonly string[] | LuaDecorativePrototype | readonly LuaDecorativePrototype[]
     readonly limit?: uint
     /** If the filters should be inverted. */
     readonly invert?: boolean
@@ -24313,7 +24318,7 @@ interface LuaSurface {
   create_decoratives(params: {
     /** If collision should be checked against entities/tiles. */
     readonly check_collision?: boolean
-    readonly decoratives: Decorative[]
+    readonly decoratives: readonly Decorative[]
   }): void
   /**
    * Find decoratives of a given name in a given area.
@@ -24332,7 +24337,7 @@ interface LuaSurface {
   find_decoratives_filtered(params: {
     readonly area?: BoundingBox
     readonly position?: TilePosition
-    readonly name?: string | string[] | LuaDecorativePrototype | LuaDecorativePrototype[]
+    readonly name?: string | readonly string[] | LuaDecorativePrototype | readonly LuaDecorativePrototype[]
     readonly limit?: uint
     /** If the filters should be inverted. */
     readonly invert?: boolean
@@ -24419,7 +24424,7 @@ interface LuaSurface {
   clone_brush(params: {
     readonly source_offset: TilePosition
     readonly destination_offset: TilePosition
-    readonly source_positions: TilePosition[]
+    readonly source_positions: readonly TilePosition[]
     readonly destination_surface?: SurfaceIdentification
     readonly destination_force?: LuaForce | string
     /** If tiles should be cloned */
@@ -24449,7 +24454,7 @@ interface LuaSurface {
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.clone_entities View documentation}
    */
   clone_entities(params: {
-    readonly entities: LuaEntity[]
+    readonly entities: readonly LuaEntity[]
     readonly destination_offset: Vector
     readonly destination_surface?: SurfaceIdentification
     readonly destination_force?: ForceIdentification
@@ -24486,7 +24491,7 @@ interface LuaSurface {
     /** The dimensions of the object that's supposed to travel the path. */
     readonly bounding_box: BoundingBox
     /** The list of masks the `bounding_box` collides with. */
-    readonly collision_mask: CollisionMask | string[]
+    readonly collision_mask: CollisionMask | readonly string[]
     /** The position from which to start pathfinding. */
     readonly start: Position
     /** The position to find a path to. */
@@ -24613,13 +24618,16 @@ interface LuaSurface {
    * @param position
    * @param entities - The Entities to check
    */
-  get_closest(position: Position, entities: LuaEntity[]): LuaEntity
+  get_closest(position: Position, entities: readonly LuaEntity[]): LuaEntity
   /**
    * Gets train stops matching the given filters.
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.get_train_stops View documentation}
    */
-  get_train_stops(params?: { readonly name?: string | string[]; readonly force?: ForceIdentification }): LuaEntity[]
+  get_train_stops(params?: {
+    readonly name?: string | readonly string[]
+    readonly force?: ForceIdentification
+  }): LuaEntity[]
   /**
    * Gets the total amount of pollution on the surface by iterating over all of the chunks containing pollution.
    *
@@ -24655,7 +24663,7 @@ interface LuaSurface {
    * @param positions - Positions for which to calculate property values
    * @returns Table of property value lists, keyed by property name
    */
-  calculate_tile_properties(property_names: string[], positions: Position[]): Record<string, double[]>
+  calculate_tile_properties(property_names: readonly string[], positions: readonly Position[]): Record<string, double[]>
   /**
    * Returns all the entities with force on this chunk for the given force.
    *
