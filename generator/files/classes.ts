@@ -1,11 +1,56 @@
 import { assertNever, getFirst, sortByOrder } from "../util"
 import ts from "typescript"
 import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method, Parameter } from "../FactorioApiJson"
-import { Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
-import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitionsProcessing"
+import { addFakeJSDoc, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
+import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
 import DefinitionsGenerator, { Statements } from "../DefinitionsGenerator"
 
-export default function generateClasses(generator: DefinitionsGenerator) {
+export function preprocessClasses(generator: DefinitionsGenerator) {
+  for (const clazz of generator.apiDocs.classes) {
+    generator.typeNames[clazz.name] = clazz.name
+
+    const existing = generator.manualDefinitions[clazz.name]
+    if (existing && existing.kind !== "interface" && existing.kind !== "type") {
+      throw new Error("Manual define for class should be interface or type alias")
+    }
+    for (const method of clazz.methods) {
+      analyzeMethod(generator, method)
+    }
+    for (const attribute of clazz.attributes) {
+      analyzeAttribute(generator, attribute)
+    }
+    for (const operator of clazz.operators) {
+      if (operator.name === "call") {
+        analyzeMethod(generator, operator)
+      } else {
+        analyzeAttribute(generator, operator)
+      }
+    }
+  }
+}
+
+function analyzeMethod(generator: DefinitionsGenerator, method: Method) {
+  for (const parameter of method.parameters) {
+    generator.mapTypeBasic(parameter.type, false, true)
+  }
+  if (method.variant_parameter_groups) {
+    for (const parameter of method.variant_parameter_groups.flatMap((x) => x.parameters)) {
+      generator.mapTypeBasic(parameter.type, false, true)
+    }
+  }
+  if (method.variadic_type) {
+    generator.mapTypeBasic(method.variadic_type, false, true)
+  }
+  if (method.return_type) {
+    generator.mapTypeBasic(method.return_type, true, false)
+  }
+}
+
+function analyzeAttribute(generator: DefinitionsGenerator, attribute: Attribute) {
+  generator.mapTypeBasic(attribute.type, attribute.read, attribute.write)
+}
+
+export function generateClasses(generator: DefinitionsGenerator) {
   const statements = generator.newStatements()
 
   for (const clazz of generator.apiDocs.classes.sort(sortByOrder)) {
@@ -380,13 +425,13 @@ function generateClass(
           baseDeclaration,
           classForDocs,
           classForDocs.name,
-          DefinitionsGenerator.needsNoSelfAnnotation(baseDeclaration) ? [DefinitionsGenerator.noSelfAnnotation] : []
+          needsNoSelfAnnotation(baseDeclaration) ? [noSelfAnnotation] : []
         )
       } else {
-        DefinitionsGenerator.addNoSelfAnnotationOnly(baseDeclaration)
+        addNoSelfAnnotationOnly(baseDeclaration)
       }
     } else {
-      DefinitionsGenerator.addNoSelfAnnotationOnly(baseDeclaration)
+      addNoSelfAnnotationOnly(baseDeclaration)
       const typeArguments = existing?.node.typeParameters?.map((p) => ts.factory.createTypeReferenceNode(p.name))
       const declaration = ts.factory.createTypeAliasDeclaration(
         undefined,
@@ -627,4 +672,15 @@ function escapeParameterName(name: string): string {
     return "_" + name
   }
   return name
+}
+
+function needsNoSelfAnnotation(node: ts.Node) {
+  return ts.isInterfaceDeclaration(node) && node.members.some((m) => ts.isMethodSignature(m))
+}
+
+const noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
+function addNoSelfAnnotationOnly(node: ts.InterfaceDeclaration) {
+  if (!needsNoSelfAnnotation(node)) return
+  const jsDoc = ts.factory.createJSDocComment(undefined, [noSelfAnnotation])
+  addFakeJSDoc(node, jsDoc)
 }

@@ -1,6 +1,6 @@
 import { assertNever, sortByOrder } from "../util"
 import ts from "typescript"
-import { getAnnotations } from "../manualDefinitionsProcessing"
+import { getAnnotations } from "../manualDefinitions"
 import { printer, Types } from "../genUtil"
 import DefinitionsGenerator, { Statements } from "../DefinitionsGenerator"
 import { Concept, TableOrArrayConcept } from "../FactorioApiJson"
@@ -19,13 +19,12 @@ export function preprocessConcepts(generator: DefinitionsGenerator) {
       generator.typeNames[concept.name + "Table"] = concept.name
       generator.typeNames[concept.name + "Array"] = concept.name
     }
-    generator.conceptUsage.set(concept.name, { read: false, write: false })
   }
+  preprocessConceptUsages(generator)
 }
 
 export function generateConcepts(generator: DefinitionsGenerator) {
   generator.apiDocs.concepts.sort(sortByOrder)
-  preprocessConceptUsages(generator)
 
   const statements = generator.newStatements()
   for (const concept of generator.apiDocs.concepts) {
@@ -191,7 +190,6 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
     let rwUsage: { read: boolean; write: boolean }
     if (concept.category === "table") {
       rwUsage = generator.conceptUsage.get(concept.name)!
-      generator.usedConceptReadWrite.add(concept.name)
     } else {
       rwUsage = { read: true, write: true }
     }

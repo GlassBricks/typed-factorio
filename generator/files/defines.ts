@@ -2,11 +2,32 @@ import { Define } from "../FactorioApiJson"
 import { sortByOrder } from "../util"
 import ts from "typescript"
 import { createConst, createNamespace, Modifiers, Types } from "../genUtil"
-import { AnyDef } from "../manualDefinitionsProcessing"
+import { AnyDef } from "../manualDefinitions"
 import DefinitionsGenerator from "../DefinitionsGenerator"
+import { getMappedEventName } from "./events"
 
-export default function generateDefines(generator: DefinitionsGenerator) {
-  const [defines] = generateDefinesDeclaration(generator.rootDefine, "", generator.manualDefinitions.defines, [
+export function preprocessDefines(generator: DefinitionsGenerator) {
+  const addDefine = (define: Define, parent: string) => {
+    const name = parent + (parent ? "." : "") + define.name
+    generator.typeNames[name] = name
+    generator.defines.set(name, define)
+    if (define.values) {
+      for (const value of define.values) {
+        const valueName = name + "." + value.name
+        generator.typeNames[valueName] = valueName
+      }
+    }
+    if (define.subkeys) {
+      for (const subkey of define.subkeys) {
+        addDefine(subkey, name)
+      }
+    }
+  }
+  addDefine(createRootDefine(generator), "")
+}
+
+export function generateDefines(generator: DefinitionsGenerator) {
+  const [defines] = generateDefinesDeclaration(createRootDefine(generator), "", generator.manualDefinitions.defines, [
     Modifiers.declare,
   ])
   const statements = generator.newStatements()
@@ -16,7 +37,7 @@ export default function generateDefines(generator: DefinitionsGenerator) {
   function generateEventsDefine(define: Define) {
     // namespace events { const member: EventId<Id> }
     const members = define.values!.sort(sortByOrder).map((m) => {
-      const eventType = DefinitionsGenerator.getMappedEventName(m.name)
+      const eventType = getMappedEventName(m.name)
       const typeArguments = [ts.factory.createTypeReferenceNode(eventType)]
       const event = generator.events.get(m.name)!
       const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
@@ -103,5 +124,14 @@ export default function generateDefines(generator: DefinitionsGenerator) {
       generator.addJsDoc(d, define, thisPath)
     })
     return declarations
+  }
+}
+
+function createRootDefine(generator: DefinitionsGenerator): Define {
+  return {
+    order: 0,
+    name: "defines",
+    description: "",
+    subkeys: generator.apiDocs.defines,
   }
 }

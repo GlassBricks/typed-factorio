@@ -3,6 +3,22 @@ import ts from "typescript"
 import { createConst, Modifiers, Types } from "../genUtil"
 import DefinitionsGenerator from "../DefinitionsGenerator"
 
+export function preprocessBuiltins(generator: DefinitionsGenerator) {
+  for (const builtin of generator.apiDocs.builtin_types) {
+    generator.typeNames[builtin.name] = builtin.name
+    if (builtin.name !== "boolean" && builtin.name !== "string" && builtin.name !== "table") {
+      generator.numericTypes.add(builtin.name)
+    }
+  }
+}
+
+export function preprocessGlobalObjects(generator: DefinitionsGenerator) {
+  for (const globalObject of generator.apiDocs.global_objects) {
+    generator.typeNames[globalObject.name] = globalObject.name
+    generator.mapTypeBasic(globalObject.type, true, false)
+  }
+}
+
 export function generateBuiltins(generator: DefinitionsGenerator) {
   const statements = generator.newStatements()
   for (const builtin of generator.apiDocs.builtin_types.sort(sortByOrder)) {

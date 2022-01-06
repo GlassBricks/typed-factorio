@@ -1,6 +1,16 @@
 import ts from "typescript"
 import { sortByOrder } from "../util"
 import DefinitionsGenerator from "../DefinitionsGenerator"
+import { toPascalCase } from "../genUtil"
+
+export function preprocessEvents(generator: DefinitionsGenerator) {
+  for (const event of generator.apiDocs.events) {
+    generator.typeNames[event.name] = getMappedEventName(event.name)
+    for (const parameter of event.data) {
+      generator.mapTypeBasic(parameter.type, true, false)
+    }
+  }
+}
 
 export default function generateEvents(generator: DefinitionsGenerator) {
   const statements = generator.newStatements()
@@ -8,7 +18,7 @@ export default function generateEvents(generator: DefinitionsGenerator) {
     ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier("EventData"), undefined),
   ])
   for (const event of generator.apiDocs.events.sort(sortByOrder)) {
-    const name = DefinitionsGenerator.getMappedEventName(event.name)
+    const name = getMappedEventName(event.name)
     const existing = generator.manualDefinitions[name]
     if (existing && existing.kind !== "interface") {
       throw new Error(`Manual definition for ${name} should be a interface, got ${ts.SyntaxKind[existing.node.kind]}`)
@@ -31,4 +41,10 @@ export default function generateEvents(generator: DefinitionsGenerator) {
   }
 
   generator.addFile("events", statements)
+}
+
+export function getMappedEventName(eventName: string): string {
+  let name = toPascalCase(eventName)
+  if (!name.endsWith("Event")) name += "Event"
+  return name
 }

@@ -13,7 +13,13 @@ import {
   Types,
 } from "./genUtil"
 import { assertNever, sortByOrder } from "./util"
-import { InterfaceDef, processManualDefinitions, RootDef, TypeAliasDef } from "./manualDefinitionsProcessing"
+import {
+  checkManuallyDefined,
+  InterfaceDef,
+  preprocessManualDefinitions,
+  processManualDefinitions,
+  TypeAliasDef,
+} from "./manualDefinitions"
 import chalk from "chalk"
 import {
   Attribute,
@@ -28,11 +34,11 @@ import {
   WithNotes,
   WithParameterVariants,
 } from "./FactorioApiJson"
-import generateClasses from "./files/classes"
-import generateDefines from "./files/defines"
-import generateEvents from "./files/events"
-import { generateBuiltins, generateGlobalObjects } from "./files/others"
+import { generateDefines, preprocessDefines } from "./files/defines"
+import generateEvents, { preprocessEvents } from "./files/events"
+import { generateBuiltins, generateGlobalObjects, preprocessBuiltins, preprocessGlobalObjects } from "./files/others"
 import { generateConcepts, preprocessConcepts } from "./files/concepts"
+import { generateClasses, preprocessClasses } from "./files/classes"
 
 export class Statements {
   statements: ts.Statement[] = [createComment("* @noSelfInFile ", true)]
@@ -69,17 +75,23 @@ export type RWType = {
 export default class DefinitionsGenerator {
   private static header = "// This is an auto-generated file. Do not edit directly!\n\n"
 
-  static noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
   private outFiles = new Map<string, ts.Statement[]>()
-  readonly manualDefinitions: Record<string, RootDef | undefined>
+
+  readonly manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)
+
   private builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
-  private defines = new Map<string, Define>()
+  defines = new Map<string, Define>()
   events = new Map<string, Event>(this.apiDocs.events.map((e) => [e.name, e]))
   private classes = new Map<string, Class>(this.apiDocs.classes.map((e) => [e.name, e]))
-  // private classMembers = new Map<string, Map<string, Attribute | Method>>()
   private concepts = new Set<string>(this.apiDocs.concepts.map((e) => e.name))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
-  // original -> mapped
+
+  numericTypes = new Set<string>()
+  // This is also a record of which types exist
+  typeNames: Record<string, string> = {}
+  addBefore = new Map<string, ts.Statement[]>()
+  addTo = new Map<string, ts.Statement[]>()
+
   tableOrArrayConcepts = new Set<string>()
   conceptUsage = new Map<
     string,
@@ -89,21 +101,8 @@ export default class DefinitionsGenerator {
       readProcessed?: boolean
       writeProcessed?: boolean
     }
-  >()
-
-  usedConceptReadWrite = new Set<string>()
-
-  numericTypes = new Set<string>()
-  // This is also a record of which types exist
-  typeNames: Record<string, string> = {}
-  private addBefore = new Map<string, ts.Statement[]>()
-  private addTo = new Map<string, ts.Statement[]>()
-  readonly rootDefine: Define = {
-    order: 0,
-    name: "defines",
-    description: "",
-    subkeys: this.apiDocs.defines,
-  }
+  >(Array.from(this.concepts.keys()).map((c) => [c, { read: false, write: false }]))
+  private preprocessDone = false
 
   private readonly docUrlBase = "https://lua-api.factorio.com/latest/"
   private readonly warnings: string[] = []
@@ -120,13 +119,6 @@ export default class DefinitionsGenerator {
     if (apiDocs.api_version !== 1) {
       throw new Error("Unsupported api version " + apiDocs.api_version)
     }
-    this.manualDefinitions = processManualDefinitions(manualDefinitionsSource)
-  }
-
-  static getMappedEventName(eventName: string): string {
-    let name = toPascalCase(eventName)
-    if (!name.endsWith("Event")) name += "Event"
-    return name
   }
 
   private static escapePropertyName(name: string): ts.PropertyName {
@@ -136,17 +128,8 @@ export default class DefinitionsGenerator {
     return ts.factory.createIdentifier(name)
   }
 
-  static needsNoSelfAnnotation(node: ts.Node) {
-    return ts.isInterfaceDeclaration(node) && node.members.some((m) => ts.isMethodSignature(m))
-  }
-
-  static addNoSelfAnnotationOnly(node: ts.InterfaceDeclaration) {
-    if (!DefinitionsGenerator.needsNoSelfAnnotation(node)) return
-    const jsDoc = ts.factory.createJSDocComment(undefined, [DefinitionsGenerator.noSelfAnnotation])
-    addFakeJSDoc(node, jsDoc)
-  }
-
   generateDeclarations(): Map<string, string> {
+    this.preprocessAll()
     this.generateAll()
     if (this.errorOnWarnings && this.warnings.length !== 0) {
       throw new Error("There are incomplete definition warnings:\n" + this.warnings.join("\n"))
@@ -165,99 +148,24 @@ export default class DefinitionsGenerator {
   }
 
   private generateAll() {
-    this.preprocessAll()
     generateBuiltins(this)
+    generateGlobalObjects(this)
     generateDefines(this)
     generateEvents(this)
     generateClasses(this)
-    generateGlobalObjects(this)
     generateConcepts(this)
-    this.checkManuallyDefined()
+    checkManuallyDefined(this)
   }
 
   private preprocessAll() {
-    for (const type of [this.apiDocs.classes, this.apiDocs.builtin_types, this.apiDocs.global_objects].flat()) {
-      this.typeNames[type.name] = type.name
-    }
-
-    for (const builtin of this.apiDocs.builtin_types) {
-      if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "table") continue
-      this.numericTypes.add(builtin.name)
-    }
-
-    for (const event of this.apiDocs.events) {
-      this.typeNames[event.name] = DefinitionsGenerator.getMappedEventName(event.name)
-    }
-    const addDefine = (define: Define, parent: string) => {
-      const name = parent + (parent ? "." : "") + define.name
-      this.typeNames[name] = name
-      this.defines.set(name, define)
-      if (define.values) {
-        for (const value of define.values) {
-          const valueName = name + "." + value.name
-          this.typeNames[valueName] = valueName
-        }
-      }
-      if (define.subkeys) {
-        for (const subkey of define.subkeys) {
-          addDefine(subkey, name)
-        }
-      }
-    }
-    addDefine(this.rootDefine, "")
-
+    preprocessBuiltins(this)
+    preprocessGlobalObjects(this)
+    preprocessDefines(this)
+    preprocessEvents(this)
+    preprocessClasses(this)
     preprocessConcepts(this)
-
-    for (const def of Object.values(this.manualDefinitions as Record<string, RootDef>)) {
-      const addBefore = def.annotations.addBefore?.[0]
-      const addTo = def.annotations.addTo?.[0]
-      const node = def.node
-      if (addBefore) {
-        if (addTo) throw new Error(`Cannot specify both addBefore and addTo for ${node.name.text}`)
-
-        if (!this.addBefore.has(addBefore)) {
-          this.addBefore.set(addBefore, [])
-        }
-        this.addBefore.get(addBefore)!.push(node)
-      }
-      if (addTo) {
-        if (!this.addTo.has(addTo)) {
-          this.addTo.set(addTo, [])
-        }
-        this.addTo.get(addTo)!.push(node)
-      }
-      if (!(addBefore || addTo)) continue
-      ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
-      const docs = node.jsDoc!
-      if (docs.length > 1) {
-        for (const doc of docs.slice(1)) {
-          addFakeJSDoc(node, doc, this.manualDefinitionsSource)
-        }
-      }
-    }
-  }
-
-  private checkManuallyDefined() {
-    for (const [name, d] of Object.entries(this.manualDefinitions)) {
-      const def = d!
-      const hasAdd = def.annotations.addBefore || def.annotations.addTo
-      const isExisting = name in this.typeNames
-      if (!!hasAdd === isExisting) {
-        this.warnIncompleteDefinition(
-          `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${
-            hasAdd ? "has" : "does not have"
-          } add annotation:`,
-          name
-        )
-      }
-    }
-    for (const name of this.addBefore.keys()) {
-      this.warnIncompleteDefinition("Could not find existing statement", name, "to add before")
-    }
-
-    for (const name of this.addTo.keys()) {
-      this.warnIncompleteDefinition("Could not find existing file", name, "to add to")
-    }
+    preprocessManualDefinitions(this)
+    this.preprocessDone = true
   }
 
   private getIndexFile(): string {
@@ -539,17 +447,16 @@ export default class DefinitionsGenerator {
 
   mapTypeBasic(type: Type, read: true, write: false): { read: ts.TypeNode }
   mapTypeBasic(type: Type, read: false, write: true): { write: ts.TypeNode }
-  mapTypeBasic(type: Type, read: true, write: true): { read: ts.TypeNode; write: ts.TypeNode }
+  // mapTypeBasic(type: Type, read: true, write: true): { read: ts.TypeNode; write: ts.TypeNode }
   mapTypeBasic(type: Type, read: boolean, write: boolean): { read?: ts.TypeNode; write?: ts.TypeNode }
 
   mapTypeBasic(type: Type, read: boolean, write: boolean): RWType {
     if (typeof type === "string") {
       const conceptReadWrite = this.conceptUsage.get(type)
       if (conceptReadWrite) {
-        const used = this.usedConceptReadWrite.has(type)
-        if (used) {
+        if (this.preprocessDone) {
           if ((!conceptReadWrite.read && read) || (!conceptReadWrite.write && write)) {
-            this.warnIncompleteDefinition(`Concept ${type} usage changed after used`)
+            this.warnIncompleteDefinition(`Concept ${type} usage changed after preprocess`)
           }
         }
         conceptReadWrite.read ||= read

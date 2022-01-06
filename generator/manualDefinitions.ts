@@ -1,4 +1,6 @@
 import ts from "typescript"
+import { addFakeJSDoc } from "./genUtil"
+import DefinitionsGenerator from "./DefinitionsGenerator"
 
 // preprocessed TS AST easier to use
 
@@ -66,6 +68,25 @@ export interface EnumDef extends BaseDef {
 export type RootDef = InterfaceDef | TypeAliasDef | NamespaceDef
 export type NamespaceDefMember = NamespaceDef | ConstDef | EnumDef
 export type AnyDef = InterfaceDef | TypeAliasDef | NamespaceDef | ConstDef | EnumDef
+
+export function processManualDefinitions(file: ts.SourceFile | undefined): Record<string, RootDef | undefined> {
+  const result: Record<string, RootDef | undefined> = {}
+  if (!file) {
+    return result
+  }
+  for (const statement of file.statements) {
+    const def = createDef(statement)
+    if (def) {
+      if (def.kind === "namespace" || def.kind === "interface" || def.kind === "type") {
+        if (result[def.name]) {
+          console.log("Warning: duplicate definition for " + def.name)
+        }
+        result[def.name] = def
+      }
+    }
+  }
+  return result
+}
 
 function createDef(node: ts.Statement): AnyDef {
   if (ts.isInterfaceDeclaration(node)) {
@@ -167,25 +188,6 @@ function createDef(node: ts.Statement): AnyDef {
   }
 }
 
-export function processManualDefinitions(file: ts.SourceFile | undefined): Record<string, RootDef | undefined> {
-  const result: Record<string, RootDef | undefined> = {}
-  if (!file) {
-    return result
-  }
-  for (const statement of file.statements) {
-    const def = createDef(statement)
-    if (def) {
-      if (def.kind === "namespace" || def.kind === "interface" || def.kind === "type") {
-        if (result[def.name]) {
-          console.log("Warning: duplicate definition for " + def.name)
-        }
-        result[def.name] = def
-      }
-    }
-  }
-  return result
-}
-
 export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
   const result: AnnotationMap = {}
   node.jsDoc?.forEach((value) =>
@@ -202,4 +204,57 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
     })
   )
   return result
+}
+
+export function preprocessManualDefinitions(generator: DefinitionsGenerator) {
+  for (const def of Object.values(generator.manualDefinitions as Record<string, RootDef>)) {
+    const addBefore = def.annotations.addBefore?.[0]
+    const addTo = def.annotations.addTo?.[0]
+    const node = def.node
+    if (addBefore) {
+      if (addTo) throw new Error(`Cannot specify both addBefore and addTo for ${node.name.text}`)
+
+      if (!generator.addBefore.has(addBefore)) {
+        generator.addBefore.set(addBefore, [])
+      }
+      generator.addBefore.get(addBefore)!.push(node)
+    }
+    if (addTo) {
+      if (!generator.addTo.has(addTo)) {
+        generator.addTo.set(addTo, [])
+      }
+      generator.addTo.get(addTo)!.push(node)
+    }
+    if (!(addBefore || addTo)) continue
+    ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
+    const docs = node.jsDoc!
+    if (docs.length > 1) {
+      for (const doc of docs.slice(1)) {
+        addFakeJSDoc(node, doc, generator.manualDefinitionsSource)
+      }
+    }
+  }
+}
+
+export function checkManuallyDefined(generator: DefinitionsGenerator) {
+  for (const [name, d] of Object.entries(generator.manualDefinitions)) {
+    const def = d!
+    const hasAdd = def.annotations.addBefore || def.annotations.addTo
+    const isExisting = name in generator.typeNames
+    if (!!hasAdd === isExisting) {
+      generator.warnIncompleteDefinition(
+        `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${
+          hasAdd ? "has" : "does not have"
+        } add annotation:`,
+        name
+      )
+    }
+  }
+  for (const name of generator.addBefore.keys()) {
+    generator.warnIncompleteDefinition("Could not find existing statement", name, "to add before")
+  }
+
+  for (const name of generator.addTo.keys()) {
+    generator.warnIncompleteDefinition("Could not find existing file", name, "to add to")
+  }
 }
