@@ -1,4 +1,4 @@
-import { tstl } from "../util"
+import { tstl } from "./util"
 
 test("lua inventory", () => {
   tstl`

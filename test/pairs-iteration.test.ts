@@ -1,4 +1,4 @@
-import { tstl } from "../util"
+import { tstl } from "./util"
 
 test("pairs iteration on lua custom tables", () => {
   tstl`
