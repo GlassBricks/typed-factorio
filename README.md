@@ -73,7 +73,7 @@ The `global` table is just a lua table which can have any shape the mod desires,
 
 Typed-factorio has 100% complete types for the runtime stage. Description-only concepts and some not documented types are filled in manually.
 
-Here are some details on particular type features in the definitions:
+Here are some details on particular type features:
 
 ### Lua features
 
@@ -96,6 +96,7 @@ The type for a specific variant is prefixed with the variant name, or with "Othe
 ### Types with subclasses
 
 Some classes have attributes that are documented to only work on particular subclasses. For these classes, e.g. `LuaEntity`, there are also these other types that you can _optionally_ use:
+
 - a "Base" type, e.g. `BaseEntity`, which only contains members usable by all subclasses
 - individual subclass types, e.g. `CraftingMachineEntity`, which extends the base type with members specific to that subclass
 
@@ -111,9 +112,13 @@ You can pass a type parameter to `script.generate_event_name<T>()`, and it will 
 
 Classes that have an index operator, a length operator, and have an array-like structure, inherit from `(Readonly)Array`. These are `LuaInventory`, `LuaFluidBox`, `LuaTransportLine`. This allows you to use these classes like arrays, meaning having array methods, and `.length` translating to the lua length operator. However, this also means, like typescript arrays, they are **0-indexed, not 1-indexed**.
 
-### Table or array types
+### Table or array types, and "Read" concepts
 
-For table or array types (e.g. Position), there also are types such as `PositionTable` and `PositionArray` that refer to the table or array form specifically.
+For table-or-array types (e.g. Position), there also are types such as `PositionTable` and `PositionArray` that refer to the table or array form.
+
+Table-or-array types will appear in the Table form when known to be in a read position. This also applies to other concepts/complex types that have table-or-array attributes.
+
+For some concepts, there is also a special form for when the concept is used in a "read" position, where all table-or-array types are in Table form. These types are suffixed with `Read`, e.g. `ScriptPositionRead`.
 
 ### LuaGuiElement
 
