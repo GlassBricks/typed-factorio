@@ -19,6 +19,8 @@ export enum AnnotationKind {
   VariantsName = "variantsName",
 
   TableOrArray = "tableOrArray",
+
+  ReadType = "readType",
 }
 
 const annotationValues = new Set<string>(Object.values(AnnotationKind))

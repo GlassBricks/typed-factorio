@@ -3,7 +3,7 @@ import ts from "typescript"
 import { getAnnotations } from "../manualDefinitionsProcessing"
 import { printer, Types } from "../genUtil"
 import DefinitionsGenerator, { Statements } from "../DefinitionsGenerator"
-import { Concept } from "../FactorioApiJson"
+import { Concept, TableOrArrayConcept } from "../FactorioApiJson"
 import assert from "node:assert"
 
 export function preprocessConcepts(generator: DefinitionsGenerator) {
@@ -81,15 +81,15 @@ function preprocessConceptUsages(generator: DefinitionsGenerator) {
         if (!read && !write) continue
         if (concept.category === "union") {
           for (const option of concept.options) {
-            generator.mapTypeRaw(option.type, read, write)
+            generator.mapTypeBasic(option.type, read, write)
           }
         } else if (concept.category === "table" || concept.category === "filter") {
           for (const parameter of concept.parameters) {
-            generator.mapTypeRaw(parameter.type, read, write)
+            generator.mapTypeBasic(parameter.type, read, write)
           }
           if (concept.variant_parameter_groups) {
             for (const parameter of concept.variant_parameter_groups.flatMap((x) => x.parameters)) {
-              generator.mapTypeRaw(parameter.type, read, write)
+              generator.mapTypeBasic(parameter.type, read, write)
             }
           }
         } else {
@@ -114,6 +114,21 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
   const existing = generator.manualDefinitions[concept.name]
   if (existing?.kind === "namespace") {
     throw new Error(`Manual definition for concept ${concept.name} cannot be a namespace`)
+  }
+  if (existing?.annotations.tableOrArray) {
+    if (concept.category !== "table" && concept.category !== "concept") {
+      throw new Error(
+        "table_or_array concept override cannot be defined on concept that is not a table or concept: " + concept.name
+      )
+    }
+    if (concept.category === "table") {
+      if (concept.variant_parameter_groups) {
+        throw new Error(
+          "table_or_array concept override cannot be defined on concept with variant parameter groups: " + concept.name
+        )
+      }
+      ;(concept as unknown as TableOrArrayConcept).category = "table_or_array"
+    }
   }
 
   if (concept.category === "concept") {
@@ -209,7 +224,7 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
   } else if (concept.category === "table_or_array") {
     const parameters = concept.parameters
       .sort(sortByOrder)
-      .map((param) => generator.mapParameterToProperty(param, concept.name, true, true))
+      .map((param) => generator.mapParameterToProperty(param, concept.name, false, true))
 
     statements.add(
       ts.factory.createInterfaceDeclaration(

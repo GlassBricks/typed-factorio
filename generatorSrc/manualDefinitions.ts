@@ -480,6 +480,9 @@ type Tags = Record<string, AnyBasic | undefined>
 interface PositionTable {}
 interface PositionArray {}
 
+/** @tableOrArray */
+interface MapPosition {}
+
 type Vector = PositionArray
 
 type MapGenSize =
@@ -588,6 +591,7 @@ type MouseButtonFlag =
   | "button-7"
   | "button-8"
   | "button-9"
+
 /** @addBefore MouseButtonFlags */
 type MouseButtonFlagsTable = {
   readonly [P in MouseButtonFlag]?: true
@@ -663,6 +667,16 @@ interface FluidBoxConnection {
 interface CircularParticleCreationSpecification {
   readonly center: PositionTable
 }
+
+/** @addBefore BoundingBox */
+interface BoundingBoxRead {
+  readonly left_top: PositionTable
+  readonly right_bottom: PositionTable
+  readonly orientation?: RealOrientation
+}
+
+/** @readType BoundingBoxRead */
+interface BoundingBox {}
 
 // additional types
 

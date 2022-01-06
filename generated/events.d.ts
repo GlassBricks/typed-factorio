@@ -46,9 +46,9 @@ interface OnAiCommandCompletedEvent extends EventData {
  */
 interface OnAreaClonedEvent extends EventData {
   readonly source_surface: LuaSurface
-  readonly source_area: BoundingBoxTable
+  readonly source_area: BoundingBoxRead
   readonly destination_surface: LuaSurface
-  readonly destination_area: BoundingBoxTable
+  readonly destination_area: BoundingBoxRead
   readonly destination_force?: LuaForce
   readonly clone_tiles: boolean
   readonly clone_entities: boolean
@@ -238,7 +238,7 @@ interface OnChunkChartedEvent extends EventData {
   readonly surface_index: uint
   readonly position: ChunkPositionTable
   /** Area of the chunk. */
-  readonly area: BoundingBoxTable
+  readonly area: BoundingBoxRead
   readonly force: LuaForce
   /** Identifier of the event */
   readonly name: typeof defines.events.on_chunk_charted
@@ -268,7 +268,7 @@ interface OnChunkDeletedEvent extends EventData {
  */
 interface OnChunkGeneratedEvent extends EventData {
   /** Area of the chunk. */
-  readonly area: BoundingBoxTable
+  readonly area: BoundingBoxRead
   /** Position of the chunk. */
   readonly position: ChunkPositionTable
   /** The surface the chunk is on. */
@@ -1120,7 +1120,7 @@ interface OnPlayerAltSelectedAreaEvent extends EventData {
   /** The surface selected. */
   readonly surface: LuaSurface
   /** The area selected. */
-  readonly area: BoundingBoxTable
+  readonly area: BoundingBoxRead
   /** The item used to select the area. */
   readonly item: string
   /** The entities selected. */
@@ -1402,7 +1402,7 @@ interface OnPlayerDeconstructedAreaEvent extends EventData {
   /** The surface selected. */
   readonly surface: LuaSurface
   /** The area selected. */
-  readonly area: BoundingBoxTable
+  readonly area: BoundingBoxRead
   /** The item used to select the area. */
   readonly item: string
   /** If normal selection or alt selection was used. */
@@ -1824,7 +1824,7 @@ interface OnPlayerSelectedAreaEvent extends EventData {
   /** The surface selected. */
   readonly surface: LuaSurface
   /** The area selected. */
-  readonly area: BoundingBoxTable
+  readonly area: BoundingBoxRead
   /** The item used to select the area. */
   readonly item: string
   /** The entities selected. */
@@ -1861,7 +1861,7 @@ interface OnPlayerSetupBlueprintEvent extends EventData {
   /** The surface selected. */
   readonly surface: LuaSurface
   /** The area selected. */
-  readonly area: BoundingBoxTable
+  readonly area: BoundingBoxRead
   /** The item used to select the area. */
   readonly item: string
   /** If normal selection or alt selection was used. */
@@ -2596,7 +2596,7 @@ interface OnSectorScannedEvent extends EventData {
   /** The chunk scanned. */
   readonly chunk_position: ChunkPositionTable
   /** Area of the scanned chunk. */
-  readonly area: BoundingBoxTable
+  readonly area: BoundingBoxRead
   /** Identifier of the event */
   readonly name: typeof defines.events.on_sector_scanned
   /** Tick the event was generated. */

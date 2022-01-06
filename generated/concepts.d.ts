@@ -101,16 +101,20 @@ type PositionArray = readonly [x: int, y: int]
  */
 type Position = PositionTable | PositionArray
 
+interface MapPositionTable {
+  readonly x: double
+  readonly y: double
+}
+
+type MapPositionArray = readonly [x: double, y: double]
+
 /**
  * Coordinates of an entity on a map. This uses the same format as {@link Position}, meaning it can be specified either
  * with or without explicit keys.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#MapPosition View documentation}
  */
-interface MapPosition {
-  readonly x: double
-  readonly y: double
-}
+type MapPosition = MapPositionTable | MapPositionArray
 
 interface ChunkPositionTable {
   readonly x: int
@@ -167,7 +171,7 @@ type GuiLocation = GuiLocationTable | GuiLocationArray
 interface ChunkPositionAndArea {
   readonly x: int
   readonly y: int
-  readonly area: BoundingBoxTable
+  readonly area: BoundingBoxRead
 }
 
 /**
@@ -263,6 +267,12 @@ interface BoundingBoxTable {
 }
 
 type BoundingBoxArray = readonly [left_top: Position, right_bottom: Position, orientation?: RealOrientation]
+
+interface BoundingBoxRead {
+  readonly left_top: PositionTable
+  readonly right_bottom: PositionTable
+  readonly orientation?: RealOrientation
+}
 
 /**
  * Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with {@link Position},

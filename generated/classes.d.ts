@@ -1380,7 +1380,7 @@ interface LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.position View documentation}
    */
-  readonly position: MapPosition
+  readonly position: MapPositionTable
   /**
    * The vehicle the player is currently sitting in; `nil` if none.
    *
@@ -1470,23 +1470,35 @@ interface LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.mining_state View documentation}
    */
-  mining_state: {
+  get mining_state(): {
+    /** Whether the player is mining at all */
+    readonly mining: boolean
+    /** What tiles the player is mining; only used when the player is mining tiles (holding a tile in the cursor). */
+    readonly position?: PositionTable
+  }
+  set mining_state(value: {
     /** Whether the player is mining at all */
     readonly mining: boolean
     /** What tiles the player is mining; only used when the player is mining tiles (holding a tile in the cursor). */
     readonly position?: Position
-  }
+  })
   /**
    * Current shooting state.
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.shooting_state View documentation}
    */
-  shooting_state: {
+  get shooting_state(): {
+    /** The current state */
+    readonly state: defines.shooting
+    /** The position being shot at */
+    readonly position: PositionTable
+  }
+  set shooting_state(value: {
     /** The current state */
     readonly state: defines.shooting
     /** The position being shot at */
     readonly position: Position
-  }
+  })
   /**
    * Current item-picking state.
    *
@@ -1498,12 +1510,18 @@ interface LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.repair_state View documentation}
    */
-  repair_state: {
+  get repair_state(): {
+    /** The current state */
+    readonly repairing: boolean
+    /** The position being repaired */
+    readonly position: PositionTable
+  }
+  set repair_state(value: {
     /** The current state */
     readonly repairing: boolean
     /** The position being repaired */
     readonly position: Position
-  }
+  })
   /**
    * The player's cursor stack, or `nil` if the player controller is a spectator. Even though this property is marked
    * as read-only, it returns a {@link LuaItemStack}, meaning it can be manipulated like so:
@@ -2110,7 +2128,7 @@ interface LuaDecorativePrototype {
    *
    * {@link https://lua-api.factorio.com/latest/LuaDecorativePrototype.html#LuaDecorativePrototype.collision_box View documentation}
    */
-  readonly collision_box: BoundingBoxTable
+  readonly collision_box: BoundingBoxRead
   /**
    * The collision masks this decorative uses
    *
@@ -3133,26 +3151,26 @@ interface BaseEntity extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.bounding_box View documentation}
    */
-  readonly bounding_box: BoundingBoxTable
+  readonly bounding_box: BoundingBoxRead
   /**
    * The secondary bounding box of this entity or `nil` if it doesn't have one.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.secondary_bounding_box View documentation}
    */
-  readonly secondary_bounding_box: BoundingBoxTable | undefined
+  readonly secondary_bounding_box: BoundingBoxRead | undefined
   /**
    * {@link LuaEntityPrototype.selection_box LuaEntityPrototype::selection_box} around entity's given position and
    * respecting the current entity orientation.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.selection_box View documentation}
    */
-  readonly selection_box: BoundingBoxTable
+  readonly selection_box: BoundingBoxRead
   /**
    * The secondary selection box of this entity or `nil` if it doesn't have one.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.secondary_selection_box View documentation}
    */
-  readonly secondary_selection_box: BoundingBoxTable | undefined
+  readonly secondary_selection_box: BoundingBoxRead | undefined
   /**
    * Entities that are directly connected to this entity via the circuit network.
    *
@@ -4243,7 +4261,8 @@ interface SpiderVehicleEntity extends BaseEntity {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destination View documentation}
    */
-  autopilot_destination: MapPosition | undefined
+  get autopilot_destination(): MapPositionTable | undefined
+  set autopilot_destination(value: MapPosition | undefined)
   /**
    * The queued destination positions of spidertron's autopilot.
    *
@@ -4251,7 +4270,7 @@ interface SpiderVehicleEntity extends BaseEntity {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destinations View documentation}
    */
-  readonly autopilot_destinations: MapPosition[]
+  readonly autopilot_destinations: MapPositionTable[]
   /**
    * The follow target of this spidertron if any.
    *
@@ -4962,38 +4981,38 @@ interface BaseEntityPrototype {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.collision_box View documentation}
    */
-  readonly collision_box: BoundingBoxTable
+  readonly collision_box: BoundingBoxRead
   /**
    * The secondary bounding box used for collision checking, or `nil` if it doesn't have one. This is only used in
    * rails and rail remnants.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.secondary_collision_box View documentation}
    */
-  readonly secondary_collision_box: BoundingBoxTable | undefined
+  readonly secondary_collision_box: BoundingBoxRead | undefined
   /**
    * The bounding box used for map generator collision checking.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.map_generator_bounding_box View documentation}
    */
-  readonly map_generator_bounding_box: BoundingBoxTable
+  readonly map_generator_bounding_box: BoundingBoxRead
   /**
    * The bounding box used for drawing selection.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.selection_box View documentation}
    */
-  readonly selection_box: BoundingBoxTable
+  readonly selection_box: BoundingBoxRead
   /**
    * The bounding box used for drawing the entity icon.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.drawing_box View documentation}
    */
-  readonly drawing_box: BoundingBoxTable
+  readonly drawing_box: BoundingBoxRead
   /**
    * The bounding box used to attach sticker type entities.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.sticker_box View documentation}
    */
-  readonly sticker_box: BoundingBoxTable
+  readonly sticker_box: BoundingBoxRead
   /**
    * The collision masks this entity uses
    *
@@ -5217,7 +5236,7 @@ interface BaseEntityPrototype {
     | {
         readonly smoke_name: string
         readonly offsets: Vector[]
-        readonly offset_deviation: BoundingBoxTable
+        readonly offset_deviation: BoundingBoxRead
         readonly initial_height: float
         readonly max_radius?: float
         readonly speed: Vector
@@ -6043,7 +6062,7 @@ interface OffshorePumpEntityPrototype extends BaseEntityPrototype {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.adjacent_tile_collision_box View documentation}
    */
-  readonly adjacent_tile_collision_box: BoundingBoxTable
+  readonly adjacent_tile_collision_box: BoundingBoxRead
   /**
    * Tiles adjacent to the offshore pump must not collide with this collision mask.
    *

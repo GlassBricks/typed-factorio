@@ -163,7 +163,7 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = generator.mapTypeRaw(lengthOperator.type, true, false).read
+      const type = generator.mapTypeBasic(lengthOperator.type, true, false).read
       const lengthProperty = generator.addJsDoc(
         ts.factory.createPropertySignature(
           [Modifiers.readonly],
@@ -538,7 +538,7 @@ function generateClass(
       : method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(m, thisPath))
 
     if (method.variadic_type) {
-      const type = generator.mapTypeRaw(
+      const type = generator.mapTypeBasic(
         {
           complex_type: "array",
           value: method.variadic_type,
