@@ -92,7 +92,7 @@ export default class DefinitionsGenerator {
   addBefore = new Map<string, ts.Statement[]>()
   addTo = new Map<string, ts.Statement[]>()
 
-  tableOrArrayConcepts = new Set<string>()
+  readWriteConcepts = new Map<string, { read: string; write: string }>()
   conceptUsage = new Map<
     string,
     {
@@ -102,16 +102,12 @@ export default class DefinitionsGenerator {
       writeProcessed?: boolean
     }
   >(Array.from(this.concepts.keys()).map((c) => [c, { read: false, write: false }]))
-  private preprocessDone = false
-
-  private readonly docUrlBase = "https://lua-api.factorio.com/latest/"
-  private readonly warnings: string[] = []
+  hasWarnings: boolean = false
 
   constructor(
     readonly apiDocs: FactorioApiJson,
     readonly manualDefinitionsSource: ts.SourceFile,
-    private readonly checker: ts.TypeChecker,
-    private readonly errorOnWarnings: boolean
+    private readonly checker: ts.TypeChecker
   ) {
     if (apiDocs.application !== "factorio") {
       throw new Error("Unsupported application " + apiDocs.application)
@@ -121,19 +117,11 @@ export default class DefinitionsGenerator {
     }
   }
 
-  private static escapePropertyName(name: string): ts.PropertyName {
-    if (name.includes("-")) {
-      return ts.factory.createStringLiteral(name)
-    }
-    return ts.factory.createIdentifier(name)
-  }
+  private static readonly docUrlBase = "https://lua-api.factorio.com/latest/"
 
   generateDeclarations(): Map<string, string> {
     this.preprocessAll()
     this.generateAll()
-    if (this.errorOnWarnings && this.warnings.length !== 0) {
-      throw new Error("There are incomplete definition warnings:\n" + this.warnings.join("\n"))
-    }
     const result = new Map<string, string>()
     for (const [fileName, statements] of this.outFiles) {
       let content = DefinitionsGenerator.header
@@ -339,14 +327,14 @@ export default class DefinitionsGenerator {
       write,
       existingContainer
     )
-    // if (readProp && writeProp && readProp !== writeProp) {
-    //   this.warnIncompleteDefinition(
-    //     "Read/write types different in reading parameter as property: " +
-    //       printNode(readProp.type!) +
-    //       " " +
-    //       printNode(writeProp.type!)
-    //   )
-    // }
+    if (readProp && writeProp && readProp !== writeProp) {
+      this.warnIncompleteDefinition(
+        "Read/write types different in reading parameter as property: " +
+          printNode(readProp.type!) +
+          " " +
+          printNode(writeProp.type!)
+      )
+    }
     return writeProp ?? readProp!
   }
 
@@ -947,6 +935,6 @@ export default class DefinitionsGenerator {
 
   warnIncompleteDefinition(...args: unknown[]) {
     console.log(chalk.yellow(...args))
-    this.warnings.push(args.join(" "))
+    this.hasWarnings = true
   }
 }

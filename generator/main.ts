@@ -57,13 +57,15 @@ if (!manualDefines) {
 const typeChecker = tsProgram.getTypeChecker()
 
 console.log("generating files")
-const outFiles = new DefinitionsGenerator(apiJson, manualDefines, typeChecker, opts.warnAsError).generateDeclarations()
+const generator = new DefinitionsGenerator(apiJson, manualDefines, typeChecker)
+const outFiles = generator.generateDeclarations()
 
 console.log("writing files")
 const outDir = path.resolve(opts.out)
 if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir)
 }
+const promises: Promise<unknown>[] = []
 for (let [name, content] of outFiles) {
   if (opts.format) {
     console.log(`Formatting ${name}.d.ts`)
@@ -77,7 +79,15 @@ for (let [name, content] of outFiles) {
       .replace(/;```/g, "```") // workaround for prettier plugin jsdoc bug
   }
   const fileName = path.join(outDir, name + ".d.ts")
-  fs.promises.writeFile(fileName, content).catch((e) => {
-    console.error(e)
-  })
+  promises.push(
+    fs.promises.writeFile(fileName, content).catch((e) => {
+      console.error(e)
+    })
+  )
 }
+
+Promise.all(promises).then(() => {
+  if (opts.warnAsError && generator.hasWarnings) {
+    throw new Error("Fail due to warnings")
+  }
+})
