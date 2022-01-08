@@ -1,3 +1,8 @@
+# v0.16.0
+
+- `LuaCustomTable` can be iterated on in a for-of loop directly (without using `pairs`). This requires TSTL v1.3.0 or later.
+- TSTL dependency minimum version is now v1.3.0.
+
 # v0.15.0
 
 - Table or array concepts are now declared in table form wherever it is an "read" position.
@@ -7,7 +12,7 @@
 - Arrays which are known to be in a "write" only form (e.g. method parameters) now are marked readonly. This means you can now pass readonly-only arrays to these methods.
 - `MapPosition` is now a table or array concept.
 - Classes with subclasses are now declared with all properties, instead of an intersection of subclasses (reversion)
-- Subclass specializations are added for some missing classes
+- Subclass specializations added for some missing classes
 
 # v0.14.1
 
