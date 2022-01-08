@@ -42,7 +42,7 @@ export interface InterfaceDef extends BaseDef {
 export interface TypeAliasDef extends BaseDef {
   readonly kind: "type"
   readonly node: ts.TypeAliasDeclaration
-  readonly supertypes: readonly ts.TypeNode[]
+  readonly supertypes: readonly (ts.TypeReferenceNode | ts.ExpressionWithTypeArguments)[]
   readonly indexOperator: ts.MappedTypeNode | ts.TypeLiteralNode | undefined
   readonly members: Record<string, ts.TypeElement[] | undefined>
   readonly annotations: AnnotationMap
@@ -71,11 +71,8 @@ export type RootDef = InterfaceDef | TypeAliasDef | NamespaceDef
 export type NamespaceDefMember = NamespaceDef | ConstDef | EnumDef
 export type AnyDef = InterfaceDef | TypeAliasDef | NamespaceDef | ConstDef | EnumDef
 
-export function processManualDefinitions(file: ts.SourceFile | undefined): Record<string, RootDef | undefined> {
+export function processManualDefinitions(file: ts.SourceFile): Record<string, RootDef | undefined> {
   const result: Record<string, RootDef | undefined> = {}
-  if (!file) {
-    return result
-  }
   for (const statement of file.statements) {
     const def = createDef(statement)
     if (def) {
@@ -109,7 +106,7 @@ function createDef(node: ts.Statement): AnyDef {
     const membersNode = types.find((t) => ts.isTypeLiteralNode(t) && t !== literalIndexOperator) as
       | ts.TypeLiteralNode
       | undefined
-    const inherits = types.filter((t) => ts.isTypeReferenceNode(t))
+    const inherits: ts.TypeReferenceNode[] = types.filter(ts.isTypeReferenceNode)
     return {
       kind: "type",
       node,
@@ -248,7 +245,7 @@ export function preprocessManualDefinitions(generator: DefinitionsGenerator) {
   }
 }
 
-export function checkManuallyDefined(generator: DefinitionsGenerator) {
+export function checkManualDefinitions(generator: DefinitionsGenerator) {
   for (const [name, d] of Object.entries(generator.manualDefinitions)) {
     const def = d!
     const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo

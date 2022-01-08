@@ -38,17 +38,31 @@ test("array-like", () => {
   `.expectToMatchSnapshot()
 })
 
-test("pairs iteration on lua custom tables", () => {
+test.each([
+  ["players", "number"],
+  ["achievement_prototypes", "string"],
+])("pairs iteration on lua custom tables (%p)", (field, type) => {
   tstl`
-  for (const [id, player] of pairs(game.players)) {
-    const num: number = id
-    const p: LuaPlayer = player
-  }
-  const bar: Record<string, object> = { foo: {} }
-
-  for (const [key, value] of pairs(bar)) {
-    const num: string = key
-    const p: object = value
+  for (const [id, value] of pairs(game.${field})) {
+    const num: ${type} = id
   }
   `.expectToHaveNoDiagnostics()
+})
+
+test.each([
+  ["players", "number"],
+  ["achievement_prototypes", "string"],
+])("for iteration on lua custom tables (%p)", (field, type) => {
+  tstl`
+  for (const [id, value] of game.${field}) {
+    const num: ${type} = id
+  }
+  `.expectToHaveNoDiagnostics()
+})
+
+test("ipairs iteration on LuaCustomTable deprecated", () => {
+  tstl`
+  for (const [id, player] of ipairs(game.players)) {
+  }
+  `.expectToHaveDiagnostics()
 })

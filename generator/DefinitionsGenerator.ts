@@ -15,7 +15,7 @@ import {
 } from "./genUtil"
 import { assertNever, sortByOrder } from "./util"
 import {
-  checkManuallyDefined,
+  checkManualDefinitions,
   InterfaceDef,
   preprocessManualDefinitions,
   processManualDefinitions,
@@ -169,7 +169,7 @@ export default class DefinitionsGenerator {
     generateEvents(this)
     generateClasses(this)
     generateConcepts(this)
-    checkManuallyDefined(this)
+    checkManualDefinitions(this)
   }
 
   private preprocessAll() {

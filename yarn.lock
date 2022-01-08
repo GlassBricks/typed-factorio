@@ -3768,10 +3768,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript-to-lua@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/typescript-to-lua/-/typescript-to-lua-1.2.0.tgz#9e62d6923b601134e152386e41bee4e800435588"
-  integrity sha512-hbAagI6DgP4MjaPKqGlxtiD/rsZE5hO9ypIz96xukKIjzxp5c/TSItik0BMriX5yIIhRiYLfyAQBp+X1cO8MkQ==
+typescript-to-lua@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/typescript-to-lua/-/typescript-to-lua-1.3.1.tgz#3c5bac57628ada8de785843abdb7cbca50e9576b"
+  integrity sha512-kizX/U0f1rXIUgs8MMqRiZkAi1t30+9cm8ZKuK6hZalJgX30IEQk4KPzgr1AQ17Bd+kBTJTw9XKHpVLKVC0Lyw==
   dependencies:
     enhanced-resolve "^5.8.2"
     resolve "^1.15.1"

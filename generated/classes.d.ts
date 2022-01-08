@@ -1939,7 +1939,7 @@ interface LuaCustomInputPrototype {
   help(): string
 }
 
-type CustomTableIndex<K extends keyof any, V>
+type CustomTableIndex<K extends string | number, V>
 /**
  * Access an element of this custom table.
  *
@@ -2012,7 +2012,9 @@ interface LuaCustomTableMembers {
  *   global.p = game.players  -- This has high potential to make the game unsaveable
  *   ```
  */
-type LuaCustomTable<K extends keyof any, V> = LuaCustomTableMembers & CustomTableIndex<K, V>
+type LuaCustomTable<K extends string | number, V> = LuaCustomTableMembers &
+  CustomTableIndex<K, V> &
+  LuaPairsIterable<[number] extends [K] ? number : K, V>
 
 /**
  * Prototype of a damage.

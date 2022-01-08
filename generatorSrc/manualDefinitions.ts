@@ -52,9 +52,9 @@ declare namespace defines {
 
 // generics and extensions
 
-type LuaCustomTable<K extends keyof any, V> = {
+type LuaCustomTable<K extends string | number, V> = {
   [P in K]: V
-}
+} & LuaPairsIterable<[number] extends [K] ? number : K, V>
 
 interface LuaLazyLoadedValue<T> {
   get(): T

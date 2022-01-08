@@ -104,10 +104,9 @@ function generateClass(
       } else if (existing.kind === "type") {
         supertypes.push(
           ...existing.supertypes.map((t) =>
-            ts.factory.createExpressionWithTypeArguments(
-              ts.factory.createIdentifier(t.getText(generator.manualDefinitionsSource)),
-              undefined
-            )
+            ts.isTypeReferenceNode(t)
+              ? ts.factory.createExpressionWithTypeArguments(t.typeName as ts.Identifier, t.typeArguments)
+              : t
           )
         )
       } else {
@@ -407,13 +406,17 @@ function generateClass(
     indexTypeName: string | undefined,
     classForDocs: Class | undefined
   ) {
+    const baseSupertypes: ts.ExpressionWithTypeArguments[] = thisSupertypes.filter((x) => !x.typeArguments)
+    const declarationSupertypes: ts.ExpressionWithTypeArguments[] = thisSupertypes.filter((x) => x.typeArguments)
+    if (!indexTypeName) baseSupertypes.push(...declarationSupertypes)
+
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
       undefined,
       undefined,
       indexTypeName ? name + "Members" : name,
       indexTypeName ? undefined : existing?.node.typeParameters,
-      thisSupertypes.length !== 0
-        ? [ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, thisSupertypes)]
+      baseSupertypes.length !== 0
+        ? [ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, baseSupertypes)]
         : undefined,
       thisMembers.flatMap((m) => m.member)
     )
@@ -441,6 +444,7 @@ function generateClass(
         ts.factory.createIntersectionTypeNode([
           ts.factory.createTypeReferenceNode(name + "Members"),
           ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName), typeArguments),
+          ...declarationSupertypes,
         ])
       )
       if (classForDocs) {
@@ -653,11 +657,11 @@ function escapeParameterName(name: string): string {
   return name
 }
 
+const noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
 function needsNoSelfAnnotation(node: ts.Node) {
   return ts.isInterfaceDeclaration(node) && node.members.some((m) => ts.isMethodSignature(m))
 }
 
-const noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))
 function addNoSelfAnnotationOnly(node: ts.InterfaceDeclaration) {
   if (!needsNoSelfAnnotation(node)) return
   const jsDoc = ts.factory.createJSDocComment(undefined, [noSelfAnnotation])
