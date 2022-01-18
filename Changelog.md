@@ -1,3 +1,7 @@
+# v0.17.0
+
+- Updated to factorio version 1.1.52
+
 # v0.16.0
 
 - `LuaCustomTable` can be iterated on in a for-of loop directly (without using `pairs`). This requires TSTL v1.3.0 or later.

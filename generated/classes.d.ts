@@ -3258,8 +3258,8 @@ interface LuaEntity extends LuaControl {
   is_registered_for_construction(): boolean
   /**
    * Is this entity registered for deconstruction with this force? If false, it means a construction robot has been
-   * dispatched to deconstruct it, or it is not marked for deconstruction. This is worst-case O(N) complexity where N
-   * is the current number of things in the deconstruct queue.
+   * dispatched to deconstruct it, or it is not marked for deconstruction. The complexity is effectively O(1) - it
+   * depends on the number of objects targeting this entity which should be small enough.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_registered_for_deconstruction View documentation}
    *
@@ -3317,6 +3317,14 @@ interface LuaEntity extends LuaControl {
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.disconnect_linked_belts View documentation}
    */
   disconnect_linked_belts(): void
+  /**
+   * Gets legs of given SpiderVehicle.
+   *
+   * *Can only be used if this is SpiderVehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_spider_legs View documentation}
+   */
+  get_spider_legs(): LuaEntity[]
   /**
    * Name of the entity prototype. E.g. "inserter" or "filter-inserter".
    *
@@ -3671,6 +3679,8 @@ interface LuaEntity extends LuaControl {
    * - When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.
    * - When called on a wall-connectable entity or reactor, this is a dictionary of all connections indexed by the
    *   connection direction "north", "south", "east", and "west".
+   * - When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction
+   *   "north", "south", "east", and "west".
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.neighbours View documentation}
    */
@@ -4551,11 +4561,18 @@ interface LuaEntity extends LuaControl {
    */
   trains_limit: uint
   /**
-   * If this entity is EntityWithForce
+   * (deprecated by 1.1.51) If this entity is a MilitaryTarget. Returns same value as LuaEntity::is_military_target
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_entity_with_force View documentation}
    */
   readonly is_entity_with_force: boolean
+  /**
+   * If this entity is a MilitaryTarget. Can be written to if
+   * LuaEntityPrototype::allow_run_time_change_of_is_military_target returns true
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_military_target View documentation}
+   */
+  is_military_target: boolean
   /**
    * If this entity is EntityWithOwner
    *
@@ -5242,8 +5259,8 @@ interface BaseEntity extends LuaControl {
   is_registered_for_construction(): boolean
   /**
    * Is this entity registered for deconstruction with this force? If false, it means a construction robot has been
-   * dispatched to deconstruct it, or it is not marked for deconstruction. This is worst-case O(N) complexity where N
-   * is the current number of things in the deconstruct queue.
+   * dispatched to deconstruct it, or it is not marked for deconstruction. The complexity is effectively O(1) - it
+   * depends on the number of objects targeting this entity which should be small enough.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_registered_for_deconstruction View documentation}
    *
@@ -5447,6 +5464,8 @@ interface BaseEntity extends LuaControl {
    * - When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.
    * - When called on a wall-connectable entity or reactor, this is a dictionary of all connections indexed by the
    *   connection direction "north", "south", "east", and "west".
+   * - When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction
+   *   "north", "south", "east", and "west".
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.neighbours View documentation}
    */
@@ -5826,11 +5845,18 @@ interface BaseEntity extends LuaControl {
    */
   tags: Tags | undefined
   /**
-   * If this entity is EntityWithForce
+   * (deprecated by 1.1.51) If this entity is a MilitaryTarget. Returns same value as LuaEntity::is_military_target
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_entity_with_force View documentation}
    */
   readonly is_entity_with_force: boolean
+  /**
+   * If this entity is a MilitaryTarget. Can be written to if
+   * LuaEntityPrototype::allow_run_time_change_of_is_military_target returns true
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_military_target View documentation}
+   */
+  is_military_target: boolean
   /**
    * If this entity is EntityWithOwner
    *
@@ -6687,6 +6713,14 @@ interface SpiderVehicleEntity extends BaseEntity {
    * @param position - The position the spidertron should move to.
    */
   add_autopilot_destination(position: MapPosition): void
+  /**
+   * Gets legs of given SpiderVehicle.
+   *
+   * *Can only be used if this is SpiderVehicle*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_spider_legs View documentation}
+   */
+  get_spider_legs(): LuaEntity[]
   /**
    * The torso orientation of this spider vehicle.
    *
@@ -8171,6 +8205,12 @@ interface LuaEntityPrototype {
    */
   readonly timeout: uint
   /**
+   * Collision mask entity must collide with to make landmine blowup
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.trigger_collision_mask View documentation}
+   */
+  readonly trigger_collision_mask: CollisionMask
+  /**
    * The fluidbox prototypes for this entity.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.fluidbox_prototypes View documentation}
@@ -8470,6 +8510,35 @@ interface LuaEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.inserter_stack_size_bonus View documentation}
    */
   readonly inserter_stack_size_bonus: double | undefined
+  /**
+   * True if this entity prototype should be included during tile collision checks with
+   * {@link LuaTilePrototype.check_collision_with_entities LuaTilePrototype::check_collision_with_entities} enabled.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.protected_from_tile_building View documentation}
+   */
+  readonly protected_from_tile_building: boolean
+  /**
+   * True if this is entity-with-owner
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.is_entity_with_owner View documentation}
+   */
+  readonly is_entity_with_owner: boolean
+  /**
+   * True if this entity-with-owner is military target
+   *
+   * *Can only be used if this is EntityWithOwnerPrototype*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.is_military_target View documentation}
+   */
+  readonly is_military_target: boolean
+  /**
+   * True if this entity-with-owner's is_military_target can be changed run-time (on the entity, not on the prototype itself)
+   *
+   * *Can only be used if this is EntityWithOwnerPrototype*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.allow_run_time_change_of_is_military_target View documentation}
+   */
+  readonly allow_run_time_change_of_is_military_target: boolean
   /**
    * Gets the current movement speed of this character, including effects from exoskeletons, tiles, stickers and shooting.
    *
@@ -9476,6 +9545,12 @@ interface BaseEntityPrototype {
    */
   readonly timeout: uint
   /**
+   * Collision mask entity must collide with to make landmine blowup
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.trigger_collision_mask View documentation}
+   */
+  readonly trigger_collision_mask: CollisionMask
+  /**
    * The fluidbox prototypes for this entity.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.fluidbox_prototypes View documentation}
@@ -9714,6 +9789,19 @@ interface BaseEntityPrototype {
    */
   readonly inserter_stack_size_bonus: double | undefined
   /**
+   * True if this entity prototype should be included during tile collision checks with
+   * {@link LuaTilePrototype.check_collision_with_entities LuaTilePrototype::check_collision_with_entities} enabled.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.protected_from_tile_building View documentation}
+   */
+  readonly protected_from_tile_building: boolean
+  /**
+   * True if this is entity-with-owner
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.is_entity_with_owner View documentation}
+   */
+  readonly is_entity_with_owner: boolean
+  /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that
    * the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the
    * object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any
@@ -9801,6 +9889,25 @@ interface TransportBeltEntityPrototype extends BaseEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.related_underground_belt View documentation}
    */
   readonly related_underground_belt: LuaEntityPrototype
+}
+
+interface EntityWithOwnerEntityPrototype extends BaseEntityPrototype {
+  /**
+   * True if this entity-with-owner is military target
+   *
+   * *Can only be used if this is EntityWithOwnerPrototype*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.is_military_target View documentation}
+   */
+  readonly is_military_target: boolean
+  /**
+   * True if this entity-with-owner's is_military_target can be changed run-time (on the entity, not on the prototype itself)
+   *
+   * *Can only be used if this is EntityWithOwnerPrototype*
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.allow_run_time_change_of_is_military_target View documentation}
+   */
+  readonly allow_run_time_change_of_is_military_target: boolean
 }
 
 interface CharacterEntityPrototype extends BaseEntityPrototype {
@@ -23894,12 +24001,12 @@ interface LuaSurface {
     readonly condition: ForceCondition
   }): LuaEntity[]
   /**
-   * Find the enemy entity-with-force ({@link https://wiki.factorio.com/Military_units_and_structures military entity})
+   * Find the enemy military target ({@link https://wiki.factorio.com/Military_units_and_structures military entity})
    * closest to the given position.
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_nearest_enemy View documentation}
    *
-   * @returns The nearest enemy entity-with-force or `nil` if no enemy could be found within the given area.
+   * @returns The nearest enemy military target or `nil` if no enemy could be found within the given area.
    */
   find_nearest_enemy(params: {
     /** Center of the search area. */
@@ -24656,7 +24763,7 @@ interface LuaSurface {
    */
   calculate_tile_properties(property_names: readonly string[], positions: readonly Position[]): Record<string, double[]>
   /**
-   * Returns all the entities with force on this chunk for the given force.
+   * Returns all the military targets (entities with force) on this chunk for the given force.
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.get_entities_with_force View documentation}
    *
