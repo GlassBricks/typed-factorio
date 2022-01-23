@@ -17,7 +17,7 @@
   - This works with setter overloading for applicable properties: `player.color.x; player.color = [1, 1, 1]` is now valid!
   - This also applies to concepts/complex types which contain table_or_array properties.
 - Some concepts now also have a special form where it is known to be in a "read" position, where all table_or_array concepts are declared in table form. These concepts are suffixed with "Read", e.g. `ScriptAreaRead`.
-- Arrays which are known to be in a "write" only form (e.g. method parameters) now are marked readonly. This means you can now pass readonly-only arrays to these methods.
+- Arrays which are known to be in a "write" only form (e.g. method parameters) now are marked readonly. This means you can now pass readonly arrays to these methods.
 - `MapPosition` is now a table or array concept.
 - Classes with subclasses are now declared with all properties, instead of an intersection of subclasses (reversion)
 - Subclass specializations added for some missing classes
