@@ -953,7 +953,7 @@ export default class DefinitionsGenerator {
     } else if (this.classes.has(reference)) {
       relative_link = reference + ".html"
     } else if (this.events.has(reference)) {
-      relative_link = "Events.html#" + reference
+      relative_link = "events.html#" + reference
     } else if (reference.startsWith("defines.")) {
       relative_link = "defines.html#" + reference
     } else if (this.concepts.has(reference)) {
