@@ -1,3 +1,7 @@
+# v0.17.1
+
+- Fixed documentation links for events
+
 # v0.17.0
 
 - Updated to factorio version 1.1.52
