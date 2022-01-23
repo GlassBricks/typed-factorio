@@ -5,7 +5,7 @@
 /**
  * Called when a {@link https://wiki.factorio.com/Prototype/CustomInput CustomInput} is activated.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#CustomInputEvent View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#CustomInputEvent View documentation}
  */
 interface CustomInputEvent extends EventData {
   /** The player that activated the custom input. */
@@ -25,7 +25,7 @@ interface CustomInputEvent extends EventData {
 /**
  * Called when a unit/group completes a command.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_ai_command_completed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_ai_command_completed View documentation}
  */
 interface OnAiCommandCompletedEvent extends EventData {
   /** Unit_number/group_number of the unit/group which just completed a command. */
@@ -42,7 +42,7 @@ interface OnAiCommandCompletedEvent extends EventData {
 /**
  * Called when an area of the map is cloned.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_area_cloned View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_area_cloned View documentation}
  */
 interface OnAreaClonedEvent extends EventData {
   readonly source_surface: LuaSurface
@@ -67,7 +67,7 @@ interface OnAreaClonedEvent extends EventData {
  * **Note**: This will be called multiple times for each migration, once for every biter that is sacrificed to build
  * part of the new base.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_biter_base_built View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_biter_base_built View documentation}
  */
 interface OnBiterBaseBuiltEvent extends EventData {
   /** The entity that was built. */
@@ -81,7 +81,7 @@ interface OnBiterBaseBuiltEvent extends EventData {
 /**
  * Called when a set of positions on the map is cloned.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_brush_cloned View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_brush_cloned View documentation}
  */
 interface OnBrushClonedEvent extends EventData {
   readonly source_offset: TilePositionTable
@@ -104,7 +104,7 @@ interface OnBrushClonedEvent extends EventData {
 /**
  * Called when a {@link defines.command.build_base} command reaches its destination, and before building starts.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_build_base_arrived View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_build_base_arrived View documentation}
  */
 interface OnBuildBaseArrivedEvent extends EventData {
   /** The unit the command was assigned to. */
@@ -120,7 +120,7 @@ interface OnBuildBaseArrivedEvent extends EventData {
 /**
  * Called when player builds something. Can be filtered using {@link LuaPlayerBuiltEntityEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_built_entity View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_built_entity View documentation}
  */
 interface OnBuiltEntityEvent extends EventData {
   readonly created_entity: LuaEntity
@@ -140,7 +140,7 @@ interface OnBuiltEntityEvent extends EventData {
  * Called when the deconstruction of an entity is canceled. Can be filtered using
  * {@link LuaEntityDeconstructionCancelledEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_cancelled_deconstruction View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_cancelled_deconstruction View documentation}
  */
 interface OnCancelledDeconstructionEvent extends EventData {
   readonly entity: LuaEntity
@@ -154,7 +154,7 @@ interface OnCancelledDeconstructionEvent extends EventData {
 /**
  * Called when the upgrade of an entity is canceled. Can be filtered using {@link LuaUpgradeCancelledEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_cancelled_upgrade View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_cancelled_upgrade View documentation}
  */
 interface OnCancelledUpgradeEvent extends EventData {
   readonly entity: LuaEntity
@@ -170,7 +170,7 @@ interface OnCancelledUpgradeEvent extends EventData {
  *
  * **Note**: this is not called if the corpse is mined. See {@link defines.events.on_pre_player_mined_item} to detect that.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_character_corpse_expired View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_character_corpse_expired View documentation}
  */
 interface OnCharacterCorpseExpiredEvent extends EventData {
   /** The corpse. */
@@ -184,7 +184,7 @@ interface OnCharacterCorpseExpiredEvent extends EventData {
 /**
  * Called when a chart tag is created.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_chart_tag_added View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_chart_tag_added View documentation}
  */
 interface OnChartTagAddedEvent extends EventData {
   readonly tag: LuaCustomChartTag
@@ -199,7 +199,7 @@ interface OnChartTagAddedEvent extends EventData {
 /**
  * Called when a chart tag is modified by a player.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_chart_tag_modified View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_chart_tag_modified View documentation}
  */
 interface OnChartTagModifiedEvent extends EventData {
   readonly tag: LuaCustomChartTag
@@ -217,7 +217,7 @@ interface OnChartTagModifiedEvent extends EventData {
 /**
  * Called just before a chart tag is deleted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_chart_tag_removed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_chart_tag_removed View documentation}
  */
 interface OnChartTagRemovedEvent extends EventData {
   readonly tag: LuaCustomChartTag
@@ -232,7 +232,7 @@ interface OnChartTagRemovedEvent extends EventData {
 /**
  * Called when a chunk is charted or re-charted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_chunk_charted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_chunk_charted View documentation}
  */
 interface OnChunkChartedEvent extends EventData {
   readonly surface_index: uint
@@ -249,7 +249,7 @@ interface OnChunkChartedEvent extends EventData {
 /**
  * Called when one or more chunks are deleted using {@link LuaSurface.delete_chunk LuaSurface::delete_chunk}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_chunk_deleted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_chunk_deleted View documentation}
  */
 interface OnChunkDeletedEvent extends EventData {
   readonly surface_index: uint
@@ -264,7 +264,7 @@ interface OnChunkDeletedEvent extends EventData {
 /**
  * Called when a chunk is generated.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_chunk_generated View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_chunk_generated View documentation}
  */
 interface OnChunkGeneratedEvent extends EventData {
   /** Area of the chunk. */
@@ -282,7 +282,7 @@ interface OnChunkGeneratedEvent extends EventData {
 /**
  * Called when a combat robot expires through a lack of energy, or timeout.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_combat_robot_expired View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_combat_robot_expired View documentation}
  */
 interface OnCombatRobotExpiredEvent extends EventData {
   readonly robot: LuaEntity
@@ -299,7 +299,7 @@ interface OnCombatRobotExpiredEvent extends EventData {
  *
  * **Note**: This event only fires for plain messages, not for any commands (including `/shout` or `/whisper`).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_console_chat View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_console_chat View documentation}
  */
 interface OnConsoleChatEvent extends EventData {
   /** The player doing the chatting, if any. */
@@ -315,7 +315,7 @@ interface OnConsoleChatEvent extends EventData {
 /**
  * Called when someone enters a command-like message regardless of it being a valid command.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_console_command View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_console_command View documentation}
  */
 interface OnConsoleCommandEvent extends EventData {
   /** The player if any. */
@@ -333,7 +333,7 @@ interface OnConsoleCommandEvent extends EventData {
 /**
  * Called when a cutscene is cancelled by the player or by script.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_cutscene_cancelled View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_cutscene_cancelled View documentation}
  */
 interface OnCutsceneCancelledEvent extends EventData {
   /** The player the cutscene was shown to. */
@@ -351,7 +351,7 @@ interface OnCutsceneCancelledEvent extends EventData {
  *
  * **Note**: Due to implementation omission, waypoint_index is 0-based.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_cutscene_waypoint_reached View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_cutscene_waypoint_reached View documentation}
  */
 interface OnCutsceneWaypointReachedEvent extends EventData {
   /** The player index of the player viewing the cutscene. */
@@ -369,7 +369,7 @@ interface OnCutsceneWaypointReachedEvent extends EventData {
  *
  * **Note**: It's not guaranteed that both settings are changed - just that at least one has been changed.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_difficulty_settings_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_difficulty_settings_changed View documentation}
  */
 interface OnDifficultySettingsChangedEvent extends EventData {
   readonly old_recipe_difficulty: uint
@@ -383,7 +383,7 @@ interface OnDifficultySettingsChangedEvent extends EventData {
 /**
  * Called when an entity is cloned. Can be filtered for the source entity using {@link LuaEntityClonedEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_entity_cloned View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_entity_cloned View documentation}
  */
 interface OnEntityClonedEvent extends EventData {
   readonly source: LuaEntity
@@ -399,7 +399,7 @@ interface OnEntityClonedEvent extends EventData {
  *
  * **Note**: This is not called when an entities health is set directly by another mod.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_entity_damaged View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_entity_damaged View documentation}
  */
 interface OnEntityDamagedEvent extends EventData {
   readonly entity: LuaEntity
@@ -427,7 +427,7 @@ interface OnEntityDamagedEvent extends EventData {
  * **Note**: Depending on when a given entity is destroyed this will be fired at the end of the current tick or end of
  * the next tick.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_entity_destroyed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_entity_destroyed View documentation}
  */
 interface OnEntityDestroyedEvent extends EventData {
   readonly registration_number: uint64
@@ -441,7 +441,7 @@ interface OnEntityDestroyedEvent extends EventData {
 /**
  * Called when an entity dies. Can be filtered using {@link LuaEntityDiedEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_entity_died View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_entity_died View documentation}
  */
 interface OnEntityDiedEvent extends EventData {
   /** The entity that died. */
@@ -466,7 +466,7 @@ interface OnEntityDiedEvent extends EventData {
  * **Note**: "Personal logistic slot" refers to a character or vehicle's personal request / auto-trash slots, not the
  * request slots on logistic chests.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_entity_logistic_slot_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_entity_logistic_slot_changed View documentation}
  */
 interface OnEntityLogisticSlotChangedEvent extends EventData {
   /** The player who changed the slot, or `nil` if changed by script. */
@@ -484,7 +484,7 @@ interface OnEntityLogisticSlotChangedEvent extends EventData {
 /**
  * Called after an entity has been renamed either by the player or through script.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_entity_renamed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_entity_renamed View documentation}
  */
 interface OnEntityRenamedEvent extends EventData {
   /** If by_script is true this will not be included. */
@@ -501,7 +501,7 @@ interface OnEntityRenamedEvent extends EventData {
 /**
  * Called after entity copy-paste is done.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_entity_settings_pasted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_entity_settings_pasted View documentation}
  */
 interface OnEntitySettingsPastedEvent extends EventData {
   readonly player_index: uint
@@ -518,7 +518,7 @@ interface OnEntitySettingsPastedEvent extends EventData {
 /**
  * Called when an entity is spawned by a EnemySpawner
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_entity_spawned View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_entity_spawned View documentation}
  */
 interface OnEntitySpawnedEvent extends EventData {
   readonly spawner: LuaEntity
@@ -532,7 +532,7 @@ interface OnEntitySpawnedEvent extends EventData {
 /**
  * Called after equipment is inserted into an equipment grid.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_equipment_inserted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_equipment_inserted View documentation}
  */
 interface OnEquipmentInsertedEvent extends EventData {
   /** The equipment grid inserted into. */
@@ -548,7 +548,7 @@ interface OnEquipmentInsertedEvent extends EventData {
 /**
  * Called after equipment is removed from an equipment grid.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_equipment_removed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_equipment_removed View documentation}
  */
 interface OnEquipmentRemovedEvent extends EventData {
   /** The equipment grid removed from. */
@@ -566,7 +566,7 @@ interface OnEquipmentRemovedEvent extends EventData {
 /**
  * Called when the a forces cease fire values change.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_force_cease_fire_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_force_cease_fire_changed View documentation}
  */
 interface OnForceCeaseFireChangedEvent extends EventData {
   /** The force who's cease fire changed. */
@@ -587,7 +587,7 @@ interface OnForceCeaseFireChangedEvent extends EventData {
  * **Note**: This is not called when the default forces (`'player'`, `'enemy'`, `'neutral'`) are created as they will
  * always exist.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_force_created View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_force_created View documentation}
  */
 interface OnForceCreatedEvent extends EventData {
   /** The newly created force. */
@@ -601,7 +601,7 @@ interface OnForceCreatedEvent extends EventData {
 /**
  * Called when the a forces friends change.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_force_friends_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_force_friends_changed View documentation}
  */
 interface OnForceFriendsChangedEvent extends EventData {
   /** The force who's friends changed. */
@@ -619,7 +619,7 @@ interface OnForceFriendsChangedEvent extends EventData {
 /**
  * Called when {@link LuaForce.reset LuaForce::reset} is finished.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_force_reset View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_force_reset View documentation}
  */
 interface OnForceResetEvent extends EventData {
   readonly force: LuaForce
@@ -634,7 +634,7 @@ interface OnForceResetEvent extends EventData {
  *
  * **Note**: The source force is invalidated before this event is called and the name can be re-used in this event if desired.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_forces_merged View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_forces_merged View documentation}
  */
 interface OnForcesMergedEvent extends EventData {
   /** The force destroyed. */
@@ -652,7 +652,7 @@ interface OnForcesMergedEvent extends EventData {
 /**
  * Called when two forces are about to be merged using `game.merge_forces()`.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_forces_merging View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_forces_merging View documentation}
  */
 interface OnForcesMergingEvent extends EventData {
   /** The force to be destroyed */
@@ -671,7 +671,7 @@ interface OnForcesMergingEvent extends EventData {
  *
  * **Note**: This event is not fired when the scenario is loaded via the map editor.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_game_created_from_scenario View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_game_created_from_scenario View documentation}
  */
 interface OnGameCreatedFromScenarioEvent extends EventData {
   /** Identifier of the event */
@@ -683,7 +683,7 @@ interface OnGameCreatedFromScenarioEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} checked state is changed (related to checkboxes and radio buttons).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_checked_state_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_checked_state_changed View documentation}
  */
 interface OnGuiCheckedStateChangedEvent extends EventData {
   /** The element whose checked state changed. */
@@ -699,7 +699,7 @@ interface OnGuiCheckedStateChangedEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} is clicked.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_click View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_click View documentation}
  */
 interface OnGuiClickEvent extends EventData {
   /** The clicked element. */
@@ -728,7 +728,7 @@ interface OnGuiClickEvent extends EventData {
  * **Note**: It's not advised to open any other GUI during this event because if this is run as a request to open a
  * different GUI the game will force close the new opened GUI without notice to ensure the original requested GUI is opened.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_closed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_closed View documentation}
  */
 interface OnGuiClosedEvent extends EventData {
   /** The player. */
@@ -758,7 +758,7 @@ interface OnGuiClosedEvent extends EventData {
 /**
  * Called when a {@link LuaGuiElement} is confirmed, for example by pressing Enter in a textfield.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_confirmed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_confirmed View documentation}
  */
 interface OnGuiConfirmedEvent extends EventData {
   /** The confirmed element. */
@@ -780,7 +780,7 @@ interface OnGuiConfirmedEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} element value is changed (related to choose element buttons).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_elem_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_elem_changed View documentation}
  */
 interface OnGuiElemChangedEvent extends EventData {
   /** The element whose element value changed. */
@@ -796,7 +796,7 @@ interface OnGuiElemChangedEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} element location is changed (related to frames in `player.gui.screen`).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_location_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_location_changed View documentation}
  */
 interface OnGuiLocationChangedEvent extends EventData {
   /** The element whose location changed. */
@@ -812,7 +812,7 @@ interface OnGuiLocationChangedEvent extends EventData {
 /**
  * Called when the player opens a GUI.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_opened View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_opened View documentation}
  */
 interface OnGuiOpenedEvent extends EventData {
   /** The player. */
@@ -838,7 +838,7 @@ interface OnGuiOpenedEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} selected tab is changed (related to tabbed-panes).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_selected_tab_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_selected_tab_changed View documentation}
  */
 interface OnGuiSelectedTabChangedEvent extends EventData {
   /** The tabbed pane whose selected tab changed. */
@@ -854,7 +854,7 @@ interface OnGuiSelectedTabChangedEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} selection state is changed (related to drop-downs and listboxes).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_selection_state_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_selection_state_changed View documentation}
  */
 interface OnGuiSelectionStateChangedEvent extends EventData {
   /** The element whose selection state changed. */
@@ -870,7 +870,7 @@ interface OnGuiSelectionStateChangedEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} switch state is changed (related to switches).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_switch_state_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_switch_state_changed View documentation}
  */
 interface OnGuiSwitchStateChangedEvent extends EventData {
   /** The switch whose switch state changed. */
@@ -886,7 +886,7 @@ interface OnGuiSwitchStateChangedEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} text is changed by the player.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_text_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_text_changed View documentation}
  */
 interface OnGuiTextChangedEvent extends EventData {
   /** The edited element. */
@@ -904,7 +904,7 @@ interface OnGuiTextChangedEvent extends EventData {
 /**
  * Called when {@link LuaGuiElement} slider value is changed (related to the slider element).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_gui_value_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_gui_value_changed View documentation}
  */
 interface OnGuiValueChangedEvent extends EventData {
   /** The element whose value changed. */
@@ -920,7 +920,7 @@ interface OnGuiValueChangedEvent extends EventData {
 /**
  * Called when a land mine is armed.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_land_mine_armed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_land_mine_armed View documentation}
  */
 interface OnLandMineArmedEvent extends EventData {
   readonly mine: LuaEntity
@@ -933,7 +933,7 @@ interface OnLandMineArmedEvent extends EventData {
 /**
  * Called when a custom Lua shortcut is pressed.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_lua_shortcut View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_lua_shortcut View documentation}
  */
 interface OnLuaShortcutEvent extends EventData {
   readonly player_index: uint
@@ -949,7 +949,7 @@ interface OnLuaShortcutEvent extends EventData {
  * Called when an entity is marked for deconstruction with the Deconstruction planner or via script. Can be filtered
  * using {@link LuaEntityMarkedForDeconstructionEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_marked_for_deconstruction View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_marked_for_deconstruction View documentation}
  */
 interface OnMarkedForDeconstructionEvent extends EventData {
   readonly entity: LuaEntity
@@ -964,7 +964,7 @@ interface OnMarkedForDeconstructionEvent extends EventData {
  * Called when an entity is marked for upgrade with the Upgrade planner or via script. Can be filtered using
  * {@link LuaEntityMarkedForUpgradeEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_marked_for_upgrade View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_marked_for_upgrade View documentation}
  */
 interface OnMarkedForUpgradeEvent extends EventData {
   readonly entity: LuaEntity
@@ -981,7 +981,7 @@ interface OnMarkedForUpgradeEvent extends EventData {
 /**
  * Called after a player purchases some offer from a `market` entity.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_market_item_purchased View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_market_item_purchased View documentation}
  */
 interface OnMarketItemPurchasedEvent extends EventData {
   /** The player who did the purchasing. */
@@ -1001,7 +1001,7 @@ interface OnMarketItemPurchasedEvent extends EventData {
 /**
  * Called when the player uses the 'Open item GUI' control on an item defined with the 'mod-openable' flag
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_mod_item_opened View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_mod_item_opened View documentation}
  */
 interface OnModItemOpenedEvent extends EventData {
   /** The player. */
@@ -1017,7 +1017,7 @@ interface OnModItemOpenedEvent extends EventData {
 /**
  * Called directly after a permission group is added.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_permission_group_added View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_permission_group_added View documentation}
  */
 interface OnPermissionGroupAddedEvent extends EventData {
   /** The player that added the group. */
@@ -1033,7 +1033,7 @@ interface OnPermissionGroupAddedEvent extends EventData {
 /**
  * Called directly after a permission group is deleted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_permission_group_deleted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_permission_group_deleted View documentation}
  */
 interface OnPermissionGroupDeletedEvent extends EventData {
   /** The player doing the deletion. */
@@ -1051,7 +1051,7 @@ interface OnPermissionGroupDeletedEvent extends EventData {
 /**
  * Called directly after a permission group is edited in some way.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_permission_group_edited View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_permission_group_edited View documentation}
  */
 interface OnPermissionGroupEditedEvent extends EventData {
   /** The player that did the editing. */
@@ -1084,7 +1084,7 @@ interface OnPermissionGroupEditedEvent extends EventData {
 /**
  * Called directly after a permission string is imported.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_permission_string_imported View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_permission_string_imported View documentation}
  */
 interface OnPermissionStringImportedEvent extends EventData {
   /** The player that imported the string. */
@@ -1098,7 +1098,7 @@ interface OnPermissionStringImportedEvent extends EventData {
 /**
  * Called when a player picks up an item.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_picked_up_item View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_picked_up_item View documentation}
  */
 interface OnPickedUpItemEvent extends EventData {
   readonly item_stack: SimpleItemStack
@@ -1112,7 +1112,7 @@ interface OnPickedUpItemEvent extends EventData {
 /**
  * Called after a player alt-selects an area with a selection-tool item.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_alt_selected_area View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_alt_selected_area View documentation}
  */
 interface OnPlayerAltSelectedAreaEvent extends EventData {
   /** The player doing the selection. */
@@ -1136,7 +1136,7 @@ interface OnPlayerAltSelectedAreaEvent extends EventData {
 /**
  * Called after a players ammo inventory changed in some way.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_ammo_inventory_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_ammo_inventory_changed View documentation}
  */
 interface OnPlayerAmmoInventoryChangedEvent extends EventData {
   readonly player_index: uint
@@ -1149,7 +1149,7 @@ interface OnPlayerAmmoInventoryChangedEvent extends EventData {
 /**
  * Called after a players armor inventory changed in some way.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_armor_inventory_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_armor_inventory_changed View documentation}
  */
 interface OnPlayerArmorInventoryChangedEvent extends EventData {
   readonly player_index: uint
@@ -1162,7 +1162,7 @@ interface OnPlayerArmorInventoryChangedEvent extends EventData {
 /**
  * Called when a player is banned.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_banned View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_banned View documentation}
  */
 interface OnPlayerBannedEvent extends EventData {
   /** The player banned. */
@@ -1182,7 +1182,7 @@ interface OnPlayerBannedEvent extends EventData {
 /**
  * Called after a player builds tiles.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_built_tile View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_built_tile View documentation}
  */
 interface OnPlayerBuiltTileEvent extends EventData {
   readonly player_index: uint
@@ -1205,7 +1205,7 @@ interface OnPlayerBuiltTileEvent extends EventData {
 /**
  * Called when a player cancels crafting.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_cancelled_crafting View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_cancelled_crafting View documentation}
  */
 interface OnPlayerCancelledCraftingEvent extends EventData {
   /** The player that did the crafting. */
@@ -1225,7 +1225,7 @@ interface OnPlayerCancelledCraftingEvent extends EventData {
 /**
  * Called after a player changes forces.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_changed_force View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_changed_force View documentation}
  */
 interface OnPlayerChangedForceEvent extends EventData {
   /** The player who changed forces. */
@@ -1241,7 +1241,7 @@ interface OnPlayerChangedForceEvent extends EventData {
 /**
  * Called when the tile position a player is located at changes.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_changed_position View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_changed_position View documentation}
  */
 interface OnPlayerChangedPositionEvent extends EventData {
   /** The player. */
@@ -1257,7 +1257,7 @@ interface OnPlayerChangedPositionEvent extends EventData {
  *
  * **Note**: In the instance a player is moved off a surface due to it being deleted this is not called.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_changed_surface View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_changed_surface View documentation}
  */
 interface OnPlayerChangedSurfaceEvent extends EventData {
   /** The player who changed surfaces. */
@@ -1273,7 +1273,7 @@ interface OnPlayerChangedSurfaceEvent extends EventData {
 /**
  * Called when cheat mode is disabled on a player.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_cheat_mode_disabled View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_cheat_mode_disabled View documentation}
  */
 interface OnPlayerCheatModeDisabledEvent extends EventData {
   /** The player. */
@@ -1287,7 +1287,7 @@ interface OnPlayerCheatModeDisabledEvent extends EventData {
 /**
  * Called when cheat mode is enabled on a player.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_cheat_mode_enabled View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_cheat_mode_enabled View documentation}
  */
 interface OnPlayerCheatModeEnabledEvent extends EventData {
   /** The player. */
@@ -1301,7 +1301,7 @@ interface OnPlayerCheatModeEnabledEvent extends EventData {
 /**
  * Called when a player clicks a gps tag
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_clicked_gps_tag View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_clicked_gps_tag View documentation}
  */
 interface OnPlayerClickedGpsTagEvent extends EventData {
   /** Index of the player */
@@ -1319,7 +1319,7 @@ interface OnPlayerClickedGpsTagEvent extends EventData {
 /**
  * Called when a player clicks the "confirm" button in the configure Blueprint GUI.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_configured_blueprint View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_configured_blueprint View documentation}
  */
 interface OnPlayerConfiguredBlueprintEvent extends EventData {
   /** The player. */
@@ -1333,7 +1333,7 @@ interface OnPlayerConfiguredBlueprintEvent extends EventData {
 /**
  * Called when a player configures spidertron remote to be connected with a given spidertron
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_configured_spider_remote View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_configured_spider_remote View documentation}
  */
 interface OnPlayerConfiguredSpiderRemoteEvent extends EventData {
   /** The player that configured the remote. */
@@ -1350,7 +1350,7 @@ interface OnPlayerConfiguredSpiderRemoteEvent extends EventData {
  * Called when the player finishes crafting an item. This event fires just before the results are inserted into the
  * player's inventory, not when the crafting is queued (see {@link OnPrePlayerCraftedItemEvent on_pre_player_crafted_item}).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_crafted_item View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_crafted_item View documentation}
  */
 interface OnPlayerCraftedItemEvent extends EventData {
   /** The item that has been crafted. */
@@ -1368,7 +1368,7 @@ interface OnPlayerCraftedItemEvent extends EventData {
 /**
  * Called after the player was created.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_created View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_created View documentation}
  */
 interface OnPlayerCreatedEvent extends EventData {
   readonly player_index: uint
@@ -1381,7 +1381,7 @@ interface OnPlayerCreatedEvent extends EventData {
 /**
  * Called after a players cursorstack changed in some way.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_cursor_stack_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_cursor_stack_changed View documentation}
  */
 interface OnPlayerCursorStackChangedEvent extends EventData {
   readonly player_index: uint
@@ -1394,7 +1394,7 @@ interface OnPlayerCursorStackChangedEvent extends EventData {
 /**
  * Called when a player selects an area with a deconstruction planner.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_deconstructed_area View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_deconstructed_area View documentation}
  */
 interface OnPlayerDeconstructedAreaEvent extends EventData {
   /** The player doing the selection. */
@@ -1416,7 +1416,7 @@ interface OnPlayerDeconstructedAreaEvent extends EventData {
 /**
  * Called when a player is demoted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_demoted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_demoted View documentation}
  */
 interface OnPlayerDemotedEvent extends EventData {
   /** The player. */
@@ -1430,7 +1430,7 @@ interface OnPlayerDemotedEvent extends EventData {
 /**
  * Called after a player dies.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_died View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_died View documentation}
  */
 interface OnPlayerDiedEvent extends EventData {
   readonly player_index: uint
@@ -1444,7 +1444,7 @@ interface OnPlayerDiedEvent extends EventData {
 /**
  * Called when the display resolution changes for a given player.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_display_resolution_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_display_resolution_changed View documentation}
  */
 interface OnPlayerDisplayResolutionChangedEvent extends EventData {
   /** The player */
@@ -1460,7 +1460,7 @@ interface OnPlayerDisplayResolutionChangedEvent extends EventData {
 /**
  * Called when the display scale changes for a given player.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_display_scale_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_display_scale_changed View documentation}
  */
 interface OnPlayerDisplayScaleChangedEvent extends EventData {
   /** The player */
@@ -1476,7 +1476,7 @@ interface OnPlayerDisplayScaleChangedEvent extends EventData {
 /**
  * Called when the player's driving state has changed, this means a player has either entered or left a vehicle.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_driving_changed_state View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_driving_changed_state View documentation}
  */
 interface OnPlayerDrivingChangedStateEvent extends EventData {
   readonly player_index: uint
@@ -1491,7 +1491,7 @@ interface OnPlayerDrivingChangedStateEvent extends EventData {
 /**
  * Called when a player drops an item on the ground.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_dropped_item View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_dropped_item View documentation}
  */
 interface OnPlayerDroppedItemEvent extends EventData {
   readonly player_index: uint
@@ -1506,7 +1506,7 @@ interface OnPlayerDroppedItemEvent extends EventData {
 /**
  * Called when a player fast-transfers something to or from an entity.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_fast_transferred View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_fast_transferred View documentation}
  */
 interface OnPlayerFastTransferredEvent extends EventData {
   /** The player transferred from or to. */
@@ -1524,7 +1524,7 @@ interface OnPlayerFastTransferredEvent extends EventData {
 /**
  * Called after player flushed fluid
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_flushed_fluid View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_flushed_fluid View documentation}
  */
 interface OnPlayerFlushedFluidEvent extends EventData {
   /** Index of the player */
@@ -1546,7 +1546,7 @@ interface OnPlayerFlushedFluidEvent extends EventData {
 /**
  * Called after a players gun inventory changed in some way.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_gun_inventory_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_gun_inventory_changed View documentation}
  */
 interface OnPlayerGunInventoryChangedEvent extends EventData {
   readonly player_index: uint
@@ -1559,7 +1559,7 @@ interface OnPlayerGunInventoryChangedEvent extends EventData {
 /**
  * Called after a player joins the game.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_joined_game View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_joined_game View documentation}
  */
 interface OnPlayerJoinedGameEvent extends EventData {
   readonly player_index: uint
@@ -1572,7 +1572,7 @@ interface OnPlayerJoinedGameEvent extends EventData {
 /**
  * Called when a player is kicked.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_kicked View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_kicked View documentation}
  */
 interface OnPlayerKickedEvent extends EventData {
   /** The player kicked. */
@@ -1590,7 +1590,7 @@ interface OnPlayerKickedEvent extends EventData {
 /**
  * Called after a player leaves the game.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_left_game View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_left_game View documentation}
  */
 interface OnPlayerLeftGameEvent extends EventData {
   readonly player_index: uint
@@ -1604,7 +1604,7 @@ interface OnPlayerLeftGameEvent extends EventData {
 /**
  * Called after a players main inventory changed in some way.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_main_inventory_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_main_inventory_changed View documentation}
  */
 interface OnPlayerMainInventoryChangedEvent extends EventData {
   readonly player_index: uint
@@ -1622,7 +1622,7 @@ interface OnPlayerMainInventoryChangedEvent extends EventData {
  * **Note**: The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding
  * as more items are transferred into it.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_mined_entity View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_mined_entity View documentation}
  */
 interface OnPlayerMinedEntityEvent extends EventData {
   /** The index of the player doing the mining. */
@@ -1640,7 +1640,7 @@ interface OnPlayerMinedEntityEvent extends EventData {
 /**
  * Called when the player mines something.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_mined_item View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_mined_item View documentation}
  */
 interface OnPlayerMinedItemEvent extends EventData {
   /** The item given to the player */
@@ -1655,7 +1655,7 @@ interface OnPlayerMinedItemEvent extends EventData {
 /**
  * Called after a player mines tiles.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_mined_tile View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_mined_tile View documentation}
  */
 interface OnPlayerMinedTileEvent extends EventData {
   readonly player_index: uint
@@ -1672,7 +1672,7 @@ interface OnPlayerMinedTileEvent extends EventData {
 /**
  * Called when a player is muted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_muted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_muted View documentation}
  */
 interface OnPlayerMutedEvent extends EventData {
   /** The player. */
@@ -1686,7 +1686,7 @@ interface OnPlayerMutedEvent extends EventData {
 /**
  * Called when a player invokes the "smart pipette" over an entity.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_pipette View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_pipette View documentation}
  */
 interface OnPlayerPipetteEvent extends EventData {
   /** The player */
@@ -1704,7 +1704,7 @@ interface OnPlayerPipetteEvent extends EventData {
 /**
  * Called after the player puts equipment in an equipment grid
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_placed_equipment View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_placed_equipment View documentation}
  */
 interface OnPlayerPlacedEquipmentEvent extends EventData {
   readonly player_index: uint
@@ -1721,7 +1721,7 @@ interface OnPlayerPlacedEquipmentEvent extends EventData {
 /**
  * Called when a player is promoted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_promoted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_promoted View documentation}
  */
 interface OnPlayerPromotedEvent extends EventData {
   /** The player. */
@@ -1736,7 +1736,7 @@ interface OnPlayerPromotedEvent extends EventData {
  * Called when a player is removed (deleted) from the game. Not to be confused with the player logging of this is
  * different in that the player is deleted as if he never existed in the save file.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_removed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_removed View documentation}
  */
 interface OnPlayerRemovedEvent extends EventData {
   /** The player index that was removed */
@@ -1750,7 +1750,7 @@ interface OnPlayerRemovedEvent extends EventData {
 /**
  * Called after the player removes equipment from an equipment grid
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_removed_equipment View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_removed_equipment View documentation}
  */
 interface OnPlayerRemovedEquipmentEvent extends EventData {
   readonly player_index: uint
@@ -1769,7 +1769,7 @@ interface OnPlayerRemovedEquipmentEvent extends EventData {
 /**
  * Called when a player repairs an entity. Can be filtered using {@link LuaPlayerRepairedEntityEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_repaired_entity View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_repaired_entity View documentation}
  */
 interface OnPlayerRepairedEntityEvent extends EventData {
   readonly player_index: uint
@@ -1783,7 +1783,7 @@ interface OnPlayerRepairedEntityEvent extends EventData {
 /**
  * Called after a player respawns.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_respawned View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_respawned View documentation}
  */
 interface OnPlayerRespawnedEvent extends EventData {
   readonly player_index: uint
@@ -1799,7 +1799,7 @@ interface OnPlayerRespawnedEvent extends EventData {
  * Called when the player rotates an entity. This event is only fired when the entity actually changes its orientation
  * -- pressing the rotate key on an entity that can't be rotated won't fire this event.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_rotated_entity View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_rotated_entity View documentation}
  */
 interface OnPlayerRotatedEntityEvent extends EventData {
   /** The rotated entity. */
@@ -1816,7 +1816,7 @@ interface OnPlayerRotatedEntityEvent extends EventData {
 /**
  * Called after a player selects an area with a selection-tool item.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_selected_area View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_selected_area View documentation}
  */
 interface OnPlayerSelectedAreaEvent extends EventData {
   /** The player doing the selection. */
@@ -1840,7 +1840,7 @@ interface OnPlayerSelectedAreaEvent extends EventData {
 /**
  * Called when a player sets a quickbar slot to anything (new value, or set to empty).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_set_quick_bar_slot View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_set_quick_bar_slot View documentation}
  */
 interface OnPlayerSetQuickBarSlotEvent extends EventData {
   readonly player_index: uint
@@ -1853,7 +1853,7 @@ interface OnPlayerSetQuickBarSlotEvent extends EventData {
 /**
  * Called when a player selects an area with a blueprint.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_setup_blueprint View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_setup_blueprint View documentation}
  */
 interface OnPlayerSetupBlueprintEvent extends EventData {
   /** The player doing the selection. */
@@ -1877,7 +1877,7 @@ interface OnPlayerSetupBlueprintEvent extends EventData {
 /**
  * Called when a player toggles alt mode, also known as "show entity info".
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_toggled_alt_mode View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_toggled_alt_mode View documentation}
  */
 interface OnPlayerToggledAltModeEvent extends EventData {
   readonly player_index: uint
@@ -1895,7 +1895,7 @@ interface OnPlayerToggledAltModeEvent extends EventData {
 /**
  * Called when a player toggles the map editor on or off.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_toggled_map_editor View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_toggled_map_editor View documentation}
  */
 interface OnPlayerToggledMapEditorEvent extends EventData {
   readonly player_index: uint
@@ -1908,7 +1908,7 @@ interface OnPlayerToggledMapEditorEvent extends EventData {
 /**
  * Called after a players trash inventory changed in some way.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_trash_inventory_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_trash_inventory_changed View documentation}
  */
 interface OnPlayerTrashInventoryChangedEvent extends EventData {
   readonly player_index: uint
@@ -1921,7 +1921,7 @@ interface OnPlayerTrashInventoryChangedEvent extends EventData {
 /**
  * Called when a player is un-banned.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_unbanned View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_unbanned View documentation}
  */
 interface OnPlayerUnbannedEvent extends EventData {
   /** The player un-banned. */
@@ -1941,7 +1941,7 @@ interface OnPlayerUnbannedEvent extends EventData {
 /**
  * Called when a player is unmuted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_unmuted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_unmuted View documentation}
  */
 interface OnPlayerUnmutedEvent extends EventData {
   /** The player. */
@@ -1955,7 +1955,7 @@ interface OnPlayerUnmutedEvent extends EventData {
 /**
  * Called when a player uses a capsule that results in some game action.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_used_capsule View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_used_capsule View documentation}
  */
 interface OnPlayerUsedCapsuleEvent extends EventData {
   /** The player. */
@@ -1973,7 +1973,7 @@ interface OnPlayerUsedCapsuleEvent extends EventData {
 /**
  * Called when a player uses spidertron remote to send a spidertron to a given position
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_player_used_spider_remote View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_used_spider_remote View documentation}
  */
 interface OnPlayerUsedSpiderRemoteEvent extends EventData {
   /** The player that used the remote. */
@@ -1993,7 +1993,7 @@ interface OnPlayerUsedSpiderRemoteEvent extends EventData {
 /**
  * Called after an entity dies. Can be filtered using {@link LuaPostEntityDiedEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_post_entity_died View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_post_entity_died View documentation}
  */
 interface OnPostEntityDiedEvent extends EventData {
   /** The ghost created by the entity dying if any. */
@@ -2021,7 +2021,7 @@ interface OnPostEntityDiedEvent extends EventData {
 /**
  * Called when players uses an item to build something. Called before {@link OnBuiltEntityEvent on_built_entity}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_build View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_build View documentation}
  */
 interface OnPreBuildEvent extends EventData {
   /** The player who did the placing. */
@@ -2047,7 +2047,7 @@ interface OnPreBuildEvent extends EventData {
 /**
  * Called before one or more chunks are deleted using {@link LuaSurface.delete_chunk LuaSurface::delete_chunk}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_chunk_deleted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_chunk_deleted View documentation}
  */
 interface OnPreChunkDeletedEvent extends EventData {
   readonly surface_index: uint
@@ -2062,7 +2062,7 @@ interface OnPreChunkDeletedEvent extends EventData {
 /**
  * Called before entity copy-paste is done.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_entity_settings_pasted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_entity_settings_pasted View documentation}
  */
 interface OnPreEntitySettingsPastedEvent extends EventData {
   readonly player_index: uint
@@ -2080,7 +2080,7 @@ interface OnPreEntitySettingsPastedEvent extends EventData {
  * Called before a ghost entity is destroyed as a result of being marked for deconstruction. Can be filtered using
  * {@link LuaPreGhostDeconstructedEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_ghost_deconstructed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_ghost_deconstructed View documentation}
  */
 interface OnPreGhostDeconstructedEvent extends EventData {
   /** The player that did the deconstruction if any. */
@@ -2095,7 +2095,7 @@ interface OnPreGhostDeconstructedEvent extends EventData {
 /**
  * Called directly before a permission group is deleted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_permission_group_deleted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_permission_group_deleted View documentation}
  */
 interface OnPrePermissionGroupDeletedEvent extends EventData {
   /** The player doing the deletion. */
@@ -2111,7 +2111,7 @@ interface OnPrePermissionGroupDeletedEvent extends EventData {
 /**
  * Called directly before a permission string is imported.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_permission_string_imported View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_permission_string_imported View documentation}
  */
 interface OnPrePermissionStringImportedEvent extends EventData {
   /** The player importing the string. */
@@ -2125,7 +2125,7 @@ interface OnPrePermissionStringImportedEvent extends EventData {
 /**
  * Called when a player queues something to be crafted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_player_crafted_item View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_player_crafted_item View documentation}
  */
 interface OnPrePlayerCraftedItemEvent extends EventData {
   /** The player doing the crafting. */
@@ -2145,7 +2145,7 @@ interface OnPrePlayerCraftedItemEvent extends EventData {
 /**
  * Called before a players dies.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_player_died View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_player_died View documentation}
  */
 interface OnPrePlayerDiedEvent extends EventData {
   readonly player_index: uint
@@ -2159,7 +2159,7 @@ interface OnPrePlayerDiedEvent extends EventData {
 /**
  * Called before a player leaves the game.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_player_left_game View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_player_left_game View documentation}
  */
 interface OnPrePlayerLeftGameEvent extends EventData {
   readonly player_index: uint
@@ -2174,7 +2174,7 @@ interface OnPrePlayerLeftGameEvent extends EventData {
  * Called when the player finishes mining an entity, before the entity is removed from map. Can be filtered using
  * {@link LuaPrePlayerMinedEntityEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_player_mined_item View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_player_mined_item View documentation}
  */
 interface OnPrePlayerMinedItemEvent extends EventData {
   /** The entity being mined */
@@ -2190,7 +2190,7 @@ interface OnPrePlayerMinedItemEvent extends EventData {
  * Called before a player is removed (deleted) from the game. Not to be confused with the player logging of this is
  * different in that the player is deleted as if he never existed in the save file.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_player_removed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_player_removed View documentation}
  */
 interface OnPrePlayerRemovedEvent extends EventData {
   /** The player index that will be removed */
@@ -2204,7 +2204,7 @@ interface OnPrePlayerRemovedEvent extends EventData {
 /**
  * Called before a player toggles the map editor on or off.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_player_toggled_map_editor View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_player_toggled_map_editor View documentation}
  */
 interface OnPrePlayerToggledMapEditorEvent extends EventData {
   readonly player_index: uint
@@ -2217,7 +2217,7 @@ interface OnPrePlayerToggledMapEditorEvent extends EventData {
 /**
  * Called directly before a robot explodes cliffs.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_robot_exploded_cliff View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_robot_exploded_cliff View documentation}
  */
 interface OnPreRobotExplodedCliffEvent extends EventData {
   readonly robot: LuaEntity
@@ -2233,7 +2233,7 @@ interface OnPreRobotExplodedCliffEvent extends EventData {
 /**
  * Called just before a script inventory is resized.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_script_inventory_resized View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_script_inventory_resized View documentation}
  */
 interface OnPreScriptInventoryResizedEvent extends EventData {
   /** If done by console command; the player who ran the command. */
@@ -2254,7 +2254,7 @@ interface OnPreScriptInventoryResizedEvent extends EventData {
 /**
  * Called just before a surface is cleared (all entities removed and all chunks deleted).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_surface_cleared View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_surface_cleared View documentation}
  */
 interface OnPreSurfaceClearedEvent extends EventData {
   readonly surface_index: uint
@@ -2267,7 +2267,7 @@ interface OnPreSurfaceClearedEvent extends EventData {
 /**
  * Called just before a surface is deleted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_pre_surface_deleted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_pre_surface_deleted View documentation}
  */
 interface OnPreSurfaceDeletedEvent extends EventData {
   readonly surface_index: uint
@@ -2280,7 +2280,7 @@ interface OnPreSurfaceDeletedEvent extends EventData {
 /**
  * Called when a research finishes.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_research_finished View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_research_finished View documentation}
  */
 interface OnResearchFinishedEvent extends EventData {
   /** The researched technology */
@@ -2296,7 +2296,7 @@ interface OnResearchFinishedEvent extends EventData {
 /**
  * Called when a research is reversed (unresearched).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_research_reversed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_research_reversed View documentation}
  */
 interface OnResearchReversedEvent extends EventData {
   /** The technology un-researched */
@@ -2312,7 +2312,7 @@ interface OnResearchReversedEvent extends EventData {
 /**
  * Called when a technology research starts.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_research_started View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_research_started View documentation}
  */
 interface OnResearchStartedEvent extends EventData {
   /** The technology being researched */
@@ -2327,7 +2327,7 @@ interface OnResearchStartedEvent extends EventData {
 /**
  * Called when a resource entity reaches 0 or its minimum yield for infinite resources.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_resource_depleted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_resource_depleted View documentation}
  */
 interface OnResourceDepletedEvent extends EventData {
   readonly entity: LuaEntity
@@ -2340,7 +2340,7 @@ interface OnResourceDepletedEvent extends EventData {
 /**
  * Called when a construction robot builds an entity. Can be filtered using {@link LuaRobotBuiltEntityEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_robot_built_entity View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_robot_built_entity View documentation}
  */
 interface OnRobotBuiltEntityEvent extends EventData {
   /** The robot that did the building. */
@@ -2360,7 +2360,7 @@ interface OnRobotBuiltEntityEvent extends EventData {
 /**
  * Called after a robot builds tiles.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_robot_built_tile View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_robot_built_tile View documentation}
  */
 interface OnRobotBuiltTileEvent extends EventData {
   /** The robot. */
@@ -2384,7 +2384,7 @@ interface OnRobotBuiltTileEvent extends EventData {
 /**
  * Called directly after a robot explodes cliffs.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_robot_exploded_cliff View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_robot_exploded_cliff View documentation}
  */
 interface OnRobotExplodedCliffEvent extends EventData {
   readonly robot: LuaEntity
@@ -2399,7 +2399,7 @@ interface OnRobotExplodedCliffEvent extends EventData {
 /**
  * Called when a robot mines an entity.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_robot_mined View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_robot_mined View documentation}
  */
 interface OnRobotMinedEvent extends EventData {
   /** The robot that did the mining. */
@@ -2420,7 +2420,7 @@ interface OnRobotMinedEvent extends EventData {
  * **Note**: The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding
  * as more items are transferred into it.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_robot_mined_entity View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_robot_mined_entity View documentation}
  */
 interface OnRobotMinedEntityEvent extends EventData {
   /** The robot doing the mining. */
@@ -2438,7 +2438,7 @@ interface OnRobotMinedEntityEvent extends EventData {
 /**
  * Called after a robot mines tiles.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_robot_mined_tile View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_robot_mined_tile View documentation}
  */
 interface OnRobotMinedTileEvent extends EventData {
   /** The robot. */
@@ -2456,7 +2456,7 @@ interface OnRobotMinedTileEvent extends EventData {
 /**
  * Called before a robot mines an entity. Can be filtered using {@link LuaPreRobotMinedEntityEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_robot_pre_mined View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_robot_pre_mined View documentation}
  */
 interface OnRobotPreMinedEvent extends EventData {
   /** The robot that's about to do the mining. */
@@ -2472,7 +2472,7 @@ interface OnRobotPreMinedEvent extends EventData {
 /**
  * Called when a rocket silo is ordered to be launched.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_rocket_launch_ordered View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_rocket_launch_ordered View documentation}
  */
 interface OnRocketLaunchOrderedEvent extends EventData {
   readonly rocket: LuaEntity
@@ -2488,7 +2488,7 @@ interface OnRocketLaunchOrderedEvent extends EventData {
 /**
  * Called when the rocket is launched.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_rocket_launched View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_rocket_launched View documentation}
  */
 interface OnRocketLaunchedEvent extends EventData {
   readonly rocket: LuaEntity
@@ -2504,7 +2504,7 @@ interface OnRocketLaunchedEvent extends EventData {
 /**
  * Called when a runtime mod setting is changed by a player.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_runtime_mod_setting_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_runtime_mod_setting_changed View documentation}
  */
 interface OnRuntimeModSettingChangedEvent extends EventData {
   /**
@@ -2526,7 +2526,7 @@ interface OnRuntimeModSettingChangedEvent extends EventData {
 /**
  * Called just after a script inventory is resized.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_script_inventory_resized View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_script_inventory_resized View documentation}
  */
 interface OnScriptInventoryResizedEvent extends EventData {
   /** If done by console command; the player who ran the command. */
@@ -2549,7 +2549,7 @@ interface OnScriptInventoryResizedEvent extends EventData {
 /**
  * Called when a {@link LuaSurface.request_path LuaSurface::request_path} call completes.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_script_path_request_finished View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_script_path_request_finished View documentation}
  */
 interface OnScriptPathRequestFinishedEvent extends EventData {
   /** The actual path that the pathfinder has determined. `nil` if pathfinding failed. */
@@ -2567,7 +2567,7 @@ interface OnScriptPathRequestFinishedEvent extends EventData {
 /**
  * Called when a script trigger effect is triggered.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_script_trigger_effect View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_script_trigger_effect View documentation}
  */
 interface OnScriptTriggerEffectEvent extends EventData {
   /** The effect_id specified in the trigger effect. */
@@ -2588,7 +2588,7 @@ interface OnScriptTriggerEffectEvent extends EventData {
  * Called when an entity of type `radar` finishes scanning a sector. Can be filtered for the radar using
  * {@link LuaSectorScannedEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_sector_scanned View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_sector_scanned View documentation}
  */
 interface OnSectorScannedEvent extends EventData {
   /** The radar that did the scanning. */
@@ -2606,7 +2606,7 @@ interface OnSectorScannedEvent extends EventData {
 /**
  * Called after the selected entity changes for a given player.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_selected_entity_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_selected_entity_changed View documentation}
  */
 interface OnSelectedEntityChangedEvent extends EventData {
   /** The player whose selected entity changed. */
@@ -2622,7 +2622,7 @@ interface OnSelectedEntityChangedEvent extends EventData {
 /**
  * Called when a spider finishes moving to its autopilot position.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_spider_command_completed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_spider_command_completed View documentation}
  */
 interface OnSpiderCommandCompletedEvent extends EventData {
   /** Spider vehicle which was requested to move. */
@@ -2637,7 +2637,7 @@ interface OnSpiderCommandCompletedEvent extends EventData {
  * Called when a translation request generated through
  * {@link LuaPlayer.request_translation LuaPlayer::request_translation} is translated.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_string_translated View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_string_translated View documentation}
  */
 interface OnStringTranslatedEvent extends EventData {
   /** The player whose locale was used for the translation. */
@@ -2657,7 +2657,7 @@ interface OnStringTranslatedEvent extends EventData {
 /**
  * Called just after a surface is cleared (all entities removed and all chunks deleted).
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_surface_cleared View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_surface_cleared View documentation}
  */
 interface OnSurfaceClearedEvent extends EventData {
   readonly surface_index: uint
@@ -2672,7 +2672,7 @@ interface OnSurfaceClearedEvent extends EventData {
  *
  * **Note**: This is not called when the default surface is created as it will always exist.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_surface_created View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_surface_created View documentation}
  */
 interface OnSurfaceCreatedEvent extends EventData {
   readonly surface_index: uint
@@ -2685,7 +2685,7 @@ interface OnSurfaceCreatedEvent extends EventData {
 /**
  * Called after a surface is deleted.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_surface_deleted View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_surface_deleted View documentation}
  */
 interface OnSurfaceDeletedEvent extends EventData {
   readonly surface_index: uint
@@ -2698,7 +2698,7 @@ interface OnSurfaceDeletedEvent extends EventData {
 /**
  * Called after a surface is imported.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_surface_imported View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_surface_imported View documentation}
  */
 interface OnSurfaceImportedEvent extends EventData {
   readonly surface_index: uint
@@ -2713,7 +2713,7 @@ interface OnSurfaceImportedEvent extends EventData {
 /**
  * Called when a surface is renamed.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_surface_renamed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_surface_renamed View documentation}
  */
 interface OnSurfaceRenamedEvent extends EventData {
   readonly surface_index: uint
@@ -2728,7 +2728,7 @@ interface OnSurfaceRenamedEvent extends EventData {
 /**
  * Called when {@link LuaForce.reset_technology_effects LuaForce::reset_technology_effects} is finished.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_technology_effects_reset View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_technology_effects_reset View documentation}
  */
 interface OnTechnologyEffectsResetEvent extends EventData {
   readonly force: LuaForce
@@ -2741,7 +2741,7 @@ interface OnTechnologyEffectsResetEvent extends EventData {
 /**
  * It is fired once every tick. Since this event is fired every tick, its handler shouldn't include performance heavy code.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_tick View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_tick View documentation}
  */
 interface OnTickEvent extends EventData {
   /** Identifier of the event */
@@ -2753,7 +2753,7 @@ interface OnTickEvent extends EventData {
 /**
  * Called when a train changes state (started to stopped and vice versa)
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_train_changed_state View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_train_changed_state View documentation}
  */
 interface OnTrainChangedStateEvent extends EventData {
   readonly train: LuaTrain
@@ -2767,7 +2767,7 @@ interface OnTrainChangedStateEvent extends EventData {
 /**
  * Called when a new train is created either through disconnecting/connecting an existing one or building a new one.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_train_created View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_train_created View documentation}
  */
 interface OnTrainCreatedEvent extends EventData {
   readonly train: LuaTrain
@@ -2784,7 +2784,7 @@ interface OnTrainCreatedEvent extends EventData {
 /**
  * Called when a trains schedule is changed either by the player or through script.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_train_schedule_changed View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_train_schedule_changed View documentation}
  */
 interface OnTrainScheduleChangedEvent extends EventData {
   readonly train: LuaTrain
@@ -2800,7 +2800,7 @@ interface OnTrainScheduleChangedEvent extends EventData {
  * Called when an entity with a trigger prototype (such as capsules) create an entity AND that trigger prototype defined
  * `trigger_created_entity="true"`.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_trigger_created_entity View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_trigger_created_entity View documentation}
  */
 interface OnTriggerCreatedEntityEvent extends EventData {
   readonly entity: LuaEntity
@@ -2815,7 +2815,7 @@ interface OnTriggerCreatedEntityEvent extends EventData {
  * Called when an entity with a trigger prototype (such as capsules) fire an artillery projectile AND that trigger
  * prototype defined `trigger_fired_artillery="true"`.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_trigger_fired_artillery View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_trigger_fired_artillery View documentation}
  */
 interface OnTriggerFiredArtilleryEvent extends EventData {
   readonly entity: LuaEntity
@@ -2829,7 +2829,7 @@ interface OnTriggerFiredArtilleryEvent extends EventData {
 /**
  * Called when a unit is added to a unit group.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_unit_added_to_group View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_unit_added_to_group View documentation}
  */
 interface OnUnitAddedToGroupEvent extends EventData {
   readonly unit: LuaEntity
@@ -2843,7 +2843,7 @@ interface OnUnitAddedToGroupEvent extends EventData {
 /**
  * Called when a new unit group is created, before any members are added to it.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_unit_group_created View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_unit_group_created View documentation}
  */
 interface OnUnitGroupCreatedEvent extends EventData {
   readonly group: LuaUnitGroup
@@ -2856,7 +2856,7 @@ interface OnUnitGroupCreatedEvent extends EventData {
 /**
  * Called when a unit group finishes gathering and starts executing its command.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_unit_group_finished_gathering View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_unit_group_finished_gathering View documentation}
  */
 interface OnUnitGroupFinishedGatheringEvent extends EventData {
   readonly group: LuaUnitGroup
@@ -2869,7 +2869,7 @@ interface OnUnitGroupFinishedGatheringEvent extends EventData {
 /**
  * Called when a unit is removed from a unit group.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_unit_removed_from_group View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_unit_removed_from_group View documentation}
  */
 interface OnUnitRemovedFromGroupEvent extends EventData {
   readonly unit: LuaEntity
@@ -2883,7 +2883,7 @@ interface OnUnitRemovedFromGroupEvent extends EventData {
 /**
  * Called when a worker (construction or logistic) robot expires through a lack of energy.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#on_worker_robot_expired View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#on_worker_robot_expired View documentation}
  */
 interface OnWorkerRobotExpiredEvent extends EventData {
   readonly robot: LuaEntity
@@ -2899,7 +2899,7 @@ interface OnWorkerRobotExpiredEvent extends EventData {
  * {@link LuaBootstrap.raise_script_built LuaBootstrap::raise_script_built}, or when `raise_built` is passed to
  * {@link LuaSurface.create_entity LuaSurface::create_entity}. Can be filtered using {@link LuaScriptRaisedBuiltEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#script_raised_built View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#script_raised_built View documentation}
  */
 interface ScriptRaisedBuiltEvent extends EventData {
   /** The entity that has been built. */
@@ -2916,7 +2916,7 @@ interface ScriptRaisedBuiltEvent extends EventData {
  * {@link LuaBootstrap.raise_script_destroy LuaBootstrap::raise_script_destroy}, or when `raise_destroy` is passed to
  * {@link LuaEntity.destroy LuaEntity::destroy}. Can be filtered using {@link LuaScriptRaisedDestroyEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#script_raised_destroy View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#script_raised_destroy View documentation}
  */
 interface ScriptRaisedDestroyEvent extends EventData {
   /** The entity that was destroyed. */
@@ -2933,7 +2933,7 @@ interface ScriptRaisedDestroyEvent extends EventData {
  * {@link LuaBootstrap.raise_script_revive LuaBootstrap::raise_script_revive}, or when `raise_revive` is passed to
  * {@link LuaEntity.revive LuaEntity::revive}. Can be filtered using {@link LuaScriptRaisedReviveEventFilter}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#script_raised_revive View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#script_raised_revive View documentation}
  */
 interface ScriptRaisedReviveEvent extends EventData {
   /** The entity that was revived. */
@@ -2952,7 +2952,7 @@ interface ScriptRaisedReviveEvent extends EventData {
  * {@link LuaBootstrap.raise_script_set_tiles LuaBootstrap::raise_script_set_tiles}, or when `raise_event` is passed to
  * {@link LuaSurface.set_tiles LuaSurface::set_tiles}.
  *
- * {@link https://lua-api.factorio.com/latest/Events.html#script_raised_set_tiles View documentation}
+ * {@link https://lua-api.factorio.com/latest/events.html#script_raised_set_tiles View documentation}
  */
 interface ScriptRaisedSetTilesEvent extends EventData {
   /** The surface whose tiles were changed. */
