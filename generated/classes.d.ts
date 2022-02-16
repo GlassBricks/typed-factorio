@@ -2318,7 +2318,7 @@ interface LuaEntity extends LuaControl {
    * @param flag - The flag to test. See {@link EntityPrototypeFlags} for a list of flags.
    * @returns `true` if this entity has the given flag set.
    */
-  has_flag(flag: string): boolean
+  has_flag(flag: keyof EntityPrototypeFlags): boolean
   /**
    * Same as {@link LuaEntity.has_flag LuaEntity::has_flag}, but targets the inner entity on a entity ghost.
    *
@@ -2329,7 +2329,7 @@ interface LuaEntity extends LuaControl {
    * @param flag - The flag to test. See {@link EntityPrototypeFlags} for a list of flags.
    * @returns `true` if the entity has the given flag set.
    */
-  ghost_has_flag(flag: string): boolean
+  ghost_has_flag(flag: keyof EntityPrototypeFlags): boolean
   /**
    * Offer a thing on the market.
    *
@@ -4743,7 +4743,7 @@ interface BaseEntity extends LuaControl {
    * @param flag - The flag to test. See {@link EntityPrototypeFlags} for a list of flags.
    * @returns `true` if this entity has the given flag set.
    */
-  has_flag(flag: string): boolean
+  has_flag(flag: keyof EntityPrototypeFlags): boolean
   /**
    * Connect two devices with a circuit wire or copper cable. Depending on which type of connection should be made,
    * there are different procedures:
@@ -6020,7 +6020,7 @@ interface EntityGhostEntity extends BaseEntity {
    * @param flag - The flag to test. See {@link EntityPrototypeFlags} for a list of flags.
    * @returns `true` if the entity has the given flag set.
    */
-  ghost_has_flag(flag: string): boolean
+  ghost_has_flag(flag: keyof EntityPrototypeFlags): boolean
   /**
    * The unit number of the entity contained in this ghost or nil if the entity doesn't have one.
    *
@@ -7321,7 +7321,7 @@ interface LuaEntityPrototype {
    * @param flag - The flag to test. See {@link EntityPrototypeFlags} for a list of flags.
    * @returns `true` if this prototype has the given flag set.
    */
-  has_flag(flag: string): boolean
+  has_flag(flag: keyof EntityPrototypeFlags): boolean
   /**
    * Gets the base size of the given inventory on this entity or `nil` if the given inventory doesn't exist.
    *
@@ -8661,7 +8661,7 @@ interface BaseEntityPrototype {
    * @param flag - The flag to test. See {@link EntityPrototypeFlags} for a list of flags.
    * @returns `true` if this prototype has the given flag set.
    */
-  has_flag(flag: string): boolean
+  has_flag(flag: keyof EntityPrototypeFlags): boolean
   /**
    * Gets the base size of the given inventory on this entity or `nil` if the given inventory doesn't exist.
    *
@@ -15572,7 +15572,7 @@ interface LuaItemPrototype {
    * @param flag - The flag to test. See {@link ItemPrototypeFlags} for a list of flags.
    * @returns `true` if this prototype has the given flag set.
    */
-  has_flag(flag: string): boolean
+  has_flag(flag: keyof ItemPrototypeFlags): boolean
   /**
    * Type of this ammo prototype or `nil` if this is not an ammo prototype.
    *
@@ -16111,7 +16111,7 @@ interface BaseItemPrototype {
    * @param flag - The flag to test. See {@link ItemPrototypeFlags} for a list of flags.
    * @returns `true` if this prototype has the given flag set.
    */
-  has_flag(flag: string): boolean
+  has_flag(flag: keyof ItemPrototypeFlags): boolean
   /**
    * Type of this ammo prototype or `nil` if this is not an ammo prototype.
    *

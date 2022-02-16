@@ -3227,7 +3227,7 @@ interface TypeItemPrototypeFilter extends BaseItemPrototypeFilter {
 interface FlagItemPrototypeFilter extends BaseItemPrototypeFilter {
   readonly filter: "flag"
   /** One of the values in {@link ItemPrototypeFlags}. */
-  readonly flag: string
+  readonly flag: keyof ItemPrototypeFlags
 }
 
 interface SubgroupItemPrototypeFilter extends BaseItemPrototypeFilter {
@@ -4079,7 +4079,7 @@ interface CollisionMaskEntityPrototypeFilter extends BaseEntityPrototypeFilter {
 interface FlagEntityPrototypeFilter extends BaseEntityPrototypeFilter {
   readonly filter: "flag"
   /** One of the values in {@link EntityPrototypeFlags}. */
-  readonly flag: string
+  readonly flag: keyof EntityPrototypeFlags
 }
 
 interface BuildBaseEvolutionRequirementEntityPrototypeFilter extends BaseEntityPrototypeFilter {

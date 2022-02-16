@@ -26,6 +26,7 @@ import {
   Attribute,
   BasicMember,
   Class,
+  Concept,
   Define,
   Event,
   FactorioApiJson,
@@ -108,7 +109,7 @@ export default class DefinitionsGenerator {
   defines = new Map<string, Define>()
   events = new Map<string, Event>(this.apiDocs.events.map((e) => [e.name, e]))
   private classes = new Map<string, Class>(this.apiDocs.classes.map((e) => [e.name, e]))
-  private concepts = new Set<string>(this.apiDocs.concepts.map((e) => e.name))
+  private concepts = new Map<string, Concept>(this.apiDocs.concepts.map((e) => [e.name, e]))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
 
   private preprocessDone = false
@@ -459,7 +460,10 @@ export default class DefinitionsGenerator {
     read: boolean,
     write: boolean
   ): RWType {
-    const type = this.tryMakeStringEnum(member, baseType) ?? this.mapTypeBasic(baseType, read, write)
+    const type =
+      this.tryUseStringEnum(member, baseType) ??
+      this.tryUseFlagValue(member, baseType) ??
+      this.mapTypeBasic(baseType, read, write)
     const isNullable = !(member as Parameter).optional && this.isNullableFromDescription(member, parent)
     if (isNullable) {
       return mergeUnion(type, Types.undefined)
@@ -630,7 +634,7 @@ export default class DefinitionsGenerator {
   }
 
   // noinspection JSMethodCanBeStatic
-  private tryMakeStringEnum(
+  private tryUseStringEnum(
     member: {
       description: string
       name?: string
@@ -656,6 +660,26 @@ export default class DefinitionsGenerator {
     */
 
     return undefined
+  }
+
+  private tryUseFlagValue(
+    member: {
+      description: string
+      name?: string
+    },
+    type: Type
+  ): RWType | undefined {
+    if (member.name !== "flag" || type !== "string") return undefined
+    const match = member.description.match(/\[([A-Z][a-zA-Z]+Flags)]/)
+    if (!match) return undefined
+    const flagName = match[1]
+    if (this.concepts.get(flagName)?.category !== "flag") return undefined
+
+    const result = ts.factory.createTypeOperatorNode(
+      ts.SyntaxKind.KeyOfKeyword,
+      ts.factory.createTypeReferenceNode(flagName)
+    )
+    return { read: result, write: result }
   }
 
   private isNullableFromDescription(
