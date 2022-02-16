@@ -1,3 +1,7 @@
+# v0.18.1
+
+- `TechnologyIdentification` now also has a more specific type when read.
+
 # v0.18.0
 
 - `ForceIdentification` and `ItemPrototypeIdentification` now have more specific types when read.
