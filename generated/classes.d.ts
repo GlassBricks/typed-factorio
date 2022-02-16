@@ -1382,7 +1382,8 @@ interface LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.force View documentation}
    */
-  force: ForceIdentification
+  get force(): LuaForce
+  set force(value: ForceIdentification)
   /**
    * The currently selected entity; `nil` if none. Assigning an entity will select it if selectable otherwise clears selection.
    *
@@ -1532,7 +1533,8 @@ interface LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.cursor_ghost View documentation}
    */
-  cursor_ghost: ItemPrototypeIdentification
+  get cursor_ghost(): LuaItemPrototype
+  set cursor_ghost(value: ItemPrototypeIdentification)
   /**
    * `true` if the player is in a vehicle. Writing to this attribute puts the player in or out of a vehicle.
    *
@@ -4410,7 +4412,8 @@ interface LuaEntity extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_to_forces View documentation}
    */
-  render_to_forces: ForceIdentification[] | undefined
+  get render_to_forces(): LuaForce[] | undefined
+  set render_to_forces(value: ForceIdentification[] | undefined)
   /**
    * The rail target of this pump or `nil`.
    *
@@ -5800,7 +5803,8 @@ interface BaseEntity extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_to_forces View documentation}
    */
-  render_to_forces: ForceIdentification[] | undefined
+  get render_to_forces(): LuaForce[] | undefined
+  set render_to_forces(value: ForceIdentification[] | undefined)
   /**
    * Returns the id of the electric network that this entity is connected to or `nil`.
    *

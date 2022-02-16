@@ -680,6 +680,12 @@ interface BoundingBoxRead extends BoundingBoxTable {
 /** @readType BoundingBoxRead */
 interface BoundingBox {}
 
+/** @readType LuaForce */
+interface ForceIdentification {}
+
+/** @readType LuaItemPrototype */
+interface ItemPrototypeIdentification {}
+
 // additional types
 
 interface MapGenSettings {}

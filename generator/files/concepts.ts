@@ -13,21 +13,20 @@ export function preprocessConcepts(generator: DefinitionsGenerator) {
     const existing = generator.manualDefinitions[concept.name]
 
     let readType: string | undefined
-    let writeType: string | undefined
+    const writeType: string = concept.name
 
     readType = existing?.annotations.readType?.[0]
     const isTableOrArrayConcept = concept.category === "table_or_array"
 
     if (isTableOrArrayConcept || existing?.annotations.tableOrArray) {
       readType ??= concept.name + "Table"
-      writeType ??= concept.name
     }
     if (isTableOrArrayConcept) {
       generator.typeNames[concept.name + "Table"] = concept.name
       generator.typeNames[concept.name + "Array"] = concept.name
     }
     if (readType) {
-      if (!writeType) throw new Error("Read and write types should be specified together")
+      // if (!writeType) throw new Error("Read and write types should be specified together")
       generator.readWriteConcepts.set(concept.name, { read: readType, write: writeType })
     }
   }
