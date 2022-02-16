@@ -680,13 +680,25 @@ interface BoundingBoxRead extends BoundingBoxTable {
 /** @readType BoundingBoxRead */
 interface BoundingBox {}
 
+/** @readType Fluid */
+interface FluidIdentification {}
+
 /** @readType LuaForce */
 interface ForceIdentification {}
+
+/** @readType LuaTechnology */
+interface TechnologyIdentification {}
+
+/** @readType LuaSurface */
+interface SurfaceIdentification {}
+
+/** @readType LuaPlayer */
+interface PlayerIdentification {}
 
 /** @readType LuaItemPrototype */
 interface ItemPrototypeIdentification {}
 
-// additional types
+// Skipped: EntityPrototypeIdentification, ItemStackIdentification
 
 interface MapGenSettings {}
 

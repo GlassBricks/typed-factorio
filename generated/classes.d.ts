@@ -11812,7 +11812,8 @@ interface LuaForce {
    *
    * {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.research_queue View documentation}
    */
-  research_queue: TechnologyIdentification[] | undefined
+  get research_queue(): LuaTechnology[] | undefined
+  set research_queue(value: TechnologyIdentification[] | undefined)
   /**
    * Whether research is enabled for this force, see {@link LuaForce.enable_research LuaForce::enable_research} and
    * {@link LuaForce.disable_research LuaForce::disable_research}
