@@ -71,10 +71,7 @@ interface LuaFluidBox extends Array<Fluid | undefined> {}
 
 interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 
-interface LuaInventory extends ReadonlyArray<LuaItemStack> {
-  find_item_stack(item: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
-  find_empty_stack(item?: string): LuaMultiReturn<[undefined] | [LuaItemStack, uint]>
-}
+interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
 
 // Gui element
 
@@ -383,10 +380,10 @@ interface LuaEntity {
   initial_amount: uint | undefined
   get_driver(): LuaEntity | LuaPlayer | undefined
   get_passenger(): LuaEntity | LuaPlayer | undefined
-  revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
-  silent_revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
+  // revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
+  // silent_revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
 
-  get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
+  // get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
 }
 
 interface LuaItemStack {
@@ -457,8 +454,8 @@ interface LuaBootstrap {
 
   generate_event_name<T extends table>(): CustomEventId<T>
 
-  get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void
-  get_event_handler(event: string): (data: CustomInputEvent) => void
+  get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | undefined
+  get_event_handler(event: string): (data: CustomInputEvent) => void | undefined
 
   get_event_filter<E extends EventId<any, table>>(event: E): E["_filter"][] | undefined
   set_event_filter<E extends EventId<any, table>>(event: E, filters: E["_filter"][] | undefined): void
@@ -477,13 +474,10 @@ type RealOrientation = float
 
 type Tags = Record<string, AnyBasic | undefined>
 
-interface PositionTable {}
-interface PositionArray {}
+interface MapPositionTable {}
+interface MapPositionArray {}
 
-/** @tableOrArray */
-interface MapPosition {}
-
-type Vector = PositionArray
+type Vector = MapPositionArray
 
 type MapGenSize =
   | number
@@ -653,27 +647,27 @@ interface EventFilter {}
 // where a vector is supposed to be a position table instead
 
 interface SmokeSource {
-  readonly position?: PositionTable
-  readonly north_position?: PositionTable
-  readonly east_position?: PositionTable
-  readonly south_position?: PositionTable
-  readonly west_position?: PositionTable
+  readonly position?: MapPositionTable
+  readonly north_position?: MapPositionTable
+  readonly east_position?: MapPositionTable
+  readonly south_position?: MapPositionTable
+  readonly west_position?: MapPositionTable
 }
 
 interface FluidBoxConnection {
-  readonly positions: PositionTable[]
+  readonly positions: MapPositionTable[]
 }
 
 interface CircularParticleCreationSpecification {
-  readonly center: PositionTable
+  readonly center: MapPositionTable
 }
 
 interface BoundingBoxTable {}
 
 /** @addAfter BoundingBox */
 interface BoundingBoxRead extends BoundingBoxTable {
-  readonly left_top: PositionTable
-  readonly right_bottom: PositionTable
+  readonly left_top: MapPositionTable
+  readonly right_bottom: MapPositionTable
   readonly orientation?: RealOrientation
 }
 

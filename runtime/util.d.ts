@@ -13,9 +13,9 @@ declare module "util" {
 
   function copy<T>(table: T): T
 
-  function distance(position1: Position, position2: Position): number
+  function distance(position1: MapPosition, position2: MapPosition): number
 
-  function positiontostr(position: Position): string
+  function positiontostr(position: MapPosition): string
 
   function formattime(ticks: number): string
 
@@ -29,11 +29,11 @@ declare module "util" {
   function multiply_color(c1: Color, n: number): ColorArray
 
   function moveposition(
-    position: Position,
+    position: MapPosition,
     direction: defines.direction.north | defines.direction.east | defines.direction.south | defines.direction.west,
     distance: number
-  ): Position
-  function moveposition(position: Position, direction: defines.direction, distance: number): Position | undefined
+  ): MapPosition
+  function moveposition(position: MapPosition, direction: defines.direction, distance: number): MapPosition | undefined
 
   function oppositedirection(direction: defines.direction): defines.direction
 
@@ -41,21 +41,21 @@ declare module "util" {
   function multiplystripes<T>(count: number, stripes: T[]): T[]
 
   /** Gets tile position by pixel */
-  function by_pixel(x: number, y: number): Position
+  function by_pixel(x: number, y: number): MapPosition
 
   /** Gets tile position by pixel, hr */
-  function by_pixel_hr(x: number, y: number): Position
+  function by_pixel_hr(x: number, y: number): MapPosition
 
   // omitted: foreach_sprite_definition
 
-  function add_shift(a: PositionArray | undefined, b: PositionArray): PositionArray
-  function add_shift(a: PositionArray, b: PositionArray | undefined): PositionArray
-  function add_shift(a: PositionArray | undefined, b: PositionArray | undefined): PositionArray | undefined
+  function add_shift(a: MapPositionArray | undefined, b: MapPositionArray): MapPositionArray
+  function add_shift(a: MapPositionArray, b: MapPositionArray | undefined): MapPositionArray
+  function add_shift(a: MapPositionArray | undefined, b: MapPositionArray | undefined): MapPositionArray | undefined
 
   // omitted: add_shift_offset
 
-  function mul_shift(shift: PositionArray, scale: number | undefined): PositionArray
-  function mul_shift(shift: PositionArray | undefined, scale: number | undefined): PositionArray | undefined
+  function mul_shift(shift: MapPositionArray, scale: number | undefined): MapPositionArray
+  function mul_shift(shift: MapPositionArray | undefined, scale: number | undefined): MapPositionArray | undefined
 
   function format_number(amount: number, append_suffix?: boolean): string
 

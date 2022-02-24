@@ -1,7 +1,7 @@
 import { assertNever, getFirst, sortByOrder } from "../util"
 import ts from "typescript"
 import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method, Parameter } from "../FactorioApiJson"
-import { addFakeJSDoc, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
+import { addFakeJSDoc, makeNullable, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
 import DefinitionsGenerator, { Statements } from "../DefinitionsGenerator"
 
@@ -41,8 +41,8 @@ function analyzeMethod(generator: DefinitionsGenerator, method: Method) {
   if (method.variadic_type) {
     generator.mapTypeBasic(method.variadic_type, false, true)
   }
-  if (method.return_type) {
-    generator.mapTypeBasic(method.return_type, true, false)
+  for (const returnValue of method.return_values) {
+    generator.mapTypeBasic(returnValue.type, true, false)
   }
 }
 
@@ -307,7 +307,7 @@ function generateClass(
       if (Array.isArray(memberNode) || !ts.isPropertySignature(memberNode)) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} should be a property signature`)
       }
-      const types = generator.tryGetUnionTypeStringLiterals(memberNode.type!)
+      const types = generator.tryGetStringEnumType(memberNode.type!)
       if (!types) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} is not a string literal union`)
       }
@@ -580,9 +580,31 @@ function generateClass(
     }
 
     let signatures: ts.MethodSignature[] | ts.MethodSignature
-    const returnType = !method.return_type
-      ? Types.void
-      : generator.mapTypeWithTransforms(method, clazz.name, method.return_type, true, false).read
+
+    function mapReturnType(type: Method["return_values"][number]): ts.TypeNode {
+      const result = generator.mapTypeWithTransforms(
+        {
+          ...type,
+          name: "<return>",
+        },
+        thisPath,
+        type.type,
+        true,
+        false
+      ).read
+      return type.optional ? makeNullable({ read: result }).read! : result
+    }
+
+    let returnType: ts.TypeNode
+    if (method.return_values.length === 0) {
+      returnType = Types.void
+    } else if (method.return_values.length === 1) {
+      returnType = mapReturnType(method.return_values[0])
+    } else {
+      const types = method.return_values.map(mapReturnType)
+      returnType = ts.factory.createTypeReferenceNode("LuaMultiReturn", [ts.factory.createTupleTypeNode(types)])
+    }
+
     if (existingMethods) {
       existingMethods.forEach((m) => {
         if (!ts.isMethodSignature(m)) {
@@ -620,7 +642,7 @@ function generateClass(
       tags.push(
         ...(method.parameters as { name: string; description?: string }[])
           .concat([{ name: "args", description: method.variadic_description }])
-          .filter((p) => p.description !== undefined)
+          .filter((p) => p.description)
           .map((p) =>
             ts.factory.createJSDocParameterTag(
               undefined,
@@ -628,14 +650,26 @@ function generateClass(
               false,
               undefined,
               undefined,
-              generator.processDescription(p.description ? "- " + p.description : undefined)
+              generator.processDescription(p.description)
             )
           )
       )
     }
-    if (method.return_description) {
+
+    if (method.return_values.length === 1) {
+      if (method.return_values[0].description)
+        tags.push(
+          ts.factory.createJSDocReturnTag(
+            undefined,
+            undefined,
+            generator.processDescription(method.return_values[0].description)
+          )
+        )
+    } else if (method.return_values.length > 1) {
       tags.push(
-        ts.factory.createJSDocReturnTag(undefined, undefined, generator.processDescription(method.return_description))
+        ...method.return_values.map((r) =>
+          ts.factory.createJSDocReturnTag(undefined, undefined, generator.processDescription(r.description))
+        )
       )
     }
     generator.addJsDoc(getFirst(signatures), method, thisPath, tags)

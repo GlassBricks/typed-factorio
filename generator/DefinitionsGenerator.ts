@@ -4,7 +4,7 @@ import {
   createComment,
   createExtendsClause,
   indent,
-  mergeUnion,
+  makeNullable,
   Modifiers,
   printer,
   printNode,
@@ -29,15 +29,15 @@ import {
   Concept,
   Define,
   Event,
+  EventRaised,
   FactorioApiJson,
-  Method,
   Parameter,
   Type,
   WithNotes,
   WithParameterVariants,
 } from "./FactorioApiJson"
 import { generateDefines, preprocessDefines } from "./files/defines"
-import generateEvents, { preprocessEvents } from "./files/events"
+import generateEvents, { getMappedEventName, preprocessEvents } from "./files/events"
 import { generateBuiltins, generateGlobalObjects, preprocessBuiltins, preprocessGlobalObjects } from "./files/others"
 import { generateConcepts, preprocessConcepts } from "./files/concepts"
 import { generateClasses, preprocessClasses } from "./files/classes"
@@ -140,7 +140,7 @@ export default class DefinitionsGenerator {
     if (apiDocs.application !== "factorio") {
       throw new Error("Unsupported application " + apiDocs.application)
     }
-    if (apiDocs.api_version !== 1) {
+    if (apiDocs.api_version !== 2) {
       throw new Error("Unsupported api version " + apiDocs.api_version)
     }
   }
@@ -465,10 +465,7 @@ export default class DefinitionsGenerator {
       this.tryUseFlagValue(member, baseType) ??
       this.mapTypeBasic(baseType, read, write)
     const isNullable = !(member as Parameter).optional && this.isNullableFromDescription(member, parent)
-    if (isNullable) {
-      return mergeUnion(type, Types.undefined)
-    }
-    return type
+    return isNullable ? makeNullable(type) : type
   }
 
   mapTypeBasic(type: Type, read: true, write: false): { read: ts.TypeNode }
@@ -616,7 +613,7 @@ export default class DefinitionsGenerator {
     )
   }
 
-  tryGetUnionTypeStringLiterals(typeNode: ts.TypeNode): string[] | undefined {
+  tryGetStringEnumType(typeNode: ts.TypeNode): string[] | undefined {
     if (ts.isUnionTypeNode(typeNode)) {
       if (typeNode.types.some((t) => !ts.isLiteralTypeNode(t) || !ts.isStringLiteral(t.literal))) return undefined
       return typeNode.types.map((t) => ((t as ts.LiteralTypeNode).literal as ts.StringLiteral).text)
@@ -645,7 +642,9 @@ export default class DefinitionsGenerator {
       const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
       if (
         (matches.size >= 2 && !member.description.match(/e\.g\. /i)) ||
-        (matches.size === 1 && member.description.match(/One of `"[a-zA-Z-_]+?"`/))
+        (matches.size === 1 &&
+          (member.description.match(/One of `"[a-zA-Z-_]+?"`/) ||
+            member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
       ) {
         const outType = ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
         return { read: outType, write: outType }
@@ -689,14 +688,13 @@ export default class DefinitionsGenerator {
     },
     parent: string
   ): boolean {
-    const description = member.description + " " + (member as Method).return_description ?? ""
     const nullableRegex = /(returns|or|be|possibly|otherwise|else|) [`']?nil[`']?|`?nil`? (if|when|otherwise)/i
-    const nullable = description.match(nullableRegex)
+    const nullable = member.description.match(nullableRegex)
     if (nullable) {
-      if (!description.match(/[`' ]nil/i)) {
+      if (!member.description.match(/[`' ]nil/i)) {
         this.warnIncompleteDefinition(
           `Inconsistency in nullability in description: ${parent}.${member.name}\n`,
-          indent(description)
+          indent(member.description)
         )
       }
       return true
@@ -764,7 +762,7 @@ export default class DefinitionsGenerator {
         }
       } else {
         const memberType = property.member.write ?? property.member.read!
-        types = this.tryGetUnionTypeStringLiterals(memberType.type!)
+        types = this.tryGetStringEnumType(memberType.type!)
         if (!types) {
           throw new Error(`Discriminant property ${name}.${discriminantProperty} is not a string literal union`)
         }
@@ -964,7 +962,7 @@ export default class DefinitionsGenerator {
         .replace(/\n(?!([\n-]))/g, "\n\n")
       result += withLinks
 
-      if (codeBlock) result += "```lua" + codeBlock + "```"
+      if (codeBlock) result += "```" + codeBlock + "```"
     }
 
     return result
@@ -994,12 +992,36 @@ export default class DefinitionsGenerator {
     return DefinitionsGenerator.docUrlBase + relative_link
   }
 
+  private getRaisesComment(raises: EventRaised[]): string {
+    let result = "**Raised events:**\n"
+    for (const event of raises.sort(sortByOrder)) {
+      const eventName = event.name
+      const eventLink = getMappedEventName(eventName)
+      const eventDescription = this.processDescription(event.description)
+      const eventTimeframe = event.timeframe
+      result += `- {@link ${eventLink} ${eventName}}${event.optional ? "?" : ""} _${eventTimeframe}_${
+        eventDescription ? " " + eventDescription : ""
+      }\n`
+    }
+    return result
+  }
+
+  private processExample(example: string): string {
+    // find code block if exists
+    const match = example.match(/(.*?)(```(?:(?!```).)*```)/s)
+    if (match) {
+      return this.processDescription(match[1].trim() + "\n" + match[2].trim())!
+    }
+    return this.processDescription(example)!
+  }
+
   addJsDoc<T extends ts.Node>(
     node: T,
     element: {
       description: string
       subclasses?: string[]
       variant_parameter_description?: string
+      raises?: EventRaised[]
     } & WithNotes,
     reference: string | undefined,
     tags?: ts.JSDocTag[]
@@ -1007,7 +1029,7 @@ export default class DefinitionsGenerator {
     let comment = [
       this.processDescription(element.description),
       this.processDescription(element.variant_parameter_description),
-      element.notes?.map((n) => this.processDescription("**Note**: " + n)),
+      element.raises && element.raises.length > 0 && this.getRaisesComment(element.raises),
       element.subclasses &&
         `_Can only be used if this is ${
           element.subclasses.length === 1
@@ -1015,25 +1037,26 @@ export default class DefinitionsGenerator {
             : `${element.subclasses.slice(0, -1).join(", ")} or ${element.subclasses[element.subclasses.length - 1]}`
         }_`,
     ]
-      .flat()
-      .filter((x) => !!x)
+      .filter((x) => x)
       .join("\n\n")
+      .replace(/\n\n+/g, "\n\n")
 
     tags = tags || []
-    if (element.examples) {
+
+    // notes
+    if (element.notes) {
       tags.push(
-        ...element.examples.map((e) =>
-          ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("example"), "\n" + this.processDescription(e))
+        ts.factory.createJSDocUnknownTag(
+          ts.factory.createIdentifier("remarks"),
+          this.processDescription(element.notes.join("<br>"))
         )
       )
     }
-    if (element.see_also) {
+
+    if (element.examples) {
       tags.push(
-        ...element.see_also?.map((l) =>
-          ts.factory.createJSDocSeeTag(
-            undefined,
-            ts.factory.createJSDocNameReference(ts.factory.createIdentifier("@link " + l.replace(/::/g, ".")))
-          )
+        ...element.examples.map((e) =>
+          ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("example"), this.processExample(e))
         )
       )
     }

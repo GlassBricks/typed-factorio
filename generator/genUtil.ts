@@ -48,16 +48,25 @@ export function toPascalCase(str: string): string {
   return toPascalDictionary[str] ?? str.split(/[-_ ]/g).map(capitalize).join("")
 }
 
-export function mergeUnion(a: RWType, b: ts.TypeNode): RWType {
-  function getTypes(t: ts.TypeNode): readonly ts.TypeNode[] {
-    if (ts.isUnionTypeNode(t)) return t.types
-    return [t]
+export function makeNullable(type: RWType) {
+  function makeTypeNullable(t: ts.TypeNode): ts.TypeNode {
+    if (!ts.isUnionTypeNode(t)) {
+      return ts.factory.createUnionTypeNode([t, Types.undefined])
+    }
+    if (t.types.some((t) => t.kind === ts.SyntaxKind.UndefinedKeyword)) {
+      return t
+    }
+    return ts.factory.createUnionTypeNode([...t.types, Types.undefined])
+  }
+  if (type.read === type.write) {
+    const read = makeTypeNullable(type.read!)
+    return { read, write: read }
   }
 
-  const readType = a.read && ts.factory.createUnionTypeNode([...getTypes(a.read), ...getTypes(b)])
-  const writeType =
-    a.write && (a.read === a.write ? readType : ts.factory.createUnionTypeNode([...getTypes(a.write), ...getTypes(b)]))
-  return { read: readType, write: writeType }
+  return {
+    read: type.read && makeTypeNullable(type.read),
+    write: type.write && makeTypeNullable(type.write),
+  }
 }
 
 export function createNamespace(

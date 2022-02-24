@@ -33,7 +33,7 @@ async function main() {
   const expected = {
     application: "factorio",
     stage: "runtime",
-    api_version: 1,
+    api_version: 2,
   }
   for (const [k, value] of Object.entries(expected)) {
     const key = k as keyof typeof expected

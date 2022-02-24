@@ -2,7 +2,7 @@ export interface FactorioApiJson {
   application: "factorio"
   stage: "runtime"
   application_version: string
-  api_version: 1
+  api_version: 2
 
   classes: Class[]
   events: Event[]
@@ -21,7 +21,6 @@ export interface BasicMember {
 export interface WithNotes {
   notes?: string[]
   examples?: string[]
-  see_also?: string[]
 }
 
 export interface WithParameterVariants {
@@ -172,6 +171,11 @@ export type ComplexType =
 
 export type Type = string | ComplexType
 
+export interface EventRaised extends BasicMember {
+  timeframe: "instantly" | "current_tick" | "future_tick"
+  optional: boolean
+}
+
 export interface Parameter extends BasicMember {
   type: Type
   optional: boolean
@@ -187,8 +191,8 @@ export interface Method extends BasicMember, WithNotes, WithParameterVariants {
   variadic_description?: string
   takes_table: boolean
   table_is_optional?: boolean
-  return_type?: Type
-  return_description?: string
+  return_values: Omit<Parameter, "name">[]
+  raises?: EventRaised[]
 }
 
 export interface Attribute extends BasicMember, WithNotes {
@@ -196,4 +200,5 @@ export interface Attribute extends BasicMember, WithNotes {
   type: Type
   read: boolean
   write: boolean
+  raises?: EventRaised[]
 }
