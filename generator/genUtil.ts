@@ -49,14 +49,14 @@ export function toPascalCase(str: string): string {
 }
 
 export function makeNullable(type: RWType) {
-  function makeTypeNullable(t: ts.TypeNode): ts.TypeNode {
-    if (!ts.isUnionTypeNode(t)) {
-      return ts.factory.createUnionTypeNode([t, Types.undefined])
+  function makeTypeNullable(typeNode: ts.TypeNode): ts.TypeNode {
+    if (!ts.isUnionTypeNode(typeNode)) {
+      return ts.factory.createUnionTypeNode([typeNode, Types.undefined])
     }
-    if (t.types.some((t) => t.kind === ts.SyntaxKind.UndefinedKeyword)) {
-      return t
+    if (typeNode.types.some((t) => t.kind === ts.SyntaxKind.UndefinedKeyword)) {
+      return typeNode
     }
-    return ts.factory.createUnionTypeNode([...t.types, Types.undefined])
+    return ts.factory.createUnionTypeNode([...typeNode.types, Types.undefined])
   }
   if (type.read === type.write) {
     const read = makeTypeNullable(type.read!)
