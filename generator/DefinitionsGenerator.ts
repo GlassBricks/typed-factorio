@@ -1007,15 +1007,11 @@ export default class DefinitionsGenerator {
   }
 
   private processExample(example: string): string {
-    let processed = this.processDescription(example)!
-    // add " * " to each line that is not the first
-    processed = processed.replaceAll("\n", "\n * ")
-
-    if (processed.startsWith("```")) {
-      return "\n" + processed
-    } else {
-      return processed
+    if (example.startsWith("```")) {
+      example = "\n" + example
     }
+    // add " * " to each line that is not the first
+    return this.processDescription(example)!.replaceAll("\n", "\n * ")
   }
 
   addJsDoc<T extends ts.Node>(

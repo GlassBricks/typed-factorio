@@ -725,7 +725,8 @@ interface LuaBurnerPrototype {
  * {@link https://lua-api.factorio.com/latest/LuaChunkIterator.html View documentation}
  * @noSelf
  * @example
-```
+ *
+ * ```
  * for chunk in some_surface.get_chunks() do
  *   game.player.print("x: " .. chunk.x .. ", y: " .. chunk.y)
  *   game.player.print("area: " .. serpent.line(chunk.area))
@@ -1529,14 +1530,15 @@ interface LuaControl {
     readonly position: MapPosition
   })
   /**
-     * The player's cursor stack, or `nil` if the player controller is a spectator. Even though this property is marked as read-only, it returns a {@link LuaItemStack}, meaning it can be manipulated like so:
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.cursor_stack View documentation}
-     * @example
-    ```
-     * player.cursor_stack.clear()
-     * ```
-     */
+   * The player's cursor stack, or `nil` if the player controller is a spectator. Even though this property is marked as read-only, it returns a {@link LuaItemStack}, meaning it can be manipulated like so:
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.cursor_stack View documentation}
+   * @example
+   *
+   * ```
+   * player.cursor_stack.clear()
+   * ```
+   */
   readonly cursor_stack: LuaItemStack | undefined
   /**
    * The ghost prototype in the player's cursor.
@@ -3487,15 +3489,16 @@ interface LuaEntity extends LuaControl {
    */
   selected_gun_index: uint | undefined
   /**
-     * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities that don't have the concept of energy stored inside.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.energy View documentation}
-     * @example
-    ```
-     * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
-     * game.player.selected.energy = 3000
-     * ```
-     */
+   * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities that don't have the concept of energy stored inside.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.energy View documentation}
+   * @example
+   *
+   * ```
+   * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
+   * game.player.selected.energy = 3000
+   * ```
+   */
   energy: double
   /**
    * The temperature of this entities heat energy source if this entity uses a heat energy source or `nil`.
@@ -5200,15 +5203,16 @@ interface BaseEntity extends LuaControl {
    */
   drop_target: LuaEntity | undefined
   /**
-     * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities that don't have the concept of energy stored inside.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.energy View documentation}
-     * @example
-    ```
-     * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
-     * game.player.selected.energy = 3000
-     * ```
-     */
+   * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities that don't have the concept of energy stored inside.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.energy View documentation}
+   * @example
+   *
+   * ```
+   * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
+   * game.player.selected.energy = 3000
+   * ```
+   */
   energy: double
   /**
    * The temperature of this entities heat energy source if this entity uses a heat energy source or `nil`.
@@ -13246,25 +13250,27 @@ interface BaseGuiElement {
     }
   >
   /**
-     * Remove children of this element. Any {@link LuaGuiElement} objects referring to the destroyed elements become invalid after this operation.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.clear View documentation}
-     * @example
-    ```
-     * game.player.gui.top.clear()
-     * ```
-     */
+   * Remove children of this element. Any {@link LuaGuiElement} objects referring to the destroyed elements become invalid after this operation.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.clear View documentation}
+   * @example
+   *
+   * ```
+   * game.player.gui.top.clear()
+   * ```
+   */
   clear(): void
   /**
-     * Remove this element, along with its children. Any {@link LuaGuiElement} objects referring to the destroyed elements become invalid after this operation.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.destroy View documentation}
-     * @remarks The top-level GUI elements - {@link LuaGui#top LuaGui::top}, {@link LuaGui#left LuaGui::left}, {@link LuaGui#center LuaGui::center} and {@link LuaGui#screen LuaGui::screen} - can't be destroyed.
-     * @example
-    ```
-     * game.player.gui.top.greeting.destroy()
-     * ```
-     */
+   * Remove this element, along with its children. Any {@link LuaGuiElement} objects referring to the destroyed elements become invalid after this operation.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.destroy View documentation}
+   * @remarks The top-level GUI elements - {@link LuaGui#top LuaGui::top}, {@link LuaGui#left LuaGui::left}, {@link LuaGui#center LuaGui::center} and {@link LuaGui#screen LuaGui::screen} - can't be destroyed.
+   * @example
+   *
+   * ```
+   * game.player.gui.top.greeting.destroy()
+   * ```
+   */
   destroy(): void
   /**
    * The mod that owns this Gui element or `nil` if it's owned by the scenario script.
@@ -13320,14 +13326,15 @@ interface BaseGuiElement {
    */
   readonly parent: LuaGuiElement | undefined
   /**
-     * The name of this element.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.name View documentation}
-     * @example
-    ```
-     * game.player.gui.top.greeting.name == "greeting"
-     * ```
-     */
+   * The name of this element.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.name View documentation}
+   * @example
+   *
+   * ```
+   * game.player.gui.top.greeting.name == "greeting"
+   * ```
+   */
   name: string
   /**
    * The text displayed on this element. For frames, this is the "heading". For other elements, like buttons or labels, this is the content.
@@ -15017,7 +15024,8 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
  * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html View documentation}
  * @noSelf
  * @example
-```
+ *
+ * ```
  * game.item_prototypes["iron-plate"]
  * ```
  */
@@ -21896,14 +21904,15 @@ interface LuaStyle {
   get color(): ColorTable
   set color(value: Color)
   /**
-     * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.column_alignments View documentation}
-     * @example
-    ```
-     * table_element.style.column_alignments[1] = "center"
-     * ```
-     */
+   * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.column_alignments View documentation}
+   * @example
+   *
+   * ```
+   * table_element.style.column_alignments[1] = "center"
+   * ```
+   */
   readonly column_alignments: LuaCustomTable<uint, Alignment>
   /**
    * _Can only be used if this is LabelStyle_
@@ -22162,14 +22171,15 @@ interface BaseStyle {
    */
   vertically_squashable: boolean
   /**
-     * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.column_alignments View documentation}
-     * @example
-    ```
-     * table_element.style.column_alignments[1] = "center"
-     * ```
-     */
+   * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.column_alignments View documentation}
+   * @example
+   *
+   * ```
+   * table_element.style.column_alignments[1] = "center"
+   * ```
+   */
   readonly column_alignments: LuaCustomTable<uint, Alignment>
   /**
    * Sets both minimal and maximal width to the given value.
@@ -22867,15 +22877,16 @@ type SurfaceCreateEntity =
  */
 interface LuaSurface {
   /**
-     * Get the pollution for a given position.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.get_pollution View documentation}
-     * @remarks Pollution is stored per chunk, so this will return the same value for all positions in one chunk.
-     * @example
-    ```
-     * game.surfaces[1].get_pollution({1,2})
-     * ```
-     */
+   * Get the pollution for a given position.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.get_pollution View documentation}
+   * @remarks Pollution is stored per chunk, so this will return the same value for all positions in one chunk.
+   * @example
+   *
+   * ```
+   * game.surfaces[1].get_pollution({1,2})
+   * ```
+   */
   get_pollution(position: MapPosition): double
   /**
    * Check for collisions with terrain or other entities.
@@ -22936,17 +22947,18 @@ interface LuaSurface {
     readonly force?: ForceIdentification
   }): boolean
   /**
-     * Find a specific entity at a specific position.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_entity View documentation}
-     * @param entity Entity to look for.
-     * @param position Coordinates to look at.
-     * @returns `nil` if no such entity is found.
-     * @example
-    ```
-     * game.player.selected.surface.find_entity('filter-inserter', {0,0})
-     * ```
-     */
+   * Find a specific entity at a specific position.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_entity View documentation}
+   * @param entity Entity to look for.
+   * @param position Coordinates to look at.
+   * @returns `nil` if no such entity is found.
+   * @example
+   *
+   * ```
+   * game.player.selected.surface.find_entity('filter-inserter', {0,0})
+   * ```
+   */
   find_entity(entity: string, position: MapPosition): LuaEntity | undefined
   /**
    * Find entities in a given area.
@@ -22962,23 +22974,24 @@ interface LuaSurface {
    */
   find_entities(area?: BoundingBox): LuaEntity[]
   /**
-     * Find all entities of the given type or name in the given area.
-     *
-     * If no filters (`name`, `type`, `force`, etc.) are given, this returns all entities in the search area. If multiple filters are specified, only entities matching all given filters are returned.
-     *
-     * If no `area` or `position` are given, the entire surface is searched. If `position` is given, this returns the entities colliding with that position (i.e the given position is within the entity's collision box). If `position` and `radius` are given, this returns the entities within the radius of the position. If `area` is specified, this returns the entities colliding with that area.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_entities_filtered View documentation}
-     * @example
-    ```
-     * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, type = "resource"} -- gets all resources in the rectangle
-     * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, name = "iron-ore"} -- gets all iron ores in the rectangle
-     * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, name = {"iron-ore", "copper-ore"}} -- gets all iron ore and copper ore in the rectangle
-     * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, force = "player"}  -- gets player owned entities in the rectangle
-     * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, limit = 5}  -- gets the first 5 entities in the rectangle
-     * game.surfaces[1].find_entities_filtered{position = {0, 0}, radius = 10}  -- gets all entities within 10 tiles of the position [0,0].
-     * ```
-     */
+   * Find all entities of the given type or name in the given area.
+   *
+   * If no filters (`name`, `type`, `force`, etc.) are given, this returns all entities in the search area. If multiple filters are specified, only entities matching all given filters are returned.
+   *
+   * If no `area` or `position` are given, the entire surface is searched. If `position` is given, this returns the entities colliding with that position (i.e the given position is within the entity's collision box). If `position` and `radius` are given, this returns the entities within the radius of the position. If `area` is specified, this returns the entities colliding with that area.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_entities_filtered View documentation}
+   * @example
+   *
+   * ```
+   * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, type = "resource"} -- gets all resources in the rectangle
+   * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, name = "iron-ore"} -- gets all iron ores in the rectangle
+   * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, name = {"iron-ore", "copper-ore"}} -- gets all iron ore and copper ore in the rectangle
+   * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, force = "player"}  -- gets player owned entities in the rectangle
+   * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, limit = 5}  -- gets the first 5 entities in the rectangle
+   * game.surfaces[1].find_entities_filtered{position = {0, 0}, radius = 10}  -- gets all entities within 10 tiles of the position [0,0].
+   * ```
+   */
   find_entities_filtered(params: {
     readonly area?: BoundingBox
     /**
@@ -23241,50 +23254,52 @@ interface LuaSurface {
     readonly unit_search_distance?: uint
   }): uint
   /**
-     * Create an entity on this surface.
-     *
-     * Other attributes may be specified depending on the type of entity:
-     *
-     * **Raised events:**
-     * - {@link ScriptRaisedBuiltEvent script_raised_built}? _instantly_ Raised if the `raise_built` flag was set and the entity was successfully created.
-     *
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.create_entity View documentation}
-     * @returns The created entity or `nil` if the creation failed.
-     * @example
-    ```
-     * asm = game.surfaces[1].create_entity{name = "assembling-machine-1", position = {15, 3}, force = game.forces.player, recipe = "iron-stick"}
-     * ```
-     * @example Creates a filter inserter with circuit conditions and a filter
-     *
-     * ```
-     * game.surfaces[1].create_entity{
-     *   name = "filter-inserter", position = {20, 15}, force = game.player.force,
-     *   conditions = {red = {name = "wood", count = 3, operator = ">"},
-     *               green = {name = "iron-ore", count = 1, operator = "<"},
-     *   logistics = {name = "wood", count = 3, operator = "="}},
-     *   filters = {{index = 1, name = "iron-ore"}}
-     * }
-     * ```
-     * @example Creates a requester chest already set to request 128 iron plates.
-     *
-     * ```
-     * game.surfaces[1].create_entity{
-     *   name = "logistic-chest-requester", position = {game.player.position.x+3, game.player.position.y},
-     *   force = game.player.force, request_filters = {{index = 1, name = "iron-plate", count = 128}}
-     * }
-     * ```
-     * @example
-    ```
-     * game.surfaces[1].create_entity{name = "big-biter", position = {15, 3}, force = game.forces.player} -- Friendly biter
-     * game.surfaces[1].create_entity{name = "medium-biter", position = {15, 3}, force = game.forces.enemy} -- Enemy biter
-     * ```
-     * @example Creates a basic inserter at the player's location facing north
-     *
-     * ```
-     * game.surfaces[1].create_entity{name = "inserter", position = game.player.position, direction = defines.direction.north}
-     * ```
-     */
+   * Create an entity on this surface.
+   *
+   * Other attributes may be specified depending on the type of entity:
+   *
+   * **Raised events:**
+   * - {@link ScriptRaisedBuiltEvent script_raised_built}? _instantly_ Raised if the `raise_built` flag was set and the entity was successfully created.
+   *
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.create_entity View documentation}
+   * @returns The created entity or `nil` if the creation failed.
+   * @example
+   *
+   * ```
+   * asm = game.surfaces[1].create_entity{name = "assembling-machine-1", position = {15, 3}, force = game.forces.player, recipe = "iron-stick"}
+   * ```
+   * @example Creates a filter inserter with circuit conditions and a filter
+   *
+   * ```
+   * game.surfaces[1].create_entity{
+   *   name = "filter-inserter", position = {20, 15}, force = game.player.force,
+   *   conditions = {red = {name = "wood", count = 3, operator = ">"},
+   *               green = {name = "iron-ore", count = 1, operator = "<"},
+   *   logistics = {name = "wood", count = 3, operator = "="}},
+   *   filters = {{index = 1, name = "iron-ore"}}
+   * }
+   * ```
+   * @example Creates a requester chest already set to request 128 iron plates.
+   *
+   * ```
+   * game.surfaces[1].create_entity{
+   *   name = "logistic-chest-requester", position = {game.player.position.x+3, game.player.position.y},
+   *   force = game.player.force, request_filters = {{index = 1, name = "iron-plate", count = 128}}
+   * }
+   * ```
+   * @example
+   *
+   * ```
+   * game.surfaces[1].create_entity{name = "big-biter", position = {15, 3}, force = game.forces.player} -- Friendly biter
+   * game.surfaces[1].create_entity{name = "medium-biter", position = {15, 3}, force = game.forces.enemy} -- Enemy biter
+   * ```
+   * @example Creates a basic inserter at the player's location facing north
+   *
+   * ```
+   * game.surfaces[1].create_entity{name = "inserter", position = game.player.position, direction = defines.direction.north}
+   * ```
+   */
   create_entity(params: SurfaceCreateEntity): LuaEntity | undefined
   create_trivial_smoke(params: {
     /**
@@ -23646,17 +23661,18 @@ interface LuaSurface {
     readonly decoratives: readonly Decorative[]
   }): void
   /**
-     * Find decoratives of a given name in a given area.
-     *
-     * If no filters are given, returns all decoratives in the search area. If multiple filters are specified, returns only decoratives matching every given filter. If no area and no position are given, the entire surface is searched.
-     *
-     * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_decoratives_filtered View documentation}
-     * @example
-    ```
-     * game.surfaces[1].find_decoratives_filtered{area = {{-10, -10}, {10, 10}}, name = "sand-decal"} -- gets all sand-decals in the rectangle
-     * game.surfaces[1].find_decoratives_filtered{area = {{-10, -10}, {10, 10}}, limit = 5}  -- gets the first 5 decoratives in the rectangle
-     * ```
-     */
+   * Find decoratives of a given name in a given area.
+   *
+   * If no filters are given, returns all decoratives in the search area. If multiple filters are specified, returns only decoratives matching every given filter. If no area and no position are given, the entire surface is searched.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_decoratives_filtered View documentation}
+   * @example
+   *
+   * ```
+   * game.surfaces[1].find_decoratives_filtered{area = {{-10, -10}, {10, 10}}, name = "sand-decal"} -- gets all sand-decals in the rectangle
+   * game.surfaces[1].find_decoratives_filtered{area = {{-10, -10}, {10, 10}}, limit = 5}  -- gets the first 5 decoratives in the rectangle
+   * ```
+   */
   find_decoratives_filtered(params: {
     readonly area?: BoundingBox
     readonly position?: TilePosition

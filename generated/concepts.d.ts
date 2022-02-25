@@ -218,7 +218,8 @@ interface OldTileAndPosition {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Tags View documentation}
  * @example
-```
+ *
+ * ```
  * {a = 1, b = true, c = "three", d = {e = "f"}}
  * ```
  */
@@ -257,7 +258,8 @@ interface SmokeSource {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Vector View documentation}
  * @example
-```
+ *
+ * ```
  * right = {1.0, 0.0}
  * ```
  */
@@ -344,7 +346,8 @@ type ColorArray = readonly [r?: float, g?: float, b?: float, a?: float]
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Color View documentation}
  * @example
-```
+ *
+ * ```
  * red1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red
  * red2 = {r = 0.5, a = 0.5}                -- Same color as red1
  * black = {}                               -- All channels omitted: black
