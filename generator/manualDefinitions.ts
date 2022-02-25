@@ -25,6 +25,8 @@ export enum AnnotationKind {
   TableOrArray = "tableOrArray",
 
   ReadType = "readType",
+
+  Deprecated = "deprecated",
 }
 
 const annotationValues = new Set<string>(Object.values(AnnotationKind))
@@ -234,12 +236,11 @@ export function preprocessManualDefinitions(generator: DefinitionsGenerator) {
       }
       generator.addTo.get(addTo)!.push(node)
     }
-    if (!(addBefore || addTo)) continue
-    ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
-    const docs = node.jsDoc!
-    if (docs.length > 1) {
-      for (const doc of docs.slice(1)) {
-        addFakeJSDoc(node, doc, generator.manualDefinitionsSource)
+    if (addBefore || addTo || addAfter) {
+      ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
+      const docs = node.jsDoc!
+      if (docs.length > 1) {
+        addFakeJSDoc(node, docs[docs.length - 1], generator.manualDefinitionsSource)
       }
     }
   }

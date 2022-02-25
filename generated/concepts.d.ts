@@ -89,6 +89,15 @@ type MapPositionArray = readonly [x: double, y: double]
  */
 type MapPosition = MapPositionTable | MapPositionArray
 
+/** @deprecated Replace with {@link MapPositionTable}. */
+type PositionTable = MapPositionTable
+
+/** @deprecated Replace with {@link MapPositionArray}. */
+type PositionArray = MapPositionArray
+
+/** @deprecated Replace with {@link MapPosition}. */
+type Position = MapPosition
+
 interface ChunkPositionTable {
   readonly x: int
   readonly y: int
@@ -279,7 +288,6 @@ type BoundingBoxArray = readonly [left_top: MapPosition, right_bottom: MapPositi
  */
 type BoundingBox = BoundingBoxTable | BoundingBoxArray
 
-/** @addAfter BoundingBox */
 interface BoundingBoxRead extends BoundingBoxTable {
   readonly left_top: MapPositionTable
   readonly right_bottom: MapPositionTable

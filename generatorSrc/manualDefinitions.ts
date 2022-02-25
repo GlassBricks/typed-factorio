@@ -476,6 +476,19 @@ type Tags = Record<string, AnyBasic | undefined>
 
 interface MapPositionTable {}
 interface MapPositionArray {}
+interface MapPosition {}
+
+/** @addAfter MapPosition */
+/** @deprecated Replace with {@link MapPositionTable}. */
+type PositionTable = MapPositionTable
+
+/** @addAfter MapPosition */
+/** @deprecated Replace with {@link MapPositionArray}. */
+type PositionArray = MapPositionArray
+
+/** @addAfter MapPosition */
+/** @deprecated Replace with {@link MapPosition}. */
+type Position = MapPosition
 
 type Vector = MapPositionArray
 

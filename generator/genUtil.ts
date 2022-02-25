@@ -116,7 +116,7 @@ export function removeLuaPrefix(str: string): string {
 
 export function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc, sourceFile?: ts.SourceFile) {
   const text: string = sourceFile
-    ? jsDoc.getText(sourceFile)
+    ? jsDoc.getText(sourceFile) + "\n"
     : printer.printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
   node.emitNode = node.emitNode ?? {}
   ts.addSyntheticLeadingComment(
