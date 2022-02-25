@@ -1,3 +1,13 @@
+# v0.19.0
+
+- Updated to factorio version 1.1.53
+- Updated to json api version 2
+- Improved documentation comments
+
+## Changes
+
+- `Position`, `PositionArray`, and `PositionTable` have been replaced by `MapPosition`, `MapPositionArray`, and `MapPositionTable` respectively. These are now deprecated and may be removed in a future version.
+
 # v0.18.1
 
 - `TechnologyIdentification` now also has a more specific type when read.
