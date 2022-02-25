@@ -325,7 +325,7 @@ interface OnChunkChartedEvent extends EventData {
 }
 
 /**
- * Called when one or more chunks are deleted using {@link LuaSurface.delete_chunk LuaSurface::delete_chunk}.
+ * Called when one or more chunks are deleted using {@link LuaSurface#delete_chunk LuaSurface::delete_chunk}.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_chunk_deleted View documentation}
  */
@@ -571,7 +571,7 @@ interface OnEntityDamagedEvent extends EventData {
 }
 
 /**
- * Called after an entity is destroyed that has been registered with {@link LuaBootstrap.register_on_entity_destroyed LuaBootstrap::register_on_entity_destroyed}
+ * Called after an entity is destroyed that has been registered with {@link LuaBootstrap#register_on_entity_destroyed LuaBootstrap::register_on_entity_destroyed}
  *
  * at the end of the next tick.
  *
@@ -580,11 +580,11 @@ interface OnEntityDamagedEvent extends EventData {
  */
 interface OnEntityDestroyedEvent extends EventData {
   /**
-   * The number returned by {@link LuaBootstrap.register_on_entity_destroyed register_on_entity_destroyed} to uniquely identify this entity during this event.
+   * The number returned by {@link LuaBootstrap#register_on_entity_destroyed register_on_entity_destroyed} to uniquely identify this entity during this event.
    */
   readonly registration_number: uint64
   /**
-   * The {@link LuaEntity.unit_number LuaEntity::unit_number} of the destroyed entity, if it had one.
+   * The {@link LuaEntity#unit_number LuaEntity::unit_number} of the destroyed entity, if it had one.
    */
   readonly unit_number?: uint
   /**
@@ -858,7 +858,7 @@ interface OnForceFriendsChangedEvent extends EventData {
 }
 
 /**
- * Called when {@link LuaForce.reset LuaForce::reset} is finished.
+ * Called when {@link LuaForce#reset LuaForce::reset} is finished.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_force_reset View documentation}
  */
@@ -928,7 +928,7 @@ interface OnForcesMergingEvent extends EventData {
 }
 
 /**
- * Called when a game is created from a scenario. This is fired for every mod, even when the scenario's save data already includes it. In those cases however, {@link LuaBootstrap.on_init LuaBootstrap::on_init} is not fired.
+ * Called when a game is created from a scenario. This is fired for every mod, even when the scenario's save data already includes it. In those cases however, {@link LuaBootstrap#on_init LuaBootstrap::on_init} is not fired.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_game_created_from_scenario View documentation}
  * @remarks This event is not fired when the scenario is loaded via the map editor.
@@ -2720,7 +2720,7 @@ interface OnPlayerSetupBlueprintEvent extends EventData {
 interface OnPlayerToggledAltModeEvent extends EventData {
   readonly player_index: uint
   /**
-   * The new alt mode value. This value is a shortcut for accessing {@link GameViewSettings.show_entity_info GameViewSettings::show_entity_info} on the player.
+   * The new alt mode value. This value is a shortcut for accessing {@link GameViewSettings#show_entity_info GameViewSettings::show_entity_info} on the player.
    */
   readonly alt_mode: boolean
   /**
@@ -2972,7 +2972,7 @@ interface OnPreBuildEvent extends EventData {
 }
 
 /**
- * Called before one or more chunks are deleted using {@link LuaSurface.delete_chunk LuaSurface::delete_chunk}.
+ * Called before one or more chunks are deleted using {@link LuaSurface#delete_chunk LuaSurface::delete_chunk}.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_pre_chunk_deleted View documentation}
  */
@@ -3691,7 +3691,7 @@ interface OnScriptInventoryResizedEvent extends EventData {
 }
 
 /**
- * Called when a {@link LuaSurface.request_path LuaSurface::request_path} call completes.
+ * Called when a {@link LuaSurface#request_path LuaSurface::request_path} call completes.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_script_path_request_finished View documentation}
  */
@@ -3701,7 +3701,7 @@ interface OnScriptPathRequestFinishedEvent extends EventData {
    */
   readonly path?: PathfinderWaypoint[]
   /**
-   * Handle to associate the callback with a particular call to {@link LuaSurface.request_path LuaSurface::request_path}.
+   * Handle to associate the callback with a particular call to {@link LuaSurface#request_path LuaSurface::request_path}.
    */
   readonly id: uint
   /**
@@ -3819,7 +3819,7 @@ interface OnSpiderCommandCompletedEvent extends EventData {
 }
 
 /**
- * Called when a translation request generated through {@link LuaPlayer.request_translation LuaPlayer::request_translation} is translated.
+ * Called when a translation request generated through {@link LuaPlayer#request_translation LuaPlayer::request_translation} is translated.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_string_translated View documentation}
  */
@@ -3943,7 +3943,7 @@ interface OnSurfaceRenamedEvent extends EventData {
 }
 
 /**
- * Called when {@link LuaForce.reset_technology_effects LuaForce::reset_technology_effects} is finished.
+ * Called when {@link LuaForce#reset_technology_effects LuaForce::reset_technology_effects} is finished.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_technology_effects_reset View documentation}
  */
@@ -4163,7 +4163,7 @@ interface OnWorkerRobotExpiredEvent extends EventData {
 }
 
 /**
- * A static event mods can use to tell other mods they built something by script. This event is only raised if a mod does so with {@link LuaBootstrap.raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap.raise_script_built LuaBootstrap::raise_script_built}, or when `raise_built` is passed to {@link LuaSurface.create_entity LuaSurface::create_entity}. Can be filtered using {@link LuaScriptRaisedBuiltEventFilter}.
+ * A static event mods can use to tell other mods they built something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_built LuaBootstrap::raise_script_built}, or when `raise_built` is passed to {@link LuaSurface#create_entity LuaSurface::create_entity}. Can be filtered using {@link LuaScriptRaisedBuiltEventFilter}.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#script_raised_built View documentation}
  */
@@ -4183,7 +4183,7 @@ interface ScriptRaisedBuiltEvent extends EventData {
 }
 
 /**
- * A static event mods can use to tell other mods they destroyed something by script. This event is only raised if a mod does so with {@link LuaBootstrap.raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap.raise_script_destroy LuaBootstrap::raise_script_destroy}, or when `raise_destroy` is passed to {@link LuaEntity.destroy LuaEntity::destroy}. Can be filtered using {@link LuaScriptRaisedDestroyEventFilter}.
+ * A static event mods can use to tell other mods they destroyed something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_destroy LuaBootstrap::raise_script_destroy}, or when `raise_destroy` is passed to {@link LuaEntity#destroy LuaEntity::destroy}. Can be filtered using {@link LuaScriptRaisedDestroyEventFilter}.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#script_raised_destroy View documentation}
  */
@@ -4203,7 +4203,7 @@ interface ScriptRaisedDestroyEvent extends EventData {
 }
 
 /**
- * A static event mods can use to tell other mods they revived something by script. This event is only raised if a mod does so with {@link LuaBootstrap.raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap.raise_script_revive LuaBootstrap::raise_script_revive}, or when `raise_revive` is passed to {@link LuaEntity.revive LuaEntity::revive}. Can be filtered using {@link LuaScriptRaisedReviveEventFilter}.
+ * A static event mods can use to tell other mods they revived something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_revive LuaBootstrap::raise_script_revive}, or when `raise_revive` is passed to {@link LuaEntity#revive LuaEntity::revive}. Can be filtered using {@link LuaScriptRaisedReviveEventFilter}.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#script_raised_revive View documentation}
  */
@@ -4227,7 +4227,7 @@ interface ScriptRaisedReviveEvent extends EventData {
 }
 
 /**
- * A static event mods can use to tell other mods they changed tiles on a surface by script. This event is only raised if a mod does so with {@link LuaBootstrap.raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap.raise_script_set_tiles LuaBootstrap::raise_script_set_tiles}, or when `raise_event` is passed to {@link LuaSurface.set_tiles LuaSurface::set_tiles}.
+ * A static event mods can use to tell other mods they changed tiles on a surface by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_set_tiles LuaBootstrap::raise_script_set_tiles}, or when `raise_event` is passed to {@link LuaSurface#set_tiles LuaSurface::set_tiles}.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#script_raised_set_tiles View documentation}
  */

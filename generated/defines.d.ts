@@ -15,7 +15,7 @@ declare namespace defines {
     train_out_of_fuel,
   }
   /**
-   * AI command exit status. See {@link LuaEntity.set_command LuaEntity::set_command}
+   * AI command exit status. See {@link LuaEntity#set_command LuaEntity::set_command}
    *
    * {@link https://lua-api.factorio.com/latest/defines.html#defines.behavior_result View documentation}
    */

@@ -3,7 +3,7 @@
 /** @noSelfInFile */
 
 /**
- * This is the main object, through which most of the API is accessed. It is, however, not available inside handlers registered with {@link LuaBootstrap.on_load LuaBootstrap::on_load}.
+ * This is the main object, through which most of the API is accessed. It is, however, not available inside handlers registered with {@link LuaBootstrap#on_load LuaBootstrap::on_load}.
  *
  * {@link https://lua-api.factorio.com/latest/ View documentation}
  */

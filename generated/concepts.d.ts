@@ -19,6 +19,8 @@
 ```
 game.player.print({"description.no-ammo"})
 ```
+
+ The `description.no-ammo` template contains no placeholders, so no further parameters are necessary.
  * @example In the English translation, this will print `"Durability: 5/9"`; in the Japanese one, it will print `"耐久度: 5/9"`:
 
 ```
@@ -207,7 +209,6 @@ interface OldTileAndPosition {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Tags View documentation}
  * @example
-
 ```
 {a = 1, b = true, c = "three", d = {e = "f"}}
 ```
@@ -247,7 +248,6 @@ interface SmokeSource {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Vector View documentation}
  * @example
-
 ```
 right = {1.0, 0.0}
 ```
@@ -336,7 +336,6 @@ type ColorArray = readonly [r?: float, g?: float, b?: float, a?: float]
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Color View documentation}
  * @example
-
 ```
 red1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red
 red2 = {r = 0.5, a = 0.5}                -- Same color as red1
@@ -1661,6 +1660,8 @@ local mgs = surface.map_gen_settings
 mgs.property_expression_names["tile:grass1:probability"] = "my-alternate-grass1-probability"
 surface.map_gen_settings = mgs
 ```
+
+ would override the probability of grass1 being placed at any given point on the current surface.
  * @example To make there be no deep water on (newly generated chunks) a surface:
 
 ```
@@ -1669,6 +1670,8 @@ local mgs = surface.map_gen_settings
 mgs.property_expression_names["tile:deepwater:probability"] = -1000
 surface.map_gen_settings = mgs
 ```
+
+ This does not require a NamedNoiseExpression to be defined, since literal numbers (and strings naming literal numbers, e.g. `"123"`) are understood to stand for constant value expressions.
  */
 interface MapGenSettings {
   /**
@@ -2399,6 +2402,12 @@ interface ItemStackDefinition {
 ```
 {name="iron-plate"}
 ```
+
+ 
+
+```
+{name="iron-plate", count=1}
+```
  * @example This is a stack of 47 copper plates:
 
 ```
@@ -2408,6 +2417,12 @@ interface ItemStackDefinition {
 
 ```
 "iron-plate"
+```
+
+ 
+
+```
+{name="iron-plate", count=100}
 ```
  */
 type SimpleItemStack = string | ItemStackDefinition
@@ -2528,7 +2543,7 @@ interface TrainScheduleRecord {
    */
   readonly rail?: LuaEntity
   /**
-   * When a train is allowed to reach rail target from any direction it will be `nil`. If rail has to be reached from specific direction, this value allows to choose the direction. This value corresponds to {@link LuaEntity.connected_rail_direction LuaEntity::connected_rail_direction} of a TrainStop.
+   * When a train is allowed to reach rail target from any direction it will be `nil`. If rail has to be reached from specific direction, this value allows to choose the direction. This value corresponds to {@link LuaEntity#connected_rail_direction LuaEntity::connected_rail_direction} of a TrainStop.
    */
   readonly rail_direction?: defines.rail_direction
   readonly wait_conditions?: WaitCondition[]
@@ -3246,7 +3261,7 @@ interface EventData {
    */
   readonly tick: uint
   /**
-   * The name of the mod that raised the event if it was raised using {@link LuaBootstrap.raise_event LuaBootstrap::raise_event}.
+   * The name of the mod that raised the event if it was raised using {@link LuaBootstrap#raise_event LuaBootstrap::raise_event}.
    */
   readonly mod_name?: string
 }
@@ -3644,7 +3659,7 @@ interface PlacedAsEquipmentResultItemPrototypeFilter extends BaseItemPrototypeFi
 }
 
 /**
- * For use within nested filters such as the `has-product-item` filter of array[{@link RecipePrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript.item_prototypes LuaGameScript::item_prototypes}.
+ * For use within nested filters such as the `has-product-item` filter of array[{@link RecipePrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript#item_prototypes LuaGameScript::item_prototypes}.
  */
 interface NameItemPrototypeFilter extends BaseItemPrototypeFilter {
   readonly filter: "name"
@@ -4072,7 +4087,7 @@ interface BaseFluidPrototypeFilter {
 }
 
 /**
- * For use within nested filters such as the `has-product-fluid` filter of array[{@link RecipePrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript.fluid_prototypes LuaGameScript::fluid_prototypes}.
+ * For use within nested filters such as the `has-product-fluid` filter of array[{@link RecipePrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript#fluid_prototypes LuaGameScript::fluid_prototypes}.
  */
 interface NameFluidPrototypeFilter extends BaseFluidPrototypeFilter {
   readonly filter: "name"
@@ -4566,7 +4581,7 @@ interface BaseEntityPrototypeFilter {
 }
 
 /**
- * For use within nested filters such as the `place-result` filter of array[{@link ItemPrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript.entity_prototypes LuaGameScript::entity_prototypes}.
+ * For use within nested filters such as the `place-result` filter of array[{@link ItemPrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript#entity_prototypes LuaGameScript::entity_prototypes}.
  */
 interface NameEntityPrototypeFilter extends BaseEntityPrototypeFilter {
   readonly filter: "name"

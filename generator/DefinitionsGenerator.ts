@@ -929,7 +929,7 @@ export default class DefinitionsGenerator {
       const operator = field.match(/(?<=operator )(.*)/)?.[1]
       let fieldRef: string
       if (!operator) {
-        fieldRef = "." + field
+        fieldRef = "#" + field
       } else if (operator === "#") {
         fieldRef = ".length"
       } else if (operator === "[]" || operator === "()") {
@@ -1007,12 +1007,12 @@ export default class DefinitionsGenerator {
   }
 
   private processExample(example: string): string {
-    // find code block if exists
-    const match = example.match(/(.*?)(```(?:(?!```).)*```)/s)
-    if (match) {
-      return this.processDescription(match[1].trim() + "\n" + match[2].trim())!
+    const processed = this.processDescription(example)!
+    if (processed.startsWith("```")) {
+      return "\n" + processed
+    } else {
+      return processed
     }
-    return this.processDescription(example)!
   }
 
   addJsDoc<T extends ts.Node>(
