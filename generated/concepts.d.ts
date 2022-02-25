@@ -15,27 +15,27 @@
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#LocalisedString View documentation}
  * @example In the English translation, this will print `"No ammo"`; in the Czech translation, it will print `"Bez munice"`:
-
-```
-game.player.print({"description.no-ammo"})
-```
-
- The `description.no-ammo` template contains no placeholders, so no further parameters are necessary.
+ *
+ * ```
+ * game.player.print({"description.no-ammo"})
+ * ```
+ *
+ *  The `description.no-ammo` template contains no placeholders, so no further parameters are necessary.
  * @example In the English translation, this will print `"Durability: 5/9"`; in the Japanese one, it will print `"耐久度: 5/9"`:
-
-```
-game.player.print({"description.durability", 5, 9})
-```
+ *
+ * ```
+ * game.player.print({"description.durability", 5, 9})
+ * ```
  * @example This will print `"hello"` in all translations:
-
-```
-game.player.print({"", "hello"})
-```
+ *
+ * ```
+ * game.player.print({"", "hello"})
+ * ```
  * @example This will print `"Iron plate: 60"` in the English translation and `"Eisenplatte: 60"` in the German translation.
-
-```
-game.print({"", {"item-name.iron-plate"}, ": ", 60})
-```
+ *
+ * ```
+ * game.print({"", {"item-name.iron-plate"}, ": ", 60})
+ * ```
  */
 type LocalisedString = readonly [string, ...LocalisedString[]] | string | number | boolean | undefined
 
@@ -76,16 +76,16 @@ type MapPositionArray = readonly [x: double, y: double]
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#MapPosition View documentation}
  * @example Explicit definition:
-
-```
-{x = 5.5, y = 2}
-{y = 2.25, x = 5.125}
-```
+ *
+ * ```
+ * {x = 5.5, y = 2}
+ * {y = 2.25, x = 5.125}
+ * ```
  * @example Shorthand:
-
-```
-{1.625, 2.375}
-```
+ *
+ * ```
+ * {1.625, 2.375}
+ * ```
  */
 type MapPosition = MapPositionTable | MapPositionArray
 
@@ -138,16 +138,16 @@ type EquipmentPositionArray = readonly [x: int, y: int]
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#EquipmentPosition View documentation}
  * @example Explicit definition:
-
-```
-{x = 5, y = 2}
-{y = 2, x = 5}
-```
+ *
+ * ```
+ * {x = 5, y = 2}
+ * {y = 2, x = 5}
+ * ```
  * @example Shorthand:
-
-```
-{1, 2}
-```
+ *
+ * ```
+ * {1, 2}
+ * ```
  */
 type EquipmentPosition = EquipmentPositionTable | EquipmentPositionArray
 
@@ -219,8 +219,8 @@ interface OldTileAndPosition {
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Tags View documentation}
  * @example
 ```
-{a = 1, b = true, c = "three", d = {e = "f"}}
-```
+ * {a = 1, b = true, c = "three", d = {e = "f"}}
+ * ```
  */
 type Tags = Record<string, AnyBasic | undefined>
 
@@ -258,8 +258,8 @@ interface SmokeSource {
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Vector View documentation}
  * @example
 ```
-right = {1.0, 0.0}
-```
+ * right = {1.0, 0.0}
+ * ```
  */
 type Vector = MapPositionArray
 
@@ -276,15 +276,15 @@ type BoundingBoxArray = readonly [left_top: MapPosition, right_bottom: MapPositi
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#BoundingBox View documentation}
  * @example Explicit definition:
-
-```
-{left_top = {-2, -3}, right_bottom = {5, 8}}
-```
+ *
+ * ```
+ * {left_top = {-2, -3}, right_bottom = {5, 8}}
+ * ```
  * @example Shorthand:
-
-```
-{{-2, -3}, {5, 8}}
-```
+ *
+ * ```
+ * {{-2, -3}, {5, 8}}
+ * ```
  */
 type BoundingBox = BoundingBoxTable | BoundingBoxArray
 
@@ -345,11 +345,11 @@ type ColorArray = readonly [r?: float, g?: float, b?: float, a?: float]
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Color View documentation}
  * @example
 ```
-red1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red
-red2 = {r = 0.5, a = 0.5}                -- Same color as red1
-black = {}                               -- All channels omitted: black
-red1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation
-```
+ * red1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red
+ * red2 = {r = 0.5, a = 0.5}                -- Same color as red1
+ * black = {}                               -- All channels omitted: black
+ * red1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation
+ * ```
  */
 type Color = ColorTable | ColorArray
 
@@ -935,10 +935,10 @@ interface PathFinderMapSettings {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#MapSettings View documentation}
  * @example Increase the number of short paths the pathfinder can cache.
-
-```
-game.map_settings.path_finder.short_cache_size = 15
-```
+ *
+ * ```
+ * game.map_settings.path_finder.short_cache_size = 15
+ * ```
  */
 interface MapSettings {
   readonly pollution: PollutionMapSettings
@@ -1238,22 +1238,22 @@ interface ItemProduct extends BaseProduct {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Product View documentation}
  * @example Products of the "steel-chest" recipe (an array of Product):
-
-```
-{{type="item", name="steel-chest", amount=1}}
-```
+ *
+ * ```
+ * {{type="item", name="steel-chest", amount=1}}
+ * ```
  * @example Products of the "advanced-oil-processing" recipe:
-
-```
-{{type="fluid", name="heavy-oil", amount=1},
- {type="fluid", name="light-oil", amount=4.5},
- {type="fluid", name="petroleum-gas", amount=5.5}}
-```
+ *
+ * ```
+ * {{type="fluid", name="heavy-oil", amount=1},
+ *  {type="fluid", name="light-oil", amount=4.5},
+ *  {type="fluid", name="petroleum-gas", amount=5.5}}
+ * ```
  * @example What a custom recipe would look like that had a probability of 0.5 to return a minimum amount of 1 and a maximum amount of 5:
-
-```
-{{type=0, name="custom-item", probability=0.5, amount_min=1, amount_max=5}}
-```
+ *
+ * ```
+ * {{type=0, name="custom-item", probability=0.5, amount_min=1, amount_max=5}}
+ * ```
  */
 type Product = FluidProduct | ItemProduct
 
@@ -1661,25 +1661,25 @@ interface CliffPlacementSettings {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#MapGenSettings View documentation}
  * @example Assuming a NamedNoiseExpression with the name "my-alternate-grass1-probability" is defined
-
-```
-local surface = game.player.surface
-local mgs = surface.map_gen_settings
-mgs.property_expression_names["tile:grass1:probability"] = "my-alternate-grass1-probability"
-surface.map_gen_settings = mgs
-```
-
- would override the probability of grass1 being placed at any given point on the current surface.
+ *
+ * ```
+ * local surface = game.player.surface
+ * local mgs = surface.map_gen_settings
+ * mgs.property_expression_names["tile:grass1:probability"] = "my-alternate-grass1-probability"
+ * surface.map_gen_settings = mgs
+ * ```
+ *
+ *  would override the probability of grass1 being placed at any given point on the current surface.
  * @example To make there be no deep water on (newly generated chunks) a surface:
-
-```
-local surface = game.player.surface
-local mgs = surface.map_gen_settings
-mgs.property_expression_names["tile:deepwater:probability"] = -1000
-surface.map_gen_settings = mgs
-```
-
- This does not require a NamedNoiseExpression to be defined, since literal numbers (and strings naming literal numbers, e.g. `"123"`) are understood to stand for constant value expressions.
+ *
+ * ```
+ * local surface = game.player.surface
+ * local mgs = surface.map_gen_settings
+ * mgs.property_expression_names["tile:deepwater:probability"] = -1000
+ * surface.map_gen_settings = mgs
+ * ```
+ *
+ *  This does not require a NamedNoiseExpression to be defined, since literal numbers (and strings naming literal numbers, e.g. `"123"`) are understood to stand for constant value expressions.
  */
 interface MapGenSettings {
   /**
@@ -2406,32 +2406,32 @@ interface ItemStackDefinition {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#SimpleItemStack View documentation}
  * @example Both of these lines specify an item stack of one iron plate:
-
-```
-{name="iron-plate"}
-```
-
- 
-
-```
-{name="iron-plate", count=1}
-```
+ *
+ * ```
+ * {name="iron-plate"}
+ * ```
+ *
+ *
+ *
+ * ```
+ * {name="iron-plate", count=1}
+ * ```
  * @example This is a stack of 47 copper plates:
-
-```
-{name="copper-plate", count=47}
-```
+ *
+ * ```
+ * {name="copper-plate", count=47}
+ * ```
  * @example These are both full stacks of iron plates (for iron-plate, a full stack is 100 plates):
-
-```
-"iron-plate"
-```
-
- 
-
-```
-{name="iron-plate", count=100}
-```
+ *
+ * ```
+ * "iron-plate"
+ * ```
+ *
+ *
+ *
+ * ```
+ * {name="iron-plate", count=100}
+ * ```
  */
 type SimpleItemStack = string | ItemStackDefinition
 
@@ -2765,13 +2765,13 @@ interface ModuleEffectValue {
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#ModuleEffects View documentation}
  * @example These are the effects of the vanilla Productivity Module 3 (up to floating point imprecisions):
-
-```
-{consumption={bonus=0.6},
- speed={bonus=-0.15},
- productivity={bonus=0.06},
- pollution={bonus=0.075}}
-```
+ *
+ * ```
+ * {consumption={bonus=0.6},
+ *  speed={bonus=-0.15},
+ *  productivity={bonus=0.06},
+ *  pollution={bonus=0.075}}
+ * ```
  */
 interface ModuleEffects {
   readonly consumption?: ModuleEffectValue

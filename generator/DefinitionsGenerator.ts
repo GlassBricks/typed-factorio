@@ -1007,7 +1007,10 @@ export default class DefinitionsGenerator {
   }
 
   private processExample(example: string): string {
-    const processed = this.processDescription(example)!
+    let processed = this.processDescription(example)!
+    // add " * " to each line that is not the first
+    processed = processed.replaceAll("\n", "\n * ")
+
     if (processed.startsWith("```")) {
       return "\n" + processed
     } else {
