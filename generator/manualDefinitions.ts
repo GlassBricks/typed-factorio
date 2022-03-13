@@ -252,7 +252,7 @@ export function checkManualDefinitions(generator: DefinitionsGenerator) {
     const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
     const isExisting = name in generator.typeNames
     if (!!hasAdd === isExisting) {
-      generator.warnIncompleteDefinition(
+      generator.warning(
         `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${
           hasAdd ? "has" : "does not have"
         } add annotation:`,
@@ -261,14 +261,14 @@ export function checkManualDefinitions(generator: DefinitionsGenerator) {
     }
   }
   for (const name of generator.addBefore.keys()) {
-    generator.warnIncompleteDefinition("Could not find existing statement", name, "to add before")
+    generator.warning("Could not find existing statement", name, "to add before")
   }
 
   for (const name of generator.addAfter.keys()) {
-    generator.warnIncompleteDefinition("Could not find existing statement", name, "to add after")
+    generator.warning("Could not find existing statement", name, "to add after")
   }
 
   for (const name of generator.addTo.keys()) {
-    generator.warnIncompleteDefinition("Could not find existing file", name, "to add to")
+    generator.warning("Could not find existing file", name, "to add to")
   }
 }

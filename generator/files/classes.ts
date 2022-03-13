@@ -156,7 +156,7 @@ function generateClass(
       return
     }
     if (!(existing?.kind === "type" && existing.indexOperator)) {
-      generator.warnIncompleteDefinition("No index operator manual definition for class", clazz.name)
+      generator.warning("No index operator manual definition for class", clazz.name)
       return
     }
 

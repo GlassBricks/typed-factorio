@@ -220,7 +220,7 @@ export default class DefinitionsGenerator {
       if (ts.isPropertySignature(first)) {
         if (attribute.read && attribute.write && type.read !== type.write) {
           if (first.type)
-            this.warnIncompleteDefinition(
+            this.warning(
               `Attribute ${parent}.${attribute.name} has different read/write type, but manually defined as one type`
             )
           member = [
@@ -356,7 +356,7 @@ export default class DefinitionsGenerator {
       existingContainer
     )
     if (readProp && writeProp && readProp !== writeProp) {
-      this.warnIncompleteDefinition(
+      this.warning(
         "Read/write types different in reading parameter as property: " +
           printNode(readProp.type!) +
           " " +
@@ -479,7 +479,7 @@ export default class DefinitionsGenerator {
       if (conceptReadWrite) {
         if (this.preprocessDone) {
           if ((!conceptReadWrite.read && read) || (!conceptReadWrite.write && write)) {
-            this.warnIncompleteDefinition(`Concept ${type} usage changed after preprocess`)
+            this.warning(`Concept ${type} usage changed after preprocess`)
           }
         }
         conceptReadWrite.read ||= read
@@ -522,14 +522,14 @@ export default class DefinitionsGenerator {
     if (type.complex_type === "dictionary") {
       let recordType = "Record"
       if (!this.isIndexableType(type.key)) {
-        this.warnIncompleteDefinition("Not typescript indexable type for key in dictionary complex type: ", type)
+        this.warning("Not typescript indexable type for key in dictionary complex type: ", type)
         recordType = "LuaTable"
       }
       const keyType = this.mapTypeBasic(type.key, true, false).read
       const valueType = this.mapTypeBasic(type.value, read, write)
       if (read && write) {
         if (valueType.read !== valueType.write) {
-          this.warnIncompleteDefinition(
+          this.warning(
             "Different read/write type for record value:",
             printNode(valueType.write!),
             printNode(valueType.read!)
@@ -692,7 +692,7 @@ export default class DefinitionsGenerator {
     const nullable = member.description.match(nullableRegex)
     if (nullable) {
       if (!member.description.match(/[`' ]nil/i)) {
-        this.warnIncompleteDefinition(
+        this.warning(
           `Inconsistency in nullability in description: ${parent}.${member.name}\n`,
           indent(member.description)
         )
@@ -800,7 +800,7 @@ export default class DefinitionsGenerator {
     for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
       const isOtherTypes = group.name === "Other"
       if (isOtherTypes && (!unusedTypes || unusedTypes.size === 0)) {
-        this.warnIncompleteDefinition('"Other" variant parameter group with no other values')
+        this.warning('"Other" variant parameter group with no other values')
         continue
       }
       const prefix = toPascalCase(isDefine ? group.name.substring(group.name.lastIndexOf(".") + 1) : group.name)
@@ -939,7 +939,7 @@ export default class DefinitionsGenerator {
       }
       return clazz + fieldRef
     } else {
-      this.warnIncompleteDefinition(`unresolved doc reference: ${origLink}`)
+      this.warning(`unresolved doc reference: ${origLink}`)
       return origLink
     }
   }
@@ -986,7 +986,7 @@ export default class DefinitionsGenerator {
       const className = reference.substring(0, reference.indexOf("."))
       return this.getDocumentationUrl(className) + "#" + reference
     } else {
-      this.warnIncompleteDefinition("Could not get documentation url:", reference)
+      this.warning("Could not get documentation url:", reference)
       relative_link = ""
     }
     return DefinitionsGenerator.docUrlBase + relative_link
@@ -1069,7 +1069,7 @@ export default class DefinitionsGenerator {
     return node
   }
 
-  warnIncompleteDefinition(...args: unknown[]) {
+  warning(...args: unknown[]) {
     console.log(chalk.yellow(...args))
     this.hasWarnings = true
   }

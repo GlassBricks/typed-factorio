@@ -172,7 +172,7 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
       ts.setEmitFlags(declaration, ts.EmitFlags.NoComments)
       return declaration
     } else {
-      generator.warnIncompleteDefinition(`No concept definition given for ${concept.name}.`)
+      generator.warning(`No concept definition given for ${concept.name}.`)
       return createTypeAlias(Types.unknown)
     }
   } else if (concept.category === "union") {
@@ -229,7 +229,7 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
       rwUsage = { read: true, write: true }
     }
     if (!rwUsage.read && !rwUsage.write) {
-      generator.warnIncompleteDefinition(`Concept ${concept.name} was found to be neither read nor write`)
+      generator.warning(`Concept ${concept.name} was found to be neither read nor write`)
     }
     const readWriteNames = generator.readWriteConcepts.get(concept.name)
     if (concept.variant_parameter_groups) {

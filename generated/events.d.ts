@@ -571,12 +571,10 @@ interface OnEntityDamagedEvent extends EventData {
 }
 
 /**
- * Called after an entity is destroyed that has been registered with {@link LuaBootstrap#register_on_entity_destroyed LuaBootstrap::register_on_entity_destroyed}
- *
- * at the end of the next tick.
+ * Called after an entity is destroyed that has been registered with {@link LuaBootstrap#register_on_entity_destroyed LuaBootstrap::register_on_entity_destroyed}.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_entity_destroyed View documentation}
- * @remarks Depending on when a given entity is destroyed, this event will be fired at the end of the current tick or
+ * @remarks Depending on when a given entity is destroyed, this event will be fired at the end of the current tick or at the end of the next tick.
  */
 interface OnEntityDestroyedEvent extends EventData {
   /**

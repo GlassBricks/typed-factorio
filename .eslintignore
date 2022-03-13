@@ -1,5 +1,5 @@
 **/*.d.ts
 **/*.js
-generatorSrc/manualDefinitions.ts
+generatorSrc/manual-defs.ts
 scripts/**
 test/**

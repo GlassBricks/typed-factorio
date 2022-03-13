@@ -1171,7 +1171,7 @@ interface LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.is_flashlight_enabled View documentation}
    */
-  is_flashlight_enabled(): void
+  is_flashlight_enabled(): boolean
   /**
    * Gets the count of the given recipe that can be crafted.
    *
@@ -2467,13 +2467,13 @@ interface LuaEntity extends LuaControl {
    */
   clear_request_slot(slot: uint): void
   /**
-   * Returns whether a craft is currently in process. It does not indicate whether progress is currently being made, but whether any crafting action has made progress in this machine.
+   * Returns whether a craft is currently in process. It does not indicate whether progress is currently being made, but whether a crafting process has been started in this machine.
    *
    * _Can only be used if this is CraftingMachine_
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_crafting View documentation}
    */
-  is_crafting(): void
+  is_crafting(): boolean
   /**
    * _Can only be used if this is Gate_
    *
@@ -5831,13 +5831,13 @@ interface MarketEntity extends BaseEntity {
  */
 interface CraftingMachineEntity extends BaseEntity {
   /**
-   * Returns whether a craft is currently in process. It does not indicate whether progress is currently being made, but whether any crafting action has made progress in this machine.
+   * Returns whether a craft is currently in process. It does not indicate whether progress is currently being made, but whether a crafting process has been started in this machine.
    *
    * _Can only be used if this is CraftingMachine_
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_crafting View documentation}
    */
-  is_crafting(): void
+  is_crafting(): boolean
   /**
    * Current recipe being assembled by this machine or `nil` if no recipe is set.
    *
@@ -23855,7 +23855,7 @@ interface LuaSurface {
    */
   clear(ignore_characters?: boolean): void
   /**
-   * Generates a path with the specified constraints (as an array of {@link PathfinderWaypoint PathfinderWaypoints}) using the unit pathfinding algorithm. This path can be used to emulate pathing behavior by script for non-unit entities. If you want to command actual units to move, use the {@link LuaEntity#set_command LuaEntity::set_command} functionality instead.
+   * Generates a path with the specified constraints (as an array of {@link PathfinderWaypoint PathfinderWaypoints}) using the unit pathfinding algorithm. This path can be used to emulate pathing behavior by script for non-unit entities, such as vehicles. If you want to command actual units (such as biters or spitters) to move, use {@link LuaEntity#set_command LuaEntity::set_command} instead.
    *
    * The resulting path is ultimately returned asynchronously via {@link OnScriptPathRequestFinishedEvent on_script_path_request_finished}.
    *

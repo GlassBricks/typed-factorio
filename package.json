@@ -15,9 +15,7 @@
   ],
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "scripts": {
-    "gen": "ts-node -P generator/tsconfig.json generator/main.ts",
-    "generate": "yarn run gen --in ./generatorSrc --out ./generated --warn-as-error",
-    "generate:dev": "yarn run gen --in ./generatorSrc --out ./generated --no-format",
+    "generate": "ts-node -P generator/tsconfig.json generator/main.ts",
     "clean": "rimraf generated",
     "pretest": "yarn run generate",
     "test": "jest",
@@ -37,7 +35,6 @@
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "chalk": "^3.0.0",
-    "commander": "^8.3.0",
     "eslint": "^8.4.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",

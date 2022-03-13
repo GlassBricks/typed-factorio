@@ -4,28 +4,16 @@ import DefinitionsGenerator from "./DefinitionsGenerator"
 import * as path from "path"
 import ts from "typescript"
 import * as console from "console"
-import { program } from "commander"
 import { FactorioApiJson } from "./FactorioApiJson"
 
-program
-  .option("--in <path>", "Source folder containing manualDefinitions(.d).ts and runtime-api(-version).json")
-  .option("--out <path>", "output directory")
-  .option("--no-format", "Do not format with prettier (significant speedup)")
-  .option("--warn-as-error", "Treat warnings as errors")
+const srcDir = path.resolve(__dirname, "../generatorSrc")
+const outDir = path.resolve(__dirname, "../generated")
 
-program.parse()
-const opts = program.opts<{
-  in: string
-  out: string
-  format: boolean
-  warnAsError: boolean
-}>()
-const srcFolder = path.resolve(opts.in)
-const srcFiles = fs.readdirSync(srcFolder)
+const srcFiles = fs.readdirSync(srcDir)
 
-const manualDefinesFile = path.resolve(srcFolder, srcFiles.find((f) => f.endsWith(".ts"))!)
+const manualDefinesFile = path.resolve(srcDir, srcFiles.find((f) => f.endsWith(".ts"))!)
 if (!manualDefinesFile) {
-  throw new Error(`could not find manual defines file in ${srcFolder}`)
+  throw new Error(`Could not find manual defines file in ${srcDir}`)
 }
 let version: string | undefined
 let jsonFile: string | undefined
@@ -40,12 +28,14 @@ for (const file of srcFiles) {
   }
 }
 if (!jsonFile) {
-  throw new Error(`could not find json api file in ${srcFolder}`)
+  throw new Error(`Could not find runtime api json file in ${srcDir}`)
 }
 
-console.log("reading input")
-const apiJson = JSON.parse(fs.readFileSync(path.join(srcFolder, jsonFile!), "utf-8")) as FactorioApiJson
-console.log(`  factorio version ${version}`)
+console.log("Reading input")
+const apiJson = JSON.parse(fs.readFileSync(path.join(srcDir, jsonFile!), "utf-8")) as FactorioApiJson
+const jsonVersion = apiJson.application_version
+
+console.log(`  factorio version ${jsonVersion}`)
 const tsProgram = ts.createProgram({
   rootNames: [manualDefinesFile],
   options: {},
@@ -56,28 +46,26 @@ if (!manualDefines) {
 }
 const typeChecker = tsProgram.getTypeChecker()
 
-console.log("generating files")
+console.log("Generating files")
 const generator = new DefinitionsGenerator(apiJson, manualDefines, typeChecker)
 const outFiles = generator.generateDeclarations()
 
-console.log("writing files")
-const outDir = path.resolve(opts.out)
+console.log("Writing files")
 if (!fs.existsSync(outDir)) {
   fs.mkdirSync(outDir)
 }
+
 for (let [name, content] of outFiles) {
-  if (opts.format) {
-    console.log(`Formatting ${name}.d.ts`)
-    content = prettier.format(content, {
-      parser: "typescript",
-      printWidth: 120,
-      semi: false,
-    })
-  }
+  console.log(`  formatting ${name}.d.ts`)
+  content = prettier.format(content, {
+    parser: "typescript",
+    printWidth: 120,
+    semi: false,
+  })
   const fileName = path.join(outDir, name + ".d.ts")
   fs.writeFileSync(fileName, content)
 }
 
-if (opts.warnAsError && generator.hasWarnings) {
-  throw new Error("Fail due to warnings")
+if (generator.hasWarnings) {
+  process.exit(1)
 }

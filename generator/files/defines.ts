@@ -113,7 +113,7 @@ export function generateDefines(generator: DefinitionsGenerator) {
         .flatMap((d) => generateDefinesDeclaration(d, thisPath, existing?.members[d.name]))
       declarations = [createNamespace(modifiers, define.name, subkeys)]
     } else if (!existing) {
-      generator.warnIncompleteDefinition("Incomplete define for", thisPath)
+      generator.warning("Incomplete define for", thisPath)
       declarations = [
         ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown),
       ]
