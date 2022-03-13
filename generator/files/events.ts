@@ -12,7 +12,7 @@ export function preprocessEvents(generator: DefinitionsGenerator) {
   }
 }
 
-export default function generateEvents(generator: DefinitionsGenerator) {
+export function generateEvents(generator: DefinitionsGenerator) {
   const statements = generator.newStatements()
   const heritageClause = createExtendsClause("EventData")
   for (const event of generator.apiDocs.events.sort(sortByOrder)) {

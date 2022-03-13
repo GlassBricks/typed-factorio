@@ -3,3 +3,4 @@
 generatorSrc/manual-defs.ts
 scripts/**
 test/**
+runtime/*.ts

@@ -6,7 +6,6 @@ import {
   indent,
   makeNullable,
   Modifiers,
-  printer,
   printNode,
   removeLuaPrefix,
   Tokens,
@@ -14,13 +13,7 @@ import {
   Types,
 } from "./genUtil"
 import { assertNever, sortByOrder } from "./util"
-import {
-  checkManualDefinitions,
-  InterfaceDef,
-  preprocessManualDefinitions,
-  processManualDefinitions,
-  TypeAliasDef,
-} from "./manualDefinitions"
+import { InterfaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions"
 import chalk from "chalk"
 import {
   Attribute,
@@ -36,12 +29,8 @@ import {
   WithNotes,
   WithParameterVariants,
 } from "./FactorioApiJson"
-import { generateDefines, preprocessDefines } from "./files/defines"
-import generateEvents, { getMappedEventName, preprocessEvents } from "./files/events"
-import { generateBuiltins, generateGlobalObjects, preprocessBuiltins, preprocessGlobalObjects } from "./files/others"
-import { generateConcepts, preprocessConcepts } from "./files/concepts"
-import { generateClasses, preprocessClasses } from "./files/classes"
-import assert from "node:assert"
+import assert from "assert"
+import { getMappedEventName } from "./files/events"
 
 export class Statements {
   statements: ts.Statement[] = [createComment("* @noSelfInFile ", true)]
@@ -49,7 +38,7 @@ export class Statements {
   constructor(private addBefore: Map<string, ts.Statement[]>, private addLater: Map<string, ts.Statement[]>) {}
 
   addAfter(first: ts.Statement, next: ts.Statement) {
-    const name = this.getName(first)
+    const name = Statements.getName(first)
     if (!name) throw new Error("First object statement does not have name to add after")
 
     if (!this.addLater.has(name)) {
@@ -59,7 +48,7 @@ export class Statements {
   }
 
   add(statement: ts.Statement) {
-    const name = this.getName(statement)
+    const name = Statements.getName(statement)
     if (name) {
       const addBefore = this.addBefore.get(name)
       if (addBefore) {
@@ -78,7 +67,7 @@ export class Statements {
     }
   }
 
-  private getName(statement: ts.Statement) {
+  private static getName(statement: ts.Statement) {
     let name: string | undefined
     if (
       ts.isInterfaceDeclaration(statement) ||
@@ -99,9 +88,7 @@ export type RWType = {
 }
 
 export default class DefinitionsGenerator {
-  private static header = "// This is an auto-generated file. Do not edit directly!\n\n"
-
-  private outFiles = new Map<string, ts.Statement[]>()
+  outFiles = new Map<string, ts.Statement[]>()
 
   readonly manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)
 
@@ -112,7 +99,7 @@ export default class DefinitionsGenerator {
   private concepts = new Map<string, Concept>(this.apiDocs.concepts.map((e) => [e.name, e]))
   private globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
 
-  private preprocessDone = false
+  preprocessDone = false
 
   numericTypes = new Set<string>()
   // This is also a record of which types exist
@@ -147,52 +134,15 @@ export default class DefinitionsGenerator {
 
   private static readonly docUrlBase = "https://lua-api.factorio.com/latest/"
 
-  generateDeclarations(): Map<string, string> {
-    this.preprocessAll()
-    this.generateAll()
-    const result = new Map<string, string>()
-    for (const [fileName, statements] of this.outFiles) {
-      let content = DefinitionsGenerator.header
-      for (const statement of statements) {
-        content += printer.printNode(ts.EmitHint.Unspecified, statement, this.manualDefinitionsSource)
-        content += "\n\n"
-      }
-      result.set(fileName, content)
-    }
-    result.set("index", this.getIndexFile())
-    return result
-  }
-
-  private generateAll() {
-    generateBuiltins(this)
-    generateGlobalObjects(this)
-    generateDefines(this)
-    generateEvents(this)
-    generateClasses(this)
-    generateConcepts(this)
-    checkManualDefinitions(this)
-  }
-
-  private preprocessAll() {
-    preprocessBuiltins(this)
-    preprocessGlobalObjects(this)
-    preprocessDefines(this)
-    preprocessEvents(this)
-    preprocessClasses(this)
-    preprocessConcepts(this)
-    preprocessManualDefinitions(this)
-    this.preprocessDone = true
-  }
-
-  private getIndexFile(): string {
-    let result = DefinitionsGenerator.header
-    result += '///<reference types="lua-types/5.2" />\n'
-    for (const file of this.outFiles.keys()) {
-      result += `///<reference path="${file}.d.ts" />\n`
-    }
-    return result
-  }
-
+  // private getIndexFile(): string {
+  //   let result = DefinitionsGenerator.header
+  //   result += '///<reference types="lua-types/5.2" />\n'
+  //   for (const file of this.outFiles.keys()) {
+  //     result += `///<reference path="${file}.d.ts" />\n`
+  //   }
+  //   return result
+  // }
+  //
   newStatements() {
     return new Statements(this.addBefore, this.addAfter)
   }

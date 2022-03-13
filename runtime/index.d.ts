@@ -1,7 +1,14 @@
 /// <reference types="lua-types/5.2" />
 
-/// <reference path="../generated/index.d.ts" />
+// generated
+/// <reference path="../generated/builtin-types.d.ts" />
+/// <reference path="../generated/global-objects.d.ts" />
+/// <reference path="../generated/defines.d.ts" />
+/// <reference path="../generated/events.d.ts" />
+/// <reference path="../generated/classes.d.ts" />
+/// <reference path="../generated/concepts.d.ts" />
 
+// other runtime
 /// <reference path="librariesAndFunctions.d.ts" />
 /// <reference path="pairs.d.ts" />
 

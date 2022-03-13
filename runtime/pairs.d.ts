@@ -1,4 +1,5 @@
 /** @noSelfInFile */
+///<reference types="lua-types/5.2" />
 
 /**
  * Iterating with `pairs` will only iterate the array part of a {@link LuaCustomTable}.
