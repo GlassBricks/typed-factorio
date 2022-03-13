@@ -1,3 +1,8 @@
+# v0.20.0
+
+- Updated to factorio version 1.1.56
+- Added custom-index-template.d.ts. You can use this if you would like to make a "custom" modification of the type definitions. 
+
 # v0.19.0
 
 - Updated to factorio version 1.1.53
