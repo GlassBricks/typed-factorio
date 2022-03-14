@@ -55,7 +55,12 @@ declare namespace defines {
 
 type LuaCustomTable<K extends string | number, V> = {
   [P in K]: V
-} & LuaPairsIterable<[number] extends [K] ? number : K, V>
+} & LuaPairsIterable<
+  // this convoluted expression gives a number type if K includes a number, even if it includes a string, and K otherwise.
+  // it also preserves number branding
+  [number] extends [K extends number & IndexBrand<infer A> ? number : K] ? (K extends string ? never : K) : K,
+  V
+>
 
 interface LuaLazyLoadedValue<T> {
   get(): T
@@ -479,7 +484,21 @@ interface LuaGameScript {
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
 }
 
-//  -- Concepts
+// strict index types
+
+/** @addTo index-types */
+interface __OptInFeatures {}
+/** @addTo index-types */
+/**
+ * Equals a branded type when __OptInFeatures contains strictIndexTypes, otherwise equals `unknown`.
+ */
+type IndexBrand<B extends string> = "strictIndexTypes" extends keyof __OptInFeatures
+  ? {
+      [K in B]: any
+    }
+  : unknown
+
+//  -- Concepts --
 
 type LocalisedString = readonly [string, ...LocalisedString[]] | string | number | boolean | undefined
 

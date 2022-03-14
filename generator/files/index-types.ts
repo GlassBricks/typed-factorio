@@ -10,7 +10,6 @@ export interface IndexType {
   }
   identificationConcept?: string
   attributePattern?: RegExp
-  allowOne?: boolean
   typeOverride?: string // default uint
 }
 
@@ -23,7 +22,6 @@ export const IndexTypes: IndexType[] = [
     },
     identificationConcept: "PlayerIdentification",
     attributePattern: /^(player_index|by_player)$/,
-    allowOne: true,
   },
   {
     name: "SurfaceIndex",
@@ -33,7 +31,6 @@ export const IndexTypes: IndexType[] = [
     },
     identificationConcept: "SurfaceIdentification",
     attributePattern: /^surface_index$/,
-    allowOne: true,
   },
   {
     name: "UnitNumber",
@@ -68,46 +65,19 @@ export function preprocessIndexTypes(generator: DefinitionsGenerator): void {
 }
 
 export function generateIndexTypesFile(generator: DefinitionsGenerator): void {
-  const strict = generator.newStatements()
-  const nonStrict = generator.newStatements()
+  const statements = generator.newStatements()
   for (const indexType of IndexTypes) {
     // type ${name} = uint & { _${name}Brand: void } ( | 1 )
-    const typeName = indexType.typeOverride ?? "uint"
-    let strictTypeNode: ts.TypeNode = ts.factory.createIntersectionTypeNode([
-      ts.factory.createTypeReferenceNode(typeName),
-      ts.factory.createTypeLiteralNode([
-        ts.factory.createPropertySignature(undefined, `_${decapitalize(indexType.name)}Brand`, undefined, Types.void),
-      ]),
+    const typeArguments = [Types.stringLiteral(`_${decapitalize(indexType.name)}Brand`)]
+    const typeNode = ts.factory.createIntersectionTypeNode([
+      ts.factory.createTypeReferenceNode(indexType.typeOverride ?? "uint"),
+      ts.factory.createTypeReferenceNode("IndexBrand", typeArguments),
     ])
-    if (indexType.allowOne) {
-      strictTypeNode = ts.factory.createUnionTypeNode([strictTypeNode, Types.numberLiteral(1)])
-    }
-    const strictStatement = ts.factory.createTypeAliasDeclaration(
-      undefined,
-      undefined,
-      indexType.name,
-      undefined,
-      strictTypeNode
-    )
-    const nonStrictStatement = ts.factory.createTypeAliasDeclaration(
-      undefined,
-      undefined,
-      indexType.name,
-      undefined,
-      ts.factory.createTypeReferenceNode(typeName)
-    )
-
+    const statement = ts.factory.createTypeAliasDeclaration(undefined, undefined, indexType.name, undefined, typeNode)
     const { parent, name } = indexType.mainAttributePath
-    const seeLink = `See [${parent}.${name}](${parent}::${name}).`
-
-    const strictDescription = `${seeLink}\n\nIf you need to use a number/numeric literal for this type, you can use a cast, e.g. \`2 as ${indexType.name}\`.`
-    generator.addJsDoc(strictStatement, { description: strictDescription }, undefined)
-    strict.add(strictStatement)
-
-    const nonStrictDescription = `${seeLink}.\n\nThis can be a "branded" type for stricter types; see docs on how to opt-in to this.`
-    generator.addJsDoc(nonStrictStatement, { description: nonStrictDescription }, undefined)
-    nonStrict.add(nonStrictStatement)
+    const fakeDescription = `See [${parent}.${name}](${parent}::${name}).\n\nIf you really need to use a number/numeric literal for this type, you can use a cast, e.g. \`2 as ${indexType.name}\`.`
+    generator.addJsDoc(statement, { description: fakeDescription }, undefined)
+    statements.add(statement)
   }
-  generator.addFile("index-types", nonStrict)
-  generator.addFile("index-types-strict", strict)
+  generator.addFile("index-types", statements)
 }

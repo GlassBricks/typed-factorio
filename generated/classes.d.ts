@@ -2000,7 +2000,12 @@ interface LuaCustomTableMembers {
  */
 type LuaCustomTable<K extends string | number, V> = LuaCustomTableMembers &
   CustomTableIndexer<K, V> &
-  LuaPairsIterable<[number] extends [K] ? number : K, V>
+  LuaPairsIterable<
+    // this convoluted expression gives a number type if K includes a number, even if it includes a string, and K otherwise.
+    // it also preserves number branding
+    [number] extends [K extends number & IndexBrand<infer A> ? number : K] ? (K extends string ? never : K) : K,
+    V
+  >
 
 /**
  * Prototype of a damage.
