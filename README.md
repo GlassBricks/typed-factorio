@@ -2,7 +2,7 @@
 
 Complete and featureful typescript definitions for the Factorio modding lua api. This is intended to be used with [TypescriptToLua](https://typescripttolua.github.io/).
 
-This project aims to provide type definitions for the Factorio lua API that are as complete as possible. This means no `any`s or `unknown`s, correct nullability, and smart types where possible. The generator integrates both the Factorio JSON api docs and manually defined additions and overrides.
+This project aims to provide type definitions for the Factorio lua API that are as complete as possible. This means no `any`s or `unknown`s, correct nullability, and lots of smart type features. The generator integrates both the Factorio JSON api docs and manually defined additions and overrides.
 
 ## Installation
 
@@ -42,7 +42,7 @@ Example:
 
 ```ts
 import { Data, Mods } from "typed-factorio/data/types"
-// or 
+// or
 import { Data, Mods } from "typed-factorio/settings/types"
 
 declare const data: Data
@@ -93,15 +93,6 @@ Variant parameter types (types with "additional fields can be specified dependin
 
 The type for a specific variant is prefixed with the variant name, or with "Other" for variants without additional fields (e.g. `AmmoDamageTechnologyModifier`, `OtherTechnologyModifier`).
 
-### Types with subclasses
-
-Some classes have attributes that are documented to only work on particular subclasses. For these classes, e.g. `LuaEntity`, there are also these other types that you can _optionally_ use:
-
-- a "Base" type, e.g. `BaseEntity`, which only contains members usable by all subclasses
-- individual subclass types, e.g. `CraftingMachineEntity`, which extends the base type with members specific to that subclass
-
-The simple class name, `LuaEntity` in this example, still contains attributes for _all_ subclasses.
-
 ### Events
 
 `script.on_event()`, `script.get/set_filters()`, and `script.raise_event()` all have type checking on the event data/filter type, inferred from what is passed as the event name/id.
@@ -120,14 +111,28 @@ Table-or-array types will appear in the Table form when known to be in a read po
 
 For some concepts, there is also a special form for when the concept is used in a "read" position, where all table-or-array types are in Table form. These types are suffixed with `Read`, e.g. `ScriptPositionRead`.
 
+### Nominal index types
+
+Some `uint` types which represent indices, e.g. player_index, entity_number, are now "branded" numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. These are assignable to `number`, but `number` is not assignable to them.
+These are indices that do not index into an array-like structure, and otherwise should usually not have arithmetic done to them. So, using a separate type helps ensure correctness.
+You can still use these types as keys in an index signature, e.g. `{ [index: PlayerIndex]: "foo" }`.
+You can cast "plain" numbers to these types, e.g. `2 as PlayerIndex`, only do this with some care.
+
+- `player_index` and `surface_index` still allow the numeric constant 1 as a valid index, representing the first player or the default surface, respectively. This is allowed as this is a common enough use case.
+
+### Types with subclasses
+
+Some classes have attributes that are documented to only work on particular subclasses. For these classes, e.g. `LuaEntity`, there are specific types that you can _optionally_ use:
+
+- a "Base" type, e.g. `BaseEntity`, which only contains members usable by all subclasses
+- individual subclass types, e.g. `CraftingMachineEntity`, which extends the base type with members specific to that subclass
+
+The simple class name, `LuaEntity` in this example, contains attributes for _all_ subclasses.
+
 ### LuaGuiElement
 
 `LuaGuiElement` is broken up into a [discriminated union](https://basarat.gitbook.io/typescript/type-system/discriminated-unions), with a separate type for each gui element type. Individual gui element types can be referred to by `<Type>GuiElement`, e.g. `ButtonGuiElement`.
 
-Similarly, the table passed to `LuaGuiElement.add`, referred to as `GuiSpec`, is also broken up into a discriminated union for each gui element type. The type for a specific GuiSpec type is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`. `LuaGuiElement.add` will return the appropriate gui element type corresponding to the gui spec type received.
+Similarly, the table passed to `LuaGuiElement.add`, referred to as `GuiSpec`, is also broken up into a discriminated union. The type for a specific GuiSpec is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`. `LuaGuiElement.add` will return the appropriate gui element type corresponding to the gui spec type received.
 
 This is done both to provide more accurate types, and for possible integration with [JSX](https://typescripttolua.github.io/docs/jsx/).
-
-### Examples
-
-Check out the `test` directory on GitHub for more examples on particular type features.
