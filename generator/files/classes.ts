@@ -80,7 +80,7 @@ function generateClass(
 
   const members: MemberAndOriginal[] = []
   // methods + operators
-  fillMembersAndOperators()
+  fillMethodsAndOperators()
   const indexType = fillIndexType()
   // attributes
   fillAttributes()
@@ -166,7 +166,7 @@ function generateClass(
       return ts.factory.createTypeAliasDeclaration(
         undefined,
         undefined,
-        shortName + "Index",
+        shortName + "Indexer",
         existing.node.typeParameters,
         generator.addJsDoc(existingIndexOp, indexOperator, clazz.name + ".operator%20[]")
       )
@@ -177,14 +177,14 @@ function generateClass(
         indexOperator,
         clazz.name + ".operator%20[]"
       )
-      return ts.factory.createInterfaceDeclaration(undefined, undefined, shortName + "Index", undefined, undefined, [
+      return ts.factory.createInterfaceDeclaration(undefined, undefined, shortName + "Indexer", undefined, undefined, [
         indexSignature,
       ])
     }
     assertNever(existingIndexOp)
   }
 
-  function fillMembersAndOperators() {
+  function fillMethodsAndOperators() {
     members.push(
       ...clazz.methods.sort(sortByOrder).map((method) => ({
         original: method,
@@ -459,7 +459,7 @@ function generateClass(
       statements.add(indexType)
     }
     const shortName = removeLuaPrefix(clazz.name)
-    const indexTypeName = indexType ? shortName + "Index" : undefined
+    const indexTypeName = indexType ? shortName + "Indexer" : undefined
     if (!membersBySubclass || !discriminantProperty) {
       // if no discriminant property, generate normal class as well as subclasses
       createDeclaration(clazz.name, superTypes, members, indexTypeName, clazz)

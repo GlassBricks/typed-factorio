@@ -300,7 +300,7 @@ interface LuaBootstrap {
    * @returns The registration number. It is used to identify the entity in the {@link OnEntityDestroyedEvent on_entity_destroyed} event.
    * @remarks Depending on when a given entity is destroyed, {@link OnEntityDestroyedEvent on_entity_destroyed} will either be fired at the end of the current tick or at the end of the next tick.
    */
-  register_on_entity_destroyed(entity: LuaEntity): uint64
+  register_on_entity_destroyed(entity: LuaEntity): RegistrationNumber
   /**
    * Generate a new, unique event ID that can be used to raise custom events with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event}.
    *
@@ -392,7 +392,7 @@ interface LuaBootstrap {
     /**
      * The player doing the chatting.
      */
-    readonly player_index: uint
+    readonly player_index: PlayerIndex
     /**
      * The chat message to send.
      */
@@ -413,7 +413,7 @@ interface LuaBootstrap {
     /**
      * The player doing the crafting.
      */
-    readonly player_index: uint
+    readonly player_index: PlayerIndex
     /**
      * The recipe used to craft this item.
      */
@@ -430,7 +430,7 @@ interface LuaBootstrap {
     /**
      * The player transferred from or to.
      */
-    readonly player_index: uint
+    readonly player_index: PlayerIndex
     /**
      * The entity transferred from or to.
      */
@@ -464,7 +464,7 @@ interface LuaBootstrap {
     /**
      * The player who did the purchasing.
      */
-    readonly player_index: uint
+    readonly player_index: PlayerIndex
     /**
      * The market entity.
      */
@@ -532,7 +532,7 @@ interface LuaBootstrap {
     /**
      * The surface whose tiles have been changed.
      */
-    readonly surface_index: uint
+    readonly surface_index: SurfaceIndex
     /**
      * The tiles that have been changed.
      */
@@ -1938,7 +1938,7 @@ interface LuaCustomInputPrototype {
   help(): string
 }
 
-type CustomTableIndex<K extends string | number, V>
+type CustomTableIndexer<K extends string | number, V>
 /**
  * Access an element of this custom table.
  *
@@ -1999,7 +1999,7 @@ interface LuaCustomTableMembers {
  * ```
  */
 type LuaCustomTable<K extends string | number, V> = LuaCustomTableMembers &
-  CustomTableIndex<K, V> &
+  CustomTableIndexer<K, V> &
   LuaPairsIterable<[number] extends [K] ? number : K, V>
 
 /**
@@ -3793,7 +3793,7 @@ interface LuaEntity extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.unit_number View documentation}
    */
-  readonly unit_number: uint | undefined
+  readonly unit_number: UnitNumber | undefined
   /**
    * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner} that was destroyed to create this ghost. If it was created by other means, or if the inner entity doesn not support unit numbers, this property is `nil`.
    *
@@ -3801,7 +3801,7 @@ interface LuaEntity extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_unit_number View documentation}
    */
-  readonly ghost_unit_number: uint | undefined
+  readonly ghost_unit_number: UnitNumber | undefined
   /**
    * The mining progress for this mining drill or `nil` if this isn't a mining drill. Is a number in range [0, mining_target.prototype.mineable_properties.mining_time]
    *
@@ -5355,7 +5355,7 @@ interface BaseEntity extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.unit_number View documentation}
    */
-  readonly unit_number: uint | undefined
+  readonly unit_number: UnitNumber | undefined
   /**
    * The mining progress for this mining drill or `nil` if this isn't a mining drill. Is a number in range [0, mining_target.prototype.mineable_properties.mining_time]
    *
@@ -5772,7 +5772,7 @@ interface EntityGhostEntity extends BaseEntity {
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.ghost_unit_number View documentation}
    */
-  readonly ghost_unit_number: uint | undefined
+  readonly ghost_unit_number: UnitNumber | undefined
 }
 
 /**
@@ -11954,7 +11954,7 @@ interface LuaGameScript {
    * @param player The player index or name.
    * @remarks This is a shortcut for game.players[...]
    */
-  get_player(player: uint | string): LuaPlayer | undefined
+  get_player(index: PlayerIndex | string): LuaPlayer | undefined
   /**
    * Gets the given surface or returns `nil` if no surface is found.
    *
@@ -11962,7 +11962,7 @@ interface LuaGameScript {
    * @param surface The surface index or name.
    * @remarks This is a shortcut for game.surfaces[...]
    */
-  get_surface(surface: uint | string): LuaSurface | undefined
+  get_surface(index: SurfaceIndex | string): LuaSurface | undefined
   /**
    * Creates a {@link LuaProfiler}, which is used for measuring script performance.
    *
@@ -12155,7 +12155,7 @@ interface LuaGameScript {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.players View documentation}
    */
-  readonly players: LuaCustomTable<uint | string, LuaPlayer>
+  readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
   /**
    * The currently active set of map settings. Even though this property is marked as read-only, the members of the dictionary that is returned can be modified mid-game.
    *
@@ -12422,7 +12422,7 @@ interface LuaGameScript {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.surfaces View documentation}
    */
-  readonly surfaces: LuaCustomTable<uint | string, LuaSurface>
+  readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
   /**
    * The active mods versions. The keys are mod names, the values are the versions.
    *
@@ -12966,7 +12966,7 @@ interface CameraGuiSpec extends BaseGuiSpec {
   /**
    * The surface that the camera will render. Defaults to the player's current surface.
    */
-  readonly surface_index?: uint
+  readonly surface_index?: SurfaceIndex
   /**
    * The initial camera zoom. Defaults to `0.75`.
    */
@@ -13136,7 +13136,7 @@ interface MinimapGuiSpec extends BaseGuiSpec {
   /**
    * The surface the camera will render. Defaults to the player's current surface.
    */
-  readonly surface_index?: uint
+  readonly surface_index?: SurfaceIndex
   /**
    * The player index the map should use. Defaults to the current player.
    */
@@ -13218,7 +13218,7 @@ type GuiSpec =
   | TabbedPaneGuiSpec
   | LabelGuiSpec
 
-interface GuiElementIndex {
+interface GuiElementIndexer {
   /**
    * The indexing operator. Gets children by name.
    *
@@ -13312,7 +13312,7 @@ interface BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.index View documentation}
    */
-  readonly index: uint
+  readonly index: GuiElementIndex
   /**
    * The GUI this element is a child of.
    *
@@ -13367,7 +13367,7 @@ interface BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.player_index View documentation}
    */
-  readonly player_index: uint
+  readonly player_index: PlayerIndex
   tooltip: LocalisedString
   /**
    * The type of this GUI element.
@@ -13497,7 +13497,7 @@ interface ChooseElemButtonGuiElementMembers extends BaseGuiElement {
   locked: boolean
 }
 
-type ChooseElemButtonGuiElement = ChooseElemButtonGuiElementMembers & GuiElementIndex
+type ChooseElemButtonGuiElement = ChooseElemButtonGuiElementMembers & GuiElementIndexer
 
 /**
  * @noSelf
@@ -13559,7 +13559,7 @@ interface DropDownGuiElementMembers extends BaseGuiElement {
   selected_index: uint
 }
 
-type DropDownGuiElement = DropDownGuiElementMembers & GuiElementIndex
+type DropDownGuiElement = DropDownGuiElementMembers & GuiElementIndexer
 
 interface EmptyWidgetGuiElementMembers extends BaseGuiElement {
   /**
@@ -13587,7 +13587,7 @@ interface EmptyWidgetGuiElementMembers extends BaseGuiElement {
   drag_target: LuaGuiElement | undefined
 }
 
-type EmptyWidgetGuiElement = EmptyWidgetGuiElementMembers & GuiElementIndex
+type EmptyWidgetGuiElement = EmptyWidgetGuiElementMembers & GuiElementIndexer
 
 interface EntityPreviewGuiElementMembers extends BaseGuiElement {
   /**
@@ -13604,7 +13604,7 @@ interface EntityPreviewGuiElementMembers extends BaseGuiElement {
   entity: LuaEntity | undefined
 }
 
-type EntityPreviewGuiElement = EntityPreviewGuiElementMembers & GuiElementIndex
+type EntityPreviewGuiElement = EntityPreviewGuiElementMembers & GuiElementIndexer
 
 /**
  * @noSelf
@@ -13676,7 +13676,7 @@ interface ListBoxGuiElementMembers extends BaseGuiElement {
   selected_index: uint
 }
 
-type ListBoxGuiElement = ListBoxGuiElementMembers & GuiElementIndex
+type ListBoxGuiElement = ListBoxGuiElementMembers & GuiElementIndexer
 
 /**
  * @noSelf
@@ -13748,7 +13748,7 @@ interface ScrollPaneGuiElementMembers extends BaseGuiElement {
   vertical_scroll_policy: "auto" | "never" | "always" | "auto-and-reserve-space" | "dont-show-but-allow-scrolling"
 }
 
-type ScrollPaneGuiElement = ScrollPaneGuiElementMembers & GuiElementIndex
+type ScrollPaneGuiElement = ScrollPaneGuiElementMembers & GuiElementIndexer
 
 interface SpriteButtonGuiElementMembers extends BaseGuiElement {
   /**
@@ -13798,7 +13798,7 @@ interface SpriteButtonGuiElementMembers extends BaseGuiElement {
   set mouse_button_filter(value: MouseButtonFlags)
 }
 
-type SpriteButtonGuiElement = SpriteButtonGuiElementMembers & GuiElementIndex
+type SpriteButtonGuiElement = SpriteButtonGuiElementMembers & GuiElementIndexer
 
 /**
  * @noSelf
@@ -13846,7 +13846,7 @@ interface TabbedPaneGuiElementMembers extends BaseGuiElement {
   readonly tabs: TabAndContent[]
 }
 
-type TabbedPaneGuiElement = TabbedPaneGuiElementMembers & GuiElementIndex
+type TabbedPaneGuiElement = TabbedPaneGuiElementMembers & GuiElementIndexer
 
 /**
  * @noSelf
@@ -13960,7 +13960,7 @@ interface TextBoxGuiElementMembers extends BaseGuiElement {
   clear_and_focus_on_right_click: boolean
 }
 
-type TextBoxGuiElement = TextBoxGuiElementMembers & GuiElementIndex
+type TextBoxGuiElement = TextBoxGuiElementMembers & GuiElementIndexer
 
 interface ButtonGuiElementMembers extends BaseGuiElement {
   /**
@@ -13978,7 +13978,7 @@ interface ButtonGuiElementMembers extends BaseGuiElement {
   set mouse_button_filter(value: MouseButtonFlags)
 }
 
-type ButtonGuiElement = ButtonGuiElementMembers & GuiElementIndex
+type ButtonGuiElement = ButtonGuiElementMembers & GuiElementIndexer
 
 interface CameraGuiElementMembers extends BaseGuiElement {
   /**
@@ -13999,7 +13999,7 @@ interface CameraGuiElementMembers extends BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.surface_index View documentation}
    */
-  surface_index: uint
+  surface_index: SurfaceIndex
   /**
    * The zoom this camera or minimap is using.
    *
@@ -14014,7 +14014,7 @@ interface CameraGuiElementMembers extends BaseGuiElement {
   entity: LuaEntity | undefined
 }
 
-type CameraGuiElement = CameraGuiElementMembers & GuiElementIndex
+type CameraGuiElement = CameraGuiElementMembers & GuiElementIndexer
 
 interface CheckboxGuiElementMembers extends BaseGuiElement {
   /**
@@ -14033,7 +14033,7 @@ interface CheckboxGuiElementMembers extends BaseGuiElement {
   state: boolean
 }
 
-type CheckboxGuiElement = CheckboxGuiElementMembers & GuiElementIndex
+type CheckboxGuiElement = CheckboxGuiElementMembers & GuiElementIndexer
 
 interface FlowGuiElementMembers extends BaseGuiElement {
   /**
@@ -14069,7 +14069,7 @@ interface FlowGuiElementMembers extends BaseGuiElement {
   drag_target: LuaGuiElement | undefined
 }
 
-type FlowGuiElement = FlowGuiElementMembers & GuiElementIndex
+type FlowGuiElement = FlowGuiElementMembers & GuiElementIndexer
 
 /**
  * @noSelf
@@ -14127,7 +14127,7 @@ interface FrameGuiElementMembers extends BaseGuiElement {
   drag_target: LuaGuiElement | undefined
 }
 
-type FrameGuiElement = FrameGuiElementMembers & GuiElementIndex
+type FrameGuiElement = FrameGuiElementMembers & GuiElementIndexer
 
 interface LabelGuiElementMembers extends BaseGuiElement {
   /**
@@ -14155,7 +14155,7 @@ interface LabelGuiElementMembers extends BaseGuiElement {
   drag_target: LuaGuiElement | undefined
 }
 
-type LabelGuiElement = LabelGuiElementMembers & GuiElementIndex
+type LabelGuiElement = LabelGuiElementMembers & GuiElementIndexer
 
 interface LineGuiElementMembers extends BaseGuiElement {
   /**
@@ -14174,7 +14174,7 @@ interface LineGuiElementMembers extends BaseGuiElement {
   readonly direction: "horizontal" | "vertical"
 }
 
-type LineGuiElement = LineGuiElementMembers & GuiElementIndex
+type LineGuiElement = LineGuiElementMembers & GuiElementIndexer
 
 interface MinimapGuiElementMembers extends BaseGuiElement {
   /**
@@ -14195,7 +14195,7 @@ interface MinimapGuiElementMembers extends BaseGuiElement {
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.surface_index View documentation}
    */
-  surface_index: uint
+  surface_index: SurfaceIndex
   /**
    * The zoom this camera or minimap is using.
    *
@@ -14224,7 +14224,7 @@ interface MinimapGuiElementMembers extends BaseGuiElement {
   entity: LuaEntity | undefined
 }
 
-type MinimapGuiElement = MinimapGuiElementMembers & GuiElementIndex
+type MinimapGuiElement = MinimapGuiElementMembers & GuiElementIndexer
 
 interface ProgressBarGuiElementMembers extends BaseGuiElement {
   /**
@@ -14243,7 +14243,7 @@ interface ProgressBarGuiElementMembers extends BaseGuiElement {
   value: double
 }
 
-type ProgressBarGuiElement = ProgressBarGuiElementMembers & GuiElementIndex
+type ProgressBarGuiElement = ProgressBarGuiElementMembers & GuiElementIndexer
 
 interface RadioButtonGuiElementMembers extends BaseGuiElement {
   /**
@@ -14262,7 +14262,7 @@ interface RadioButtonGuiElementMembers extends BaseGuiElement {
   state: boolean
 }
 
-type RadioButtonGuiElement = RadioButtonGuiElementMembers & GuiElementIndex
+type RadioButtonGuiElement = RadioButtonGuiElementMembers & GuiElementIndexer
 
 /**
  * @noSelf
@@ -14340,7 +14340,7 @@ interface SliderGuiElementMembers extends BaseGuiElement {
   slider_value: double
 }
 
-type SliderGuiElement = SliderGuiElementMembers & GuiElementIndex
+type SliderGuiElement = SliderGuiElementMembers & GuiElementIndexer
 
 interface SpriteGuiElementMembers extends BaseGuiElement {
   /**
@@ -14363,7 +14363,7 @@ interface SpriteGuiElementMembers extends BaseGuiElement {
   resize_to_sprite: boolean
 }
 
-type SpriteGuiElement = SpriteGuiElementMembers & GuiElementIndex
+type SpriteGuiElement = SpriteGuiElementMembers & GuiElementIndexer
 
 interface SwitchGuiElementMembers extends BaseGuiElement {
   /**
@@ -14424,7 +14424,7 @@ interface SwitchGuiElementMembers extends BaseGuiElement {
   right_label_tooltip: LocalisedString
 }
 
-type SwitchGuiElement = SwitchGuiElementMembers & GuiElementIndex
+type SwitchGuiElement = SwitchGuiElementMembers & GuiElementIndexer
 
 interface TabGuiElementMembers extends BaseGuiElement {
   /**
@@ -14443,7 +14443,7 @@ interface TabGuiElementMembers extends BaseGuiElement {
   badge_text: LocalisedString
 }
 
-type TabGuiElement = TabGuiElementMembers & GuiElementIndex
+type TabGuiElement = TabGuiElementMembers & GuiElementIndexer
 
 interface TableGuiElementMembers extends BaseGuiElement {
   /**
@@ -14511,7 +14511,7 @@ interface TableGuiElementMembers extends BaseGuiElement {
   drag_target: LuaGuiElement | undefined
 }
 
-type TableGuiElement = TableGuiElementMembers & GuiElementIndex
+type TableGuiElement = TableGuiElementMembers & GuiElementIndexer
 
 /**
  * @noSelf
@@ -14609,7 +14609,7 @@ interface TextFieldGuiElementMembers extends BaseGuiElement {
   clear_and_focus_on_right_click: boolean
 }
 
-type TextFieldGuiElement = TextFieldGuiElementMembers & GuiElementIndex
+type TextFieldGuiElement = TextFieldGuiElementMembers & GuiElementIndexer
 
 type GuiElementMembers =
   | ChooseElemButtonGuiElementMembers
@@ -14691,7 +14691,7 @@ type GuiElementMembers =
  * tabbed_pane.add_tab(tab2, label2)
  * ```
  */
-type LuaGuiElement = GuiElementMembers & GuiElementIndex
+type LuaGuiElement = GuiElementMembers & GuiElementIndexer
 
 /**
  * Prototype of a heat energy source.
@@ -19309,7 +19309,7 @@ interface LuaPlayer extends LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.index View documentation}
    */
-  readonly index: uint
+  readonly index: PlayerIndex
   readonly gui: LuaGui
   /**
    * `true` if the player opened itself. I.e. if they opened the character or god-controller GUI.
@@ -22804,7 +22804,7 @@ interface ProgrammableSpeakerSurfaceCreateEntity extends BaseSurfaceCreateEntity
 
 interface CharacterCorpseSurfaceCreateEntity extends BaseSurfaceCreateEntity {
   readonly inventory_size?: uint
-  readonly player_index?: uint
+  readonly player_index?: PlayerIndex
 }
 
 interface HighlightBoxSurfaceCreateEntity extends BaseSurfaceCreateEntity {
@@ -24071,7 +24071,7 @@ interface LuaSurface {
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.index View documentation}
    */
-  readonly index: uint
+  readonly index: SurfaceIndex
   /**
    * The generation settings for this surface. These can be modified to after surface generation, but note that this will not retroactively update the surface. To manually adjust it, {@link LuaSurface#regenerate_entity LuaSurface::regenerate_entity}, {@link LuaSurface#regenerate_decorative LuaSurface::regenerate_decorative} and {@link LuaSurface#delete_chunk LuaSurface::delete_chunk} can be used.
    *

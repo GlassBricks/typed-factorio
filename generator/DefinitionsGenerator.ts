@@ -31,6 +31,7 @@ import {
 } from "./FactorioApiJson"
 import assert from "assert"
 import { getMappedEventName } from "./files/events"
+import { IndexTypes } from "./files/index-types"
 
 export class Statements {
   statements: ts.Statement[] = [createComment("* @noSelfInFile ", true)]
@@ -411,6 +412,7 @@ export default class DefinitionsGenerator {
     write: boolean
   ): RWType {
     const type =
+      this.tryUseIndexType(member, parent, baseType) ??
       this.tryUseStringEnum(member, baseType) ??
       this.tryUseFlagValue(member, baseType) ??
       this.mapTypeBasic(baseType, read, write)
@@ -576,6 +578,30 @@ export default class DefinitionsGenerator {
     if (type.isUnion()) {
       if (type.types.some((t) => !t.isStringLiteral())) return undefined
       return type.types.map((t) => (t as ts.StringLiteralType).value)
+    }
+    return undefined
+  }
+
+  private tryUseIndexType(
+    member: {
+      name?: string
+    },
+    parent: string,
+    type: Type
+  ): RWType | undefined {
+    if (type !== "uint" && type !== "uint64") return undefined
+    for (const indexType of IndexTypes) {
+      const expectedType = indexType.typeOverride ?? "uint"
+      if (type !== expectedType) continue
+      if (
+        (indexType.mainAttributePath.parent === parent && member.name === indexType.mainAttributePath.name) ||
+        parent === indexType.mainAttributePath.parent + "." + indexType.mainAttributePath.name ||
+        parent === indexType.identificationConcept ||
+        (indexType.attributePattern && member.name?.match(indexType.attributePattern))
+      ) {
+        const typeNode = ts.factory.createTypeReferenceNode(indexType.name)
+        return { read: typeNode, write: typeNode }
+      }
     }
     return undefined
   }

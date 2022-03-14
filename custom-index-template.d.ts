@@ -11,6 +11,7 @@
 /// <reference types="typed-factorio/generated/events.d.ts" />
 /// <reference types="typed-factorio/generated/classes.d.ts" />
 /// <reference types="typed-factorio/generated/concepts.d.ts" />
+/// <reference types="typed-factorio/generated/index-types.d.ts" />
 
 // other runtime
 /// <reference types="typed-factorio/runtime/librariesAndFunctions.d.ts" />

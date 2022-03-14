@@ -27,6 +27,9 @@ export const Types = {
   stringLiteral(text: string): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(text))
   },
+  numberLiteral(value: number): ts.LiteralTypeNode {
+    return ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(value))
+  },
 }
 
 export const Tokens = {
@@ -36,6 +39,9 @@ export const Tokens = {
 
 export function capitalize(str: string): string {
   return str[0].toUpperCase() + str.slice(1)
+}
+export function decapitalize(str: string): string {
+  return str[0].toLowerCase() + str.slice(1)
 }
 
 const toPascalDictionary: Record<string, string> = {

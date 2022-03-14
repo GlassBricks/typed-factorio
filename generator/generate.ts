@@ -10,6 +10,7 @@ import DefinitionsGenerator from "./DefinitionsGenerator"
 import { FactorioApiJson } from "./FactorioApiJson"
 import * as path from "path"
 import * as fs from "fs"
+import { generateIndexTypesFile, preprocessIndexTypes } from "./files/index-types"
 
 export function generateDefinitions(
   apiJson: FactorioApiJson,
@@ -47,6 +48,7 @@ function preprocessAll(generator: DefinitionsGenerator) {
   preprocessEvents(generator)
   preprocessClasses(generator)
   preprocessConcepts(generator)
+  preprocessIndexTypes(generator)
   preprocessManualDefinitions(generator)
   generator.preprocessDone = true
 }
@@ -58,6 +60,7 @@ function generateAll(generator: DefinitionsGenerator) {
   generateEvents(generator)
   generateClasses(generator)
   generateConcepts(generator)
+  generateIndexTypesFile(generator)
   checkManualDefinitions(generator)
 }
 

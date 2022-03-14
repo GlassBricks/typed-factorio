@@ -247,10 +247,11 @@ export function preprocessManualDefinitions(generator: DefinitionsGenerator) {
 }
 
 export function checkManualDefinitions(generator: DefinitionsGenerator) {
+  const typeNames = new Set(Object.values(generator.typeNames))
   for (const [name, d] of Object.entries(generator.manualDefinitions)) {
     const def = d!
     const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
-    const isExisting = name in generator.typeNames
+    const isExisting = typeNames.has(name) || name in generator.typeNames
     if (!!hasAdd === isExisting) {
       generator.warning(
         `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${

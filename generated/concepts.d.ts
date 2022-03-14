@@ -2478,7 +2478,7 @@ type TechnologyIdentification = string | LuaTechnology | LuaTechnologyPrototype
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#SurfaceIdentification View documentation}
  */
-type SurfaceIdentification = uint | string | LuaSurface
+type SurfaceIdentification = SurfaceIndex | string | LuaSurface
 
 /**
  *  - uint: The player index.
@@ -2489,7 +2489,7 @@ type SurfaceIdentification = uint | string | LuaSurface
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#PlayerIdentification View documentation}
  */
-type PlayerIdentification = uint | string | LuaPlayer
+type PlayerIdentification = PlayerIndex | string | LuaPlayer
 
 type ItemStackIdentification = SimpleItemStack | LuaItemStack
 
@@ -3334,7 +3334,7 @@ interface CustomCommandData {
   /**
    * The player who issued the command, or `nil` if it was issued from the server console.
    */
-  readonly player_index?: uint
+  readonly player_index?: PlayerIndex
   /**
    * The parameter passed after the command, if there is one.
    */
