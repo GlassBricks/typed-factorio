@@ -3,50 +3,36 @@
 /** @noSelfInFile */
 
 /**
- * See {@link LuaPlayer#index LuaPlayer.index}.
+ * See {@link LuaPlayer#index LuaPlayer.index}..
  *
- * If you really need to use a number/numeric literal for this type, you can use a cast, e.g. `2 as PlayerIndex`.
+ * This can be a "branded" type for stricter types; see docs on how to opt-in to this.
  */
-type PlayerIndex =
-  | (uint & {
-      _playerIndexBrand: void
-    })
-  | 1
+type PlayerIndex = uint
 
 /**
- * See {@link LuaSurface#index LuaSurface.index}.
+ * See {@link LuaSurface#index LuaSurface.index}..
  *
- * If you really need to use a number/numeric literal for this type, you can use a cast, e.g. `2 as SurfaceIndex`.
+ * This can be a "branded" type for stricter types; see docs on how to opt-in to this.
  */
-type SurfaceIndex =
-  | (uint & {
-      _surfaceIndexBrand: void
-    })
-  | 1
+type SurfaceIndex = uint
 
 /**
- * See {@link LuaEntity#unit_number LuaEntity.unit_number}.
+ * See {@link LuaEntity#unit_number LuaEntity.unit_number}..
  *
- * If you really need to use a number/numeric literal for this type, you can use a cast, e.g. `2 as UnitNumber`.
+ * This can be a "branded" type for stricter types; see docs on how to opt-in to this.
  */
-type UnitNumber = uint & {
-  _unitNumberBrand: void
-}
+type UnitNumber = uint
 
 /**
- * See {@link LuaGuiElement#index LuaGuiElement.index}.
+ * See {@link LuaGuiElement#index LuaGuiElement.index}..
  *
- * If you really need to use a number/numeric literal for this type, you can use a cast, e.g. `2 as GuiElementIndex`.
+ * This can be a "branded" type for stricter types; see docs on how to opt-in to this.
  */
-type GuiElementIndex = uint & {
-  _guiElementIndexBrand: void
-}
+type GuiElementIndex = uint
 
 /**
- * See {@link LuaBootstrap#register_on_entity_destroyed LuaBootstrap.register_on_entity_destroyed}.
+ * See {@link LuaBootstrap#register_on_entity_destroyed LuaBootstrap.register_on_entity_destroyed}..
  *
- * If you really need to use a number/numeric literal for this type, you can use a cast, e.g. `2 as RegistrationNumber`.
+ * This can be a "branded" type for stricter types; see docs on how to opt-in to this.
  */
-type RegistrationNumber = uint64 & {
-  _registrationNumberBrand: void
-}
+type RegistrationNumber = uint64

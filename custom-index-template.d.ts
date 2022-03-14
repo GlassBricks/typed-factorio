@@ -2,6 +2,8 @@
 // For example, if you want to modify a file, copy the file you want to modify to your project and make the changes. Then, copy this template file into your project and remove the line corresponding to modified file.
 // If you think your modification will be useful to others, please consider making a change suggestion by creating an issue on GitHub.
 
+// Replace "index-types.d.ts" with "index-types-strict.d.ts" below if you want strict index types.
+
 /// <reference types="lua-types/5.2" />
 
 // generated

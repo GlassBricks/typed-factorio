@@ -32,7 +32,7 @@ export function generateDefinitions(
     result.set(path.join("generated", fileName + ".d.ts"), content)
   }
 
-  const indexFiles = generateIndexFiles(generator.outFiles.keys())
+  const indexFiles = generateIndexFiles(Array.from(generator.outFiles.keys()))
   for (const [fileName, content] of indexFiles) {
     result.set(fileName, content)
   }
@@ -64,24 +64,38 @@ function generateAll(generator: DefinitionsGenerator) {
   checkManualDefinitions(generator)
 }
 
-function generateIndexFiles(fileNames: Iterable<string>): Map<string, string> {
+function generateIndexFiles(fileNames: string[]): Map<string, string> {
   const result = new Map<string, string>()
-  const indexTemplateFile = path.resolve(__dirname, "../runtime/index-template.ts")
-  let references = ""
-  for (const file of fileNames) {
-    references += `/// <reference path="../generated/${file}.d.ts" />\n`
+  // hardcoded for now
+  const indexTemplate = fs.readFileSync(path.resolve(__dirname, "../runtime/index-template.ts"), "utf8")
+  function createIndexFile(useStrict: boolean) {
+    let references = ""
+    for (const file of fileNames) {
+      if (file === "index-types") {
+        if (useStrict) continue
+      }
+      if (file === "index-types-strict") {
+        if (!useStrict) continue
+      }
+      references += `/// <reference path="../generated/${file}.d.ts" />\n`
+    }
+    return indexTemplate.replace("// generated\n", (m) => m + references)
   }
-  const indexFileContent = fs.readFileSync(indexTemplateFile, "utf8").replace("// generated\n", (m) => m + references)
-  result.set("runtime/index.d.ts", indexFileContent)
+
+  const nonStrictIndexFile = createIndexFile(false)
+  result.set("runtime/index.d.ts", nonStrictIndexFile)
+  result.set("runtime/strict-index-types.d.ts", createIndexFile(true))
 
   const header = `// This references the same files as "typed-factorio/runtime".
 // For example, if you want to modify a file, copy the file you want to modify to your project and make the changes. Then, copy this template file into your project and remove the line corresponding to modified file.
 // If you think your modification will be useful to others, please consider making a change suggestion by creating an issue on GitHub.
 
+// Replace "index-types.d.ts" with "index-types-strict.d.ts" below if you want strict index types.
+
 `
   const customIndexFileContent =
     header +
-    indexFileContent.replaceAll(/<reference path="(.*?)"/g, (match, filePath) => {
+    nonStrictIndexFile.replaceAll(/<reference path="(.*?)"/g, (match, filePath) => {
       const relPath = path.join("runtime", filePath)
       return `<reference types="typed-factorio/${relPath}"`
     })

@@ -479,7 +479,7 @@ interface LuaGameScript {
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
 }
 
-//  -- Concepts --
+//  -- Concepts
 
 type LocalisedString = readonly [string, ...LocalisedString[]] | string | number | boolean | undefined
 
