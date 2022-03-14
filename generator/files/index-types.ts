@@ -75,8 +75,8 @@ export function generateIndexTypesFile(generator: DefinitionsGenerator): void {
     ])
     const statement = ts.factory.createTypeAliasDeclaration(undefined, undefined, indexType.name, undefined, typeNode)
     const { parent, name } = indexType.mainAttributePath
-    const fakeDescription = `See [${parent}.${name}](${parent}::${name}).\n\nIf you really need to use a number/numeric literal for this type, you can use a cast, e.g. \`2 as ${indexType.name}\`.`
-    generator.addJsDoc(statement, { description: fakeDescription }, undefined)
+    const description = `See [${parent}.${name}](${parent}::${name}).\n\nIf using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. \`1 as ${indexType.name}\`.`
+    generator.addJsDoc(statement, { description }, undefined)
     statements.add(statement)
   }
   generator.addFile("index-types", statements)

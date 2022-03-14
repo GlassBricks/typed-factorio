@@ -111,15 +111,6 @@ Table-or-array types will appear in the Table form when known to be in a read po
 
 For some concepts, there is also a special form for when the concept is used in a "read" position, where all table-or-array types are in Table form. These types are suffixed with `Read`, e.g. `ScriptPositionRead`.
 
-### Nominal index types
-
-Some `uint` types which represent indices, e.g. player_index, entity_number, are now "branded" numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. These are assignable to `number`, but `number` is not assignable to them.
-These are indices that do not index into an array-like structure, and otherwise should usually not have arithmetic done to them. So, using a separate type helps ensure correctness.
-You can still use these types as keys in an index signature, e.g. `{ [index: PlayerIndex]: "foo" }`.
-You can cast "plain" numbers to these types, e.g. `2 as PlayerIndex`, only do this with some care.
-
-- `player_index` and `surface_index` still allow the numeric constant 1 as a valid index, representing the first player or the default surface, respectively. This is allowed as this is a common enough use case.
-
 ### Types with subclasses
 
 Some classes have attributes that are documented to only work on particular subclasses. For these classes, e.g. `LuaEntity`, there are specific types that you can _optionally_ use:
@@ -136,3 +127,12 @@ The simple class name, `LuaEntity` in this example, contains attributes for _all
 Similarly, the table passed to `LuaGuiElement.add`, referred to as `GuiSpec`, is also broken up into a discriminated union. The type for a specific GuiSpec is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`. `LuaGuiElement.add` will return the appropriate gui element type corresponding to the gui spec type received.
 
 This is done both to provide more accurate types, and for possible integration with [JSX](https://typescripttolua.github.io/docs/jsx/).
+
+### Strict index types
+
+This is a recommended **opt-in** feature. To opt in, add `"typed-factorio/strict-index-types"` to `compilerOptions > types` in your tsconfig.json (in addition to `"typed-factorio/runtime"`).
+
+Some `uint` types which represent indices, e.g. player_index, entity_number, can be "branded" numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. These are assignable to `number`, but a plain `number` is not directly assignable to them. This helps ensure correctness.
+These are indices that do not index into an array-like structure, and otherwise should usually not have arithmetic done to them.
+You can use these types as keys in an index signature, e.g. `{ [index: PlayerIndex]: "foo" }`.
+You can cast "plain" numbers to these types, e.g. `1 as PlayerIndex`, do this with caution.

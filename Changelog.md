@@ -1,8 +1,8 @@
 # v0.20.0
 
 - Updated to factorio version 1.1.56
-- Added custom-index-template.d.ts. You can use this if you would like to make a "custom" modification of the type definitions.
-- Some numeric types which represent indices/number,e.g. player_index, entity_number, are now branded numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. See the README for more info.
+- This is an **opt-in** feature: Some numeric types which represent indices/number,e.g. player_index, entity_number, are now branded numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. See the README for more info.
+- Added custom-index-template.d.ts to assist trying out custom changes to types in a project.
 
 # v0.19.0
 
