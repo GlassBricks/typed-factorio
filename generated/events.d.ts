@@ -21,7 +21,7 @@ interface CustomInputEvent extends EventData {
    */
   readonly cursor_position: MapPositionTable
   /**
-   * Information about the prototype that is selected when the custom input is used. `nil` if none is selected.
+   * Information about the prototype that is selected when the custom input is used. Needs to be enabled on the custom input's prototype. `nil` if none is selected.
    */
   readonly selected_prototype?: SelectedPrototypeData
   /**

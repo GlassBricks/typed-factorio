@@ -8,7 +8,7 @@ const url = "https://lua-api.factorio.com/latest/runtime-api.json"
 async function main() {
   const destinationFolder = path.resolve(__dirname, "../generatorSrc")
   const destination = path.join(destinationFolder, "downloaded-runtime-api.json")
-  await new Promise<void>((resolve, reject) => {
+  await new Promise((resolve, reject) => {
     const file = fs.createWriteStream(destination)
     const request = https.get(url, (response) => {
       if (response.statusCode !== 200) {
@@ -16,7 +16,7 @@ async function main() {
       }
       response.pipe(file)
       file.on("finish", () => {
-        ;(file as any).close(resolve) // incomplete type...
+        file.close(resolve)
       })
     })
     request.on("error", (err) => {

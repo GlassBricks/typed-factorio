@@ -1895,25 +1895,25 @@ interface LuaCustomInputPrototype {
    */
   readonly action: string
   /**
-   * If this custom input is enabled. Disabled custom inputs exist but are not used by the game.
+   * Whether this custom input is enabled. Disabled custom inputs exist but are not used by the game.
    *
    * {@link https://lua-api.factorio.com/latest/LuaCustomInputPrototype.html#LuaCustomInputPrototype.enabled View documentation}
    */
   readonly enabled: boolean
   /**
-   * If this custom input is enabled while using the spectator controller.
+   * Whether this custom input is enabled while using the spectator controller.
    *
    * {@link https://lua-api.factorio.com/latest/LuaCustomInputPrototype.html#LuaCustomInputPrototype.enabled_while_spectating View documentation}
    */
   readonly enabled_while_spectating: boolean
   /**
-   * If this custom input is enabled while using the cutscene controller.
+   * Whether this custom input is enabled while using the cutscene controller.
    *
    * {@link https://lua-api.factorio.com/latest/LuaCustomInputPrototype.html#LuaCustomInputPrototype.enabled_while_in_cutscene View documentation}
    */
   readonly enabled_while_in_cutscene: boolean
   /**
-   * If this custom input will include the selected prototype (if any) when triggered.
+   * Whether this custom input will include the selected prototype (if any) when triggered.
    *
    * {@link https://lua-api.factorio.com/latest/LuaCustomInputPrototype.html#LuaCustomInputPrototype.include_selected_prototype View documentation}
    */
@@ -4460,6 +4460,14 @@ interface LuaEntity extends LuaControl {
    */
   readonly linked_belt_neighbour: LuaEntity | undefined
   /**
+   * The current radar scan progress, as a number in range [0, 1].
+   *
+   * _Can only be used if this is Radar_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.radar_scan_progress View documentation}
+   */
+  readonly radar_scan_progress: float
+  /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
   readonly valid: boolean
@@ -7004,6 +7012,17 @@ interface SmokeWithTriggerEntity extends BaseEntity {
   time_to_next_effect: uint
 }
 
+interface RadarEntity extends BaseEntity {
+  /**
+   * The current radar scan progress, as a number in range [0, 1].
+   *
+   * _Can only be used if this is Radar_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.radar_scan_progress View documentation}
+   */
+  readonly radar_scan_progress: float
+}
+
 /**
  * Prototype of an entity.
  *
@@ -7637,6 +7656,12 @@ interface LuaEntityPrototype {
    */
   readonly void_energy_source_prototype: LuaVoidEnergySourcePrototype | undefined
   /**
+   * The heat buffer prototype this entity uses or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.heat_buffer_prototype View documentation}
+   */
+  readonly heat_buffer_prototype: LuaHeatBufferPrototype | undefined
+  /**
    * The log2 of grid size of the building
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.building_grid_bit_shift View documentation}
@@ -7654,6 +7679,30 @@ interface LuaEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.maximum_temperature View documentation}
    */
   readonly maximum_temperature: double | undefined
+  /**
+   * If this generator prototype burns fluid.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.burns_fluid View documentation}
+   */
+  readonly burns_fluid: boolean
+  /**
+   * If this generator prototype scales fluid usage.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.scale_fluid_usage View documentation}
+   */
+  readonly scale_fluid_usage: boolean
+  /**
+   * If this generator prototype destroys non fuel fluids.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.destroy_non_fuel_fluid View documentation}
+   */
+  readonly destroy_non_fuel_fluid: boolean
+  /**
+   * The default maximum power output of this generator prototype or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.max_power_output View documentation}
+   */
+  readonly max_power_output: double | undefined
   /**
    * The target temperature of this boiler prototype or `nil`.
    *
@@ -8235,6 +8284,31 @@ interface LuaEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.allow_run_time_change_of_is_military_target View documentation}
    */
   readonly allow_run_time_change_of_is_military_target: boolean
+  /**
+   * The logistic parameters for this roboport. or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.logistic_parameters View documentation}
+   * @remarks Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
+   */
+  readonly logistic_parameters:
+    | {
+        readonly spawn_and_station_height: float
+        readonly spawn_and_station_shadow_height_offset: float
+        readonly charge_approach_distance: float
+        readonly logistic_radius: float
+        readonly construction_radius: float
+        readonly charging_station_count: uint
+        readonly charging_distance: float
+        readonly charging_station_shift: Vector
+        readonly charging_energy: double
+        readonly charging_threshold_distance: float
+        readonly robot_vertical_acceleration: float
+        readonly stationing_offset: Vector
+        readonly robot_limit: uint
+        readonly logistics_connection_distance: float
+        readonly robots_shrink_when_entering_and_exiting: boolean
+      }
+    | undefined
   /**
    * Gets the current movement speed of this character, including effects from exoskeletons, tiles, stickers and shooting.
    *
@@ -8971,6 +9045,12 @@ interface BaseEntityPrototype {
    */
   readonly void_energy_source_prototype: LuaVoidEnergySourcePrototype | undefined
   /**
+   * The heat buffer prototype this entity uses or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.heat_buffer_prototype View documentation}
+   */
+  readonly heat_buffer_prototype: LuaHeatBufferPrototype | undefined
+  /**
    * The log2 of grid size of the building
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.building_grid_bit_shift View documentation}
@@ -8988,6 +9068,30 @@ interface BaseEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.maximum_temperature View documentation}
    */
   readonly maximum_temperature: double | undefined
+  /**
+   * If this generator prototype burns fluid.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.burns_fluid View documentation}
+   */
+  readonly burns_fluid: boolean
+  /**
+   * If this generator prototype scales fluid usage.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.scale_fluid_usage View documentation}
+   */
+  readonly scale_fluid_usage: boolean
+  /**
+   * If this generator prototype destroys non fuel fluids.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.destroy_non_fuel_fluid View documentation}
+   */
+  readonly destroy_non_fuel_fluid: boolean
+  /**
+   * The default maximum power output of this generator prototype or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.max_power_output View documentation}
+   */
+  readonly max_power_output: double | undefined
   /**
    * The target temperature of this boiler prototype or `nil`.
    *
@@ -9491,6 +9595,31 @@ interface BaseEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.is_entity_with_owner View documentation}
    */
   readonly is_entity_with_owner: boolean
+  /**
+   * The logistic parameters for this roboport. or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.logistic_parameters View documentation}
+   * @remarks Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
+   */
+  readonly logistic_parameters:
+    | {
+        readonly spawn_and_station_height: float
+        readonly spawn_and_station_shadow_height_offset: float
+        readonly charge_approach_distance: float
+        readonly logistic_radius: float
+        readonly construction_radius: float
+        readonly charging_station_count: uint
+        readonly charging_distance: float
+        readonly charging_station_shift: Vector
+        readonly charging_energy: double
+        readonly charging_threshold_distance: float
+        readonly robot_vertical_acceleration: float
+        readonly stationing_offset: Vector
+        readonly robot_limit: uint
+        readonly logistics_connection_distance: float
+        readonly robots_shrink_when_entering_and_exiting: boolean
+      }
+    | undefined
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
@@ -11535,7 +11664,7 @@ interface LuaGameScript {
    */
   regenerate_entity(entities: string | readonly string[]): void
   /**
-   * Take a screenshot and save it to a file. The filename should include a file extension indicating the desired image format. Supports `.png`, `.jpg` / `.jpeg`, `.tga` and `.bmp`.
+   * Take a screenshot of the game and save it to the `script-output` folder, located in the game's {@link https://wiki.factorio.com/User_data_directory user data directory}. The name of the image file can be specified via the `path` parameter.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.take_screenshot View documentation}
    * @remarks If Factorio is running headless, this function will do nothing.
@@ -11566,7 +11695,7 @@ interface LuaGameScript {
      */
     readonly zoom?: double
     /**
-     * The sub-path in `"script-output"` to save the screenshot to. Defaults to `"screenshot.png"`.
+     * The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"screenshot.png"`.
      */
     readonly path?: string
     /**
@@ -11613,7 +11742,7 @@ interface LuaGameScript {
    */
   set_wait_for_screenshots_to_finish(): void
   /**
-   * Take a screenshot of the technology screen and save it to a file. The filename should include a file extension indicating the desired image format. Supports `.png`, `.jpg` / `.jpeg`, `.tga` and `.bmp`.
+   * Take a screenshot of the technology screen and save it to the `script-output` folder, located in the game's {@link https://wiki.factorio.com/User_data_directory user data directory}. The name of the image file can be specified via the `path` parameter.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.take_technology_screenshot View documentation}
    */
@@ -11623,7 +11752,7 @@ interface LuaGameScript {
      */
     readonly force?: ForceIdentification
     /**
-     * The sub-path in `"script-output"` to save the screenshot to. Defaults to `"technology-screenshot.png"`.
+     * The name of the image file. It should include a file extension indicating the desired format. Supports `.png`, `.jpg` /`.jpeg`, `.tga` and `.bmp`. Providing a directory path (ex. `"save/here/screenshot.png"`) will create the necessary folder structure in `script-output`. Defaults to `"technology-screenshot.png"`.
      */
     readonly path?: string
     /**
@@ -11658,20 +11787,20 @@ interface LuaGameScript {
    */
   json_to_table(json: string): AnyBasic | undefined
   /**
-   * Write a string to a file.
+   * Write a file to the `script-output` folder, located in the game's {@link https://wiki.factorio.com/User_data_directory user data directory}. The name and file extension of the file can be specified via the `filename` parameter.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.write_file View documentation}
-   * @param filename Path to the file to write to.
-   * @param data File content
-   * @param append When `true`, this will append to the end of the file. Defaults to `false`, which will overwrite any pre-existing file with the new data.
-   * @param for_player If given, the file will only be written for this player_index. 0 means only the server if one exists.
+   * @param filename The name of the file. Providing a directory path (ex. `"save/here/example.txt"`) will create the necessary folder structure in `script-output`.
+   * @param data The content to write to the file.
+   * @param append If `true`, `data` will be appended to the end of the file. Defaults to `false`, which will overwrite any pre-existing file with the new `data`.
+   * @param for_player If given, the file will only be written for this `player_index`. Providing `0` will only write to the server's output if present.
    */
   write_file(filename: string, data: LocalisedString, append?: boolean, for_player?: uint): void
   /**
-   * Remove file or directory. Given path is taken relative to the script output directory. Can be used to remove files created by {@link LuaGameScript#write_file LuaGameScript::write_file}.
+   * Remove a file or directory in the `script-output` folder, located in the game's {@link https://wiki.factorio.com/User_data_directory user data directory}. Can be used to remove files created by {@link LuaGameScript#write_file LuaGameScript::write_file}.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.remove_path View documentation}
-   * @param path Path to remove, relative to the script output directory
+   * @param path The path to the file or directory to remove, relative to `script-output`.
    */
   remove_path(path: string): void
   /**
@@ -14006,7 +14135,7 @@ interface CameraGuiElementMembers extends BaseGuiElement {
    */
   surface_index: SurfaceIndex
   /**
-   * The zoom this camera or minimap is using.
+   * The zoom this camera or minimap is using. This value must be positive.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.zoom View documentation}
    */
@@ -14202,7 +14331,7 @@ interface MinimapGuiElementMembers extends BaseGuiElement {
    */
   surface_index: SurfaceIndex
   /**
-   * The zoom this camera or minimap is using.
+   * The zoom this camera or minimap is using. This value must be positive.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.zoom View documentation}
    */
@@ -14699,6 +14828,35 @@ type GuiElementMembers =
 type LuaGuiElement = GuiElementMembers & GuiElementIndexer
 
 /**
+ * Prototype of a heat buffer.
+ *
+ * {@link https://lua-api.factorio.com/latest/LuaHeatBufferPrototype.html View documentation}
+ * @noSelf
+ */
+interface LuaHeatBufferPrototype {
+  readonly max_temperature: double
+  readonly default_temperature: double
+  readonly specific_heat: double
+  readonly max_transfer: double
+  readonly min_temperature_gradient: double
+  readonly min_working_temperature: double
+  readonly minimum_glow_temperature: double
+  readonly connections: HeatConnection[]
+  /**
+   * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
+   */
+  readonly valid: boolean
+  /**
+   * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
+   */
+  readonly object_name: "LuaHeatBufferPrototype"
+  /**
+   * All methods and properties that this object supports.
+   */
+  help(): string
+}
+
+/**
  * Prototype of a heat energy source.
  *
  * {@link https://lua-api.factorio.com/latest/LuaHeatEnergySourcePrototype.html View documentation}
@@ -14716,6 +14874,7 @@ interface LuaHeatEnergySourcePrototype {
   readonly min_working_temperature: double
   readonly minimum_glow_temperature: double
   readonly connections: HeatConnection[]
+  readonly heat_buffer_prototype: LuaHeatBufferPrototype
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
@@ -15382,6 +15541,14 @@ interface LuaItemPrototype {
    */
   readonly alt_selection_border_color: ColorTable
   /**
+   * The color used when doing reverse selection with this selection tool prototype.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_selection_border_color View documentation}
+   */
+  readonly reverse_selection_border_color: ColorTable
+  /**
    * Flags that affect which entities will be selected.
    *
    * _Can only be used if this is SelectionTool_
@@ -15398,6 +15565,14 @@ interface LuaItemPrototype {
    */
   readonly alt_selection_mode_flags: SelectionModeFlags
   /**
+   * Flags that affect which entities will be selected during reverse selection.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_selection_mode_flags View documentation}
+   */
+  readonly reverse_selection_mode_flags: SelectionModeFlags
+  /**
    * _Can only be used if this is SelectionTool_
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.selection_cursor_box_type View documentation}
@@ -15409,6 +15584,12 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_selection_cursor_box_type View documentation}
    */
   readonly alt_selection_cursor_box_type: string
+  /**
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_selection_cursor_box_type View documentation}
+   */
+  readonly reverse_selection_cursor_box_type: string
   /**
    * If tiles area always included when doing selection with this selection tool prototype.
    *
@@ -15434,6 +15615,14 @@ interface LuaItemPrototype {
    */
   readonly alt_entity_filter_mode: string
   /**
+   * The reverse entity filter mode used by this selection tool.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_alt_entity_filter_mode View documentation}
+   */
+  readonly reverse_alt_entity_filter_mode: string
+  /**
    * The tile filter mode used by this selection tool.
    *
    * _Can only be used if this is SelectionTool_
@@ -15450,6 +15639,14 @@ interface LuaItemPrototype {
    */
   readonly alt_tile_filter_mode: string
   /**
+   * The reverse tile filter mode used by this selection tool.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_tile_filter_mode View documentation}
+   */
+  readonly reverse_tile_filter_mode: string
+  /**
    * The entity filters used by this selection tool indexed by entity name.
    *
    * _Can only be used if this is SelectionTool_
@@ -15465,6 +15662,14 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_entity_filters View documentation}
    */
   readonly alt_entity_filters: Record<string, LuaEntityPrototype>
+  /**
+   * The reverse entity filters used by this selection tool indexed by entity name.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_entity_filters View documentation}
+   */
+  readonly reverse_entity_filters: Record<string, LuaEntityPrototype>
   /**
    * The entity type filters used by this selection tool indexed by entity type.
    *
@@ -15484,6 +15689,15 @@ interface LuaItemPrototype {
    */
   readonly alt_entity_type_filters: Record<string, boolean>
   /**
+   * The reverse entity type filters used by this selection tool indexed by entity type.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_entity_type_filters View documentation}
+   * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+   */
+  readonly reverse_entity_type_filters: Record<string, boolean>
+  /**
    * The tile filters used by this selection tool indexed by tile name.
    *
    * _Can only be used if this is SelectionTool_
@@ -15499,6 +15713,14 @@ interface LuaItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_tile_filters View documentation}
    */
   readonly alt_tile_filters: Record<string, LuaTilePrototype>
+  /**
+   * The reverse tile filters used by this selection tool indexed by tile name.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_tile_filters View documentation}
+   */
+  readonly reverse_tile_filters: Record<string, LuaTilePrototype>
   /**
    * The number of entity filters this deconstruction item has or `nil` if this isn't a deconstruction item prototype.
    *
@@ -15945,6 +16167,14 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly alt_selection_border_color: ColorTable
   /**
+   * The color used when doing reverse selection with this selection tool prototype.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_selection_border_color View documentation}
+   */
+  readonly reverse_selection_border_color: ColorTable
+  /**
    * Flags that affect which entities will be selected.
    *
    * _Can only be used if this is SelectionTool_
@@ -15961,6 +16191,14 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly alt_selection_mode_flags: SelectionModeFlags
   /**
+   * Flags that affect which entities will be selected during reverse selection.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_selection_mode_flags View documentation}
+   */
+  readonly reverse_selection_mode_flags: SelectionModeFlags
+  /**
    * _Can only be used if this is SelectionTool_
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.selection_cursor_box_type View documentation}
@@ -15972,6 +16210,12 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_selection_cursor_box_type View documentation}
    */
   readonly alt_selection_cursor_box_type: string
+  /**
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_selection_cursor_box_type View documentation}
+   */
+  readonly reverse_selection_cursor_box_type: string
   /**
    * If tiles area always included when doing selection with this selection tool prototype.
    *
@@ -15997,6 +16241,14 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly alt_entity_filter_mode: string
   /**
+   * The reverse entity filter mode used by this selection tool.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_alt_entity_filter_mode View documentation}
+   */
+  readonly reverse_alt_entity_filter_mode: string
+  /**
    * The tile filter mode used by this selection tool.
    *
    * _Can only be used if this is SelectionTool_
@@ -16013,6 +16265,14 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly alt_tile_filter_mode: string
   /**
+   * The reverse tile filter mode used by this selection tool.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_tile_filter_mode View documentation}
+   */
+  readonly reverse_tile_filter_mode: string
+  /**
    * The entity filters used by this selection tool indexed by entity name.
    *
    * _Can only be used if this is SelectionTool_
@@ -16028,6 +16288,14 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_entity_filters View documentation}
    */
   readonly alt_entity_filters: Record<string, LuaEntityPrototype>
+  /**
+   * The reverse entity filters used by this selection tool indexed by entity name.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_entity_filters View documentation}
+   */
+  readonly reverse_entity_filters: Record<string, LuaEntityPrototype>
   /**
    * The entity type filters used by this selection tool indexed by entity type.
    *
@@ -16047,6 +16315,15 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly alt_entity_type_filters: Record<string, boolean>
   /**
+   * The reverse entity type filters used by this selection tool indexed by entity type.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_entity_type_filters View documentation}
+   * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+   */
+  readonly reverse_entity_type_filters: Record<string, boolean>
+  /**
    * The tile filters used by this selection tool indexed by tile name.
    *
    * _Can only be used if this is SelectionTool_
@@ -16062,6 +16339,14 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_tile_filters View documentation}
    */
   readonly alt_tile_filters: Record<string, LuaTilePrototype>
+  /**
+   * The reverse tile filters used by this selection tool indexed by tile name.
+   *
+   * _Can only be used if this is SelectionTool_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_tile_filters View documentation}
+   */
+  readonly reverse_tile_filters: Record<string, LuaTilePrototype>
 }
 
 interface DeconstructionItemPrototype extends BaseItemPrototype {
