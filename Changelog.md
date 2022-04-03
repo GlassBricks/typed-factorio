@@ -1,7 +1,7 @@
 # v1.0.0
 
+- This project now has all the features that was originally planned, and can now guarantee reasonable backwards compatibility for future releases. As such, it now deserves the v1.0.0. Goodbye to [Zer0Ver](http://0ver.org)!
 - Updated to factorio version 1.1.57
-- This project now has all the features that was originally planned, and can now guarantee reshasonable backwards compatibility for future releases. As such, it now deserves the v1.0.0. Goodbye to [Zer0Ver](http://0ver.org)!
 
 # v0.20.0
 
