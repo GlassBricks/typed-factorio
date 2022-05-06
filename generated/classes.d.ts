@@ -83,7 +83,7 @@ interface LuaAchievementPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaAchievementPrototype.html#LuaAchievementPrototype.order View documentation}
    */
@@ -120,7 +120,7 @@ interface LuaAmmoCategoryPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaAmmoCategoryPrototype.html#LuaAmmoCategoryPrototype.order View documentation}
    */
@@ -150,10 +150,10 @@ interface LuaAmmoCategoryPrototype {
  */
 interface LuaArithmeticCombinatorControlBehavior extends LuaCombinatorControlBehavior {
   /**
-   * The arithmetic combinator parameters.
+   * This arithmetic combinator's parameters.
    *
    * {@link https://lua-api.factorio.com/latest/LuaArithmeticCombinatorControlBehavior.html#LuaArithmeticCombinatorControlBehavior.parameters View documentation}
-   * @remarks `parameters` may be `nil` in order to clear the parameters.
+   * @remarks Writing `nil` clears the combinator's parameters.
    */
   parameters: ArithmeticCombinatorParameters
   /**
@@ -184,7 +184,7 @@ interface LuaAutoplaceControlPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaAutoplaceControlPrototype.html#LuaAutoplaceControlPrototype.order View documentation}
    */
@@ -222,10 +222,11 @@ interface LuaAutoplaceControlPrototype {
  */
 interface LuaBootstrap {
   /**
-   * Register a callback to be run on mod initialization. This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the `global` table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
+   * Register a function to be run on mod initialization. This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@link https://lua-api.factorio.com/latest/Global.html global} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_init View documentation}
    * @param f The handler for this event. Passing `nil` will unregister it.
+   * @remarks For more context, refer to the {@link https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    * @example Initialize a `players` table in `global` for later use.
    *
    * ```
@@ -236,24 +237,26 @@ interface LuaBootstrap {
    */
   on_init(f: (() => void) | undefined): void
   /**
-   * Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session. It gives the mod the opportunity to do some very specific actions, should it need to. Doing anything other than these three will lead to desyncs, which breaks multiplayer and replay functionality. Access to {@link LuaGameScript} and {@link LuaRendering} is not available. The `global` table can be accessed and is safe to read from, but not write to.
+   * Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session. It gives the mod the opportunity to do some very specific actions, should it need to. Doing anything other than these three will lead to desyncs, which breaks multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@link https://lua-api.factorio.com/latest/Global.html global} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
    *
-   * The only legitimate uses of this event are these three:
-   * - Re-setup {@link https://www.lua.org/pil/13.html metatables} as they are not persisted through save-load.
-   * - Re-setup conditional event handlers.
+   * The only legitimate uses of this event are the following:
+   * - Re-setup {@link https://www.lua.org/pil/13.html metatables} as they are not persisted through the save/load cycle.
+   * - Re-setup conditional event handlers, meaning subscribing to an event only when some condition is met to save processing time.
    * - Create local references to data stored in the {@link https://lua-api.factorio.com/latest/Global.html global} table.
    *
-   * For all other purposes, {@link LuaBootstrap#on_init LuaBootstrap::on_init}, {@link LuaBootstrap#on_configuration_changed LuaBootstrap::on_configuration_changed} or migration scripts should be used instead.
+   * For all other purposes, {@link LuaBootstrap#on_init LuaBootstrap::on_init}, {@link LuaBootstrap#on_configuration_changed LuaBootstrap::on_configuration_changed} or {@link https://lua-api.factorio.com/latest/Migrations.html migrations} should be used instead.
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_load View documentation}
    * @param f The handler for this event. Passing `nil` will unregister it.
+   * @remarks For more context, refer to the {@link https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    */
   on_load(f: (() => void) | undefined): void
   /**
-   * Register a function to be run when mod configuration changes. This is called when the game version or any mod version changes; when any mod is added or removed; or when prototypes or startup mod settings have changed. It allows the mod to make any changes it deems appropriate to both the data structures in its `global` table or to the game state through {@link LuaGameScript}.
+   * Register a function to be run when mod configuration changes. This is called when the major game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, or when any prototypes have been added or removed. It allows the mod to make any changes it deems appropriate to both the data structures in its {@link https://lua-api.factorio.com/latest/Global.html global} table or to the game state through {@link LuaGameScript}.
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_configuration_changed View documentation}
    * @param f The handler for this event. Passing `nil` will unregister it.
+   * @remarks For more context, refer to the {@link https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    */
   on_configuration_changed(f: ((param1: ConfigurationChangedData) => void) | undefined): void
   /**
@@ -915,12 +918,12 @@ interface LuaConstantCombinatorControlBehavior extends LuaControlBehavior {
    */
   get_signal(index: uint): Signal
   /**
-   * The constant combinator parameters
+   * This constant combinator's parameters, or `nil` if the {@link LuaEntityPrototype#item_slot_count item_slot_count} of the combinator's prototype is `0`.
    *
    * {@link https://lua-api.factorio.com/latest/LuaConstantCombinatorControlBehavior.html#LuaConstantCombinatorControlBehavior.parameters View documentation}
-   * @remarks Setting to `nil` clears the parameters.
+   * @remarks Writing `nil` clears the combinator's parameters.
    */
-  parameters: ConstantCombinatorParameters[]
+  parameters: ConstantCombinatorParameters[] | undefined
   /**
    * Turns this constant combinator on and off.
    *
@@ -1281,7 +1284,7 @@ interface LuaControl {
    */
   set_personal_logistic_slot(slot_index: uint, value: LogisticParameters): boolean
   /**
-   * Sets a vehicle logistic request and auto-trash slot to the given value. Only used on `spider-vehicule`s.
+   * Sets a vehicle logistic request and auto-trash slot to the given value. Only used on `spider-vehicle`.
    *
    * **Raised events:**
    * - {@link OnEntityLogisticSlotChangedEvent on_entity_logistic_slot_changed}? _instantly_ Raised if setting of logistic slot was successful.
@@ -1294,7 +1297,7 @@ interface LuaControl {
    */
   set_vehicle_logistic_slot(slot_index: uint, value: LogisticParameters): boolean
   /**
-   * Gets the parameters of a personal logistic request and auto-trash slot.
+   * Gets the parameters of a personal logistic request and auto-trash slot. Only used on `spider-vehicle`.
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.get_personal_logistic_slot View documentation}
    * @param slot_index The slot to get.
@@ -1857,7 +1860,7 @@ interface LuaCustomInputPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaCustomInputPrototype.html#LuaCustomInputPrototype.order View documentation}
    */
@@ -2021,7 +2024,7 @@ interface LuaDamagePrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaDamagePrototype.html#LuaDamagePrototype.order View documentation}
    */
@@ -2056,10 +2059,10 @@ interface LuaDamagePrototype {
  */
 interface LuaDeciderCombinatorControlBehavior extends LuaCombinatorControlBehavior {
   /**
-   * The decider combinator parameters
+   * This decider combinator's parameters.
    *
    * {@link https://lua-api.factorio.com/latest/LuaDeciderCombinatorControlBehavior.html#LuaDeciderCombinatorControlBehavior.parameters View documentation}
-   * @remarks Setting to `nil` clears the parameters.
+   * @remarks Writing `nil` clears the combinator's parameters.
    */
   parameters: DeciderCombinatorParameters
   /**
@@ -2090,7 +2093,7 @@ interface LuaDecorativePrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaDecorativePrototype.html#LuaDecorativePrototype.order View documentation}
    */
@@ -2169,7 +2172,7 @@ interface LuaElectricEnergySourcePrototype {
  */
 interface LuaEntity extends LuaControl {
   /**
-   * Gets the entities output inventory if it has one.
+   * Gets the entity's output inventory if it has one.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_output_inventory View documentation}
    * @returns A reference to the entity's output inventory.
@@ -2909,7 +2912,7 @@ interface LuaEntity extends LuaControl {
    */
   set_passenger(passenger: LuaEntity | PlayerIdentification): void
   /**
-   * Returns true if this entity is connected to an electric network.
+   * Returns `true` if this entity produces or consumes electricity and is connected to an electric network that has at least one entity that can produce power.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_connected_to_electric_network View documentation}
    */
@@ -3755,13 +3758,16 @@ interface LuaEntity extends LuaControl {
    */
   kills: uint
   /**
-   * The last player that changed any setting on this entity. This includes building the entity, changing its color, or configuring its circuit network. Can be `nil` if the last user is not part of the save anymore. Mods can overwrite it if desired.
+   * The last player that changed any setting on this entity. This includes building the entity, changing its color, or configuring its circuit network. Can be `nil` if the last user is not part of the save anymore.
+   *
+   * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
    *
    * _Can only be used if this is EntityWithOwner_
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.last_user View documentation}
    */
-  last_user: LuaPlayer | undefined
+  get last_user(): LuaPlayer | LuaPlayer | undefined
+  set last_user(value: LuaPlayer | PlayerIdentification | undefined)
   /**
    * The buffer size for the electric energy source or nil if the entity doesn't have an electric energy source.
    *
@@ -4087,14 +4093,19 @@ interface LuaEntity extends LuaControl {
    */
   character_corpse_death_cause: LocalisedString
   /**
-   * The player this character is associated with or `nil` if none. When the player logs off in multiplayer all of the associated characters will be logged off with him.
+   * The player this character is associated with, or `nil` if there isn't one. Set to `nil` to clear.
+   *
+   * The player will be automatically disassociated when a controller is set on the character. Also, all characters associated to a player will be logged off when the player logs off in multiplayer.
+   *
+   * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
    *
    * _Can only be used if this is Character_
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.associated_player View documentation}
-   * @remarks A character associated with a player is not directly controlled by any player.<br>Set to `nil` to clear. The player will be automatically disassociated when a controller is set on the character.
+   * @remarks A character associated with a player is not directly controlled by any player.
    */
-  associated_player: LuaPlayer | undefined
+  get associated_player(): LuaPlayer | LuaPlayer | undefined
+  set associated_player(value: LuaPlayer | PlayerIdentification | undefined)
   /**
    * The last tick this character entity was attacked.
    *
@@ -4240,9 +4251,12 @@ interface LuaEntity extends LuaControl {
   /**
    * The player that this `simple-entity-with-owner`, `simple-entity-with-force`, `flying-text`, or `highlight-box` is visible to. `nil` means it is rendered for every player.
    *
+   * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
+   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_player View documentation}
    */
-  render_player: LuaPlayer | undefined
+  get render_player(): LuaPlayer | LuaPlayer | undefined
+  set render_player(value: LuaPlayer | PlayerIdentification | undefined)
   /**
    * The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array means it is rendered for every force.
    *
@@ -4486,7 +4500,7 @@ interface LuaEntity extends LuaControl {
  */
 interface BaseEntity extends LuaControl {
   /**
-   * Gets the entities output inventory if it has one.
+   * Gets the entity's output inventory if it has one.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_output_inventory View documentation}
    * @returns A reference to the entity's output inventory.
@@ -4876,7 +4890,7 @@ interface BaseEntity extends LuaControl {
     readonly force?: LuaForce | string
   }): LuaMultiReturn<[boolean, Record<string, uint> | undefined]>
   /**
-   * Returns true if this entity is connected to an electric network.
+   * Returns `true` if this entity produces or consumes electricity and is connected to an electric network that has at least one entity that can produce power.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_connected_to_electric_network View documentation}
    */
@@ -5556,9 +5570,12 @@ interface BaseEntity extends LuaControl {
   /**
    * The player that this `simple-entity-with-owner`, `simple-entity-with-force`, `flying-text`, or `highlight-box` is visible to. `nil` means it is rendered for every player.
    *
+   * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
+   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_player View documentation}
    */
-  render_player: LuaPlayer | undefined
+  get render_player(): LuaPlayer | LuaPlayer | undefined
+  set render_player(value: LuaPlayer | PlayerIdentification | undefined)
   /**
    * The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array means it is rendered for every force.
    *
@@ -6718,14 +6735,19 @@ interface CharacterEntity extends BaseEntity {
    */
   readonly player: LuaPlayer | undefined
   /**
-   * The player this character is associated with or `nil` if none. When the player logs off in multiplayer all of the associated characters will be logged off with him.
+   * The player this character is associated with, or `nil` if there isn't one. Set to `nil` to clear.
+   *
+   * The player will be automatically disassociated when a controller is set on the character. Also, all characters associated to a player will be logged off when the player logs off in multiplayer.
+   *
+   * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
    *
    * _Can only be used if this is Character_
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.associated_player View documentation}
-   * @remarks A character associated with a player is not directly controlled by any player.<br>Set to `nil` to clear. The player will be automatically disassociated when a controller is set on the character.
+   * @remarks A character associated with a player is not directly controlled by any player.
    */
-  associated_player: LuaPlayer | undefined
+  get associated_player(): LuaPlayer | LuaPlayer | undefined
+  set associated_player(value: LuaPlayer | PlayerIdentification | undefined)
   /**
    * The last tick this character entity was attacked.
    *
@@ -6825,13 +6847,16 @@ interface TurretEntity extends BaseEntity {
 
 interface EntityWithOwnerEntity extends BaseEntity {
   /**
-   * The last player that changed any setting on this entity. This includes building the entity, changing its color, or configuring its circuit network. Can be `nil` if the last user is not part of the save anymore. Mods can overwrite it if desired.
+   * The last player that changed any setting on this entity. This includes building the entity, changing its color, or configuring its circuit network. Can be `nil` if the last user is not part of the save anymore.
+   *
+   * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
    *
    * _Can only be used if this is EntityWithOwner_
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.last_user View documentation}
    */
-  last_user: LuaPlayer | undefined
+  get last_user(): LuaPlayer | LuaPlayer | undefined
+  set last_user(value: LuaPlayer | PlayerIdentification | undefined)
 }
 
 interface ElectricEnergyInterfaceEntity extends BaseEntity {
@@ -7186,7 +7211,7 @@ interface LuaEntityPrototype {
    */
   readonly default_collision_mask_with_flags: CollisionMaskWithFlags
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.order View documentation}
    */
@@ -8575,7 +8600,7 @@ interface BaseEntityPrototype {
    */
   readonly default_collision_mask_with_flags: CollisionMaskWithFlags
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.order View documentation}
    */
@@ -9936,7 +9961,7 @@ interface LuaEquipmentCategoryPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEquipmentCategoryPrototype.html#LuaEquipmentCategoryPrototype.order View documentation}
    */
@@ -10154,7 +10179,7 @@ interface LuaEquipmentGridPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEquipmentGridPrototype.html#LuaEquipmentGridPrototype.order View documentation}
    */
@@ -10209,7 +10234,7 @@ interface LuaEquipmentPrototype {
    */
   readonly type: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEquipmentPrototype.html#LuaEquipmentPrototype.order View documentation}
    */
@@ -10719,7 +10744,7 @@ interface LuaFluidPrototype {
    */
   readonly heat_capacity: double
   /**
-   * Order string for this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaFluidPrototype.html#LuaFluidPrototype.order View documentation}
    */
@@ -11546,7 +11571,7 @@ interface LuaFuelCategoryPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaFuelCategoryPrototype.html#LuaFuelCategoryPrototype.order View documentation}
    */
@@ -12279,7 +12304,9 @@ interface LuaGameScript {
    */
   decode_string(string: string): string | undefined
   /**
-   * The player typing at the console - `nil` in all other instances. See {@link LuaGameScript#players LuaGameScript::players} for accessing all players.
+   * This property is only populated inside {@link LuaCommandProcessor custom command} handlers and when writing {@link https://wiki.factorio.com/Console#Scripting_and_cheat_commands Lua console commands}. Returns the player that is typing the command, `nil` in all other instances.
+   *
+   * See {@link LuaGameScript#players LuaGameScript::players} for accessing all players.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.player View documentation}
    */
@@ -12727,6 +12754,11 @@ interface LuaGroup {
    * @remarks Can only be used on groups, not on subgroups.
    */
   readonly order_in_recipe: string
+  /**
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaGroup.html#LuaGroup.order View documentation}
+   */
   readonly order: string
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
@@ -13585,20 +13617,7 @@ interface ChooseElemButtonGuiElementMembers extends BaseGuiElement {
    */
   elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | undefined
   /**
-   * The elem filters of this choose-elem-button or `nil` if there are no filters.
-   *
-   * The compatible type of filter is determined by elem_type:
-   * - Type `"item"` - {@link ItemPrototypeFilter}
-   * - Type `"tile"` - {@link TilePrototypeFilter}
-   * - Type `"entity"` - {@link EntityPrototypeFilter}
-   * - Type `"signal"` - Does not support filters
-   * - Type `"fluid"` - {@link FluidPrototypeFilter}
-   * - Type `"recipe"` - {@link RecipePrototypeFilter}
-   * - Type `"decorative"` - {@link DecorativePrototypeFilter}
-   * - Type `"item-group"` - Does not support filters
-   * - Type `"achievement"` - {@link AchievementPrototypeFilter}
-   * - Type `"equipment"` - {@link EquipmentPrototypeFilter}
-   * - Type `"technology"` - {@link TechnologyPrototypeFilter}
+   * The elem filters of this choose-elem-button, or `nil` if there are no filters. The compatible type of filter is determined by `elem_type`.
    *
    * _Can only be used if this is choose-elem-button_
    *
@@ -15223,7 +15242,7 @@ interface LuaItemPrototype {
   readonly localised_name: LocalisedString
   readonly localised_description: LocalisedString
   /**
-   * Order string.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.order View documentation}
    */
@@ -15461,13 +15480,13 @@ interface LuaItemPrototype {
    */
   readonly speed: float | undefined
   /**
-   * Effects of this module; `nil` if this is not a module.
+   * Effects of this module.
    *
    * _Can only be used if this is ModuleItem_
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.module_effects View documentation}
    */
-  readonly module_effects: ModuleEffects | undefined
+  readonly module_effects: ModuleEffects
   /**
    * The name of a {@link LuaModuleCategoryPrototype}. Used when upgrading modules: Ctrl + click modules into an entity and it will replace lower tier modules of the same category with higher tier modules.
    *
@@ -15816,7 +15835,7 @@ interface BaseItemPrototype {
   readonly localised_name: LocalisedString
   readonly localised_description: LocalisedString
   /**
-   * Order string.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.order View documentation}
    */
@@ -16078,13 +16097,13 @@ interface ItemWithLabelItemPrototype extends BaseItemPrototype {
 
 interface ModuleItemPrototype extends BaseItemPrototype {
   /**
-   * Effects of this module; `nil` if this is not a module.
+   * Effects of this module.
    *
    * _Can only be used if this is ModuleItem_
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.module_effects View documentation}
    */
-  readonly module_effects: ModuleEffects | undefined
+  readonly module_effects: ModuleEffects
   /**
    * The name of a {@link LuaModuleCategoryPrototype}. Used when upgrading modules: Ctrl + click modules into an entity and it will replace lower tier modules of the same category with higher tier modules.
    *
@@ -16484,8 +16503,8 @@ interface LuaItemStack {
    * Set this item stack to another item stack.
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_stack View documentation}
-   * @param stack Item stack to set this one to. Omitting this parameter or passing `nil` will clear this item stack, as if by calling {@link LuaItemStack#clear LuaItemStack::clear}.
-   * @returns Was the stack set successfully?
+   * @param stack Item stack to set it to. Omitting this parameter or passing `nil` will clear this item stack, as if {@link LuaItemStack#clear LuaItemStack::clear} was called.
+   * @returns Whether the stack was set successfully. Returns `false` if this stack was not {@link LuaItemStack#can_set_stack valid for write}.
    */
   set_stack(stack?: ItemStackIdentification): boolean
   /**
@@ -17219,8 +17238,8 @@ interface BaseItemStack {
    * Set this item stack to another item stack.
    *
    * {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.set_stack View documentation}
-   * @param stack Item stack to set this one to. Omitting this parameter or passing `nil` will clear this item stack, as if by calling {@link LuaItemStack#clear LuaItemStack::clear}.
-   * @returns Was the stack set successfully?
+   * @param stack Item stack to set it to. Omitting this parameter or passing `nil` will clear this item stack, as if {@link LuaItemStack#clear LuaItemStack::clear} was called.
+   * @returns Whether the stack was set successfully. Returns `false` if this stack was not {@link LuaItemStack#can_set_stack valid for write}.
    */
   set_stack(stack?: ItemStackIdentification): boolean
   /**
@@ -18619,7 +18638,7 @@ interface LuaModSettingPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaModSettingPrototype.html#LuaModSettingPrototype.order View documentation}
    */
@@ -18703,7 +18722,7 @@ interface LuaModuleCategoryPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaModuleCategoryPrototype.html#LuaModuleCategoryPrototype.order View documentation}
    */
@@ -18738,7 +18757,7 @@ interface LuaNamedNoiseExpression {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaNamedNoiseExpression.html#LuaNamedNoiseExpression.order View documentation}
    */
@@ -18785,7 +18804,7 @@ interface LuaNoiseLayerPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaNoiseLayerPrototype.html#LuaNoiseLayerPrototype.order View documentation}
    */
@@ -18820,7 +18839,7 @@ interface LuaParticlePrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaParticlePrototype.html#LuaParticlePrototype.order View documentation}
    */
@@ -19595,7 +19614,7 @@ interface LuaPlayer extends LuaControl {
    */
   readonly cutscene_character: LuaEntity | undefined
   /**
-   * This player's index in {@link LuaGameScript#players LuaGameScript::players}.
+   * This player's unique index in {@link LuaGameScript#players LuaGameScript::players}. It is given to them when they are {@link OnPlayerCreatedEvent created} and remains assigned to them until they are {@link OnPlayerRemovedEvent removed}.
    *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.index View documentation}
    */
@@ -20143,7 +20162,7 @@ interface LuaRecipe {
    */
   readonly energy: double
   /**
-   * Order string. This is used to sort the crafting menu.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaRecipe.html#LuaRecipe.order View documentation}
    */
@@ -20194,7 +20213,7 @@ interface LuaRecipeCategoryPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaRecipeCategoryPrototype.html#LuaRecipeCategoryPrototype.order View documentation}
    */
@@ -20296,7 +20315,7 @@ interface LuaRecipePrototype {
    */
   readonly energy: double
   /**
-   * Order string. This is used to sort the crafting menu.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaRecipePrototype.html#LuaRecipePrototype.order View documentation}
    */
@@ -21793,7 +21812,7 @@ interface LuaResourceCategoryPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaResourceCategoryPrototype.html#LuaResourceCategoryPrototype.order View documentation}
    */
@@ -21907,7 +21926,7 @@ interface LuaShortcutPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaShortcutPrototype.html#LuaShortcutPrototype.order View documentation}
    */
@@ -22161,7 +22180,7 @@ interface LuaStyle {
   /**
    * Horizontal space between individual cells.
    *
-   * _Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlow_
+   * _Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlowStyle_
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontal_spacing View documentation}
    */
@@ -22336,13 +22355,13 @@ interface LuaStyle {
    */
   set cell_padding(value: int)
   /**
-   * Sets extra_top/right/bottom/left_padding_when_actived to this value. An array with two values sets top/bottom padding to the first value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding respectively.
+   * Sets `extra_top/right/bottom/left_padding_when_activated` to this value. An array with two values sets top/bottom padding to the first value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding respectively.
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_padding_when_activated View documentation}
    */
   set extra_padding_when_activated(value: int | StyleValuesArray)
   /**
-   * Sets extra_top/right/bottom/left_margin_when_activated to this value. An array with two values sets top/bottom margin to the first value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin respectively.
+   * Sets `extra_top/right/bottom/left_margin_when_activated` to this value. An array with two values sets top/bottom margin to the first value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin respectively.
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_margin_when_activated View documentation}
    */
@@ -22551,7 +22570,7 @@ interface TableStyle extends BaseStyle {
   /**
    * Horizontal space between individual cells.
    *
-   * _Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlow_
+   * _Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlowStyle_
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontal_spacing View documentation}
    */
@@ -22725,7 +22744,7 @@ interface FlowStyle extends BaseStyle {
   /**
    * Horizontal space between individual cells.
    *
-   * _Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlow_
+   * _Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlowStyle_
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontal_spacing View documentation}
    */
@@ -22744,7 +22763,7 @@ interface HorizontalFlowStyle extends BaseStyle {
   /**
    * Horizontal space between individual cells.
    *
-   * _Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlow_
+   * _Can only be used if this is LuaTableStyle, LuaFlowStyle or LuaHorizontalFlowStyle_
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.horizontal_spacing View documentation}
    */
@@ -22848,13 +22867,13 @@ interface ScrollPaneStyle extends BaseStyle {
    */
   extra_right_margin_when_activated: int
   /**
-   * Sets extra_top/right/bottom/left_padding_when_actived to this value. An array with two values sets top/bottom padding to the first value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding respectively.
+   * Sets `extra_top/right/bottom/left_padding_when_activated` to this value. An array with two values sets top/bottom padding to the first value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding respectively.
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_padding_when_activated View documentation}
    */
   set extra_padding_when_activated(value: int | StyleValuesArray)
   /**
-   * Sets extra_top/right/bottom/left_margin_when_activated to this value. An array with two values sets top/bottom margin to the first value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin respectively.
+   * Sets `extra_top/right/bottom/left_margin_when_activated` to this value. An array with two values sets top/bottom margin to the first value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin respectively.
    *
    * {@link https://lua-api.factorio.com/latest/LuaStyle.html#LuaStyle.extra_margin_when_activated View documentation}
    */
@@ -22890,11 +22909,11 @@ interface BaseSurfaceCreateEntity {
   /**
    * Entity with health for the new entity to target.
    */
-  readonly target?: LuaEntity
+  readonly target?: LuaEntity | MapPosition
   /**
    * Source entity. Used for beams and highlight-boxes.
    */
-  readonly source?: LuaEntity
+  readonly source?: LuaEntity | MapPosition
   /**
    * If true, building will attempt to simulate fast-replace building.
    */
@@ -23268,7 +23287,10 @@ interface LuaSurface {
    *
    * If no filters (`name`, `type`, `force`, etc.) are given, this returns all entities in the search area. If multiple filters are specified, only entities matching all given filters are returned.
    *
-   * If no `area` or `position` are given, the entire surface is searched. If `position` is given, this returns the entities colliding with that position (i.e the given position is within the entity's collision box). If `position` and `radius` are given, this returns the entities within the radius of the position. If `area` is specified, this returns the entities colliding with that area.
+   * - If no `area` or `position` are given, the entire surface is searched.
+   * - If `position` is given, this returns the entities colliding with that position (i.e the given position is within the entity's collision box).
+   * - If `position` and `radius` are given, this returns the entities within the radius of the position. Looks for the center of entities.
+   * - If `area` is specified, this returns the entities colliding with that area.
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_entities_filtered View documentation}
    * @example
@@ -23288,9 +23310,6 @@ interface LuaSurface {
      * Has precedence over area field.
      */
     readonly position?: MapPosition
-    /**
-     * If given with position, will return all entities within the radius of the position.
-     */
     readonly radius?: double
     readonly name?: string | readonly string[]
     readonly type?: string | readonly string[]
@@ -23304,7 +23323,7 @@ interface LuaSurface {
     readonly limit?: uint
     readonly is_military_target?: boolean
     /**
-     * If the filters should be inverted.
+     * Whether the filters should be inverted.
      */
     readonly invert?: boolean
   }): LuaEntity[]
@@ -24597,7 +24616,7 @@ interface LuaTechnology {
    */
   readonly research_unit_energy: double
   /**
-   * Order string for this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaTechnology.html#LuaTechnology.order View documentation}
    */
@@ -24711,7 +24730,7 @@ interface LuaTechnologyPrototype {
    */
   readonly research_unit_energy: double
   /**
-   * Order string for this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaTechnologyPrototype.html#LuaTechnologyPrototype.order View documentation}
    */
@@ -24850,7 +24869,7 @@ interface LuaTilePrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaTilePrototype.html#LuaTilePrototype.order View documentation}
    */
@@ -25465,7 +25484,7 @@ interface LuaTrivialSmokePrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaTrivialSmokePrototype.html#LuaTrivialSmokePrototype.order View documentation}
    */
@@ -25626,7 +25645,7 @@ interface LuaVirtualSignalPrototype {
    */
   readonly name: string
   /**
-   * Order string of this prototype.
+   * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
    *
    * {@link https://lua-api.factorio.com/latest/LuaVirtualSignalPrototype.html#LuaVirtualSignalPrototype.order View documentation}
    */

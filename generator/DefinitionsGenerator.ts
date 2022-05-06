@@ -120,6 +120,13 @@ export default class DefinitionsGenerator {
 
   hasWarnings: boolean = false
 
+  private static readonly docUrlBase = "https://lua-api.factorio.com/latest/"
+  private static hardCodedLinks: Record<string, string> = {
+    global: "Global.html",
+    "data-lifecycle": "Data-Lifecycle.html",
+    migrations: "Migrations.html",
+  }
+
   constructor(
     readonly apiDocs: FactorioApiJson,
     readonly manualDefinitionsSource: ts.SourceFile,
@@ -132,8 +139,6 @@ export default class DefinitionsGenerator {
       throw new Error("Unsupported api version " + apiDocs.api_version)
     }
   }
-
-  private static readonly docUrlBase = "https://lua-api.factorio.com/latest/"
 
   // private getIndexFile(): string {
   //   let result = DefinitionsGenerator.header
@@ -897,6 +902,8 @@ export default class DefinitionsGenerator {
       return DefinitionsGenerator.docUrlBase + origLink
     } else if (this.typeNames[origLink]) {
       return this.typeNames[origLink]
+    } else if (DefinitionsGenerator.hardCodedLinks[origLink]) {
+      return DefinitionsGenerator.docUrlBase + DefinitionsGenerator.hardCodedLinks[origLink]
     }
     const referenceMatch = origLink.match(/^(.+?)::(.+)$/)
     if (referenceMatch) {

@@ -144,6 +144,27 @@ interface LineGuiSpec {
 
 interface SignalID {}
 
+interface ItemPrototypeFilter {}
+interface TilePrototypeFilter {}
+interface EntityPrototypeFilter {}
+interface FluidPrototypeFilter {}
+interface RecipePrototypeFilter {}
+interface DecorativePrototypeFilter {}
+interface AchievementPrototypeFilter {}
+interface EquipmentPrototypeFilter {}
+interface TechnologyPrototypeFilter {}
+
+type PrototypeFilter =
+  | ItemPrototypeFilter
+  | TilePrototypeFilter
+  | EntityPrototypeFilter
+  | FluidPrototypeFilter
+  | RecipePrototypeFilter
+  | DecorativePrototypeFilter
+  | AchievementPrototypeFilter
+  | EquipmentPrototypeFilter
+  | TechnologyPrototypeFilter
+
 /** @addBefore ChooseElemButtonGuiSpec */
 type ChooseElemButtonType =
   | "item"
@@ -157,16 +178,6 @@ type ChooseElemButtonType =
   | "achievement"
   | "equipment"
   | "technology"
-
-interface ItemPrototypeFilter {}
-interface TilePrototypeFilter {}
-interface EntityPrototypeFilter {}
-interface FluidPrototypeFilter {}
-interface RecipePrototypeFilter {}
-interface DecorativePrototypeFilter {}
-interface AchievementPrototypeFilter {}
-interface EquipmentPrototypeFilter {}
-interface TechnologyPrototypeFilter {}
 
 /** @addBefore ChooseElemButtonGuiSpec */
 interface ChooseElemButtonFilters {
@@ -740,62 +751,6 @@ interface ItemPrototypeIdentification {}
 // Skipped: EntityPrototypeIdentification, ItemStackIdentification
 
 interface MapGenSettings {}
-
-/** @addTo concepts */
-/**
- * A map gen preset. Used in {@link https://wiki.factorio.com/Prototype/MapGenPresets Prototype/MapGenPresets}.
- *
- * {@link https://wiki.factorio.com/Types/MapGenPreset View Documentation}
- */
-interface MapGenPreset {
-  /** Specifies the ordering the map generator gui. */
-  order: string
-  /** Whether this is the default preset. If set to boolean, this preset may not have any other properties besides this and order. */
-  default?: boolean
-  /**
-   * This is a table with the below key/value pairs. All key/value pairs are optional. If not set they will just use the
-   * default values.
-   */
-  basic_settings: Partial<MapGenSettings>
-  /**
-   * This is a table with the below key/value pairs. All key/value pairs are optional, if not set they will just use the
-   * existing values.
-   */
-  readonly advanced_settings: {
-    readonly pollution?: {
-      enabled?: boolean
-      /** Must be <= 0.25. */
-      diffusion_ratio?: double
-      /** Also known as dissipation rate. Must be >= 0.5. */
-      ageing?: double
-      enemy_attack_pollution_consumption_modifier?: double
-      min_pollution_to_damage_trees?: double
-      pollution_restored_per_tree_damage?: double
-    }
-    readonly enemy_evolution?: {
-      enabled?: boolean
-      time_factor?: double
-      destroy_factor?: double
-      pollution_factor?: double
-    }
-    readonly enemy_expansion?: {
-      enabled?: boolean
-      max_expansion_distance?: double
-      settler_group_min_size?: double
-      settler_group_max_size?: double
-      /** In ticks. */
-      min_expansion_cooldown?: double
-      /** In ticks. */
-      max_expansion_cooldown?: double
-    }
-    readonly difficulty_settings?: {
-      recipe_difficulty?: defines.difficulty_settings.recipe_difficulty
-      technology_difficulty?: defines.difficulty_settings.technology_difficulty
-      technology_price_multiplier?: double
-      research_queue_setting?: "after-victory" | "always" | "never"
-    }
-  }
-}
 
 /** @addBefore BlueprintEntity */
 /**

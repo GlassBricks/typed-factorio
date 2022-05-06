@@ -757,6 +757,10 @@ declare namespace defines {
      */
     const on_research_reversed: EventId<OnResearchReversedEvent>
     /**
+     * Event type: {@link OnResearchCancelledEvent}
+     */
+    const on_research_cancelled: EventId<OnResearchCancelledEvent>
+    /**
      * Event type: {@link OnPlayerRotatedEntityEvent}
      */
     const on_player_rotated_entity: EventId<OnPlayerRotatedEntityEvent>
@@ -1386,6 +1390,10 @@ declare namespace defines {
      * Event type: {@link OnEquipmentRemovedEvent}
      */
     const on_equipment_removed: EventId<OnEquipmentRemovedEvent>
+    /**
+     * Event type: {@link OnPlayerReverseSelectedAreaEvent}
+     */
+    const on_player_reverse_selected_area: EventId<OnPlayerReverseSelectedAreaEvent>
   }
   /**
    * See the {@link https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
@@ -1555,6 +1563,7 @@ declare namespace defines {
     remove_train_station,
     reset_assembling_machine,
     reset_item,
+    reverse_select_area,
     rotate_entity,
     select_area,
     select_blueprint_entities,

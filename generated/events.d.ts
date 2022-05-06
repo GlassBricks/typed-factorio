@@ -2589,6 +2589,46 @@ interface OnPlayerRespawnedEvent extends EventData {
 }
 
 /**
+ * Called after a player reverse-selects an area with a selection-tool item.
+ *
+ * {@link https://lua-api.factorio.com/latest/events.html#on_player_reverse_selected_area View documentation}
+ */
+interface OnPlayerReverseSelectedAreaEvent extends EventData {
+  /**
+   * The player doing the selection.
+   */
+  readonly player_index: PlayerIndex
+  /**
+   * The surface selected.
+   */
+  readonly surface: LuaSurface
+  /**
+   * The area selected.
+   */
+  readonly area: BoundingBoxRead
+  /**
+   * The item used to select the area.
+   */
+  readonly item: string
+  /**
+   * The entities selected.
+   */
+  readonly entities: LuaEntity[]
+  /**
+   * The tiles selected.
+   */
+  readonly tiles: LuaTile[]
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_player_reverse_selected_area
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
  * Called when the player rotates an entity. This event is only fired when the entity actually changes its orientation -- pressing the rotate key on an entity that can't be rotated won't fire this event.
  *
  * {@link https://lua-api.factorio.com/latest/events.html#on_player_rotated_entity View documentation}
@@ -3289,6 +3329,30 @@ interface OnPreSurfaceDeletedEvent extends EventData {
    * Identifier of the event
    */
   readonly name: typeof defines.events.on_pre_surface_deleted
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
+ * Called when research is cancelled.
+ *
+ * {@link https://lua-api.factorio.com/latest/events.html#on_research_cancelled View documentation}
+ */
+interface OnResearchCancelledEvent extends EventData {
+  /**
+   * A mapping of technology name to how many times it was cancelled.
+   */
+  readonly research: Record<string, uint>
+  /**
+   * The force whose research was cancelled.
+   */
+  readonly force: LuaForce
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_research_cancelled
   /**
    * Tick the event was generated.
    */

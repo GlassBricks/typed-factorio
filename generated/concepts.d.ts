@@ -11,7 +11,7 @@
  *
  * As a special case, when the key is just the empty string, all the parameters will be concatenated (after processing, if any are localised strings). If there is only one parameter, it will be used as is.
  *
- * Furthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number or boolean, which will be converted to their textual representation.
+ * Furthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number, boolean or `nil`, which will be converted to their textual representation.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#LocalisedString View documentation}
  * @example In the English translation, this will print `"No ammo"`; in the Czech translation, it will print `"Bez munice"`:
@@ -280,7 +280,7 @@ type BoundingBoxArray = readonly [left_top: MapPosition, right_bottom: MapPositi
  * @example Explicit definition:
  *
  * ```
- * {left_top = {-2, -3}, right_bottom = {5, 8}}
+ * {left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}
  * ```
  * @example Shorthand:
  *
@@ -1611,20 +1611,6 @@ type MapGenSize =
   | "very-big"
   | "very-good"
 
-interface AutoplaceSetting {
-  readonly frequency: MapGenSize
-  readonly size: MapGenSize
-  readonly richness: MapGenSize
-}
-
-interface AutoplaceSettings {
-  /**
-   * Whether missing autoplace names for this type should be default enabled.
-   */
-  readonly treat_missing_as_default: boolean
-  readonly settings: Record<string, AutoplaceSetting>
-}
-
 interface AutoplaceControl {
   /**
    * For things that are placed as spots such as ores and enemy bases, frequency is generally proportional to number of spots placed per unit area. For continuous features such as forests, frequency is how compressed the probability function is over distance, i.e. the inverse of 'scale' (similar to terrain_segmentation). When the {@link LuaAutoplaceControlPrototype} is of the category `"terrain"`, then scale is shown in the map generator GUI instead of frequency.
@@ -1638,6 +1624,14 @@ interface AutoplaceControl {
    * Has different effects for different things, but generally affects the 'health' or density of a thing that is placed without affecting where it is placed. For trees, richness affects tree health. For ores, richness multiplies the amount of ore at any given tile in a patch. Metadata about autoplace controls (such as whether or not 'richness' does anything for them) can be found in the {@link LuaAutoplaceControlPrototype} by looking up `game.autoplace_control_prototypes[(control prototype name)]`, e.g. `game.autoplace_control_prototypes["enemy-base"].richness` is false, because enemy base autoplacement doesn't use richness.
    */
   readonly richness: MapGenSize
+}
+
+interface AutoplaceSettings {
+  /**
+   * Whether missing autoplace names for this type should be default enabled.
+   */
+  readonly treat_missing_as_default: boolean
+  readonly settings: Record<string, AutoplaceControl>
 }
 
 interface CliffPlacementSettings {
@@ -1756,6 +1750,26 @@ interface MapGenSettingsRead extends MapGenSettings {
    * Positions of the starting areas.
    */
   readonly starting_points: MapPositionTable[]
+}
+
+interface AdvancedMapGenSettings {
+  readonly pollution: PollutionMapSettings
+  readonly enemy_evolution: EnemyEvolutionMapSettings
+  readonly enemy_expansion: EnemyExpansionMapSettings
+  readonly difficulty_settings: DifficultySettings
+}
+
+interface MapGenPreset {
+  /**
+   * The string used to alphabetically sort the presets. It is a simple string that has no additional semantic meaning.
+   */
+  readonly order: string
+  /**
+   * Whether this is the preset that is selected by default.
+   */
+  readonly default?: boolean
+  readonly basic_settings?: MapGenSettingsRead
+  readonly advanced_settings?: AdvancedMapGenSettings
 }
 
 interface SignalID {
@@ -2787,32 +2801,105 @@ interface ModuleEffects {
  * This is a set of flags given as a dictionary[{@link string} &rarr; {@link boolean}]. When a flag is set, it is present in the dictionary with the value `true`. Unset flags aren't present in the dictionary at all. So, the boolean value is meaningless and exists just for easy table lookup if a flag is set.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#EntityPrototypeFlags View documentation}
+ * @remarks By default, none of these flags are set.
  */
 interface EntityPrototypeFlags {
+  /**
+   * Prevents the entity from being rotated before or after placement.
+   */
   readonly "not-rotatable"?: boolean
+  /**
+   * Determines the default force when placing entities in the map editor and using the "AUTO" option for the force.
+   */
   readonly "placeable-neutral"?: boolean
+  /**
+   * Determines the default force when placing entities in the map editor and using the "AUTO" option for the force.
+   */
   readonly "placeable-player"?: boolean
+  /**
+   * Determines the default force when placing entities in the map editor and using the "AUTO" option for the force.
+   */
   readonly "placeable-enemy"?: boolean
+  /**
+   * Determines whether the entity needs to be aligned with the invisible grid within the world. Most entities are confined in this way, with a few exceptions such as trees and land mines.
+   */
   readonly "placeable-off-grid"?: boolean
+  /**
+   * Makes it possible to blueprint, deconstruct, and repair the entity (which can be turned off again using the specific flags). Makes it possible for the biter AI to target the entity as a distraction. Enables dust to automatically be created when building the entity. If the entity does not have a `map_color` set, this flag makes the entity appear on the map with the default color specified by the UtilityConstants.
+   */
   readonly "player-creation"?: boolean
+  /**
+   * Uses 45 degree angle increments when selecting direction.
+   */
   readonly "building-direction-8-way"?: boolean
+  /**
+   * Used to automatically detect the proper direction of the entity if possible. Used by the pump, train stop, and train signal by default.
+   */
   readonly "filter-directions"?: boolean
+  /**
+   * Fast replace will not apply when building while moving.
+   */
   readonly "fast-replaceable-no-build-while-moving"?: boolean
+  /**
+   * Used to specify that the entity breathes air, and is thus affected by poison.
+   */
   readonly "breaths-air"?: boolean
+  /**
+   * Used to specify that the entity can not be 'healed' by repair packs.
+   */
   readonly "not-repairable"?: boolean
+  /**
+   * Prevents the entity from being drawn on the map.
+   */
   readonly "not-on-map"?: boolean
+  /**
+   * Prevents the entity from being deconstructed.
+   */
   readonly "not-deconstructable"?: boolean
+  /**
+   * Prevents the entity from being part of a blueprint.
+   */
   readonly "not-blueprintable"?: boolean
+  /**
+   * Hides the entity from the bonus GUI and from the "made in"-property of recipe tooltips.
+   */
   readonly hidden?: boolean
+  /**
+   * Hides the alt-info of this entity when in alt-mode.
+   */
   readonly "hide-alt-info"?: boolean
+  /**
+   * Does not fast replace this entity over other entity types when building while moving.
+   */
   readonly "fast-replaceable-no-cross-type-while-moving"?: boolean
   readonly "no-gap-fill-while-building"?: boolean
+  /**
+   * Does not apply fire stickers to the entity.
+   */
   readonly "not-flammable"?: boolean
+  /**
+   * Prevents inserters and loaders from taking items from this entity.
+   */
   readonly "no-automated-item-removal"?: boolean
+  /**
+   * Prevents inserters and loaders from inserting items into this entity.
+   */
   readonly "no-automated-item-insertion"?: boolean
+  /**
+   * Prevents the entity from being copy-pasted.
+   */
   readonly "no-copy-paste"?: boolean
+  /**
+   * Disallows selection of the entity even when a selection box is specified for other reasons. For example, selection boxes are used to determine the size of outlines to be shown when highlighting entities inside electric pole ranges.
+   */
   readonly "not-selectable-in-game"?: boolean
+  /**
+   * Prevents the entity from being selected by the upgrade planner.
+   */
   readonly "not-upgradable"?: boolean
+  /**
+   * Prevents the entity from being shown in the kill statistics.
+   */
   readonly "not-in-kill-statistics"?: boolean
 }
 
@@ -2820,18 +2907,52 @@ interface EntityPrototypeFlags {
  * This is a set of flags given as dictionary[{@link string} &rarr; {@link boolean}]. When a flag is set, it is present in the dictionary with the value `true`. Unset flags aren't present in the dictionary at all. So, the boolean value is meaningless and exists just for easy table lookup if a flag is set.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#ItemPrototypeFlags View documentation}
+ * @remarks By default, none of these flags are set.
  */
 interface ItemPrototypeFlags {
+  /**
+   * Determines whether the logistics areas of roboports should be drawn when holding this item. Used by the deconstruction planner by default.
+   */
   readonly "draw-logistic-overlay"?: boolean
+  /**
+   * Hides the item in the logistic requests and filters GUIs (among others).
+   */
   readonly hidden?: boolean
+  /**
+   * Always shows the item in the logistic requests and filters GUIs (among others) even when the recipe for that item is locked.
+   */
   readonly "always-show"?: boolean
+  /**
+   * Hides the item from the bonus GUI.
+   */
   readonly "hide-from-bonus-gui"?: boolean
+  /**
+   * Hides the item from the tooltip that's shown when hovering over a burner inventory.
+   */
   readonly "hide-from-fuel-tooltip"?: boolean
+  /**
+   * Prevents the item from being stacked. It also prevents the item from stacking in assembling machine input slots, which can otherwise exceed the item stack size if required by the recipe. Additionally, the item does not show an item count when in the cursor.
+   */
   readonly "not-stackable"?: boolean
+  /**
+   * Makes the item act as an extension to the inventory that it is placed in. Only has an effect for items with inventory.
+   */
   readonly "can-extend-inventory"?: boolean
+  /**
+   * Makes construction bots prefer this item when building the entity specified by its `place_result`.
+   */
   readonly "primary-place-result"?: boolean
+  /**
+   * Allows the item to be opened by the player, firing the `on_mod_item_opened` event. Only has an effect for selection tool items.
+   */
   readonly "mod-openable"?: boolean
+  /**
+   * Makes it so the item is deleted when clearing the cursor, instead of being put into the player's inventory. The copy-paste tools use this by default, for example.
+   */
   readonly "only-in-cursor"?: boolean
+  /**
+   * Allows the item to be spawned by a quickbar shortcut or custom input.
+   */
   readonly spawnable?: boolean
 }
 
@@ -3231,7 +3352,7 @@ interface ProgrammableSpeakerInstrument {
 }
 
 /**
- * A {@link string} that specifies where a gui element should be.
+ * A {@link string} that specifies where a GUI element should be.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Alignment View documentation}
  */
@@ -3599,6 +3720,34 @@ interface VehicleAutomaticTargetingParameters {
  */
 type SoundType = "game-effect" | "gui-effect" | "ambient" | "environment" | "walking" | "alert" | "wind"
 
+/**
+ * Types `"signal"` and `"item-group"` do not support filters.
+ *
+ * Available filters:
+ * - {@link ItemPrototypeFilter} for type `"item"`
+ * - {@link TilePrototypeFilter} for type `"tile"`
+ * - {@link EntityPrototypeFilter} for type `"entity"`
+ * - {@link FluidPrototypeFilter} for type `"fluid"`
+ * - {@link RecipePrototypeFilter} for type `"recipe"`
+ * - {@link DecorativePrototypeFilter} for type `"decorative"`
+ * - {@link AchievementPrototypeFilter} for type `"achievement"`
+ * - {@link EquipmentPrototypeFilter} for type `"equipment"`
+ * - {@link TechnologyPrototypeFilter} for type `"technology"`
+ *
+ * {@link https://lua-api.factorio.com/latest/Concepts.html#PrototypeFilter View documentation}
+ * @remarks Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
+ */
+type PrototypeFilter =
+  | ItemPrototypeFilter
+  | TilePrototypeFilter
+  | EntityPrototypeFilter
+  | FluidPrototypeFilter
+  | RecipePrototypeFilter
+  | DecorativePrototypeFilter
+  | AchievementPrototypeFilter
+  | EquipmentPrototypeFilter
+  | TechnologyPrototypeFilter
+
 interface BaseItemPrototypeFilter {
   /**
    * The condition to filter on. One of `"tool"`, `"mergeable"`, `"item-with-inventory"`, `"selection-tool"`, `"item-with-label"`, `"has-rocket-launch-products"`, `"fuel"`, `"place-result"`, `"burnt-result"`, `"place-as-tile"`, `"placed-as-equipment-result"`, `"name"`, `"type"`, `"flag"`, `"subgroup"`, `"fuel-category"`, `"stack-size"`, `"default-request-amount"`, `"wire-count"`, `"fuel-value"`, `"fuel-acceleration-multiplier"`, `"fuel-top-speed-multiplier"`, `"fuel-emissions-multiplier"`.
@@ -3690,9 +3839,9 @@ interface NameItemPrototypeFilter extends BaseItemPrototypeFilter {
 interface TypeItemPrototypeFilter extends BaseItemPrototypeFilter {
   readonly filter: "type"
   /**
-   * The prototype type
+   * The prototype type, or a list of acceptable types.
    */
-  readonly type: string
+  readonly type: string | string[]
 }
 
 interface FlagItemPrototypeFilter extends BaseItemPrototypeFilter {
@@ -3865,9 +4014,9 @@ interface BaseModSettingPrototypeFilter {
 interface TypeModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
   readonly filter: "type"
   /**
-   * The prototype type
+   * The prototype type, or a list of acceptable types.
    */
-  readonly type: string
+  readonly type: string | string[]
 }
 
 interface ModModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
@@ -3881,9 +4030,9 @@ interface ModModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
 interface SettingTypeModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
   readonly filter: "setting-type"
   /**
-   * The setting scope type (startup, runtime-global, or runtime-per-user)
+   * The setting scope type (`"startup"`, `"runtime-global"`, or `"runtime-per-user"`)
    */
-  readonly type: string
+  readonly type: "startup" | "runtime-global" | "runtime-per-user"
 }
 
 /**
@@ -4057,9 +4206,9 @@ interface BaseAchievementPrototypeFilter {
 interface TypeAchievementPrototypeFilter extends BaseAchievementPrototypeFilter {
   readonly filter: "type"
   /**
-   * The prototype type
+   * The prototype type, or a list of acceptable types.
    */
-  readonly type: string
+  readonly type: string | string[]
 }
 
 interface AllowedWithoutFightAchievementPrototypeFilter extends BaseAchievementPrototypeFilter {
@@ -4208,9 +4357,9 @@ interface BaseEquipmentPrototypeFilter {
 interface TypeEquipmentPrototypeFilter extends BaseEquipmentPrototypeFilter {
   readonly filter: "type"
   /**
-   * The prototype type
+   * The prototype type, or a list of acceptable types.
    */
-  readonly type: string
+  readonly type: string | string[]
 }
 
 interface ItemToPlaceEquipmentPrototypeFilter extends BaseEquipmentPrototypeFilter {
@@ -4612,9 +4761,9 @@ interface NameEntityPrototypeFilter extends BaseEntityPrototypeFilter {
 interface TypeEntityPrototypeFilter extends BaseEntityPrototypeFilter {
   readonly filter: "type"
   /**
-   * The prototype type
+   * The prototype type, or a list of acceptable types.
    */
-  readonly type: string
+  readonly type: string | string[]
 }
 
 /**
@@ -7370,61 +7519,6 @@ type RaiseableEvents =
   | typeof defines.events.script_raised_destroy
   | typeof defines.events.script_raised_revive
   | typeof defines.events.script_raised_set_tiles
-
-/**
- * A map gen preset. Used in {@link https://wiki.factorio.com/Prototype/MapGenPresets Prototype/MapGenPresets}.
- *
- * {@link https://wiki.factorio.com/Types/MapGenPreset View Documentation}
- */
-interface MapGenPreset {
-  /** Specifies the ordering the map generator gui. */
-  order: string
-  /** Whether this is the default preset. If set to boolean, this preset may not have any other properties besides this and order. */
-  default?: boolean
-  /**
-   * This is a table with the below key/value pairs. All key/value pairs are optional. If not set they will just use the
-   * default values.
-   */
-  basic_settings: Partial<MapGenSettings>
-  /**
-   * This is a table with the below key/value pairs. All key/value pairs are optional, if not set they will just use the
-   * existing values.
-   */
-  readonly advanced_settings: {
-    readonly pollution?: {
-      enabled?: boolean
-      /** Must be <= 0.25. */
-      diffusion_ratio?: double
-      /** Also known as dissipation rate. Must be >= 0.5. */
-      ageing?: double
-      enemy_attack_pollution_consumption_modifier?: double
-      min_pollution_to_damage_trees?: double
-      pollution_restored_per_tree_damage?: double
-    }
-    readonly enemy_evolution?: {
-      enabled?: boolean
-      time_factor?: double
-      destroy_factor?: double
-      pollution_factor?: double
-    }
-    readonly enemy_expansion?: {
-      enabled?: boolean
-      max_expansion_distance?: double
-      settler_group_min_size?: double
-      settler_group_max_size?: double
-      /** In ticks. */
-      min_expansion_cooldown?: double
-      /** In ticks. */
-      max_expansion_cooldown?: double
-    }
-    readonly difficulty_settings?: {
-      recipe_difficulty?: defines.difficulty_settings.recipe_difficulty
-      technology_difficulty?: defines.difficulty_settings.technology_difficulty
-      technology_price_multiplier?: double
-      research_queue_setting?: "after-victory" | "always" | "never"
-    }
-  }
-}
 
 interface BlueprintControlBehavior {
   readonly condition?: CircuitCondition
