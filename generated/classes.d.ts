@@ -1554,6 +1554,10 @@ interface LuaControl {
   /**
    * `true` if the player is in a vehicle. Writing to this attribute puts the player in or out of a vehicle.
    *
+   * **Raised events:**
+   * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_ Raised if the driving state successfully changed.
+   *
+   *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.driving View documentation}
    */
   driving: boolean
@@ -2885,6 +2889,9 @@ interface LuaEntity extends LuaControl {
   /**
    * Sets the driver of this vehicle.
    *
+   * **Raised events:**
+   * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
+   *
    * _Can only be used if this is Vehicle_
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_driver View documentation}
@@ -2904,6 +2911,9 @@ interface LuaEntity extends LuaControl {
   get_passenger(): LuaEntity | LuaPlayer | undefined
   /**
    * Sets the passenger of this car or spidertron.
+   *
+   * **Raised events:**
+   * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
    *
    * _Can only be used if this is Vehicle_
    *
@@ -3848,7 +3858,7 @@ interface LuaEntity extends LuaControl {
    */
   readonly bounding_box: BoundingBoxRead
   /**
-   * The secondary bounding box of this entity or `nil` if it doesn't have one.
+   * The secondary bounding box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.secondary_bounding_box View documentation}
    */
@@ -3860,7 +3870,7 @@ interface LuaEntity extends LuaControl {
    */
   readonly selection_box: BoundingBoxRead
   /**
-   * The secondary selection box of this entity or `nil` if it doesn't have one.
+   * The secondary selection box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.secondary_selection_box View documentation}
    */
@@ -5402,7 +5412,7 @@ interface BaseEntity extends LuaControl {
    */
   readonly bounding_box: BoundingBoxRead
   /**
-   * The secondary bounding box of this entity or `nil` if it doesn't have one.
+   * The secondary bounding box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.secondary_bounding_box View documentation}
    */
@@ -5414,7 +5424,7 @@ interface BaseEntity extends LuaControl {
    */
   readonly selection_box: BoundingBoxRead
   /**
-   * The secondary selection box of this entity or `nil` if it doesn't have one.
+   * The secondary selection box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.secondary_selection_box View documentation}
    */
@@ -6293,6 +6303,9 @@ interface VehicleEntity extends BaseEntity {
   /**
    * Sets the driver of this vehicle.
    *
+   * **Raised events:**
+   * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
+   *
    * _Can only be used if this is Vehicle_
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_driver View documentation}
@@ -6312,6 +6325,9 @@ interface VehicleEntity extends BaseEntity {
   get_passenger(): LuaEntity | LuaPlayer | undefined
   /**
    * Sets the passenger of this car or spidertron.
+   *
+   * **Raised events:**
+   * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
    *
    * _Can only be used if this is Vehicle_
    *
@@ -8335,6 +8351,58 @@ interface LuaEntityPrototype {
       }
     | undefined
   /**
+   * Gets the height of this prototype. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.height View documentation}
+   */
+  readonly height: double | undefined
+  /**
+   * Gets the torso rotation speed of this prototype. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.torso_rotation_speed View documentation}
+   */
+  readonly torso_rotation_speed: double | undefined
+  /**
+   * Does this prototoype automaticly cycle weapons. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.automatic_weapon_cycling View documentation}
+   */
+  readonly automatic_weapon_cycling: boolean | undefined
+  /**
+   * Gets the chain shooting cooldown modifier of this prototype. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.chain_shooting_cooldown_modifier View documentation}
+   */
+  readonly chain_shooting_cooldown_modifier: double | undefined
+  /**
+   * Gets the chunk exploration radius of this prototype. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.chunk_exploration_radius View documentation}
+   */
+  readonly chunk_exploration_radius: double | undefined
+  /**
+   * Gets the animation speed coefficient of this belt . `nil` if this is not transport belt connectable.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.animation_speed_coefficient View documentation}
+   */
+  readonly animation_speed_coefficient: double | undefined
+  /**
+   * Get the manual range modifier for artillery turret and artillery wagon prototypes. `nil` if not artillery type prototype
+   *
+   * subclass(ArtilleryWagon, ArtilleryTurret)
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.manual_range_modifier View documentation}
+   */
+  readonly manual_range_modifier: double | undefined
+  /**
+   * The dying time of this corpse prototype. `nil` if not a corpse prototype.
+   *
+   * _Can only be used if this is Corpse_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.dying_speed View documentation}
+   */
+  readonly dying_speed: float | undefined
+  /**
    * Gets the current movement speed of this character, including effects from exoskeletons, tiles, stickers and shooting.
    *
    * _Can only be used if this is Character_
@@ -9646,6 +9714,50 @@ interface BaseEntityPrototype {
       }
     | undefined
   /**
+   * Gets the height of this prototype. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.height View documentation}
+   */
+  readonly height: double | undefined
+  /**
+   * Gets the torso rotation speed of this prototype. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.torso_rotation_speed View documentation}
+   */
+  readonly torso_rotation_speed: double | undefined
+  /**
+   * Does this prototoype automaticly cycle weapons. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.automatic_weapon_cycling View documentation}
+   */
+  readonly automatic_weapon_cycling: boolean | undefined
+  /**
+   * Gets the chain shooting cooldown modifier of this prototype. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.chain_shooting_cooldown_modifier View documentation}
+   */
+  readonly chain_shooting_cooldown_modifier: double | undefined
+  /**
+   * Gets the chunk exploration radius of this prototype. `nil` if this is not a spider vechicle.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.chunk_exploration_radius View documentation}
+   */
+  readonly chunk_exploration_radius: double | undefined
+  /**
+   * Gets the animation speed coefficient of this belt . `nil` if this is not transport belt connectable.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.animation_speed_coefficient View documentation}
+   */
+  readonly animation_speed_coefficient: double | undefined
+  /**
+   * Get the manual range modifier for artillery turret and artillery wagon prototypes. `nil` if not artillery type prototype
+   *
+   * subclass(ArtilleryWagon, ArtilleryTurret)
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.manual_range_modifier View documentation}
+   */
+  readonly manual_range_modifier: double | undefined
+  /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
   readonly valid: boolean
@@ -9750,6 +9862,17 @@ interface EntityWithOwnerEntityPrototype extends BaseEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.allow_run_time_change_of_is_military_target View documentation}
    */
   readonly allow_run_time_change_of_is_military_target: boolean
+}
+
+interface CorpseEntityPrototype extends BaseEntityPrototype {
+  /**
+   * The dying time of this corpse prototype. `nil` if not a corpse prototype.
+   *
+   * _Can only be used if this is Corpse_
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.dying_speed View documentation}
+   */
+  readonly dying_speed: float | undefined
 }
 
 interface CharacterEntityPrototype extends BaseEntityPrototype {
@@ -10369,7 +10492,7 @@ interface LuaEquipmentPrototype {
  *
  * Examples:
  * - The item production GUI shows "consumption" on the right, thus `output` describes the item consumption numbers. The same goes for fluid consumption.
- * - The kills gui shows "losses" on the right, so `output` describes how many of the force's entities were killed by enemies.
+ * - The kills GUI shows "losses" on the right, so `output` describes how many of the force's entities were killed by enemies.
  * - The electric network GUI shows "power consumption" on the left side, so in this case `input` describes the power consumption numbers.
  *
  * {@link https://lua-api.factorio.com/latest/LuaFlowStatistics.html View documentation}
@@ -10407,7 +10530,11 @@ interface LuaFlowStatistics {
    */
   set_output_count(name: string, count: uint64 | double): void
   /**
-   * Gets the flow count value for the given time frame.
+   * Gets the flow count value for the given time frame. If `sample_index` is not provided, then the value returned is the average across the provided precision time period. These are the values shown in the bottom section of the statistics GUIs.
+   *
+   * Use `sample_index` to access the data used to generate the statistics graphs. Each precision level contains 300 samples of data so at a precision of 1 minute, each sample contains data averaged across 60s / 300 = 0.2s = 12 ticks.
+   *
+   * All return values are normalized to be per-tick for electric networks and per-minute for all other types.
    *
    * {@link https://lua-api.factorio.com/latest/LuaFlowStatistics.html#LuaFlowStatistics.get_flow_count View documentation}
    */
@@ -10421,11 +10548,15 @@ interface LuaFlowStatistics {
      */
     readonly input: boolean
     /**
-     * The precision to read.
+     * The precision range to read.
      */
     readonly precision_index: defines.flow_precision_index
     /**
-     * If true, the count is returned instead of the per-time-frame value.
+     * The sample index to read from within the precision range. If not provided, the entire precision range is read. Must be between 1 and 300 where 1 is the most recent sample and 300 is the oldest.
+     */
+    readonly sample_index?: uint16
+    /**
+     * If true, the count of items/fluids/entities is returned instead of the per-time-frame value.
      */
     readonly count?: boolean
   }): double
@@ -10506,7 +10637,7 @@ interface LuaFluidBox extends Array<Fluid | undefined> {
    */
   get_capacity(index: uint): double
   /**
-   * The fluidbox connections for the given fluidbox index.
+   * The fluidboxes to which the fluidbox at the given index is connected.
    *
    * {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.get_connections View documentation}
    */
@@ -11984,11 +12115,10 @@ interface LuaGameScript {
    */
   is_valid_sound_path(sound_path: SoundPath): boolean
   /**
-   * Checks if the given SpritePath is valid and contains a loaded sprite.
+   * Checks if the given SpritePath is valid and contains a loaded sprite. The existence of the image is not checked for paths of type `file`.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.is_valid_sprite_path View documentation}
    * @param sprite_path Path to the image.
-   * @remarks The existence of the image is not checked for paths of type `file`.
    */
   is_valid_sprite_path(sprite_path: SpritePath): boolean
   /**
@@ -12785,6 +12915,8 @@ interface LuaGui {
   /**
    * Returns `true` if sprite_path is valid and contains loaded sprite, otherwise `false`. Sprite path of type `file` doesn't validate if file exists.
    *
+   * If you want to avoid needing a LuaGui object, {@link LuaGameScript#is_valid_sprite_path LuaGameScript::is_valid_sprite_path} can be used instead.
+   *
    * {@link https://lua-api.factorio.com/latest/LuaGui.html#LuaGui.is_valid_sprite_path View documentation}
    * @param sprite_path Path to a image.
    */
@@ -12884,7 +13016,7 @@ interface BaseGuiSpec {
    */
   readonly type: GuiElementType
   /**
-   * Name of the child element.
+   * Name of the child element. It must be unique within the parent element.
    */
   readonly name?: string
   /**
@@ -13403,7 +13535,7 @@ interface BaseGuiElement {
    * Other attributes may be specified depending on `type`:
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.add View documentation}
-   * @returns The added GUI element.
+   * @returns The GUI element that was added.
    */
   add<Type extends GuiElementType>(
     element: GuiSpec & {
@@ -13492,7 +13624,7 @@ interface BaseGuiElement {
    */
   readonly parent: LuaGuiElement | undefined
   /**
-   * The name of this element.
+   * The name of this element. `""` if no name was set.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.name View documentation}
    * @example
@@ -19142,6 +19274,10 @@ interface LuaPlayer extends LuaControl {
   /**
    * Invokes the "clear cursor" action on the player as if the user pressed it.
    *
+   * **Raised events:**
+   * - {@link OnPlayerCursorStackChangedEvent on_player_cursor_stack_changed}? _current_tick_ Raised when the cursor was successfully cleared.
+   *
+   *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.clear_cursor View documentation}
    * @returns Whether the cursor is now empty.
    */
@@ -20521,11 +20657,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -20570,11 +20706,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -20637,11 +20773,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -20689,11 +20825,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -20744,11 +20880,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -20799,11 +20935,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -20877,11 +21013,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -20940,11 +21076,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -21015,11 +21151,11 @@ interface LuaRendering {
      */
     readonly time_to_live?: uint
     /**
-     * The forces that this object is rendered to.
+     * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
      */
     readonly forces?: readonly ForceIdentification[]
     /**
-     * The players that this object is rendered to.
+     * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
      */
     readonly players?: readonly PlayerIdentification[]
     /**
@@ -23118,7 +23254,7 @@ interface CharacterCorpseSurfaceCreateEntity extends BaseSurfaceCreateEntity {
 
 interface HighlightBoxSurfaceCreateEntity extends BaseSurfaceCreateEntity {
   /**
-   * The bounding box defining the highlight box using absolute map coordinates. If specified, the `position` parameter is ignored, but needs to be present anyways. If not specified, the game falls back to the `source` parameter first, then the `target` parameter second. One of these three parameters need to be specified.
+   * The bounding box defining the highlight box using absolute map coordinates. If specified, the general `position` parameter still needs to be present, but will be ignored. If not specified, the game falls back to the `source` parameter first, then the `target` parameter second. One of these three parameters need to be specified.
    */
   readonly bounding_box?: BoundingBox
   /**
@@ -24915,11 +25051,11 @@ interface LuaTilePrototype {
     /**
      * Energy required to mine a tile.
      */
-    readonly miningtime: double
+    readonly mining_time: double
     /**
      * Prototype name of the particle produced when mining this tile. Will only be present if this tile produces any particle during mining.
      */
-    readonly miningparticle?: string
+    readonly mining_particle?: string
     /**
      * Products obtained by mining this tile.
      */
@@ -24932,11 +25068,11 @@ interface LuaTilePrototype {
    */
   readonly next_direction: LuaTilePrototype | undefined
   /**
-   * Items that when placed will produce this tile. It is a dictionary indexed by the item prototype name.
+   * Items that when placed will produce this tile. It is a dictionary indexed by the item prototype name. `nil` (instead of an empty table) if no items can place this tile.
    *
    * {@link https://lua-api.factorio.com/latest/LuaTilePrototype.html#LuaTilePrototype.items_to_place_this View documentation}
    */
-  readonly items_to_place_this: SimpleItemStack[]
+  readonly items_to_place_this: SimpleItemStack[] | undefined
   /**
    * False if this tile is not allowed in blueprints regardless of the ability to build it.
    *

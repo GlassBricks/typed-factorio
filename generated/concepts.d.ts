@@ -2721,6 +2721,8 @@ type SpriteType =
 /**
  * It is specified by {@link string}. It can be either the name of a {@link https://wiki.factorio.com/Prototype/Sprite sprite prototype} defined in the data stage or a path in form "type/name".
  *
+ * The validity of a SpritePath can be verified at runtime using {@link LuaGameScript#is_valid_sprite_path LuaGameScript::is_valid_sprite_path}.
+ *
  * The supported types are:
  * - `"item"` - for example "item/iron-plate" is the icon sprite of iron plate
  * - `"entity"` - for example "entity/small-biter" is the icon sprite of the small biter
@@ -2741,6 +2743,8 @@ type SpritePath = string | `${SpriteType}/${string}`
 
 /**
  * A sound defined by a {@link string}. It can be either the name of a {@link https://wiki.factorio.com/Prototype/Sound sound prototype} defined in the data stage or a path in the form `"type/name"`. The latter option can be sorted into three categories.
+ *
+ * The validity of a SoundPath can be verified at runtime using {@link LuaGameScript#is_valid_sound_path LuaGameScript::is_valid_sound_path}.
  *
  * The utility and ambient types each contain general use sound prototypes defined by the game itself.
  * - `"utility"` - Uses the {@link https://wiki.factorio.com/Prototype/UtilitySounds UtilitySounds} prototype. Example: `"utility/wire_connect_pole"`
