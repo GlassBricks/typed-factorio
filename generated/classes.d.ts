@@ -1423,7 +1423,7 @@ interface LuaControl {
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.crafting_queue_progress View documentation}
    */
-  readonly crafting_queue_progress: double
+  crafting_queue_progress: double
   /**
    * Current walking state.
    *
@@ -7612,6 +7612,12 @@ interface LuaEntityPrototype {
    */
   readonly guns: Record<string, LuaItemPrototype> | undefined
   /**
+   * A vector of the gun prototypes this prototype uses, or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.indexed_guns View documentation}
+   */
+  readonly indexed_guns: LuaItemPrototype[] | undefined
+  /**
    * The default speed of this flying robot, rolling stock or unit, `nil` if not one of these.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.speed View documentation}
@@ -9052,6 +9058,12 @@ interface BaseEntityPrototype {
    * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.guns View documentation}
    */
   readonly guns: Record<string, LuaItemPrototype> | undefined
+  /**
+   * A vector of the gun prototypes this prototype uses, or `nil`.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.indexed_guns View documentation}
+   */
+  readonly indexed_guns: LuaItemPrototype[] | undefined
   /**
    * The default speed of this flying robot, rolling stock or unit, `nil` if not one of these.
    *
@@ -23483,9 +23495,22 @@ interface LuaSurface {
      */
     readonly radius?: double
     readonly name?: string | readonly string[]
+    readonly force?: ForceIdentification | readonly ForceIdentification[]
     readonly limit?: uint
     readonly has_hidden_tile?: boolean
+    /**
+     * Can be further filtered by supplying a `force` filter.
+     */
+    readonly has_tile_ghost?: boolean
+    /**
+     * Can be further filtered by supplying a `force` filter.
+     */
+    readonly to_be_deconstructed?: boolean
     readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
+    /**
+     * Whether the filters should be inverted.
+     */
+    readonly invert?: boolean
   }): LuaTile[]
   /**
    * Count entities of given type or name in a given area. Works just like {@link LuaSurface#find_entities_filtered LuaSurface::find_entities_filtered}, except this only returns the count. As it doesn't construct all the wrapper objects, this is more efficient if one is only interested in the number of entities.
@@ -23513,7 +23538,7 @@ interface LuaSurface {
     readonly limit?: uint
     readonly is_military_target?: boolean
     /**
-     * If the filters should be inverted.
+     * Whether the filters should be inverted.
      */
     readonly invert?: boolean
   }): uint
@@ -23535,9 +23560,22 @@ interface LuaSurface {
      */
     readonly radius?: double
     readonly name?: string | readonly string[]
+    readonly force?: ForceIdentification | readonly ForceIdentification[]
     readonly limit?: uint
     readonly has_hidden_tile?: boolean
+    /**
+     * Can be further filtered by supplying a `force` filter.
+     */
+    readonly has_tile_ghost?: boolean
+    /**
+     * Can be further filtered by supplying a `force` filter.
+     */
+    readonly to_be_deconstructed?: boolean
     readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
+    /**
+     * If the filters should be inverted.
+     */
+    readonly invert?: boolean
   }): uint
   /**
    * Find a non-colliding position within a given radius.
@@ -24086,6 +24124,13 @@ interface LuaSurface {
     readonly area?: BoundingBox
     readonly position?: TilePosition
     readonly name?: string | readonly string[] | LuaDecorativePrototype | readonly LuaDecorativePrototype[]
+    readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
+    readonly from_layer?: string
+    readonly to_layer?: string
+    /**
+     * Soft decoratives can be drawn over rails.
+     */
+    readonly exclude_soft?: boolean
     readonly limit?: uint
     /**
      * If the filters should be inverted.
@@ -24122,6 +24167,13 @@ interface LuaSurface {
     readonly area?: BoundingBox
     readonly position?: TilePosition
     readonly name?: string | readonly string[] | LuaDecorativePrototype | readonly LuaDecorativePrototype[]
+    readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
+    readonly from_layer?: string
+    readonly to_layer?: string
+    /**
+     * Soft decoratives can be drawn over rails.
+     */
+    readonly exclude_soft?: boolean
     readonly limit?: uint
     /**
      * If the filters should be inverted.
@@ -24925,8 +24977,9 @@ interface LuaTile {
    * Is this tile marked for deconstruction?
    *
    * {@link https://lua-api.factorio.com/latest/LuaTile.html#LuaTile.to_be_deconstructed View documentation}
+   * @param force The force who did the deconstruction order.
    */
-  to_be_deconstructed(): boolean
+  to_be_deconstructed(force?: ForceIdentification): boolean
   /**
    * Orders deconstruction of this tile by the given force.
    *
@@ -24952,6 +25005,20 @@ interface LuaTile {
    * @param player The player to set the last_user to if any.
    */
   cancel_deconstruction(force: ForceIdentification, player?: PlayerIdentification): void
+  /**
+   * Does this tile have any tile ghosts on it.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaTile.html#LuaTile.has_tile_ghost View documentation}
+   * @param force Check for tile ghosts of this force.
+   */
+  has_tile_ghost(force?: ForceIdentification): boolean
+  /**
+   * Gets all tile ghosts on this tile.
+   *
+   * {@link https://lua-api.factorio.com/latest/LuaTile.html#LuaTile.get_tile_ghosts View documentation}
+   * @param force Get tile ghosts of this force.
+   */
+  get_tile_ghosts(force?: ForceIdentification): LuaTile[]
   /**
    * Prototype name of this tile. E.g. `"sand-3"` or `"grass-2"`.
    *

@@ -385,6 +385,10 @@ interface CraftingQueueItem {
    * The amount of items being crafted.
    */
   readonly count: uint
+  /**
+   * The item is a prerequisite for another item in the queue.
+   */
+  readonly prerequisite: boolean
 }
 
 interface Alert {
@@ -4169,9 +4173,9 @@ interface CollisionMaskDecorativePrototypeFilter extends BaseDecorativePrototype
   readonly filter: "collision-mask"
   readonly mask: CollisionMask | CollisionMaskWithFlags
   /**
-   * How to filter: `"collides"` or `"layers-equals"`
+   * How to filter: `"collides"`, `"layers-equals"`, `"contains-any"` or `"contains-all"`
    */
-  readonly mask_mode: "collides" | "layers-equals"
+  readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
 }
 
 interface DecalDecorativePrototypeFilter extends BaseDecorativePrototypeFilter {
@@ -4405,9 +4409,9 @@ interface CollisionMaskTilePrototypeFilter extends BaseTilePrototypeFilter {
   readonly filter: "collision-mask"
   readonly mask: CollisionMask | CollisionMaskWithFlags
   /**
-   * How to filter: `"collides"` or `"layers-equals"`
+   * How to filter: `"collides"`, `"layers-equals"`, `"contains-any"` or `"contains-all"`
    */
-  readonly mask_mode: "collides" | "layers-equals"
+  readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
 }
 
 interface WalkingSpeedModifierTilePrototypeFilter extends BaseTilePrototypeFilter {
@@ -4781,9 +4785,9 @@ interface CollisionMaskEntityPrototypeFilter extends BaseEntityPrototypeFilter {
   readonly filter: "collision-mask"
   readonly mask: CollisionMask | CollisionMaskWithFlags
   /**
-   * How to filter: `"collides"` or `"layers-equals"`
+   * How to filter: `"collides"`, `"layers-equals"`, `"contains-any"` or `"contains-all"`
    */
-  readonly mask_mode: "collides" | "layers-equals"
+  readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
 }
 
 /**
