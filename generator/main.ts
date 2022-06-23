@@ -61,6 +61,8 @@ for (let [name, content] of files) {
     semi: false,
   })
   const fileName = path.join(outDir, name)
+  // make sure directory exists
+  fs.mkdirSync(path.dirname(fileName), { recursive: true })
   fs.writeFileSync(fileName, content)
 }
 

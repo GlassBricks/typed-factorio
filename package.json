@@ -22,7 +22,8 @@
     "lint": "eslint .",
     "check": "yarn run lint && yarn run test",
     "prepublishOnly": "yarn run check",
-    "download-latest-runtime-api": "ts-node ./scripts/downloadLatest.ts"
+    "download-latest-runtime-api": "ts-node ./scripts/downloadLatest.ts",
+    "next-version": "yarn run download-latest-runtime-api && yarn run clean && yarn test && yarn version --minor"
   },
   "peerDependencies": {
     "lua-types": "^2.11.0",
