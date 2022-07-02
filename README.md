@@ -71,54 +71,52 @@ The `global` table is just a lua table which can have any shape the mod desires,
 
 ## Type features
 
-Typed-factorio has 100% complete types for the runtime stage. Description-only concepts and some not documented types are filled in manually.
+Here is a quick overview of type features:
 
-Here are some details on particular type features:
-
-### Lua features
-
-The types include [TypescriptToLua language extensions](https://typescripttolua.github.io/docs/advanced/language-extensions/)
-and [lua-types](https://github.com/TypeScriptToLua/lua-types) (for v5.2) as dependencies.
-
-### `nil`
+### Nullability
 
 The types consistently use `undefined` to represent `nil`.
-`null` is not used, because `undefined` in typescript is much more similar to `nil` in lua, and optional parameters/properties already use `undefined`.
 
-A class attribute is marked as possibly undefined only if the _read_ type is possibly `nil`. For properties where `nil` is not possible on _read_, but is possible on _write_, you can write `nil` by using `undefined!` or `myNullableValue!`, e.g. `controlBehavior.parameters = undefined!`.
+A class attribute is marked as possibly undefined only if the _read_ type is possibly `nil`. For properties where `nil` is not possible on _read_, but possible on _write_, you can write `nil` by using `undefined!` or `myNullableValue!`, e.g. `controlBehavior.parameters = undefined!`.
 
-### Variant parameter types
+### Parameter Variants
 
-Variant parameter types (types with "additional fields can be specified depending on type") are handled as a union of all variants (which is often a [discriminated union](https://basarat.gitbook.io/typescript/type-system/discriminated-unions#discriminated-union)). This gives proper type checking for each variant.
-
-The type for a specific variant is prefixed with the variant name, or with "Other" for variants without additional fields (e.g. `AmmoDamageTechnologyModifier`, `OtherTechnologyModifier`).
+Parameters with variants (with "additional fields can be specified depending on type ...") are defined as a union of all variants. The type for a specific variant is prefixed with the variant name, or "Other" types variants without extra properties (e.g. `AmmoDamageTechnologyModifier`, `OtherTechnologyModifier`).
 
 ### Events
 
-`script.on_event()`, `script.get/set_filters()`, and `script.raise_event()` all have type checking on the event data/filter type, inferred from what is passed as the event name/id.
+Event IDs (`defines.events`) carry information about their event type and possible filters, which is used by the various methods on `script`.
+You can pass a type parameter to `script.generate_event_name<T>()`, and it will return an `EventId` that holds type info of the event data.
 
-You can pass a type parameter to `script.generate_event_name<T>()`, and it will return an `EventId` that holds type info of the event data. Event functions on `script` can then use the type data when the `EventId` is passed.
-
-### Array-like types
+### Array-like classes
 
 Classes that have an index operator, a length operator, and have an array-like structure, inherit from `(Readonly)Array`. These are `LuaInventory`, `LuaFluidBox`, `LuaTransportLine`. This allows you to use these classes like arrays, meaning having array methods, and `.length` translating to the lua length operator. However, this also means, like typescript arrays, they are **0-indexed, not 1-indexed**.
 
-### Table or array types, and "Read" concepts
+### Table-or-array concepts, and "Read" variants
 
 For table-or-array types (e.g. Position), there also are types such as `PositionTable` and `PositionArray` that refer to the table or array form.
 
-Table-or-array types will appear in the Table form when known to be in a read position. This also applies to other concepts/complex types that have table-or-array attributes.
+Table-or-array types will appear in Table form when known to be in a read position. This also applies to other concepts/types that have table-or-array attributes.
 
-For some concepts, there is also a special form for when the concept is used in a "read" position, where all table-or-array types are in Table form. These types are suffixed with `Read`, e.g. `ScriptPositionRead`.
+For some concepts, there is also a special form for when it is used in a "read" position, where all table-or-array types are in Table form. These types are suffixed with `Read`, e.g. `ScriptPositionRead`, `BoundingBoxRead`.
 
-### Types with subclasses
+### Classes with subclasses
 
-Some classes have attributes that are documented to only work on particular subclasses. For these classes, e.g. `LuaEntity`, there are specific types that you can _optionally_ use:
+Some classes have attributes that are documented to only work for particular subclasses. For these classes, e.g. `LuaEntity`, there are specific types that you can _optionally_ use:
 
 - a "Base" type, e.g. `BaseEntity`, which only contains members usable by all subclasses
-- individual subclass types, e.g. `CraftingMachineEntity`, which extends the base type with members specific to that subclass
+- individual subclass types, e.g. `CraftingMachineEntity`, which extends the base type with members specific to that subclass.
 
-The simple class name, `LuaEntity` in this example, contains attributes for _all_ subclasses.
+The simple class name, e.g. `LuaEntity`, contains attributes for _all_ subclasses.
+
+For stricter types, use the `Base` type generally, and the specific subclass type when needed.
+You can also create your own type-narrowing functions, like so:
+
+```ts
+function isCraftingMachineEntity(entity: LuaEntity): entity is CraftingMachineEntity {
+  return entity.type === "crafting-machine"
+}
+```
 
 ### LuaGuiElement
 
@@ -132,7 +130,6 @@ This is done both to provide more accurate types, and for possible integration w
 
 This is a recommended **opt-in** feature. To opt in, add `"typed-factorio/strict-index-types"` to `compilerOptions > types` in your tsconfig.json (in addition to `"typed-factorio/runtime"`).
 
-Some `uint` types which represent indices, e.g. player_index, entity_number, can be "branded" numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. These are assignable to `number`, but a plain `number` is not directly assignable to them. This helps ensure correctness.
-These are indices that do not index into an array-like structure, and otherwise should usually not have arithmetic done to them.
+Some `uint` types which represent unique indices, e.g. player_index, entity_number, can be "branded" numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. If opted-in, these index-types will be still assignable to `number`, but a plain `number` is not directly assignable to them. This helps ensure correctness.
 You can use these types as keys in an index signature, e.g. `{ [index: PlayerIndex]: "foo" }`.
 You can cast "plain" numbers to these types, e.g. `1 as PlayerIndex`, do this with caution.
