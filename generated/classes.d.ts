@@ -222,11 +222,11 @@ interface LuaAutoplaceControlPrototype {
  */
 interface LuaBootstrap {
   /**
-   * Register a function to be run on mod initialization. This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@link https://lua-api.factorio.com/latest/Global.html global} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
+   * Register a function to be run on mod initialization. This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@linkplain https://lua-api.factorio.com/latest/Global.html global} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_init View documentation}
    * @param f The handler for this event. Passing `nil` will unregister it.
-   * @remarks For more context, refer to the {@link https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
+   * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    * @example Initialize a `players` table in `global` for later use.
    *
    * ```
@@ -237,26 +237,26 @@ interface LuaBootstrap {
    */
   on_init(f: (() => void) | undefined): void
   /**
-   * Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session. It gives the mod the opportunity to do some very specific actions, should it need to. Doing anything other than these three will lead to desyncs, which breaks multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@link https://lua-api.factorio.com/latest/Global.html global} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
+   * Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session. It gives the mod the opportunity to do some very specific actions, should it need to. Doing anything other than these three will lead to desyncs, which breaks multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@linkplain https://lua-api.factorio.com/latest/Global.html global} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
    *
    * The only legitimate uses of this event are the following:
-   * - Re-setup {@link https://www.lua.org/pil/13.html metatables} as they are not persisted through the save/load cycle.
+   * - Re-setup {@linkplain https://www.lua.org/pil/13.html metatables} as they are not persisted through the save/load cycle.
    * - Re-setup conditional event handlers, meaning subscribing to an event only when some condition is met to save processing time.
-   * - Create local references to data stored in the {@link https://lua-api.factorio.com/latest/Global.html global} table.
+   * - Create local references to data stored in the {@linkplain https://lua-api.factorio.com/latest/Global.html global} table.
    *
-   * For all other purposes, {@link LuaBootstrap#on_init LuaBootstrap::on_init}, {@link LuaBootstrap#on_configuration_changed LuaBootstrap::on_configuration_changed} or {@link https://lua-api.factorio.com/latest/Migrations.html migrations} should be used instead.
+   * For all other purposes, {@link LuaBootstrap#on_init LuaBootstrap::on_init}, {@link LuaBootstrap#on_configuration_changed LuaBootstrap::on_configuration_changed} or {@linkplain https://lua-api.factorio.com/latest/Migrations.html migrations} should be used instead.
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_load View documentation}
    * @param f The handler for this event. Passing `nil` will unregister it.
-   * @remarks For more context, refer to the {@link https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
+   * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    */
   on_load(f: (() => void) | undefined): void
   /**
-   * Register a function to be run when mod configuration changes. This is called when the major game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, or when any prototypes have been added or removed. It allows the mod to make any changes it deems appropriate to both the data structures in its {@link https://lua-api.factorio.com/latest/Global.html global} table or to the game state through {@link LuaGameScript}.
+   * Register a function to be run when mod configuration changes. This is called when the major game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, or when any prototypes have been added or removed. It allows the mod to make any changes it deems appropriate to both the data structures in its {@linkplain https://lua-api.factorio.com/latest/Global.html global} table or to the game state through {@link LuaGameScript}.
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_configuration_changed View documentation}
    * @param f The handler for this event. Passing `nil` will unregister it.
-   * @remarks For more context, refer to the {@link https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
+   * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    */
   on_configuration_changed(f: ((param1: ConfigurationChangedData) => void) | undefined): void
   /**
@@ -887,7 +887,7 @@ interface LuaCommandProcessor {
    */
   readonly commands: Record<string, LocalisedString>
   /**
-   * Lists the built-in commands of the core game. The {@link https://wiki.factorio.com/Console wiki} has an overview of these.
+   * Lists the built-in commands of the core game. The {@linkplain https://wiki.factorio.com/Console wiki} has an overview of these.
    *
    * {@link https://lua-api.factorio.com/latest/LuaCommandProcessor.html#LuaCommandProcessor.game_commands View documentation}
    */
@@ -3810,13 +3810,13 @@ interface LuaEntity extends LuaControl {
    */
   readonly electric_emissions: double | undefined
   /**
-   * A universally unique number identifying this entity for the lifetime of the save. Only entities inheriting from {@link https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner}, as well as {@link https://wiki.factorio.com/Prototype/ItemRequestProxy ItemRequestProxy} and {@link https://wiki.factorio.com/Prototype/EntityGhost EntityGhost} entities, are assigned a unit number. This property is `nil` for entities without unit number.
+   * A universally unique number identifying this entity for the lifetime of the save. Only entities inheriting from {@linkplain https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner}, as well as {@linkplain https://wiki.factorio.com/Prototype/ItemRequestProxy ItemRequestProxy} and {@linkplain https://wiki.factorio.com/Prototype/EntityGhost EntityGhost} entities, are assigned a unit number. This property is `nil` for entities without unit number.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.unit_number View documentation}
    */
   readonly unit_number: UnitNumber | undefined
   /**
-   * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner} that was destroyed to create this ghost. If it was created by other means, or if the inner entity doesn not support unit numbers, this property is `nil`.
+   * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@linkplain https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner} that was destroyed to create this ghost. If it was created by other means, or if the inner entity doesn not support unit numbers, this property is `nil`.
    *
    * _Can only be used if this is EntityGhost_
    *
@@ -5388,7 +5388,7 @@ interface BaseEntity extends LuaControl {
    */
   readonly electric_emissions: double | undefined
   /**
-   * A universally unique number identifying this entity for the lifetime of the save. Only entities inheriting from {@link https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner}, as well as {@link https://wiki.factorio.com/Prototype/ItemRequestProxy ItemRequestProxy} and {@link https://wiki.factorio.com/Prototype/EntityGhost EntityGhost} entities, are assigned a unit number. This property is `nil` for entities without unit number.
+   * A universally unique number identifying this entity for the lifetime of the save. Only entities inheriting from {@linkplain https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner}, as well as {@linkplain https://wiki.factorio.com/Prototype/ItemRequestProxy ItemRequestProxy} and {@linkplain https://wiki.factorio.com/Prototype/EntityGhost EntityGhost} entities, are assigned a unit number. This property is `nil` for entities without unit number.
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.unit_number View documentation}
    */
@@ -5806,7 +5806,7 @@ interface EntityGhostEntity extends BaseEntity {
    */
   ghost_has_flag(flag: keyof EntityPrototypeFlags): boolean
   /**
-   * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner} that was destroyed to create this ghost. If it was created by other means, or if the inner entity doesn not support unit numbers, this property is `nil`.
+   * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@linkplain https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner} that was destroyed to create this ghost. If it was created by other means, or if the inner entity doesn not support unit numbers, this property is `nil`.
    *
    * _Can only be used if this is EntityGhost_
    *
@@ -11832,7 +11832,7 @@ interface LuaGameScript {
    */
   regenerate_entity(entities: string | readonly string[]): void
   /**
-   * Take a screenshot of the game and save it to the `script-output` folder, located in the game's {@link https://wiki.factorio.com/User_data_directory user data directory}. The name of the image file can be specified via the `path` parameter.
+   * Take a screenshot of the game and save it to the `script-output` folder, located in the game's {@linkplain https://wiki.factorio.com/User_data_directory user data directory}. The name of the image file can be specified via the `path` parameter.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.take_screenshot View documentation}
    * @remarks If Factorio is running headless, this function will do nothing.
@@ -11910,7 +11910,7 @@ interface LuaGameScript {
    */
   set_wait_for_screenshots_to_finish(): void
   /**
-   * Take a screenshot of the technology screen and save it to the `script-output` folder, located in the game's {@link https://wiki.factorio.com/User_data_directory user data directory}. The name of the image file can be specified via the `path` parameter.
+   * Take a screenshot of the technology screen and save it to the `script-output` folder, located in the game's {@linkplain https://wiki.factorio.com/User_data_directory user data directory}. The name of the image file can be specified via the `path` parameter.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.take_technology_screenshot View documentation}
    */
@@ -11955,7 +11955,7 @@ interface LuaGameScript {
    */
   json_to_table(json: string): AnyBasic | undefined
   /**
-   * Write a file to the `script-output` folder, located in the game's {@link https://wiki.factorio.com/User_data_directory user data directory}. The name and file extension of the file can be specified via the `filename` parameter.
+   * Write a file to the `script-output` folder, located in the game's {@linkplain https://wiki.factorio.com/User_data_directory user data directory}. The name and file extension of the file can be specified via the `filename` parameter.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.write_file View documentation}
    * @param filename The name of the file. Providing a directory path (ex. `"save/here/example.txt"`) will create the necessary folder structure in `script-output`.
@@ -11965,7 +11965,7 @@ interface LuaGameScript {
    */
   write_file(filename: string, data: LocalisedString, append?: boolean, for_player?: uint): void
   /**
-   * Remove a file or directory in the `script-output` folder, located in the game's {@link https://wiki.factorio.com/User_data_directory user data directory}. Can be used to remove files created by {@link LuaGameScript#write_file LuaGameScript::write_file}.
+   * Remove a file or directory in the `script-output` folder, located in the game's {@linkplain https://wiki.factorio.com/User_data_directory user data directory}. Can be used to remove files created by {@link LuaGameScript#write_file LuaGameScript::write_file}.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.remove_path View documentation}
    * @param path The path to the file or directory to remove, relative to `script-output`.
@@ -12273,7 +12273,7 @@ interface LuaGameScript {
    */
   create_profiler(stopped?: boolean): LuaProfiler
   /**
-   * Evaluate an expression, substituting variables as provided. For details on the formula, see the relevant page on the {@link https://wiki.factorio.com/Prototype/Technology#unit Factorio wiki}.
+   * Evaluate an expression, substituting variables as provided. For details on the formula, see the relevant page on the {@linkplain https://wiki.factorio.com/Prototype/Technology#unit Factorio wiki}.
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.evaluate_expression View documentation}
    * @param expression The expression to evaluate.
@@ -12446,7 +12446,7 @@ interface LuaGameScript {
    */
   decode_string(string: string): string | undefined
   /**
-   * This property is only populated inside {@link LuaCommandProcessor custom command} handlers and when writing {@link https://wiki.factorio.com/Console#Scripting_and_cheat_commands Lua console commands}. Returns the player that is typing the command, `nil` in all other instances.
+   * This property is only populated inside {@link LuaCommandProcessor custom command} handlers and when writing {@linkplain https://wiki.factorio.com/Console#Scripting_and_cheat_commands Lua console commands}. Returns the player that is typing the command, `nil` in all other instances.
    *
    * See {@link LuaGameScript#players LuaGameScript::players} for accessing all players.
    *
@@ -20184,7 +20184,7 @@ interface LuaRailSignalControlBehavior extends LuaControlBehavior {
 }
 
 /**
- * A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state. Note this is entirely different from calling {@link https://lua-api.factorio.com/latest/Libraries.html#math.random math.random}() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.
+ * A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state. Note this is entirely different from calling {@linkplain https://lua-api.factorio.com/latest/Libraries.html#math.random math.random}() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.
  *
  * {@link https://lua-api.factorio.com/latest/LuaRandomGenerator.html View documentation}
  * @noSelf
@@ -21112,7 +21112,7 @@ interface LuaRendering {
    */
   draw_animation(params: {
     /**
-     * Name of an {@link https://wiki.factorio.com/Prototype/Animation animation prototype}.
+     * Name of an {@linkplain https://wiki.factorio.com/Prototype/Animation animation prototype}.
      */
     readonly animation: string
     /**
@@ -23676,7 +23676,7 @@ interface LuaSurface {
     readonly condition: ForceCondition
   }): LuaEntity[]
   /**
-   * Find the enemy military target ({@link https://wiki.factorio.com/Military_units_and_structures military entity}) closest to the given position.
+   * Find the enemy military target ({@linkplain https://wiki.factorio.com/Military_units_and_structures military entity}) closest to the given position.
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_nearest_enemy View documentation}
    * @returns The nearest enemy military target or `nil` if no enemy could be found within the given area.

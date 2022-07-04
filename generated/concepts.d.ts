@@ -655,7 +655,7 @@ interface EnemyEvolutionMapSettings {
 }
 
 /**
- * Candidate chunks are given scores to determine which one of them should be expanded into. This score takes into account various settings noted below. The iteration is over a square region centered around the chunk for which the calculation is done, and includes the central chunk as well. Distances are calculated as {@link https://en.wikipedia.org/wiki/Taxicab_geometry Manhattan distance}.
+ * Candidate chunks are given scores to determine which one of them should be expanded into. This score takes into account various settings noted below. The iteration is over a square region centered around the chunk for which the calculation is done, and includes the central chunk as well. Distances are calculated as {@linkplain https://en.wikipedia.org/wiki/Taxicab_geometry Manhattan distance}.
  *
  * The pseudocode algorithm to determine a chunk's score is as follows:
  *
@@ -1507,7 +1507,7 @@ interface AutoplaceSpecification {
 }
 
 /**
- * A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the {@link https://wiki.factorio.com/Types/NoiseExpression wiki}.
+ * A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the {@linkplain https://wiki.factorio.com/Types/NoiseExpression wiki}.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#NoiseExpression View documentation}
  */
@@ -2723,7 +2723,7 @@ type SpriteType =
   | "utility"
 
 /**
- * It is specified by {@link string}. It can be either the name of a {@link https://wiki.factorio.com/Prototype/Sprite sprite prototype} defined in the data stage or a path in form "type/name".
+ * It is specified by {@link string}. It can be either the name of a {@linkplain https://wiki.factorio.com/Prototype/Sprite sprite prototype} defined in the data stage or a path in form "type/name".
  *
  * The validity of a SpritePath can be verified at runtime using {@link LuaGameScript#is_valid_sprite_path LuaGameScript::is_valid_sprite_path}.
  *
@@ -2746,33 +2746,33 @@ type SpriteType =
 type SpritePath = string | `${SpriteType}/${string}`
 
 /**
- * A sound defined by a {@link string}. It can be either the name of a {@link https://wiki.factorio.com/Prototype/Sound sound prototype} defined in the data stage or a path in the form `"type/name"`. The latter option can be sorted into three categories.
+ * A sound defined by a {@link string}. It can be either the name of a {@linkplain https://wiki.factorio.com/Prototype/Sound sound prototype} defined in the data stage or a path in the form `"type/name"`. The latter option can be sorted into three categories.
  *
  * The validity of a SoundPath can be verified at runtime using {@link LuaGameScript#is_valid_sound_path LuaGameScript::is_valid_sound_path}.
  *
  * The utility and ambient types each contain general use sound prototypes defined by the game itself.
- * - `"utility"` - Uses the {@link https://wiki.factorio.com/Prototype/UtilitySounds UtilitySounds} prototype. Example: `"utility/wire_connect_pole"`
- * - `"ambient"` - Uses {@link https://wiki.factorio.com/Prototype/AmbientSound AmbientSound} prototypes. Example: `"ambient/resource-deficiency"`
+ * - `"utility"` - Uses the {@linkplain https://wiki.factorio.com/Prototype/UtilitySounds UtilitySounds} prototype. Example: `"utility/wire_connect_pole"`
+ * - `"ambient"` - Uses {@linkplain https://wiki.factorio.com/Prototype/AmbientSound AmbientSound} prototypes. Example: `"ambient/resource-deficiency"`
  *
  * The following types can be combined with any tile name as long as its prototype defines the
  *
  *     corresponding sound.
- * - `"tile-walking"` - Uses {@link https://wiki.factorio.com/Prototype/Tile#walking_sound Tile::walking_sound}. Example: `"tile-walking/concrete"`
- * - `"tile-mined"` - Uses {@link https://wiki.factorio.com/Prototype/Tile#mined_sound Tile::mined_sound}
- * - `"tile-build-small"` - Uses {@link https://wiki.factorio.com/Prototype/Tile#build_sound Tile::build_sound}. Example: `"tile-build-small/concrete"`
- * - `"tile-build-medium"` - Uses {@link https://wiki.factorio.com/Prototype/Tile#build_sound Tile::build_sound}
- * - `"tile-build-large"` - Uses {@link https://wiki.factorio.com/Prototype/Tile#build_sound Tile::build_sound}
+ * - `"tile-walking"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Tile#walking_sound Tile::walking_sound}. Example: `"tile-walking/concrete"`
+ * - `"tile-mined"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Tile#mined_sound Tile::mined_sound}
+ * - `"tile-build-small"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Tile#build_sound Tile::build_sound}. Example: `"tile-build-small/concrete"`
+ * - `"tile-build-medium"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Tile#build_sound Tile::build_sound}
+ * - `"tile-build-large"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Tile#build_sound Tile::build_sound}
  *
  * The following types can be combined with any entity name as long as its prototype defines the
  *
  *     corresponding sound.
- * - `"entity-build"` - Uses {@link https://wiki.factorio.com/Prototype/Entity#build_sound Entity::build_sound}. Example: `"entity-build/wooden-chest"`
- * - `"entity-mined"` - Uses {@link https://wiki.factorio.com/Prototype/Entity#mined_sound Entity::mined_sound}
- * - `"entity-mining"` - Uses {@link https://wiki.factorio.com/Prototype/Entity#mining_sound Entity::mining_sound}
- * - `"entity-vehicle_impact"` - Uses {@link https://wiki.factorio.com/Prototype/Entity#vehicle_impact_sound Entity::vehicle_impact_sound}
- * - `"entity-rotated"` - Uses {@link https://wiki.factorio.com/Prototype/Entity#rotated_sound Entity::rotated_sound}
- * - `"entity-open"` - Uses {@link https://wiki.factorio.com/Prototype/Entity#open_sound Entity::open_sound}
- * - `"entity-close"` - Uses {@link https://wiki.factorio.com/Prototype/Entity#close_sound Entity::close_sound}
+ * - `"entity-build"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Entity#build_sound Entity::build_sound}. Example: `"entity-build/wooden-chest"`
+ * - `"entity-mined"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Entity#mined_sound Entity::mined_sound}
+ * - `"entity-mining"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Entity#mining_sound Entity::mining_sound}
+ * - `"entity-vehicle_impact"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Entity#vehicle_impact_sound Entity::vehicle_impact_sound}
+ * - `"entity-rotated"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Entity#rotated_sound Entity::rotated_sound}
+ * - `"entity-open"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Entity#open_sound Entity::open_sound}
+ * - `"entity-close"` - Uses {@linkplain https://wiki.factorio.com/Prototype/Entity#close_sound Entity::close_sound}
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#SoundPath View documentation}
  */
@@ -3387,7 +3387,7 @@ type Alignment =
   | "bottom-right"
 
 /**
- * Information about the event that has been raised. The table can also contain other fields depending on the type of event. See {@link https://lua-api.factorio.com/latest/events.html the list of Factorio events} for more information on these.
+ * Information about the event that has been raised. The table can also contain other fields depending on the type of event. See {@linkplain https://lua-api.factorio.com/latest/events.html the list of Factorio events} for more information on these.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#EventData View documentation}
  */

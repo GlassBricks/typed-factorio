@@ -895,19 +895,22 @@ export default class DefinitionsGenerator {
     return ts.factory.createTypeReferenceNode(name)
   }
 
-  private mapLink(origLink: string): string {
+  private mapLink(origLink: string): { link: string; isWebLink?: true } {
     if (origLink.match(/^http(s?):\/\//)) {
-      return origLink
+      return { link: origLink, isWebLink: true }
     } else if (origLink.match(/\.html($|#)/)) {
-      return DefinitionsGenerator.docUrlBase + origLink
+      return { link: DefinitionsGenerator.docUrlBase + origLink, isWebLink: true }
     } else if (this.typeNames[origLink]) {
-      return this.typeNames[origLink]
+      return { link: this.typeNames[origLink] }
     } else if (DefinitionsGenerator.hardCodedLinks[origLink]) {
-      return DefinitionsGenerator.docUrlBase + DefinitionsGenerator.hardCodedLinks[origLink]
+      return {
+        link: DefinitionsGenerator.docUrlBase + DefinitionsGenerator.hardCodedLinks[origLink],
+        isWebLink: true,
+      }
     }
     const referenceMatch = origLink.match(/^(.+?)::(.+)$/)
     if (referenceMatch) {
-      const clazz = this.mapLink(referenceMatch[1])
+      const { link: clazz } = this.mapLink(referenceMatch[1])
       const field = referenceMatch[2]
       const operator = field.match(/(?<=operator )(.*)/)?.[1]
       let fieldRef: string
@@ -920,10 +923,10 @@ export default class DefinitionsGenerator {
       } else {
         throw new Error(`Unknown operator ${operator}`)
       }
-      return clazz + fieldRef
+      return { link: clazz + fieldRef }
     } else {
       this.warning(`unresolved doc reference: ${origLink}`)
-      return origLink
+      return { link: origLink }
     }
   }
 
@@ -934,11 +937,12 @@ export default class DefinitionsGenerator {
     for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|```((?:(?!```).)*)```)/gs)) {
       const withLinks = text
         .replace(/\[(?!\[)(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
-          const link = this.mapLink(origLink)
+          const { link, isWebLink } = this.mapLink(origLink)
+          const tag = isWebLink ? "linkplain" : "link"
           if (link === name) {
-            return `{@link ${link}}`
+            return `{@${tag} ${link}}`
           } else {
-            return `{@link ${link} ${name}}`
+            return `{@${tag} ${link} ${name}}`
           }
         })
         .replace("__1__\n   ", "__1__") // fix for LocalisedString description

@@ -643,7 +643,7 @@ declare namespace defines {
     cant_divide_segments,
   }
   /**
-   * See the {@link https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
+   * See the {@linkplain https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
    *
    * {@link https://lua-api.factorio.com/latest/defines.html#defines.events View documentation}
    */
@@ -1396,7 +1396,7 @@ declare namespace defines {
     const on_player_reverse_selected_area: EventId<OnPlayerReverseSelectedAreaEvent>
   }
   /**
-   * See the {@link https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
+   * See the {@linkplain https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
    *
    * {@link https://lua-api.factorio.com/latest/defines.html#defines.events View documentation}
    */
