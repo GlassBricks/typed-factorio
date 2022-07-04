@@ -1,3 +1,7 @@
+# v1.3.1
+
+- Use @linkplain instead of @link for web links. This works around issue #13
+
 # v1.3.0
 
 - Updated to factorio version 1.1.61
