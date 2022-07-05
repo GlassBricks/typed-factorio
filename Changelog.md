@@ -1,6 +1,11 @@
+# v1.3.2
+
+- Move "notes" comment into the main body of doc comment, instead of in @remarks. This works around #13.
+- Add manually defined overload for LuaControl::teleport().
+
 # v1.3.1
 
-- Use @linkplain instead of @link for web links. This works around issue #13
+- Use @linkplain instead of @link for web links. This hopefully works around issue #13
 
 # v1.3.0
 
