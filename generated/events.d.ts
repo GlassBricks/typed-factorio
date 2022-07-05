@@ -88,8 +88,11 @@ interface OnAreaClonedEvent extends EventData {
 /**
  * Called when a biter migration builds a base.
  *
+ * **Note**
+ *
+ * This will be called multiple times for each migration, once for every biter that is sacrificed to build part of the new base.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_biter_base_built View documentation}
- * @remarks This will be called multiple times for each migration, once for every biter that is sacrificed to build part of the new base.
  */
 interface OnBiterBaseBuiltEvent extends EventData {
   /**
@@ -223,8 +226,11 @@ interface OnCancelledUpgradeEvent extends EventData {
 /**
  * Called when a character corpse expires due to timeout or all of the items being removed from it.
  *
+ * **Note**
+ *
+ * this is not called if the corpse is mined. See {@link defines.events.on_pre_player_mined_item} to detect that.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_character_corpse_expired View documentation}
- * @remarks this is not called if the corpse is mined. See {@link defines.events.on_pre_player_mined_item} to detect that.
  */
 interface OnCharacterCorpseExpiredEvent extends EventData {
   /**
@@ -397,8 +403,11 @@ interface OnCombatRobotExpiredEvent extends EventData {
 /**
  * Called when a message is sent to the in-game console, either by a player or through the server interface.
  *
+ * **Note**
+ *
+ * This event only fires for plain messages, not for any commands (including `/shout` or `/whisper`).
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_console_chat View documentation}
- * @remarks This event only fires for plain messages, not for any commands (including `/shout` or `/whisper`).
  */
 interface OnConsoleChatEvent extends EventData {
   /**
@@ -472,8 +481,11 @@ interface OnCutsceneCancelledEvent extends EventData {
  *
  * This refers to an index in the table previously passed to set_controller which started the cutscene.
  *
+ * **Note**
+ *
+ * Due to implementation omission, waypoint_index is 0-based.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_cutscene_waypoint_reached View documentation}
- * @remarks Due to implementation omission, waypoint_index is 0-based.
  */
 interface OnCutsceneWaypointReachedEvent extends EventData {
   /**
@@ -497,8 +509,11 @@ interface OnCutsceneWaypointReachedEvent extends EventData {
 /**
  * Called when the map difficulty settings are changed.
  *
+ * **Note**
+ *
+ * It's not guaranteed that both settings are changed - just that at least one has been changed.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_difficulty_settings_changed View documentation}
- * @remarks It's not guaranteed that both settings are changed - just that at least one has been changed.
  */
 interface OnDifficultySettingsChangedEvent extends EventData {
   readonly old_recipe_difficulty: uint
@@ -534,8 +549,11 @@ interface OnEntityClonedEvent extends EventData {
 /**
  * Called when an entity is damaged. Can be filtered using {@link LuaEntityDamagedEventFilter}.
  *
+ * **Note**
+ *
+ * This is not called when an entities health is set directly by another mod.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_entity_damaged View documentation}
- * @remarks This is not called when an entities health is set directly by another mod.
  */
 interface OnEntityDamagedEvent extends EventData {
   readonly entity: LuaEntity
@@ -573,8 +591,11 @@ interface OnEntityDamagedEvent extends EventData {
 /**
  * Called after an entity is destroyed that has been registered with {@link LuaBootstrap#register_on_entity_destroyed LuaBootstrap::register_on_entity_destroyed}.
  *
+ * **Note**
+ *
+ * Depending on when a given entity is destroyed, this event will be fired at the end of the current tick or at the end of the next tick.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_entity_destroyed View documentation}
- * @remarks Depending on when a given entity is destroyed, this event will be fired at the end of the current tick or at the end of the next tick.
  */
 interface OnEntityDestroyedEvent extends EventData {
   /**
@@ -634,8 +655,11 @@ interface OnEntityDiedEvent extends EventData {
 /**
  * Called when one of an entity's personal logistic slots changes.
  *
+ * **Note**
+ *
+ * "Personal logistic slot" refers to a character or vehicle's personal request / auto-trash slots, not the request slots on logistic chests.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_entity_logistic_slot_changed View documentation}
- * @remarks "Personal logistic slot" refers to a character or vehicle's personal request / auto-trash slots, not the request slots on logistic chests.
  */
 interface OnEntityLogisticSlotChangedEvent extends EventData {
   /**
@@ -809,8 +833,11 @@ interface OnForceCeaseFireChangedEvent extends EventData {
 /**
  * Called when a new force is created using `game.create_force()`
  *
+ * **Note**
+ *
+ * This is not called when the default forces (`'player'`, `'enemy'`, `'neutral'`) are created as they will always exist.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_force_created View documentation}
- * @remarks This is not called when the default forces (`'player'`, `'enemy'`, `'neutral'`) are created as they will always exist.
  */
 interface OnForceCreatedEvent extends EventData {
   /**
@@ -875,8 +902,11 @@ interface OnForceResetEvent extends EventData {
 /**
  * Called after two forces have been merged using `game.merge_forces()`.
  *
+ * **Note**
+ *
+ * The source force is invalidated before this event is called and the name can be re-used in this event if desired.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_forces_merged View documentation}
- * @remarks The source force is invalidated before this event is called and the name can be re-used in this event if desired.
  */
 interface OnForcesMergedEvent extends EventData {
   /**
@@ -928,8 +958,11 @@ interface OnForcesMergingEvent extends EventData {
 /**
  * Called when a game is created from a scenario. This is fired for every mod, even when the scenario's save data already includes it. In those cases however, {@link LuaBootstrap#on_init LuaBootstrap::on_init} is not fired.
  *
+ * **Note**
+ *
+ * This event is not fired when the scenario is loaded via the map editor.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_game_created_from_scenario View documentation}
- * @remarks This event is not fired when the scenario is loaded via the map editor.
  */
 interface OnGameCreatedFromScenarioEvent extends EventData {
   /**
@@ -1011,8 +1044,11 @@ interface OnGuiClickEvent extends EventData {
  *
  * This can only be raised when the GUI's player controller is still valid. If a GUI is thus closed due to the player disconnecting, dying, or becoming a spectator in other ways, it won't cause this event to be raised.
  *
+ * **Note**
+ *
+ * It's not advised to open any other GUI during this event because if this is run as a request to open a different GUI the game will force close the new opened GUI without notice to ensure the original requested GUI is opened.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_gui_closed View documentation}
- * @remarks It's not advised to open any other GUI during this event because if this is run as a request to open a different GUI the game will force close the new opened GUI without notice to ensure the original requested GUI is opened.
  */
 interface OnGuiClosedEvent extends EventData {
   /**
@@ -1811,8 +1847,11 @@ interface OnPlayerChangedPositionEvent extends EventData {
 /**
  * Called after a player changes surfaces.
  *
+ * **Note**
+ *
+ * In the instance a player is moved off a surface due to it being deleted this is not called.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_player_changed_surface View documentation}
- * @remarks In the instance a player is moved off a surface due to it being deleted this is not called.
  */
 interface OnPlayerChangedSurfaceEvent extends EventData {
   /**
@@ -2335,8 +2374,11 @@ interface OnPlayerMainInventoryChangedEvent extends EventData {
 /**
  * Called after the results of an entity being mined are collected just before the entity is destroyed. After this event any items in the buffer will be transferred into the player as if they came from mining the entity. Can be filtered using {@link LuaPlayerMinedEntityEventFilter}.
  *
+ * **Note**
+ *
+ * The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_player_mined_entity View documentation}
- * @remarks The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.
  */
 interface OnPlayerMinedEntityEvent extends EventData {
   /**
@@ -3565,8 +3607,11 @@ interface OnRobotMinedEvent extends EventData {
 /**
  * Called after the results of an entity being mined are collected just before the entity is destroyed. After this event any items in the buffer will be transferred into the robot as if they came from mining the entity. Can be filtered using {@link LuaRobotMinedEntityEventFilter}.
  *
+ * **Note**
+ *
+ * The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_robot_mined_entity View documentation}
- * @remarks The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.
  */
 interface OnRobotMinedEntityEvent extends EventData {
   /**
@@ -3932,8 +3977,11 @@ interface OnSurfaceClearedEvent extends EventData {
 /**
  * Called when a surface is created.
  *
+ * **Note**
+ *
+ * This is not called when the default surface is created as it will always exist.
+ *
  * {@link https://lua-api.factorio.com/latest/events.html#on_surface_created View documentation}
- * @remarks This is not called when the default surface is created as it will always exist.
  */
 interface OnSurfaceCreatedEvent extends EventData {
   readonly surface_index: SurfaceIndex

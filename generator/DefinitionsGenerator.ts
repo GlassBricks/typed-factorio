@@ -979,7 +979,8 @@ export default class DefinitionsGenerator {
     return DefinitionsGenerator.docUrlBase + relative_link
   }
 
-  private getRaisesComment(raises: EventRaised[]): string {
+  private getRaisesComment(raises: EventRaised[] | undefined): string | undefined {
+    if (!raises || raises.length === 0) return
     let result = "**Raised events:**\n"
     for (const event of raises.sort(sortByOrder)) {
       const eventName = event.name
@@ -991,6 +992,24 @@ export default class DefinitionsGenerator {
       }\n`
     }
     return result
+  }
+
+  private getSubclassesComment(subclasses: string[] | undefined): string | undefined {
+    if (!subclasses || subclasses.length === 0) return
+    return `_Can only be used if this is ${
+      subclasses.length === 1
+        ? subclasses[0]
+        : `${subclasses.slice(0, -1).join(", ")} or ${subclasses[subclasses.length - 1]}`
+    }_`
+  }
+
+  private getNotesComment(notes: string[] | undefined): string | undefined {
+    if (!notes || notes.length === 0) return
+    if (notes.length === 1) {
+      return `**Note**\n\n${this.processDescription(notes[0])}`
+    } else {
+      return `**Notes**\n${this.processDescription(notes.map((x) => "- " + x).join("\n"))}`
+    }
   }
 
   private processExample(example: string): string {
@@ -1015,29 +1034,15 @@ export default class DefinitionsGenerator {
     let comment = [
       this.processDescription(element.description),
       this.processDescription(element.variant_parameter_description),
-      element.raises && element.raises.length > 0 && this.getRaisesComment(element.raises),
-      element.subclasses &&
-        `_Can only be used if this is ${
-          element.subclasses.length === 1
-            ? element.subclasses[0]
-            : `${element.subclasses.slice(0, -1).join(", ")} or ${element.subclasses[element.subclasses.length - 1]}`
-        }_`,
+      this.getRaisesComment(element.raises),
+      this.getSubclassesComment(element.subclasses),
+      this.getNotesComment(element.notes),
     ]
       .filter((x) => x)
       .join("\n\n")
       .replace(/\n\n+/g, "\n\n")
 
     tags = tags || []
-
-    // notes
-    if (element.notes) {
-      tags.push(
-        ts.factory.createJSDocUnknownTag(
-          ts.factory.createIdentifier("remarks"),
-          this.processDescription(element.notes.join("<br>"))
-        )
-      )
-    }
 
     if (element.examples) {
       tags.push(

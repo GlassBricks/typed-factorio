@@ -226,10 +226,11 @@ interface OldTileAndPosition {
 type Tags = Record<string, AnyBasic | undefined>
 
 /**
+ * **Note**
  *
+ * The vectors for all 5 position attributes are a table with `x` and `y` keys instead of an array.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#SmokeSource View documentation}
- * @remarks The vectors for all 5 position attributes are a table with `x` and `y` keys instead of an array.
  */
 interface SmokeSource {
   readonly name: string
@@ -472,10 +473,11 @@ interface DecorativeResult {
 }
 
 /**
+ * **Note**
  *
+ * Either `icon`, `text`, or both must be provided.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#ChartTagSpec View documentation}
- * @remarks Either `icon`, `text`, or both must be provided.
  */
 interface ChartTagSpec {
   readonly position: MapPosition
@@ -1593,8 +1595,11 @@ interface Resistance {
  * - `"high"`, `"big"`, `"good"` - equivalent to `sqrt(2)`
  * - `"very-high"`, `"very-big"`, `"very-good"` - equivalent to `2`
  *
+ * **Note**
+ *
+ * The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.
+ *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#MapGenSize View documentation}
- * @remarks The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.
  */
 type MapGenSize =
   | number
@@ -1980,10 +1985,11 @@ interface ConstantCombinatorParameters {
 }
 
 /**
+ * **Note**
  *
+ * While the API accepts both versions for `"less/greater than or equal to"` and `"not equal"`, it'll always return `"≥"`, `"≤"` or `"≠"` respectively when reading them back.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#ComparatorString View documentation}
- * @remarks While the API accepts both versions for `"less/greater than or equal to"` and `"not equal"`, it'll always return `"≥"`, `"≤"` or `"≠"` respectively when reading them back.
  */
 type ComparatorString
 /**
@@ -2808,8 +2814,11 @@ interface ModuleEffects {
 /**
  * This is a set of flags given as a dictionary[{@link string} &rarr; {@link boolean}]. When a flag is set, it is present in the dictionary with the value `true`. Unset flags aren't present in the dictionary at all. So, the boolean value is meaningless and exists just for easy table lookup if a flag is set.
  *
+ * **Note**
+ *
+ * By default, none of these flags are set.
+ *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#EntityPrototypeFlags View documentation}
- * @remarks By default, none of these flags are set.
  */
 interface EntityPrototypeFlags {
   /**
@@ -2914,8 +2923,11 @@ interface EntityPrototypeFlags {
 /**
  * This is a set of flags given as dictionary[{@link string} &rarr; {@link boolean}]. When a flag is set, it is present in the dictionary with the value `true`. Unset flags aren't present in the dictionary at all. So, the boolean value is meaningless and exists just for easy table lookup if a flag is set.
  *
+ * **Note**
+ *
+ * By default, none of these flags are set.
+ *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#ItemPrototypeFlags View documentation}
- * @remarks By default, none of these flags are set.
  */
 interface ItemPrototypeFlags {
   /**
@@ -3309,10 +3321,11 @@ interface LogisticFilter {
 }
 
 /**
+ * **Note**
  *
+ * Runtime settings can be changed through console commands and by the mod that owns the settings by writing a new table to the ModSetting.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#ModSetting View documentation}
- * @remarks Runtime settings can be changed through console commands and by the mod that owns the settings by writing a new table to the ModSetting.
  */
 interface ModSetting {
   /**
@@ -3742,8 +3755,11 @@ type SoundType = "game-effect" | "gui-effect" | "ambient" | "environment" | "wal
  * - {@link EquipmentPrototypeFilter} for type `"equipment"`
  * - {@link TechnologyPrototypeFilter} for type `"technology"`
  *
+ * **Note**
+ *
+ * Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
+ *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#PrototypeFilter View documentation}
- * @remarks Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
  */
 type PrototypeFilter =
   | ItemPrototypeFilter
