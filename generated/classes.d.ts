@@ -1172,6 +1172,7 @@ interface LuaControl {
    * @returns `true` if the entity was successfully teleported.
    */
   teleport(position: MapPosition, surface?: SurfaceIdentification): boolean
+  teleport(x: number, y?: number): boolean
   /**
    * Select an entity, as if by hovering the mouse above it.
    *

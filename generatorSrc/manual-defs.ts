@@ -391,6 +391,9 @@ interface LuaControl {
       | undefined
   )
   get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | undefined
+
+  teleport(position: MapPosition, surface?: SurfaceIdentification): boolean
+  teleport(x: number, y?: number): boolean
 }
 
 interface LuaEntity {
