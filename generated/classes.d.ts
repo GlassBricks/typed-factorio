@@ -2126,7 +2126,8 @@ interface LuaDeciderCombinatorControlBehavior extends LuaCombinatorControlBehavi
    *
    * {@link https://lua-api.factorio.com/latest/LuaDeciderCombinatorControlBehavior.html#LuaDeciderCombinatorControlBehavior.parameters View documentation}
    */
-  parameters: DeciderCombinatorParameters
+  get parameters(): DeciderCombinatorParametersRead
+  set parameters(value: DeciderCombinatorParameters)
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
@@ -13293,7 +13294,8 @@ interface LuaGenericOnOffControlBehavior extends LuaControlBehavior {
    *                                            constant=4}}
    * ```
    */
-  circuit_condition: CircuitConditionDefinition
+  get circuit_condition(): CircuitConditionDefinitionRead
+  set circuit_condition(value: CircuitConditionDefinition)
   /**
    * The logistic condition.
    *
@@ -13310,7 +13312,8 @@ interface LuaGenericOnOffControlBehavior extends LuaControlBehavior {
    *                                             constant=4}}
    * ```
    */
-  logistic_condition: CircuitConditionDefinition
+  get logistic_condition(): CircuitConditionDefinitionRead
+  set logistic_condition(value: CircuitConditionDefinition)
   /**
    * `true` if this should connect to the logistic network.
    *
@@ -20679,7 +20682,8 @@ interface LuaProfiler {
  */
 interface LuaProgrammableSpeakerControlBehavior extends LuaControlBehavior {
   circuit_parameters: ProgrammableSpeakerCircuitParameters
-  circuit_condition: CircuitConditionDefinition
+  get circuit_condition(): CircuitConditionDefinitionRead
+  set circuit_condition(value: CircuitConditionDefinition)
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
@@ -20816,7 +20820,8 @@ interface LuaRailSignalControlBehavior extends LuaControlBehavior {
    *
    * {@link https://lua-api.factorio.com/latest/LuaRailSignalControlBehavior.html#LuaRailSignalControlBehavior.circuit_condition View documentation}
    */
-  circuit_condition: CircuitConditionDefinition
+  get circuit_condition(): CircuitConditionDefinitionRead
+  set circuit_condition(value: CircuitConditionDefinition)
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
@@ -26660,7 +26665,8 @@ interface LuaWallControlBehavior extends LuaControlBehavior {
    *
    * {@link https://lua-api.factorio.com/latest/LuaWallControlBehavior.html#LuaWallControlBehavior.circuit_condition View documentation}
    */
-  circuit_condition: CircuitConditionDefinition
+  get circuit_condition(): CircuitConditionDefinitionRead
+  set circuit_condition(value: CircuitConditionDefinition)
   open_gate: boolean
   read_sensor: boolean
   output_signal: SignalID

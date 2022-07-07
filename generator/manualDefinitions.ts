@@ -191,19 +191,17 @@ function createDef(node: ts.Statement): AnyDef {
 
 export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
   const result: AnnotationMap = {}
-  node.jsDoc?.forEach((value) =>
-    value.tags?.forEach((tag) => {
-      const annotationName = tag.tagName.text
-      if (!annotationValues.has(annotationName)) {
-        throw new Error(`Unknown annotation ${annotationName}`)
-      }
-      result[annotationName as AnnotationKind] = !tag.comment
-        ? []
-        : typeof tag.comment === "string"
-        ? tag.comment.split(" ")
-        : tag.comment.map((part) => part.text)
-    })
-  )
+  node.jsDoc?.[0]?.tags?.forEach((tag) => {
+    const annotationName = tag.tagName.text
+    if (!annotationValues.has(annotationName)) {
+      throw new Error(`Unknown annotation ${annotationName}`)
+    }
+    result[annotationName as AnnotationKind] = !tag.comment
+      ? []
+      : typeof tag.comment === "string"
+      ? tag.comment.split(" ")
+      : tag.comment.map((part) => part.text)
+  })
   return result
 }
 

@@ -538,6 +538,7 @@ type Position = MapPosition
 
 type Vector = MapPositionArray
 
+/** @readType number */
 type MapGenSize =
   | number
   | "none"
@@ -556,6 +557,12 @@ type MapGenSize =
   | "very-high"
   | "very-big"
   | "very-good"
+
+/** @readType ComparatorStringRead */
+interface ComparatorString {}
+/** @addAfter ComparatorString */
+/** @see ComparatorString */
+type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
 
 interface ArithmeticCombinatorParameters {
   readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"

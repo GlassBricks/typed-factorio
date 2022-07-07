@@ -486,11 +486,17 @@ export default class DefinitionsGenerator {
       const valueType = this.mapTypeBasic(type.value, read, write)
       if (read && write) {
         if (valueType.read !== valueType.write) {
-          this.warning(
-            "Different read/write type for record value:",
-            printNode(valueType.write!),
-            printNode(valueType.read!)
-          )
+          if (!(typeof type.value === "string" && type.value.startsWith("Autoplace")))
+            // hardcoded exception for now
+            this.warning(
+              "Different read/write type for record value:",
+              printNode(valueType.write!),
+              printNode(valueType.read!)
+            )
+          return {
+            read: ts.factory.createTypeReferenceNode(recordType, [keyType, valueType.read!]),
+            write: ts.factory.createTypeReferenceNode(recordType, [keyType, valueType.write!]),
+          }
         }
         const readType = ts.factory.createTypeReferenceNode(recordType, [keyType, valueType.read!])
         return { read: readType, write: readType }

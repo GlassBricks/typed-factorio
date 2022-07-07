@@ -1635,12 +1635,31 @@ interface AutoplaceControl {
   readonly richness: MapGenSize
 }
 
+interface AutoplaceControlRead extends AutoplaceControl {
+  /**
+   * For things that are placed as spots such as ores and enemy bases, frequency is generally proportional to number of spots placed per unit area. For continuous features such as forests, frequency is how compressed the probability function is over distance, i.e. the inverse of 'scale' (similar to terrain_segmentation). When the {@link LuaAutoplaceControlPrototype} is of the category `"terrain"`, then scale is shown in the map generator GUI instead of frequency.
+   */
+  readonly frequency: number
+  /**
+   * For things that are placed as spots, size is proportional to the area of each spot. For continuous features, size affects how much of the map is covered with the thing, and is called 'coverage' in the GUI.
+   */
+  readonly size: number
+  /**
+   * Has different effects for different things, but generally affects the 'health' or density of a thing that is placed without affecting where it is placed. For trees, richness affects tree health. For ores, richness multiplies the amount of ore at any given tile in a patch. Metadata about autoplace controls (such as whether or not 'richness' does anything for them) can be found in the {@link LuaAutoplaceControlPrototype} by looking up `game.autoplace_control_prototypes[(control prototype name)]`, e.g. `game.autoplace_control_prototypes["enemy-base"].richness` is false, because enemy base autoplacement doesn't use richness.
+   */
+  readonly richness: number
+}
+
 interface AutoplaceSettings {
   /**
    * Whether missing autoplace names for this type should be default enabled.
    */
   readonly treat_missing_as_default: boolean
   readonly settings: Record<string, AutoplaceControl>
+}
+
+interface AutoplaceSettingsRead extends AutoplaceSettings {
+  readonly settings: Record<string, AutoplaceControlRead>
 }
 
 interface CliffPlacementSettings {
@@ -1660,6 +1679,13 @@ interface CliffPlacementSettings {
    * Corresponds to 'continuity' in the GUI. This value is not used directly, but is used by the 'cliffiness' noise expression, which in combination with elevation and the two cliff elevation properties drives cliff placement (cliffs are placed when elevation crosses the elevation contours defined by `cliff_elevation_0` and `cliff_elevation_interval` when 'cliffiness' is greater than `0.5`). The default 'cliffiness' expression interprets this value such that larger values result in longer unbroken walls of cliffs, and smaller values (between `0` and `1`) result in larger gaps in cliff walls.
    */
   readonly richness: MapGenSize
+}
+
+interface CliffPlacementSettingsRead extends CliffPlacementSettings {
+  /**
+   * Corresponds to 'continuity' in the GUI. This value is not used directly, but is used by the 'cliffiness' noise expression, which in combination with elevation and the two cliff elevation properties drives cliff placement (cliffs are placed when elevation crosses the elevation contours defined by `cliff_elevation_0` and `cliff_elevation_interval` when 'cliffiness' is greater than `0.5`). The default 'cliffiness' expression interprets this value such that larger values result in longer unbroken walls of cliffs, and smaller values (between `0` and `1`) result in larger gaps in cliff walls.
+   */
+  readonly richness: number
 }
 
 /**
@@ -1755,6 +1781,30 @@ interface MapGenSettings {
 }
 
 interface MapGenSettingsRead extends MapGenSettings {
+  /**
+   * The inverse of 'water scale' in the map generator GUI. Lower `terrain_segmentation` increases the scale of elevation features (lakes, continents, etc). This behavior can be overridden with alternate elevation generators (see `property_expression_names`, below).
+   */
+  readonly terrain_segmentation: number
+  /**
+   * The equivalent to 'water coverage' in the map generator GUI. Specifically, when this value is non-zero, `water_level = 10 * log2` (the value of this field), and the elevation generator subtracts water level from elevation before adding starting lakes. If water is set to 'none', elevation is clamped to a small positive value before adding starting lakes. This behavior can be overridden with alternate elevation generators (see `property_expression_names`, below).
+   */
+  readonly water: number
+  /**
+   * Indexed by autoplace control prototype name.
+   */
+  readonly autoplace_controls: Record<string, AutoplaceControlRead>
+  /**
+   * Each setting in this dictionary maps the string type to the settings for that type. Valid types are `"entity"`, `"tile"` and `"decorative"`.
+   */
+  readonly autoplace_settings: Record<string, AutoplaceSettingsRead>
+  /**
+   * Map generation settings for entities of the type "cliff".
+   */
+  readonly cliff_settings: CliffPlacementSettingsRead
+  /**
+   * Size of the starting area.
+   */
+  readonly starting_area: number
   /**
    * Positions of the starting areas.
    */
@@ -2011,6 +2061,9 @@ interface ConstantCombinatorParameters {
  */
 type ComparatorString = "=" | ">" | "<" | "≥" | ">=" | "≤" | "<=" | "≠" | "!="
 
+/** @see ComparatorString */
+type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
+
 interface DeciderCombinatorParameters {
   /**
    * Defaults to blank.
@@ -2038,6 +2091,13 @@ interface DeciderCombinatorParameters {
   readonly copy_count_from_input?: boolean
 }
 
+interface DeciderCombinatorParametersRead extends DeciderCombinatorParameters {
+  /**
+   * Specifies how the inputs should be compared. If not specified, defaults to `"<"`.
+   */
+  readonly comparator?: ComparatorStringRead
+}
+
 interface InserterCircuitConditions {
   readonly circuit?: CircuitCondition
   readonly logistics?: CircuitCondition
@@ -2062,12 +2122,23 @@ interface CircuitCondition {
   readonly constant?: int
 }
 
+interface CircuitConditionRead extends CircuitCondition {
+  /**
+   * Specifies how the inputs should be compared. If not specified, defaults to `"<"`.
+   */
+  readonly comparator?: ComparatorStringRead
+}
+
 interface CircuitConditionDefinition {
   readonly condition: CircuitCondition
   /**
    * Whether the condition is currently fulfilled
    */
   readonly fulfilled?: boolean
+}
+
+interface CircuitConditionDefinitionRead extends CircuitConditionDefinition {
+  readonly condition: CircuitConditionRead
 }
 
 interface CircuitConnectionDefinition {
@@ -2548,6 +2619,13 @@ interface WaitCondition {
    * Only present when `type` is `"item_count"`, `"circuit"` or `"fluid_count"`.
    */
   readonly condition?: CircuitCondition
+}
+
+interface WaitConditionRead extends WaitCondition {
+  /**
+   * Only present when `type` is `"item_count"`, `"circuit"` or `"fluid_count"`.
+   */
+  readonly condition?: CircuitConditionRead
 }
 
 interface TrainScheduleRecord {
