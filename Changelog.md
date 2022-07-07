@@ -1,3 +1,10 @@
+# v1.4.0
+
+- Improve doc comments for enum concepts
+- Improve doc comment formatting
+- Improve types of concepts with literal union types
+- Add read-specific types to AutoplaceControl and ComparatorString
+
 # v1.3.2
 
 - Move "notes" comment into the main body of doc comment, instead of in @remarks. This works around #13.
