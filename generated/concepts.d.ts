@@ -1985,49 +1985,31 @@ interface ConstantCombinatorParameters {
 }
 
 /**
+ *  - `"="`: "equal to"
+ *
+ *  - `">"`: "greater than"
+ *
+ *  - `"<"`: "lesser than"
+ *
+ *  - `"≥"`: "greater than or equal to"
+ *
+ *  - `">="`: "greater than or equal to"
+ *
+ *  - `"≤"`: "lesser than or equal to"
+ *
+ *  - `"<="`: "lesser than or equal to"
+ *
+ *  - `"≠"`: "not equal to"
+ *
+ *  - `"!="`: "not equal to"
+ *
  * **Note**
  *
  * While the API accepts both versions for `"less/greater than or equal to"` and `"not equal"`, it'll always return `"≥"`, `"≤"` or `"≠"` respectively when reading them back.
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#ComparatorString View documentation}
  */
-type ComparatorString
-/**
- * "equal to"
- */ =
-  | "="
-  /**
-   * "greater than"
-   */
-  | ">"
-  /**
-   * "lesser than"
-   */
-  | "<"
-  /**
-   * "greater than or equal to"
-   */
-  | "\u2265"
-  /**
-   * "greater than or equal to"
-   */
-  | ">="
-  /**
-   * "lesser than or equal to"
-   */
-  | "\u2264"
-  /**
-   * "lesser than or equal to"
-   */
-  | "<="
-  /**
-   * "not equal to"
-   */
-  | "\u2260"
-  /**
-   * "not equal to"
-   */
-  | "!="
+type ComparatorString = "=" | ">" | "<" | "≥" | ">=" | "≤" | "<=" | "≠" | "!="
 
 interface DeciderCombinatorParameters {
   /**
@@ -3375,27 +3357,24 @@ interface ProgrammableSpeakerInstrument {
 /**
  * A {@link string} that specifies where a GUI element should be.
  *
+ *  - `"left"`: The same as `"middle-left"`
+ *
+ *  - `"center"`: The same as `"middle-center"`
+ *
+ *  - `"right"`: The same as `"middle-right"`
+ *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#Alignment View documentation}
  */
 type Alignment =
   | "top-left"
   | "middle-left"
-  /**
-   * The same as `"middle-left"`
-   */
   | "left"
   | "bottom-left"
   | "top-center"
   | "middle-center"
-  /**
-   * The same as `"middle-center"`
-   */
   | "center"
   | "bottom-center"
   | "top-right"
-  /**
-   * The same as `"middle-right"`
-   */
   | "right"
   | "bottom-right"
 
@@ -3543,69 +3522,53 @@ type MouseButtonFlagsArray = readonly (MouseButtonFlag | "left-and-right")[]
  */
 type MouseButtonFlags = MouseButtonFlagsTable | MouseButtonFlagsArray
 
-type CursorBoxRenderType
 /**
- * Yellow box.
- */ =
+ *  - `"entity"`: Yellow box.
+ *
+ *  - `"not-allowed"`: Red box.
+ *
+ *  - `"electricity"`: Light blue box.
+ *
+ *  - `"pair"`: Light blue box.
+ *
+ *  - `"copy"`: Green box.
+ *
+ *  - `"train-visualization"`: White box.
+ *
+ *  - `"logistics"`: Light blue box.
+ *
+ *  - `"blueprint-snap-rectangle"`: Green box.
+ *
+ * {@link https://lua-api.factorio.com/latest/Concepts.html#CursorBoxRenderType View documentation}
+ */
+type CursorBoxRenderType =
   | "entity"
-  /**
-   * Red box.
-   */
   | "not-allowed"
-  /**
-   * Light blue box.
-   */
   | "electricity"
-  /**
-   * Light blue box.
-   */
   | "pair"
-  /**
-   * Green box.
-   */
   | "copy"
-  /**
-   * White box.
-   */
   | "train-visualization"
-  /**
-   * Light blue box.
-   */
   | "logistics"
-  /**
-   * Green box.
-   */
   | "blueprint-snap-rectangle"
 
-type ForceCondition
 /**
- * All forces pass.
- */ =
-  | "all"
-  /**
-   * Forces which will attack pass.
-   */
-  | "enemy"
-  /**
-   * Forces which won't attack pass.
-   */
-  | "ally"
-  /**
-   * Forces which are friends pass.
-   */
-  | "friend"
-  /**
-   * Forces which are not friends pass.
-   */
-  | "not-friend"
-  /**
-   * The same force pass.
-   */
-  | "same"
-  /**
-   * The non-same forces pass.
-   */
-  | "not-same"
+ *  - `"all"`: All forces pass.
+ *
+ *  - `"enemy"`: Forces which will attack pass.
+ *
+ *  - `"ally"`: Forces which won't attack pass.
+ *
+ *  - `"friend"`: Forces which are friends pass.
+ *
+ *  - `"not-friend"`: Forces which are not friends pass.
+ *
+ *  - `"same"`: The same force pass.
+ *
+ *  - `"not-same"`: The non-same forces pass.
+ *
+ * {@link https://lua-api.factorio.com/latest/Concepts.html#ForceCondition View documentation}
+ */
+type ForceCondition = "all" | "enemy" | "ally" | "friend" | "not-friend" | "same" | "not-same"
 
 /**
  * A value between 0 and 255 inclusive represented by one of the following named {@link string} or string version of the value (for example `"27"` and `"decals"` are both valid). Higher values are rendered on top of lower values.

@@ -403,7 +403,6 @@ interface LuaBootstrap {
    * **Raised events:**
    * - {@link OnConsoleChatEvent on_console_chat} _instantly_ Raised with the provided arguments.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_console_chat View documentation}
    */
   raise_console_chat(params: {
@@ -419,7 +418,6 @@ interface LuaBootstrap {
   /**
    * **Raised events:**
    * - {@link OnPlayerCraftedItemEvent on_player_crafted_item} _instantly_ Raised with the provided arguments.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_player_crafted_item View documentation}
    */
@@ -441,7 +439,6 @@ interface LuaBootstrap {
    * **Raised events:**
    * - {@link OnPlayerFastTransferredEvent on_player_fast_transferred} _instantly_ Raised with the provided arguments.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_player_fast_transferred View documentation}
    */
   raise_player_fast_transferred(params: {
@@ -462,7 +459,6 @@ interface LuaBootstrap {
    * **Raised events:**
    * - {@link OnBiterBaseBuiltEvent on_biter_base_built} _instantly_ Raised with the provided arguments.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_biter_base_built View documentation}
    */
   raise_biter_base_built(params: {
@@ -474,7 +470,6 @@ interface LuaBootstrap {
   /**
    * **Raised events:**
    * - {@link OnMarketItemPurchasedEvent on_market_item_purchased} _instantly_ Raised with the provided arguments.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_market_item_purchased View documentation}
    */
@@ -500,7 +495,6 @@ interface LuaBootstrap {
    * **Raised events:**
    * - {@link ScriptRaisedBuiltEvent script_raised_built} _instantly_ Raised with the provided arguments.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_script_built View documentation}
    */
   raise_script_built(params: {
@@ -513,7 +507,6 @@ interface LuaBootstrap {
    * **Raised events:**
    * - {@link ScriptRaisedDestroyEvent script_raised_destroy} _instantly_ Raised with the provided arguments.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_script_destroy View documentation}
    */
   raise_script_destroy(params: {
@@ -525,7 +518,6 @@ interface LuaBootstrap {
   /**
    * **Raised events:**
    * - {@link ScriptRaisedReviveEvent script_raised_revive} _instantly_ Raised with the provided arguments.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_script_revive View documentation}
    */
@@ -542,7 +534,6 @@ interface LuaBootstrap {
   /**
    * **Raised events:**
    * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles} _instantly_ Raised with the provided arguments.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_script_set_tiles View documentation}
    */
@@ -1179,7 +1170,6 @@ interface LuaControl {
    * **Raised events:**
    * - {@link OnSelectedEntityChangedEvent on_selected_entity_changed}? _instantly_ Raised if there is an entity at the given position to select.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.update_selected_entity View documentation}
    * @param position Position of the entity to select.
    */
@@ -1189,7 +1179,6 @@ interface LuaControl {
    *
    * **Raised events:**
    * - {@link OnSelectedEntityChangedEvent on_selected_entity_changed}? _instantly_ Raised if there is a currently selected entity.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.clear_selected_entity View documentation}
    */
@@ -1227,7 +1216,6 @@ interface LuaControl {
    * - {@link OnPrePlayerCraftedItemEvent on_pre_player_crafted_item}? _instantly_ Raised if crafting was able to be started.
    * - {@link OnPlayerMainInventoryChangedEvent on_player_main_inventory_changed}? _current_tick_ Raised if crafting was able to be started.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.begin_crafting View documentation}
    * @returns The count that was actually started crafting.
    */
@@ -1252,7 +1240,6 @@ interface LuaControl {
    * - {@link OnPlayerCancelledCraftingEvent on_player_cancelled_crafting}? _instantly_ Raised if crafting was able to be cancelled.
    * - {@link OnPlayerMainInventoryChangedEvent on_player_main_inventory_changed}? _current_tick_ Raised if crafting was able to be cancelled.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.cancel_crafting View documentation}
    */
   cancel_crafting(params: {
@@ -1273,7 +1260,6 @@ interface LuaControl {
    * - {@link OnPlayerMinedEntityEvent on_player_mined_entity}? _instantly_ Raised if mining is successful.
    * - {@link OnPlayerMinedItemEvent on_player_mined_item}? _instantly_ Raised if mining is successful.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.mine_entity View documentation}
    * @param entity The entity to mine
    * @param force Forces mining the entity even if the items can't fit in the player.
@@ -1286,7 +1272,6 @@ interface LuaControl {
    * **Raised events:**
    * - {@link OnPlayerMinedItemEvent on_player_mined_item}? _instantly_ Raised if mining is successful.
    * - {@link OnPlayerMinedTileEvent on_player_mined_tile}? _instantly_ Raised if mining is successful.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.mine_tile View documentation}
    * @param tile The tile to mine.
@@ -1327,7 +1312,6 @@ interface LuaControl {
    *
    * **Raised events:**
    * - {@link OnEntityLogisticSlotChangedEvent on_entity_logistic_slot_changed}? _instantly_ Raised if setting of logistic slot was successful.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.set_vehicle_logistic_slot View documentation}
    * @param slot_index The slot to set.
@@ -1426,7 +1410,6 @@ interface LuaControl {
    *
    * **Raised events:**
    * - {@link OnSelectedEntityChangedEvent on_selected_entity_changed}? _instantly_ Raised when a selectable entity is written to this attribute.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.selected View documentation}
    */
@@ -1607,7 +1590,6 @@ interface LuaControl {
    *
    * **Raised events:**
    * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_ Raised if the driving state successfully changed.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.driving View documentation}
    */
@@ -2355,7 +2337,6 @@ interface LuaEntity extends LuaControl {
    * - {@link OnEntityDiedEvent on_entity_died}? _instantly_ Raised if the entity was successfully killed. If `force` is not specified, the event will blame the `"neutral"` force.
    * - {@link OnPostEntityDiedEvent on_post_entity_died}? _instantly_ Raised if the entity was successfully killed.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.die View documentation}
    * @param force The force to attribute the kill to.
    * @param cause The cause to attribute the kill to.
@@ -2466,7 +2447,6 @@ interface LuaEntity extends LuaControl {
    * **Raised events:**
    * - {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction}? _instantly_ Raised if the entity way successfully marked for deconstruction.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.order_deconstruction View documentation}
    * @param force The force whose robots are supposed to do the deconstruction.
    * @param player The player to set the `last_user` to if any.
@@ -2478,7 +2458,6 @@ interface LuaEntity extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnCancelledDeconstructionEvent on_cancelled_deconstruction}? _instantly_ Raised if the entity's deconstruction was successfully cancelled.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.cancel_deconstruction View documentation}
    * @param force The force who did the deconstruction order.
@@ -2496,7 +2475,6 @@ interface LuaEntity extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnMarkedForUpgradeEvent on_marked_for_upgrade}? _instantly_ Raised if the entity way successfully marked for upgrade.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.order_upgrade View documentation}
    * @returns Whether the entity was marked for upgrade.
@@ -2521,7 +2499,6 @@ interface LuaEntity extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnCancelledUpgradeEvent on_cancelled_upgrade}? _instantly_ Raised if the entity way previously marked for upgrade.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.cancel_upgrade View documentation}
    * @param force The force who did the upgrade order.
@@ -2656,7 +2633,6 @@ interface LuaEntity extends LuaControl {
    * - {@link ScriptRaisedReviveEvent script_raised_revive}? _instantly_ Raised if this was an entity ghost and the `raise_revive` flag was set and the entity was successfully revived.
    * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}? _instantly_ Raised if this was a tile ghost and the `raise_revive` flag was set and the tile was successfully revived.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.revive View documentation}
    * @returns Any items the new real entity collided with or `nil` if the ghost could not be revived.
    * @returns The revived entity if an entity ghost was successfully revived.
@@ -2678,7 +2654,6 @@ interface LuaEntity extends LuaControl {
    * **Raised events:**
    * - {@link ScriptRaisedReviveEvent script_raised_revive}? _instantly_ Raised if this was an entity ghost and the `raise_revive` flag was set and the entity was successfully revived.
    * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}? _instantly_ Raised if this was a tile ghost and the `raise_revive` flag was set and the tile was successfully revived.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.silent_revive View documentation}
    * @returns Any items the new real entity collided with or `nil` if the ghost could not be revived.
@@ -2964,7 +2939,6 @@ interface LuaEntity extends LuaControl {
    * **Raised events:**
    * - {@link OnPlayerRotatedEntityEvent on_player_rotated_entity}? _instantly_ Raised if the `by_player` argument was given and the rotation was successful.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.rotate View documentation}
    * @returns Whether the rotation was successful.
    * @returns Count of spilled items indexed by their prototype names if `spill_items` was `true`.
@@ -3071,7 +3045,6 @@ interface LuaEntity extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnEntityClonedEvent on_entity_cloned}? _instantly_ Raised if the entity was successfully cloned.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.clone View documentation}
    * @returns The cloned entity or `nil` if this entity can't be cloned/can't be cloned to the given location.
@@ -4796,7 +4769,6 @@ interface BaseEntity extends LuaControl {
    * - {@link OnEntityDiedEvent on_entity_died}? _instantly_ Raised if the entity was successfully killed. If `force` is not specified, the event will blame the `"neutral"` force.
    * - {@link OnPostEntityDiedEvent on_post_entity_died}? _instantly_ Raised if the entity was successfully killed.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.die View documentation}
    * @param force The force to attribute the kill to.
    * @param cause The cause to attribute the kill to.
@@ -4849,7 +4821,6 @@ interface BaseEntity extends LuaControl {
    * **Raised events:**
    * - {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction}? _instantly_ Raised if the entity way successfully marked for deconstruction.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.order_deconstruction View documentation}
    * @param force The force whose robots are supposed to do the deconstruction.
    * @param player The player to set the `last_user` to if any.
@@ -4861,7 +4832,6 @@ interface BaseEntity extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnCancelledDeconstructionEvent on_cancelled_deconstruction}? _instantly_ Raised if the entity's deconstruction was successfully cancelled.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.cancel_deconstruction View documentation}
    * @param force The force who did the deconstruction order.
@@ -4879,7 +4849,6 @@ interface BaseEntity extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnMarkedForUpgradeEvent on_marked_for_upgrade}? _instantly_ Raised if the entity way successfully marked for upgrade.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.order_upgrade View documentation}
    * @returns Whether the entity was marked for upgrade.
@@ -4904,7 +4873,6 @@ interface BaseEntity extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnCancelledUpgradeEvent on_cancelled_upgrade}? _instantly_ Raised if the entity way previously marked for upgrade.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.cancel_upgrade View documentation}
    * @param force The force who did the upgrade order.
@@ -4961,7 +4929,6 @@ interface BaseEntity extends LuaControl {
    * - {@link ScriptRaisedReviveEvent script_raised_revive}? _instantly_ Raised if this was an entity ghost and the `raise_revive` flag was set and the entity was successfully revived.
    * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}? _instantly_ Raised if this was a tile ghost and the `raise_revive` flag was set and the tile was successfully revived.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.revive View documentation}
    * @returns Any items the new real entity collided with or `nil` if the ghost could not be revived.
    * @returns The revived entity if an entity ghost was successfully revived.
@@ -4983,7 +4950,6 @@ interface BaseEntity extends LuaControl {
    * **Raised events:**
    * - {@link ScriptRaisedReviveEvent script_raised_revive}? _instantly_ Raised if this was an entity ghost and the `raise_revive` flag was set and the entity was successfully revived.
    * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}? _instantly_ Raised if this was a tile ghost and the `raise_revive` flag was set and the tile was successfully revived.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.silent_revive View documentation}
    * @returns Any items the new real entity collided with or `nil` if the ghost could not be revived.
@@ -5118,7 +5084,6 @@ interface BaseEntity extends LuaControl {
    * **Raised events:**
    * - {@link OnPlayerRotatedEntityEvent on_player_rotated_entity}? _instantly_ Raised if the `by_player` argument was given and the rotation was successful.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.rotate View documentation}
    * @returns Whether the rotation was successful.
    * @returns Count of spilled items indexed by their prototype names if `spill_items` was `true`.
@@ -5156,7 +5121,6 @@ interface BaseEntity extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnEntityClonedEvent on_entity_cloned}? _instantly_ Raised if the entity was successfully cloned.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.clone View documentation}
    * @returns The cloned entity or `nil` if this entity can't be cloned/can't be cloned to the given location.
@@ -11473,7 +11437,6 @@ interface LuaForce {
    * **Raised events:**
    * - {@link OnResearchFinishedEvent on_research_finished} _instantly_
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.research_all_technologies View documentation}
    * @param include_disabled_prototypes Whether technologies that are explicitly disabled in the prototype should also be researched. Defaults to `false`.
    */
@@ -11490,7 +11453,6 @@ interface LuaForce {
    * **Raised events:**
    * - {@link OnForceResetEvent on_force_reset} _instantly_
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.reset View documentation}
    */
   reset(): void
@@ -11499,7 +11461,6 @@ interface LuaForce {
    *
    * **Raised events:**
    * - {@link OnTechnologyEffectsResetEvent on_technology_effects_reset} _instantly_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.reset_technology_effects View documentation}
    */
@@ -11603,7 +11564,6 @@ interface LuaForce {
    * **Raised events:**
    * - {@link OnForceCeaseFireChangedEvent on_force_cease_fire_changed} _instantly_
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.set_cease_fire View documentation}
    */
   set_cease_fire(other: ForceIdentification, cease_fire: boolean): void
@@ -11618,7 +11578,6 @@ interface LuaForce {
    *
    * **Raised events:**
    * - {@link OnForceFriendsChangedEvent on_force_friends_changed} _instantly_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.set_friend View documentation}
    */
@@ -11795,7 +11754,6 @@ interface LuaForce {
    *
    * **Raised events:**
    * - {@link OnResearchStartedEvent on_research_started}? _instantly_ Raised if the technology was successfully added.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.add_research View documentation}
    * @returns Whether the technology was successfully added.
@@ -12441,7 +12399,6 @@ interface LuaGameScript {
    * - {@link OnPrePlayerRemovedEvent on_pre_player_removed} _instantly_
    * - {@link OnPlayerRemovedEvent on_player_removed} _instantly_
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.remove_offline_players View documentation}
    * @param players List of players to remove. If not specified, remove all offline players.
    */
@@ -12523,7 +12480,6 @@ interface LuaGameScript {
    * **Raised events:**
    * - {@link OnPreSurfaceDeletedEvent on_pre_surface_deleted} _future_tick_
    * - {@link OnSurfaceDeletedEvent on_surface_deleted} _future_tick_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.delete_surface View documentation}
    * @param surface The surface to be deleted. Currently the primary surface (1, 'nauvis') cannot be deleted.
@@ -12621,7 +12577,6 @@ interface LuaGameScript {
    * - {@link OnPlayerKickedEvent on_player_kicked} _instantly_
    * - {@link OnConsoleCommandEvent on_console_command} _instantly_
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.kick_player View documentation}
    * @param player The player to kick.
    * @param reason The reason given if any.
@@ -12633,7 +12588,6 @@ interface LuaGameScript {
    * **Raised events:**
    * - {@link OnPlayerBannedEvent on_player_banned} _instantly_
    * - {@link OnConsoleCommandEvent on_console_command} _instantly_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.ban_player View documentation}
    * @param player The player to ban.
@@ -12647,7 +12601,6 @@ interface LuaGameScript {
    * - {@link OnPlayerUnbannedEvent on_player_unbanned} _instantly_
    * - {@link OnConsoleCommandEvent on_console_command} _instantly_
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.unban_player View documentation}
    * @param player The player to unban.
    */
@@ -12657,7 +12610,6 @@ interface LuaGameScript {
    *
    * **Raised events:**
    * - {@link OnConsoleCommandEvent on_console_command} _instantly_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.purge_player View documentation}
    * @param player The player to purge.
@@ -12670,7 +12622,6 @@ interface LuaGameScript {
    * - {@link OnPlayerMutedEvent on_player_muted} _instantly_
    * - {@link OnConsoleCommandEvent on_console_command} _instantly_
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.mute_player View documentation}
    * @param player The player to mute.
    */
@@ -12681,7 +12632,6 @@ interface LuaGameScript {
    * **Raised events:**
    * - {@link OnPlayerUnmutedEvent on_player_unmuted} _instantly_
    * - {@link OnConsoleCommandEvent on_console_command} _instantly_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.unmute_player View documentation}
    * @param player The player to unmute.
@@ -19934,7 +19884,6 @@ interface LuaPlayer extends LuaControl {
    * **Raised events:**
    * - {@link OnPlayerCursorStackChangedEvent on_player_cursor_stack_changed}? _current_tick_ Raised when the cursor was successfully cleared.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.clear_cursor View documentation}
    * @returns Whether the cursor is now empty.
    */
@@ -20037,7 +19986,6 @@ interface LuaPlayer extends LuaControl {
    * **Raised events:**
    * - {@link OnPlayerPipetteEvent on_player_pipette}? _instantly_ Raised if the entity was successfully pipetted.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.pipette_entity View documentation}
    * @returns Whether the smart pipette found something to place.
    */
@@ -20067,7 +20015,6 @@ interface LuaPlayer extends LuaControl {
    * **Raised events:**
    * - {@link OnPreBuildEvent on_pre_build}? _instantly_ Raised if the cursor was successfully built.
    * - {@link OnBuiltEntityEvent on_built_entity}? _instantly_ Raised if the cursor was successfully built.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.can_build_from_cursor View documentation}
    */
@@ -20340,7 +20287,6 @@ interface LuaPlayer extends LuaControl {
    * **Raised events:**
    * - {@link OnPrePlayerToggledMapEditorEvent on_pre_player_toggled_map_editor}? _instantly_ Raised if the map editor was successfully toggled.
    * - {@link OnPlayerToggledMapEditorEvent on_player_toggled_map_editor}? _instantly_ Raised if the map editor was successfully toggled.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.toggle_map_editor View documentation}
    */
@@ -24494,7 +24440,6 @@ interface LuaSurface {
    * **Raised events:**
    * - {@link ScriptRaisedBuiltEvent script_raised_built}? _instantly_ Raised if the `raise_built` flag was set and the entity was successfully created.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.create_entity View documentation}
    * @returns The created entity or `nil` if the creation failed.
    * @example
@@ -24568,7 +24513,6 @@ interface LuaSurface {
    *
    * **Raised events:**
    * - {@link OnUnitGroupCreatedEvent on_unit_group_created} _instantly_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.create_unit_group View documentation}
    */
@@ -24694,7 +24638,6 @@ interface LuaSurface {
    * **Raised events:**
    * - {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction}? _instantly_ Raised for every entity that has been successfully marked for deconstruction.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.deconstruct_area View documentation}
    */
   deconstruct_area(params: {
@@ -24724,7 +24667,6 @@ interface LuaSurface {
    *
    * **Raised events:**
    * - {@link OnCancelledDeconstructionEvent on_cancelled_deconstruction}? _instantly_ Raised for every entity whose deconstruction has been successfully cancelled.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.cancel_deconstruct_area View documentation}
    */
@@ -24756,7 +24698,6 @@ interface LuaSurface {
    * **Raised events:**
    * - {@link OnMarkedForUpgradeEvent on_marked_for_upgrade}? _instantly_ Raised for every entity that has been successfully marked for upgrade.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.upgrade_area View documentation}
    */
   upgrade_area(params: {
@@ -24786,7 +24727,6 @@ interface LuaSurface {
    *
    * **Raised events:**
    * - {@link OnCancelledUpgradeEvent on_cancelled_upgrade}? _instantly_ Raised for every entity whose upgrade has been successfully cancelled.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.cancel_upgrade_area View documentation}
    */
@@ -24845,7 +24785,6 @@ interface LuaSurface {
    * **Raised events:**
    * - {@link OnPreChunkDeletedEvent on_pre_chunk_deleted} _future_tick_
    * - {@link OnChunkDeletedEvent on_chunk_deleted} _future_tick_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.delete_chunk View documentation}
    * @param position The chunk position to delete
@@ -25126,7 +25065,6 @@ interface LuaSurface {
    * - {@link OnPreSurfaceClearedEvent on_pre_surface_cleared} _future_tick_
    * - {@link OnSurfaceClearedEvent on_surface_cleared} _future_tick_
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.clear View documentation}
    * @param ignore_characters Whether characters on this surface that are connected to or associated with players should be ignored (not destroyed).
    */
@@ -25138,7 +25076,6 @@ interface LuaSurface {
    *
    * **Raised events:**
    * - {@link OnScriptPathRequestFinishedEvent on_script_path_request_finished} _future_tick_
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.request_path View documentation}
    * @returns A unique handle to identify this call when {@link OnScriptPathRequestFinishedEvent on_script_path_request_finished} fires.
@@ -25784,7 +25721,6 @@ interface LuaTile {
    * **Raised events:**
    * - {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction}? _instantly_ Raised if the tile was successfully marked for deconstruction.
    *
-   *
    * {@link https://lua-api.factorio.com/latest/LuaTile.html#LuaTile.order_deconstruction View documentation}
    * @param force The force whose robots are supposed to do the deconstruction.
    * @param player The player to set the last_user to if any.
@@ -25796,7 +25732,6 @@ interface LuaTile {
    *
    * **Raised events:**
    * - {@link OnCancelledDeconstructionEvent on_cancelled_deconstruction}? _instantly_ Raised if the tile's deconstruction was successfully cancelled.
-   *
    *
    * {@link https://lua-api.factorio.com/latest/LuaTile.html#LuaTile.cancel_deconstruction View documentation}
    * @param force The force who did the deconstruction order.

@@ -179,18 +179,20 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
     const types = concept.options
       .sort(sortByOrder)
       .map((option) => generator.mapTypeWithTransforms(option, concept.name, option.type, false, true).write)
-    concept.description += concept.options
-      .map(
-        (option, i) =>
-          option.description &&
-          ` - ${
-            typeof option.type === "string"
-              ? option.type
-              : printer.printNode(ts.EmitHint.Unspecified, types[i], generator.manualDefinitionsSource)
-          }: ${option.description}`
-      )
-      .filter((x) => !!x)
-      .join("\n\n")
+    concept.description +=
+      "\n\n" +
+      concept.options
+        .map(
+          (option, i) =>
+            option.description &&
+            ` - ${
+              typeof option.type === "string"
+                ? option.type
+                : printer.printNode(ts.EmitHint.Unspecified, types[i], generator.manualDefinitionsSource)
+            }: ${option.description}`
+        )
+        .filter((x) => x)
+        .join("\n\n")
     return createTypeAlias(ts.factory.createUnionTypeNode(types))
   } else if (concept.category === "struct") {
     return ts.factory.createInterfaceDeclaration(
@@ -283,13 +285,19 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
       )
     }
   } else if (concept.category === "enum") {
-    return createTypeAlias(
-      ts.factory.createUnionTypeNode(
-        concept.options
-          .sort(sortByOrder)
-          .map((option) => generator.addJsDoc(Types.stringLiteral(option.name), option, undefined))
-      )
+    const type = ts.factory.createUnionTypeNode(
+      concept.options
+        .sort(sortByOrder)
+        // .map((option) => generator.addJsDoc(Types.stringLiteral(option.name), option, undefined))
+        .map((option) => Types.stringLiteral(option.name))
     )
+    concept.description +=
+      "\n\n" +
+      concept.options
+        .map((option) => option.description && ` - \`"${option.name}"\`: ${option.description}`)
+        .filter((x) => x)
+        .join("\n\n")
+    return createTypeAlias(type)
   } else if (concept.category === "table_or_array") {
     const parameters = concept.parameters
       .sort(sortByOrder)

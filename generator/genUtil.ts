@@ -25,7 +25,9 @@ export const Types = {
   symbol: ts.factory.createKeywordTypeNode(ts.SyntaxKind.SymbolKeyword),
 
   stringLiteral(text: string): ts.LiteralTypeNode {
-    return ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(text))
+    return ts.factory.createLiteralTypeNode(
+      ts.setEmitFlags(ts.factory.createStringLiteral(text), ts.EmitFlags.NoAsciiEscaping)
+    )
   },
   numberLiteral(value: number): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(value))
