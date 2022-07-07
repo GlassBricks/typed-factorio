@@ -575,7 +575,7 @@ type SpriteType =
   | "file"
   | "utility"
 // template string type allows for autocomplete
-type SpritePath = string | `${SpriteType}/${string}`
+type SpritePath = (string & { _?: never }) | `${SpriteType}/${string}`
 
 type SoundType =
   | "utility"
@@ -593,7 +593,7 @@ type SoundType =
   | "entity-open"
   | "entity-close"
 // template string type allows for autocomplete
-type SoundPath = string | `${SoundType}/${string}`
+type SoundPath = (string & { _?: never }) | `${SoundType}/${string}`
 
 type CollisionMaskLayer =
   | "ground-tile"
@@ -609,7 +609,7 @@ type CollisionMaskLayer =
   | "rail-layer"
   | "transport-belt-layer"
   | "not-setup"
-  | `layer-${number}`
+  | `layer-${bigint}`
 
 type CollisionMask = {
   readonly [P in CollisionMaskLayer]?: true
@@ -656,7 +656,7 @@ type MouseButtonFlags = MouseButtonFlagsTable | MouseButtonFlagsArray
 
 type RenderLayer =
   | number
-  | `${number}`
+  | `${bigint}`
   | "water-tile"
   | "ground-tile"
   | "tile-transition"

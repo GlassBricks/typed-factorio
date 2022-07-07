@@ -2731,7 +2731,11 @@ type SpriteType =
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#SpritePath View documentation}
  */
-type SpritePath = string | `${SpriteType}/${string}`
+type SpritePath =
+  | (string & {
+      _?: never
+    })
+  | `${SpriteType}/${string}`
 
 /**
  * A sound defined by a {@link string}. It can be either the name of a {@linkplain https://wiki.factorio.com/Prototype/Sound sound prototype} defined in the data stage or a path in the form `"type/name"`. The latter option can be sorted into three categories.
@@ -2764,7 +2768,11 @@ type SpritePath = string | `${SpriteType}/${string}`
  *
  * {@link https://lua-api.factorio.com/latest/Concepts.html#SoundPath View documentation}
  */
-type SoundPath = string | `${SoundType}/${string}`
+type SoundPath =
+  | (string & {
+      _?: never
+    })
+  | `${SoundType}/${string}`
 
 interface ModuleEffectValue {
   /**
@@ -2994,7 +3002,7 @@ type CollisionMaskLayer =
   | "rail-layer"
   | "transport-belt-layer"
   | "not-setup"
-  | `layer-${number}`
+  | `layer-${bigint}`
 
 /**
  * This is a set of masks given as a dictionary[{@link CollisionMaskLayer} &rarr; {@link boolean}]. Only set masks are present in the dictionary and they have the value `true`. Unset flags aren't present at all.
@@ -3621,7 +3629,7 @@ type ForceCondition = "all" | "enemy" | "ally" | "friend" | "not-friend" | "same
  */
 type RenderLayer =
   | number
-  | `${number}`
+  | `${bigint}`
   | "water-tile"
   | "ground-tile"
   | "tile-transition"
