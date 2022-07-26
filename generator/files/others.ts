@@ -1,7 +1,7 @@
-import { sortByOrder } from "../util"
 import ts from "typescript"
-import { createConst, Modifiers, Types } from "../genUtil"
 import DefinitionsGenerator from "../DefinitionsGenerator"
+import { createConst, Modifiers, Types } from "../genUtil"
+import { sortByOrder } from "../util"
 
 export function preprocessBuiltins(generator: DefinitionsGenerator) {
   for (const builtin of generator.apiDocs.builtin_types) {
@@ -15,17 +15,21 @@ export function preprocessBuiltins(generator: DefinitionsGenerator) {
 export function preprocessGlobalObjects(generator: DefinitionsGenerator) {
   for (const globalObject of generator.apiDocs.global_objects) {
     generator.typeNames[globalObject.name] = globalObject.name
-    generator.mapTypeBasic(globalObject.type, true, false)
+    // generator.mapTypeSimple(globalObject.type, true, false)
   }
 }
 
 export function generateBuiltins(generator: DefinitionsGenerator) {
   const statements = generator.newStatements()
   for (const builtin of generator.apiDocs.builtin_types.sort(sortByOrder)) {
-    if (builtin.name === "boolean" || builtin.name === "string") continue
+    if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
     let type: ts.KeywordTypeNode
     if (builtin.name === "table") {
       type = Types.object
+    } else if (builtin.name === "LuaObject") {
+      type = Types.unknown // TODO
+    } else if (builtin.name === "nil") {
+      type = Types.undefined
     } else {
       type = Types.number
     }
@@ -45,7 +49,7 @@ export function generateGlobalObjects(generator: DefinitionsGenerator) {
   for (const globalObject of generator.apiDocs.global_objects.sort(sortByOrder)) {
     const definition = createConst(
       globalObject.name,
-      generator.mapTypeWithTransforms(globalObject, "", globalObject.type, true, false).read,
+      generator.mapTypeWithTransforms(globalObject, "", globalObject.type).mainType,
       [Modifiers.declare]
     )
     generator.addJsDoc(definition, globalObject, globalObject.name)

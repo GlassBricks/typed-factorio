@@ -1,9 +1,9 @@
-import { Define } from "../FactorioApiJson"
-import { sortByOrder } from "../util"
 import ts from "typescript"
+import DefinitionsGenerator from "../DefinitionsGenerator"
+import { Define } from "../FactorioApiJson"
 import { createConst, createNamespace, Modifiers, Types } from "../genUtil"
 import { AnyDef } from "../manualDefinitions"
-import DefinitionsGenerator from "../DefinitionsGenerator"
+import { sortByOrder } from "../util"
 import { getMappedEventName } from "./events"
 
 export function preprocessDefines(generator: DefinitionsGenerator) {
@@ -64,7 +64,7 @@ export function generateDefines(generator: DefinitionsGenerator) {
     const type = ts.factory.createTypeAliasDeclaration(
       undefined,
       undefined,
-      "Events",
+      "events",
       undefined,
       ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof)
     )

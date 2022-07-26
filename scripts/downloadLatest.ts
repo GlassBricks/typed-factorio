@@ -1,7 +1,7 @@
-import * as https from "https"
-import * as fs from "fs"
-import * as path from "path"
 import * as child_process from "child_process"
+import * as fs from "fs"
+import * as https from "https"
+import * as path from "path"
 
 const url = "https://lua-api.factorio.com/latest/runtime-api.json"
 
@@ -32,7 +32,7 @@ new Promise((resolve, reject) => {
   const expected = {
     application: "factorio",
     stage: "runtime",
-    api_version: 2,
+    api_version: 3,
   }
   for (const [k, value] of Object.entries(expected)) {
     const key = k as keyof typeof expected

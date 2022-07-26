@@ -1,5 +1,4 @@
 import ts from "typescript"
-import { RWType } from "./DefinitionsGenerator"
 
 export const printer = ts.createPrinter({
   omitTrailingSemicolon: true,
@@ -19,6 +18,7 @@ export const Modifiers = {
 export const Types = {
   void: ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
   undefined: ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
+  nil: ts.factory.createTypeReferenceNode("nil"),
   unknown: ts.factory.createKeywordTypeNode(ts.SyntaxKind.UnknownKeyword),
   object: ts.factory.createKeywordTypeNode(ts.SyntaxKind.ObjectKeyword),
   number: ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
@@ -31,6 +31,9 @@ export const Types = {
   },
   numberLiteral(value: number): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(ts.factory.createNumericLiteral(value))
+  },
+  booleanLiteral(value: boolean): ts.LiteralTypeNode {
+    return ts.factory.createLiteralTypeNode(value ? ts.factory.createTrue() : ts.factory.createFalse())
   },
 }
 
@@ -54,27 +57,6 @@ const toPascalDictionary: Record<string, string> = {
 
 export function toPascalCase(str: string): string {
   return toPascalDictionary[str] ?? str.split(/[-_ ]/g).map(capitalize).join("")
-}
-
-export function makeNullable(type: RWType) {
-  function makeTypeNullable(typeNode: ts.TypeNode): ts.TypeNode {
-    if (!ts.isUnionTypeNode(typeNode)) {
-      return ts.factory.createUnionTypeNode([typeNode, Types.undefined])
-    }
-    if (typeNode.types.some((t) => t.kind === ts.SyntaxKind.UndefinedKeyword)) {
-      return typeNode
-    }
-    return ts.factory.createUnionTypeNode([...typeNode.types, Types.undefined])
-  }
-  if (type.read === type.write) {
-    const read = makeTypeNullable(type.read!)
-    return { read, write: read }
-  }
-
-  return {
-    read: type.read && makeTypeNullable(type.read),
-    write: type.write && makeTypeNullable(type.write),
-  }
 }
 
 export function createNamespace(

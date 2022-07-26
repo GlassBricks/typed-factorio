@@ -520,21 +520,23 @@ type RealOrientation = float
 
 type Tags = Record<string, AnyBasic | undefined>
 
-interface MapPositionTable {}
-interface MapPositionArray {}
+/** @addAfter MapPosition */
+type MapPositionTable = MapPosition
+/** @addAfter MapPosition */
+type MapPositionArray = MapPosition
 interface MapPosition {}
 
-/** @addAfter MapPosition */
-/** @deprecated Replace with {@link MapPositionTable}. */
-type PositionTable = MapPositionTable
-
-/** @addAfter MapPosition */
-/** @deprecated Replace with {@link MapPositionArray}. */
-type PositionArray = MapPositionArray
-
-/** @addAfter MapPosition */
-/** @deprecated Replace with {@link MapPosition}. */
-type Position = MapPosition
+// /** @addAfter MapPosition */
+// /** @deprecated Replace with {@link MapPositionTable}. */
+// type PositionTable = MapPositionTable
+//
+// /** @addAfter MapPosition */
+// /** @deprecated Replace with {@link MapPositionArray}. */
+// type PositionArray = MapPositionArray
+//
+// /** @addAfter MapPosition */
+// /** @deprecated Replace with {@link MapPosition}. */
+// type Position = MapPosition
 
 type Vector = MapPositionArray
 
@@ -730,14 +732,14 @@ interface CircularParticleCreationSpecification {
 
 interface BoundingBoxTable {}
 
-/** @addAfter BoundingBox */
-interface BoundingBoxRead extends BoundingBoxTable {
-  readonly left_top: MapPositionTable
-  readonly right_bottom: MapPositionTable
-  readonly orientation?: RealOrientation
-}
+// /** @addAfter BoundingBox */
+// interface BoundingBoxRead extends BoundingBoxTable {
+//   readonly left_top: MapPositionTable
+//   readonly right_bottom: MapPositionTable
+//   readonly orientation?: RealOrientation
+// }
 
-/** @readType BoundingBoxRead */
+// /** @readType BoundingBoxRead */
 interface BoundingBox {}
 
 /** @readType Fluid */

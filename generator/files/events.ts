@@ -1,14 +1,11 @@
 import ts from "typescript"
-import { sortByOrder } from "../util"
 import DefinitionsGenerator from "../DefinitionsGenerator"
 import { createExtendsClause, toPascalCase } from "../genUtil"
+import { sortByOrder } from "../util"
 
 export function preprocessEvents(generator: DefinitionsGenerator) {
   for (const event of generator.apiDocs.events) {
     generator.typeNames[event.name] = getMappedEventName(event.name)
-    for (const parameter of event.data) {
-      generator.mapTypeBasic(parameter.type, true, false)
-    }
   }
 }
 
@@ -31,7 +28,7 @@ export function generateEvents(generator: DefinitionsGenerator) {
         if (p.name === "name" && event.name !== "CustomInputEvent") {
           p.type = "typeof " + p.type + "." + event.name
         }
-        return generator.mapParameterToProperty(p, name, true, false, existing)
+        return generator.mapParameterToProperty(p, name, existing)
       })
     )
     generator.addJsDoc(declaration, event, event.name)

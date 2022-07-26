@@ -1,9 +1,10 @@
-import { assertNever, getFirst, sortByOrder } from "../util"
 import ts from "typescript"
-import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method, Parameter } from "../FactorioApiJson"
-import { addFakeJSDoc, makeNullable, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
-import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
 import DefinitionsGenerator, { Statements } from "../DefinitionsGenerator"
+import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method, Parameter } from "../FactorioApiJson"
+import { addFakeJSDoc, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
+import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
+import { makeNullable, mapType } from "../types"
+import { assertNever, getFirst, sortByOrder } from "../util"
 
 export function preprocessClasses(generator: DefinitionsGenerator) {
   for (const clazz of generator.apiDocs.classes) {
@@ -13,42 +14,42 @@ export function preprocessClasses(generator: DefinitionsGenerator) {
     if (existing && existing.kind !== "interface" && existing.kind !== "type") {
       throw new Error("Manual define for class should be interface or type alias")
     }
-    for (const method of clazz.methods) {
-      analyzeMethod(generator, method)
-    }
-    for (const attribute of clazz.attributes) {
-      analyzeAttribute(generator, attribute)
-    }
-    for (const operator of clazz.operators) {
-      if (operator.name === "call") {
-        analyzeMethod(generator, operator)
-      } else {
-        analyzeAttribute(generator, operator)
-      }
-    }
+    //   for (const method of clazz.methods) {
+    //     analyzeMethod(generator, method)
+    //   }
+    //   for (const attribute of clazz.attributes) {
+    //     analyzeAttribute(generator, attribute)
+    //   }
+    //   for (const operator of clazz.operators) {
+    //     if (operator.name === "call") {
+    //       analyzeMethod(generator, operator)
+    //     } else {
+    //       analyzeAttribute(generator, operator)
+    //     }
+    //   }
   }
 }
 
-function analyzeMethod(generator: DefinitionsGenerator, method: Method) {
-  for (const parameter of method.parameters) {
-    generator.mapTypeBasic(parameter.type, false, true)
-  }
-  if (method.variant_parameter_groups) {
-    for (const parameter of method.variant_parameter_groups.flatMap((x) => x.parameters)) {
-      generator.mapTypeBasic(parameter.type, false, true)
-    }
-  }
-  if (method.variadic_type) {
-    generator.mapTypeBasic(method.variadic_type, false, true)
-  }
-  for (const returnValue of method.return_values) {
-    generator.mapTypeBasic(returnValue.type, true, false)
-  }
-}
+// function analyzeMethod(generator: DefinitionsGenerator, method: Method) {
+// for (const parameter of method.parameters) {
+//   generator.mapTypeSimple(parameter.type, false, true)
+// }
+// if (method.variant_parameter_groups) {
+//   for (const parameter of method.variant_parameter_groups.flatMap((x) => x.parameters)) {
+//     generator.mapTypeSimple(parameter.type, false, true)
+//   }
+// }
+// if (method.variadic_type) {
+//   generator.mapTypeSimple(method.variadic_type, false, true)
+// }
+// for (const returnValue of method.return_values) {
+//   generator.mapTypeSimple(returnValue.type, true, false)
+// }
+// }
 
-function analyzeAttribute(generator: DefinitionsGenerator, attribute: Attribute) {
-  generator.mapTypeBasic(attribute.type, attribute.read, attribute.write)
-}
+// function analyzeAttribute(generator: DefinitionsGenerator, attribute: Attribute) {
+// generator.mapTypeSimple(attribute.type, attribute.read, attribute.write)
+// }
 
 export function generateClasses(generator: DefinitionsGenerator) {
   const statements = generator.newStatements()
@@ -79,10 +80,8 @@ function generateClass(
   const arrayType = getArrayType()
 
   const members: MemberAndOriginal[] = []
-  // methods + operators
   fillMethodsAndOperators()
   const indexType = fillIndexType()
-  // attributes
   fillAttributes()
   shiftLuaObjectMembers()
   let discriminantProperty: string | undefined, membersBySubclass: Map<string, MemberAndOriginal[]>
@@ -207,7 +206,7 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = generator.mapTypeBasic(lengthOperator.type, true, false).read
+      const type = mapType(generator, lengthOperator.type).mainType
       const lengthProperty = generator.addJsDoc(
         ts.factory.createPropertySignature(
           [Modifiers.readonly],
@@ -247,6 +246,16 @@ function generateClass(
         standardMembers[name] = group as never
         members.splice(i, 1)
         i--
+      }
+    }
+
+    if (clazz.abstract) {
+      if (standardMembers.valid || standardMembers.object_name || standardMembers.help) {
+        generator.warning("Abstract class with lua object members", clazz.name)
+      }
+    } else {
+      if (!standardMembers.valid || !standardMembers.object_name || !standardMembers.help) {
+        generator.warning("Class missing lua object members", clazz.name)
       }
     }
 
@@ -524,7 +533,7 @@ function generateClass(
     }
   }
   function mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
-    const type = generator.mapTypeWithTransforms(parameter, parent, parameter.type, false, true).write
+    const type = generator.mapTypeWithTransforms(parameter, parent, parameter.type).mainType
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
@@ -552,28 +561,20 @@ function generateClass(
                   (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
                     removeLuaPrefix(clazz.name) + toPascalCase(method.name),
                   method,
-                  statements,
-                  false,
-                  true
+                  statements
                 )
               : ts.factory.createTypeLiteralNode(
-                  method.parameters
-                    .sort(sortByOrder)
-                    .map((m) => generator.mapParameterToProperty(m, thisPath, false, true))
+                  method.parameters.sort(sortByOrder).map((m) => generator.mapParameterToProperty(m, thisPath))
                 )
           ),
         ]
       : method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(m, thisPath))
 
     if (method.variadic_type) {
-      const type = generator.mapTypeBasic(
-        {
-          complex_type: "array",
-          value: method.variadic_type,
-        },
-        false,
-        true
-      ).write
+      const type = mapType(generator, {
+        complex_type: "array",
+        value: method.variadic_type,
+      }).mainType
       parameters.push(
         ts.factory.createParameterDeclaration(undefined, undefined, Tokens.dotDotDot, "args", undefined, type)
       )
@@ -588,11 +589,9 @@ function generateClass(
           name: "<return>",
         },
         thisPath,
-        type.type,
-        true,
-        false
-      ).read
-      return type.optional ? makeNullable({ read: result }).read! : result
+        type.type
+      )
+      return type.optional ? makeNullable(result).mainType : result.mainType
     }
 
     let returnType: ts.TypeNode

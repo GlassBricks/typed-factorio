@@ -2,7 +2,7 @@ export interface FactorioApiJson {
   application: "factorio"
   stage: "runtime"
   application_version: string
-  api_version: 2
+  api_version: 3
 
   classes: Class[]
   events: Event[]
@@ -10,6 +10,7 @@ export interface FactorioApiJson {
   builtin_types: BuiltinType[]
   concepts: Concept[]
   global_objects: GlobalObject[]
+  global_functions: Method[]
 }
 
 export interface BasicMember {
@@ -33,6 +34,7 @@ export interface Class extends BasicMember, WithNotes {
   methods: Method[]
   attributes: Attribute[]
   operators: Operator[]
+  abstract: boolean
   base_classes?: string[]
 }
 
@@ -61,60 +63,9 @@ export interface Define extends BasicMember {
 
 export type BuiltinType = BasicMember
 
-export interface BaseConcept extends BasicMember, WithNotes {
-  category: string
+export interface Concept extends BasicMember, WithNotes {
+  type: Type
 }
-
-export interface TableConcept extends BaseConcept, WithParameterVariants {
-  category: "table"
-}
-
-export interface TableOrArrayConcept extends BaseConcept {
-  category: "table_or_array"
-  parameters: Parameter[]
-}
-
-export interface EnumConcept extends BaseConcept {
-  category: "enum"
-  options: BasicMember[]
-}
-
-export interface FlagConcept extends BaseConcept {
-  category: "flag"
-  options: BasicMember[]
-}
-
-export interface UnionConcept extends BaseConcept {
-  category: "union"
-  options: {
-    type: Type
-    order: number
-    description: string
-  }[]
-}
-
-export interface FilterConcept extends BaseConcept, WithParameterVariants {
-  category: "filter"
-}
-
-export interface StructConcept extends BaseConcept {
-  category: "struct"
-  attributes: Attribute[]
-}
-
-export interface ConceptConcept extends BaseConcept {
-  category: "concept"
-}
-
-export type Concept =
-  | TableConcept
-  | TableOrArrayConcept
-  | EnumConcept
-  | FlagConcept
-  | UnionConcept
-  | FilterConcept
-  | StructConcept
-  | ConceptConcept
 
 export interface GlobalObject extends BasicMember {
   type: string
@@ -124,9 +75,16 @@ export interface BaseComplexType {
   complex_type: string
 }
 
-export interface VariantComplexType extends BaseComplexType {
-  complex_type: "variant"
+export interface TypeComplexType {
+  complex_type: "type"
+  value: Type
+  description: string
+}
+
+export interface UnionComplexType extends BaseComplexType {
+  complex_type: "union"
   options: Type[]
+  full_format: boolean
 }
 
 export interface ArrayComplexType extends BaseComplexType {
@@ -135,13 +93,7 @@ export interface ArrayComplexType extends BaseComplexType {
 }
 
 export interface DictionaryComplexType extends BaseComplexType {
-  complex_type: "dictionary"
-  key: Type
-  value: Type
-}
-
-export interface LuaCustomTableComplexType extends BaseComplexType {
-  complex_type: "LuaCustomTable"
+  complex_type: "dictionary" | "LuaCustomTable"
   key: Type
   value: Type
 }
@@ -151,22 +103,35 @@ export interface FunctionComplexType extends BaseComplexType {
   parameters: Type[]
 }
 
+export interface LiteralComplexType extends BaseComplexType {
+  complex_type: "literal"
+  value: string | number | boolean
+  description?: string
+}
+
 export interface LuaLazyLoadedValueComplexType extends BaseComplexType {
   complex_type: "LuaLazyLoadedValue"
   value: Type
 }
 
+export interface StructComplexType extends BaseComplexType {
+  complex_type: "struct"
+  attributes: Attribute[]
+}
+
 export interface TableComplexType extends BaseComplexType, WithParameterVariants {
-  complex_type: "table"
+  complex_type: "table" | "tuple"
 }
 
 export type ComplexType =
-  | VariantComplexType
+  | TypeComplexType
+  | UnionComplexType
   | ArrayComplexType
   | DictionaryComplexType
-  | LuaCustomTableComplexType
   | FunctionComplexType
+  | LiteralComplexType
   | LuaLazyLoadedValueComplexType
+  | StructComplexType
   | TableComplexType
 
 export type Type = string | ComplexType
@@ -196,9 +161,10 @@ export interface Method extends BasicMember, WithNotes, WithParameterVariants {
 }
 
 export interface Attribute extends BasicMember, WithNotes {
-  subclasses: string[]
+  raises?: EventRaised[]
+  subclasses?: string[]
   type: Type
+  optional: boolean
   read: boolean
   write: boolean
-  raises?: EventRaised[]
 }
