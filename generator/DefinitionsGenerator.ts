@@ -10,17 +10,14 @@ import {
   EventRaised,
   FactorioApiJson,
   Parameter,
-  Type,
   WithNotes,
   WithParameterVariants,
 } from "./FactorioApiJson"
 import { getMappedEventName } from "./files/events"
-import { IndexTypes } from "./files/index-types"
 import {
   addFakeJSDoc,
   createComment,
   createExtendsClause,
-  indent,
   Modifiers,
   removeLuaPrefix,
   Tokens,
@@ -28,7 +25,7 @@ import {
   Types,
 } from "./genUtil"
 import { InterfaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions"
-import { makeNullable, mapType, RWType } from "./types"
+import { mapMemberType } from "./types"
 import { sortByOrder } from "./util"
 
 export class Statements {
@@ -103,13 +100,6 @@ export default class DefinitionsGenerator {
   addTo = new Map<string, ts.Statement[]>()
 
   readWriteConcepts = new Map<string, { read: string; write: string }>()
-  conceptUsage = new Map<
-    string,
-    {
-      read: boolean
-      write: boolean
-    }
-  >(Array.from(this.concepts.keys()).map((c) => [c, { read: false, write: false }]))
 
   hasWarnings: boolean = false
 
@@ -118,12 +108,13 @@ export default class DefinitionsGenerator {
     global: "Global.html",
     "data-lifecycle": "Data-Lifecycle.html",
     migrations: "Migrations.html",
+    classes: "Classes.html",
   }
 
   constructor(
     readonly apiDocs: FactorioApiJson,
     readonly manualDefinitionsSource: ts.SourceFile,
-    private readonly checker: ts.TypeChecker
+    readonly checker: ts.TypeChecker
   ) {
     if (apiDocs.application !== "factorio") {
       throw new Error("Unsupported application " + apiDocs.application)
@@ -163,7 +154,7 @@ export default class DefinitionsGenerator {
   ): ts.TypeElement | ts.TypeElement[] {
     let member: ts.TypeElement | ts.TypeElement[]
     // todo: include rw usage
-    const type = this.mapTypeWithTransforms(attribute, parent, attribute.type)
+    const type = mapMemberType(this, attribute, parent, attribute.type)
     const existing = existingContainer?.members[attribute.name]
     if (existing) {
       // todo: handle read/write differences
@@ -248,15 +239,6 @@ export default class DefinitionsGenerator {
     parent: string,
     existingContainer?: InterfaceDef | TypeAliasDef
   ): ts.PropertySignature {
-    const prop = this.mapParameterToRWProperties(parameter, parent, existingContainer)
-    return prop.mainType
-  }
-
-  mapParameterToRWProperties(
-    parameter: Parameter,
-    parent: string,
-    existingContainer?: InterfaceDef | TypeAliasDef
-  ): RWType<ts.PropertySignature> {
     const existingProperty = existingContainer?.members[parameter.name]?.[0]
     if (existingProperty) {
       if (!ts.isPropertySignature(existingProperty)) {
@@ -267,9 +249,9 @@ export default class DefinitionsGenerator {
         )
       }
       this.addJsDoc(existingProperty, parameter, undefined)
-      return { mainType: existingProperty }
+      return existingProperty
     } else {
-      const type = this.mapTypeWithTransforms(parameter, parent, parameter.type)
+      const type = mapMemberType(this, parameter, parent, parameter.type)
 
       const result = ts.factory.createPropertySignature(
         [Modifiers.readonly],
@@ -279,7 +261,7 @@ export default class DefinitionsGenerator {
       )
       this.addJsDoc(result, parameter, undefined)
 
-      return { mainType: result }
+      return result
     }
 
     function escapePropertyName(name: string): ts.PropertyName {
@@ -290,137 +272,10 @@ export default class DefinitionsGenerator {
     }
   }
 
-  mapTypeWithTransforms(member: { description: string; name?: string }, parent: string, baseType: Type): RWType {
-    const result =
-      this.tryUseIndexType(member, parent, baseType) ??
-      this.tryUseStringEnum(member, baseType) ??
-      this.tryUseFlagValue(member, baseType) ??
-      mapType(this, baseType)
-    const isNullable = !(member as Parameter).optional && this.isNullableFromDescription(member, parent)
-    return isNullable ? makeNullable(result) : result
-  }
-
-  tryGetStringEnumType(typeNode: ts.TypeNode): string[] | undefined {
-    if (ts.isUnionTypeNode(typeNode)) {
-      if (typeNode.types.some((t) => !ts.isLiteralTypeNode(t) || !ts.isStringLiteral(t.literal))) return undefined
-      return typeNode.types.map((t) => ((t as ts.LiteralTypeNode).literal as ts.StringLiteral).text)
-    }
-
-    let type = this.checker.getTypeFromTypeNode(typeNode)
-    while (!type.isUnion() && type.symbol) {
-      type = this.checker.getDeclaredTypeOfSymbol(type.symbol)
-    }
-    if (type.isUnion()) {
-      if (type.types.some((t) => !t.isStringLiteral())) return undefined
-      return type.types.map((t) => (t as ts.StringLiteralType).value)
-    }
-    return undefined
-  }
-
-  private tryUseIndexType(
-    member: {
-      name?: string
-    },
-    parent: string,
-    type: Type
-  ): RWType | undefined {
-    if (type !== "uint" && type !== "uint64") return undefined
-    for (const indexType of IndexTypes) {
-      const expectedType = indexType.typeOverride ?? "uint"
-      if (type !== expectedType) continue
-      if (
-        (indexType.mainAttributePath.parent === parent && member.name === indexType.mainAttributePath.name) ||
-        parent === indexType.mainAttributePath.parent + "." + indexType.mainAttributePath.name ||
-        parent === indexType.identificationConcept ||
-        (indexType.attributePattern && member.name?.match(indexType.attributePattern))
-      ) {
-        const typeNode = ts.factory.createTypeReferenceNode(indexType.name)
-        return { mainType: typeNode }
-      }
-    }
-    return undefined
-  }
-
-  // noinspection JSMethodCanBeStatic
-  private tryUseStringEnum(
-    member: {
-      description: string
-      name?: string
-    },
-    type: Type
-  ): RWType | undefined {
-    if (type === "string") {
-      const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
-      if (
-        (matches.size >= 2 && !member.description.match(/e\.g\. /i)) ||
-        (matches.size === 1 &&
-          (member.description.match(/One of `"[a-zA-Z-_]+?"`/) ||
-            member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
-      ) {
-        const outType = ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
-        return { mainType: outType }
-      }
-    }
-    /*
-    else {
-      if (member.name === "type") {
-        console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
-      }
-    }
-    */
-
-    return undefined
-  }
-
-  private tryUseFlagValue(
-    member: {
-      description: string
-      name?: string
-    },
-    type: Type
-  ): RWType | undefined {
-    if (member.name !== "flag" || type !== "string") return undefined
-    const match = member.description.match(/\[([A-Z][a-zA-Z]+Flags)]/)
-    if (!match) return undefined
-    const flagName = match[1]
-    if (this.concepts.get(flagName)?.type !== "flag") return undefined
-
-    const result = ts.factory.createTypeOperatorNode(
-      ts.SyntaxKind.KeyOfKeyword,
-      ts.factory.createTypeReferenceNode(flagName)
-    )
-    return { mainType: result }
-  }
-
-  private isNullableFromDescription(
-    member: {
-      description: string
-      name?: string
-    },
-    parent: string
-  ): boolean {
-    const nullableRegex = /(returns|or|be|possibly|otherwise|else|) [`']?nil[`']?|`?nil`? (if|when|otherwise)/i
-    const nullable = member.description.match(nullableRegex)
-    if (nullable) {
-      if (!member.description.match(/[`' ]nil/i)) {
-        this.warning(
-          `Inconsistency in nullability in description: ${parent}.${member.name}\n`,
-          indent(member.description)
-        )
-      }
-      return true
-    }
-    // if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
-    //   console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
-    // }
-    return false
-  }
-
   createVariantParameterTypes(
     name: string,
     variants: WithParameterVariants,
     statements: Statements,
-    readWriteNames?: { read: string; write: string },
     memberForDocs?: BasicMember
   ): ts.TypeReferenceNode {
     const shortName = removeLuaPrefix(name)
@@ -433,7 +288,7 @@ export default class DefinitionsGenerator {
 
     const baseProperties = variants.parameters.sort(sortByOrder).map((p) => ({
       original: p,
-      member: this.mapParameterToRWProperties(p, baseName, existingBase),
+      member: this.mapParameterToProperty(p, baseName, existingBase),
     }))
 
     // not supported right now
@@ -444,7 +299,7 @@ export default class DefinitionsGenerator {
         baseName,
         undefined,
         undefined,
-        baseProperties.map((g) => g.member.mainType)
+        baseProperties.map((g) => g.member)
       )
     )
     this.typeNames[baseName] = name
@@ -468,7 +323,7 @@ export default class DefinitionsGenerator {
           )
         }
       } else {
-        const memberType = property.member.mainType
+        const memberType = property.member
         types = this.tryGetStringEnumType(memberType.type!)
         if (!types) {
           throw new Error(`Discriminant property ${name}.${discriminantProperty} is not a string literal union`)
@@ -536,9 +391,9 @@ export default class DefinitionsGenerator {
         }
         const properties = group.parameters
           .sort(sortByOrder)
-          .map((p) => this.mapParameterToRWProperties(p, fullName, existing))
+          .map((p) => this.mapParameterToProperty(p, fullName, existing))
 
-        members.push(...properties.map((x) => x.mainType))
+        members.push(...properties)
         declaration = ts.factory.createInterfaceDeclaration(
           undefined,
           undefined,
@@ -556,35 +411,13 @@ export default class DefinitionsGenerator {
       this.typeNames[fullName] = fullName
     }
 
-    let declaration: ts.TypeAliasDeclaration
-
-    if (readWriteNames) {
-      statements.add(
-        ts.factory.createTypeAliasDeclaration(
-          undefined,
-          undefined,
-          readWriteNames.read,
-          undefined,
-          ts.factory.createUnionTypeNode(readGroupNames.map((x) => ts.factory.createTypeReferenceNode(x)))
-        )
-      )
-
-      declaration = ts.factory.createTypeAliasDeclaration(
-        undefined,
-        undefined,
-        readWriteNames.write,
-        undefined,
-        ts.factory.createUnionTypeNode(writeGroupNames.map((x) => ts.factory.createTypeReferenceNode(x)))
-      )
-    } else {
-      declaration = ts.factory.createTypeAliasDeclaration(
-        undefined,
-        undefined,
-        name,
-        undefined,
-        ts.factory.createUnionTypeNode(readGroupNames.map((x) => ts.factory.createTypeReferenceNode(x)))
-      )
-    }
+    const declaration: ts.TypeAliasDeclaration = ts.factory.createTypeAliasDeclaration(
+      undefined,
+      undefined,
+      name,
+      undefined,
+      ts.factory.createUnionTypeNode(readGroupNames.map((x) => ts.factory.createTypeReferenceNode(x)))
+    )
 
     statements.add(declaration)
     if (memberForDocs) {
@@ -592,6 +425,24 @@ export default class DefinitionsGenerator {
     }
     this.typeNames[name] = name
     return ts.factory.createTypeReferenceNode(name)
+  }
+
+  // todo: replace
+  tryGetStringEnumType(typeNode: ts.TypeNode): string[] | undefined {
+    if (ts.isUnionTypeNode(typeNode)) {
+      if (typeNode.types.some((t) => !ts.isLiteralTypeNode(t) || !ts.isStringLiteral(t.literal))) return undefined
+      return typeNode.types.map((t) => ((t as ts.LiteralTypeNode).literal as ts.StringLiteral).text)
+    }
+
+    let type = this.checker.getTypeFromTypeNode(typeNode)
+    while (!type.isUnion() && type.symbol) {
+      type = this.checker.getDeclaredTypeOfSymbol(type.symbol)
+    }
+    if (type.isUnion()) {
+      if (type.types.some((t) => !t.isStringLiteral())) return undefined
+      return type.types.map((t) => (t as ts.StringLiteralType).value)
+    }
+    return undefined
   }
 
   private mapLink(origLink: string): { link: string; isWebLink?: true } {

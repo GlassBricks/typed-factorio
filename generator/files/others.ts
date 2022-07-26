@@ -1,6 +1,7 @@
 import ts from "typescript"
 import DefinitionsGenerator from "../DefinitionsGenerator"
 import { createConst, Modifiers, Types } from "../genUtil"
+import { mapType } from "../types"
 import { sortByOrder } from "../util"
 
 export function preprocessBuiltins(generator: DefinitionsGenerator) {
@@ -49,7 +50,7 @@ export function generateGlobalObjects(generator: DefinitionsGenerator) {
   for (const globalObject of generator.apiDocs.global_objects.sort(sortByOrder)) {
     const definition = createConst(
       globalObject.name,
-      generator.mapTypeWithTransforms(globalObject, "", globalObject.type).mainType,
+      mapType(generator, globalObject.type, { baseName: globalObject.name }).mainType,
       [Modifiers.declare]
     )
     generator.addJsDoc(definition, globalObject, globalObject.name)

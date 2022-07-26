@@ -3,7 +3,7 @@ import DefinitionsGenerator, { Statements } from "../DefinitionsGenerator"
 import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method, Parameter } from "../FactorioApiJson"
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
-import { makeNullable, mapType } from "../types"
+import { makeNullable, mapMemberType, mapType } from "../types"
 import { assertNever, getFirst, sortByOrder } from "../util"
 
 export function preprocessClasses(generator: DefinitionsGenerator) {
@@ -206,7 +206,7 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = mapType(generator, lengthOperator.type).mainType
+      const type = mapType(generator, lengthOperator.type, undefined).mainType
       const lengthProperty = generator.addJsDoc(
         ts.factory.createPropertySignature(
           [Modifiers.readonly],
@@ -246,16 +246,6 @@ function generateClass(
         standardMembers[name] = group as never
         members.splice(i, 1)
         i--
-      }
-    }
-
-    if (clazz.abstract) {
-      if (standardMembers.valid || standardMembers.object_name || standardMembers.help) {
-        generator.warning("Abstract class with lua object members", clazz.name)
-      }
-    } else {
-      if (!standardMembers.valid || !standardMembers.object_name || !standardMembers.help) {
-        generator.warning("Class missing lua object members", clazz.name)
       }
     }
 
@@ -533,7 +523,7 @@ function generateClass(
     }
   }
   function mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
-    const type = generator.mapTypeWithTransforms(parameter, parent, parameter.type).mainType
+    const type = mapMemberType(generator, parameter, parent, parameter.type).mainType
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
@@ -548,33 +538,39 @@ function generateClass(
     const existingMethods = existing?.members[method.name]
     const firstExistingMethod = existingMethods?.[0]
     const thisPath = clazz.name + "." + method.name
-    const parameters = method.takes_table
-      ? [
-          ts.factory.createParameterDeclaration(
-            undefined,
-            undefined,
-            undefined,
-            "params",
-            method.table_is_optional ? Tokens.question : undefined,
-            method.variant_parameter_groups !== undefined
-              ? generator.createVariantParameterTypes(
-                  (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
-                    removeLuaPrefix(clazz.name) + toPascalCase(method.name),
-                  method,
-                  statements
-                )
-              : ts.factory.createTypeLiteralNode(
-                  method.parameters.sort(sortByOrder).map((m) => generator.mapParameterToProperty(m, thisPath))
-                )
-          ),
-        ]
-      : method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(m, thisPath))
+    let parameters: ts.ParameterDeclaration[]
+    if (method.takes_table) {
+      const type =
+        method.variant_parameter_groups !== undefined
+          ? generator.createVariantParameterTypes(
+              (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
+                removeLuaPrefix(clazz.name) + toPascalCase(method.name),
+              method,
+              statements
+            )
+          : ts.factory.createTypeLiteralNode(
+              method.parameters.sort(sortByOrder).map((m) => generator.mapParameterToProperty(m, thisPath, undefined))
+            )
+      parameters = [
+        ts.factory.createParameterDeclaration(
+          undefined,
+          undefined,
+          undefined,
+          "params",
+          method.table_is_optional ? Tokens.question : undefined,
+          type
+        ),
+      ]
+    } else {
+      parameters = method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(m, thisPath))
+    }
 
     if (method.variadic_type) {
-      const type = mapType(generator, {
-        complex_type: "array",
-        value: method.variadic_type,
-      }).mainType
+      const type = mapType(
+        generator,
+        { complex_type: "array", value: method.variadic_type },
+        { baseName: clazz.name, member: thisPath }
+      ).mainType
       parameters.push(
         ts.factory.createParameterDeclaration(undefined, undefined, Tokens.dotDotDot, "args", undefined, type)
       )
@@ -583,7 +579,8 @@ function generateClass(
     let signatures: ts.MethodSignature[] | ts.MethodSignature
 
     function mapReturnType(type: Method["return_values"][number]): ts.TypeNode {
-      const result = generator.mapTypeWithTransforms(
+      const result = mapMemberType(
+        generator,
         {
           ...type,
           name: "<return>",

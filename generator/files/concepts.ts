@@ -59,7 +59,7 @@ function generateConcept(generator: DefinitionsGenerator, concept: Concept, stat
     generator.warning("todo: tableOrArray annotation")
   }
 
-  const type = mapType(generator, concept.type).mainType
+  const type = mapType(generator, concept.type, { baseName: concept.name }).mainType
   if (ts.isTypeLiteralNode(type)) {
     // create interface
     return ts.factory.createInterfaceDeclaration(undefined, undefined, concept.name, undefined, undefined, type.members)
