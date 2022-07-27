@@ -1,67 +1,70 @@
-import { printer } from "./genUtil"
+import * as fs from "fs"
+import * as path from "path"
 import ts from "typescript"
-import { generateBuiltins, generateGlobalObjects, preprocessBuiltins, preprocessGlobalObjects } from "./files/others"
-import { generateDefines, preprocessDefines } from "./files/defines"
-import { generateEvents, preprocessEvents } from "./files/events"
+import { DefinitionsFile } from "./DefinitionsFile"
+import { FactorioApiJson } from "./FactorioApiJson"
 import { generateClasses, preprocessClasses } from "./files/classes"
 import { generateConcepts, preprocessConcepts } from "./files/concepts"
-import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions"
-import DefinitionsGenerator from "./DefinitionsGenerator"
-import { FactorioApiJson } from "./FactorioApiJson"
-import * as path from "path"
-import * as fs from "fs"
+import { generateDefines, preprocessDefines } from "./files/defines"
+import { generateEvents, preprocessEvents } from "./files/events"
 import { generateIndexTypesFile, preprocessIndexTypes } from "./files/index-types"
+import { generateBuiltins, generateGlobalObjects, preprocessBuiltins, preprocessGlobalObjects } from "./files/others"
+import GenerationContext from "./GenerationContext"
+import { printer } from "./genUtil"
+import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions"
 
+const header = "// This is an auto-generated file. Do not edit directly!\n\n"
 export function generateDefinitions(
   apiJson: FactorioApiJson,
   manualDefinitionsSource: ts.SourceFile,
   checker: ts.TypeChecker
 ): { files: Map<string, string>; hasWarnings: boolean } {
-  const header = "// This is an auto-generated file. Do not edit directly!\n\n"
-  const generator = new DefinitionsGenerator(apiJson, manualDefinitionsSource, checker)
-  preprocessAll(generator)
-  generateAll(generator)
+  const context = new GenerationContext(apiJson, manualDefinitionsSource, checker)
+  preprocessAll(context)
+  const files = generateAll(context)
 
   const result = new Map<string, string>()
-  for (const [fileName, statements] of generator.outFiles) {
+  for (const { name, statements } of files) {
     let content = header
     for (const statement of statements) {
-      content += printer.printNode(ts.EmitHint.Unspecified, statement, generator.manualDefinitionsSource)
+      content += printer.printNode(ts.EmitHint.Unspecified, statement, context.manualDefinitionsSource)
       content += "\n\n"
     }
-    result.set(path.join("generated", fileName + ".d.ts"), content)
+    result.set(path.join("generated", name + ".d.ts"), content)
   }
 
-  const indexFiles = generateIndexFiles(generator.outFiles.keys())
+  const indexFiles = generateIndexFiles(files.map((f) => f.name))
   for (const [fileName, content] of indexFiles) {
     result.set(fileName, content)
   }
 
-  const hasWarnings = generator.hasWarnings
+  const hasWarnings = context.hasWarnings
   return { files: result, hasWarnings }
 }
 
-function preprocessAll(generator: DefinitionsGenerator) {
-  preprocessBuiltins(generator)
-  preprocessGlobalObjects(generator)
-  preprocessDefines(generator)
-  preprocessEvents(generator)
-  preprocessClasses(generator)
-  preprocessConcepts(generator)
-  preprocessIndexTypes(generator)
-  preprocessManualDefinitions(generator)
-  generator.preprocessDone = true
+function preprocessAll(context: GenerationContext) {
+  preprocessBuiltins(context)
+  preprocessGlobalObjects(context)
+  preprocessDefines(context)
+  preprocessEvents(context)
+  preprocessClasses(context)
+  preprocessConcepts(context)
+  preprocessIndexTypes(context)
+  preprocessManualDefinitions(context)
 }
 
-function generateAll(generator: DefinitionsGenerator) {
-  generateBuiltins(generator)
-  generateGlobalObjects(generator)
-  generateDefines(generator)
-  generateEvents(generator)
-  generateClasses(generator)
-  generateConcepts(generator)
-  generateIndexTypesFile(generator)
-  checkManualDefinitions(generator)
+function generateAll(context: GenerationContext): DefinitionsFile[] {
+  const files = [
+    generateBuiltins(context),
+    generateGlobalObjects(context),
+    generateDefines(context),
+    generateEvents(context),
+    generateClasses(context),
+    generateConcepts(context),
+    generateIndexTypesFile(context),
+  ]
+  checkManualDefinitions(context)
+  return files
 }
 
 function generateIndexFiles(fileNames: Iterable<string>): Map<string, string> {

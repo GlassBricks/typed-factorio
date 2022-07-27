@@ -1,20 +1,23 @@
 import ts from "typescript"
-import DefinitionsGenerator from "../DefinitionsGenerator"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
+import { addJsDoc } from "../documentation"
+import GenerationContext from "../GenerationContext"
 import { createExtendsClause, toPascalCase } from "../genUtil"
+import { mapParameterToProperty } from "../members"
 import { sortByOrder } from "../util"
 
-export function preprocessEvents(generator: DefinitionsGenerator) {
-  for (const event of generator.apiDocs.events) {
-    generator.typeNames[event.name] = getMappedEventName(event.name)
+export function preprocessEvents(context: GenerationContext) {
+  for (const event of context.apiDocs.events) {
+    context.typeNames[event.name] = getMappedEventName(event.name)
   }
 }
 
-export function generateEvents(generator: DefinitionsGenerator) {
-  const statements = generator.newStatements()
+export function generateEvents(context: GenerationContext): DefinitionsFile {
+  const statements = new StatementsList(context, "events")
   const heritageClause = createExtendsClause("EventData")
-  for (const event of generator.apiDocs.events.sort(sortByOrder)) {
+  for (const event of context.apiDocs.events.sort(sortByOrder)) {
     const name = getMappedEventName(event.name)
-    const existing = generator.manualDefinitions[name]
+    const existing = context.manualDefinitions[name]
     if (existing && existing.kind !== "interface") {
       throw new Error(`Manual definition for ${name} should be a interface, got ${ts.SyntaxKind[existing.node.kind]}`)
     }
@@ -28,14 +31,14 @@ export function generateEvents(generator: DefinitionsGenerator) {
         if (p.name === "name" && event.name !== "CustomInputEvent") {
           p.type = "typeof " + p.type + "." + event.name
         }
-        return generator.mapParameterToProperty(p, name, existing)
+        return mapParameterToProperty(context, p, name, existing)
       })
     )
-    generator.addJsDoc(declaration, event, event.name)
+    addJsDoc(context, declaration, event, event.name, undefined)
     statements.add(declaration)
   }
 
-  generator.addFile("events", statements)
+  return statements.getResult()
 }
 
 export function getMappedEventName(eventName: string): string {

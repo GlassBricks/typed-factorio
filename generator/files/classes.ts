@@ -1,68 +1,72 @@
 import ts from "typescript"
-import DefinitionsGenerator, { Statements } from "../DefinitionsGenerator"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
+import { addJsDoc, processDescription } from "../documentation"
 import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method, Parameter } from "../FactorioApiJson"
+import GenerationContext from "../GenerationContext"
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
+import { mapAttribute, mapParameterToProperty } from "../members"
 import { makeNullable, mapMemberType, mapType } from "../types"
 import { assertNever, getFirst, sortByOrder } from "../util"
+import { createVariantParameterTypes } from "../variantParameter"
 
-export function preprocessClasses(generator: DefinitionsGenerator) {
-  for (const clazz of generator.apiDocs.classes) {
-    generator.typeNames[clazz.name] = clazz.name
+export function preprocessClasses(context: GenerationContext) {
+  for (const clazz of context.apiDocs.classes) {
+    context.typeNames[clazz.name] = clazz.name
 
-    const existing = generator.manualDefinitions[clazz.name]
+    const existing = context.manualDefinitions[clazz.name]
     if (existing && existing.kind !== "interface" && existing.kind !== "type") {
       throw new Error("Manual define for class should be interface or type alias")
     }
     //   for (const method of clazz.methods) {
-    //     analyzeMethod(generator, method)
+    //     analyzeMethod(context, method)
     //   }
     //   for (const attribute of clazz.attributes) {
-    //     analyzeAttribute(generator, attribute)
+    //     analyzeAttribute(context, attribute)
     //   }
     //   for (const operator of clazz.operators) {
     //     if (operator.name === "call") {
-    //       analyzeMethod(generator, operator)
+    //       analyzeMethod(context, operator)
     //     } else {
-    //       analyzeAttribute(generator, operator)
+    //       analyzeAttribute(context, operator)
     //     }
     //   }
   }
 }
 
-// function analyzeMethod(generator: DefinitionsGenerator, method: Method) {
+// function analyzeMethod(context: GenerationContext, method: Method) {
 // for (const parameter of method.parameters) {
-//   generator.mapTypeSimple(parameter.type, false, true)
+//   context.mapTypeSimple(parameter.type, false, true)
 // }
 // if (method.variant_parameter_groups) {
 //   for (const parameter of method.variant_parameter_groups.flatMap((x) => x.parameters)) {
-//     generator.mapTypeSimple(parameter.type, false, true)
+//     context.mapTypeSimple(parameter.type, false, true)
 //   }
 // }
 // if (method.variadic_type) {
-//   generator.mapTypeSimple(method.variadic_type, false, true)
+//   context.mapTypeSimple(method.variadic_type, false, true)
 // }
 // for (const returnValue of method.return_values) {
-//   generator.mapTypeSimple(returnValue.type, true, false)
+//   context.mapTypeSimple(returnValue.type, true, false)
 // }
 // }
 
-// function analyzeAttribute(generator: DefinitionsGenerator, attribute: Attribute) {
-// generator.mapTypeSimple(attribute.type, attribute.read, attribute.write)
+// function analyzeAttribute(context: GenerationContext, attribute: Attribute) {
+// context.mapTypeSimple(attribute.type, attribute.read, attribute.write)
 // }
 
-export function generateClasses(generator: DefinitionsGenerator) {
-  const statements = generator.newStatements()
+export function generateClasses(context: GenerationContext): DefinitionsFile {
+  const statements = new StatementsList(context, "classes")
 
-  for (const clazz of generator.apiDocs.classes.sort(sortByOrder)) {
-    const existing = generator.manualDefinitions[clazz.name]
+  for (const clazz of context.apiDocs.classes.sort(sortByOrder)) {
+    const existing = context.manualDefinitions[clazz.name]
     if (existing && existing.kind !== "interface" && existing.kind !== "type") {
       throw new Error("Manual define for class should be interface or type alias")
     }
-    generateClass(generator, clazz, existing, statements)
+    generateClass(context, clazz, existing, statements)
   }
 
-  generator.addFile("classes", statements)
+  return statements.getResult()
 }
 
 interface MemberAndOriginal {
@@ -71,10 +75,10 @@ interface MemberAndOriginal {
 }
 
 function generateClass(
-  generator: DefinitionsGenerator,
+  context: GenerationContext,
   clazz: Class,
   existing: InterfaceDef | TypeAliasDef | undefined,
-  statements: Statements
+  statements: StatementsList
 ) {
   const superTypes = getSupertypes()
   const arrayType = getArrayType()
@@ -131,7 +135,8 @@ function generateClass(
     const indexOperator = clazz.operators.find((x) => x.name === "index") as IndexOperator | undefined
     if (!indexOperator) return
     if (arrayType) {
-      const indexSignature = generator.addJsDoc(
+      const indexSignature = addJsDoc(
+        context,
         ts.factory.createIndexSignature(
           undefined,
           arrayType.readonly ? [Modifiers.readonly] : undefined,
@@ -149,13 +154,14 @@ function generateClass(
           arrayType.type
         ),
         indexOperator,
-        clazz.name + ".operator%20[]"
+        clazz.name + ".operator%20[]",
+        undefined
       )
       members.push({ original: indexOperator, member: indexSignature })
       return
     }
     if (!(existing?.kind === "type" && existing.indexOperator)) {
-      generator.warning("No index operator manual definition for class", clazz.name)
+      context.warning("No index operator manual definition for class", clazz.name)
       return
     }
 
@@ -167,14 +173,16 @@ function generateClass(
         undefined,
         shortName + "Indexer",
         existing.node.typeParameters,
-        generator.addJsDoc(existingIndexOp, indexOperator, clazz.name + ".operator%20[]")
+        addJsDoc(context, existingIndexOp, indexOperator, clazz.name + ".operator%20[]", undefined)
       )
     }
     if (ts.isTypeLiteralNode(existingIndexOp)) {
-      const indexSignature = generator.addJsDoc(
+      const indexSignature = addJsDoc(
+        context,
         existingIndexOp.members[0] as ts.IndexSignatureDeclaration,
         indexOperator,
-        clazz.name + ".operator%20[]"
+        clazz.name + ".operator%20[]",
+        undefined
       )
       return ts.factory.createInterfaceDeclaration(undefined, undefined, shortName + "Indexer", undefined, undefined, [
         indexSignature,
@@ -206,8 +214,9 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = mapType(generator, lengthOperator.type, { baseName: clazz.name, member: "length" })
-      const lengthProperty = generator.addJsDoc(
+      const type = mapType(context, lengthOperator.type, { baseName: clazz.name, member: "length" })
+      const lengthProperty = addJsDoc(
+        context,
         ts.factory.createPropertySignature(
           [Modifiers.readonly],
           "length",
@@ -215,7 +224,8 @@ function generateClass(
           arrayType ? type : ts.factory.createTypeReferenceNode("LuaLengthMethod", [type])
         ),
         lengthOperator,
-        clazz.name + ".operator%20#"
+        clazz.name + ".operator%20#",
+        undefined
       )
       members.push({ original: lengthOperator, member: lengthProperty })
     }
@@ -225,7 +235,7 @@ function generateClass(
     members.push(
       ...clazz.attributes.sort(sortByOrder).map((attr) => ({
         original: attr,
-        member: generator.mapAttribute(attr, clazz.name, existing),
+        member: mapAttribute(context, attr, clazz.name, existing),
       }))
     )
   }
@@ -251,7 +261,7 @@ function generateClass(
 
     function setNoRefJsDoc(property: { original: Attribute | Method; member: ts.TypeElement }) {
       ts.setSyntheticLeadingComments(property.member, undefined)
-      generator.addJsDoc(property.member, property.original, undefined)
+      addJsDoc(context, property.member, property.original, undefined, undefined)
     }
 
     if (standardMembers.valid) {
@@ -306,7 +316,7 @@ function generateClass(
       if (Array.isArray(memberNode) || !ts.isPropertySignature(memberNode)) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} should be a property signature`)
       }
-      const types = generator.tryGetStringEnumType(memberNode.type!)
+      const types = context.tryGetStringEnumType(memberNode.type!)
       if (!types) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} is not a string literal union`)
       }
@@ -423,7 +433,8 @@ function generateClass(
 
     if (!indexTypeName) {
       if (classForDocs) {
-        generator.addJsDoc(
+        addJsDoc(
+          context,
           baseDeclaration,
           classForDocs,
           classForDocs.name,
@@ -447,7 +458,7 @@ function generateClass(
         ])
       )
       if (classForDocs) {
-        generator.addJsDoc(declaration, classForDocs, classForDocs.name)
+        addJsDoc(context, declaration, classForDocs, classForDocs.name, undefined)
       }
       statements.add(declaration)
     }
@@ -486,7 +497,7 @@ function generateClass(
         undefined,
         ts.factory.createUnionTypeNode(allSubclassTypes.map((x) => ts.factory.createTypeReferenceNode(x)))
       )
-      if (!indexTypeName) generator.addJsDoc(unionDeclaration, clazz, clazz.name)
+      if (!indexTypeName) addJsDoc(context, unionDeclaration, clazz, clazz.name, undefined)
       statements.add(unionDeclaration)
     }
 
@@ -495,7 +506,7 @@ function generateClass(
     //     ([subclassName, origName]) =>
     //       ts.factory.createPropertySignature(
     //         undefined,
-    //         DefinitionsGenerator.escapePropertyName(origName),
+    //         GenerationContext.escapePropertyName(origName),
     //         undefined,
     //         ts.factory.createTypeReferenceNode(toPascalCase(subclassName) + shortName)
     //       )
@@ -504,7 +515,7 @@ function generateClass(
     //   statements.add(
     //     ts.factory.createInterfaceDeclaration(undefined, undefined, outName, undefined, undefined, typeMembers)
     //   )
-    //   generator.typeNames[outName] = outName
+    //   context.typeNames[outName] = outName
     // }
 
     if (indexTypeName) {
@@ -518,12 +529,12 @@ function generateClass(
           ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName)),
         ])
       )
-      generator.addJsDoc(declaration, clazz, clazz.name)
+      addJsDoc(context, declaration, clazz, clazz.name, undefined)
       statements.add(declaration)
     }
   }
   function mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
-    const type = mapMemberType(generator, parameter, parent, parameter.type).mainType
+    const type = mapMemberType(context, parameter, parent, parameter.type).mainType
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
@@ -542,14 +553,15 @@ function generateClass(
     if (method.takes_table) {
       const type =
         method.variant_parameter_groups !== undefined
-          ? generator.createVariantParameterTypes(
+          ? createVariantParameterTypes(
+              context,
               (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
                 removeLuaPrefix(clazz.name) + toPascalCase(method.name),
               method,
               statements
             )
           : ts.factory.createTypeLiteralNode(
-              method.parameters.sort(sortByOrder).map((m) => generator.mapParameterToProperty(m, thisPath, undefined))
+              method.parameters.sort(sortByOrder).map((m) => mapParameterToProperty(context, m, thisPath, undefined))
             )
       parameters = [
         ts.factory.createParameterDeclaration(
@@ -567,7 +579,7 @@ function generateClass(
 
     if (method.variadic_type) {
       const type = mapType(
-        generator,
+        context,
         { complex_type: "array", value: method.variadic_type },
         { baseName: clazz.name, member: method.name }
       )
@@ -580,7 +592,7 @@ function generateClass(
 
     function mapReturnType(type: Method["return_values"][number]): ts.TypeNode {
       const result = mapMemberType(
-        generator,
+        context,
         {
           ...type,
           name: "<return>",
@@ -646,7 +658,7 @@ function generateClass(
               false,
               undefined,
               undefined,
-              generator.processDescription(p.description)
+              processDescription(context, p.description)
             )
           )
       )
@@ -658,17 +670,17 @@ function generateClass(
           ts.factory.createJSDocReturnTag(
             undefined,
             undefined,
-            generator.processDescription(method.return_values[0].description)
+            processDescription(context, method.return_values[0].description)
           )
         )
     } else if (method.return_values.length > 1) {
       tags.push(
         ...method.return_values.map((r) =>
-          ts.factory.createJSDocReturnTag(undefined, undefined, generator.processDescription(r.description))
+          ts.factory.createJSDocReturnTag(undefined, undefined, processDescription(context, r.description))
         )
       )
     }
-    generator.addJsDoc(getFirst(signatures), method, thisPath, tags)
+    addJsDoc(context, getFirst(signatures), method, thisPath, tags)
     // if (Array.isArray(members)) {
     //   for (let i = 1; i < members.length; i++) {
     //     const member = members[i]

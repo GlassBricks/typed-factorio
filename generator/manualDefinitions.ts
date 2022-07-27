@@ -1,5 +1,5 @@
 import ts from "typescript"
-import DefinitionsGenerator from "./DefinitionsGenerator"
+import GenerationContext from "./GenerationContext"
 import { addFakeJSDoc } from "./genUtil"
 
 // preprocessed TS AST easier to use
@@ -201,8 +201,8 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
   return result
 }
 
-export function preprocessManualDefinitions(generator: DefinitionsGenerator) {
-  for (const def of Object.values(generator.manualDefinitions as Record<string, RootDef>)) {
+export function preprocessManualDefinitions(context: GenerationContext) {
+  for (const def of Object.values(context.manualDefinitions as Record<string, RootDef>)) {
     const addBefore = def.annotations.addBefore?.[0]
     const addAfter = def.annotations.addAfter?.[0]
     const addTo = def.annotations.addTo?.[0]
@@ -210,44 +210,44 @@ export function preprocessManualDefinitions(generator: DefinitionsGenerator) {
     if (addBefore) {
       if (addTo || addAfter) throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
 
-      if (!generator.addBefore.has(addBefore)) {
-        generator.addBefore.set(addBefore, [])
+      if (!context.addBefore.has(addBefore)) {
+        context.addBefore.set(addBefore, [])
       }
-      generator.addBefore.get(addBefore)!.push(node)
+      context.addBefore.get(addBefore)!.push(node)
     }
     if (addAfter) {
       if (addTo || addBefore)
         throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
 
-      if (!generator.addAfter.has(addAfter)) {
-        generator.addAfter.set(addAfter, [])
+      if (!context.addAfter.has(addAfter)) {
+        context.addAfter.set(addAfter, [])
       }
-      generator.addAfter.get(addAfter)!.push(node)
+      context.addAfter.get(addAfter)!.push(node)
     }
     if (addTo) {
-      if (!generator.addTo.has(addTo)) {
-        generator.addTo.set(addTo, [])
+      if (!context.addTo.has(addTo)) {
+        context.addTo.set(addTo, [])
       }
-      generator.addTo.get(addTo)!.push(node)
+      context.addTo.get(addTo)!.push(node)
     }
     if (addBefore || addTo || addAfter) {
       ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
       const docs = node.jsDoc!
       if (docs.length > 1) {
-        addFakeJSDoc(node, docs[docs.length - 1], generator.manualDefinitionsSource)
+        addFakeJSDoc(node, docs[docs.length - 1], context.manualDefinitionsSource)
       }
     }
   }
 }
 
-export function checkManualDefinitions(generator: DefinitionsGenerator) {
-  const typeNames = new Set(Object.values(generator.typeNames))
-  for (const [name, d] of Object.entries(generator.manualDefinitions)) {
+export function checkManualDefinitions(context: GenerationContext) {
+  const typeNames = new Set(Object.values(context.typeNames))
+  for (const [name, d] of Object.entries(context.manualDefinitions)) {
     const def = d!
     const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
-    const isExisting = typeNames.has(name) || name in generator.typeNames
+    const isExisting = typeNames.has(name) || name in context.typeNames
     if (!!hasAdd === isExisting) {
-      generator.warning(
+      context.warning(
         `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${
           hasAdd ? "has" : "does not have"
         } add annotation:`,
@@ -255,15 +255,15 @@ export function checkManualDefinitions(generator: DefinitionsGenerator) {
       )
     }
   }
-  for (const name of generator.addBefore.keys()) {
-    generator.warning("Could not find existing statement", name, "to add before")
+  for (const name of context.addBefore.keys()) {
+    context.warning("Could not find existing statement", name, "to add before")
   }
 
-  for (const name of generator.addAfter.keys()) {
-    generator.warning("Could not find existing statement", name, "to add after")
+  for (const name of context.addAfter.keys()) {
+    context.warning("Could not find existing statement", name, "to add after")
   }
 
-  for (const name of generator.addTo.keys()) {
-    generator.warning("Could not find existing file", name, "to add to")
+  for (const name of context.addTo.keys()) {
+    context.warning("Could not find existing file", name, "to add to")
   }
 }

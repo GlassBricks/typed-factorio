@@ -1,20 +1,22 @@
 import ts from "typescript"
-import DefinitionsGenerator from "../DefinitionsGenerator"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
+import { addJsDoc } from "../documentation"
 import { Define } from "../FactorioApiJson"
+import GenerationContext from "../GenerationContext"
 import { createConst, createNamespace, Modifiers, Types } from "../genUtil"
 import { AnyDef } from "../manualDefinitions"
 import { sortByOrder } from "../util"
 import { getMappedEventName } from "./events"
 
-export function preprocessDefines(generator: DefinitionsGenerator) {
+export function preprocessDefines(context: GenerationContext) {
   const addDefine = (define: Define, parent: string) => {
     const name = parent + (parent ? "." : "") + define.name
-    generator.typeNames[name] = name
-    generator.defines.set(name, define)
+    context.typeNames[name] = name
+    context.defines.set(name, define)
     if (define.values) {
       for (const value of define.values) {
         const valueName = name + "." + value.name
-        generator.typeNames[valueName] = valueName
+        context.typeNames[valueName] = valueName
       }
     }
     if (define.subkeys) {
@@ -23,23 +25,21 @@ export function preprocessDefines(generator: DefinitionsGenerator) {
       }
     }
   }
-  addDefine(createRootDefine(generator), "")
+  addDefine(createRootDefine(context), "")
 }
 
-export function generateDefines(generator: DefinitionsGenerator) {
-  const [defines] = generateDefinesDeclaration(createRootDefine(generator), "", generator.manualDefinitions.defines, [
+export function generateDefines(context: GenerationContext): DefinitionsFile {
+  const [defines] = generateDefinesDeclaration(createRootDefine(context), "", context.manualDefinitions.defines, [
     Modifiers.declare,
   ])
-  const statements = generator.newStatements()
-  statements.add(defines)
-  generator.addFile("defines", statements)
+  return new StatementsList(context, "defines").add(defines).getResult()
 
   function generateEventsDefine(define: Define) {
     // namespace events { const member: EventId<Id> }
     const members = define.values!.sort(sortByOrder).map((m) => {
       const eventType = getMappedEventName(m.name)
       const typeArguments = [ts.factory.createTypeReferenceNode(eventType)]
-      const event = generator.events.get(m.name)!
+      const event = context.events.get(m.name)!
       const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
       if (eventFilterName) {
         typeArguments.push(ts.factory.createTypeReferenceNode(eventFilterName))
@@ -51,7 +51,7 @@ export function generateDefines(generator: DefinitionsGenerator) {
       }
 
       const statement = createConst(m.name, ts.factory.createTypeReferenceNode("EventId", typeArguments))
-      return generator.addJsDoc(statement, { description }, undefined)
+      return addJsDoc(context, statement, { description }, undefined, undefined)
     })
     const namespace = createNamespace(undefined, define.name, members)
 
@@ -91,13 +91,15 @@ export function generateDefines(generator: DefinitionsGenerator) {
         const members = define.values
           .sort(sortByOrder)
           .map((m, i) =>
-            generator.addJsDoc(
+            addJsDoc(
+              context,
               ts.factory.createEnumMember(
                 m.name,
                 existing?.annotations.numericEnum ? ts.factory.createNumericLiteral(i) : undefined
               ),
               m,
-              thisPath + "." + m.name
+              thisPath + "." + m.name,
+              undefined
             )
           )
         declarations = [ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)]
@@ -113,7 +115,7 @@ export function generateDefines(generator: DefinitionsGenerator) {
         .flatMap((d) => generateDefinesDeclaration(d, thisPath, existing?.members[d.name]))
       declarations = [createNamespace(modifiers, define.name, subkeys)]
     } else if (!existing) {
-      generator.warning("Incomplete define for", thisPath)
+      context.warning("Incomplete define for", thisPath)
       declarations = [
         ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown),
       ]
@@ -121,17 +123,17 @@ export function generateDefines(generator: DefinitionsGenerator) {
       declarations = [existing.node]
     }
     declarations.forEach((d) => {
-      generator.addJsDoc(d, define, thisPath)
+      addJsDoc(context, d, define, thisPath, undefined)
     })
     return declarations
   }
 }
 
-function createRootDefine(generator: DefinitionsGenerator): Define {
+function createRootDefine(context: GenerationContext): Define {
   return {
     order: 0,
     name: "defines",
     description: "",
-    subkeys: generator.apiDocs.defines,
+    subkeys: context.apiDocs.defines,
   }
 }

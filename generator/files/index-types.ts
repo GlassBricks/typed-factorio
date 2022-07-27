@@ -1,5 +1,7 @@
-import DefinitionsGenerator from "../DefinitionsGenerator"
 import ts from "typescript"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
+import { addJsDoc } from "../documentation"
+import GenerationContext from "../GenerationContext"
 import { decapitalize, Types } from "../genUtil"
 
 export interface IndexType {
@@ -58,14 +60,14 @@ export const IndexTypes: IndexType[] = [
   },
 ]
 
-export function preprocessIndexTypes(generator: DefinitionsGenerator): void {
+export function preprocessIndexTypes(context: GenerationContext): void {
   for (const indexType of IndexTypes) {
-    generator.typeNames[indexType.name] = indexType.name
+    context.typeNames[indexType.name] = indexType.name
   }
 }
 
-export function generateIndexTypesFile(generator: DefinitionsGenerator): void {
-  const statements = generator.newStatements()
+export function generateIndexTypesFile(context: GenerationContext): DefinitionsFile {
+  const statements = new StatementsList(context, "index-types")
   for (const indexType of IndexTypes) {
     // type ${name} = uint & { _${name}Brand: void } ( | 1 )
     const typeArguments = [Types.stringLiteral(`_${decapitalize(indexType.name)}Brand`)]
@@ -76,8 +78,9 @@ export function generateIndexTypesFile(generator: DefinitionsGenerator): void {
     const statement = ts.factory.createTypeAliasDeclaration(undefined, undefined, indexType.name, undefined, typeNode)
     const { parent, name } = indexType.mainAttributePath
     const description = `See [${parent}.${name}](${parent}::${name}).\n\nIf using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. \`1 as ${indexType.name}\`.`
-    generator.addJsDoc(statement, { description }, undefined)
+    addJsDoc(context, statement, { description }, undefined, undefined)
     statements.add(statement)
   }
-  generator.addFile("index-types", statements)
+
+  return statements.getResult()
 }
