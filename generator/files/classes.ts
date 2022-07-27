@@ -551,18 +551,18 @@ function generateClass(
     const thisPath = clazz.name + "." + method.name
     let parameters: ts.ParameterDeclaration[]
     if (method.takes_table) {
-      const type =
-        method.variant_parameter_groups !== undefined
-          ? createVariantParameterTypes(
-              context,
-              (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
-                removeLuaPrefix(clazz.name) + toPascalCase(method.name),
-              method,
-              statements
-            )
-          : ts.factory.createTypeLiteralNode(
-              method.parameters.sort(sortByOrder).map((m) => mapParameterToProperty(context, m, thisPath, undefined))
-            )
+      let type: ts.TypeNode
+      if (method.variant_parameter_groups !== undefined) {
+        const name =
+          (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
+          removeLuaPrefix(clazz.name) + toPascalCase(method.name)
+        createVariantParameterTypes(context, name, method, statements)
+        type = ts.factory.createTypeReferenceNode(name)
+      } else {
+        type = ts.factory.createTypeLiteralNode(
+          method.parameters.sort(sortByOrder).map((m) => mapParameterToProperty(context, m, thisPath, undefined))
+        )
+      }
       parameters = [
         ts.factory.createParameterDeclaration(
           undefined,

@@ -13,21 +13,18 @@ export function createVariantParameterTypes(
   variants: WithParameterVariants,
   statements: StatementsList,
   memberForDocs?: BasicMember
-): ts.TypeReferenceNode {
+): void {
   const shortName = removeLuaPrefix(name)
-  const baseName = "Base" + shortName
 
+  const baseName = "Base" + shortName
   const existingBase = context.manualDefinitions[baseName]
   if (existingBase?.kind === "namespace") {
     throw new Error(`Manual definition for variant parameter type ${name} cannot be a namespace`)
   }
-
   const baseProperties = variants.parameters.sort(sortByOrder).map((p) => ({
     original: p,
     member: mapParameterToProperty(context, p, baseName, existingBase),
   }))
-
-  // not supported right now
   statements.add(
     ts.factory.createInterfaceDeclaration(
       undefined,
@@ -41,10 +38,10 @@ export function createVariantParameterTypes(
   context.typeNames[baseName] = name
 
   const discriminantProperty = variants.variant_parameter_description?.match(/depending on `(.+?)`:/)?.[1]
-  let unusedTypes: Set<string> | undefined
+  let unusedVariants: Set<string> | undefined
   let isDefine = false
   if (discriminantProperty) {
-    const property = baseProperties.find((g) => g.original.name === discriminantProperty)
+    const property = baseProperties.find((p) => p.original.name === discriminantProperty)
     if (property === undefined) {
       throw new Error(`Discriminant property ${discriminantProperty} was not found on ${name}`)
     }
@@ -65,21 +62,21 @@ export function createVariantParameterTypes(
         throw new Error(`Discriminant property ${name}.${discriminantProperty} is not a string literal union`)
       }
     }
-    unusedTypes = new Set<string>(types)
+    unusedVariants = new Set<string>(types)
   }
 
   const otherTypes = variants.variant_parameter_groups!.find((x) => x.name === "Other types")
   if (otherTypes) {
     otherTypes.order = variants.variant_parameter_groups!.length + 1
     otherTypes.name = "Other"
-  } else if (unusedTypes) {
+  } else if (unusedVariants) {
     for (const group of variants.variant_parameter_groups!) {
-      unusedTypes.delete(group.name)
+      unusedVariants.delete(group.name)
     }
     let order = variants.variant_parameter_groups!.length + 1
-    for (const unusedType of unusedTypes) {
+    for (const unused of unusedVariants) {
       variants.variant_parameter_groups!.push({
-        name: unusedType,
+        name: unused,
         order: order++,
         description: "",
         parameters: [],
@@ -87,16 +84,15 @@ export function createVariantParameterTypes(
     }
   }
 
-  function getType(groupName: string) {
-    return isDefine ? ts.factory.createTypeReferenceNode(groupName) : Types.stringLiteral(groupName)
+  function variantToTypeNode(variantName: string) {
+    return isDefine ? ts.factory.createTypeReferenceNode(variantName) : Types.stringLiteral(variantName)
   }
 
-  // also default
   const groupNames: string[] = []
 
   for (const group of variants.variant_parameter_groups!.sort(sortByOrder)) {
     const isOtherTypes = group.name === "Other"
-    if (isOtherTypes && (!unusedTypes || unusedTypes.size === 0)) {
+    if (isOtherTypes && (!unusedVariants || unusedVariants.size === 0)) {
       context.warning('"Other" variant parameter group with no other values')
       continue
     }
@@ -119,7 +115,9 @@ export function createVariantParameterTypes(
             [Modifiers.readonly],
             discriminantProperty,
             undefined,
-            isOtherTypes ? ts.factory.createUnionTypeNode(Array.from(unusedTypes!).map(getType)) : getType(group.name)
+            isOtherTypes
+              ? ts.factory.createUnionTypeNode(Array.from(unusedVariants!).map(variantToTypeNode))
+              : variantToTypeNode(group.name)
           )
         )
       }
@@ -138,7 +136,7 @@ export function createVariantParameterTypes(
       )
       groupNames.push(fullName)
     }
-    addJsDoc(context, declaration, group, undefined)
+    addJsDoc(context, declaration, group, name)
     statements.add(declaration)
 
     context.typeNames[fullName] = fullName
@@ -157,5 +155,4 @@ export function createVariantParameterTypes(
     addJsDoc(context, declaration, memberForDocs, memberForDocs.name)
   }
   context.typeNames[name] = name
-  return ts.factory.createTypeReferenceNode(name)
 }

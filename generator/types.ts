@@ -266,7 +266,7 @@ function mapTableType(
 ): RWType {
   assert(typeContext)
   if (type.variant_parameter_groups) {
-    context.warning("variant_parameter_groups is not yet supported")
+    context.warning("variant_parameter_groups is not supported in mapType")
   }
 
   const parameters = type.parameters.sort(sortByOrder).map((p) => {
