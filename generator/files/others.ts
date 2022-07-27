@@ -50,7 +50,7 @@ export function generateGlobalObjects(generator: DefinitionsGenerator) {
   for (const globalObject of generator.apiDocs.global_objects.sort(sortByOrder)) {
     const definition = createConst(
       globalObject.name,
-      mapType(generator, globalObject.type, { baseName: globalObject.name }).mainType,
+      mapType(generator, globalObject.type, { baseName: globalObject.name }),
       [Modifiers.declare]
     )
     generator.addJsDoc(definition, globalObject, globalObject.name)

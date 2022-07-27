@@ -213,7 +213,7 @@ export default class DefinitionsGenerator {
             undefined,
             undefined,
             "value",
-            undefined,
+            attribute.optional ? Tokens.question : undefined,
             type.mainType,
             undefined
           ),
@@ -225,7 +225,7 @@ export default class DefinitionsGenerator {
       member = ts.factory.createPropertySignature(
         attribute.write ? undefined : [Modifiers.readonly],
         attribute.name,
-        undefined,
+        attribute.optional ? Tokens.question : undefined,
         type.mainType
       )
     }

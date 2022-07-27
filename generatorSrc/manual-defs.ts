@@ -540,7 +540,7 @@ interface MapPosition {}
 
 type Vector = MapPositionArray
 
-/** @readType number */
+// /** @readType number */
 type MapGenSize =
   | number
   | "none"
@@ -560,7 +560,7 @@ type MapGenSize =
   | "very-big"
   | "very-good"
 
-/** @readType ComparatorStringRead */
+// /** @readType ComparatorStringRead */
 interface ComparatorString {}
 /** @addAfter ComparatorString */
 /** @see ComparatorString */
@@ -642,27 +642,6 @@ type AnyBasic = string | number | boolean | table
 
 type Any = any
 
-/** @addBefore MouseButtonFlags */
-type MouseButtonFlag =
-  | "left"
-  | "right"
-  | "middle"
-  | "button-4"
-  | "button-5"
-  | "button-6"
-  | "button-7"
-  | "button-8"
-  | "button-9"
-
-/** @addBefore MouseButtonFlags */
-type MouseButtonFlagsTable = {
-  readonly [P in MouseButtonFlag]?: true
-}
-/** @addBefore MouseButtonFlags */
-type MouseButtonFlagsArray = readonly (MouseButtonFlag | "left-and-right")[]
-/** @tableOrArray */
-type MouseButtonFlags = MouseButtonFlagsTable | MouseButtonFlagsArray
-
 type RenderLayer =
   | number
   | `${bigint}`
@@ -730,34 +709,25 @@ interface CircularParticleCreationSpecification {
   readonly center: MapPositionTable
 }
 
-interface BoundingBoxTable {}
-
-// /** @addAfter BoundingBox */
-// interface BoundingBoxRead extends BoundingBoxTable {
-//   readonly left_top: MapPositionTable
-//   readonly right_bottom: MapPositionTable
-//   readonly orientation?: RealOrientation
-// }
-
 // /** @readType BoundingBoxRead */
 interface BoundingBox {}
 
-/** @readType Fluid */
+// /** @readType Fluid */
 interface FluidIdentification {}
 
-/** @readType LuaForce */
+// /** @readType LuaForce */
 interface ForceIdentification {}
 
-/** @readType LuaTechnology */
+// /** @readType LuaTechnology */
 interface TechnologyIdentification {}
 
-/** @readType LuaSurface */
+// /** @readType LuaSurface */
 interface SurfaceIdentification {}
 
-/** @readType LuaPlayer */
+// /** @readType LuaPlayer */
 interface PlayerIdentification {}
 
-/** @readType LuaItemPrototype */
+// /** @readType LuaItemPrototype */
 interface ItemPrototypeIdentification {}
 
 // Skipped: EntityPrototypeIdentification, ItemStackIdentification

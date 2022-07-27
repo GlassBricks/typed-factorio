@@ -17,15 +17,16 @@ import { IndexTypes } from "./files/index-types"
 import { indent, Types } from "./genUtil"
 import { assertNever, sortByOrder } from "./util"
 
-export interface RWType<T extends ts.Node = ts.TypeNode> {
-  mainType: T
+interface RWType {
+  mainType: ts.TypeNode
+  description?: string
+  asString: string | undefined
   // writeType?: ts.TypeNode
 }
 
 export interface TypeContext {
   baseName: string
   member?: string
-  isInUnion?: boolean
 }
 
 function getPath(context: TypeContext) {
@@ -35,8 +36,8 @@ function getPath(context: TypeContext) {
   return context.baseName
 }
 
-export function mapType(generator: DefinitionsGenerator, type: Type, typeContext: TypeContext | undefined): RWType {
-  if (typeof type === "string") return mapBasicType(generator, type)
+function mapTypeInternal(generator: DefinitionsGenerator, type: Type, typeContext: TypeContext | undefined): RWType {
+  if (typeof type === "string") return mapBasicType(type)
   switch (type.complex_type) {
     case "type":
       return mapTypeType(generator, type, typeContext)
@@ -75,12 +76,44 @@ export function mapMemberType(
     tryUseIndexType(member, parent, type) ??
     tryUseStringEnum(member, type) ??
     tryUseFlagValue(generator, member, type) ??
-    mapType(generator, type, {
+    mapTypeInternal(generator, type, {
       baseName: parent,
       member: member.name,
     })
+
+  if (result.description) {
+    generator.warning("Don't have use for type description in member: " + JSON.stringify(member))
+  }
+
   const isNullable = !member.optional && isNullableFromDescription(generator, member, parent)
   return isNullable ? makeNullable(result) : result
+}
+
+export function mapType(
+  generator: DefinitionsGenerator,
+  type: Type,
+  typeContext: TypeContext | undefined
+): ts.TypeNode {
+  const result = mapTypeInternal(generator, type, typeContext)
+  if (result.description) {
+    generator.warning("Don't have use for type description: " + JSON.stringify(type))
+  }
+  return result.mainType
+}
+
+export function mapTypeWithDescription(
+  generator: DefinitionsGenerator,
+  type: Type,
+  typeContext: TypeContext
+): {
+  type: ts.TypeNode
+  description: string | undefined
+} {
+  const result = mapTypeInternal(generator, type, typeContext)
+  return {
+    type: result.mainType,
+    description: result.description,
+  }
 }
 
 function mapTypeType(
@@ -88,15 +121,22 @@ function mapTypeType(
   type: TypeComplexType,
   typeContext: TypeContext | undefined
 ): RWType {
-  // todo: decide what to do about description
-  return mapType(generator, type.value, typeContext)
+  const result = mapTypeInternal(generator, type.value, typeContext)
+  if (type.description) {
+    if (result.description) {
+      generator.warning("type type already has description: " + JSON.stringify(type))
+    }
+    result.description = type.description
+  }
+  return result
 }
 
-function mapBasicType(generator: DefinitionsGenerator, type: string): RWType {
+function mapBasicType(type: string): RWType {
   // todo: analyze read/write usages
   // todo: use readWriteConcepts
   return {
     mainType: ts.factory.createTypeReferenceNode(type),
+    asString: type,
   }
 }
 
@@ -107,23 +147,33 @@ function mapUnionType(
   type: UnionComplexType,
   typeContext: TypeContext | undefined
 ): RWType {
-  const newContext = {
-    baseName: "",
-    ...typeContext,
-    isInUnion: true,
+  const types = type.options.map((t) => mapTypeInternal(generator, t, typeContext))
+  let description: string | undefined
+  if (type.full_format) {
+    description = types
+      .map((t) => {
+        if (!t.asString) generator.warning("Union type with full format has no asString: " + JSON.stringify(type))
+        if (t.description) {
+          return ` - ${t.asString}: ${t.description}`
+        }
+        return ` - ${t.asString}`
+      })
+      .join("\n")
   }
-  const types = type.options.map((t) => mapType(generator, t, newContext))
 
   return {
     mainType: ts.factory.createUnionTypeNode(types.map((t) => t.mainType)),
+    description,
+    asString: undefined,
   }
 }
 
 function mapArrayType(generator: DefinitionsGenerator, type: ArrayComplexType): RWType {
-  const elementType = mapType(generator, type.value, undefined)
+  const elementType = mapTypeInternal(generator, type.value, undefined)
   // todo: add readonly modifier if write but not read
   return {
     mainType: ts.factory.createArrayTypeNode(elementType.mainType),
+    asString: elementType.asString ? `${elementType.asString}[]` : undefined,
   }
 }
 
@@ -134,10 +184,11 @@ function mapDictionaryType(generator: DefinitionsGenerator, type: DictionaryComp
     generator.warning("dictionary key is not indexable: " + JSON.stringify(type.key), isIndexable)
     recordType = "LuaTable"
   }
-  const keyType = mapType(generator, type.key, undefined)
-  const valueType = mapType(generator, type.value, undefined)
+  const keyType = mapTypeInternal(generator, type.key, undefined)
+  const valueType = mapTypeInternal(generator, type.value, undefined)
   return {
     mainType: ts.factory.createTypeReferenceNode(recordType, [keyType.mainType, valueType.mainType]),
+    asString: undefined,
   }
 }
 
@@ -165,16 +216,17 @@ function isIndexableType(generator: DefinitionsGenerator, type: Type): boolean {
 }
 
 function mapLuaCustomTableType(generator: DefinitionsGenerator, type: DictionaryComplexType): RWType {
-  const keyType = mapType(generator, type.key, undefined)
-  const valueType = mapType(generator, type.value, undefined)
+  const keyType = mapTypeInternal(generator, type.key, undefined)
+  const valueType = mapTypeInternal(generator, type.value, undefined)
   return {
     mainType: ts.factory.createTypeReferenceNode("LuaCustomTable", [keyType.mainType, valueType.mainType]),
+    asString: undefined,
   }
 }
 
 function mapFunctionType(generator: DefinitionsGenerator, type: FunctionComplexType): RWType {
   const parameters = type.parameters.map((value, index) => {
-    const paramType = mapType(generator, value, undefined).mainType
+    const paramType = mapTypeInternal(generator, value, undefined).mainType
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
@@ -187,25 +239,27 @@ function mapFunctionType(generator: DefinitionsGenerator, type: FunctionComplexT
   const funcType = ts.factory.createFunctionTypeNode(undefined, parameters, Types.void)
   return {
     mainType: funcType,
+    asString: undefined,
   }
 }
 
-function mapLiteralType(generator: DefinitionsGenerator, type: LiteralComplexType) {
+function mapLiteralType(generator: DefinitionsGenerator, type: LiteralComplexType): RWType {
   const value = type.value
   if (typeof value === "string") {
-    return { mainType: Types.stringLiteral(value) }
+    return { mainType: Types.stringLiteral(value), asString: `"${value}"` }
   } else if (typeof value === "number") {
-    return { mainType: Types.numberLiteral(value) }
+    return { mainType: Types.numberLiteral(value), asString: value.toString() }
   } else {
-    return { mainType: Types.booleanLiteral(value) }
+    return { mainType: Types.booleanLiteral(value), asString: value.toString() }
   }
 }
 
-function mapLuaLazyLoadedValueType(generator: DefinitionsGenerator, type: LuaLazyLoadedValueComplexType) {
+function mapLuaLazyLoadedValueType(generator: DefinitionsGenerator, type: LuaLazyLoadedValueComplexType): RWType {
   return {
     mainType: ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [
-      mapType(generator, type.value, undefined).mainType,
+      mapTypeInternal(generator, type.value, undefined).mainType,
     ]),
+    asString: undefined,
   }
 }
 
@@ -222,6 +276,7 @@ function mapStructType(
 
   return {
     mainType: ts.factory.createTypeLiteralNode(attributes),
+    asString: undefined,
   }
 }
 
@@ -241,12 +296,13 @@ function mapTableType(
   })
   return {
     mainType: ts.factory.createTypeLiteralNode(parameters),
+    asString: undefined,
   }
 }
 
-function mapTupleType(generator: DefinitionsGenerator, type: TableComplexType) {
+function mapTupleType(generator: DefinitionsGenerator, type: TableComplexType): RWType {
   if (type.variant_parameter_groups) {
-    generator.warning("variant_parameter_groups is not yet supported for tuples")
+    generator.warning("variant_parameter_groups is not supported for tuples")
   }
   const parameters = type.parameters.sort(sortByOrder).map((p) => {
     // todo: parent
@@ -255,6 +311,7 @@ function mapTupleType(generator: DefinitionsGenerator, type: TableComplexType) {
   })
   return {
     mainType: ts.factory.createTupleTypeNode(parameters),
+    asString: undefined,
   }
 }
 
@@ -275,8 +332,7 @@ function tryUseIndexType(
       parent === indexType.identificationConcept ||
       (indexType.attributePattern && member.name?.match(indexType.attributePattern))
     ) {
-      const typeNode = ts.factory.createTypeReferenceNode(indexType.name)
-      return { mainType: typeNode }
+      return mapBasicType(indexType.name)
     }
   }
   return undefined
@@ -298,7 +354,7 @@ function tryUseStringEnum(
           member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
     ) {
       const outType = ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
-      return { mainType: outType }
+      return { mainType: outType, asString: undefined }
     }
   }
   /*
@@ -329,7 +385,7 @@ function tryUseFlagValue(
     ts.SyntaxKind.KeyOfKeyword,
     ts.factory.createTypeReferenceNode(flagName)
   )
-  return { mainType: result }
+  return { mainType: result, asString: flagName }
 }
 
 function isNullableFromDescription(
@@ -370,5 +426,5 @@ export function makeNullable(type: RWType): RWType {
     }
     return ts.factory.createUnionTypeNode([...typeNode.types, Types.nil])
   }
-  return { mainType: makeTypeNullable(type.mainType) }
+  return { mainType: makeTypeNullable(type.mainType), description: type.description, asString: undefined }
 }

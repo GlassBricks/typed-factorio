@@ -1,6 +1,6 @@
 import ts from "typescript"
-import { addFakeJSDoc } from "./genUtil"
 import DefinitionsGenerator from "./DefinitionsGenerator"
+import { addFakeJSDoc } from "./genUtil"
 
 // preprocessed TS AST easier to use
 
@@ -21,10 +21,6 @@ export enum AnnotationKind {
   Subclasses = "subclasses",
   DiscriminatedUnion = "discriminatedUnion",
   VariantsName = "variantsName",
-
-  TableOrArray = "tableOrArray",
-
-  ReadType = "readType",
 
   Deprecated = "deprecated",
 }
