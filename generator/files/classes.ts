@@ -13,11 +13,6 @@ import { createVariantParameterTypes } from "../variantParameter"
 export function preprocessClasses(context: GenerationContext) {
   for (const clazz of context.apiDocs.classes) {
     context.typeNames[clazz.name] = clazz.name
-
-    const existing = context.manualDefinitions[clazz.name]
-    if (existing && existing.kind !== "interface" && existing.kind !== "type") {
-      throw new Error("Manual define for class should be interface or type alias")
-    }
     //   for (const method of clazz.methods) {
     //     analyzeMethod(context, method)
     //   }
@@ -59,10 +54,7 @@ export function generateClasses(context: GenerationContext): DefinitionsFile {
   const statements = new StatementsList(context, "classes")
 
   for (const clazz of context.apiDocs.classes.sort(sortByOrder)) {
-    const existing = context.manualDefinitions[clazz.name]
-    if (existing && existing.kind !== "interface" && existing.kind !== "type") {
-      throw new Error("Manual define for class should be interface or type alias")
-    }
+    const existing = context.getInterfaceDef(clazz.name)
     generateClass(context, clazz, existing, statements)
   }
 

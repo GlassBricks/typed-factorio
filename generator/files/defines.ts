@@ -29,7 +29,7 @@ export function preprocessDefines(context: GenerationContext) {
 }
 
 export function generateDefines(context: GenerationContext): DefinitionsFile {
-  const [defines] = generateDefinesDeclaration(createRootDefine(context), "", context.manualDefinitions.defines, [
+  const [defines] = generateDefinesDeclaration(createRootDefine(context), "", context.getNamespaceDef("defines"), [
     Modifiers.declare,
   ])
   return new StatementsList(context, "defines").add(defines).getResult()

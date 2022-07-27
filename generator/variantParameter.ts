@@ -17,10 +17,7 @@ export function createVariantParameterTypes(
   const shortName = removeLuaPrefix(name)
 
   const baseName = "Base" + shortName
-  const existingBase = context.manualDefinitions[baseName]
-  if (existingBase?.kind === "namespace") {
-    throw new Error(`Manual definition for variant parameter type ${name} cannot be a namespace`)
-  }
+  const existingBase = context.getInterfaceDef(baseName)
   const baseProperties = variants.parameters.sort(sortByOrder).map((p) => ({
     original: p,
     member: mapParameterToProperty(context, p, baseName, existingBase),
@@ -98,10 +95,7 @@ export function createVariantParameterTypes(
     }
     const prefix = toPascalCase(isDefine ? group.name.substring(group.name.lastIndexOf(".") + 1) : group.name)
     const fullName = prefix + shortName
-    const existing = context.manualDefinitions[fullName]
-    if (existing?.kind === "namespace") {
-      throw new Error(`Manual definition for variant parameter type ${fullName} cannot be a namespace`)
-    }
+    const existing = context.getInterfaceDef(fullName)
 
     let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
     if (existing?.kind === "type") {

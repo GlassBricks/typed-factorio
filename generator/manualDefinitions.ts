@@ -202,7 +202,7 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
 }
 
 export function preprocessManualDefinitions(context: GenerationContext) {
-  for (const def of Object.values(context.manualDefinitions as Record<string, RootDef>)) {
+  for (const def of Object.values(context._manualDefinitions as Record<string, RootDef>)) {
     const addBefore = def.annotations.addBefore?.[0]
     const addAfter = def.annotations.addAfter?.[0]
     const addTo = def.annotations.addTo?.[0]
@@ -242,7 +242,7 @@ export function preprocessManualDefinitions(context: GenerationContext) {
 
 export function checkManualDefinitions(context: GenerationContext) {
   const typeNames = new Set(Object.values(context.typeNames))
-  for (const [name, d] of Object.entries(context.manualDefinitions)) {
+  for (const [name, d] of Object.entries(context._manualDefinitions)) {
     const def = d!
     const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
     const isExisting = typeNames.has(name) || name in context.typeNames

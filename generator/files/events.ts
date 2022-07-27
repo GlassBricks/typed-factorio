@@ -17,10 +17,7 @@ export function generateEvents(context: GenerationContext): DefinitionsFile {
   const heritageClause = createExtendsClause("EventData")
   for (const event of context.apiDocs.events.sort(sortByOrder)) {
     const name = getMappedEventName(event.name)
-    const existing = context.manualDefinitions[name]
-    if (existing && existing.kind !== "interface") {
-      throw new Error(`Manual definition for ${name} should be a interface, got ${ts.SyntaxKind[existing.node.kind]}`)
-    }
+    const existing = context.getInterfaceDef(name)
     const declaration = ts.factory.createInterfaceDeclaration(
       undefined,
       undefined,

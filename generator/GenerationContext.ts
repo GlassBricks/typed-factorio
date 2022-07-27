@@ -1,10 +1,10 @@
 import chalk from "chalk"
 import ts from "typescript"
 import { Class, Concept, Define, Event, FactorioApiJson } from "./FactorioApiJson"
-import { processManualDefinitions } from "./manualDefinitions"
+import { InterfaceDef, NamespaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions"
 
 export default class GenerationContext {
-  readonly manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)
+  public readonly _manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)
 
   builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
   defines = new Map<string, Define>()
@@ -34,6 +34,24 @@ export default class GenerationContext {
     if (apiDocs.api_version !== 3) {
       throw new Error("Unsupported api version " + apiDocs.api_version)
     }
+  }
+
+  getInterfaceDef(name: string): InterfaceDef | TypeAliasDef | undefined {
+    const result = this._manualDefinitions[name]
+    if (!result) return
+    if (result.kind !== "interface" && result.kind !== "type") {
+      throw new Error(`Existing definition for ${name} is not an interface`)
+    }
+    return result
+  }
+
+  getNamespaceDef(name: string): NamespaceDef | undefined {
+    const result = this._manualDefinitions[name]
+    if (!result) return
+    if (result.kind !== "namespace") {
+      throw new Error(`Existing definitions for ${name} is not a namespace`)
+    }
+    return result
   }
 
   tryGetStringEnumType(typeNode: ts.TypeNode): string[] | undefined {

@@ -39,10 +39,7 @@ function generateConcept(
       additionalDescription: string | undefined
     }
   | undefined {
-  const existing = context.manualDefinitions[concept.name]
-  if (existing?.kind === "namespace") {
-    throw new Error(`Manual definition for concept ${concept.name} cannot be a namespace`)
-  }
+  const existing = context.getInterfaceDef(concept.name)
 
   if (
     typeof concept.type !== "string" &&
