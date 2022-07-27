@@ -388,7 +388,7 @@ interface LuaControl {
   )
   get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | nil
 
-  teleport(position: MapPosition, surface?: SurfaceIdentification): boolean
+  teleport(position: MapPositionWrite, surface?: SurfaceIdentification): boolean
   teleport(x: number, y?: number): boolean
 }
 
@@ -506,47 +506,32 @@ type IndexBrand<B extends string> = "strictIndexTypes" extends keyof __OptInFeat
 
 //  -- Concepts --
 
-type LocalisedString = readonly [string, ...LocalisedString[]] | string | number | boolean | nil
+/** @unionReplace array */
+type LocalisedString = readonly [string, ...LocalisedString[]]
 
-type RealOrientation = float
-
-type Tags = Record<string, AnyBasic | nil>
+interface RealOrientation {}
 
 interface MapPosition {}
 interface MapPositionWrite {}
 interface MapPositionArray {}
 
+/** @replace */
 type Vector = MapPositionArray
 
 // /** @readType number */
-type MapGenSize =
-  | number
-  | "none"
-  | "very-low"
-  | "very-small"
-  | "very-poor"
-  | "low"
-  | "small"
-  | "poor"
-  | "normal"
-  | "medium"
-  | "regular"
-  | "high"
-  | "big"
-  | "good"
-  | "very-high"
-  | "very-big"
-  | "very-good"
+// type MapGenSize =
 
 // /** @readType ComparatorStringRead */
-interface ComparatorString {}
-/** @addAfter ComparatorString */
-/** @see ComparatorString */
-type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
+// interface ComparatorString {
+// }
+// /** @addAfter ComparatorString */
+// /** @see ComparatorString */
+// type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
 
 interface ArithmeticCombinatorParameters {
   readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
 }
+
 /** @addBefore SpritePath */
 type SpriteType =
   | "item"
@@ -561,10 +546,12 @@ type SpriteType =
   | "equipment"
   | "file"
   | "utility"
-// template string type allows for autocomplete
+
+/** @replace */
 type SpritePath = (string & { _?: never }) | `${SpriteType}/${string}`
 
-type SoundType =
+/** @addBefore SoundPath */
+type SoundCategory =
   | "utility"
   | "ambient"
   | "tile-walking"
@@ -579,92 +566,15 @@ type SoundType =
   | "entity-rotated"
   | "entity-open"
   | "entity-close"
-// template string type allows for autocomplete
-type SoundPath = (string & { _?: never }) | `${SoundType}/${string}`
 
-type CollisionMaskLayer =
-  | "ground-tile"
-  | "water-tile"
-  | "resource-layer"
-  | "doodad-layer"
-  | "floor-layer"
-  | "item-layer"
-  | "ghost-layer"
-  | "object-layer"
-  | "player-layer"
-  | "train-layer"
-  | "rail-layer"
-  | "transport-belt-layer"
-  | "not-setup"
-  | `layer-${bigint}`
+/** @replace */
+type SoundPath = (string & { _?: never }) | `${SoundCategory}/${string}`
 
-type CollisionMask = {
-  readonly [P in CollisionMaskLayer]?: true
-}
+/** @unionAdd */
+type CollisionMaskLayer = `layer-${bigint}`
 
-type CollisionMaskWithFlags = {
-  readonly [P in
-    | CollisionMaskLayer
-    | "not-colliding-with-itself"
-    | "consider-tile-transitions"
-    | "colliding-with-tiles-only"]?: true
-}
-
-type TriggerTargetMask = {
-  readonly [P in string]?: true
-}
-
-type CircularProjectileCreationSpecification = [RealOrientation, Vector]
-
-type AnyBasic = string | number | boolean | table
-
-type Any = any
-
-type RenderLayer =
-  | number
-  | `${bigint}`
-  | "water-tile"
-  | "ground-tile"
-  | "tile-transition"
-  | "decals"
-  | "lower-radius-visualization"
-  | "radius-visualization"
-  | "transport-belt-integration"
-  | "resource"
-  | "building-smoke"
-  | "decorative"
-  | "ground-patch"
-  | "ground-patch-higher"
-  | "remnants"
-  | "floor"
-  | "transport-belt"
-  | "transport-belt-endings"
-  | "floor-mechanics-under-corpse"
-  | "corpse"
-  | "floor-mechanics"
-  | "item"
-  | "lower-object"
-  | "transport-belt-circuit-connector"
-  | "lower-object-above-shadow"
-  | "object"
-  | "higher-object-under"
-  | "higher-object-above"
-  | "item-in-inserter-hand"
-  | "wires"
-  | "wires-above"
-  | "entity-info-icon"
-  | "entity-info-icon-above"
-  | "explosion"
-  | "projectile"
-  | "smoke"
-  | "air-object"
-  | "air-entity-info-icon"
-  | "light-effect"
-  | "selection-box"
-  | "higher-selection-box"
-  | "collision-selection-box"
-  | "arrow"
-  | "cursor"
+/** @unionReplace type */
+type RenderLayer = `${bigint}`
 
 /** @omit */
 interface EventFilter {}
@@ -673,21 +583,21 @@ interface PrototypeFilter {}
 
 // where a vector is supposed to be a position table instead
 
-interface SmokeSource {
-  readonly position?: MapPosition
-  readonly north_position?: MapPosition
-  readonly east_position?: MapPosition
-  readonly south_position?: MapPosition
-  readonly west_position?: MapPosition
-}
+// interface SmokeSource {
+//   readonly position?: MapPosition
+//   readonly north_position?: MapPosition
+//   readonly east_position?: MapPosition
+//   readonly south_position?: MapPosition
+//   readonly west_position?: MapPosition
+// }
 
-interface FluidBoxConnection {
-  readonly positions: MapPosition[]
-}
+// interface FluidBoxConnection {
+//   readonly positions: MapPosition[]
+// }
 
-interface CircularParticleCreationSpecification {
-  readonly center: MapPosition
-}
+// interface CircularParticleCreationSpecification {
+//   readonly center: MapPosition
+// }
 
 // /** @readType BoundingBoxRead */
 interface BoundingBox {}

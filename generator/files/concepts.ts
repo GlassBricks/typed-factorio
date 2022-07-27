@@ -28,11 +28,14 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
   const existing = context.getInterfaceDef(concept.name)
 
   if (existing?.annotations) {
-    const annotation = existing.annotations
     if (existing.annotations.omit) return
-
-    context.warning("Don't know what to do with existing concept interface", concept.name)
-    // todo
+    if (existing.annotations.replace) {
+      const node = existing.node
+      statements.add(node)
+      ts.setEmitFlags(node, ts.EmitFlags.NoComments)
+      addJsDoc(context, node, concept, concept.name)
+      return
+    }
   }
   if (
     typeof concept.type !== "string" &&

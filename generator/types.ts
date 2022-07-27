@@ -124,7 +124,22 @@ function mapUnionType(
   type: UnionComplexType,
   typeContext: TypeContext | undefined
 ): RWType {
+  const annotations = typeContext?.existingDef?.annotations
+  let removedIndex: number | undefined
+  if (annotations?.unionReplace) {
+    const toReplace = annotations.unionReplace[0]
+    const removed = type.options.findIndex(
+      (o) => (typeof o !== "string" && o.complex_type === toReplace) || o === toReplace
+    )
+    if (removed !== -1) {
+      removedIndex = removed
+    } else {
+      context.warning(`unionReplace type ${toReplace} not found in ${JSON.stringify(type)}`)
+    }
+  }
+
   const types = type.options.map((t) => mapTypeInternal(context, t, typeContext))
+
   let description: string | undefined
   if (type.full_format) {
     description = types
@@ -144,8 +159,23 @@ function mapUnionType(
     }
   }
 
+  const typeNodes = types.map((t) => t.mainType)
+  if (annotations?.unionReplace || annotations?.unionAdd) {
+    const existingDef = typeContext!.existingDef!
+    if (existingDef.kind === "interface") {
+      context.warning("cannot merge interface into union")
+    } else {
+      const node = ts.factory.createTypeReferenceNode(existingDef.node.type.getText())
+      if (removedIndex !== undefined) {
+        typeNodes.splice(removedIndex, 1, node)
+      } else {
+        typeNodes.push(node)
+      }
+    }
+  }
+
   return {
-    mainType: ts.factory.createUnionTypeNode(types.map((t) => t.mainType)),
+    mainType: ts.factory.createUnionTypeNode(typeNodes),
     description,
     asString: undefined,
   }
