@@ -1,8 +1,7 @@
-import ts from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
 import { addJsDoc } from "../documentation"
 import GenerationContext from "../GenerationContext"
-import { createConst, Modifiers, Types } from "../genUtil"
+import { createConst, Modifiers } from "../genUtil"
 import { mapFunction } from "../members"
 import { mapType } from "../types"
 import { sortByOrder } from "../util"
@@ -32,25 +31,12 @@ export function generateBuiltins(context: GenerationContext): DefinitionsFile {
   const statements = new StatementsList(context, "builtin-types")
   for (const builtin of context.apiDocs.builtin_types.sort(sortByOrder)) {
     if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
-    let type: ts.KeywordTypeNode
-    if (builtin.name === "table") {
-      type = Types.object
-    } else if (builtin.name === "LuaObject") {
-      type = Types.unknown // TODO
-    } else if (builtin.name === "nil") {
-      type = Types.undefined
-    } else {
-      type = Types.number
+    const existing = context.getInterfaceDef(builtin.name)
+    if (!existing) {
+      context.warning(`No existing definition for builtin ${builtin.name}`)
+      continue
     }
-    statements.add(
-      addJsDoc(
-        context,
-        ts.factory.createTypeAliasDeclaration(undefined, undefined, builtin.name, undefined, type),
-        builtin,
-        builtin.name,
-        undefined
-      )
-    )
+    statements.add(addJsDoc(context, existing.node, builtin, builtin.name, undefined))
   }
   return statements.getResult()
 }

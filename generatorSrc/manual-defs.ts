@@ -2,7 +2,10 @@ type double = number
 type float = number
 type table = object
 type int = number
+type int8 = number
 type uint = number
+type uint8 = number
+type uint16 = number
 type uint64 = number
 type nil = undefined
 interface LuaObject {
@@ -401,22 +404,22 @@ interface LuaControl {
 }
 
 interface LuaEntity {
-  initial_amount: uint | undefined
-  get_driver(): LuaEntity | LuaPlayer | undefined
-  get_passenger(): LuaEntity | LuaPlayer | undefined
+  initial_amount: uint | nil
+  get_driver(): LuaEntity | LuaPlayer | nil
+  get_passenger(): LuaEntity | LuaPlayer | nil
 }
 
 interface LuaItemStack {
-  durability: double | undefined
+  durability: double | nil
 }
 
 interface LuaPermissionGroup {}
 interface LuaPermissionGroups {
-  create_group(name?: string): LuaPermissionGroup | undefined
+  create_group(name?: string): LuaPermissionGroup | nil
 }
 
 interface LuaPlayer {
-  readonly cutscene_character: LuaEntity | undefined
+  readonly cutscene_character: LuaEntity | nil
 }
 
 // other
@@ -466,19 +469,19 @@ type CustomEventId<T extends table> = EventId<T> & {
 interface LuaBootstrap {
   on_event<E extends EventId<any, table>>(
     event: E,
-    f: ((data: E["_eventData"]) => void) | undefined,
+    f: ((data: E["_eventData"]) => void) | nil,
     filters?: E["_filter"][]
   ): void
-  on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | undefined): void
-  on_event(event: string, f: ((data: CustomInputEvent) => void) | undefined): void
+  on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | nil): void
+  on_event(event: string, f: ((data: CustomInputEvent) => void) | nil): void
 
   generate_event_name<T extends table>(): CustomEventId<T>
 
-  get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | undefined
-  get_event_handler(event: string): (data: CustomInputEvent) => void | undefined
+  get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | nil
+  get_event_handler(event: string): (data: CustomInputEvent) => void | nil
 
-  get_event_filter<E extends EventId<any, table>>(event: E): E["_filter"][] | undefined
-  set_event_filter<E extends EventId<any, table>>(event: E, filters: E["_filter"][] | undefined): void
+  get_event_filter<E extends EventId<any, table>>(event: E): E["_filter"][] | nil
+  set_event_filter<E extends EventId<any, table>>(event: E, filters: E["_filter"][] | nil): void
 
   raise_event<E extends RaiseableEvents | CustomEventId<any>>(
     event: E,
@@ -492,8 +495,8 @@ type PlayerIndex = uint
 type SurfaceIndex = uint
 
 interface LuaGameScript {
-  get_player(index: PlayerIndex | string): LuaPlayer | undefined
-  get_surface(index: SurfaceIndex | string): LuaSurface | undefined
+  get_player(index: PlayerIndex | string): LuaPlayer | nil
+  get_surface(index: SurfaceIndex | string): LuaSurface | nil
   readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
 }
@@ -514,11 +517,11 @@ type IndexBrand<B extends string> = "strictIndexTypes" extends keyof __OptInFeat
 
 //  -- Concepts --
 
-type LocalisedString = readonly [string, ...LocalisedString[]] | string | number | boolean | undefined
+type LocalisedString = readonly [string, ...LocalisedString[]] | string | number | boolean | nil
 
 type RealOrientation = float
 
-type Tags = Record<string, AnyBasic | undefined>
+type Tags = Record<string, AnyBasic | nil>
 
 /** @addAfter MapPosition */
 type MapPositionTable = MapPosition
