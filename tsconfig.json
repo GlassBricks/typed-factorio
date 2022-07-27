@@ -10,6 +10,7 @@
         "name": "typescript-tstl-plugin"
       }
     ],
+    "types": [],
     "noEmit": true
   },
   "include": ["**/*.d.ts"]
