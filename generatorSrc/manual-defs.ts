@@ -65,7 +65,7 @@ type LuaCustomTable<K extends string | number, V> = {
 } & LuaPairsIterable<
   // this convoluted expression gives a number type if K includes a number, even if it includes a string, and K otherwise.
   // it also preserves number branding
-  [number] extends [K extends number & IndexBrand<infer A> ? number : K] ? (K extends string ? never : K) : K,
+  [number] extends [K extends number ? number : K] ? (K extends string ? never : K) : K,
   V
 >
 
