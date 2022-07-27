@@ -4,8 +4,8 @@ export const printer = ts.createPrinter({
   omitTrailingSemicolon: true,
   newLine: ts.NewLineKind.LineFeed,
 })
-export const emptySourceFile = ts.createSourceFile("", "", ts.ScriptTarget.ESNext)
 
+const emptySourceFile = ts.createSourceFile("", "", ts.ScriptTarget.ESNext)
 export function printNode(node: ts.Node) {
   return printer.printNode(ts.EmitHint.Unspecified, node, emptySourceFile)
 }
@@ -105,9 +105,7 @@ export function removeLuaPrefix(str: string): string {
 }
 
 export function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc, sourceFile?: ts.SourceFile) {
-  const text: string = sourceFile
-    ? jsDoc.getText(sourceFile) + "\n"
-    : printer.printNode(ts.EmitHint.Unspecified, jsDoc, emptySourceFile)
+  const text: string = sourceFile ? jsDoc.getText(sourceFile) + "\n" : printNode(jsDoc)
   node.emitNode = node.emitNode ?? {}
   ts.addSyntheticLeadingComment(
     node,
