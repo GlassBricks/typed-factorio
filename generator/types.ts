@@ -386,6 +386,7 @@ function isNullableFromDescription(
     }
     return true
   }
+  // todo: better nullability detection
   // if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
   //   console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
   // }

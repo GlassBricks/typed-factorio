@@ -1,3 +1,4 @@
+import { SyntaxKind } from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
 import { addJsDoc } from "../documentation"
 import GenerationContext from "../GenerationContext"
@@ -9,9 +10,9 @@ import { sortByOrder } from "../util"
 export function preprocessBuiltins(context: GenerationContext) {
   for (const builtin of context.apiDocs.builtin_types) {
     context.typeNames[builtin.name] = builtin.name
-    if (builtin.name !== "boolean" && builtin.name !== "string" && builtin.name !== "table") {
+    const existing = context.getInterfaceDef(builtin.name)
+    if (existing?.kind === "type" && existing.node.type.kind === SyntaxKind.NumberKeyword)
       context.numericTypes.add(builtin.name)
-    }
   }
 }
 
