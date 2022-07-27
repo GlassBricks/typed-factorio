@@ -14,7 +14,7 @@ import {
 } from "./FactorioApiJson"
 import { IndexTypes } from "./files/index-types"
 import GenerationContext from "./GenerationContext"
-import { indent, Types } from "./genUtil"
+import { indent, Tokens, Types } from "./genUtil"
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions"
 import { mapAttribute, mapParameterToProperty } from "./members"
 import { assertNever, sortByOrder } from "./util"
@@ -289,10 +289,18 @@ function mapTupleType(
   }
   const parameters = type.parameters.sort(sortByOrder).map((p) => {
     const paramType = mapMemberType(context, p, typeContext.contextName, p.type)
-    return ts.factory.createNamedTupleMember(undefined, ts.factory.createIdentifier(p.name), undefined, paramType)
+    return ts.factory.createNamedTupleMember(
+      undefined,
+      ts.factory.createIdentifier(p.name),
+      p.optional ? Tokens.question : undefined,
+      paramType
+    )
   })
   return {
-    mainType: ts.factory.createTupleTypeNode(parameters),
+    mainType: ts.factory.createTypeOperatorNode(
+      ts.SyntaxKind.ReadonlyKeyword,
+      ts.factory.createTupleTypeNode(parameters)
+    ),
     asString: undefined,
   }
 }
