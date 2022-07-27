@@ -15,6 +15,7 @@ import {
 import { IndexTypes } from "./files/index-types"
 import GenerationContext from "./GenerationContext"
 import { indent, Types } from "./genUtil"
+import { InterfaceDef, TypeAliasDef } from "./manualDefinitions"
 import { mapAttribute, mapParameterToProperty } from "./members"
 import { assertNever, sortByOrder } from "./util"
 
@@ -26,15 +27,8 @@ interface RWType {
 }
 
 export interface TypeContext {
-  baseName: string
-  member?: string
-}
-
-function getPath(context: TypeContext) {
-  if (context.member) {
-    return context.baseName + "." + context.member
-  }
-  return context.baseName
+  contextName: string
+  existingDef?: InterfaceDef | TypeAliasDef
 }
 
 function mapTypeInternal(context: GenerationContext, type: Type, typeContext: TypeContext | undefined): RWType {
@@ -61,7 +55,7 @@ function mapTypeInternal(context: GenerationContext, type: Type, typeContext: Ty
     case "table":
       return mapTableType(context, type, typeContext)
     case "tuple":
-      return mapTupleType(context, type)
+      return mapTupleType(context, type, typeContext)
     default:
       assertNever(type)
   }
@@ -72,33 +66,26 @@ export function mapMemberType(
   member: { description: string; name?: string; optional?: boolean },
   parent: string,
   type: Type
-): RWType {
+): ts.TypeNode {
   const result =
     tryUseIndexType(member, parent, type) ??
     tryUseStringEnum(member, type) ??
     tryUseFlagValue(context, member, type) ??
-    mapTypeInternal(context, type, {
-      baseName: parent,
-      member: member.name,
-    })
-
-  if (result.description) {
-    context.warning("Don't have use for type description in member: " + JSON.stringify(member))
-  }
+    mapType(context, type, parent + (member.name ? "." + member.name : ""))
 
   const isNullable = !member.optional && isNullableFromDescription(context, member, parent)
   return isNullable ? makeNullable(result) : result
 }
 
-export function mapType(context: GenerationContext, type: Type, typeContext: TypeContext | undefined): ts.TypeNode {
-  const result = mapTypeInternal(context, type, typeContext)
+export function mapType(context: GenerationContext, type: Type, name: string | undefined): ts.TypeNode {
+  const result = mapTypeInternal(context, type, name !== undefined ? { contextName: name } : undefined)
   if (result.description) {
     context.warning("Don't have use for type description: " + JSON.stringify(type))
   }
   return result.mainType
 }
 
-export function mapTypeWithDescription(
+export function mapTypeValue(
   context: GenerationContext,
   type: Type,
   typeContext: TypeContext
@@ -125,15 +112,11 @@ function mapTypeType(context: GenerationContext, type: TypeComplexType, typeCont
 }
 
 function mapBasicType(type: string): RWType {
-  // todo: analyze read/write usages
-  // todo: use readWriteConcepts
   return {
     mainType: ts.factory.createTypeReferenceNode(type),
     asString: type,
   }
 }
-
-// todo: separate in case of different read/write types
 
 function mapUnionType(
   context: GenerationContext,
@@ -152,6 +135,10 @@ function mapUnionType(
         return ` - ${t.asString}`
       })
       .join("\n")
+  } else {
+    if (types.some((t) => t.description)) {
+      context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
+    }
   }
 
   return {
@@ -263,8 +250,7 @@ function mapStructType(
 ): RWType {
   assert(typeContext)
   const attributes = type.attributes.sort(sortByOrder).flatMap((a) => {
-    // todo: parent
-    return mapAttribute(context, a, getPath(typeContext), undefined)
+    return mapAttribute(context, a, typeContext.contextName, typeContext.existingDef)
   })
 
   return {
@@ -284,8 +270,7 @@ function mapTableType(
   }
 
   const parameters = type.parameters.sort(sortByOrder).map((p) => {
-    // todo: parent and existing
-    return mapParameterToProperty(context, p, getPath(typeContext), undefined)
+    return mapParameterToProperty(context, p, typeContext.contextName, typeContext.existingDef)
   })
   return {
     mainType: ts.factory.createTypeLiteralNode(parameters),
@@ -293,13 +278,17 @@ function mapTableType(
   }
 }
 
-function mapTupleType(context: GenerationContext, type: TableComplexType): RWType {
+function mapTupleType(
+  context: GenerationContext,
+  type: TableComplexType,
+  typeContext: TypeContext | undefined
+): RWType {
+  assert(typeContext)
   if (type.variant_parameter_groups) {
     context.warning("variant_parameter_groups is not supported for tuples")
   }
   const parameters = type.parameters.sort(sortByOrder).map((p) => {
-    // todo: parent
-    const paramType = mapMemberType(context, p, "<<tuple type>>", p.type).mainType
+    const paramType = mapMemberType(context, p, typeContext.contextName, p.type)
     return ts.factory.createNamedTupleMember(undefined, ts.factory.createIdentifier(p.name), undefined, paramType)
   })
   return {
@@ -308,13 +297,7 @@ function mapTupleType(context: GenerationContext, type: TableComplexType): RWTyp
   }
 }
 
-function tryUseIndexType(
-  member: {
-    name?: string
-  },
-  parent: string,
-  type: Type
-): RWType | undefined {
+function tryUseIndexType(member: { name?: string }, parent: string, type: Type): ts.TypeNode | undefined {
   if (type !== "uint" && type !== "uint64") return undefined
   for (const indexType of IndexTypes) {
     const expectedType = indexType.typeOverride ?? "uint"
@@ -325,7 +308,7 @@ function tryUseIndexType(
       parent === indexType.identificationConcept ||
       (indexType.attributePattern && member.name?.match(indexType.attributePattern))
     ) {
-      return mapBasicType(indexType.name)
+      return mapBasicType(indexType.name).mainType
     }
   }
   return undefined
@@ -337,7 +320,7 @@ function tryUseStringEnum(
     name?: string
   },
   type: Type
-): RWType | undefined {
+): ts.TypeNode | undefined {
   if (type === "string") {
     const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
     if (
@@ -346,8 +329,7 @@ function tryUseStringEnum(
         (member.description.match(/One of `"[a-zA-Z-_]+?"`/) ||
           member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
     ) {
-      const outType = ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
-      return { mainType: outType, asString: undefined }
+      return ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral))
     }
   }
   /*
@@ -368,17 +350,13 @@ function tryUseFlagValue(
     name?: string
   },
   type: Type
-): RWType | undefined {
+): ts.TypeNode | undefined {
   if (member.name !== "flag" || type !== "string") return undefined
   const match = member.description.match(/\[([A-Z][a-zA-Z]+Flags)]/)
   if (!match) return undefined
   const flagName = match[1]
 
-  const result = ts.factory.createTypeOperatorNode(
-    ts.SyntaxKind.KeyOfKeyword,
-    ts.factory.createTypeReferenceNode(flagName)
-  )
-  return { mainType: result, asString: flagName }
+  return ts.factory.createTypeOperatorNode(ts.SyntaxKind.KeyOfKeyword, ts.factory.createTypeReferenceNode(flagName))
 }
 
 function isNullableFromDescription(
@@ -406,18 +384,16 @@ function isNullableFromDescription(
   return false
 }
 
-export function makeNullable(type: RWType): RWType {
-  function isNilTypeNode(typeNode: ts.TypeNode) {
-    return ts.isTypeReferenceNode(typeNode) && ts.isIdentifier(typeNode.typeName) && typeNode.typeName.text === "nil"
+export function makeNullable(typeNode: ts.TypeNode): ts.TypeNode {
+  function isNilTypeNode(t: ts.TypeNode) {
+    return ts.isTypeReferenceNode(t) && ts.isIdentifier(t.typeName) && t.typeName.text === "nil"
   }
-  function makeTypeNullable(typeNode: ts.TypeNode): ts.TypeNode {
-    if (!ts.isUnionTypeNode(typeNode)) {
-      return ts.factory.createUnionTypeNode([typeNode, Types.nil])
-    }
-    if (typeNode.types.some((t) => isNilTypeNode(t))) {
-      return typeNode
-    }
-    return ts.factory.createUnionTypeNode([...typeNode.types, Types.nil])
+
+  if (!ts.isUnionTypeNode(typeNode)) {
+    return ts.factory.createUnionTypeNode([typeNode, Types.nil])
   }
-  return { mainType: makeTypeNullable(type.mainType), description: type.description, asString: undefined }
+  if (typeNode.types.some((t) => isNilTypeNode(t))) {
+    return typeNode
+  }
+  return ts.factory.createUnionTypeNode([...typeNode.types, Types.nil])
 }

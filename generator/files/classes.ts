@@ -214,7 +214,7 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = mapType(context, lengthOperator.type, { baseName: clazz.name, member: "length" })
+      const type = mapType(context, lengthOperator.type, clazz.name + ".length")
       const lengthProperty = addJsDoc(
         context,
         ts.factory.createPropertySignature(
@@ -534,7 +534,7 @@ function generateClass(
     }
   }
   function mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
-    const type = mapMemberType(context, parameter, parent, parameter.type).mainType
+    const type = mapMemberType(context, parameter, parent, parameter.type)
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
@@ -578,11 +578,7 @@ function generateClass(
     }
 
     if (method.variadic_type) {
-      const type = mapType(
-        context,
-        { complex_type: "array", value: method.variadic_type },
-        { baseName: clazz.name, member: method.name }
-      )
+      const type = mapType(context, { complex_type: "array", value: method.variadic_type }, thisPath)
       parameters.push(
         ts.factory.createParameterDeclaration(undefined, undefined, Tokens.dotDotDot, "args", undefined, type)
       )
@@ -600,7 +596,7 @@ function generateClass(
         thisPath,
         type.type
       )
-      return type.optional ? makeNullable(result).mainType : result.mainType
+      return type.optional ? makeNullable(result) : result
     }
 
     let returnType: ts.TypeNode

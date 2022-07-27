@@ -13,19 +13,12 @@ export function mapAttribute(
   existingContainer: InterfaceDef | TypeAliasDef | undefined
 ): ts.TypeElement | ts.TypeElement[] {
   let member: ts.TypeElement | ts.TypeElement[]
-  // todo: include rw usage
   const type = mapMemberType(context, attribute, parent, attribute.type)
   const existing = existingContainer?.members[attribute.name]
   if (existing) {
-    // todo: handle read/write differences
     const first = existing[0]
     if (ts.isPropertySignature(first)) {
-      member = ts.factory.createPropertySignature(
-        first.modifiers,
-        first.name,
-        first.questionToken,
-        first.type ?? type.mainType
-      )
+      member = ts.factory.createPropertySignature(first.modifiers, first.name, first.questionToken, first.type ?? type)
       ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
     } else if (existing.every((v) => ts.isGetAccessorDeclaration(v) || ts.isSetAccessorDeclaration(v))) {
       member = []
@@ -37,7 +30,7 @@ export function mapAttribute(
             element.modifiers,
             element.name,
             element.parameters,
-            element.type ?? type.mainType,
+            element.type ?? type,
             undefined
           )
           ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
@@ -74,19 +67,18 @@ export function mapAttribute(
           undefined,
           "value",
           attribute.optional ? Tokens.question : undefined,
-          type.mainType,
+          type,
           undefined
         ),
       ],
       undefined
     )
   } else {
-    // todo: handle different read/write
     member = ts.factory.createPropertySignature(
       attribute.write ? undefined : [Modifiers.readonly],
       attribute.name,
       attribute.optional ? Tokens.question : undefined,
-      type.mainType
+      type
     )
   }
   const first = Array.isArray(member) ? member[0] : member
@@ -118,7 +110,7 @@ export function mapParameterToProperty(
       [Modifiers.readonly],
       escapePropertyName(parameter.name),
       parameter.optional ? Tokens.question : undefined,
-      type.mainType
+      type
     )
     addJsDoc(context, result, parameter, undefined)
 

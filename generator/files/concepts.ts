@@ -3,7 +3,7 @@ import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
 import { addJsDoc } from "../documentation"
 import { Concept } from "../FactorioApiJson"
 import GenerationContext from "../GenerationContext"
-import { mapTypeWithDescription } from "../types"
+import { mapTypeValue } from "../types"
 import { sortByOrder } from "../util"
 
 export function preprocessConcepts(context: GenerationContext) {
@@ -39,10 +39,12 @@ function generateConcept(
     throw new Error(`Manual definition for concept ${concept.name} cannot be a namespace`)
   }
 
-  const { type, description } = mapTypeWithDescription(context, concept.type, { baseName: concept.name })
+  const { type, description } = mapTypeValue(context, concept.type, {
+    contextName: concept.name,
+    existingDef: existing,
+  })
   let result: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
   if (ts.isTypeLiteralNode(type)) {
-    // create interface
     result = ts.factory.createInterfaceDeclaration(
       undefined,
       undefined,

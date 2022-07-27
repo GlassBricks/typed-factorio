@@ -52,11 +52,9 @@ export function generateBuiltins(context: GenerationContext): DefinitionsFile {
 export function generateGlobalObjects(context: GenerationContext): DefinitionsFile {
   const statements = new StatementsList(context, "globals")
   for (const globalObject of context.apiDocs.global_objects.sort(sortByOrder)) {
-    const definition = createConst(
-      globalObject.name,
-      mapType(context, globalObject.type, { baseName: globalObject.name }),
-      [Modifiers.declare]
-    )
+    const definition = createConst(globalObject.name, mapType(context, globalObject.type, globalObject.name), [
+      Modifiers.declare,
+    ])
     addJsDoc(context, definition, globalObject, globalObject.name, undefined)
     statements.add(definition)
   }
