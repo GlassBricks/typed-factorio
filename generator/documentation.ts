@@ -162,8 +162,7 @@ export function addJsDoc<T extends ts.Node>(
     .filter((x) => x)
     .join("\n\n")
     .replace(/\n\n\n+/g, "\n\n")
-    .replace(/^\n+/, "")
-    .replace(/\n+$/, "")
+    .replace(/^\n+|\n+$/, "")
 
   tags = tags || []
 

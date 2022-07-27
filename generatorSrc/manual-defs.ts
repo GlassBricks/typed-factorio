@@ -523,23 +523,9 @@ type RealOrientation = float
 
 type Tags = Record<string, AnyBasic | nil>
 
-/** @addAfter MapPosition */
-type MapPositionTable = MapPosition
-/** @addAfter MapPosition */
-type MapPositionArray = MapPosition
 interface MapPosition {}
-
-// /** @addAfter MapPosition */
-// /** @deprecated Replace with {@link MapPositionTable}. */
-// type PositionTable = MapPositionTable
-//
-// /** @addAfter MapPosition */
-// /** @deprecated Replace with {@link MapPositionArray}. */
-// type PositionArray = MapPositionArray
-//
-// /** @addAfter MapPosition */
-// /** @deprecated Replace with {@link MapPosition}. */
-// type Position = MapPosition
+interface MapPositionWrite {}
+interface MapPositionArray {}
 
 type Vector = MapPositionArray
 
@@ -697,19 +683,19 @@ interface EventFilter {}
 // where a vector is supposed to be a position table instead
 
 interface SmokeSource {
-  readonly position?: MapPositionTable
-  readonly north_position?: MapPositionTable
-  readonly east_position?: MapPositionTable
-  readonly south_position?: MapPositionTable
-  readonly west_position?: MapPositionTable
+  readonly position?: MapPosition
+  readonly north_position?: MapPosition
+  readonly east_position?: MapPosition
+  readonly south_position?: MapPosition
+  readonly west_position?: MapPosition
 }
 
 interface FluidBoxConnection {
-  readonly positions: MapPositionTable[]
+  readonly positions: MapPosition[]
 }
 
 interface CircularParticleCreationSpecification {
-  readonly center: MapPositionTable
+  readonly center: MapPosition
 }
 
 // /** @readType BoundingBoxRead */
