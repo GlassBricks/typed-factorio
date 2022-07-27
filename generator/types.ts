@@ -72,7 +72,7 @@ export function mapConceptType(
 }
 
 function mapTypeInternal(context: GenerationContext, type: Type, typeContext: TypeContext | undefined): RWType {
-  if (typeof type === "string") return mapBasicType(context, type)
+  if (typeof type === "string") return mapBasicType(context, type, typeContext)
   switch (type.complex_type) {
     case "type":
       return mapTypeType(context, type, typeContext)
@@ -101,6 +101,35 @@ function mapTypeInternal(context: GenerationContext, type: Type, typeContext: Ty
   }
 }
 
+function mapBasicType(context: GenerationContext, type: string, typeContext: TypeContext | undefined): RWType {
+  const usingIndex = tryUseIndexTypeFromBasicType(context, type, typeContext)
+  if (usingIndex) return usingIndex
+  const typeName = context.typeNames[type]
+  return {
+    mainType: ts.factory.createTypeReferenceNode(type),
+    asString: typeName ? `[${typeName}](${type})` : `\`${type}\``,
+  }
+}
+
+function tryUseIndexTypeFromBasicType(
+  context: GenerationContext,
+  type: string,
+  typeContext: TypeContext | undefined
+): RWType | undefined {
+  if (!typeContext || !(type === "uint" || type === "uint64")) return
+  for (const indexType of IndexTypes) {
+    const expectedType = indexType.typeOverride ?? "uint"
+    if (type !== expectedType) continue
+    if (typeContext.contextName === indexType.identificationConcept) {
+      return {
+        mainType: ts.factory.createTypeReferenceNode(indexType.name),
+        asString: indexType.name,
+      }
+    }
+  }
+  return undefined
+}
+
 function mapTypeType(context: GenerationContext, type: TypeComplexType, typeContext: TypeContext | undefined): RWType {
   const result = mapTypeInternal(context, type.value, typeContext)
   if (type.description) {
@@ -110,14 +139,6 @@ function mapTypeType(context: GenerationContext, type: TypeComplexType, typeCont
     result.description = type.description
   }
   return result
-}
-
-function mapBasicType(context: GenerationContext, type: string): RWType {
-  const typeName = context.typeNames[type]
-  return {
-    mainType: ts.factory.createTypeReferenceNode(type),
-    asString: typeName ? `[${typeName}](${type})` : `\`${type}\``,
-  }
 }
 
 const unionDescriptionHeader = "\n**Options:**\n"
@@ -436,10 +457,9 @@ function tryUseIndexType(
     if (
       (indexType.mainAttributePath.parent === parent && member.name === indexType.mainAttributePath.name) ||
       parent === indexType.mainAttributePath.parent + "." + indexType.mainAttributePath.name ||
-      parent === indexType.identificationConcept ||
       (indexType.attributePattern && member.name?.match(indexType.attributePattern))
     ) {
-      return mapBasicType(context, indexType.name).mainType
+      return mapBasicType(context, indexType.name, undefined).mainType
     }
   }
   return undefined
