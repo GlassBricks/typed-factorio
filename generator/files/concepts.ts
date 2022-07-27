@@ -1,6 +1,6 @@
 import ts from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
-import { addJsDoc } from "../documentation"
+import { addJsDoc, createSeeTag } from "../documentation"
 import { Concept } from "../FactorioApiJson"
 import GenerationContext from "../GenerationContext"
 import { addFakeJSDoc } from "../genUtil"
@@ -42,8 +42,10 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
     concept.type.complex_type === "table" &&
     concept.type.variant_parameter_groups
   ) {
-    createVariantParameterTypes(context, concept.name, concept.type, statements, concept)
-    return undefined
+    const { description, declaration } = createVariantParameterTypes(context, concept.name, concept.type, statements)
+    concept.description += `\n\n${description}`
+    addJsDoc(context, declaration, concept, concept.name)
+    return
   }
 
   const tableOrArray = tryGetTableOrArrayConcept(context, concept)
@@ -169,10 +171,6 @@ function createTableOrArrayConcept(
 
   context.typeNames[writeName] = name
   context.typeNames[arrayName] = name
-}
-
-function createSeeTag(name: string): ts.JSDocUnknownTag {
-  return ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("see"), name)
 }
 
 function createDeprecatedTag(useInstead: string): ts.JSDocUnknownTag {

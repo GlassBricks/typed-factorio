@@ -149,7 +149,6 @@ export function addJsDoc<T extends ts.Node>(
   element: {
     description: string
     subclasses?: string[]
-    variant_parameter_description?: string
     raises?: EventRaised[]
   } & WithNotes,
   reference: string | undefined,
@@ -157,7 +156,6 @@ export function addJsDoc<T extends ts.Node>(
 ): T {
   let comment = [
     processDescription(context, element.description),
-    processDescription(context, element.variant_parameter_description),
     getRaisesComment(context, element.raises),
     getSubclassesComment(element.subclasses),
     getNotesComment(context, element.notes),
@@ -184,4 +182,8 @@ export function addJsDoc<T extends ts.Node>(
   addFakeJSDoc(node, jsDoc)
 
   return node
+}
+
+export function createSeeTag(name: string): ts.JSDocUnknownTag {
+  return ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("see"), name)
 }

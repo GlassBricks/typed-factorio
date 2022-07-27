@@ -122,45 +122,6 @@ export function mapParameterToProperty(
   }
 }
 
-function addMethodJSDoc(context: GenerationContext, node: ts.Node, method: Method, thisPath: string): void {
-  const tags: ts.JSDocTag[] = []
-  if (!method.takes_table) {
-    tags.push(
-      ...(method.parameters as { name: string; description?: string }[])
-        .concat([{ name: "args", description: method.variadic_description }])
-        .filter((p) => p.description)
-        .map((p) =>
-          ts.factory.createJSDocParameterTag(
-            undefined,
-            ts.factory.createIdentifier(escapeParameterName(p.name)),
-            false,
-            undefined,
-            undefined,
-            processDescription(context, p.description)
-          )
-        )
-    )
-  }
-
-  if (method.return_values.length === 1) {
-    if (method.return_values[0].description)
-      tags.push(
-        ts.factory.createJSDocReturnTag(
-          undefined,
-          undefined,
-          processDescription(context, method.return_values[0].description)
-        )
-      )
-  } else if (method.return_values.length > 1) {
-    tags.push(
-      ...method.return_values.map((r) =>
-        ts.factory.createJSDocReturnTag(undefined, undefined, processDescription(context, r.description))
-      )
-    )
-  }
-  addJsDoc(context, node, method, thisPath, tags)
-}
-
 export function mapMethod(
   context: GenerationContext,
   method: Method,
@@ -178,7 +139,9 @@ export function mapMethod(
     const name =
       (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
       removeLuaPrefix(parent!) + toPascalCase(method.name)
-    createVariantParameterTypes(context, name, method, statements)
+    const { description } = createVariantParameterTypes(context, name, method, statements)
+    method.description += `\n\n${description}`
+
     const type = ts.factory.createTypeReferenceNode(name)
     parameters = [
       ts.factory.createParameterDeclaration(
@@ -284,6 +247,45 @@ function getReturnType(context: GenerationContext, method: Method): ts.TypeNode 
     const types = method.return_values.map(mapReturnType)
     return ts.factory.createTypeReferenceNode("LuaMultiReturn", [ts.factory.createTupleTypeNode(types)])
   }
+}
+
+function addMethodJSDoc(context: GenerationContext, node: ts.Node, method: Method, thisPath: string): void {
+  const tags = []
+  if (!method.takes_table) {
+    tags.push(
+      ...(method.parameters as { name: string; description?: string }[])
+        .concat([{ name: "args", description: method.variadic_description }])
+        .filter((p) => p.description)
+        .map((p) =>
+          ts.factory.createJSDocParameterTag(
+            undefined,
+            ts.factory.createIdentifier(escapeParameterName(p.name)),
+            false,
+            undefined,
+            undefined,
+            processDescription(context, p.description)
+          )
+        )
+    )
+  }
+
+  if (method.return_values.length === 1) {
+    if (method.return_values[0].description)
+      tags.push(
+        ts.factory.createJSDocReturnTag(
+          undefined,
+          undefined,
+          processDescription(context, method.return_values[0].description)
+        )
+      )
+  } else if (method.return_values.length > 1) {
+    tags.push(
+      ...method.return_values.map((r) =>
+        ts.factory.createJSDocReturnTag(undefined, undefined, processDescription(context, r.description))
+      )
+    )
+  }
+  addJsDoc(context, node, method, thisPath, tags)
 }
 
 function mapParameterToParameter(
