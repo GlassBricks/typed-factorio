@@ -31,6 +31,45 @@ export interface TypeContext {
   existingDef?: InterfaceDef | TypeAliasDef
 }
 
+export function mapMemberType(
+  context: GenerationContext,
+  member: { description: string; name?: string; optional?: boolean },
+  parent: string,
+  type: Type
+): ts.TypeNode {
+  const result =
+    tryUseIndexType(member, parent, type) ??
+    tryUseStringEnum(member, type) ??
+    tryUseFlagValue(context, member, type) ??
+    mapType(context, type, parent + (member.name ? "." + member.name : ""))
+
+  const isNullable = !member.optional && isNullableFromDescription(context, member, parent)
+  return isNullable ? makeNullable(result) : result
+}
+
+export function mapType(context: GenerationContext, type: Type, name: string | undefined): ts.TypeNode {
+  const result = mapTypeInternal(context, type, name !== undefined ? { contextName: name } : undefined)
+  if (result.description) {
+    context.warning("Don't have use for type description: " + JSON.stringify(type))
+  }
+  return result.mainType
+}
+
+export function mapConceptType(
+  context: GenerationContext,
+  type: Type,
+  typeContext: TypeContext
+): {
+  type: ts.TypeNode
+  description: string | undefined
+} {
+  const result = mapTypeInternal(context, type, typeContext)
+  return {
+    type: result.mainType,
+    description: result.description,
+  }
+}
+
 function mapTypeInternal(context: GenerationContext, type: Type, typeContext: TypeContext | undefined): RWType {
   if (typeof type === "string") return mapBasicType(type)
   switch (type.complex_type) {
@@ -61,45 +100,6 @@ function mapTypeInternal(context: GenerationContext, type: Type, typeContext: Ty
   }
 }
 
-export function mapMemberType(
-  context: GenerationContext,
-  member: { description: string; name?: string; optional?: boolean },
-  parent: string,
-  type: Type
-): ts.TypeNode {
-  const result =
-    tryUseIndexType(member, parent, type) ??
-    tryUseStringEnum(member, type) ??
-    tryUseFlagValue(context, member, type) ??
-    mapType(context, type, parent + (member.name ? "." + member.name : ""))
-
-  const isNullable = !member.optional && isNullableFromDescription(context, member, parent)
-  return isNullable ? makeNullable(result) : result
-}
-
-export function mapType(context: GenerationContext, type: Type, name: string | undefined): ts.TypeNode {
-  const result = mapTypeInternal(context, type, name !== undefined ? { contextName: name } : undefined)
-  if (result.description) {
-    context.warning("Don't have use for type description: " + JSON.stringify(type))
-  }
-  return result.mainType
-}
-
-export function mapTypeValue(
-  context: GenerationContext,
-  type: Type,
-  typeContext: TypeContext
-): {
-  type: ts.TypeNode
-  description: string | undefined
-} {
-  const result = mapTypeInternal(context, type, typeContext)
-  return {
-    type: result.mainType,
-    description: result.description,
-  }
-}
-
 function mapTypeType(context: GenerationContext, type: TypeComplexType, typeContext: TypeContext | undefined): RWType {
   const result = mapTypeInternal(context, type.value, typeContext)
   if (type.description) {
@@ -114,7 +114,7 @@ function mapTypeType(context: GenerationContext, type: TypeComplexType, typeCont
 function mapBasicType(type: string): RWType {
   return {
     mainType: ts.factory.createTypeReferenceNode(type),
-    asString: type,
+    asString: `[${type}](${type})`,
   }
 }
 
@@ -130,11 +130,13 @@ function mapUnionType(
       .map((t) => {
         if (!t.asString) context.warning("Union type with full format has no asString: " + JSON.stringify(type))
         if (t.description) {
-          return ` - ${t.asString}: ${t.description}`
+          return `- ${t.asString}: ${t.description}`
         }
-        return ` - ${t.asString}`
+        return `- ${t.asString}`
       })
+      .map((x) => x.trim())
       .join("\n")
+    description = "\n**Union members:**\n" + description
   } else {
     if (types.some((t) => t.description)) {
       context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
@@ -153,7 +155,8 @@ function mapArrayType(context: GenerationContext, type: ArrayComplexType): RWTyp
   // todo: add readonly modifier if write but not read
   return {
     mainType: ts.factory.createArrayTypeNode(elementType.mainType),
-    asString: elementType.asString ? `${elementType.asString}[]` : undefined,
+    asString: undefined,
+    description: elementType.description,
   }
 }
 
@@ -166,9 +169,14 @@ function mapDictionaryType(context: GenerationContext, type: DictionaryComplexTy
   }
   const keyType = mapTypeInternal(context, type.key, undefined)
   const valueType = mapTypeInternal(context, type.value, undefined)
+  if (valueType.description) {
+    context.warning("Dictionary type has element with description: " + JSON.stringify(type))
+  }
+
   return {
     mainType: ts.factory.createTypeReferenceNode(recordType, [keyType.mainType, valueType.mainType]),
     asString: undefined,
+    description: keyType.description,
   }
 }
 
@@ -198,6 +206,9 @@ function isIndexableType(context: GenerationContext, type: Type): boolean {
 function mapLuaCustomTableType(context: GenerationContext, type: DictionaryComplexType): RWType {
   const keyType = mapTypeInternal(context, type.key, undefined)
   const valueType = mapTypeInternal(context, type.value, undefined)
+  if (keyType.description || valueType.description) {
+    context.warning("LuaCustomTable type has element with description: " + JSON.stringify(type))
+  }
   return {
     mainType: ts.factory.createTypeReferenceNode("LuaCustomTable", [keyType.mainType, valueType.mainType]),
     asString: undefined,
@@ -206,14 +217,15 @@ function mapLuaCustomTableType(context: GenerationContext, type: DictionaryCompl
 
 function mapFunctionType(context: GenerationContext, type: FunctionComplexType): RWType {
   const parameters = type.parameters.map((value, index) => {
-    const paramType = mapTypeInternal(context, value, undefined).mainType
+    const paramType = mapTypeInternal(context, value, undefined)
+    if (paramType.description) context.warning("Function type has parameter with description: " + JSON.stringify(type))
     return ts.factory.createParameterDeclaration(
       undefined,
       undefined,
       undefined,
       ts.factory.createIdentifier(`arg${index + 1}`),
       undefined,
-      paramType
+      paramType.mainType
     )
   })
   const funcType = ts.factory.createFunctionTypeNode(undefined, parameters, Types.void)
@@ -226,19 +238,20 @@ function mapFunctionType(context: GenerationContext, type: FunctionComplexType):
 function mapLiteralType(context: GenerationContext, type: LiteralComplexType): RWType {
   const value = type.value
   if (typeof value === "string") {
-    return { mainType: Types.stringLiteral(value), asString: `"${value}"` }
+    return { mainType: Types.stringLiteral(value), asString: `\`"${value}"\``, description: type.description }
   } else if (typeof value === "number") {
-    return { mainType: Types.numberLiteral(value), asString: value.toString() }
+    return { mainType: Types.numberLiteral(value), asString: `\`${value}\``, description: type.description }
   } else {
-    return { mainType: Types.booleanLiteral(value), asString: value.toString() }
+    return { mainType: Types.booleanLiteral(value), asString: `\`${value}\``, description: type.description }
   }
 }
 
 function mapLuaLazyLoadedValueType(context: GenerationContext, type: LuaLazyLoadedValueComplexType): RWType {
+  const valueType = mapTypeInternal(context, type.value, undefined)
+  if (valueType.description)
+    context.warning("LuaLazyLoadedValue type has element with description: " + JSON.stringify(type))
   return {
-    mainType: ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [
-      mapTypeInternal(context, type.value, undefined).mainType,
-    ]),
+    mainType: ts.factory.createTypeReferenceNode("LuaLazyLoadedValue", [valueType.mainType]),
     asString: undefined,
   }
 }
@@ -249,9 +262,9 @@ function mapStructType(
   typeContext: TypeContext | undefined
 ): RWType {
   assert(typeContext)
-  const attributes = type.attributes.sort(sortByOrder).flatMap((a) => {
-    return mapAttribute(context, a, typeContext.contextName, typeContext.existingDef)
-  })
+  const attributes = type.attributes
+    .sort(sortByOrder)
+    .flatMap((a) => mapAttribute(context, a, typeContext.contextName, typeContext.existingDef))
 
   return {
     mainType: ts.factory.createTypeLiteralNode(attributes),
@@ -269,9 +282,9 @@ function mapTableType(
     context.warning("variant_parameter_groups is not supported in mapType")
   }
 
-  const parameters = type.parameters.sort(sortByOrder).map((p) => {
-    return mapParameterToProperty(context, p, typeContext.contextName, typeContext.existingDef)
-  })
+  const parameters = type.parameters
+    .sort(sortByOrder)
+    .map((p) => mapParameterToProperty(context, p, typeContext.contextName, typeContext.existingDef))
   return {
     mainType: ts.factory.createTypeLiteralNode(parameters),
     asString: undefined,
