@@ -47,11 +47,18 @@ declare namespace defines {
     namespace mining_drill {
       enum resource_read_mode {}
     }
-    namespace inserter {
-      enum hand_read_mode {}
-    }
     namespace transport_belt {
       enum content_read_mode {}
+    }
+    namespace inserter {
+      enum circuit_mode_of_operation {}
+      enum hand_read_mode {}
+    }
+    namespace logistic_container {
+      enum circuit_mode_of_operation {}
+    }
+    namespace lamp {
+      enum circuit_mode_of_operation {}
     }
   }
 }
@@ -118,8 +125,8 @@ type GuiElementType =
 
 /** @addTo concepts */
 type StyleValuesArray =
-  | readonly [topBottom: number, leftRight: number]
-  | readonly [top: number, right: number, bottom: number, left: number]
+  | readonly [topBottom: int, leftRight: int]
+  | readonly [top: int, right: int, bottom: int, left: int]
 /** @addTo concepts */
 type SizeArray = readonly [width: int, height: int]
 
@@ -687,7 +694,10 @@ interface BlueprintControlBehavior {
   readonly train_stopped_signal?: SignalID
   readonly read_from_train?: boolean
   readonly send_to_train?: boolean
-  readonly circuit_mode_of_operation?: number
+  readonly circuit_mode_of_operation?:
+    | defines.control_behavior.inserter.circuit_mode_of_operation
+    | defines.control_behavior.logistic_container.circuit_mode_of_operation
+    | defines.control_behavior.lamp.circuit_mode_of_operation
   readonly circuit_read_hand_contents?: boolean
   readonly circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
   readonly circuit_set_stack_size?: boolean
