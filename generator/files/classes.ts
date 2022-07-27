@@ -1,14 +1,13 @@
 import ts from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
-import { addJsDoc, processDescription } from "../documentation"
-import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method, Parameter } from "../FactorioApiJson"
+import { addJsDoc } from "../documentation"
+import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioApiJson"
 import GenerationContext from "../GenerationContext"
-import { addFakeJSDoc, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil"
+import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
-import { mapAttribute, mapParameterToProperty } from "../members"
-import { makeNullable, mapMemberType, mapType } from "../types"
-import { assertNever, getFirst, sortByOrder } from "../util"
-import { createVariantParameterTypes } from "../variantParameter"
+import { mapAttribute, mapMethod } from "../members"
+import { mapType } from "../types"
+import { assertNever, sortByOrder } from "../util"
 
 export function preprocessClasses(context: GenerationContext) {
   for (const clazz of context.apiDocs.classes) {
@@ -187,17 +186,23 @@ function generateClass(
     members.push(
       ...clazz.methods.sort(sortByOrder).map((method) => ({
         original: method,
-        member: mapMethod(method),
+        member: mapMethod(context, method, clazz.name, existing, statements),
       }))
     )
 
     const callOperator = clazz.operators.find((x) => x.name === "call") as CallOperator | undefined
     if (callOperator) {
       // manual define for operator not supported yet
-      const asMethod = mapMethod({
-        ...callOperator,
-        name: "operator%20()",
-      }) as ts.MethodSignature
+      const asMethod = mapMethod(
+        context,
+        {
+          ...callOperator,
+          name: "operator%20()",
+        },
+        clazz.name,
+        existing,
+        statements
+      ) as ts.MethodSignature
       const callSignature = ts.factory.createCallSignature(undefined, asMethod.parameters, asMethod.type)
       ts.setSyntheticLeadingComments(callSignature, ts.getSyntheticLeadingComments(asMethod))
       members.push({ original: callOperator, member: callSignature })
@@ -525,166 +530,6 @@ function generateClass(
       statements.add(declaration)
     }
   }
-  function mapParameterToParameter(parameter: Parameter, parent: string): ts.ParameterDeclaration {
-    const type = mapMemberType(context, parameter, parent, parameter.type)
-    return ts.factory.createParameterDeclaration(
-      undefined,
-      undefined,
-      undefined,
-      escapeParameterName(parameter.name),
-      parameter.optional ? Tokens.question : undefined,
-      type
-    )
-  }
-
-  function mapMethod(method: Method): ts.MethodSignature[] | ts.MethodSignature {
-    const existingMethods = existing?.members[method.name]
-    const firstExistingMethod = existingMethods?.[0]
-    const thisPath = clazz.name + "." + method.name
-    let parameters: ts.ParameterDeclaration[]
-    if (method.takes_table) {
-      let type: ts.TypeNode
-      if (method.variant_parameter_groups !== undefined) {
-        const name =
-          (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
-          removeLuaPrefix(clazz.name) + toPascalCase(method.name)
-        createVariantParameterTypes(context, name, method, statements)
-        type = ts.factory.createTypeReferenceNode(name)
-      } else {
-        type = ts.factory.createTypeLiteralNode(
-          method.parameters.sort(sortByOrder).map((m) => mapParameterToProperty(context, m, thisPath, undefined))
-        )
-      }
-      parameters = [
-        ts.factory.createParameterDeclaration(
-          undefined,
-          undefined,
-          undefined,
-          "params",
-          method.table_is_optional ? Tokens.question : undefined,
-          type
-        ),
-      ]
-    } else {
-      parameters = method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(m, thisPath))
-    }
-
-    if (method.variadic_type) {
-      const type = mapType(context, { complex_type: "array", value: method.variadic_type }, thisPath)
-      parameters.push(
-        ts.factory.createParameterDeclaration(undefined, undefined, Tokens.dotDotDot, "args", undefined, type)
-      )
-    }
-
-    let signatures: ts.MethodSignature[] | ts.MethodSignature
-
-    function mapReturnType(type: Method["return_values"][number]): ts.TypeNode {
-      const result = mapMemberType(
-        context,
-        {
-          ...type,
-          name: "<return>",
-        },
-        thisPath,
-        type.type
-      )
-      return type.optional ? makeNullable(result) : result
-    }
-
-    let returnType: ts.TypeNode
-    if (method.return_values.length === 0) {
-      returnType = Types.void
-    } else if (method.return_values.length === 1) {
-      returnType = mapReturnType(method.return_values[0])
-    } else {
-      const types = method.return_values.map(mapReturnType)
-      returnType = ts.factory.createTypeReferenceNode("LuaMultiReturn", [ts.factory.createTupleTypeNode(types)])
-    }
-
-    if (existingMethods) {
-      existingMethods.forEach((m) => {
-        if (!ts.isMethodSignature(m)) {
-          throw new Error(
-            `Manual define for ${clazz.name}.${method.name} should be a method signature, got ${
-              ts.SyntaxKind[m.kind]
-            } instead`
-          )
-        }
-      })
-      signatures = (existingMethods as ts.MethodSignature[]).map((m) => {
-        const member = ts.factory.createMethodSignature(
-          m.modifiers,
-          m.name,
-          m.questionToken,
-          m.typeParameters,
-          m.parameters.length > 0 ? m.parameters : parameters,
-          m.type ?? returnType
-        )
-        ts.setEmitFlags(member.name, ts.EmitFlags.NoComments)
-        return member
-      })
-    } else {
-      signatures = ts.factory.createMethodSignature(
-        undefined,
-        method.name,
-        undefined,
-        undefined,
-        parameters,
-        returnType
-      )
-    }
-    const tags: ts.JSDocTag[] = []
-    if (!method.takes_table) {
-      tags.push(
-        ...(method.parameters as { name: string; description?: string }[])
-          .concat([{ name: "args", description: method.variadic_description }])
-          .filter((p) => p.description)
-          .map((p) =>
-            ts.factory.createJSDocParameterTag(
-              undefined,
-              ts.factory.createIdentifier(escapeParameterName(p.name)),
-              false,
-              undefined,
-              undefined,
-              processDescription(context, p.description)
-            )
-          )
-      )
-    }
-
-    if (method.return_values.length === 1) {
-      if (method.return_values[0].description)
-        tags.push(
-          ts.factory.createJSDocReturnTag(
-            undefined,
-            undefined,
-            processDescription(context, method.return_values[0].description)
-          )
-        )
-    } else if (method.return_values.length > 1) {
-      tags.push(
-        ...method.return_values.map((r) =>
-          ts.factory.createJSDocReturnTag(undefined, undefined, processDescription(context, r.description))
-        )
-      )
-    }
-    addJsDoc(context, getFirst(signatures), method, thisPath, tags)
-    // if (Array.isArray(members)) {
-    //   for (let i = 1; i < members.length; i++) {
-    //     const member = members[i]
-    //     addFakeJSDoc(member, ts.factory.createJSDocComment(`{@inheritDoc ${thisPath}}`))
-    //   }
-    // }
-    return signatures
-  }
-}
-
-const keywords = new Set(["function", "interface"])
-function escapeParameterName(name: string): string {
-  if (keywords.has(name)) {
-    return "_" + name
-  }
-  return name
 }
 
 const noSelfAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noSelf"))

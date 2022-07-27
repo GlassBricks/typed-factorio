@@ -7,6 +7,7 @@
 // generated
 /// <reference types="typed-factorio/generated/builtin-types.d.ts" />
 /// <reference types="typed-factorio/generated/global-objects.d.ts" />
+/// <reference types="typed-factorio/generated/global-functions.d.ts" />
 /// <reference types="typed-factorio/generated/defines.d.ts" />
 /// <reference types="typed-factorio/generated/events.d.ts" />
 /// <reference types="typed-factorio/generated/classes.d.ts" />

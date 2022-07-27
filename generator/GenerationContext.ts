@@ -12,6 +12,7 @@ export default class GenerationContext {
   classes = new Map<string, Class>(this.apiDocs.classes.map((e) => [e.name, e]))
   concepts = new Map<string, Concept>(this.apiDocs.concepts.map((e) => [e.name, e]))
   globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
+  globalFunctions = new Set<string>(this.apiDocs.global_functions.map((e) => e.name))
 
   numericTypes = new Set<string>()
   // This is also a record of which types exist
@@ -26,7 +27,7 @@ export default class GenerationContext {
   constructor(
     readonly apiDocs: FactorioApiJson,
     readonly manualDefinitionsSource: ts.SourceFile,
-    readonly checker: ts.TypeChecker
+    private readonly checker: ts.TypeChecker
   ) {
     if (apiDocs.application !== "factorio") {
       throw new Error("Unsupported application " + apiDocs.application)

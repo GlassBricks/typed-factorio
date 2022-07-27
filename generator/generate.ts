@@ -8,7 +8,14 @@ import { generateConcepts, preprocessConcepts } from "./files/concepts"
 import { generateDefines, preprocessDefines } from "./files/defines"
 import { generateEvents, preprocessEvents } from "./files/events"
 import { generateIndexTypesFile, preprocessIndexTypes } from "./files/index-types"
-import { generateBuiltins, generateGlobalObjects, preprocessBuiltins, preprocessGlobalObjects } from "./files/others"
+import {
+  generateBuiltins,
+  generateGlobalFunctions,
+  generateGlobalObjects,
+  preprocessBuiltins,
+  preprocessGlobalFunctions,
+  preprocessGlobalObjects,
+} from "./files/others"
 import GenerationContext from "./GenerationContext"
 import { printer } from "./genUtil"
 import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions"
@@ -45,6 +52,7 @@ export function generateDefinitions(
 function preprocessAll(context: GenerationContext) {
   preprocessBuiltins(context)
   preprocessGlobalObjects(context)
+  preprocessGlobalFunctions(context)
   preprocessDefines(context)
   preprocessEvents(context)
   preprocessClasses(context)
@@ -57,6 +65,7 @@ function generateAll(context: GenerationContext): DefinitionsFile[] {
   const files = [
     generateBuiltins(context),
     generateGlobalObjects(context),
+    generateGlobalFunctions(context),
     generateDefines(context),
     generateEvents(context),
     generateClasses(context),

@@ -89,35 +89,3 @@ declare namespace serpent {
    */
   function load<T>(str: string, options?: { safe?: boolean }): LuaMultiReturn<[true, T] | [false, string]>
 }
-
-/**
- * This function allows to log {@link LocalisedString} to the Factorio
- * {@link https://wiki.factorio.com/Log_file log file}. This, in combination with serpent, makes debugging in the data
- * stage easier, because it allows to simply inspect entire prototype tables. For example, this allows to see all
- * properties of the sulfur item prototype: `log(serpent.block(data.raw["item"]["sulfur"]))`
- */
-declare function log(ls: LocalisedString): void
-
-/**
- * This function allows printing {@link LocalisedString}s to stdout without polluting the logfile. This is primarily
- * useful for communicating with external tools that launch Factorio as a child process.
- */
-declare function localised_print(ls: LocalisedString): void
-
-/**
- * Factorio provides the function `table_size()` as a simple way to find the size of tables with non-continuous keys,
- * because the standard `#` does not work correctly for these. The function is a C++-side implementation of the
- * following Lua code, thus it is faster than using this code in Lua:
- *
- *     local function size(t)
- *       local count = 0
- *        for k,v in pairs(t) do
- *         count = count + 1
- *       end
- *       return count
- *     end
- *
- * Note that `table_size()` does not work correctly for {@link LuaCustomTable}s, their size has to be determined with
- * {@link LuaCustomTable.length LuaCustomTable::operator #} instead.
- */
-declare function table_size(tbl: table): number

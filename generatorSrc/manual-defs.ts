@@ -4,6 +4,10 @@ type table = object
 type int = number
 type uint = number
 type uint64 = number
+type nil = undefined
+interface LuaObject {
+  readonly object_name: string
+}
 
 declare namespace defines {
   const prototypes: {
@@ -73,7 +77,7 @@ interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
 interface Fluid {}
 
-interface LuaFluidBox extends Array<Fluid | undefined> {}
+interface LuaFluidBox extends Array<Fluid | nil> {}
 
 interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 
@@ -300,7 +304,7 @@ interface GuiSpec {
 
 /** @discriminatedUnion type */
 type LuaGuiElement = {
-  readonly [name: string]: LuaGuiElement | undefined
+  readonly [name: string]: LuaGuiElement | nil
 } & {
   readonly type: GuiElementType
 
@@ -309,9 +313,9 @@ type LuaGuiElement = {
 
   readonly elem_type: ChooseElemButtonType
   // @ts-ignore
-  elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | undefined
+  elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | nil
   // @ts-ignore
-  elem_filters: ChooseElemButtonFilters[this["elem_type"]] | undefined
+  elem_filters: ChooseElemButtonFilters[this["elem_type"]] | nil
 
   /** @subclasses dropdown list-box */
   clear_items()
@@ -366,7 +370,7 @@ type LuaGuiElement = {
   /** @subclasses button sprite-button */
   mouse_button_filter
   /** @subclasses flow frame label table empty-widget */
-  drag_target: LuaGuiElement | undefined
+  drag_target: LuaGuiElement | nil
   /** @subclasses tabbed-pane */
   readonly tabs
   /** @subclasses entity-preview camera minimap */
@@ -388,9 +392,9 @@ interface LuaControl {
       | LuaPlayer
       | LuaGuiElement
       | defines.gui_type
-      | undefined
+      | nil
   )
-  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | undefined
+  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | nil
 
   teleport(position: MapPosition, surface?: SurfaceIdentification): boolean
   teleport(x: number, y?: number): boolean
@@ -400,10 +404,6 @@ interface LuaEntity {
   initial_amount: uint | undefined
   get_driver(): LuaEntity | LuaPlayer | undefined
   get_passenger(): LuaEntity | LuaPlayer | undefined
-  // revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
-  // silent_revive(): LuaMultiReturn<[undefined] | [Record<string, uint>, LuaEntity, LuaEntity | undefined]>
-
-  // get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
 }
 
 interface LuaItemStack {

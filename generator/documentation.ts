@@ -87,6 +87,8 @@ function getDocumentationUrl(context: GenerationContext, reference: string): str
     relative_link = "Concepts.html#" + reference
   } else if (context.globalObjects.has(reference)) {
     relative_link = ""
+  } else if (context.globalFunctions.has(reference)) {
+    relative_link = "Libraries.html#2.-new-functions"
   } else if (reference.includes(".")) {
     const className = reference.substring(0, reference.indexOf("."))
     return getDocumentationUrl(context, className) + "#" + reference
