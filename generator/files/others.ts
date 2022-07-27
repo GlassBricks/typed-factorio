@@ -9,6 +9,7 @@ import { sortByOrder } from "../util"
 
 export function preprocessBuiltins(context: GenerationContext) {
   for (const builtin of context.apiDocs.builtin_types) {
+    if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
     context.typeNames[builtin.name] = builtin.name
     const existing = context.getInterfaceDef(builtin.name)
     if (existing?.kind === "type" && existing.node.type.kind === SyntaxKind.NumberKeyword)

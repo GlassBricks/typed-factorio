@@ -55,6 +55,9 @@ export function processDescription(context: GenerationContext, description: stri
   for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|```((?:(?!```).)*)```)/gs)) {
     const withLinks = text
       .replace(/\[(?!\[)(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
+        if (name === "string" || name === "number" || name === "boolean") {
+          return `\`${name}\``
+        }
         const { link, isWebLink } = mapLink(context, origLink)
         const tag = isWebLink ? "linkplain" : "link"
         if (link === name) {

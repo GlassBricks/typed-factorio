@@ -38,7 +38,7 @@ export function mapMemberType(
   type: Type
 ): ts.TypeNode {
   const result =
-    tryUseIndexType(member, parent, type) ??
+    tryUseIndexType(context, member, parent, type) ??
     tryUseStringEnum(member, type) ??
     tryUseFlagValue(context, member, type) ??
     mapType(context, type, parent + (member.name ? "." + member.name : ""))
@@ -71,7 +71,7 @@ export function mapConceptType(
 }
 
 function mapTypeInternal(context: GenerationContext, type: Type, typeContext: TypeContext | undefined): RWType {
-  if (typeof type === "string") return mapBasicType(type)
+  if (typeof type === "string") return mapBasicType(context, type)
   switch (type.complex_type) {
     case "type":
       return mapTypeType(context, type, typeContext)
@@ -111,10 +111,11 @@ function mapTypeType(context: GenerationContext, type: TypeComplexType, typeCont
   return result
 }
 
-function mapBasicType(type: string): RWType {
+function mapBasicType(context: GenerationContext, type: string): RWType {
+  const typeName = context.typeNames[type]
   return {
     mainType: ts.factory.createTypeReferenceNode(type),
-    asString: `[${type}](${type})`,
+    asString: typeName ? `[${typeName}](${type})` : `\`${type}\``,
   }
 }
 
@@ -318,7 +319,12 @@ function mapTupleType(
   }
 }
 
-function tryUseIndexType(member: { name?: string }, parent: string, type: Type): ts.TypeNode | undefined {
+function tryUseIndexType(
+  context: GenerationContext,
+  member: { name?: string },
+  parent: string,
+  type: Type
+): ts.TypeNode | undefined {
   if (type !== "uint" && type !== "uint64") return undefined
   for (const indexType of IndexTypes) {
     const expectedType = indexType.typeOverride ?? "uint"
@@ -329,7 +335,7 @@ function tryUseIndexType(member: { name?: string }, parent: string, type: Type):
       parent === indexType.identificationConcept ||
       (indexType.attributePattern && member.name?.match(indexType.attributePattern))
     ) {
-      return mapBasicType(indexType.name).mainType
+      return mapBasicType(context, indexType.name).mainType
     }
   }
   return undefined
