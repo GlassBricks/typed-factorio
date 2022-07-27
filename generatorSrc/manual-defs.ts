@@ -133,9 +133,6 @@ interface LuaStyle {
   set extra_margin_when_activated(value: int | StyleValuesArray)
 }
 
-interface LuaEquipment {}
-interface LuaEquipmentGrid {}
-
 interface BaseGuiSpec {
   readonly type: GuiElementType
 }
@@ -160,17 +157,6 @@ interface DecorativePrototypeFilter {}
 interface AchievementPrototypeFilter {}
 interface EquipmentPrototypeFilter {}
 interface TechnologyPrototypeFilter {}
-
-type PrototypeFilter =
-  | ItemPrototypeFilter
-  | TilePrototypeFilter
-  | EntityPrototypeFilter
-  | FluidPrototypeFilter
-  | RecipePrototypeFilter
-  | DecorativePrototypeFilter
-  | AchievementPrototypeFilter
-  | EquipmentPrototypeFilter
-  | TechnologyPrototypeFilter
 
 /** @addBefore ChooseElemButtonGuiSpec */
 type ChooseElemButtonType =
@@ -384,6 +370,9 @@ type LuaGuiElement = {
 }
 
 // nullability, multi-return, different read/write types
+
+interface LuaEquipment {}
+interface LuaEquipmentGrid {}
 
 interface LuaControl {
   set opened(
@@ -679,6 +668,8 @@ type RenderLayer =
 
 /** @omit */
 interface EventFilter {}
+/** @omit */
+interface PrototypeFilter {}
 
 // where a vector is supposed to be a position table instead
 

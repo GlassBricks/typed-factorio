@@ -27,6 +27,13 @@ export function generateConcepts(context: GenerationContext): DefinitionsFile {
 function generateConcept(context: GenerationContext, concept: Concept, statements: StatementsList): void {
   const existing = context.getInterfaceDef(concept.name)
 
+  if (existing?.annotations) {
+    const annotation = existing.annotations
+    if (existing.annotations.omit) return
+
+    context.warning("Don't know what to do with existing concept interface", concept.name)
+    // todo
+  }
   if (
     typeof concept.type !== "string" &&
     concept.type.complex_type === "table" &&
