@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { StatementsList } from "./DefinitionsFile"
 import { addJsDoc } from "./documentation"
-import { BasicMember, WithParameterVariants } from "./FactorioApiJson"
+import { BasicMember, WithVariantParameterGroups } from "./FactorioApiJson"
 import GenerationContext from "./GenerationContext"
 import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil"
 import { mapParameterToProperty } from "./members"
@@ -10,7 +10,7 @@ import { sortByOrder } from "./util"
 export function createVariantParameterTypes(
   context: GenerationContext,
   name: string,
-  variants: WithParameterVariants,
+  variants: WithVariantParameterGroups,
   statements: StatementsList,
   memberForDocs?: BasicMember
 ): void {

@@ -1,11 +1,11 @@
 import ts from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
 import { addJsDoc } from "../documentation"
-import { Concept } from "../FactorioApiJson"
+import { Concept, Type } from "../FactorioApiJson"
 import GenerationContext from "../GenerationContext"
-import { mapTypeValue } from "../types"
+import { mapType, mapTypeValue } from "../types"
 import { sortByOrder } from "../util"
-import { createVariantParameterTypes } from "../variantParameter"
+import { createVariantParameterTypes } from "../variantParameterGroups"
 
 export function preprocessConcepts(context: GenerationContext) {
   for (const concept of context.apiDocs.concepts) {

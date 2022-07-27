@@ -8,7 +8,7 @@ import { Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUt
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions"
 import { makeNullable, mapMemberType, mapType } from "./types"
 import { getFirst, sortByOrder } from "./util"
-import { createVariantParameterTypes } from "./variantParameter"
+import { createVariantParameterTypes } from "./variantParameterGroups"
 
 export function mapAttribute(
   context: GenerationContext,

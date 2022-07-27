@@ -24,7 +24,7 @@ export interface WithNotes {
   examples?: string[]
 }
 
-export interface WithParameterVariants {
+export interface WithVariantParameterGroups {
   parameters: Parameter[]
   variant_parameter_groups?: ParameterGroup[]
   variant_parameter_description: string
@@ -119,7 +119,7 @@ export interface StructComplexType extends BaseComplexType {
   attributes: Attribute[]
 }
 
-export interface TableComplexType extends BaseComplexType, WithParameterVariants {
+export interface TableComplexType extends BaseComplexType, WithVariantParameterGroups {
   complex_type: "table" | "tuple"
 }
 
@@ -150,7 +150,7 @@ export interface ParameterGroup extends BasicMember {
   parameters: Parameter[]
 }
 
-export interface Method extends BasicMember, WithNotes, WithParameterVariants {
+export interface Method extends BasicMember, WithNotes, WithVariantParameterGroups {
   subclasses?: string[]
   variadic_type?: Type
   variadic_description?: string
