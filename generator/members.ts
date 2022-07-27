@@ -4,7 +4,7 @@ import { StatementsList } from "./DefinitionsFile"
 import { addJsDoc, processDescription } from "./documentation"
 import { Attribute, Method, Parameter } from "./FactorioApiJson"
 import GenerationContext from "./GenerationContext"
-import { Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil"
+import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions"
 import { makeNullable, mapMemberType, mapType } from "./types"
 import { getFirst, sortByOrder } from "./util"
@@ -119,13 +119,6 @@ export function mapParameterToProperty(
     addJsDoc(context, result, parameter, undefined)
 
     return result
-  }
-
-  function escapePropertyName(name: string): ts.PropertyName {
-    if (name.includes("-")) {
-      return ts.factory.createStringLiteral(name)
-    }
-    return ts.factory.createIdentifier(name)
   }
 }
 

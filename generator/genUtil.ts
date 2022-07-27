@@ -126,3 +126,9 @@ export function createComment(text: string, multiline?: boolean): ts.EmptyStatem
     true
   )
 }
+export function escapePropertyName(name: string): ts.PropertyName {
+  if (name.includes("-")) {
+    return ts.factory.createStringLiteral(name)
+  }
+  return ts.factory.createIdentifier(name)
+}

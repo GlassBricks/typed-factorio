@@ -1,5 +1,6 @@
 import assert from "assert"
 import ts from "typescript"
+import { addJsDoc } from "./documentation"
 import {
   ArrayComplexType,
   DictionaryComplexType,
@@ -14,7 +15,7 @@ import {
 } from "./FactorioApiJson"
 import { IndexTypes } from "./files/index-types"
 import GenerationContext from "./GenerationContext"
-import { indent, Tokens, Types } from "./genUtil"
+import { escapePropertyName, indent, Modifiers, Tokens, Types } from "./genUtil"
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions"
 import { mapAttribute, mapParameterToProperty } from "./members"
 import { assertNever, sortByOrder } from "./util"
@@ -80,7 +81,7 @@ function mapTypeInternal(context: GenerationContext, type: Type, typeContext: Ty
     case "array":
       return mapArrayType(context, type)
     case "dictionary":
-      return mapDictionaryType(context, type)
+      return mapDictionaryType(context, type, typeContext)
     case "LuaCustomTable":
       return mapLuaCustomTableType(context, type)
     case "function":
@@ -119,6 +120,7 @@ function mapBasicType(context: GenerationContext, type: string): RWType {
   }
 }
 
+const unionDescriptionHeader = "\n**Options:**\n"
 function mapUnionType(
   context: GenerationContext,
   type: UnionComplexType,
@@ -152,7 +154,7 @@ function mapUnionType(
       })
       .map((x) => x.trim())
       .join("\n")
-    description = "\n**Union members:**\n" + description
+    description = unionDescriptionHeader + description
   } else {
     if (types.some((t) => t.description)) {
       context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
@@ -191,12 +193,54 @@ function mapArrayType(context: GenerationContext, type: ArrayComplexType): RWTyp
   }
 }
 
-function mapDictionaryType(context: GenerationContext, type: DictionaryComplexType): RWType {
+enum IndexType {
+  None = 0,
+  Basic = 1,
+  StringUnion = (1 << 1) | Basic,
+}
+
+function getIndexableType(context: GenerationContext, type: Type): IndexType {
+  if (typeof type === "string") {
+    if (type === "string" || type === "number" || type.startsWith("defines.") || context.numericTypes.has(type))
+      return IndexType.Basic
+    if (type === "CollisionMaskLayer") return IndexType.StringUnion
+    return IndexType.None
+  }
+  if (type.complex_type === "literal") {
+    if (typeof type.value === "string") return IndexType.StringUnion
+    if (typeof type.value === "number") return IndexType.Basic
+    return IndexType.None
+  }
+  if (type.complex_type === "type") {
+    return getIndexableType(context, type.value)
+  }
+  if (type.complex_type === "union") {
+    return type.options.map((t) => getIndexableType(context, t)).reduce((a, b) => a & b, IndexType.StringUnion)
+  }
+  return IndexType.None
+}
+
+function mapDictionaryType(
+  context: GenerationContext,
+  type: DictionaryComplexType,
+  typeContext: TypeContext | undefined
+): RWType {
   let recordType = "Record"
-  if (!isIndexableType(context, type.key)) {
-    const isIndexable = isIndexableType(context, type.key)
-    context.warning("dictionary key is not indexable: " + JSON.stringify(type.key), isIndexable)
+  const indexType = getIndexableType(context, type.key)
+  if (indexType === IndexType.None) {
+    context.warning("dictionary key is not indexable: " + JSON.stringify(type.key))
     recordType = "LuaTable"
+  }
+  // flags
+  if (
+    indexType === IndexType.StringUnion &&
+    typeContext?.contextName &&
+    typeof type.value !== "string" &&
+    type.value.complex_type === "literal" &&
+    type.value.value === true
+  ) {
+    // Record<... true>
+    return makeFlagsType(context, typeContext, type.key)
   }
   const keyType = mapTypeInternal(context, type.key, undefined)
   const valueType = mapTypeInternal(context, type.value, undefined)
@@ -211,27 +255,57 @@ function mapDictionaryType(context: GenerationContext, type: DictionaryComplexTy
   }
 }
 
-function isIndexableType(context: GenerationContext, type: Type): boolean {
-  if (typeof type === "string") {
-    return (
-      type === "string" ||
-      type === "number" ||
-      type.startsWith("defines.") ||
-      context.numericTypes.has(type) ||
-      // temp hardcoded
-      type === "CollisionMaskLayer"
-    )
+function makeFlagsType(context: GenerationContext, typeContext: TypeContext, keyType: Type): RWType {
+  const isUnion = typeof keyType !== "string" && keyType.complex_type === "union"
+  const options = isUnion ? keyType.options : [keyType]
+  const members = options.map((o) => {
+    if (typeof o !== "string" && o.complex_type === "literal" && typeof o.value === "string") {
+      // readonly <value>?: true
+      const property = ts.factory.createPropertySignature(
+        [Modifiers.readonly],
+        escapePropertyName(o.value),
+        Tokens.question,
+        Types.booleanLiteral(true)
+      )
+      if (o.description) addJsDoc(context, property, { description: o.description }, undefined)
+      return property
+    } else {
+      const rwType = mapTypeInternal(context, o, undefined)
+      const node = ts.factory.createMappedTypeNode(
+        Modifiers.readonly,
+        ts.factory.createTypeParameterDeclaration("T", rwType.mainType),
+        undefined,
+        Tokens.question,
+        Types.booleanLiteral(true),
+        undefined
+      )
+      if (rwType.description) addJsDoc(context, node, { description: rwType.description }, undefined)
+      return node
+    }
+  })
+  const description = mapTypeInternal(context, keyType, typeContext).description
+
+  const intersectionMembers: ts.TypeNode[] = []
+
+  const propDeclarations = members.filter(ts.isPropertySignature)
+  if (propDeclarations.length > 0) {
+    intersectionMembers.push(ts.factory.createTypeLiteralNode(propDeclarations))
   }
-  if (type.complex_type === "literal") {
-    return typeof type.value === "string" || typeof type.value === "number"
+  const indexDeclarations = members.filter(ts.isMappedTypeNode)
+  if (indexDeclarations.length > 0) {
+    if (indexDeclarations.length > 1)
+      context.warning("flags type has multiple index signatures: " + JSON.stringify(keyType))
+    intersectionMembers.push(...indexDeclarations)
   }
-  if (type.complex_type === "type") {
-    return isIndexableType(context, type.value)
+  const resultType =
+    intersectionMembers.length === 1
+      ? intersectionMembers[0]
+      : ts.factory.createIntersectionTypeNode(intersectionMembers)
+  return {
+    mainType: resultType,
+    asString: undefined,
+    description,
   }
-  if (type.complex_type === "union") {
-    return type.options.every((t) => isIndexableType(context, t))
-  }
-  return false
 }
 
 function mapLuaCustomTableType(context: GenerationContext, type: DictionaryComplexType): RWType {
