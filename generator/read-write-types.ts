@@ -1,5 +1,6 @@
 import assert from "assert"
-import { Concept, Type } from "./FactorioApiJson"
+import ts from "typescript"
+import { Attribute, Concept, Type } from "./FactorioApiJson"
 import GenerationContext from "./GenerationContext"
 import { assertNever } from "./util"
 
@@ -8,6 +9,17 @@ export enum RWUsage {
   Read = 1 << 0,
   Write = 1 << 1,
   ReadWrite = Read | Write,
+}
+
+export function getUsage(attribute: Attribute): RWUsage {
+  let usage = RWUsage.None
+  if (attribute.read) {
+    usage |= RWUsage.Read
+  }
+  if (attribute.write) {
+    usage |= RWUsage.Write
+  }
+  return usage
 }
 
 export function analyzeType(context: GenerationContext, type: Type, usage: RWUsage): void {
@@ -103,32 +115,41 @@ export function recordConceptDependencies(context: GenerationContext, concept: C
   }
 }
 
-export function markHavingSeparateReadWriteTypes(
+export function setReadWriteType(
   context: GenerationContext,
   concept: Concept,
-  type?: { read: string; write: string }
+  type: { read: string | ts.TypeNode; write: string | ts.TypeNode }
 ) {
   const { conceptUsages, conceptReferencedBy, conceptReadWriteTypes } = context
-  // assert(conceptUsages.get(concept) === RWUsage.ReadWrite)
   if (conceptUsages.get(concept) !== RWUsage.ReadWrite) {
     context.warning(
       `Concept ${concept.name} is not read-write, but is being marked as having separate read and write types`
     )
   }
   const existingType = conceptReadWriteTypes.get(concept)
+  conceptReadWriteTypes.set(concept, type)
+  if (existingType) return
+  setReadWriteTypeWorker(concept)
 
-  if (existingType === true) {
-    if (type) conceptReadWriteTypes.set(concept, type)
-    return
-  } else if (existingType) {
-    if (type) context.warning(`${concept.name} has already has read/write types`)
-    return
-  }
-  conceptReadWriteTypes.set(concept, type ?? true)
-
-  conceptReferencedBy.get(concept)!.forEach((referencingConcept) => {
-    if (conceptUsages.get(referencingConcept) === RWUsage.ReadWrite) {
-      markHavingSeparateReadWriteTypes(context, referencingConcept)
+  function setReadWriteTypeWorker(curConcept: Concept) {
+    if (conceptUsages.get(curConcept) !== RWUsage.ReadWrite) {
+      context.warning(
+        `Concept ${curConcept.name} is not read-write, but is being marked as having separate read and write types`
+      )
     }
-  })
+
+    conceptReferencedBy.get(curConcept)!.forEach((referencingConcept) => {
+      if (
+        conceptUsages.get(referencingConcept) === RWUsage.ReadWrite &&
+        !conceptReadWriteTypes.has(referencingConcept)
+      ) {
+        const defaultNames = {
+          read: `${referencingConcept.name}`,
+          write: `${referencingConcept.name}Write`,
+        }
+        conceptReadWriteTypes.set(referencingConcept, defaultNames)
+        setReadWriteTypeWorker(referencingConcept)
+      }
+    })
+  }
 }

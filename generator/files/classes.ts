@@ -197,7 +197,7 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = mapType(context, lengthOperator.type, clazz.name + ".length")
+      const type = mapType(context, lengthOperator.type, clazz.name + ".length", RWUsage.Read).mainType
       const lengthProperty = addJsDoc(
         context,
         ts.factory.createPropertySignature(

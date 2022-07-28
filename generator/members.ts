@@ -6,8 +6,8 @@ import { Attribute, Method, Parameter } from "./FactorioApiJson"
 import GenerationContext from "./GenerationContext"
 import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions"
-import { analyzeType, RWUsage } from "./read-write-types"
-import { makeNullable, mapMemberType, mapType } from "./types"
+import { analyzeType, getUsage, RWUsage } from "./read-write-types"
+import { makeNullable, mapMemberType, mapType, RWType } from "./types"
 import { getFirst, sortByOrder } from "./util"
 import { createVariantParameterTypes } from "./variantParameterGroups"
 
@@ -35,48 +35,10 @@ export function mapAttribute(
   existingContainer: InterfaceDef | TypeAliasDef | undefined
 ): ts.TypeElement | ts.TypeElement[] {
   let member: ts.TypeElement | ts.TypeElement[]
-  const type = mapMemberType(context, attribute, parent, attribute.type)
+  const type = mapMemberType(context, attribute, parent, attribute.type, getUsage(attribute))
   const existing = existingContainer?.members[attribute.name]
   if (existing) {
-    const first = existing[0]
-    if (ts.isPropertySignature(first)) {
-      member = ts.factory.createPropertySignature(first.modifiers, first.name, first.questionToken, first.type ?? type)
-      ts.setEmitFlags(member, ts.EmitFlags.NoNestedComments)
-    } else if (existing.every((v) => ts.isGetAccessorDeclaration(v) || ts.isSetAccessorDeclaration(v))) {
-      member = []
-      for (const element of existing) {
-        if (ts.isGetAccessorDeclaration(element)) {
-          if (!attribute.read) throw new Error("Get accessor defined for non-readable attribute")
-          const newMember = ts.factory.createGetAccessorDeclaration(
-            element.decorators,
-            element.modifiers,
-            element.name,
-            element.parameters,
-            element.type ?? type,
-            undefined
-          )
-          ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
-          member.push(newMember)
-        } else if (ts.isSetAccessorDeclaration(element)) {
-          if (!attribute.write) throw new Error("Set accessor defined for non-writable attribute")
-          const newMember = ts.factory.createSetAccessorDeclaration(
-            element.decorators,
-            element.modifiers,
-            element.name,
-            element.parameters,
-            undefined
-          )
-          ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
-          member.push(newMember)
-        }
-      }
-    } else {
-      throw new Error(
-        `Unknown type for manual define for ${parent}.${attribute.name}, got kinds ${existing
-          .map((x) => ts.SyntaxKind[x.kind])
-          .join()} instead`
-      )
-    }
+    member = mergeAttributeWithExisting(context, parent, attribute, type, existing)
   } else if (!attribute.read) {
     member = ts.factory.createSetAccessorDeclaration(
       undefined,
@@ -89,18 +51,40 @@ export function mapAttribute(
           undefined,
           "value",
           attribute.optional ? Tokens.question : undefined,
-          type,
+          type.mainType,
           undefined
         ),
       ],
       undefined
     )
+  } else if (type.altWriteType) {
+    assert(attribute.read && attribute.write)
+    member = [
+      ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], type.mainType, undefined),
+      ts.factory.createSetAccessorDeclaration(
+        undefined,
+        undefined,
+        attribute.name,
+        [
+          ts.factory.createParameterDeclaration(
+            undefined,
+            undefined,
+            undefined,
+            "value",
+            undefined,
+            type.altWriteType,
+            undefined
+          ),
+        ],
+        undefined
+      ),
+    ]
   } else {
     member = ts.factory.createPropertySignature(
       attribute.write ? undefined : [Modifiers.readonly],
       attribute.name,
       attribute.optional ? Tokens.question : undefined,
-      type
+      type.mainType
     )
   }
   const first = Array.isArray(member) ? member[0] : member
@@ -108,12 +92,101 @@ export function mapAttribute(
   return member
 }
 
+function mergeAttributeWithExisting(
+  context: GenerationContext,
+  parent: string,
+  attribute: Attribute,
+  type: RWType,
+  existing: ts.TypeElement[] | (ts.GetAccessorDeclaration | ts.SetAccessorDeclaration)[]
+): ts.TypeElement | ts.TypeElement[] {
+  let result: ts.TypeElement | ts.TypeElement[]
+  const firstDecl = existing[0]
+
+  if (ts.isPropertySignature(firstDecl)) {
+    if (type.altWriteType) {
+      result = mergePropertyWithReadWriteType(firstDecl)
+    } else {
+      result = ts.factory.createPropertySignature(
+        firstDecl.modifiers,
+        firstDecl.name,
+        firstDecl.questionToken,
+        firstDecl.type ?? type.mainType
+      )
+      ts.setEmitFlags(result, ts.EmitFlags.NoNestedComments)
+    }
+  } else if (existing.every((v) => ts.isGetAccessorDeclaration(v) || ts.isSetAccessorDeclaration(v))) {
+    result = []
+    for (const element of existing) {
+      if (ts.isGetAccessorDeclaration(element)) {
+        if (!attribute.read) context.warning(`Read accessor for non-readable attribute: ${parent}.${attribute.name}`)
+        const newMember = ts.factory.createGetAccessorDeclaration(
+          element.decorators,
+          element.modifiers,
+          element.name,
+          element.parameters,
+          element.type ?? type.mainType,
+          undefined
+        )
+        ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
+        result.push(newMember)
+      } else if (ts.isSetAccessorDeclaration(element)) {
+        if (!attribute.write) context.warning(`Write accessor for non-writable attribute: ${parent}.${attribute.name}`)
+        const newMember = ts.factory.createSetAccessorDeclaration(
+          element.decorators,
+          element.modifiers,
+          element.name,
+          element.parameters,
+          undefined
+        )
+        ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
+        result.push(newMember)
+      }
+    }
+  } else {
+    throw new Error(
+      `Unknown type for manual define for ${parent}.${attribute.name}, got kinds ${existing
+        .map((x) => ts.SyntaxKind[x.kind])
+        .join()} instead`
+    )
+  }
+  return result
+
+  function mergePropertyWithReadWriteType(property: ts.PropertySignature) {
+    if (property.type) {
+      context.warning(
+        `Attribute ${parent}.${attribute.name} has different read/write type, but manually defined as one type.`
+      )
+    }
+    return [
+      ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], type.mainType, undefined),
+      ts.factory.createSetAccessorDeclaration(
+        undefined,
+        undefined,
+        attribute.name,
+        [
+          ts.factory.createParameterDeclaration(
+            undefined,
+            undefined,
+            undefined,
+            "value",
+            undefined,
+            type.altWriteType,
+            undefined
+          ),
+        ],
+        undefined
+      ),
+    ]
+  }
+}
+
 export function mapParameterToProperty(
   context: GenerationContext,
   parameter: Parameter,
   parent: string,
+  usage: RWUsage,
   existingContainer?: InterfaceDef | TypeAliasDef
-): ts.PropertySignature {
+): { mainProperty: ts.PropertySignature; altWriteProperty?: ts.PropertySignature } {
   const existingProperty = existingContainer?.members[parameter.name]?.[0]
   if (existingProperty) {
     if (!ts.isPropertySignature(existingProperty)) {
@@ -124,19 +197,25 @@ export function mapParameterToProperty(
       )
     }
     addJsDoc(context, existingProperty, parameter, undefined)
-    return existingProperty
+    return { mainProperty: existingProperty }
   } else {
-    const type = mapMemberType(context, parameter, parent, parameter.type)
+    const type = mapMemberType(context, parameter, parent, parameter.type, usage)
 
-    const result = ts.factory.createPropertySignature(
-      [Modifiers.readonly],
-      escapePropertyName(parameter.name),
-      parameter.optional ? Tokens.question : undefined,
-      type
-    )
-    addJsDoc(context, result, parameter, undefined)
+    function makeProperty(typeNode: ts.TypeNode) {
+      const result = ts.factory.createPropertySignature(
+        [Modifiers.readonly],
+        escapePropertyName(parameter.name),
+        parameter.optional ? Tokens.question : undefined,
+        typeNode
+      )
+      addJsDoc(context, result, parameter, undefined)
+      return result
+    }
 
-    return result
+    return {
+      mainProperty: makeProperty(type.mainType),
+      altWriteProperty: type.altWriteType && makeProperty(type.altWriteType),
+    }
   }
 }
 
@@ -157,7 +236,7 @@ export function mapMethod(
     const name =
       (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
       removeLuaPrefix(parent!) + toPascalCase(method.name)
-    const { description } = createVariantParameterTypes(context, name, method, statements)
+    const { description } = createVariantParameterTypes(context, name, method, RWUsage.Write, statements)
     method.description += `\n\n${description}`
 
     const type = ts.factory.createTypeReferenceNode(name)
@@ -227,7 +306,9 @@ function getParameters(context: GenerationContext, method: Method, thisPath: str
   let parameters: ts.ParameterDeclaration[]
   if (method.takes_table) {
     const type = ts.factory.createTypeLiteralNode(
-      method.parameters.sort(sortByOrder).map((m) => mapParameterToProperty(context, m, thisPath, undefined))
+      method.parameters
+        .sort(sortByOrder)
+        .map((m) => mapParameterToProperty(context, m, thisPath, RWUsage.Write).mainProperty)
     )
     parameters = [
       ts.factory.createParameterDeclaration(
@@ -243,7 +324,15 @@ function getParameters(context: GenerationContext, method: Method, thisPath: str
     parameters = method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(context, m, thisPath))
   }
   if (method.variadic_type) {
-    const type = mapType(context, { complex_type: "array", value: method.variadic_type }, thisPath)
+    const type = mapType(
+      context,
+      {
+        complex_type: "array",
+        value: method.variadic_type,
+      },
+      thisPath,
+      RWUsage.Write
+    ).mainType
     parameters.push(
       ts.factory.createParameterDeclaration(undefined, undefined, Tokens.dotDotDot, "args", undefined, type)
     )
@@ -253,7 +342,7 @@ function getParameters(context: GenerationContext, method: Method, thisPath: str
 
 function getReturnType(context: GenerationContext, method: Method): ts.TypeNode {
   function mapReturnType(type: Omit<Parameter, "name">): ts.TypeNode {
-    const result = mapType(context, type.type, undefined)
+    const result = mapType(context, type.type, undefined, RWUsage.Read).mainType
     return type.optional ? makeNullable(result) : result
   }
 
@@ -311,7 +400,7 @@ function mapParameterToParameter(
   parameter: Parameter,
   parent: string
 ): ts.ParameterDeclaration {
-  const type = mapMemberType(context, parameter, parent, parameter.type)
+  const type = mapMemberType(context, parameter, parent, parameter.type, RWUsage.Write).mainType
   return ts.factory.createParameterDeclaration(
     undefined,
     undefined,

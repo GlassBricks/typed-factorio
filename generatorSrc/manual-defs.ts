@@ -395,7 +395,7 @@ interface LuaControl {
   )
   get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | nil
 
-  teleport(position: MapPositionWrite, surface?: SurfaceIdentification): boolean
+  teleport(position: MapPosition | MapPositionArray, surface?: SurfaceIdentification): boolean
   teleport(x: number, y?: number): boolean
 }
 
@@ -519,7 +519,6 @@ type LocalisedString = readonly [string, ...LocalisedString[]]
 interface RealOrientation {}
 
 interface MapPosition {}
-interface MapPositionWrite {}
 interface MapPositionArray {}
 
 /** @replace */
@@ -605,7 +604,18 @@ interface CircularParticleCreationSpecification {
   readonly center: MapPosition
 }
 
-// todo: bounding box
+/** @writeType BoundingBoxWrite | BoundingBoxArray */
+interface BoundingBox {}
+
+/** @addAfter BoundingBox */
+/**
+ * Write form of {@link BoundingBox}, as a table, where positions are allowed to take an array form.
+ */
+interface BoundingBoxWrite {
+  readonly left_top: MapPosition | MapPositionArray
+  readonly right_bottom: MapPosition | MapPositionArray
+  readonly orientation?: RealOrientation
+}
 
 // /** @readType Fluid */
 // interface FluidIdentification {}

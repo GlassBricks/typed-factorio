@@ -32,7 +32,7 @@ export function generateEvents(context: GenerationContext): DefinitionsFile {
         if (p.name === "name" && event.name !== "CustomInputEvent") {
           p.type = "typeof " + p.type + "." + event.name
         }
-        return mapParameterToProperty(context, p, name, existing)
+        return mapParameterToProperty(context, p, name, RWUsage.Read, existing).mainProperty
       })
     )
     addJsDoc(context, declaration, event, event.name, undefined)

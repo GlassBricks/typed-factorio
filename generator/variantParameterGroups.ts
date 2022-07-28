@@ -6,14 +6,16 @@ import { Parameter, ParameterGroup, WithVariantParameterGroups } from "./Factori
 import GenerationContext from "./GenerationContext"
 import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil"
 import { mapParameterToProperty } from "./members"
+import { RWUsage } from "./read-write-types"
 import { sortByOrder } from "./util"
 
 export function createVariantParameterTypes(
   context: GenerationContext,
   name: string,
   value: WithVariantParameterGroups,
+  usage: RWUsage,
   statements: StatementsList
-): { declaration: ts.TypeAliasDeclaration; description: string } {
+): { declarations: ts.TypeAliasDeclaration; description: string } {
   context.typeNames[name] = name
   const shortName = removeLuaPrefix(name)
 
@@ -22,10 +24,15 @@ export function createVariantParameterTypes(
 
   value.variant_parameter_groups!.sort(sortByOrder)
 
-  const baseProperties = value.parameters.sort(sortByOrder).map((p) => ({
+  const baseProperties: {
+    original: Parameter
+    member: { mainProperty: ts.PropertySignature; altWriteProperty?: ts.PropertySignature }
+  }[] = value.parameters.sort(sortByOrder).map((p) => ({
     original: p,
-    member: mapParameterToProperty(context, p, baseName, existingBase),
+    member: mapParameterToProperty(context, p, baseName, usage, existingBase),
   }))
+
+  assert(!baseProperties.some((p) => p.member.altWriteProperty)) // not supported for now
   {
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
       undefined,
@@ -33,7 +40,7 @@ export function createVariantParameterTypes(
       baseName,
       undefined,
       undefined,
-      baseProperties.map((g) => g.member)
+      baseProperties.map((g) => g.member.mainProperty)
     )
     addJsDoc(
       context,
@@ -50,9 +57,8 @@ export function createVariantParameterTypes(
   const { isDefine, variants, discriminantProperty } = getAllVariants(context, value, baseProperties, name)
   addOtherVariant(context, value, variants)
 
-  const variantTypeNames = new Map<string, string>(
-    value.variant_parameter_groups!.map((group) => [group.name, variantToTypeName(group.name)])
-  )
+  const writeTypeNames: string[] = []
+  let hasSeparateWrite = false
 
   for (const group of value.variant_parameter_groups!) {
     const isOtherTypes = group.name === "Other"
@@ -61,73 +67,113 @@ export function createVariantParameterTypes(
       continue
     }
 
-    const typeName = variantTypeNames.get(group.name)!
+    const typeName = variantToTypeName(group.name)
+
     const existing = context.getInterfaceDef(typeName)
 
-    let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
+    let declarations: (ts.InterfaceDeclaration | ts.TypeAliasDeclaration)[]
     if (existing?.kind === "type") {
-      declaration = existing.node
+      declarations = [existing.node]
     } else {
-      const members: ts.PropertySignature[] = []
+      let discriminantMember: ts.PropertySignature | undefined
       if (discriminantProperty) {
-        members.push(
-          ts.factory.createPropertySignature(
-            [Modifiers.readonly],
-            discriminantProperty,
-            undefined,
-            isOtherTypes
-              ? ts.factory.createUnionTypeNode(Array.from(variants!).map(variantToTypeNode))
-              : variantToTypeNode(group.name)
-          )
+        discriminantMember = ts.factory.createPropertySignature(
+          [Modifiers.readonly],
+          discriminantProperty,
+          undefined,
+          isOtherTypes
+            ? ts.factory.createUnionTypeNode(Array.from(variants!).map(variantToTypeNode))
+            : variantToTypeNode(group.name)
         )
       }
+      declarations = []
       const properties = group.parameters
         .sort(sortByOrder)
-        .map((p) => mapParameterToProperty(context, p, typeName, existing))
+        .map((p) => mapParameterToProperty(context, p, typeName, usage, existing))
 
-      members.push(...properties)
-      declaration = ts.factory.createInterfaceDeclaration(
-        undefined,
-        undefined,
-        typeName,
-        undefined,
-        createExtendsClause(baseName),
-        members
+      const readMembers = properties.map((p) => p.mainProperty)
+      if (discriminantMember) readMembers.unshift(discriminantMember)
+      declarations.push(
+        ts.factory.createInterfaceDeclaration(
+          undefined,
+          undefined,
+          typeName,
+          undefined,
+          createExtendsClause(baseName),
+          readMembers
+        )
       )
+
+      if (properties.some((p) => p.altWriteProperty)) {
+        hasSeparateWrite = true
+        const writeMembers = properties.map((p) => p.altWriteProperty ?? p.mainProperty).filter((x) => x)
+        if (discriminantMember) writeMembers.unshift(discriminantMember)
+        declarations.push(
+          ts.factory.createInterfaceDeclaration(
+            undefined,
+            undefined,
+            typeName + "Write",
+            undefined,
+            createExtendsClause(baseName),
+            writeMembers
+          )
+        )
+        writeTypeNames.push(typeName + "Write")
+      } else {
+        writeTypeNames.push(typeName)
+      }
     }
     const variantDescription = getVariantDescription(group)
     group.description = variantDescription + "\n\n" + (group.description ?? "")
-    addJsDoc(context, declaration, group, undefined)
-    statements.add(declaration)
+    addJsDoc(context, declarations[0], group, undefined)
+    declarations.forEach((d) => statements.add(d))
 
     context.typeNames[typeName] = typeName
 
     if (isOtherTypes) variants?.clear()
   }
 
+  const resultDeclarations: ts.TypeAliasDeclaration[] = []
   const unionDeclaration: ts.TypeAliasDeclaration = ts.factory.createTypeAliasDeclaration(
     undefined,
     undefined,
     name,
     undefined,
-    ts.factory.createUnionTypeNode([...variantTypeNames.values()].map((x) => ts.factory.createTypeReferenceNode(x)))
+    ts.factory.createUnionTypeNode(
+      value
+        .variant_parameter_groups!.map((x) => variantToTypeName(x.name))
+        .map((x) => ts.factory.createTypeReferenceNode(x))
+    )
   )
-  statements.add(unionDeclaration)
+  resultDeclarations.push(unionDeclaration)
+
+  let writeUnionDeclaration: ts.TypeAliasDeclaration | undefined
+  if (hasSeparateWrite) {
+    writeUnionDeclaration = ts.factory.createTypeAliasDeclaration(
+      undefined,
+      undefined,
+      name + "Write",
+      undefined,
+      ts.factory.createUnionTypeNode(writeTypeNames.map((x) => ts.factory.createTypeReferenceNode(x)))
+    )
+    resultDeclarations.push(writeUnionDeclaration)
+  }
+  resultDeclarations.forEach((d) => statements.add(d))
 
   const description = getVariantsDescription()
-  return { declaration: unionDeclaration, description }
+  return { declarations: unionDeclaration, description }
 
   function getVariantsDescription(): string {
     const rawDescription =
       `Base attributes: {@link ${baseName}}\n` +
       value.variant_parameter_description +
       "\n" +
-      [...variantTypeNames.entries()]
-        .filter(([groupName]) => groupName !== "Other")
-        .map(([variantName, typeName]) => {
-          const variantNameLink = isDefine ? `[${variantName}](${variantName})` : `\`"${variantName}"\``
-          const typeNameLink = `[${typeName}](${typeName})`
-          return `- ${variantNameLink}: ${typeNameLink}`
+      value
+        .variant_parameter_groups!.filter((group) => group.name !== "Other")
+        .map((group) => {
+          const variantName = group.name
+          const typeName = variantToTypeName(variantName)
+          return `- ${variantToLink(variantName)}: [${typeName}](${typeName})`
         })
         .join("\n")
     const result = processDescription(context, rawDescription)
@@ -159,7 +205,10 @@ export function createVariantParameterTypes(
 function getAllVariants(
   context: GenerationContext,
   withVariants: WithVariantParameterGroups,
-  baseProperties: { original: Parameter; member: ts.PropertySignature }[],
+  baseProperties: {
+    original: Parameter
+    member: { mainProperty: ts.PropertySignature }
+  }[],
   name: string
 ) {
   const discriminantProperty = withVariants.variant_parameter_description.match(/depending on `(.+?)`:/)?.[1]
@@ -181,7 +230,7 @@ function getAllVariants(
         )
       }
     } else {
-      const memberType = property.member
+      const memberType = property.member.mainProperty
       types = context.tryGetStringEnumType(memberType.type!)
       if (!types) {
         throw new Error(`Discriminant property ${name}.${discriminantProperty} is not a string literal union`)

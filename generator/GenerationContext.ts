@@ -26,7 +26,7 @@ export default class GenerationContext {
   conceptUsages = new Map<Concept, RWUsage>(this.apiDocs.concepts.map((e) => [e, RWUsage.None]))
   conceptUsagesToPropagate = new Map<Concept, RWUsage>()
   conceptReferencedBy = new Map<Concept, Set<Concept>>(this.apiDocs.concepts.map((e) => [e, new Set()]))
-  conceptReadWriteTypes = new Map<Concept, { read: string; write: string } | true>()
+  conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
   // ^: empty object = has separate read/write types, but not yet known form (may use default)
 
   hasWarnings: boolean = false

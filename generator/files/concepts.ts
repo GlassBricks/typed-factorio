@@ -5,12 +5,7 @@ import { addJsDoc, createSeeTag } from "../documentation"
 import { Concept, TableComplexType } from "../FactorioApiJson"
 import GenerationContext from "../GenerationContext"
 import { addFakeJSDoc } from "../genUtil"
-import {
-  finalizeConceptUsageAnalysis,
-  markHavingSeparateReadWriteTypes,
-  recordConceptDependencies,
-  RWUsage,
-} from "../read-write-types"
+import { finalizeConceptUsageAnalysis, recordConceptDependencies, RWUsage, setReadWriteType } from "../read-write-types"
 import { mapConceptType, mapType } from "../types"
 import { sortByOrder } from "../util"
 import { createVariantParameterTypes } from "../variantParameterGroups"
@@ -26,7 +21,8 @@ export function preprocessConcepts(context: GenerationContext) {
 
   for (const concept of concepts) {
     context.typeNames[concept.name] = concept.name
-    recordConceptDependencies(context, concept)
+    const existing = context.getInterfaceDef(concept.name)
+    if (!existing?.annotations.omit) recordConceptDependencies(context, concept)
   }
   finalizeConceptUsageAnalysis(context)
 
@@ -37,20 +33,26 @@ export function preprocessConcepts(context: GenerationContext) {
     }
 
     const existing = context.getInterfaceDef(concept.name)
-    if (existing?.annotations) {
-      if (existing.annotations.omit || existing.annotations.replace) continue
-    }
+    if (existing?.annotations.replace) continue
     const tableOrArray = tryGetTableOrArrayConcept(context, concept)
     if (tableOrArray) {
       tableOrArrayConcepts.set(concept, tableOrArray)
       const readName = concept.name
-      const writeName = `${concept.name}Write`
-      markHavingSeparateReadWriteTypes(context, concept, { read: readName, write: writeName })
-    } else {
-      const readType = existing?.annotations.readType?.[0]
-      if (readType) {
-        markHavingSeparateReadWriteTypes(context, concept, { read: readType, write: concept.name })
-      }
+      // const writeName = `${concept.name} | ${concept.name}Array`
+      const writeName = ts.factory.createUnionTypeNode([
+        ts.factory.createTypeReferenceNode(concept.name),
+        ts.factory.createTypeReferenceNode(`${concept.name}Array`),
+      ])
+      setReadWriteType(context, concept, { read: readName, write: writeName })
+    }
+
+    const readType = existing?.annotations.readType?.[0]
+    const writeType = existing?.annotations.writeType?.[0]
+    if (readType || writeType) {
+      setReadWriteType(context, concept, {
+        read: readType ?? concept.name,
+        write: writeType ?? concept.name,
+      })
     }
   }
 }
@@ -87,7 +89,6 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
   const existing = context.getInterfaceDef(concept.name)
 
   if (existing?.annotations) {
-    if (existing.annotations.omit) return
     if (existing.annotations.replace) {
       const node = existing.node
       statements.add(node)
@@ -96,14 +97,22 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
       return
     }
   }
+
+  const conceptUsage = context.conceptUsages.get(concept)!
   if (
     typeof concept.type !== "string" &&
     concept.type.complex_type === "table" &&
     concept.type.variant_parameter_groups
   ) {
-    const { description, declaration } = createVariantParameterTypes(context, concept.name, concept.type, statements)
+    const { description, declarations } = createVariantParameterTypes(
+      context,
+      concept.name,
+      concept.type,
+      conceptUsage,
+      statements
+    )
     concept.description += `\n\n${description}`
-    addJsDoc(context, declaration, concept, concept.name)
+    addJsDoc(context, declarations, concept, concept.name)
     return
   }
 
@@ -113,28 +122,50 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
     return
   }
 
-  const { type, description } = mapConceptType(context, concept.type, {
-    contextName: concept.name,
-    existingDef: existing,
-  })
-  let result: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
-  if (ts.isTypeLiteralNode(type)) {
-    result = ts.factory.createInterfaceDeclaration(
-      undefined,
-      undefined,
-      concept.name,
-      undefined,
-      undefined,
-      type.members
-    )
-  } else {
-    result = ts.factory.createTypeAliasDeclaration(undefined, undefined, concept.name, undefined, type)
-  }
+  const { mainType, description, altWriteType } = mapConceptType(
+    context,
+    concept.type,
+    {
+      contextName: concept.name,
+      existingDef: existing,
+    },
+    conceptUsage
+  )
+
+  const mainResult = typeToDeclaration(mainType, concept.name)
   if (description) {
     concept.description += "\n\n" + description
   }
-  addJsDoc(context, result, concept, concept.name)
-  statements.add(result)
+
+  const writeName = `${concept.name}Write`
+  let tags: ts.JSDocTag[] | undefined
+  if (altWriteType) {
+    tags = [createSeeTag(writeName)]
+  }
+  addJsDoc(context, mainResult, concept, concept.name, tags)
+  statements.add(mainResult)
+
+  if (altWriteType) {
+    const writeResult = typeToDeclaration(altWriteType, writeName)
+    addJsDoc(
+      context,
+      writeResult,
+      {
+        description: `Write form of {@link ${concept.name}}, where table-or-array concepts are allowed to take an array form.`,
+      },
+      concept.name
+    )
+
+    statements.add(writeResult)
+  }
+}
+
+function typeToDeclaration(type: ts.TypeNode, name: string): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
+  if (ts.isTypeLiteralNode(type)) {
+    return ts.factory.createInterfaceDeclaration(undefined, undefined, name, undefined, undefined, type.members)
+  } else {
+    return ts.factory.createTypeAliasDeclaration(undefined, undefined, name, undefined, type)
+  }
 }
 
 function createTableOrArrayConcept(
@@ -144,22 +175,21 @@ function createTableOrArrayConcept(
   tableOrArray: { table: TableComplexType; array: TableComplexType }
 ): void {
   // /** description */
-  // interface Concept { ...table }
-  // /** Array form of @{link Concept} */
-  // type ConceptArray = Array
-  // /** Table or array form of @{link Concept} */
-  // type ConceptWrite = Concept | ConceptArray
+  // interface Concept { ...table read }
+
+  // /** Array form of @{link Concept}. */
+  // type ConceptArray = Array write
+
   // /** @deprecated Use @{link Concept} instead */
   // type ConceptTable = Concept
 
-  const tableForm = mapType(context, tableOrArray.table, concept.name) as ts.TypeLiteralNode
-  const arrayForm = mapType(context, tableOrArray.array, concept.name)
-  assert(ts.isTypeLiteralNode(tableForm))
+  const tableForm = mapType(context, tableOrArray.table, concept.name, RWUsage.ReadWrite)
+  const arrayForm = mapType(context, tableOrArray.array, concept.name, RWUsage.Write).mainType
+  assert(ts.isTypeLiteralNode(tableForm.mainType))
   assert(tableOrArray.array.complex_type === "tuple")
 
   const name = concept.name
   const arrayName = `${concept.name}Array`
-  const writeName = `${concept.name}Write`
 
   const conceptInterface = ts.factory.createInterfaceDeclaration(
     undefined,
@@ -167,35 +197,15 @@ function createTableOrArrayConcept(
     name,
     undefined,
     undefined,
-    tableForm.members
+    tableForm.mainType.members
   )
-  addJsDoc(context, conceptInterface, concept, concept.name, [createSeeTag(arrayName), createSeeTag(writeName)])
+  addJsDoc(context, conceptInterface, concept, concept.name, [createSeeTag(arrayName)])
   statements.add(conceptInterface)
 
   const conceptArray = ts.factory.createTypeAliasDeclaration(undefined, undefined, arrayName, undefined, arrayForm)
-  const arrayDescription = `Array form of {@link ${concept.name}}`
-  addJsDoc(context, conceptArray, { description: arrayDescription }, name, [
-    createSeeTag(name),
-    createSeeTag(writeName),
-  ])
+  const arrayDescription = `Array form of {@link ${concept.name}}.`
+  addJsDoc(context, conceptArray, { description: arrayDescription }, name, [createSeeTag(name)])
   statements.add(conceptArray)
-
-  const conceptWrite = ts.factory.createTypeAliasDeclaration(
-    undefined,
-    undefined,
-    writeName,
-    undefined,
-    ts.factory.createUnionTypeNode([
-      ts.factory.createTypeReferenceNode(name),
-      ts.factory.createTypeReferenceNode(arrayName),
-    ])
-  )
-  const writeDescription = `Either table or array form of {@link ${concept.name}}`
-  addJsDoc(context, conceptWrite, { description: writeDescription }, name, [
-    createSeeTag(name),
-    createSeeTag(arrayName),
-  ])
-  statements.add(conceptWrite)
 
   const conceptTable = ts.factory.createTypeAliasDeclaration(
     undefined,
@@ -207,7 +217,6 @@ function createTableOrArrayConcept(
   addFakeJSDoc(conceptTable, ts.factory.createJSDocComment("", [createDeprecatedTag(name)]))
   statements.add(conceptTable)
 
-  context.typeNames[writeName] = name
   context.typeNames[arrayName] = name
 }
 
