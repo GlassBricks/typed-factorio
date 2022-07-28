@@ -529,6 +529,12 @@ interface ArithmeticCombinatorParameters {
   readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
 }
 
+/** @writeType MouseButtonFlagsWrite */
+interface MouseButtonFlags {}
+/** @addAfter MouseButtonFlags */
+/** @see MouseButtonFlags */
+type MouseButtonFlagsWrite = MouseButtonFlags | ReadonlyArray<keyof MouseButtonFlags | "left-and-right">
+
 /** @addBefore SpritePath */
 type SpriteType =
   | "item"
