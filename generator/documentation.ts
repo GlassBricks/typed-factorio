@@ -185,6 +185,12 @@ export function addJsDoc<T extends ts.Node>(
   if (reference) {
     tags.push(createSeeTag(`{@link ${getDocumentationUrl(context, reference)} Online documentation}`))
   }
+  // move @noSelf annotation to the end
+  const noSelfIndex = tags.findIndex((x) => x.tagName.text === "noSelf")
+  if (noSelfIndex !== -1) {
+    const noSelf = tags.splice(noSelfIndex, 1)[0]
+    tags.push(noSelf)
+  }
 
   comment = comment.replace(/\n\n\n+/g, "\n\n").replace(/^\n+|\n+$/, "")
 
