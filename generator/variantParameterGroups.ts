@@ -27,16 +27,16 @@ export function createVariantParameterTypes(
 
   value.variant_parameter_groups!.sort(sortByOrder)
 
-  const baseProperties: {
-    original: Parameter
-    member: { mainProperty: ts.PropertySignature; altWriteProperty?: ts.PropertySignature }
-  }[] = value.parameters.sort(sortByOrder).map((p) => ({
+  const baseProperties = value.parameters.sort(sortByOrder).map((p) => ({
     original: p,
     member: mapParameterToProperty(context, p, baseName, usage, existingBase),
   }))
 
-  assert(!baseProperties.some((p) => p.member.altWriteProperty)) // not supported for now
+  const { isDefine, variants, discriminantProperty } = getAllVariants(context, value, baseProperties, name)
+  const baseHasAttributes = baseProperties.length > (discriminantProperty ? 1 : 0)
+
   {
+    assert(!baseProperties.some((p) => p.member.altWriteProperty)) // not supported for now
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
       undefined,
       undefined,
@@ -45,19 +45,20 @@ export function createVariantParameterTypes(
       undefined,
       baseProperties.map((g) => g.member.mainProperty)
     )
-    addJsDoc(
-      context,
-      baseDeclaration,
-      {
-        description: `Common attributes to all variants of {@link ${name}}.`,
-      },
-      undefined
-    )
+    if (baseHasAttributes) {
+      addJsDoc(
+        context,
+        baseDeclaration,
+        {
+          description: `Common attributes to all variants of {@link ${name}}.`,
+        },
+        undefined
+      )
+    }
     statements.add(baseDeclaration)
     context.typeNames[baseName] = name
   }
 
-  const { isDefine, variants, discriminantProperty } = getAllVariants(context, value, baseProperties, name)
   addOtherVariant(context, value, variants)
 
   const writeTypeNames: string[] = []
@@ -163,26 +164,8 @@ export function createVariantParameterTypes(
   }
   resultDeclarations.forEach((d) => statements.add(d))
 
-  const description = getVariantsDescription()
+  const description = getMainResultDescription()
   return { declarations: resultDeclarations as never, description }
-
-  function getVariantsDescription(): string {
-    const rawDescription =
-      `Base attributes: {@link ${baseName}}\n` +
-      value.variant_parameter_description +
-      "\n" +
-      value
-        .variant_parameter_groups!.filter((group) => group.name !== "Other")
-        .map((group) => {
-          const variantName = group.name
-          const typeName = variantToTypeName(variantName)
-          return `- ${variantToLink(variantName)}: [${typeName}](${typeName})`
-        })
-        .join("\n")
-    const result = processDescription(context, rawDescription)
-    assert(result !== undefined)
-    return result
-  }
 
   function variantToTypeNode(variantName: string) {
     return isDefine ? ts.factory.createTypeReferenceNode(variantName) : Types.stringLiteral(variantName)
@@ -200,7 +183,26 @@ export function createVariantParameterTypes(
     return `${variantToLink(group.name)} variant of {@link ${name}}.`
   }
 
+  function getMainResultDescription(): string {
+    const rawDescription =
+      (baseHasAttributes ? `Base attributes: {@link ${baseName}}\n` : "") +
+      value.variant_parameter_description +
+      "\n" +
+      value
+        .variant_parameter_groups!.filter((group) => group.name !== "Other" || group.parameters.length > 0)
+        .map((group) => {
+          const variantName = group.name
+          const typeName = variantToTypeName(variantName)
+          return `- ${variantToLink(variantName)}: [${typeName}](${typeName})`
+        })
+        .join("\n")
+    const result = processDescription(context, rawDescription)
+    assert(result !== undefined)
+    return result
+  }
+
   function variantToLink(variantName: string) {
+    if (variantName === "Other") return "Other types"
     return isDefine ? `[${variantName}](${variantName})` : `\`"${variantName}"\``
   }
 }
@@ -253,19 +255,19 @@ function addOtherVariant(
   if (otherTypes) {
     otherTypes.order = variants.variant_parameter_groups!.length + 1
     otherTypes.name = "Other"
-  } else if (allVariants) {
-    variants.variant_parameter_groups!.forEach((x) => {
-      if (!allVariants.delete(x.name)) {
-        context.warning(`Group ${x.name} is not in known variants`)
-      }
-    })
-    if (allVariants.size > 0)
-      // add
-      variants.variant_parameter_groups!.push({
-        name: "Other",
-        order: variants.variant_parameter_groups!.length + 1,
-        parameters: [],
-        description: "",
-      })
   }
+  if (!allVariants) return
+  variants.variant_parameter_groups!.forEach((x) => {
+    if (!allVariants.delete(x.name) && x !== otherTypes) {
+      context.warning(`Group ${x.name} is not in known variants`)
+    }
+  })
+  if (!otherTypes && allVariants.size > 0)
+    // add
+    variants.variant_parameter_groups!.push({
+      name: "Other",
+      order: variants.variant_parameter_groups!.length + 1,
+      parameters: [],
+      description: "",
+    })
 }
