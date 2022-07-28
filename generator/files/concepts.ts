@@ -1,22 +1,81 @@
+import assert from "assert"
 import ts from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
 import { addJsDoc, createSeeTag } from "../documentation"
-import { Concept } from "../FactorioApiJson"
+import { Concept, TableComplexType } from "../FactorioApiJson"
 import GenerationContext from "../GenerationContext"
 import { addFakeJSDoc } from "../genUtil"
+import {
+  finalizeConceptUsageAnalysis,
+  markHavingSeparateReadWriteTypes,
+  recordConceptDependencies,
+  RWUsage,
+} from "../read-write-types"
 import { mapConceptType, mapType } from "../types"
 import { sortByOrder } from "../util"
 import { createVariantParameterTypes } from "../variantParameterGroups"
 
+const tableOrArrayConcepts = new Map<Concept, { table: TableComplexType; array: TableComplexType }>()
+/**
+ * Should be last to preprocess
+ * @param context
+ */
 export function preprocessConcepts(context: GenerationContext) {
-  for (const concept of context.apiDocs.concepts) {
+  const concepts = context.apiDocs.concepts
+  concepts.sort(sortByOrder)
+
+  for (const concept of concepts) {
     context.typeNames[concept.name] = concept.name
+    recordConceptDependencies(context, concept)
+  }
+  finalizeConceptUsageAnalysis(context)
+
+  for (const concept of concepts) {
+    const usage = context.conceptUsages.get(concept)
+    if (usage === RWUsage.None) {
+      context.warning(`Unknown concept usage for ${concept.name}`)
+    }
+
+    const existing = context.getInterfaceDef(concept.name)
+    if (existing?.annotations) {
+      if (existing.annotations.omit || existing.annotations.replace) continue
+    }
+    const tableOrArray = tryGetTableOrArrayConcept(context, concept)
+    if (tableOrArray) {
+      tableOrArrayConcepts.set(concept, tableOrArray)
+      const readName = concept.name
+      const writeName = `${concept.name}Write`
+      markHavingSeparateReadWriteTypes(context, concept, { read: readName, write: writeName })
+    } else {
+      const readType = existing?.annotations.readType?.[0]
+      if (readType) {
+        markHavingSeparateReadWriteTypes(context, concept, { read: readType, write: concept.name })
+      }
+    }
+  }
+}
+
+function tryGetTableOrArrayConcept(
+  context: GenerationContext,
+  concept: Concept
+):
+  | {
+      table: TableComplexType
+      array: TableComplexType
+    }
+  | undefined {
+  const type = concept.type
+  if (typeof type === "string" || type.complex_type !== "union" || type.options.length !== 2) return undefined
+  const tableType = type.options.find((o) => typeof o !== "string" && o.complex_type === "table")
+  const arrayType = type.options.find((o) => typeof o !== "string" && o.complex_type === "tuple")
+  if (!tableType || !arrayType) return undefined
+  return {
+    table: tableType as TableComplexType,
+    array: arrayType as TableComplexType,
   }
 }
 
 export function generateConcepts(context: GenerationContext): DefinitionsFile {
-  context.apiDocs.concepts.sort(sortByOrder)
-
   const statements = new StatementsList(context, "concepts")
   for (const concept of context.apiDocs.concepts) {
     generateConcept(context, concept, statements)
@@ -48,7 +107,7 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
     return
   }
 
-  const tableOrArray = tryGetTableOrArrayConcept(context, concept)
+  const tableOrArray = tableOrArrayConcepts.get(concept)
   if (tableOrArray) {
     createTableOrArrayConcept(context, statements, concept, tableOrArray)
     return
@@ -78,31 +137,11 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
   statements.add(result)
 }
 
-function tryGetTableOrArrayConcept(
-  context: GenerationContext,
-  concept: Concept
-):
-  | {
-      table: ts.TypeLiteralNode
-      array: ts.TupleTypeNode
-    }
-  | undefined {
-  const type = concept.type
-  if (typeof type === "string" || type.complex_type !== "union" || type.options.length !== 2) return undefined
-  const tableType = type.options.find((o) => typeof o !== "string" && o.complex_type === "table")
-  const arrayType = type.options.find((o) => typeof o !== "string" && o.complex_type === "tuple")
-  if (!tableType || !arrayType) return undefined
-  return {
-    table: mapType(context, tableType, concept.name) as ts.TypeLiteralNode,
-    array: mapType(context, arrayType, concept.name) as ts.TupleTypeNode,
-  }
-}
-
 function createTableOrArrayConcept(
   context: GenerationContext,
   statements: StatementsList,
   concept: Concept,
-  tableOrArray: { table: ts.TypeLiteralNode; array: ts.TupleTypeNode }
+  tableOrArray: { table: TableComplexType; array: TableComplexType }
 ): void {
   // /** description */
   // interface Concept { ...table }
@@ -112,6 +151,11 @@ function createTableOrArrayConcept(
   // type ConceptWrite = Concept | ConceptArray
   // /** @deprecated Use @{link Concept} instead */
   // type ConceptTable = Concept
+
+  const tableForm = mapType(context, tableOrArray.table, concept.name) as ts.TypeLiteralNode
+  const arrayForm = mapType(context, tableOrArray.array, concept.name)
+  assert(ts.isTypeLiteralNode(tableForm))
+  assert(tableOrArray.array.complex_type === "tuple")
 
   const name = concept.name
   const arrayName = `${concept.name}Array`
@@ -123,18 +167,12 @@ function createTableOrArrayConcept(
     name,
     undefined,
     undefined,
-    tableOrArray.table.members
+    tableForm.members
   )
   addJsDoc(context, conceptInterface, concept, concept.name, [createSeeTag(arrayName), createSeeTag(writeName)])
   statements.add(conceptInterface)
 
-  const conceptArray = ts.factory.createTypeAliasDeclaration(
-    undefined,
-    undefined,
-    arrayName,
-    undefined,
-    tableOrArray.array
-  )
+  const conceptArray = ts.factory.createTypeAliasDeclaration(undefined, undefined, arrayName, undefined, arrayForm)
   const arrayDescription = `Array form of {@link ${concept.name}}`
   addJsDoc(context, conceptArray, { description: arrayDescription }, name, [
     createSeeTag(name),

@@ -6,9 +6,27 @@ import { Attribute, Method, Parameter } from "./FactorioApiJson"
 import GenerationContext from "./GenerationContext"
 import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions"
+import { analyzeType, RWUsage } from "./read-write-types"
 import { makeNullable, mapMemberType, mapType } from "./types"
 import { getFirst, sortByOrder } from "./util"
 import { createVariantParameterTypes } from "./variantParameterGroups"
+
+export function analyzeMethod(context: GenerationContext, method: Method) {
+  for (const parameter of method.parameters) {
+    analyzeType(context, parameter.type, RWUsage.Write)
+  }
+  if (method.variant_parameter_groups) {
+    for (const parameter of method.variant_parameter_groups.flatMap((x) => x.parameters)) {
+      analyzeType(context, parameter.type, RWUsage.Write)
+    }
+  }
+  if (method.variadic_type) {
+    analyzeType(context, method.variadic_type, RWUsage.Write)
+  }
+  for (const returnValue of method.return_values) {
+    analyzeType(context, returnValue.type, RWUsage.Read)
+  }
+}
 
 export function mapAttribute(
   context: GenerationContext,

@@ -3,7 +3,8 @@ import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
 import { addJsDoc } from "../documentation"
 import GenerationContext from "../GenerationContext"
 import { createConst, Modifiers } from "../genUtil"
-import { mapFunction } from "../members"
+import { analyzeMethod, mapFunction } from "../members"
+import { analyzeType, RWUsage } from "../read-write-types"
 import { mapType } from "../types"
 import { sortByOrder } from "../util"
 
@@ -20,12 +21,14 @@ export function preprocessBuiltins(context: GenerationContext) {
 export function preprocessGlobalObjects(context: GenerationContext) {
   for (const globalObject of context.apiDocs.global_objects) {
     context.typeNames[globalObject.name] = globalObject.name
+    analyzeType(context, globalObject.type, RWUsage.Read)
   }
 }
 
 export function preprocessGlobalFunctions(context: GenerationContext) {
   for (const globalFunction of context.apiDocs.global_functions) {
     context.typeNames[globalFunction.name] = globalFunction.name
+    analyzeMethod(context, globalFunction)
   }
 }
 

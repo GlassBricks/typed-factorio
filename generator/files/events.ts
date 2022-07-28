@@ -4,11 +4,15 @@ import { addJsDoc } from "../documentation"
 import GenerationContext from "../GenerationContext"
 import { createExtendsClause, toPascalCase } from "../genUtil"
 import { mapParameterToProperty } from "../members"
+import { analyzeType, RWUsage } from "../read-write-types"
 import { sortByOrder } from "../util"
 
 export function preprocessEvents(context: GenerationContext) {
   for (const event of context.apiDocs.events) {
     context.typeNames[event.name] = getMappedEventName(event.name)
+    for (const parameter of event.data) {
+      analyzeType(context, parameter.type, RWUsage.Read)
+    }
   }
 }
 

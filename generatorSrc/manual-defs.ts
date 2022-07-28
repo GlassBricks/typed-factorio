@@ -525,15 +525,14 @@ interface MapPositionArray {}
 /** @replace */
 type Vector = MapPositionArray
 
-// /** @readType number */
-// type MapGenSize =
+/** @readType float */
+interface MapGenSize {}
 
-// /** @readType ComparatorStringRead */
-// interface ComparatorString {
-// }
-// /** @addAfter ComparatorString */
-// /** @see ComparatorString */
-// type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
+/** @readType ComparatorStringRead */
+interface ComparatorString {}
+/** @addAfter ComparatorString */
+/** @see ComparatorString */
+type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
 
 interface ArithmeticCombinatorParameters {
   readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
@@ -590,41 +589,40 @@ interface PrototypeFilter {}
 
 // where a vector is supposed to be a position table instead
 
-// interface SmokeSource {
-//   readonly position?: MapPosition
-//   readonly north_position?: MapPosition
-//   readonly east_position?: MapPosition
-//   readonly south_position?: MapPosition
-//   readonly west_position?: MapPosition
-// }
+interface SmokeSource {
+  readonly position?: MapPosition
+  readonly north_position?: MapPosition
+  readonly east_position?: MapPosition
+  readonly south_position?: MapPosition
+  readonly west_position?: MapPosition
+}
 
-// interface FluidBoxConnection {
-//   readonly positions: MapPosition[]
-// }
+interface FluidBoxConnection {
+  readonly positions: MapPosition[]
+}
 
-// interface CircularParticleCreationSpecification {
-//   readonly center: MapPosition
-// }
+interface CircularParticleCreationSpecification {
+  readonly center: MapPosition
+}
 
-// /** @readType BoundingBoxRead */
-interface BoundingBox {}
+// todo: bounding box
 
 // /** @readType Fluid */
-interface FluidIdentification {}
+// interface FluidIdentification {}
 
-// /** @readType LuaForce */
+/** @readType LuaForce */
 interface ForceIdentification {}
 
-// /** @readType LuaTechnology */
+/** @readType LuaTechnology */
 interface TechnologyIdentification {}
 
 // /** @readType LuaSurface */
 interface SurfaceIdentification {}
 
-// /** @readType LuaPlayer */
+/** @readType LuaPlayer */
 interface PlayerIdentification {}
 
-// /** @readType LuaItemPrototype */
+/** @readType LuaItemPrototype */
 interface ItemPrototypeIdentification {}
 
 // Skipped: EntityPrototypeIdentification, ItemStackIdentification

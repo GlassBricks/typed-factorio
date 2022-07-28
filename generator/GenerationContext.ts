@@ -2,6 +2,7 @@ import chalk from "chalk"
 import ts from "typescript"
 import { Class, Concept, Define, Event, FactorioApiJson } from "./FactorioApiJson"
 import { InterfaceDef, NamespaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions"
+import { RWUsage } from "./read-write-types"
 
 export default class GenerationContext {
   public readonly _manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)
@@ -21,6 +22,12 @@ export default class GenerationContext {
   addBefore = new Map<string, ts.Statement[]>()
   addAfter = new Map<string, ts.Statement[]>()
   addTo = new Map<string, ts.Statement[]>()
+
+  conceptUsages = new Map<Concept, RWUsage>(this.apiDocs.concepts.map((e) => [e, RWUsage.None]))
+  conceptUsagesToPropagate = new Map<Concept, RWUsage>()
+  conceptReferencedBy = new Map<Concept, Set<Concept>>(this.apiDocs.concepts.map((e) => [e, new Set()]))
+  conceptReadWriteTypes = new Map<Concept, { read: string; write: string } | true>()
+  // ^: empty object = has separate read/write types, but not yet known form (may use default)
 
   hasWarnings: boolean = false
 

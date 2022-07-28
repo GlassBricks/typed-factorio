@@ -5,49 +5,35 @@ import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method }
 import GenerationContext from "../GenerationContext"
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
-import { mapAttribute, mapMethod } from "../members"
+import { analyzeMethod, mapAttribute, mapMethod } from "../members"
+import { analyzeType, RWUsage } from "../read-write-types"
 import { mapType } from "../types"
 import { assertNever, sortByOrder } from "../util"
 
 export function preprocessClasses(context: GenerationContext) {
   for (const clazz of context.apiDocs.classes) {
     context.typeNames[clazz.name] = clazz.name
-    //   for (const method of clazz.methods) {
-    //     analyzeMethod(context, method)
-    //   }
-    //   for (const attribute of clazz.attributes) {
-    //     analyzeAttribute(context, attribute)
-    //   }
-    //   for (const operator of clazz.operators) {
-    //     if (operator.name === "call") {
-    //       analyzeMethod(context, operator)
-    //     } else {
-    //       analyzeAttribute(context, operator)
-    //     }
-    //   }
+    for (const method of clazz.methods) {
+      analyzeMethod(context, method)
+    }
+    for (const attribute of clazz.attributes) {
+      analyzeAttribute(context, attribute)
+    }
+    for (const operator of clazz.operators) {
+      if (operator.name === "call") {
+        analyzeMethod(context, operator)
+      } else {
+        analyzeAttribute(context, operator)
+      }
+    }
   }
 }
 
-// function analyzeMethod(context: GenerationContext, method: Method) {
-// for (const parameter of method.parameters) {
-//   context.mapTypeSimple(parameter.type, false, true)
-// }
-// if (method.variant_parameter_groups) {
-//   for (const parameter of method.variant_parameter_groups.flatMap((x) => x.parameters)) {
-//     context.mapTypeSimple(parameter.type, false, true)
-//   }
-// }
-// if (method.variadic_type) {
-//   context.mapTypeSimple(method.variadic_type, false, true)
-// }
-// for (const returnValue of method.return_values) {
-//   context.mapTypeSimple(returnValue.type, true, false)
-// }
-// }
-
-// function analyzeAttribute(context: GenerationContext, attribute: Attribute) {
-// context.mapTypeSimple(attribute.type, attribute.read, attribute.write)
-// }
+function analyzeAttribute(context: GenerationContext, attribute: Attribute) {
+  // context.mapTypeSimple(attribute.type, attribute.read, attribute.write)
+  const rwType = attribute.read && attribute.write ? RWUsage.ReadWrite : attribute.read ? RWUsage.Read : RWUsage.Write
+  analyzeType(context, attribute.type, rwType)
+}
 
 export function generateClasses(context: GenerationContext): DefinitionsFile {
   const statements = new StatementsList(context, "classes")

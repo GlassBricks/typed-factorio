@@ -27,6 +27,8 @@ export enum AnnotationKind {
 
   Replace = "replace",
 
+  ReadType = "readType",
+
   Deprecated = "deprecated",
 }
 
