@@ -158,12 +158,9 @@ export function addJsDoc<T extends ts.Node>(
     processDescription(context, element.description),
     getRaisesComment(context, element.raises),
     getSubclassesComment(element.subclasses),
-    getNotesComment(context, element.notes),
   ]
     .filter((x) => x)
     .join("\n\n")
-    .replace(/\n\n\n+/g, "\n\n")
-    .replace(/^\n+|\n+$/, "")
 
   tags = tags || []
 
@@ -174,9 +171,22 @@ export function addJsDoc<T extends ts.Node>(
       )
     )
   }
+  if (element.notes) {
+    tags.push(
+      ts.factory.createJSDocUnknownTag(
+        ts.factory.createIdentifier("remarks"),
+        processDescription(context, element.notes.join("<br>"))
+      )
+    )
+  }
+
   if (!comment && tags.length === 0) return node
 
-  if (reference) comment += `\n\n{@link ${getDocumentationUrl(context, reference)} View documentation}`
+  if (reference) {
+    tags.push(createSeeTag(`{@link ${getDocumentationUrl(context, reference)} Online documentation}`))
+  }
+
+  comment = comment.replace(/\n\n\n+/g, "\n\n").replace(/^\n+|\n+$/, "")
 
   const jsDoc = ts.factory.createJSDocComment(comment, tags)
   addFakeJSDoc(node, jsDoc)
