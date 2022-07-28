@@ -15,7 +15,10 @@ export function createVariantParameterTypes(
   value: WithVariantParameterGroups,
   usage: RWUsage,
   statements: StatementsList
-): { declarations: ts.TypeAliasDeclaration; description: string } {
+): {
+  declarations: [mainType: ts.TypeAliasDeclaration, altWriteType?: ts.TypeAliasDeclaration]
+  description: string
+} {
   context.typeNames[name] = name
   const shortName = removeLuaPrefix(name)
 
@@ -161,7 +164,7 @@ export function createVariantParameterTypes(
   resultDeclarations.forEach((d) => statements.add(d))
 
   const description = getVariantsDescription()
-  return { declarations: unionDeclaration, description }
+  return { declarations: resultDeclarations as never, description }
 
   function getVariantsDescription(): string {
     const rawDescription =

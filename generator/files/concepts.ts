@@ -85,6 +85,22 @@ export function generateConcepts(context: GenerationContext): DefinitionsFile {
   return statements.getResult()
 }
 
+function createVariantParameterConcept(
+  context: GenerationContext,
+  concept: Concept,
+  conceptUsage: RWUsage,
+  statements: StatementsList
+): void {
+  const {
+    description,
+    declarations: [readDecl, writeDecl],
+  } = createVariantParameterTypes(context, concept.name, concept.type as TableComplexType, conceptUsage, statements)
+  concept.description += `\n\n${description}`
+  addJsDoc(context, readDecl, concept, concept.name)
+  if (writeDecl) {
+    addJsDoc(context, writeDecl, { description: getWriteDescription(concept) }, concept.name)
+  }
+}
 function generateConcept(context: GenerationContext, concept: Concept, statements: StatementsList): void {
   const existing = context.getInterfaceDef(concept.name)
 
@@ -104,15 +120,7 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
     concept.type.complex_type === "table" &&
     concept.type.variant_parameter_groups
   ) {
-    const { description, declarations } = createVariantParameterTypes(
-      context,
-      concept.name,
-      concept.type,
-      conceptUsage,
-      statements
-    )
-    concept.description += `\n\n${description}`
-    addJsDoc(context, declarations, concept, concept.name)
+    createVariantParameterConcept(context, concept, conceptUsage, statements)
     return
   }
 
@@ -151,13 +159,17 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
       context,
       writeResult,
       {
-        description: `Write form of {@link ${concept.name}}, where table-or-array concepts are allowed to take an array form.`,
+        description: getWriteDescription(concept),
       },
       concept.name
     )
 
     statements.add(writeResult)
   }
+}
+
+function getWriteDescription(concept: Concept): string {
+  return `Write form of {@link ${concept.name}}, where table-or-array concepts are allowed to take an array form.`
 }
 
 function typeToDeclaration(type: ts.TypeNode, name: string): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
