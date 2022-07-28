@@ -16,8 +16,7 @@ declare namespace defines {
   }
   /**
    * AI command exit status. See {@link LuaEntity#set_command LuaEntity::set_command}
-   *
-   * {@link https://lua-api.factorio.com/latest/defines.html#defines.behavior_result View documentation}
+   * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.behavior_result Online documentation}
    */
   enum behavior_result {
     in_progress,
@@ -35,8 +34,7 @@ declare namespace defines {
   }
   /**
    * State of a chain signal.
-   *
-   * {@link https://lua-api.factorio.com/latest/defines.html#defines.chain_signal_state View documentation}
+   * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.chain_signal_state Online documentation}
    */
   enum chain_signal_state {
     none,
@@ -66,6 +64,7 @@ declare namespace defines {
     accumulator,
     constant_combinator,
     container,
+    linked_container,
     programmable_speaker,
     rail_signal,
     rail_chain_signal,
@@ -82,87 +81,73 @@ declare namespace defines {
   }
   /**
    * Command given to units describing what they should do.
-   *
-   * {@link https://lua-api.factorio.com/latest/defines.html#defines.command View documentation}
+   * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command Online documentation}
    */
   enum command {
     /**
      * Attack another entity.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.attack View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.attack Online documentation}
      */
     attack = 0,
     /**
      * Go to a specific position.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.go_to_location View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.go_to_location Online documentation}
      */
     go_to_location = 1,
     /**
      * Chain commands together, see {@link defines.compound_command}.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.compound View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.compound Online documentation}
      */
     compound = 2,
     /**
      * Do what your group wants you to do.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.group View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.group Online documentation}
      */
     group = 3,
     /**
      * Go to a place and attack what you see.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.attack_area View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.attack_area Online documentation}
      */
     attack_area = 4,
     /**
      * Chill.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.wander View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.wander Online documentation}
      */
     wander = 5,
     /**
      * Flee from another entity.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.flee View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.flee Online documentation}
      */
     flee = 6,
     /**
      * Stop moving and stay where you are.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.stop View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.stop Online documentation}
      */
     stop = 7,
     /**
      * Go to a position and build a base there.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.command.build_base View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.build_base Online documentation}
      */
     build_base = 8,
   }
   /**
    * How commands are joined together in a compound command (see {@link defines.command.compound}).
-   *
-   * {@link https://lua-api.factorio.com/latest/defines.html#defines.compound_command View documentation}
+   * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.compound_command Online documentation}
    */
   enum compound_command {
     /**
      * Fail on first failure. Only succeeds if all commands (executed one after another) succeed.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.compound_command.logical_and View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.compound_command.logical_and Online documentation}
      */
     logical_and,
     /**
      * Succeed on first success. Only fails if all commands (executed one after another) fail.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.compound_command.logical_or View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.compound_command.logical_or Online documentation}
      */
     logical_or,
     /**
      * Execute all commands in sequence and fail or succeed depending on the return status of the last command.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.compound_command.return_last View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.compound_command.return_last Online documentation}
      */
     return_last,
   }
@@ -206,110 +191,92 @@ declare namespace defines {
     enum type {
       /**
        * {@link LuaContainerControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.container View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.container Online documentation}
        */
       container,
       /**
        * {@link LuaGenericOnOffControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.generic_on_off View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.generic_on_off Online documentation}
        */
       generic_on_off,
       /**
        * {@link LuaInserterControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.inserter View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.inserter Online documentation}
        */
       inserter,
       /**
        * {@link LuaLampControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.lamp View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.lamp Online documentation}
        */
       lamp,
       /**
        * {@link LuaLogisticContainerControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.logistic_container View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.logistic_container Online documentation}
        */
       logistic_container,
       /**
        * {@link LuaRoboportControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.roboport View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.roboport Online documentation}
        */
       roboport,
       /**
        * {@link LuaStorageTankControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.storage_tank View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.storage_tank Online documentation}
        */
       storage_tank,
       /**
        * {@link LuaTrainStopControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.train_stop View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.train_stop Online documentation}
        */
       train_stop,
       /**
        * {@link LuaDeciderCombinatorControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.decider_combinator View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.decider_combinator Online documentation}
        */
       decider_combinator,
       /**
        * {@link LuaArithmeticCombinatorControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.arithmetic_combinator View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.arithmetic_combinator Online documentation}
        */
       arithmetic_combinator,
       /**
        * {@link LuaConstantCombinatorControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.constant_combinator View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.constant_combinator Online documentation}
        */
       constant_combinator,
       /**
        * {@link LuaTransportBeltControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.transport_belt View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.transport_belt Online documentation}
        */
       transport_belt,
       /**
        * {@link LuaAccumulatorControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.accumulator View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.accumulator Online documentation}
        */
       accumulator,
       /**
        * {@link LuaRailSignalControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.rail_signal View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.rail_signal Online documentation}
        */
       rail_signal,
       /**
        * {@link LuaRailChainSignalControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.rail_chain_signal View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.rail_chain_signal Online documentation}
        */
       rail_chain_signal,
       /**
        * {@link LuaWallControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.wall View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.wall Online documentation}
        */
       wall,
       /**
        * {@link LuaMiningDrillControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.mining_drill View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.mining_drill Online documentation}
        */
       mining_drill,
       /**
        * {@link LuaProgrammableSpeakerControlBehavior}
-       *
-       * {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.programmable_speaker View documentation}
+       * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.control_behavior.type.programmable_speaker Online documentation}
        */
       programmable_speaker,
     }
@@ -317,38 +284,32 @@ declare namespace defines {
   enum controllers {
     /**
      * Can't interact with the world, can only observe. Used in the multiplayer waiting-to-respawn screen.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.ghost View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.ghost Online documentation}
      */
     ghost,
     /**
      * The controller controls a character. This is the default controller in freeplay.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.character View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.character Online documentation}
      */
     character,
     /**
      * The controller isn't tied to a character. This is the default controller in sandbox.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.god View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.god Online documentation}
      */
     god,
     /**
      * The Editor Controller near ultimate power to do almost anything in the game.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.editor View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.editor Online documentation}
      */
     editor,
     /**
      * The player can't interact with the world, and the camera pans around in a predefined manner.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.cutscene View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.cutscene Online documentation}
      */
     cutscene,
     /**
      * Can't change anything in the world but can view anything.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.spectator View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.controllers.spectator Online documentation}
      */
     spectator,
   }
@@ -409,26 +370,22 @@ declare namespace defines {
   enum distraction {
     /**
      * Perform command even if someone attacks the unit.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.distraction.none View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.distraction.none Online documentation}
      */
     none,
     /**
      * Attack closer enemy entities with force.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.distraction.by_enemy View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.distraction.by_enemy Online documentation}
      */
     by_enemy,
     /**
      * Attack closer enemy entities, including entities "built" by player (belts, inserters, chests).
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.distraction.by_anything View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.distraction.by_anything Online documentation}
      */
     by_anything,
     /**
      * Attack when attacked.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.distraction.by_damage View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.distraction.by_damage Online documentation}
      */
     by_damage,
   }
@@ -445,207 +402,173 @@ declare namespace defines {
     marked_for_deconstruction,
     /**
      * Used by generators and solar panels.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.not_plugged_in_electric_network View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.not_plugged_in_electric_network Online documentation}
      */
     not_plugged_in_electric_network,
     /**
      * Used by power switches.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.networks_connected View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.networks_connected Online documentation}
      */
     networks_connected,
     /**
      * Used by power switches.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.networks_disconnected View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.networks_disconnected Online documentation}
      */
     networks_disconnected,
     /**
      * Used by accumulators.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.charging View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.charging Online documentation}
      */
     charging,
     /**
      * Used by accumulators.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.discharging View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.discharging Online documentation}
      */
     discharging,
     /**
      * Used by accumulators.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.fully_charged View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.fully_charged Online documentation}
      */
     fully_charged,
     /**
      * Used by logistic containers.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.out_of_logistic_network View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.out_of_logistic_network Online documentation}
      */
     out_of_logistic_network,
     /**
      * Used by assembling machines.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_recipe View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_recipe Online documentation}
      */
     no_recipe,
     /**
      * Used by furnaces.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_ingredients View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_ingredients Online documentation}
      */
     no_ingredients,
     /**
      * Used by boilers, fluid turrets and fluid energy sources: Boiler has no fluid to work with.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_input_fluid View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_input_fluid Online documentation}
      */
     no_input_fluid,
     /**
      * Used by labs.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_research_in_progress View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_research_in_progress Online documentation}
      */
     no_research_in_progress,
     /**
      * Used by mining drills.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_minable_resources View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_minable_resources Online documentation}
      */
     no_minable_resources,
     /**
      * Used by boilers and fluid turrets: Boiler still has some fluid but is about to run out.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.low_input_fluid View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.low_input_fluid Online documentation}
      */
     low_input_fluid,
     /**
      * Used by crafting machines.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.fluid_ingredient_shortage View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.fluid_ingredient_shortage Online documentation}
      */
     fluid_ingredient_shortage,
     /**
      * Used by crafting machines, boilers, burner energy sources and reactors: Reactor/burner has full burnt result inventory, boiler has full output fluidbox.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.full_output View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.full_output Online documentation}
      */
     full_output,
     /**
      * Used by crafting machines.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.item_ingredient_shortage View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.item_ingredient_shortage Online documentation}
      */
     item_ingredient_shortage,
     /**
      * Used by mining drills when the mining fluid is missing.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.missing_required_fluid View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.missing_required_fluid Online documentation}
      */
     missing_required_fluid,
     /**
      * Used by labs.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.missing_science_packs View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.missing_science_packs Online documentation}
      */
     missing_science_packs,
     /**
      * Used by inserters.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_for_source_items View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_for_source_items Online documentation}
      */
     waiting_for_source_items,
     /**
      * Used by inserters and mining drills.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_for_space_in_destination View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_for_space_in_destination Online documentation}
      */
     waiting_for_space_in_destination,
     /**
      * Used by the rocket silo.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.preparing_rocket_for_launch View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.preparing_rocket_for_launch Online documentation}
      */
     preparing_rocket_for_launch,
     /**
      * Used by the rocket silo.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_to_launch_rocket View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_to_launch_rocket Online documentation}
      */
     waiting_to_launch_rocket,
     /**
      * Used by the rocket silo.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.launching_rocket View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.launching_rocket Online documentation}
      */
     launching_rocket,
     /**
      * Used by beacons.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_modules_to_transmit View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_modules_to_transmit Online documentation}
      */
     no_modules_to_transmit,
     /**
      * Used by roboports.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.recharging_after_power_outage View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.recharging_after_power_outage Online documentation}
      */
     recharging_after_power_outage,
     /**
      * Used by inserters targeting entity ghosts.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_for_target_to_be_built View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_for_target_to_be_built Online documentation}
      */
     waiting_for_target_to_be_built,
     /**
      * Used by inserters targeting rails.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_for_train View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.waiting_for_train Online documentation}
      */
     waiting_for_train,
     /**
      * Used by ammo turrets.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_ammo View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.no_ammo Online documentation}
      */
     no_ammo,
     /**
      * Used by heat energy sources.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.low_temperature View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.low_temperature Online documentation}
      */
     low_temperature,
     /**
      * Used by constant combinators: Combinator is turned off via switch in GUI.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.disabled View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.disabled Online documentation}
      */
     disabled,
     /**
      * Used by lamps.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.turned_off_during_daytime View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.turned_off_during_daytime Online documentation}
      */
     turned_off_during_daytime,
     /**
      * Used by rail signals.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.not_connected_to_rail View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.not_connected_to_rail Online documentation}
      */
     not_connected_to_rail,
     /**
      * Used by rail signals.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.cant_divide_segments View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.entity_status.cant_divide_segments Online documentation}
      */
     cant_divide_segments,
   }
   /**
    * See the {@linkplain https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
-   *
-   * {@link https://lua-api.factorio.com/latest/defines.html#defines.events View documentation}
+   * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.events Online documentation}
    */
   namespace events {
     /**
@@ -1083,6 +1006,12 @@ declare namespace defines {
      */
     const on_pre_ghost_deconstructed: EventId<OnPreGhostDeconstructedEvent, LuaPreGhostDeconstructedEventFilter>
     /**
+     * Event type: {@link OnPreGhostUpgradedEvent}
+     *
+     * Event filter: {@link LuaPreGhostUpgradedEventFilter}
+     */
+    const on_pre_ghost_upgraded: EventId<OnPreGhostUpgradedEvent, LuaPreGhostUpgradedEventFilter>
+    /**
      * Event type: {@link OnPlayerPipetteEvent}
      */
     const on_player_pipette: EventId<OnPlayerPipetteEvent>
@@ -1397,10 +1326,9 @@ declare namespace defines {
   }
   /**
    * See the {@linkplain https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
-   *
-   * {@link https://lua-api.factorio.com/latest/defines.html#defines.events View documentation}
+   * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.events Online documentation}
    */
-  type Events = typeof events[keyof typeof events]
+  type events = typeof events[keyof typeof events]
   enum flow_precision_index {
     five_seconds,
     one_minute,
@@ -1440,6 +1368,7 @@ declare namespace defines {
     server_management,
     player_management,
     tile,
+    script_inventory,
   }
   enum input_action {
     activate_copy,
@@ -1674,6 +1603,9 @@ declare namespace defines {
     item_main,
     rocket_silo_rocket,
     rocket_silo_result,
+    rocket_silo_input,
+    rocket_silo_output,
+    rocket_silo_modules,
     rocket,
     car_trunk,
     car_ammo,
@@ -1711,8 +1643,7 @@ declare namespace defines {
   }
   /**
    * A dictionary mapping all top-level prototypes by name to a list of their associated subtypes. This list is organized as a lookup table, meaning it maps the sub-prototype names to `0`. As an example, `defines.prototypes['entity']` looks like this: `{furnace=0, inserter=0, container=0, ...}`.
-   *
-   * {@link https://lua-api.factorio.com/latest/defines.html#defines.prototypes View documentation}
+   * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.prototypes Online documentation}
    */
   const prototypes: {
     readonly [Type in string]?: {
@@ -1789,6 +1720,7 @@ declare namespace defines {
     resource_entity_gui,
     roboport_gui,
     rocket_silo_gui,
+    script_inventory_gui,
     server_config_gui,
     spider_vehicle_gui,
     splitter_gui,
@@ -1825,6 +1757,23 @@ declare namespace defines {
       right,
     }
   }
+  enum rocket_silo_status {
+    building_rocket,
+    create_rocket,
+    lights_blinking_open,
+    doors_opening,
+    doors_opened,
+    rocket_rising,
+    arms_advance,
+    rocket_ready,
+    launch_starting,
+    engine_starting,
+    arms_retract,
+    rocket_flying,
+    lights_blinking_close,
+    doors_closing,
+    launch_started,
+  }
   enum shooting {
     not_shooting,
     shooting_enemies,
@@ -1832,100 +1781,84 @@ declare namespace defines {
   }
   /**
    * State of an ordinary rail signal.
-   *
-   * {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state View documentation}
+   * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state Online documentation}
    */
   enum signal_state {
     /**
      * Green.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state.open View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state.open Online documentation}
      */
     open,
     /**
      * Red.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state.closed View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state.closed Online documentation}
      */
     closed,
     /**
      * Orange.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state.reserved View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state.reserved Online documentation}
      */
     reserved,
     /**
      * Red - From circuit network.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state.reserved_by_circuit_network View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.signal_state.reserved_by_circuit_network Online documentation}
      */
     reserved_by_circuit_network,
   }
   enum train_state {
     /**
      * Normal state -- following the path.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.on_the_path View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.on_the_path Online documentation}
      */
     on_the_path,
     /**
      * Had path and lost it -- must stop.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.path_lost View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.path_lost Online documentation}
      */
     path_lost,
     /**
      * Doesn't have anywhere to go.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.no_schedule View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.no_schedule Online documentation}
      */
     no_schedule,
     /**
      * Has no path and is stopped.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.no_path View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.no_path Online documentation}
      */
     no_path,
     /**
      * Braking before a rail signal.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.arrive_signal View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.arrive_signal Online documentation}
      */
     arrive_signal,
     /**
      * Waiting at a signal.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.wait_signal View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.wait_signal Online documentation}
      */
     wait_signal,
     /**
      * Braking before a station.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.arrive_station View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.arrive_station Online documentation}
      */
     arrive_station,
     /**
      * Waiting at a station.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.wait_station View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.wait_station Online documentation}
      */
     wait_station,
     /**
      * Switched to manual control and has to stop.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.manual_control_stop View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.manual_control_stop Online documentation}
      */
     manual_control_stop,
     /**
      * Can move if user explicitly sits in and rides the train.
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.manual_control View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.manual_control Online documentation}
      */
     manual_control,
     /**
      * Same as no_path but all candidate train stops are full
-     *
-     * {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.destination_full View documentation}
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.train_state.destination_full Online documentation}
      */
     destination_full,
   }
