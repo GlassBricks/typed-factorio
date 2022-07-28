@@ -119,7 +119,7 @@ function getRaisesComment(context: GenerationContext, raises: EventRaised[] | un
 
 function getSubclassesComment(subclasses: string[] | undefined): string | undefined {
   if (!subclasses || subclasses.length === 0) return
-  return `_Can only be used if context is ${
+  return `_Can only be used if this is ${
     subclasses.length === 1
       ? subclasses[0]
       : `${subclasses.slice(0, -1).join(", ")} or ${subclasses[subclasses.length - 1]}`
