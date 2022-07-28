@@ -534,9 +534,21 @@ function mapTableType(
     context.warning("variant_parameter_groups is not supported in mapType")
   }
 
+  const existingDef = typeContext.existingDef
   const parameters = type.parameters
     .sort(sortByOrder)
-    .map((p) => mapParameterToProperty(context, p, typeContext.contextName, usage, typeContext.existingDef))
+    .map((p) => mapParameterToProperty(context, p, typeContext.contextName, usage, existingDef))
+
+  const parameterNames = new Set(type.parameters.map((p) => p.name))
+  if (existingDef?.annotations.addProperties) {
+    for (const [name, elements] of Object.entries(existingDef.members)) {
+      if (parameterNames.has(name)) continue
+      assert(elements?.length === 1)
+      const first = elements[0]
+      assert(ts.isPropertySignature(first))
+      parameters.push({ mainProperty: first })
+    }
+  }
 
   const mainType = ts.factory.createTypeLiteralNode(parameters.map((p) => p.mainProperty))
   let altWriteType: ts.TypeNode | undefined

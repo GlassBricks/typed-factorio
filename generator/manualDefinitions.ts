@@ -22,6 +22,8 @@ export enum AnnotationKind {
   DiscriminatedUnion = "discriminatedUnion",
   VariantsName = "variantsName",
 
+  AddProperties = "addProperties",
+
   UnionAdd = "unionAdd",
   UnionReplace = "unionReplace",
 

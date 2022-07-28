@@ -64,6 +64,7 @@ function generateClass(
   fillMethodsAndOperators()
   const indexType = fillIndexType()
   fillAttributes()
+  checkManuallyDefined()
   shiftLuaObjectMembers()
   let discriminantProperty: string | undefined, membersBySubclass: Map<string, MemberAndOriginal[]>
   processSubclasses()
@@ -221,6 +222,15 @@ function generateClass(
         member: mapAttribute(context, attr, clazz.name, existing),
       }))
     )
+  }
+  function checkManuallyDefined() {
+    if (!existing) return
+    const allAttributes = new Set(clazz.attributes.map((x) => x.name).concat(clazz.methods.map((x) => x.name)))
+    for (const name of Object.keys(existing.members)) {
+      if (!allAttributes.has(name)) {
+        context.warning(`Attribute ${name} is not defined in class ${clazz.name}`, clazz.name)
+      }
+    }
   }
 
   function shiftLuaObjectMembers() {
@@ -413,6 +423,7 @@ function generateClass(
       thisMembers.flatMap((m) => m.member)
     )
     statements.add(baseDeclaration)
+    context.typeNames[name] = name
 
     if (!indexTypeName) {
       if (classForDocs) {

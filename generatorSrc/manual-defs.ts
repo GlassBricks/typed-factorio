@@ -366,7 +366,7 @@ type LuaGuiElement = {
   /** @subclasses button sprite-button */
   mouse_button_filter
   /** @subclasses flow frame label table empty-widget */
-  drag_target: LuaGuiElement | nil
+  drag_target?: FrameGuiElement
   /** @subclasses tabbed-pane */
   readonly tabs
   /** @subclasses entity-preview camera minimap */
@@ -375,6 +375,8 @@ type LuaGuiElement = {
   set style(style: LuaStyle | string)
   get style(): LuaStyle
 }
+
+interface FrameGuiElement {}
 
 // nullability, multi-return, different read/write types
 
@@ -399,20 +401,9 @@ interface LuaControl {
   teleport(x: number, y?: number): boolean
 }
 
-interface LuaEntity {
-  initial_amount: uint | nil
-  get_driver(): LuaEntity | LuaPlayer | nil
-  get_passenger(): LuaEntity | LuaPlayer | nil
-}
+interface LuaEntity {}
 
-interface LuaItemStack {
-  durability: double | nil
-}
-
-interface LuaPermissionGroup {}
-interface LuaPermissionGroups {
-  create_group(name?: string): LuaPermissionGroup | nil
-}
+interface LuaItemStack {}
 
 interface LuaPlayer {
   readonly cutscene_character: LuaEntity | nil
@@ -520,6 +511,7 @@ interface RealOrientation {}
 
 interface MapPosition {}
 interface MapPositionArray {}
+interface Color {}
 
 /** @replace */
 type Vector = MapPositionArray
@@ -635,11 +627,62 @@ interface PlayerIdentification {}
 /** @readType LuaItemPrototype */
 interface ItemPrototypeIdentification {}
 
+interface OtherTechnologyModifier {
+  readonly modifier?: double
+}
 // Skipped: EntityPrototypeIdentification, ItemStackIdentification
 
-interface MapGenSettings {}
+/** @addProperties */
+interface BlueprintEntity {
+  /** Orientation of the cargo wagon or locomotive, value 0 to 1 */
+  readonly orientation?: RealOrientation
+  /** Copper wire connections, array of entity_numbers */
+  readonly neighbours?: uint[]
+  /** Name of the recipe prototype this assembling machine is set to. */
+  readonly recipe?: string
+  /** Used by {@link https://wiki.factorio.com/Prototype/Container Prototype/Container}. The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
+  readonly bar?: uint16
+  /** Cargo wagon inventory configuration */
+  readonly inventory?: BlueprintInventory
+  /** Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
+  readonly infinity_settings?: BlueprintInfinitySettings
+  /** Type of the underground belt or loader. Either "input" or "output". */
+  readonly type?: "input" | "output"
+  /** Input priority of the splitter. Either "right" or "left", "none" is omitted. */
+  readonly input_priority?: "right" | "left"
+  /** Output priority of the splitter. Either "right" or "left", "none" is omitted. */
+  readonly output_priority?: "right" | "left"
+  /** Filter of the splitter. Name of the item prototype the filter is set to. */
+  readonly filter?: string
+  /** Filters of the filter inserter or loader. Array of {@link BlueprintItemFilter Item filter} objects. */
+  readonly filters?: BlueprintItemFilter[]
+  /** Filter mode of the filter inserter. Either "whitelist" or "blacklist". */
+  readonly filter_mode?: "whitelist" | "blacklist"
+  /** The stack size the inserter is set to. */
+  readonly override_stack_size?: uint8
+  /** The drop position the inserter is set to. */
+  readonly drop_position?: MapPosition
+  /** The pickup position the inserter is set to. */
+  readonly pickup_position?: MapPosition
+  /** Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}. */
+  readonly request_filters?: BlueprintLogisticFilter[]
+  /** Whether this requester chest can request from buffer chests. */
+  readonly request_from_buffers?: boolean
+  /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
+  readonly parameters?: BlueprintSpeakerParameter
+  /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
+  readonly alert_parameters?: BlueprintSpeakerAlertParameter
+  /** Used by the rocket silo, whether auto launch is enabled. */
+  readonly auto_launch?: boolean
+  /** Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}. */
+  readonly variation?: uint8
+  /** Color of the {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce}, {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}, or train station. */
+  readonly color?: Color
+  /** The name of the train station. */
+  readonly station?: string
+}
 
-/** @addBefore BlueprintEntity */
+/** @addAfter BlueprintEntity */
 /**
  * Information about a single connection between two connection points.
  *
@@ -651,7 +694,7 @@ interface BlueprintConnectionData {
   /** The circuit connector id of the entity this connection is connected to, see {@link defines.circuit_connector_id} */
   circuit_id?: defines.circuit_connector_id
 }
-/** @addBefore BlueprintEntity */
+/** @addAfter BlueprintEntity */
 /**
  * The actual point where a wire is connected to. Contains information about where it is connected to.
  *
@@ -669,7 +712,7 @@ interface BlueprintConnectionPoint {
    */
   green?: BlueprintConnectionData[]
 }
-/** @addBefore BlueprintEntity */
+/** @addAfter BlueprintEntity */
 /**
  * Object containing information about the connections to other entities formed by red or green wires.
  *
@@ -680,6 +723,73 @@ interface BlueprintCircuitConnection {
   "1"?: BlueprintConnectionPoint
   /** Second connection point. For example, the "output" part of an arithmetic combinator. */
   "2"?: BlueprintConnectionPoint
+}
+
+/** @addAfter BlueprintEntity */
+interface BlueprintInventory {
+  readonly filters?: BlueprintItemFilter[]
+  /** The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
+  readonly bar?: uint16
+}
+
+/** @addAfter BlueprintEntity */
+interface BlueprintItemFilter {
+  /** Name of the item prototype this filter is set to. */
+  readonly name: string
+  /** Index of the filter, 1-based. */
+  readonly index: uint
+}
+
+/** @addAfter BlueprintEntity */
+interface BlueprintInfinitySettings {
+  /** Whether the "remove unfiltered items" checkbox is checked. */
+  readonly remove_unfiltered_items: boolean
+  /** Filters of the infinity container. */
+  readonly filters?: BlueprintInfinityFilter[]
+}
+
+/** @addAfter BlueprintEntity */
+interface BlueprintInfinityFilter {
+  /** Name of the item prototype this filter is set to. */
+  readonly name: string
+  /** Number the filter is set to. */
+  readonly count: uint
+  /** Mode of the filter. Either "at-least", "at-most", or "exactly". */
+  readonly mode: "at-least" | "at-most" | "exactly"
+  /** Index of the filter, 1-based. */
+  readonly index: uint
+}
+
+/** @addAfter BlueprintEntity */
+interface BlueprintLogisticFilter {
+  /** Name of the item prototype this filter is set to. */
+  readonly name: string
+  /** Index of the filter, 1-based. */
+  readonly index: uint
+  /** Number the filter is set to. Is 0 for storage chests. */
+  readonly count: uint
+}
+
+/** @addAfter BlueprintEntity */
+interface BlueprintSpeakerParameter {
+  /** Volume of the speaker. */
+  readonly playback_volume: double
+  /** Whether global playback is enabled. */
+  readonly playback_globally: boolean
+  /** Whether polyphony is allowed. */
+  readonly allow_polyphony: boolean
+}
+
+/** @addAfter BlueprintEntity */
+interface BlueprintSpeakerAlertParameter {
+  /** Whether an alert is shown. */
+  readonly show_alert: boolean
+  /** Whether an alert icon is shown on the map. */
+  readonly show_on_map: boolean
+  /** The icon that is displayed with the alert. */
+  readonly icon_signal_id: SignalID
+  /** Message of the alert. */
+  readonly alert_message: string
 }
 
 interface CircuitCondition {}
