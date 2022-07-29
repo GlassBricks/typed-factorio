@@ -165,6 +165,16 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
     )
 
     statements.add(writeResult)
+
+    const deprecatedReadResult = ts.factory.createTypeAliasDeclaration(
+      undefined,
+      undefined,
+      concept.name + "Read",
+      undefined,
+      ts.factory.createTypeReferenceNode(concept.name)
+    )
+    addJsDoc(context, deprecatedReadResult, { description: "" }, undefined, [createDeprecatedTag(concept.name)])
+    statements.add(deprecatedReadResult)
   }
 }
 

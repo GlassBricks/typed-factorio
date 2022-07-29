@@ -358,6 +358,11 @@ interface ScriptAreaWrite {
 }
 
 /**
+ * @deprecated Use {@link ScriptArea} instead
+ */
+type ScriptAreaRead = ScriptArea
+
+/**
  * A position defined using the map editor.
  * @see ScriptPositionWrite
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#ScriptPosition Online documentation}
@@ -379,6 +384,11 @@ interface ScriptPositionWrite {
   readonly color: Color | ColorArray
   readonly id: uint
 }
+
+/**
+ * @deprecated Use {@link ScriptPosition} instead
+ */
+type ScriptPositionRead = ScriptPosition
 
 /**
  * Red, green, blue and alpha values, all in range [0, 1] or all in range [0, 255] if any value is > 1. All values here are optional. Color channels default to `0`, the alpha channel defaults to `1`.
@@ -1354,6 +1364,11 @@ interface BlueprintEntityWrite {
 }
 
 /**
+ * @deprecated Use {@link BlueprintEntity} instead
+ */
+type BlueprintEntityRead = BlueprintEntity
+
+/**
  * @see TileWrite
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#Tile Online documentation}
  */
@@ -1382,6 +1397,11 @@ interface TileWrite {
    */
   readonly name: string
 }
+
+/**
+ * @deprecated Use {@link Tile} instead
+ */
+type TileRead = Tile
 
 interface Fluid {
   /**
@@ -1948,6 +1968,11 @@ interface AutoplaceControlWrite {
 }
 
 /**
+ * @deprecated Use {@link AutoplaceControl} instead
+ */
+type AutoplaceControlRead = AutoplaceControl
+
+/**
  * @see AutoplaceSettingsWrite
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#AutoplaceSettings Online documentation}
  */
@@ -1970,6 +1995,11 @@ interface AutoplaceSettingsWrite {
   readonly treat_missing_as_default: boolean
   readonly settings: Record<string, AutoplaceControlWrite>
 }
+
+/**
+ * @deprecated Use {@link AutoplaceSettings} instead
+ */
+type AutoplaceSettingsRead = AutoplaceSettings
 
 /**
  * @see CliffPlacementSettingsWrite
@@ -2016,6 +2046,11 @@ interface CliffPlacementSettingsWrite {
    */
   readonly richness: MapGenSize
 }
+
+/**
+ * @deprecated Use {@link CliffPlacementSettings} instead
+ */
+type CliffPlacementSettingsRead = CliffPlacementSettings
 
 /**
  * The 'map type' dropdown in the map generation GUI is actually a selector for elevation generator. The base game sets `property_expression_names.elevation` to `"0_16-elevation"` to reproduce terrain from 0.16 or to `"0_17-island"` for the island preset. If generators are available for other properties, the 'map type' dropdown in the GUI will be renamed to 'elevation' and shown along with selectors for the other selectable properties.
@@ -2179,6 +2214,11 @@ interface MapGenSettingsWrite {
    */
   readonly property_expression_names: Record<string, string>
 }
+
+/**
+ * @deprecated Use {@link MapGenSettings} instead
+ */
+type MapGenSettingsRead = MapGenSettings
 
 interface AdvancedMapGenSettings {
   readonly pollution: PollutionMapSettings
@@ -2481,6 +2521,11 @@ interface DeciderCombinatorParametersWrite {
   readonly copy_count_from_input?: boolean
 }
 
+/**
+ * @deprecated Use {@link DeciderCombinatorParameters} instead
+ */
+type DeciderCombinatorParametersRead = DeciderCombinatorParameters
+
 interface InserterCircuitConditions {
   readonly circuit?: CircuitConditionWrite
   readonly logistics?: CircuitConditionWrite
@@ -2533,6 +2578,11 @@ interface CircuitConditionWrite {
 }
 
 /**
+ * @deprecated Use {@link CircuitCondition} instead
+ */
+type CircuitConditionRead = CircuitCondition
+
+/**
  * @see CircuitConditionDefinitionWrite
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#CircuitConditionDefinition Online documentation}
  */
@@ -2555,6 +2605,11 @@ interface CircuitConditionDefinitionWrite {
    */
   readonly fulfilled?: boolean
 }
+
+/**
+ * @deprecated Use {@link CircuitConditionDefinition} instead
+ */
+type CircuitConditionDefinitionRead = CircuitConditionDefinition
 
 interface CircuitConnectionDefinition {
   /**
@@ -3159,6 +3214,11 @@ interface WaitConditionWrite {
 }
 
 /**
+ * @deprecated Use {@link WaitCondition} instead
+ */
+type WaitConditionRead = WaitCondition
+
+/**
  * @see TrainScheduleRecordWrite
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#TrainScheduleRecord Online documentation}
  */
@@ -3207,6 +3267,11 @@ interface TrainScheduleRecordWrite {
 }
 
 /**
+ * @deprecated Use {@link TrainScheduleRecord} instead
+ */
+type TrainScheduleRecordRead = TrainScheduleRecord
+
+/**
  * @see TrainScheduleWrite
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#TrainSchedule Online documentation}
  */
@@ -3229,6 +3294,11 @@ interface TrainScheduleWrite {
   readonly current: uint
   readonly records: readonly TrainScheduleRecordWrite[]
 }
+
+/**
+ * @deprecated Use {@link TrainSchedule} instead
+ */
+type TrainScheduleRead = TrainSchedule
 
 interface BaseGuiArrowSpecification {
   /**
@@ -4502,6 +4572,11 @@ type PrototypeFilterWrite = readonly (
   | EquipmentPrototypeFilter
   | TechnologyPrototypeFilterWrite
 )[]
+
+/**
+ * @deprecated Use {@link PrototypeFilter} instead
+ */
+type PrototypeFilterRead = PrototypeFilter
 
 /**
  * Common attributes to all variants of {@link ItemPrototypeFilter}.
@@ -6296,6 +6371,11 @@ type EventFilterWrite = readonly (
   | LuaPlayerBuiltEntityEventFilter
   | LuaPlayerRepairedEntityEventFilter
 )[]
+
+/**
+ * @deprecated Use {@link EventFilter} instead
+ */
+type EventFilterRead = EventFilter
 
 /**
  * Common attributes to all variants of {@link LuaScriptRaisedReviveEventFilter}.
