@@ -64,41 +64,36 @@ If you have a need for types to more lualib modules, feel free to open an issue 
 
 ### The `global` table
 
-The `global` table is just a lua table which can have any shape the mod desires, so it is not defined in typed-factorio. Instead, you can either:
+The `global` table is a lua table which can have any shape, so it is not defined in typed-factorio. Instead, you can either:
 
 - add `declare const global: <Your type>` in a `.d.ts` file included in your project, to apply it project-wide, or
-- add `declare const global: {...}` to each module/file where needed. This way, you can also only define attributes that each module/file specifically uses.
+- add `declare const global: {...}` to each module/file where needed. This way, you can define only attributes that each module/file specifically uses.
 
 ## Type features
 
-Here is a quick overview of type features:
+### `nil`
 
-### Nullability
-
-The types consistently use `undefined` to represent `nil`.
+`nil` is equivalent to `undefined`.
 
 A class attribute is marked as possibly undefined only if the _read_ type is possibly `nil`. For properties where `nil` is not possible on _read_, but possible on _write_, you can write `nil` by using `undefined!` or `myNullableValue!`, e.g. `controlBehavior.parameters = undefined!`.
 
 ### Parameter Variants
 
-Parameters with variants (with "additional fields can be specified depending on type ...") are defined as a union of all variants. The type for a specific variant is prefixed with the variant name, or "Other" types variants without extra properties (e.g. `AmmoDamageTechnologyModifier`, `OtherTechnologyModifier`).
+Parameter tables with variants (having "additional attributes can be specified depending on type ...") are defined as a union of all variants. The type for a specific variant is prefixed with the variant name, or "Other" types variants without extra properties (e.g. `AmmoDamageTechnologyModifier`, `OtherTechnologyModifier`).
 
 ### Events
 
-Event IDs (`defines.events`) carry information about their event type and possible filters, which is used by the various methods on `script`.
-You can pass a type parameter to `script.generate_event_name<T>()`, and it will return an `EventId` that holds type info of the event data.
+Event IDs (`defines.events`) carry information about their event type and filters, which is used by the various methods on `script`.
+You can pass an event data type parameter to `script.generate_event_name<T>()`, and it will return a `CustomEventId` that holds type info of the event data.
 
 ### Array-like classes
 
-Classes that have an index operator, a length operator, and have an array-like structure, inherit from `(Readonly)Array`. These are `LuaInventory`, `LuaFluidBox`, `LuaTransportLine`. This allows you to use these classes like arrays, meaning having array methods, and `.length` translating to the lua length operator. However, this also means, like typescript arrays, they are **0-indexed, not 1-indexed**.
+Classes that have an index operator, a length operator, and have an array-like structure, inherit from `(Readonly)Array` (these are `LuaInventory`, `LuaFluidBox`, `LuaTransportLine`). This allows you to use these classes like arrays, meaning having array methods, and `.length` translating to the lua length operator. However, this also means, like typescript arrays, they are **0-indexed, not 1-indexed**.
 
-### Table-or-array concepts, and "Read" variants
+### Read and write variants
 
-For table-or-array types (e.g. Position), there also are types such as `PositionTable` and `PositionArray` that refer to the table or array form.
-
-Table-or-array types will appear in Table form when known to be in a read position. This also applies to other concepts/types that have table-or-array attributes.
-
-For some concepts, there is also a special form for when it is used in a "read" position, where all table-or-array types are in Table form. These types are suffixed with `Read`, e.g. `ScriptPositionRead`, `BoundingBoxRead`.
+For concepts that can take a table or array form, the main type (e.g. `MapPosition`) defines the table form, and an `Array` suffix (e.g. `MapPositionArray`) defines the array form.
+Concepts in a "read" position will always be in the table form, and concepts in a "write" position may be either in table or array form (e.g. `MapPosition | MapPositionArray`). This is including within other concepts (e.g. in `ScriptArea`, via the `ScriptAreaWrite` type).
 
 ### Classes with subclasses
 
@@ -113,7 +108,7 @@ For stricter types, use the `Base` type generally, and the specific subclass typ
 You can also create your own type-narrowing functions, like so:
 
 ```ts
-function isCraftingMachineEntity(entity: LuaEntity): entity is CraftingMachineEntity {
+function isCraftingMachineEntity(entity: BaseEntity): entity is CraftingMachineEntity {
   return entity.type === "crafting-machine"
 }
 ```
@@ -122,7 +117,7 @@ function isCraftingMachineEntity(entity: LuaEntity): entity is CraftingMachineEn
 
 `LuaGuiElement` is broken up into a [discriminated union](https://basarat.gitbook.io/typescript/type-system/discriminated-unions), with a separate type for each gui element type. Individual gui element types can be referred to by `<Type>GuiElement`, e.g. `ButtonGuiElement`.
 
-Similarly, the table passed to `LuaGuiElement.add`, referred to as `GuiSpec`, is also broken up into a discriminated union. The type for a specific GuiSpec is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`. `LuaGuiElement.add` will return the appropriate gui element type corresponding to the gui spec type received.
+Similarly, the table passed to `LuaGuiElement.add`, referred to as `GuiSpec`, is also broken up into a discriminated union. The type for a specific GuiSpec is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`. `LuaGuiElement.add` will return the appropriate gui element type corresponding to the GuiSpec type received.
 
 This is done both to provide more accurate types, and for possible integration with [JSX](https://typescripttolua.github.io/docs/jsx/).
 
@@ -130,6 +125,6 @@ This is done both to provide more accurate types, and for possible integration w
 
 This is a recommended **opt-in** feature. To opt in, add `"typed-factorio/strict-index-types"` to `compilerOptions > types` in your tsconfig.json (in addition to `"typed-factorio/runtime"`).
 
-Some `uint` types which represent unique indices, e.g. player_index, entity_number, can be "branded" numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. If opted-in, these index-types will be still assignable to `number`, but a plain `number` is not directly assignable to them. This helps ensure correctness.
+Some `uint` types which represent unique indices, e.g. player_index, entity_number, can be "branded" numbers, e.g. `PlayerIndex` and `EntityNumber`. If opted-in, these index-types will be still assignable to `number`, but a plain `number` is not directly assignable to them. This helps ensure their correct use.
 You can use these types as keys in an index signature, e.g. `{ [index: PlayerIndex]: "foo" }`.
 You can cast "plain" numbers to these types, e.g. `1 as PlayerIndex`, do this with caution.
