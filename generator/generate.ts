@@ -86,13 +86,13 @@ function generateIndexFiles(fileNames: Iterable<string>): Map<string, string> {
   const indexFileContent = fs.readFileSync(indexTemplateFile, "utf8").replace("// generated\n", (m) => m + references)
   result.set("runtime/index.d.ts", indexFileContent)
 
-  const header = `// This references the same files as "typed-factorio/runtime".
+  const indexFileHeader = `// This references the same files as "typed-factorio/runtime".
 // For example, if you want to modify a file, copy the file you want to modify to your project and make the changes. Then, copy this template file into your project and remove the line corresponding to modified file.
 // If you think your modification will be useful to others, please consider making a change suggestion by creating an issue on GitHub.
 
 `
   const customIndexFileContent =
-    header +
+    indexFileHeader +
     indexFileContent.replaceAll(/<reference path="(.*?)"/g, (match, filePath) => {
       const relPath = path.join("runtime", filePath)
       return `<reference types="typed-factorio/${relPath}"`

@@ -126,15 +126,6 @@ function getSubclassesComment(subclasses: string[] | undefined): string | undefi
   }_`
 }
 
-function getNotesComment(context: GenerationContext, notes: string[] | undefined): string | undefined {
-  if (!notes || notes.length === 0) return
-  if (notes.length === 1) {
-    return `**Note**\n\n${processDescription(context, notes[0])}`
-  } else {
-    return `**Notes**\n${processDescription(context, notes.map((x) => "- " + x).join("\n"))}`
-  }
-}
-
 function processExample(context: GenerationContext, example: string): string {
   if (example.startsWith("```")) {
     example = "\n" + example

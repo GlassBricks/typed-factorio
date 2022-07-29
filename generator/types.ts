@@ -518,7 +518,7 @@ function mapStructType(
 
   const mainType = ts.factory.createTypeLiteralNode(attributes)
   return {
-    mainType: mainType,
+    mainType,
     asString: undefined,
   }
 }
