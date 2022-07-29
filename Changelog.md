@@ -1,3 +1,7 @@
+# v1.5.1
+
+- Added old `Read` types as deprecated type aliases of new types; to help with migration.
+
 # v1.5.0
 
 ### BREAKING
