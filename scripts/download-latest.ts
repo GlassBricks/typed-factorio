@@ -1,4 +1,4 @@
-import * as child_process from "child_process"
+import child_process from "child_process"
 import * as fs from "fs"
 import * as https from "https"
 import * as path from "path"
@@ -32,7 +32,7 @@ new Promise((resolve, reject) => {
   const expected = {
     application: "factorio",
     stage: "runtime",
-    api_version: 3,
+    // api_version: 3,
   }
   for (const [k, value] of Object.entries(expected)) {
     const key = k as keyof typeof expected
