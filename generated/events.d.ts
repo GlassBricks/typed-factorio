@@ -201,6 +201,8 @@ interface OnCancelledDeconstructionEvent extends EventData {
 interface OnCancelledUpgradeEvent extends EventData {
   readonly entity: LuaEntity
   readonly player_index?: PlayerIndex
+  readonly target: LuaEntityPrototype
+  readonly direction?: defines.direction
   /**
    * Identifier of the event
    */
@@ -2973,6 +2975,7 @@ interface OnPreGhostUpgradedEvent extends EventData {
    */
   readonly player_index?: PlayerIndex
   readonly ghost: LuaEntity
+  readonly target: LuaEntityPrototype
   /**
    * Identifier of the event
    */

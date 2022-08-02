@@ -1572,6 +1572,10 @@ declare namespace defines {
     wire_dragging,
     write_to_console,
   }
+  enum input_method {
+    keyboard_and_mouse,
+    game_controller,
+  }
   enum inventory {
     fuel,
     burnt_result,

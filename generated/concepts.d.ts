@@ -3569,6 +3569,7 @@ interface ModuleEffects {
  * - `"not-selectable-in-game"`: Disallows selection of the entity even when a selection box is specified for other reasons. For example, selection boxes are used to determine the size of outlines to be shown when highlighting entities inside electric pole ranges.
  * - `"not-upgradable"`: Prevents the entity from being selected by the upgrade planner.
  * - `"not-in-kill-statistics"`: Prevents the entity from being shown in the kill statistics.
+ * - `"not-in-made-in"`: Prevents the entity from being shown in the "made in" list in recipe tooltips.
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#EntityPrototypeFlags Online documentation}
  */
 interface EntityPrototypeFlags {
@@ -3669,6 +3670,10 @@ interface EntityPrototypeFlags {
    * Prevents the entity from being shown in the kill statistics.
    */
   readonly "not-in-kill-statistics"?: true
+  /**
+   * Prevents the entity from being shown in the "made in" list in recipe tooltips.
+   */
+  readonly "not-in-made-in"?: true
 }
 
 /**

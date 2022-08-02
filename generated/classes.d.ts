@@ -4029,6 +4029,16 @@ interface LuaEntity extends LuaControl {
    */
   readonly rocket_silo_status: defines.rocket_silo_status
   /**
+   * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.tile_width Online documentation}
+   */
+  readonly tile_width: uint
+  /**
+   * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.tile_height Online documentation}
+   */
+  readonly tile_height: uint
+  /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
   readonly valid: boolean
@@ -5058,6 +5068,16 @@ interface BaseEntity extends LuaControl {
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.rocket_silo_status Online documentation}
    */
   readonly rocket_silo_status: defines.rocket_silo_status
+  /**
+   * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.tile_width Online documentation}
+   */
+  readonly tile_width: uint
+  /**
+   * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.tile_height Online documentation}
+   */
+  readonly tile_height: uint
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
@@ -7783,6 +7803,16 @@ interface LuaEntityPrototype {
    */
   readonly use_exact_mode?: boolean
   /**
+   * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.tile_width Online documentation}
+   */
+  readonly tile_width: uint
+  /**
+   * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.tile_height Online documentation}
+   */
+  readonly tile_height: uint
+  /**
    * The current movement speed of this character, including effects from exoskeletons, tiles, stickers and shooting.
    *
    * _Can only be used if this is Character_
@@ -8272,6 +8302,16 @@ interface BaseEntityPrototype {
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.manual_range_modifier Online documentation}
    */
   readonly manual_range_modifier?: double
+  /**
+   * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.tile_width Online documentation}
+   */
+  readonly tile_width: uint
+  /**
+   * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.tile_height Online documentation}
+   */
+  readonly tile_height: uint
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
@@ -9883,6 +9923,19 @@ interface LuaEquipmentGrid {
    * @see {@link https://lua-api.factorio.com/latest/LuaEquipmentGrid.html#LuaEquipmentGrid.get_contents Online documentation}
    */
   get_contents(): Record<string, uint>
+  /**
+   * Find equipment by name.
+   * @param equipment Prototype name of the equipment to find.
+   * @returns The first found equipment, or `nil` if equipment could not be found.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEquipmentGrid.html#LuaEquipmentGrid.find Online documentation}
+   */
+  find(equipment: string): LuaEquipment | nil
+  /**
+   * Get the number of all or some equipment in this grid.
+   * @param equipment Prototype name of the equipment to count. If not specified, count all equipment.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEquipmentGrid.html#LuaEquipmentGrid.count Online documentation}
+   */
+  count(equipment?: string): uint
   readonly prototype: LuaEquipmentGridPrototype
   /**
    * Width of the equipment grid.
@@ -11294,6 +11347,17 @@ interface LuaForce {
    * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.research_enabled Online documentation}
    */
   readonly research_enabled: boolean
+  /**
+   * Custom color for this force. If specified, will take priority over other sources of the force color. Writing nil clears custom color. Will return nil if it was not specified or if was set to {0,0,0,0}
+   * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.custom_color Online documentation}
+   */
+  get custom_color(): Color
+  set custom_color(value: Color | ColorArray)
+  /**
+   * Effective color of this force.
+   * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.color Online documentation}
+   */
+  readonly color: Color
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
