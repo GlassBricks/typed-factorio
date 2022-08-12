@@ -660,8 +660,8 @@ interface BlueprintEntity {
   readonly output_priority?: "right" | "left"
   /** Filter of the splitter. Name of the item prototype the filter is set to. */
   readonly filter?: string
-  /** Filters of the filter inserter or loader. Array of {@link BlueprintItemFilter Item filter} objects. */
-  readonly filters?: BlueprintItemFilter[]
+  /** Filters of the filter inserter or loader. Array of {@link InventoryFilter} objects. */
+  readonly filters?: InventoryFilter[]
   /** Filter mode of the filter inserter. Either "whitelist" or "blacklist". */
   readonly filter_mode?: "whitelist" | "blacklist"
   /** The stack size the inserter is set to. */
@@ -671,13 +671,13 @@ interface BlueprintEntity {
   /** The pickup position the inserter is set to. */
   readonly pickup_position?: MapPosition
   /** Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}. */
-  readonly request_filters?: BlueprintLogisticFilter[]
+  readonly request_filters?: LogisticFilter[]
   /** Whether this requester chest can request from buffer chests. */
   readonly request_from_buffers?: boolean
   /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-  readonly parameters?: BlueprintSpeakerParameter
+  readonly parameters?: ProgrammableSpeakerParameters
   /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-  readonly alert_parameters?: BlueprintSpeakerAlertParameter
+  readonly alert_parameters?: ProgrammableSpeakerAlertParameters
   /** Used by the rocket silo, whether auto launch is enabled. */
   readonly auto_launch?: boolean
   /** Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}. */
@@ -733,17 +733,9 @@ interface BlueprintCircuitConnection {
 
 /** @addAfter BlueprintEntity */
 interface BlueprintInventory {
-  readonly filters?: BlueprintItemFilter[]
+  readonly filters?: InventoryFilter[]
   /** The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
   readonly bar?: uint16
-}
-
-/** @addAfter BlueprintEntity */
-interface BlueprintItemFilter {
-  /** Name of the item prototype this filter is set to. */
-  readonly name: string
-  /** Index of the filter, 1-based. */
-  readonly index: uint
 }
 
 /** @addAfter BlueprintEntity */
@@ -751,59 +743,20 @@ interface BlueprintInfinitySettings {
   /** Whether the "remove unfiltered items" checkbox is checked. */
   readonly remove_unfiltered_items: boolean
   /** Filters of the infinity container. */
-  readonly filters?: BlueprintInfinityFilter[]
+  readonly filters?: InfinityInventoryFilter[]
 }
 
-/** @addAfter BlueprintEntity */
-interface BlueprintInfinityFilter {
-  /** Name of the item prototype this filter is set to. */
-  readonly name: string
-  /** Number the filter is set to. */
-  readonly count: uint
-  /** Mode of the filter. Either "at-least", "at-most", or "exactly". */
-  readonly mode: "at-least" | "at-most" | "exactly"
-  /** Index of the filter, 1-based. */
-  readonly index: uint
-}
-
-/** @addAfter BlueprintEntity */
-interface BlueprintLogisticFilter {
-  /** Name of the item prototype this filter is set to. */
-  readonly name: string
-  /** Index of the filter, 1-based. */
-  readonly index: uint
-  /** Number the filter is set to. Is 0 for storage chests. */
-  readonly count: uint
-}
-
-/** @addAfter BlueprintEntity */
-interface BlueprintSpeakerParameter {
-  /** Volume of the speaker. */
-  readonly playback_volume: double
-  /** Whether global playback is enabled. */
-  readonly playback_globally: boolean
-  /** Whether polyphony is allowed. */
-  readonly allow_polyphony: boolean
-}
-
-/** @addAfter BlueprintEntity */
-interface BlueprintSpeakerAlertParameter {
-  /** Whether an alert is shown. */
-  readonly show_alert: boolean
-  /** Whether an alert icon is shown on the map. */
-  readonly show_on_map: boolean
-  /** The icon that is displayed with the alert. */
-  readonly icon_signal_id: SignalID
-  /** Message of the alert. */
-  readonly alert_message: string
-}
-
+interface InventoryFilter {}
+interface LogisticFilter {}
+interface InfinityInventoryFilter {}
+interface ProgrammableSpeakerParameters {}
+interface ProgrammableSpeakerAlertParameters {}
 interface CircuitCondition {}
 interface Signal {}
 interface DeciderCombinatorParameters {}
 interface ProgrammableSpeakerCircuitParameters {}
 
-/** @addTo concepts */
+/** @addAfter BlueprintEntity */
 interface BlueprintControlBehavior {
   readonly condition?: CircuitCondition
   readonly circuit_condition?: CircuitCondition

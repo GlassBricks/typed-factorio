@@ -1144,8 +1144,8 @@ interface BlueprintEntity {
   readonly output_priority?: "right" | "left"
   /** Filter of the splitter. Name of the item prototype the filter is set to. */
   readonly filter?: string
-  /** Filters of the filter inserter or loader. Array of {@link BlueprintItemFilter Item filter} objects. */
-  readonly filters?: BlueprintItemFilter[]
+  /** Filters of the filter inserter or loader. Array of {@link InventoryFilter} objects. */
+  readonly filters?: InventoryFilter[]
   /** Filter mode of the filter inserter. Either "whitelist" or "blacklist". */
   readonly filter_mode?: "whitelist" | "blacklist"
   /** The stack size the inserter is set to. */
@@ -1155,13 +1155,13 @@ interface BlueprintEntity {
   /** The pickup position the inserter is set to. */
   readonly pickup_position?: MapPosition
   /** Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}. */
-  readonly request_filters?: BlueprintLogisticFilter[]
+  readonly request_filters?: LogisticFilter[]
   /** Whether this requester chest can request from buffer chests. */
   readonly request_from_buffers?: boolean
   /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-  readonly parameters?: BlueprintSpeakerParameter
+  readonly parameters?: ProgrammableSpeakerParameters
   /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-  readonly alert_parameters?: BlueprintSpeakerAlertParameter
+  readonly alert_parameters?: ProgrammableSpeakerAlertParameters
   /** Used by the rocket silo, whether auto launch is enabled. */
   readonly auto_launch?: boolean
   /** Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}. */
@@ -1215,63 +1215,58 @@ interface BlueprintCircuitConnection {
 }
 
 interface BlueprintInventory {
-  readonly filters?: BlueprintItemFilter[]
+  readonly filters?: InventoryFilter[]
   /** The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
   readonly bar?: uint16
-}
-
-interface BlueprintItemFilter {
-  /** Name of the item prototype this filter is set to. */
-  readonly name: string
-  /** Index of the filter, 1-based. */
-  readonly index: uint
 }
 
 interface BlueprintInfinitySettings {
   /** Whether the "remove unfiltered items" checkbox is checked. */
   readonly remove_unfiltered_items: boolean
   /** Filters of the infinity container. */
-  readonly filters?: BlueprintInfinityFilter[]
+  readonly filters?: InfinityInventoryFilter[]
 }
 
-interface BlueprintInfinityFilter {
-  /** Name of the item prototype this filter is set to. */
-  readonly name: string
-  /** Number the filter is set to. */
-  readonly count: uint
-  /** Mode of the filter. Either "at-least", "at-most", or "exactly". */
-  readonly mode: "at-least" | "at-most" | "exactly"
-  /** Index of the filter, 1-based. */
-  readonly index: uint
-}
-
-interface BlueprintLogisticFilter {
-  /** Name of the item prototype this filter is set to. */
-  readonly name: string
-  /** Index of the filter, 1-based. */
-  readonly index: uint
-  /** Number the filter is set to. Is 0 for storage chests. */
-  readonly count: uint
-}
-
-interface BlueprintSpeakerParameter {
-  /** Volume of the speaker. */
-  readonly playback_volume: double
-  /** Whether global playback is enabled. */
-  readonly playback_globally: boolean
-  /** Whether polyphony is allowed. */
-  readonly allow_polyphony: boolean
-}
-
-interface BlueprintSpeakerAlertParameter {
-  /** Whether an alert is shown. */
-  readonly show_alert: boolean
-  /** Whether an alert icon is shown on the map. */
-  readonly show_on_map: boolean
-  /** The icon that is displayed with the alert. */
-  readonly icon_signal_id: SignalID
-  /** Message of the alert. */
-  readonly alert_message: string
+interface BlueprintControlBehavior {
+  readonly condition?: CircuitCondition
+  readonly circuit_condition?: CircuitCondition
+  readonly filters?: Signal[]
+  readonly is_on?: boolean
+  readonly arithmetic_conditions?: ArithmeticCombinatorParameters
+  readonly decider_conditions?: DeciderCombinatorParameters
+  readonly circuit_enable_disable?: boolean
+  readonly circuit_read_resources?: boolean
+  readonly circuit_resource_read_mode?: defines.control_behavior.mining_drill.resource_read_mode
+  readonly read_stopped_train?: boolean
+  readonly train_stopped_signal?: SignalID
+  readonly read_from_train?: boolean
+  readonly send_to_train?: boolean
+  readonly circuit_mode_of_operation?:
+    | defines.control_behavior.inserter.circuit_mode_of_operation
+    | defines.control_behavior.logistic_container.circuit_mode_of_operation
+    | defines.control_behavior.lamp.circuit_mode_of_operation
+  readonly circuit_read_hand_contents?: boolean
+  readonly circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
+  readonly circuit_set_stack_size?: boolean
+  readonly stack_control_input_signal?: SignalID
+  readonly use_colors?: boolean
+  readonly read_robot_stats?: boolean
+  readonly read_logistics?: boolean
+  readonly available_logistic_output_signal?: boolean
+  readonly total_logistic_output_signal?: boolean
+  readonly available_construction_output_signal?: boolean
+  readonly total_construction_output_signal?: boolean
+  readonly circuit_contents_read_mode?: defines.control_behavior.transport_belt.content_read_mode
+  readonly output_signal?: SignalID
+  readonly circuit_close_signal?: boolean
+  readonly circuit_read_signal?: boolean
+  readonly red_output_signal?: SignalID
+  readonly orange_output_signal?: SignalID
+  readonly green_output_signal?: SignalID
+  readonly blue_output_signal?: SignalID
+  readonly circuit_open_gate?: boolean
+  readonly circuit_read_sensor?: boolean
+  readonly circuit_parameters?: ProgrammableSpeakerCircuitParameters
 }
 
 /**
@@ -1335,8 +1330,8 @@ interface BlueprintEntityWrite {
   readonly output_priority?: "right" | "left"
   /** Filter of the splitter. Name of the item prototype the filter is set to. */
   readonly filter?: string
-  /** Filters of the filter inserter or loader. Array of {@link BlueprintItemFilter Item filter} objects. */
-  readonly filters?: BlueprintItemFilter[]
+  /** Filters of the filter inserter or loader. Array of {@link InventoryFilter} objects. */
+  readonly filters?: InventoryFilter[]
   /** Filter mode of the filter inserter. Either "whitelist" or "blacklist". */
   readonly filter_mode?: "whitelist" | "blacklist"
   /** The stack size the inserter is set to. */
@@ -1346,13 +1341,13 @@ interface BlueprintEntityWrite {
   /** The pickup position the inserter is set to. */
   readonly pickup_position?: MapPosition
   /** Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}. */
-  readonly request_filters?: BlueprintLogisticFilter[]
+  readonly request_filters?: LogisticFilter[]
   /** Whether this requester chest can request from buffer chests. */
   readonly request_from_buffers?: boolean
   /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-  readonly parameters?: BlueprintSpeakerParameter
+  readonly parameters?: ProgrammableSpeakerParameters
   /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-  readonly alert_parameters?: BlueprintSpeakerAlertParameter
+  readonly alert_parameters?: ProgrammableSpeakerAlertParameters
   /** Used by the rocket silo, whether auto launch is enabled. */
   readonly auto_launch?: boolean
   /** Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}. */
@@ -8847,45 +8842,3 @@ type RaiseableEvents =
   | typeof defines.events.script_raised_destroy
   | typeof defines.events.script_raised_revive
   | typeof defines.events.script_raised_set_tiles
-
-interface BlueprintControlBehavior {
-  readonly condition?: CircuitCondition
-  readonly circuit_condition?: CircuitCondition
-  readonly filters?: Signal[]
-  readonly is_on?: boolean
-  readonly arithmetic_conditions?: ArithmeticCombinatorParameters
-  readonly decider_conditions?: DeciderCombinatorParameters
-  readonly circuit_enable_disable?: boolean
-  readonly circuit_read_resources?: boolean
-  readonly circuit_resource_read_mode?: defines.control_behavior.mining_drill.resource_read_mode
-  readonly read_stopped_train?: boolean
-  readonly train_stopped_signal?: SignalID
-  readonly read_from_train?: boolean
-  readonly send_to_train?: boolean
-  readonly circuit_mode_of_operation?:
-    | defines.control_behavior.inserter.circuit_mode_of_operation
-    | defines.control_behavior.logistic_container.circuit_mode_of_operation
-    | defines.control_behavior.lamp.circuit_mode_of_operation
-  readonly circuit_read_hand_contents?: boolean
-  readonly circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
-  readonly circuit_set_stack_size?: boolean
-  readonly stack_control_input_signal?: SignalID
-  readonly use_colors?: boolean
-  readonly read_robot_stats?: boolean
-  readonly read_logistics?: boolean
-  readonly available_logistic_output_signal?: boolean
-  readonly total_logistic_output_signal?: boolean
-  readonly available_construction_output_signal?: boolean
-  readonly total_construction_output_signal?: boolean
-  readonly circuit_contents_read_mode?: defines.control_behavior.transport_belt.content_read_mode
-  readonly output_signal?: SignalID
-  readonly circuit_close_signal?: boolean
-  readonly circuit_read_signal?: boolean
-  readonly red_output_signal?: SignalID
-  readonly orange_output_signal?: SignalID
-  readonly green_output_signal?: SignalID
-  readonly blue_output_signal?: SignalID
-  readonly circuit_open_gate?: boolean
-  readonly circuit_read_sensor?: boolean
-  readonly circuit_parameters?: ProgrammableSpeakerCircuitParameters
-}
