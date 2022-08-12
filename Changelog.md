@@ -1,3 +1,8 @@
+# v1.6.1
+
+- Fixed write type for `BoundingBox`.
+- Simplified types for BlueprintEntity.
+
 # v1.6.0
 
 - Updated to factorio version 1.1.64
