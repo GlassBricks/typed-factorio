@@ -46,8 +46,8 @@ export function preprocessConcepts(context: GenerationContext) {
       setReadWriteType(context, concept, { read: readName, write: writeName })
     }
 
-    const readType = existing?.annotations.readType?.[0]
-    const writeType = existing?.annotations.writeType?.[0]
+    const readType = stringsToType(existing?.annotations.readType)
+    const writeType = stringsToType(existing?.annotations.writeType)
     if (readType || writeType) {
       setReadWriteType(context, concept, {
         read: readType ?? concept.name,
@@ -55,6 +55,12 @@ export function preprocessConcepts(context: GenerationContext) {
       })
     }
   }
+}
+
+function stringsToType(types: string[] | undefined) {
+  if (!types) return undefined
+  if (types.length === 1) return ts.factory.createTypeReferenceNode(types[0])
+  return ts.factory.createUnionTypeNode(types.map((t) => ts.factory.createTypeReferenceNode(t)))
 }
 
 function tryGetTableOrArrayConcept(

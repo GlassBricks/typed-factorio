@@ -351,7 +351,7 @@ interface ScriptArea {
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#ScriptArea Online documentation}
  */
 interface ScriptAreaWrite {
-  readonly area: BoundingBoxWrite
+  readonly area: BoundingBoxWrite | BoundingBoxArray
   readonly name: string
   readonly color: Color | ColorArray
   readonly id: uint

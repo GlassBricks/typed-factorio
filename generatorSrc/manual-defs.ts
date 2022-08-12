@@ -602,7 +602,7 @@ interface CircularParticleCreationSpecification {
   readonly center: MapPosition
 }
 
-/** @writeType BoundingBoxWrite | BoundingBoxArray */
+/** @writeType BoundingBoxWrite BoundingBoxArray */
 interface BoundingBox {}
 
 /** @addAfter BoundingBox */

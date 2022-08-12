@@ -10842,7 +10842,7 @@ interface LuaForce {
    * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.chart Online documentation}
    */
-  chart(surface: SurfaceIdentification, area: BoundingBoxWrite): void
+  chart(surface: SurfaceIdentification, area: BoundingBoxWrite | BoundingBoxArray): void
   /**
    * Erases chart data for this force.
    * @param surface Which surface to erase chart data for or if not provided all surfaces charts are erased.
@@ -11005,7 +11005,7 @@ interface LuaForce {
    * Finds all custom chart tags within the given bounding box on the given surface.
    * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.find_chart_tags Online documentation}
    */
-  find_chart_tags(surface: SurfaceIdentification, area?: BoundingBoxWrite): LuaCustomChartTag[]
+  find_chart_tags(surface: SurfaceIdentification, area?: BoundingBoxWrite | BoundingBoxArray): LuaCustomChartTag[]
   /**
    * Gets the saved progress for the given technology or `nil` if there is no saved progress.
    * @param technology The technology
@@ -16039,7 +16039,7 @@ interface LuaItemStack {
     /**
      * The area to deconstruct
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * If chunks covered by fog-of-war are skipped.
      */
@@ -16065,7 +16065,7 @@ interface LuaItemStack {
     /**
      * The area to deconstruct
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * If chunks covered by fog-of-war are skipped.
      */
@@ -16092,7 +16092,7 @@ interface LuaItemStack {
     /**
      * The bounding box
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area.
      */
@@ -16681,7 +16681,7 @@ interface BaseItemStack {
     /**
      * The area to deconstruct
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * If chunks covered by fog-of-war are skipped.
      */
@@ -16707,7 +16707,7 @@ interface BaseItemStack {
     /**
      * The area to deconstruct
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * If chunks covered by fog-of-war are skipped.
      */
@@ -16734,7 +16734,7 @@ interface BaseItemStack {
     /**
      * The bounding box
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area.
      */
@@ -21977,7 +21977,7 @@ interface HighlightBoxSurfaceCreateEntity extends BaseSurfaceCreateEntity {
   /**
    * The bounding box defining the highlight box using absolute map coordinates. If specified, the general `position` parameter still needs to be present, but will be ignored. If not specified, the game falls back to the `source` parameter first, then the `target` parameter second. One of these three parameters need to be specified.
    */
-  readonly bounding_box?: BoundingBoxWrite
+  readonly bounding_box?: BoundingBoxWrite | BoundingBoxArray
   /**
    * Specifies the graphical appearance (color) of the highlight box. Defaults to `"electricity"`.
    */
@@ -22141,7 +22141,7 @@ interface LuaSurface {
    * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_entities Online documentation}
    */
-  find_entities(area?: BoundingBoxWrite): LuaEntity[]
+  find_entities(area?: BoundingBoxWrite | BoundingBoxArray): LuaEntity[]
   /**
    * Find all entities of the given type or name in the given area.
    *
@@ -22164,7 +22164,7 @@ interface LuaSurface {
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_entities_filtered Online documentation}
    */
   find_entities_filtered(params: {
-    readonly area?: BoundingBoxWrite
+    readonly area?: BoundingBoxWrite | BoundingBoxArray
     /**
      * Has precedence over area field.
      */
@@ -22195,7 +22195,7 @@ interface LuaSurface {
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_tiles_filtered Online documentation}
    */
   find_tiles_filtered(params: {
-    readonly area?: BoundingBoxWrite
+    readonly area?: BoundingBoxWrite | BoundingBoxArray
     /**
      * Ignored if not given with radius.
      */
@@ -22229,7 +22229,7 @@ interface LuaSurface {
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.count_entities_filtered Online documentation}
    */
   count_entities_filtered(params: {
-    readonly area?: BoundingBoxWrite
+    readonly area?: BoundingBoxWrite | BoundingBoxArray
     readonly position?: MapPosition | MapPositionArray
     /**
      * If given with position, will count all entities within the radius of the position.
@@ -22258,7 +22258,7 @@ interface LuaSurface {
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.count_tiles_filtered Online documentation}
    */
   count_tiles_filtered(params: {
-    readonly area?: BoundingBoxWrite
+    readonly area?: BoundingBoxWrite | BoundingBoxArray
     /**
      * Ignored if not given with radius.
      */
@@ -22314,7 +22314,7 @@ interface LuaSurface {
    */
   find_non_colliding_position_in_box(
     name: string,
-    search_space: BoundingBoxWrite,
+    search_space: BoundingBoxWrite | BoundingBoxArray,
     precision: double,
     force_to_tile_center?: boolean
   ): MapPosition | nil
@@ -22368,7 +22368,7 @@ interface LuaSurface {
     /**
      * Box to find units within.
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * Force performing the search.
      */
@@ -22656,7 +22656,7 @@ interface LuaSurface {
     /**
      * The area to mark for deconstruction.
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * The force whose bots should perform the deconstruction.
      */
@@ -22685,7 +22685,7 @@ interface LuaSurface {
     /**
      * The area to cancel deconstruction orders in.
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * The force whose deconstruction orders to cancel.
      */
@@ -22714,7 +22714,7 @@ interface LuaSurface {
     /**
      * The area to mark for upgrade.
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * The force whose bots should perform the upgrade.
      */
@@ -22743,7 +22743,7 @@ interface LuaSurface {
     /**
      * The area to cancel upgrade orders in.
      */
-    readonly area: BoundingBoxWrite
+    readonly area: BoundingBoxWrite | BoundingBoxArray
     /**
      * The force whose upgrade orders to cancel.
      */
@@ -22825,7 +22825,7 @@ interface LuaSurface {
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.destroy_decoratives Online documentation}
    */
   destroy_decoratives(params: {
-    readonly area?: BoundingBoxWrite
+    readonly area?: BoundingBoxWrite | BoundingBoxArray
     readonly position?: TilePosition | TilePositionArray
     readonly name?: string | readonly string[] | LuaDecorativePrototype | readonly LuaDecorativePrototype[]
     readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
@@ -22866,7 +22866,7 @@ interface LuaSurface {
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_decoratives_filtered Online documentation}
    */
   find_decoratives_filtered(params: {
-    readonly area?: BoundingBoxWrite
+    readonly area?: BoundingBoxWrite | BoundingBoxArray
     readonly position?: TilePosition | TilePositionArray
     readonly name?: string | readonly string[] | LuaDecorativePrototype | readonly LuaDecorativePrototype[]
     readonly collision_mask?: CollisionMaskLayer | readonly CollisionMaskLayer[]
@@ -22934,8 +22934,8 @@ interface LuaSurface {
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.clone_area Online documentation}
    */
   clone_area(params: {
-    readonly source_area: BoundingBoxWrite
-    readonly destination_area: BoundingBoxWrite
+    readonly source_area: BoundingBoxWrite | BoundingBoxArray
+    readonly destination_area: BoundingBoxWrite | BoundingBoxArray
     readonly destination_surface?: SurfaceIdentification
     readonly destination_force?: LuaForce | string
     /**
@@ -23054,7 +23054,7 @@ interface LuaSurface {
     /**
      * The dimensions of the object that's supposed to travel the path.
      */
-    readonly bounding_box: BoundingBoxWrite
+    readonly bounding_box: BoundingBoxWrite | BoundingBoxArray
     /**
      * The list of masks the `bounding_box` collides with.
      */
@@ -23219,7 +23219,7 @@ interface LuaSurface {
    * @param area The tile area.
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.build_checkerboard Online documentation}
    */
-  build_checkerboard(area: BoundingBoxWrite): void
+  build_checkerboard(area: BoundingBoxWrite | BoundingBoxArray): void
   /**
    * The name of this surface. Names are unique among surfaces.
    * @remarks the default surface can't be renamed.
