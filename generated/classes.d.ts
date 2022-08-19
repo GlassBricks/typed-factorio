@@ -2942,6 +2942,13 @@ interface LuaEntity extends LuaControl {
    */
   get_spider_legs(): LuaEntity[]
   /**
+   * Stops the given SpiderVehicle.
+   *
+   * _Can only be used if this is SpiderVehicle_
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.stop_spider Online documentation}
+   */
+  stop_spider(): void
+  /**
    * Name of the entity prototype. E.g. "inserter" or "filter-inserter".
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.name Online documentation}
    */
@@ -3941,21 +3948,21 @@ interface LuaEntity extends LuaControl {
    */
   readonly autopilot_destinations: MapPosition[]
   /**
-   * Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint. Writing nil will disable the limit (will set a maximum possible value).
+   * Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint.
    *
    * _Can only be used if this is TrainStop_
    * @remarks Train may be included multiple times when braking distance covers this train stop multiple times<br>Value may be read even when train stop has no control behavior
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_count Online documentation}
    */
-  readonly trains_count: uint | nil
+  readonly trains_count: uint
   /**
-   * Amount of trains above which no new trains will be sent to this train stop.
+   * Amount of trains above which no new trains will be sent to this train stop. Writing nil will disable the limit (will set a maximum possible value).
    *
    * _Can only be used if this is TrainStop_
    * @remarks When a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_limit Online documentation}
    */
-  trains_limit: uint
+  trains_limit: uint | nil
   /**
    * (deprecated by 1.1.51) If this entity is a MilitaryTarget. Returns same value as LuaEntity::is_military_target
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_entity_with_force Online documentation}
@@ -5784,21 +5791,21 @@ interface TrainStopEntity extends BaseEntity {
    */
   readonly connected_rail_direction: defines.rail_direction
   /**
-   * Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint. Writing nil will disable the limit (will set a maximum possible value).
+   * Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint.
    *
    * _Can only be used if this is TrainStop_
    * @remarks Train may be included multiple times when braking distance covers this train stop multiple times<br>Value may be read even when train stop has no control behavior
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_count Online documentation}
    */
-  readonly trains_count: uint | nil
+  readonly trains_count: uint
   /**
-   * Amount of trains above which no new trains will be sent to this train stop.
+   * Amount of trains above which no new trains will be sent to this train stop. Writing nil will disable the limit (will set a maximum possible value).
    *
    * _Can only be used if this is TrainStop_
    * @remarks When a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.trains_limit Online documentation}
    */
-  trains_limit: uint
+  trains_limit: uint | nil
 }
 
 /**
@@ -5885,6 +5892,13 @@ interface SpiderVehicleEntity extends BaseEntity {
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_spider_legs Online documentation}
    */
   get_spider_legs(): LuaEntity[]
+  /**
+   * Stops the given SpiderVehicle.
+   *
+   * _Can only be used if this is SpiderVehicle_
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.stop_spider Online documentation}
+   */
+  stop_spider(): void
   /**
    * The torso orientation of this spider vehicle.
    *
@@ -18340,7 +18354,7 @@ interface LuaPlayer extends LuaControl {
    */
   remove_alert(params: {
     readonly entity?: LuaEntity
-    readonly prototype?: LuaEntityPrototype
+    readonly prototype?: LuaEntityPrototype | string
     readonly position?: MapPosition | MapPositionArray
     readonly type?: defines.alert_type
     readonly surface?: SurfaceIdentification
@@ -23084,7 +23098,7 @@ interface LuaSurface {
      */
     readonly can_open_gates?: boolean
     /**
-     * Defines how coarse the pathfinder's grid is. Smaller values mean a coarser grid (negative numbers allowed). Defaults to `0`.
+     * Defines how coarse the pathfinder's grid is. Smaller values mean a coarser grid (negative numbers allowed). Allowed values are from -8 to 8. Defaults to `0`.
      */
     readonly path_resolution_modifier?: int
     /**

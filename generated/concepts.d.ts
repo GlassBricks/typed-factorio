@@ -3398,6 +3398,9 @@ interface AmmoType {
    * Energy consumption of a single shot, if applicable. Defaults to `0`.
    */
   readonly energy_consumption?: double
+  readonly range_modifier?: double
+  readonly cooldown_modifier?: double
+  readonly consumption_modifier?: double
 }
 
 interface BeamTarget {
@@ -4119,9 +4122,9 @@ interface LogisticFilter {
  */
 interface ModSetting {
   /**
-   * The value of the mod setting. The type depends on the setting.
+   * The value of the mod setting. The type depends on the kind of setting.
    */
-  readonly value: uint | double | boolean | string
+  readonly value: int | double | boolean | string
 }
 
 /**

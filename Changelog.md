@@ -1,3 +1,7 @@
+# v1.7.0
+
+- Updated to factorio version 1.1.67
+
 # v1.6.1
 
 - Fixed write type for `BoundingBox`.
