@@ -1,5 +1,5 @@
 import assert from "assert"
-import ts from "typescript"
+import ts, { TypeNode } from "typescript"
 import { addJsDoc } from "./documentation"
 import {
   ArrayComplexType,
@@ -272,11 +272,27 @@ function mapUnionType(
   }
 
   return {
-    mainType: ts.factory.createUnionTypeNode(typeNodes),
-    altWriteType: altType && ts.factory.createUnionTypeNode(altType),
+    mainType: makeUnion(typeNodes),
+    altWriteType: altType && makeUnion(altType),
     description,
     asString: undefined,
   }
+}
+
+function makeUnion(types: ts.TypeNode[]): ts.TypeNode {
+  const dedupedTypes = new Set<string | TypeNode>()
+  for (const type of types) {
+    if (ts.isTypeReferenceNode(type) && ts.isIdentifier(type.typeName) && !type.typeArguments?.length) {
+      dedupedTypes.add(type.typeName.text)
+    } else {
+      dedupedTypes.add(type)
+    }
+  }
+  const typesArray = Array.from(dedupedTypes, (t) =>
+    typeof t === "string" ? ts.factory.createTypeReferenceNode(t) : t
+  )
+  if (typesArray.length === 1) return typesArray[0]
+  return ts.factory.createUnionTypeNode(typesArray)
 }
 
 function mapArrayType(context: GenerationContext, type: ArrayComplexType, usage: RWUsage): IntermediateType {
@@ -630,7 +646,7 @@ function tryUseStringEnum(
           member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
     ) {
       return {
-        mainType: ts.factory.createUnionTypeNode(Array.from(matches).map(Types.stringLiteral)),
+        mainType: ts.factory.createUnionTypeNode(Array.from(matches, Types.stringLiteral)),
       }
     }
   }

@@ -3413,7 +3413,7 @@ interface LuaEntity extends LuaControl {
    * _Can only be used if this is EntityWithOwner_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.last_user Online documentation}
    */
-  get last_user(): LuaPlayer | LuaPlayer | nil
+  get last_user(): LuaPlayer | nil
   set last_user(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The buffer size for the electric energy source. `nil` if the entity doesn't have an electric energy source.
@@ -3702,7 +3702,7 @@ interface LuaEntity extends LuaControl {
    * @remarks A character associated with a player is not directly controlled by any player.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.associated_player Online documentation}
    */
-  get associated_player(): LuaPlayer | LuaPlayer | nil
+  get associated_player(): LuaPlayer | nil
   set associated_player(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The last tick this character entity was attacked.
@@ -3834,7 +3834,7 @@ interface LuaEntity extends LuaControl {
    * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_player Online documentation}
    */
-  get render_player(): LuaPlayer | LuaPlayer | nil
+  get render_player(): LuaPlayer | nil
   set render_player(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array when this entity is rendered for all forces.
@@ -4998,7 +4998,7 @@ interface BaseEntity extends LuaControl {
    * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_player Online documentation}
    */
-  get render_player(): LuaPlayer | LuaPlayer | nil
+  get render_player(): LuaPlayer | nil
   set render_player(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array when this entity is rendered for all forces.
@@ -6138,7 +6138,7 @@ interface CharacterEntity extends BaseEntity {
    * @remarks A character associated with a player is not directly controlled by any player.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.associated_player Online documentation}
    */
-  get associated_player(): LuaPlayer | LuaPlayer | nil
+  get associated_player(): LuaPlayer | nil
   set associated_player(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The last tick this character entity was attacked.
@@ -6236,7 +6236,7 @@ interface EntityWithOwnerEntity extends BaseEntity {
    * _Can only be used if this is EntityWithOwner_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.last_user Online documentation}
    */
-  get last_user(): LuaPlayer | LuaPlayer | nil
+  get last_user(): LuaPlayer | nil
   set last_user(value: LuaPlayer | PlayerIdentification | nil)
 }
 
