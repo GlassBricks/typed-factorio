@@ -11,7 +11,9 @@
   "repository": "https://github.com/GlassBricks/typed-factorio",
   "license": "MIT",
   "files": [
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "*.d.ts",
+    "!generator/**/*"
   ],
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "scripts": {
