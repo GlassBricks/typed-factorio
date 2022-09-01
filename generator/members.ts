@@ -50,8 +50,8 @@ export function mapAttribute(
           undefined,
           undefined,
           "value",
-          attribute.optional ? Tokens.question : undefined,
-          type.mainType,
+          undefined,
+          attribute.optional ? makeNullable(type.mainType) : type.mainType,
           undefined
         ),
       ],
@@ -59,8 +59,10 @@ export function mapAttribute(
     )
   } else if (type.altWriteType) {
     assert(attribute.read && attribute.write)
+    const mainType = attribute.optional ? makeNullable(type.mainType) : type.mainType
+    const altWriteType = attribute.optional ? makeNullable(type.altWriteType) : type.altWriteType
     member = [
-      ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], type.mainType, undefined),
+      ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], mainType, undefined),
       ts.factory.createSetAccessorDeclaration(
         undefined,
         undefined,
@@ -72,7 +74,7 @@ export function mapAttribute(
             undefined,
             "value",
             undefined,
-            type.altWriteType,
+            altWriteType,
             undefined
           ),
         ],

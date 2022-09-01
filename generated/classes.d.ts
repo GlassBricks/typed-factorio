@@ -1407,8 +1407,8 @@ interface LuaControl {
    * @remarks Items in the cursor stack will take priority over the cursor ghost.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.cursor_ghost Online documentation}
    */
-  get cursor_ghost(): LuaItemPrototype
-  set cursor_ghost(value: ItemPrototypeIdentification)
+  get cursor_ghost(): LuaItemPrototype | nil
+  set cursor_ghost(value: ItemPrototypeIdentification | nil)
   /**
    * `true` if the player is in a vehicle. Writing to this attribute puts the player in or out of a vehicle.
    *
@@ -3268,8 +3268,8 @@ interface LuaEntity extends LuaControl {
    * @remarks Car color is overridden by the color of the current driver/passenger, if there is one.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.color Online documentation}
    */
-  get color(): Color
-  set color(value: Color | ColorArray)
+  get color(): Color | nil
+  set color(value: Color | ColorArray | nil)
   /**
    * The text of this flying-text entity.
    *
@@ -3413,8 +3413,8 @@ interface LuaEntity extends LuaControl {
    * _Can only be used if this is EntityWithOwner_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.last_user Online documentation}
    */
-  get last_user(): LuaPlayer | LuaPlayer
-  set last_user(value: LuaPlayer | PlayerIdentification)
+  get last_user(): LuaPlayer | LuaPlayer | nil
+  set last_user(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The buffer size for the electric energy source. `nil` if the entity doesn't have an electric energy source.
    * @remarks Write access is limited to the ElectricEnergyInterface type
@@ -3702,8 +3702,8 @@ interface LuaEntity extends LuaControl {
    * @remarks A character associated with a player is not directly controlled by any player.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.associated_player Online documentation}
    */
-  get associated_player(): LuaPlayer | LuaPlayer
-  set associated_player(value: LuaPlayer | PlayerIdentification)
+  get associated_player(): LuaPlayer | LuaPlayer | nil
+  set associated_player(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The last tick this character entity was attacked.
    *
@@ -3834,15 +3834,15 @@ interface LuaEntity extends LuaControl {
    * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_player Online documentation}
    */
-  get render_player(): LuaPlayer | LuaPlayer
-  set render_player(value: LuaPlayer | PlayerIdentification)
+  get render_player(): LuaPlayer | LuaPlayer | nil
+  set render_player(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array when this entity is rendered for all forces.
    * @remarks Reading will always give an array of {@link LuaForce}
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_to_forces Online documentation}
    */
-  get render_to_forces(): LuaForce[]
-  set render_to_forces(value: readonly ForceIdentification[])
+  get render_to_forces(): LuaForce[] | nil
+  set render_to_forces(value: readonly ForceIdentification[] | nil)
   /**
    * The rail target of this pump, if any.
    *
@@ -3938,8 +3938,8 @@ interface LuaEntity extends LuaControl {
    * _Can only be used if this is SpiderVehicle_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destination Online documentation}
    */
-  get autopilot_destination(): MapPosition
-  set autopilot_destination(value: MapPosition | MapPositionArray)
+  get autopilot_destination(): MapPosition | nil
+  set autopilot_destination(value: MapPosition | MapPositionArray | nil)
   /**
    * The queued destination positions of spidertron's autopilot.
    *
@@ -4767,8 +4767,8 @@ interface BaseEntity extends LuaControl {
    * @remarks Car color is overridden by the color of the current driver/passenger, if there is one.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.color Online documentation}
    */
-  get color(): Color
-  set color(value: Color | ColorArray)
+  get color(): Color | nil
+  set color(value: Color | ColorArray | nil)
   /**
    * The productivity bonus of this entity.
    * @remarks This includes force based bonuses as well as beacon/module bonuses.
@@ -4998,15 +4998,15 @@ interface BaseEntity extends LuaControl {
    * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_player Online documentation}
    */
-  get render_player(): LuaPlayer | LuaPlayer
-  set render_player(value: LuaPlayer | PlayerIdentification)
+  get render_player(): LuaPlayer | LuaPlayer | nil
+  set render_player(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array when this entity is rendered for all forces.
    * @remarks Reading will always give an array of {@link LuaForce}
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.render_to_forces Online documentation}
    */
-  get render_to_forces(): LuaForce[]
-  set render_to_forces(value: readonly ForceIdentification[])
+  get render_to_forces(): LuaForce[] | nil
+  set render_to_forces(value: readonly ForceIdentification[] | nil)
   /**
    * Returns the id of the electric network that this entity is connected to, if any.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.electric_network_id Online documentation}
@@ -5919,8 +5919,8 @@ interface SpiderVehicleEntity extends BaseEntity {
    * _Can only be used if this is SpiderVehicle_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destination Online documentation}
    */
-  get autopilot_destination(): MapPosition
-  set autopilot_destination(value: MapPosition | MapPositionArray)
+  get autopilot_destination(): MapPosition | nil
+  set autopilot_destination(value: MapPosition | MapPositionArray | nil)
   /**
    * The queued destination positions of spidertron's autopilot.
    *
@@ -6138,8 +6138,8 @@ interface CharacterEntity extends BaseEntity {
    * @remarks A character associated with a player is not directly controlled by any player.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.associated_player Online documentation}
    */
-  get associated_player(): LuaPlayer | LuaPlayer
-  set associated_player(value: LuaPlayer | PlayerIdentification)
+  get associated_player(): LuaPlayer | LuaPlayer | nil
+  set associated_player(value: LuaPlayer | PlayerIdentification | nil)
   /**
    * The last tick this character entity was attacked.
    *
@@ -6236,8 +6236,8 @@ interface EntityWithOwnerEntity extends BaseEntity {
    * _Can only be used if this is EntityWithOwner_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.last_user Online documentation}
    */
-  get last_user(): LuaPlayer | LuaPlayer
-  set last_user(value: LuaPlayer | PlayerIdentification)
+  get last_user(): LuaPlayer | LuaPlayer | nil
+  set last_user(value: LuaPlayer | PlayerIdentification | nil)
 }
 
 interface ElectricEnergyInterfaceEntity extends BaseEntity {
@@ -11365,8 +11365,8 @@ interface LuaForce {
    * Custom color for this force. If specified, will take priority over other sources of the force color. Writing nil clears custom color. Will return nil if it was not specified or if was set to {0,0,0,0}
    * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.custom_color Online documentation}
    */
-  get custom_color(): Color
-  set custom_color(value: Color | ColorArray)
+  get custom_color(): Color | nil
+  set custom_color(value: Color | ColorArray | nil)
   /**
    * Effective color of this force.
    * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.color Online documentation}
@@ -13292,8 +13292,8 @@ interface BaseGuiElement {
    * The location of this widget when stored in {@link LuaGui#screen LuaGui::screen}. `nil` if not set or not in {@link LuaGui#screen LuaGui::screen}.
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.location Online documentation}
    */
-  get location(): GuiLocation
-  set location(value: GuiLocation | GuiLocationArray)
+  get location(): GuiLocation | nil
+  set location(value: GuiLocation | GuiLocationArray | nil)
   /**
    * Whether this GUI element is enabled. Disabled GUI elements don't trigger events when clicked.
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.enabled Online documentation}
@@ -16336,16 +16336,16 @@ interface LuaItemStack {
    * _Can only be used if this is BlueprintItem_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_snap_to_grid Online documentation}
    */
-  get blueprint_snap_to_grid(): TilePosition
-  set blueprint_snap_to_grid(value: TilePosition | TilePositionArray)
+  get blueprint_snap_to_grid(): TilePosition | nil
+  set blueprint_snap_to_grid(value: TilePosition | TilePositionArray | nil)
   /**
    * The offset from the absolute grid. `nil` if absolute snapping is not enabled.
    *
    * _Can only be used if this is BlueprintItem_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_position_relative_to_grid Online documentation}
    */
-  get blueprint_position_relative_to_grid(): TilePosition
-  set blueprint_position_relative_to_grid(value: TilePosition | TilePositionArray)
+  get blueprint_position_relative_to_grid(): TilePosition | nil
+  set blueprint_position_relative_to_grid(value: TilePosition | TilePositionArray | nil)
   /**
    * If absolute snapping is enabled on this blueprint item.
    *
@@ -16366,8 +16366,8 @@ interface LuaItemStack {
    * _Can only be used if this is ItemWithLabel_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.label_color Online documentation}
    */
-  get label_color(): Color
-  set label_color(value: Color | ColorArray)
+  get label_color(): Color | nil
+  set label_color(value: Color | ColorArray | nil)
   /**
    * Whether the label for this item can be manually changed. When false the label can only be changed through the API.
    *
@@ -17021,16 +17021,16 @@ interface BlueprintItemStack extends BaseItemStack {
    * _Can only be used if this is BlueprintItem_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_snap_to_grid Online documentation}
    */
-  get blueprint_snap_to_grid(): TilePosition
-  set blueprint_snap_to_grid(value: TilePosition | TilePositionArray)
+  get blueprint_snap_to_grid(): TilePosition | nil
+  set blueprint_snap_to_grid(value: TilePosition | TilePositionArray | nil)
   /**
    * The offset from the absolute grid. `nil` if absolute snapping is not enabled.
    *
    * _Can only be used if this is BlueprintItem_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.blueprint_position_relative_to_grid Online documentation}
    */
-  get blueprint_position_relative_to_grid(): TilePosition
-  set blueprint_position_relative_to_grid(value: TilePosition | TilePositionArray)
+  get blueprint_position_relative_to_grid(): TilePosition | nil
+  set blueprint_position_relative_to_grid(value: TilePosition | TilePositionArray | nil)
   /**
    * If absolute snapping is enabled on this blueprint item.
    *
@@ -17291,8 +17291,8 @@ interface ItemWithLabelItemStack extends BaseItemStack {
    * _Can only be used if this is ItemWithLabel_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.label_color Online documentation}
    */
-  get label_color(): Color
-  set label_color(value: Color | ColorArray)
+  get label_color(): Color | nil
+  set label_color(value: Color | ColorArray | nil)
   /**
    * Whether the label for this item can be manually changed. When false the label can only be changed through the API.
    *
@@ -23901,8 +23901,8 @@ interface LuaTrain {
    * @remarks The schedule can't be changed by modifying the returned table. Instead, changes must be made by assigning a new table to this attribute.
    * @see {@link https://lua-api.factorio.com/latest/LuaTrain.html#LuaTrain.schedule Online documentation}
    */
-  get schedule(): TrainSchedule
-  set schedule(value: TrainScheduleWrite)
+  get schedule(): TrainSchedule | nil
+  set schedule(value: TrainScheduleWrite | nil)
   /**
    * This train's current state.
    * @see {@link https://lua-api.factorio.com/latest/LuaTrain.html#LuaTrain.state Online documentation}
