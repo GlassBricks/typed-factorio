@@ -7,16 +7,6 @@ export class StatementsList {
 
   constructor(private context: GenerationContext, private fileName: string) {}
 
-  addAfter(first: ts.Statement, next: ts.Statement) {
-    const name = StatementsList.getName(first)
-    if (!name) throw new Error("First object statement does not have name to add after")
-
-    if (!this.context.addAfter.has(name)) {
-      this.context.addAfter.set(name, [])
-    }
-    this.context.addAfter.get(name)!.push(next)
-  }
-
   add(statement: ts.Statement): this {
     const name = StatementsList.getName(statement)
     if (name) {

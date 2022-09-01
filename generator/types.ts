@@ -415,7 +415,7 @@ function makeFlagsType(
       const rwType = mapTypeInternal(context, o, undefined, usage)
       const node = ts.factory.createMappedTypeNode(
         Modifiers.readonly,
-        ts.factory.createTypeParameterDeclaration("T", rwType.mainType),
+        ts.factory.createTypeParameterDeclaration(undefined, "T", rwType.mainType),
         undefined,
         Tokens.question,
         Types.booleanLiteral(true),

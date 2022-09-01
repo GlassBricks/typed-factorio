@@ -10,6 +10,7 @@ export interface BaseDef {
   readonly name: string
 }
 
+// noinspection JSUnusedGlobalSymbols
 export enum AnnotationKind {
   AddTo = "addTo",
   AddBefore = "addBefore",
