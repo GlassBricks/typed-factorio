@@ -1,12 +1,9 @@
 {
   "name": "typed-factorio",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "Featureful typescript definitions for the the Factorio modding lua api.",
   "keywords": [
-    "factorio",
-    "types",
-    "typescript-to-lua",
-    "tstl"
+    "factorio", "types", "typescript-to-lua", "tstl"
   ],
   "repository": "https://github.com/GlassBricks/typed-factorio",
   "license": "MIT",
