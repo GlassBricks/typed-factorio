@@ -1,11 +1,11 @@
 import ts from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
-import { addJsDoc } from "../documentation"
-import GenerationContext from "../GenerationContext"
-import { createExtendsClause, toPascalCase } from "../genUtil"
-import { mapParameterToProperty } from "../members"
-import { analyzeType, RWUsage } from "../read-write-types"
-import { sortByOrder } from "../util"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
+import { addJsDoc } from "../documentation.js"
+import GenerationContext from "../GenerationContext.js"
+import { createExtendsClause, toPascalCase } from "../genUtil.js"
+import { mapParameterToProperty } from "../members.js"
+import { analyzeType, RWUsage } from "../read-write-types.js"
+import { sortByOrder } from "../util.js"
 
 export function preprocessEvents(context: GenerationContext) {
   for (const event of context.apiDocs.events) {
@@ -23,7 +23,6 @@ export function generateEvents(context: GenerationContext): DefinitionsFile {
     const name = getMappedEventName(event.name)
     const existing = context.getInterfaceDef(name)
     const declaration = ts.factory.createInterfaceDeclaration(
-      undefined,
       undefined,
       name,
       undefined,

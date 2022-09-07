@@ -1,9 +1,9 @@
 import ts from "typescript"
-import { EventRaised, WithNotes } from "./FactorioApiJson"
-import { getMappedEventName } from "./files/events"
-import GenerationContext from "./GenerationContext"
-import { addFakeJSDoc } from "./genUtil"
-import { sortByOrder } from "./util"
+import { EventRaised, WithNotes } from "./FactorioApiJson.js"
+import { getMappedEventName } from "./files/events.js"
+import GenerationContext from "./GenerationContext.js"
+import { addFakeJSDoc } from "./genUtil.js"
+import { sortByOrder } from "./util.js"
 
 const docUrlBase = "https://lua-api.factorio.com/latest/"
 const hardCodedLinks: Record<string, string> = {

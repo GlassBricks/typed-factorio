@@ -1,6 +1,6 @@
 import assert from "assert"
 import ts, { TypeNode } from "typescript"
-import { addJsDoc } from "./documentation"
+import { addJsDoc } from "./documentation.js"
 import {
   ArrayComplexType,
   DictionaryComplexType,
@@ -12,14 +12,14 @@ import {
   Type,
   TypeComplexType,
   UnionComplexType,
-} from "./FactorioApiJson"
-import { IndexTypes } from "./files/index-types"
-import GenerationContext from "./GenerationContext"
-import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil"
-import { InterfaceDef, TypeAliasDef } from "./manualDefinitions"
-import { mapAttribute, mapParameterToProperty } from "./members"
-import { RWUsage } from "./read-write-types"
-import { assertNever, sortByOrder } from "./util"
+} from "./FactorioApiJson.js"
+import { IndexTypes } from "./files/index-types.js"
+import GenerationContext from "./GenerationContext.js"
+import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
+import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
+import { mapAttribute, mapParameterToProperty } from "./members.js"
+import { RWUsage } from "./read-write-types.js"
+import { assertNever, sortByOrder } from "./util.js"
 
 export interface TypeContext {
   contextName: string
@@ -479,7 +479,6 @@ function mapFunctionType(context: GenerationContext, type: FunctionComplexType):
     const paramType = mapTypeInternal(context, value, undefined, RWUsage.Read)
     if (paramType.description) context.warning("Function type has parameter with description: " + JSON.stringify(type))
     return ts.factory.createParameterDeclaration(
-      undefined,
       undefined,
       undefined,
       ts.factory.createIdentifier(`arg${index + 1}`),

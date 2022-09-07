@@ -1,8 +1,8 @@
 import chalk from "chalk"
 import ts from "typescript"
-import { Class, Concept, Define, Event, FactorioApiJson } from "./FactorioApiJson"
-import { InterfaceDef, NamespaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions"
-import { RWUsage } from "./read-write-types"
+import { Class, Concept, Define, Event, FactorioApiJson } from "./FactorioApiJson.js"
+import { InterfaceDef, NamespaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions.js"
+import { RWUsage } from "./read-write-types.js"
 
 export default class GenerationContext {
   public readonly _manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)

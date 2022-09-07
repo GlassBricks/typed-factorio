@@ -1,15 +1,15 @@
 import assert from "assert"
 import ts from "typescript"
-import { StatementsList } from "./DefinitionsFile"
-import { addJsDoc, processDescription } from "./documentation"
-import { Attribute, Method, Parameter } from "./FactorioApiJson"
-import GenerationContext from "./GenerationContext"
-import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil"
-import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions"
-import { analyzeType, getUsage, RWUsage } from "./read-write-types"
-import { makeNullable, mapMemberType, mapType, RWType } from "./types"
-import { getFirst, sortByOrder } from "./util"
-import { createVariantParameterTypes } from "./variantParameterGroups"
+import { StatementsList } from "./DefinitionsFile.js"
+import { addJsDoc, processDescription } from "./documentation.js"
+import { Attribute, Method, Parameter } from "./FactorioApiJson.js"
+import GenerationContext from "./GenerationContext.js"
+import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil.js"
+import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
+import { analyzeType, getUsage, RWUsage } from "./read-write-types.js"
+import { makeNullable, mapMemberType, mapType, RWType } from "./types.js"
+import { getFirst, sortByOrder } from "./util.js"
+import { createVariantParameterTypes } from "./variantParameterGroups.js"
 
 export function analyzeMethod(context: GenerationContext, method: Method) {
   for (const parameter of method.parameters) {
@@ -42,11 +42,9 @@ export function mapAttribute(
   } else if (!attribute.read) {
     member = ts.factory.createSetAccessorDeclaration(
       undefined,
-      undefined,
       attribute.name,
       [
         ts.factory.createParameterDeclaration(
-          undefined,
           undefined,
           undefined,
           "value",
@@ -62,22 +60,11 @@ export function mapAttribute(
     const mainType = attribute.optional ? makeNullable(type.mainType) : type.mainType
     const altWriteType = attribute.optional ? makeNullable(type.altWriteType) : type.altWriteType
     member = [
-      ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], mainType, undefined),
+      ts.factory.createGetAccessorDeclaration(undefined, attribute.name, [], mainType, undefined),
       ts.factory.createSetAccessorDeclaration(
         undefined,
-        undefined,
         attribute.name,
-        [
-          ts.factory.createParameterDeclaration(
-            undefined,
-            undefined,
-            undefined,
-            "value",
-            undefined,
-            altWriteType,
-            undefined
-          ),
-        ],
+        [ts.factory.createParameterDeclaration(undefined, undefined, "value", undefined, altWriteType, undefined)],
         undefined
       ),
     ]
@@ -122,7 +109,6 @@ function mergeAttributeWithExisting(
       if (ts.isGetAccessorDeclaration(element)) {
         if (!attribute.read) context.warning(`Read accessor for non-readable attribute: ${parent}.${attribute.name}`)
         const newMember = ts.factory.createGetAccessorDeclaration(
-          element.decorators,
           element.modifiers,
           element.name,
           element.parameters,
@@ -134,7 +120,6 @@ function mergeAttributeWithExisting(
       } else if (ts.isSetAccessorDeclaration(element)) {
         if (!attribute.write) context.warning(`Write accessor for non-writable attribute: ${parent}.${attribute.name}`)
         const newMember = ts.factory.createSetAccessorDeclaration(
-          element.decorators,
           element.modifiers,
           element.name,
           element.parameters,
@@ -160,22 +145,11 @@ function mergeAttributeWithExisting(
       )
     }
     return [
-      ts.factory.createGetAccessorDeclaration(undefined, undefined, attribute.name, [], type.mainType, undefined),
+      ts.factory.createGetAccessorDeclaration(undefined, attribute.name, [], type.mainType, undefined),
       ts.factory.createSetAccessorDeclaration(
         undefined,
-        undefined,
         attribute.name,
-        [
-          ts.factory.createParameterDeclaration(
-            undefined,
-            undefined,
-            undefined,
-            "value",
-            undefined,
-            type.altWriteType,
-            undefined
-          ),
-        ],
+        [ts.factory.createParameterDeclaration(undefined, undefined, "value", undefined, type.altWriteType)],
         undefined
       ),
     ]
@@ -246,7 +220,6 @@ export function mapMethod(
       ts.factory.createParameterDeclaration(
         undefined,
         undefined,
-        undefined,
         "params",
         method.table_is_optional ? Tokens.question : undefined,
         type
@@ -291,7 +264,6 @@ export function mapFunction(context: GenerationContext, method: Method): ts.Func
   const parameters = getParameters(context, method, method.name)
   const returnType = getReturnType(context, method)
   const func = ts.factory.createFunctionDeclaration(
-    undefined,
     [Modifiers.declare],
     undefined,
     method.name,
@@ -316,7 +288,6 @@ function getParameters(context: GenerationContext, method: Method, thisPath: str
       ts.factory.createParameterDeclaration(
         undefined,
         undefined,
-        undefined,
         "params",
         method.table_is_optional ? Tokens.question : undefined,
         type
@@ -335,9 +306,7 @@ function getParameters(context: GenerationContext, method: Method, thisPath: str
       thisPath,
       RWUsage.Write
     ).mainType
-    parameters.push(
-      ts.factory.createParameterDeclaration(undefined, undefined, Tokens.dotDotDot, "args", undefined, type)
-    )
+    parameters.push(ts.factory.createParameterDeclaration(undefined, Tokens.dotDotDot, "args", undefined, type))
   }
   return parameters
 }
@@ -404,7 +373,6 @@ function mapParameterToParameter(
 ): ts.ParameterDeclaration {
   const type = mapMemberType(context, parameter, parent, parameter.type, RWUsage.Write).mainType
   return ts.factory.createParameterDeclaration(
-    undefined,
     undefined,
     undefined,
     escapeParameterName(parameter.name),

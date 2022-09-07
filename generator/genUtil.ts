@@ -65,7 +65,6 @@ export function createNamespace(
   statements: ts.Statement[]
 ): ts.ModuleDeclaration {
   return ts.factory.createModuleDeclaration(
-    undefined,
     modifiers,
     ts.factory.createIdentifier(name),
     ts.factory.createModuleBlock(statements),

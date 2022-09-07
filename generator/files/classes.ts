@@ -1,14 +1,14 @@
 import ts from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
-import { addJsDoc } from "../documentation"
-import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioApiJson"
-import GenerationContext from "../GenerationContext"
-import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil"
-import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions"
-import { analyzeMethod, mapAttribute, mapMethod } from "../members"
-import { analyzeType, RWUsage } from "../read-write-types"
-import { mapType } from "../types"
-import { assertNever, sortByOrder } from "../util"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
+import { addJsDoc } from "../documentation.js"
+import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioApiJson.js"
+import GenerationContext from "../GenerationContext.js"
+import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil.js"
+import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
+import { analyzeMethod, mapAttribute, mapMethod } from "../members.js"
+import { mapType } from "../types.js"
+import { assertNever, sortByOrder } from "../util.js"
+import { analyzeType, RWUsage } from "../read-write-types.js"
 
 export function preprocessClasses(context: GenerationContext) {
   for (const clazz of context.apiDocs.classes) {
@@ -116,19 +116,8 @@ function generateClass(
       const indexSignature = addJsDoc(
         context,
         ts.factory.createIndexSignature(
-          undefined,
           arrayType.readonly ? [Modifiers.readonly] : undefined,
-          [
-            ts.factory.createParameterDeclaration(
-              undefined,
-              undefined,
-              undefined,
-              "index",
-              undefined,
-              Types.number,
-              undefined
-            ),
-          ],
+          [ts.factory.createParameterDeclaration(undefined, undefined, "index", undefined, Types.number, undefined)],
           arrayType.type
         ),
         indexOperator,
@@ -148,7 +137,6 @@ function generateClass(
     if (ts.isMappedTypeNode(existingIndexOp)) {
       return ts.factory.createTypeAliasDeclaration(
         undefined,
-        undefined,
         shortName + "Indexer",
         existing.node.typeParameters,
         addJsDoc(context, existingIndexOp, indexOperator, clazz.name + ".operator%20[]", undefined)
@@ -162,7 +150,7 @@ function generateClass(
         clazz.name + ".operator%20[]",
         undefined
       )
-      return ts.factory.createInterfaceDeclaration(undefined, undefined, shortName + "Indexer", undefined, undefined, [
+      return ts.factory.createInterfaceDeclaration(undefined, shortName + "Indexer", undefined, undefined, [
         indexSignature,
       ])
     }
@@ -414,7 +402,6 @@ function generateClass(
 
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
       undefined,
-      undefined,
       indexTypeName ? name + "Members" : name,
       indexTypeName ? undefined : existing?.node.typeParameters,
       baseSupertypes.length !== 0
@@ -441,7 +428,6 @@ function generateClass(
       addNoSelfAnnotationOnly(baseDeclaration)
       const typeArguments = existing?.node.typeParameters?.map((p) => ts.factory.createTypeReferenceNode(p.name))
       const declaration = ts.factory.createTypeAliasDeclaration(
-        undefined,
         undefined,
         name,
         existing?.node.typeParameters,
@@ -486,7 +472,6 @@ function generateClass(
       // union
       const unionDeclaration = ts.factory.createTypeAliasDeclaration(
         undefined,
-        undefined,
         indexTypeName ? shortName + "Members" : clazz.name,
         undefined,
         ts.factory.createUnionTypeNode(allSubclassTypes.map((x) => ts.factory.createTypeReferenceNode(x)))
@@ -514,7 +499,6 @@ function generateClass(
 
     if (indexTypeName) {
       const declaration = ts.factory.createTypeAliasDeclaration(
-        undefined,
         undefined,
         clazz.name,
         existing?.node.typeParameters,

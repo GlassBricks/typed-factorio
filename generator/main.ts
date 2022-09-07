@@ -1,11 +1,14 @@
-import * as fs from "fs"
-import * as prettier from "prettier"
-import * as path from "path"
-import ts from "typescript"
 import * as console from "console"
-import { FactorioApiJson } from "./FactorioApiJson"
-import { generateDefinitions } from "./generate"
+import * as fs from "fs"
+import * as path from "path"
+import * as prettier from "prettier"
+import ts from "typescript"
+import { FactorioApiJson } from "./FactorioApiJson.js"
+import { generateDefinitions } from "./generate.js"
+import { fileURLToPath } from "url"
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const srcDir = path.resolve(__dirname, "../generatorSrc")
 
 const srcFiles = fs.readdirSync(srcDir)

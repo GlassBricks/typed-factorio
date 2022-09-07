@@ -1,6 +1,6 @@
 import ts from "typescript"
-import GenerationContext from "./GenerationContext"
-import { createComment } from "./genUtil"
+import GenerationContext from "./GenerationContext.js"
+import { createComment } from "./genUtil.js"
 
 export class StatementsList {
   private statements: ts.Statement[] = [createComment("* @noSelfInFile ", true)]

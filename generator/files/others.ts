@@ -1,19 +1,19 @@
-import { SyntaxKind } from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
-import { addJsDoc } from "../documentation"
-import GenerationContext from "../GenerationContext"
-import { createConst, Modifiers } from "../genUtil"
-import { analyzeMethod, mapFunction } from "../members"
-import { analyzeType, RWUsage } from "../read-write-types"
-import { mapType } from "../types"
-import { sortByOrder } from "../util"
+import ts from "typescript"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
+import { addJsDoc } from "../documentation.js"
+import GenerationContext from "../GenerationContext.js"
+import { createConst, Modifiers } from "../genUtil.js"
+import { analyzeMethod, mapFunction } from "../members.js"
+import { analyzeType, RWUsage } from "../read-write-types.js"
+import { mapType } from "../types.js"
+import { sortByOrder } from "../util.js"
 
 export function preprocessBuiltins(context: GenerationContext) {
   for (const builtin of context.apiDocs.builtin_types) {
     if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
     context.typeNames[builtin.name] = builtin.name
     const existing = context.getInterfaceDef(builtin.name)
-    if (existing?.kind === "type" && existing.node.type.kind === SyntaxKind.NumberKeyword)
+    if (existing?.kind === "type" && existing.node.type.kind === ts.SyntaxKind.NumberKeyword)
       context.numericTypes.add(builtin.name)
   }
 }

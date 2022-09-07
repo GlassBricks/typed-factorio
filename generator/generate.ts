@@ -1,13 +1,13 @@
 import * as fs from "fs"
 import * as path from "path"
 import ts from "typescript"
-import { DefinitionsFile } from "./DefinitionsFile"
-import { FactorioApiJson } from "./FactorioApiJson"
-import { generateClasses, preprocessClasses } from "./files/classes"
-import { generateConcepts, preprocessConcepts } from "./files/concepts"
-import { generateDefines, preprocessDefines } from "./files/defines"
-import { generateEvents, preprocessEvents } from "./files/events"
-import { generateIndexTypesFile, preprocessIndexTypes } from "./files/index-types"
+import { DefinitionsFile } from "./DefinitionsFile.js"
+import { FactorioApiJson } from "./FactorioApiJson.js"
+import { generateClasses, preprocessClasses } from "./files/classes.js"
+import { generateConcepts, preprocessConcepts } from "./files/concepts.js"
+import { generateDefines, preprocessDefines } from "./files/defines.js"
+import { generateEvents, preprocessEvents } from "./files/events.js"
+import { generateIndexTypesFile, preprocessIndexTypes } from "./files/index-types.js"
 import {
   generateBuiltins,
   generateGlobalFunctions,
@@ -15,10 +15,14 @@ import {
   preprocessBuiltins,
   preprocessGlobalFunctions,
   preprocessGlobalObjects,
-} from "./files/others"
-import GenerationContext from "./GenerationContext"
-import { printer } from "./genUtil"
-import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions"
+} from "./files/others.js"
+import GenerationContext from "./GenerationContext.js"
+import { printer } from "./genUtil.js"
+import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions.js"
+import { fileURLToPath } from "url"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const header = "// This is an auto-generated file. Do not edit directly!\n\n"
 export function generateDefinitions(

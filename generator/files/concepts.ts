@@ -1,14 +1,19 @@
 import assert from "assert"
 import ts from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
-import { addJsDoc, createSeeTag } from "../documentation"
-import { Concept, TableComplexType } from "../FactorioApiJson"
-import GenerationContext from "../GenerationContext"
-import { addFakeJSDoc } from "../genUtil"
-import { finalizeConceptUsageAnalysis, recordConceptDependencies, RWUsage, setReadWriteType } from "../read-write-types"
-import { mapConceptType, mapType } from "../types"
-import { sortByOrder } from "../util"
-import { createVariantParameterTypes } from "../variantParameterGroups"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
+import { addJsDoc, createSeeTag } from "../documentation.js"
+import { Concept, TableComplexType } from "../FactorioApiJson.js"
+import GenerationContext from "../GenerationContext.js"
+import { addFakeJSDoc } from "../genUtil.js"
+import {
+  finalizeConceptUsageAnalysis,
+  recordConceptDependencies,
+  RWUsage,
+  setReadWriteType,
+} from "../read-write-types.js"
+import { mapConceptType, mapType } from "../types.js"
+import { sortByOrder } from "../util.js"
+import { createVariantParameterTypes } from "../variantParameterGroups.js"
 
 const tableOrArrayConcepts = new Map<Concept, { table: TableComplexType; array: TableComplexType }>()
 /**
@@ -174,7 +179,6 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
 
     const deprecatedReadResult = ts.factory.createTypeAliasDeclaration(
       undefined,
-      undefined,
       concept.name + "Read",
       undefined,
       ts.factory.createTypeReferenceNode(concept.name)
@@ -190,9 +194,9 @@ function getWriteDescription(concept: Concept): string {
 
 function typeToDeclaration(type: ts.TypeNode, name: string): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
   if (ts.isTypeLiteralNode(type)) {
-    return ts.factory.createInterfaceDeclaration(undefined, undefined, name, undefined, undefined, type.members)
+    return ts.factory.createInterfaceDeclaration(undefined, name, undefined, undefined, type.members)
   } else {
-    return ts.factory.createTypeAliasDeclaration(undefined, undefined, name, undefined, type)
+    return ts.factory.createTypeAliasDeclaration(undefined, name, undefined, type)
   }
 }
 
@@ -221,7 +225,6 @@ function createTableOrArrayConcept(
 
   const conceptInterface = ts.factory.createInterfaceDeclaration(
     undefined,
-    undefined,
     name,
     undefined,
     undefined,
@@ -230,13 +233,12 @@ function createTableOrArrayConcept(
   addJsDoc(context, conceptInterface, concept, concept.name, [createSeeTag(arrayName)])
   statements.add(conceptInterface)
 
-  const conceptArray = ts.factory.createTypeAliasDeclaration(undefined, undefined, arrayName, undefined, arrayForm)
+  const conceptArray = ts.factory.createTypeAliasDeclaration(undefined, arrayName, undefined, arrayForm)
   const arrayDescription = `Array form of {@link ${concept.name}}.`
   addJsDoc(context, conceptArray, { description: arrayDescription }, name, [createSeeTag(name)])
   statements.add(conceptArray)
 
   const conceptTable = ts.factory.createTypeAliasDeclaration(
-    undefined,
     undefined,
     name + "Table",
     undefined,

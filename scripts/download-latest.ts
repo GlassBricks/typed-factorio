@@ -2,8 +2,12 @@ import child_process from "child_process"
 import * as fs from "fs"
 import * as https from "https"
 import * as path from "path"
+import { fileURLToPath } from "url"
 
 const url = "https://lua-api.factorio.com/latest/runtime-api.json"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 const destinationFolder = path.resolve(__dirname, "../generatorSrc")
 const destination = path.join(destinationFolder, "downloaded-runtime-api.json")

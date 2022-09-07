@@ -1,4 +1,4 @@
-import { tstl } from "./util"
+import { tstl } from "./util.js"
 
 describe("on_event", () => {
   test("set handler", () => {

@@ -1,8 +1,8 @@
 import ts from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
-import { addJsDoc } from "../documentation"
-import GenerationContext from "../GenerationContext"
-import { decapitalize, Types } from "../genUtil"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
+import { addJsDoc } from "../documentation.js"
+import GenerationContext from "../GenerationContext.js"
+import { decapitalize, Types } from "../genUtil.js"
 
 export interface IndexType {
   name: string
@@ -75,7 +75,7 @@ export function generateIndexTypesFile(context: GenerationContext): DefinitionsF
       ts.factory.createTypeReferenceNode(indexType.typeOverride ?? "uint"),
       ts.factory.createTypeReferenceNode("IndexBrand", typeArguments),
     ])
-    const statement = ts.factory.createTypeAliasDeclaration(undefined, undefined, indexType.name, undefined, typeNode)
+    const statement = ts.factory.createTypeAliasDeclaration(undefined, indexType.name, undefined, typeNode)
     const { parent, name } = indexType.mainAttributePath
     const description = `See [${parent}.${name}](${parent}::${name}).\n\nIf using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. \`1 as ${indexType.name}\`.`
     addJsDoc(context, statement, { description }, undefined, undefined)

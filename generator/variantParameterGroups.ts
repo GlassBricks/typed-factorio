@@ -1,13 +1,13 @@
 import assert from "assert"
 import ts from "typescript"
-import { StatementsList } from "./DefinitionsFile"
-import { addJsDoc, processDescription } from "./documentation"
-import { Parameter, ParameterGroup, WithVariantParameterGroups } from "./FactorioApiJson"
-import GenerationContext from "./GenerationContext"
-import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil"
-import { mapParameterToProperty } from "./members"
-import { RWUsage } from "./read-write-types"
-import { sortByOrder } from "./util"
+import { StatementsList } from "./DefinitionsFile.js"
+import { addJsDoc, processDescription } from "./documentation.js"
+import { Parameter, ParameterGroup, WithVariantParameterGroups } from "./FactorioApiJson.js"
+import GenerationContext from "./GenerationContext.js"
+import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil.js"
+import { mapParameterToProperty } from "./members.js"
+import { RWUsage } from "./read-write-types.js"
+import { sortByOrder } from "./util.js"
 
 export function createVariantParameterTypes(
   context: GenerationContext,
@@ -38,7 +38,6 @@ export function createVariantParameterTypes(
   {
     assert(!baseProperties.some((p) => p.member.altWriteProperty)) // not supported for now
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
-      undefined,
       undefined,
       baseName,
       undefined,
@@ -100,7 +99,6 @@ export function createVariantParameterTypes(
       declarations.push(
         ts.factory.createInterfaceDeclaration(
           undefined,
-          undefined,
           typeName,
           undefined,
           createExtendsClause(baseName),
@@ -114,7 +112,6 @@ export function createVariantParameterTypes(
         if (discriminantMember) writeMembers.unshift(discriminantMember)
         declarations.push(
           ts.factory.createInterfaceDeclaration(
-            undefined,
             undefined,
             typeName + "Write",
             undefined,
@@ -140,7 +137,6 @@ export function createVariantParameterTypes(
   const resultDeclarations: ts.TypeAliasDeclaration[] = []
   const unionDeclaration: ts.TypeAliasDeclaration = ts.factory.createTypeAliasDeclaration(
     undefined,
-    undefined,
     name,
     undefined,
     ts.factory.createUnionTypeNode(
@@ -154,7 +150,6 @@ export function createVariantParameterTypes(
   let writeUnionDeclaration: ts.TypeAliasDeclaration | undefined
   if (hasSeparateWrite) {
     writeUnionDeclaration = ts.factory.createTypeAliasDeclaration(
-      undefined,
       undefined,
       name + "Write",
       undefined,

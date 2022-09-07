@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "strict": true,
-    "target": "es2017",
-    "module": "None",
+    "target": "es2020",
+    "module": "es2020",
     "lib": ["esnext"],
     "skipLibCheck": true,
     "sourceMap": true,

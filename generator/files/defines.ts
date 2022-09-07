@@ -1,12 +1,12 @@
 import ts from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile"
-import { addJsDoc } from "../documentation"
-import { Define } from "../FactorioApiJson"
-import GenerationContext from "../GenerationContext"
-import { createConst, createNamespace, Modifiers, Types } from "../genUtil"
-import { AnyDef } from "../manualDefinitions"
-import { sortByOrder } from "../util"
-import { getMappedEventName } from "./events"
+import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
+import { addJsDoc } from "../documentation.js"
+import { Define } from "../FactorioApiJson.js"
+import GenerationContext from "../GenerationContext.js"
+import { createConst, createNamespace, Modifiers, Types } from "../genUtil.js"
+import { AnyDef } from "../manualDefinitions.js"
+import { sortByOrder } from "../util.js"
+import { getMappedEventName } from "./events.js"
 
 export function preprocessDefines(context: GenerationContext) {
   const addDefine = (define: Define, parent: string) => {
@@ -63,7 +63,6 @@ export function generateDefines(context: GenerationContext): DefinitionsFile {
     const keyofTypeof = ts.factory.createTypeOperatorNode(ts.SyntaxKind.KeyOfKeyword, typeofExp)
     const type = ts.factory.createTypeAliasDeclaration(
       undefined,
-      undefined,
       "events",
       undefined,
       ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof)
@@ -102,7 +101,7 @@ export function generateDefines(context: GenerationContext): DefinitionsFile {
               undefined
             )
           )
-        declarations = [ts.factory.createEnumDeclaration(undefined, modifiers, define.name, members)]
+        declarations = [ts.factory.createEnumDeclaration(modifiers, define.name, members)]
       }
     } else if (define.subkeys) {
       if (existing && existing.kind !== "namespace") {
@@ -116,9 +115,7 @@ export function generateDefines(context: GenerationContext): DefinitionsFile {
       declarations = [createNamespace(modifiers, define.name, subkeys)]
     } else if (!existing) {
       context.warning("Incomplete define for", thisPath)
-      declarations = [
-        ts.factory.createTypeAliasDeclaration(undefined, undefined, define.name, undefined, Types.unknown),
-      ]
+      declarations = [ts.factory.createTypeAliasDeclaration(undefined, define.name, undefined, Types.unknown)]
     } else {
       declarations = [existing.node]
     }
