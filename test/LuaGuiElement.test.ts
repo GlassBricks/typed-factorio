@@ -1,4 +1,4 @@
-import { tstl } from "./util.js"
+import { tstl } from "./util"
 
 test("add returns correct element type", () => {
   tstl`

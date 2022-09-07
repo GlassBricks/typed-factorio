@@ -1,4 +1,4 @@
-import { tstl } from "./util.js"
+import { tstl } from "./util"
 
 test("hello world", () => {
   tstl`
