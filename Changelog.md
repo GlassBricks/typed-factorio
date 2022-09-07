@@ -1,3 +1,7 @@
+# v1.7.4
+
+- Fix advanced types of method returns (nullability, string unions, etc.)
+
 # v1.7.3
 
 - Improve types of "util" lualib module
