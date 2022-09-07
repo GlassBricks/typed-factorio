@@ -286,7 +286,7 @@ interface LuaBootstrap {
    * @remarks Depending on when a given entity is destroyed, {@link OnEntityDestroyedEvent on_entity_destroyed} will either be fired at the end of the current tick or at the end of the next tick.
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.register_on_entity_destroyed Online documentation}
    */
-  register_on_entity_destroyed(entity: LuaEntity): uint64
+  register_on_entity_destroyed(entity: LuaEntity): RegistrationNumber
   /**
    * Generate a new, unique event ID that can be used to raise custom events with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event}.
    * @returns The newly generated event ID.
@@ -1575,7 +1575,10 @@ interface LuaControlBehavior {
    * @returns The circuit network or nil.
    * @see {@link https://lua-api.factorio.com/latest/LuaControlBehavior.html#LuaControlBehavior.get_circuit_network Online documentation}
    */
-  get_circuit_network(wire: defines.wire_type, circuit_connector?: defines.circuit_connector_id): LuaCircuitNetwork
+  get_circuit_network(
+    wire: defines.wire_type,
+    circuit_connector?: defines.circuit_connector_id
+  ): LuaCircuitNetwork | nil
   /**
    * The concrete type of this control behavior.
    * @see {@link https://lua-api.factorio.com/latest/LuaControlBehavior.html#LuaControlBehavior.type Online documentation}
@@ -10506,7 +10509,7 @@ interface LuaFluidBox extends Array<Fluid | nil> {
    * Gets unique fluid system identifier of selected fluid box. May return nil for fluid wagon, fluid turret's internal buffer or a fluidbox which does not belong to a fluid system
    * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.get_fluid_system_id Online documentation}
    */
-  get_fluid_system_id(index: uint): uint
+  get_fluid_system_id(index: uint): uint | nil
   /**
    * Flushes all fluid from this fluidbox and its fluid system.
    * @param fluid If provided, only this fluid is flushed.
@@ -20081,7 +20084,7 @@ interface LuaRendering {
    * Gets the type of the given object. The types are "text", "line", "circle", "rectangle", "arc", "polygon", "sprite", "light" and "animation".
    * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.get_type Online documentation}
    */
-  get_type(id: uint64): string
+  get_type(id: uint64): "text" | "line" | "circle" | "rectangle" | "arc" | "polygon" | "sprite" | "light" | "animation"
   /**
    * Reorder this object so that it is drawn in front of the already existing objects.
    * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.bring_to_front Online documentation}
@@ -22429,7 +22432,7 @@ interface LuaSurface {
      * The force the result will be an enemy of. Uses the player force if not specified.
      */
     readonly force?: ForceIdentification
-  }): LuaEntity
+  }): LuaEntity | nil
   /**
    * Give a command to multiple units. This will automatically select suitable units for the task.
    * @returns Number of units actually sent. May be less than `count` if not enough units were available.

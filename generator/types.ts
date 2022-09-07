@@ -698,9 +698,9 @@ function isNullableFromDescription(
         indent(member.description)
       )
     }
-    return true
+    const exceptionsRegex = /`name` will be `nil`/i
+    return !exceptionsRegex.test(member.description)
   }
-  // todo: better nullability detection
   // if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
   //   console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
   // }

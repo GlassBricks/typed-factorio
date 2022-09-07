@@ -229,7 +229,7 @@ export function mapMethod(
     parameters = getParameters(context, method, thisPath)
   }
 
-  const returnType = getReturnType(context, method)
+  const returnType = getReturnType(context, method, parent)
 
   let signatures: ts.MethodSignature[] | ts.MethodSignature
   if (existingMethods) {
@@ -262,7 +262,7 @@ export function mapMethod(
 
 export function mapFunction(context: GenerationContext, method: Method): ts.FunctionDeclaration {
   const parameters = getParameters(context, method, method.name)
-  const returnType = getReturnType(context, method)
+  const returnType = getReturnType(context, method, "")
   const func = ts.factory.createFunctionDeclaration(
     [Modifiers.declare],
     undefined,
@@ -311,9 +311,19 @@ function getParameters(context: GenerationContext, method: Method, thisPath: str
   return parameters
 }
 
-function getReturnType(context: GenerationContext, method: Method): ts.TypeNode {
+function getReturnType(context: GenerationContext, method: Method, parent: string): ts.TypeNode {
   function mapReturnType(type: Omit<Parameter, "name">): ts.TypeNode {
-    const result = mapType(context, type.type, undefined, RWUsage.Read).mainType
+    const result = mapMemberType(
+      context,
+      {
+        name: method.name,
+        description: method.description + "\n" + type.description,
+        optional: false,
+      },
+      parent,
+      type.type,
+      RWUsage.Read
+    ).mainType
     return type.optional ? makeNullable(result) : result
   }
 
