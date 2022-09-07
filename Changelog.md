@@ -1,3 +1,8 @@
+# v1.7.3
+
+- Improve types of "util" lualib module
+- Made compatible with typescript v4.8
+
 # v1.7.1
 
 - Added proper nullablity to members with different read/write types
