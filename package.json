@@ -20,10 +20,9 @@
   "scripts": {
     "generate": "ts-node --esm -P generator/tsconfig.json generator/main.ts",
     "clean": "rimraf generated",
-    "pretest": "yarn run generate",
     "test": "jest",
     "lint": "eslint .",
-    "check": "yarn run lint && yarn run test",
+    "check": "yarn run lint && yarn run generate && yarn run test",
     "prepublishOnly": "yarn run check",
     "download-latest-runtime-api": "ts-node --esm ./scripts/download-latest.ts",
     "new-version-changelog": "ts-node --esm ./scripts/new-version-changelog.ts",
