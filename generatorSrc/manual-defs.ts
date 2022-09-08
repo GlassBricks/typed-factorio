@@ -392,10 +392,11 @@ interface LuaControl {
       | LuaEquipmentGrid
       | LuaPlayer
       | LuaGuiElement
+      | LuaInventory
       | defines.gui_type
       | nil
   )
-  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | nil
+  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | LuaInventory | nil
 
   teleport(position: MapPosition | MapPositionArray, surface?: SurfaceIdentification): boolean
   teleport(x: number, y?: number): boolean

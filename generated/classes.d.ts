@@ -1276,10 +1276,11 @@ interface LuaControl {
       | LuaEquipmentGrid
       | LuaPlayer
       | LuaGuiElement
+      | LuaInventory
       | defines.gui_type
       | nil
   )
-  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | nil
+  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | LuaInventory | nil
   /**
    * Size of the crafting queue.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.crafting_queue_size Online documentation}
