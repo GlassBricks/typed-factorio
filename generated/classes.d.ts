@@ -7751,7 +7751,14 @@ interface LuaEntityPrototype {
    */
   readonly torso_rotation_speed?: double
   /**
-   * Whether this spider vehicle prototoype automatically cycles weapons.
+   * The torso bob speed of this spider vehicle prototype.
+   *
+   * _Can only be used if this is SpiderVehicle_
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.torso_bob_speed Online documentation}
+   */
+  readonly torso_bob_speed?: double
+  /**
+   * Whether this spider vehicle prototype automatically cycles weapons.
    *
    * _Can only be used if this is SpiderVehicle_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.automatic_weapon_cycling Online documentation}
@@ -8978,7 +8985,14 @@ interface SpiderVehicleEntityPrototype extends BaseEntityPrototype {
    */
   readonly torso_rotation_speed?: double
   /**
-   * Whether this spider vehicle prototoype automatically cycles weapons.
+   * The torso bob speed of this spider vehicle prototype.
+   *
+   * _Can only be used if this is SpiderVehicle_
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.torso_bob_speed Online documentation}
+   */
+  readonly torso_bob_speed?: double
+  /**
+   * Whether this spider vehicle prototype automatically cycles weapons.
    *
    * _Can only be used if this is SpiderVehicle_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.automatic_weapon_cycling Online documentation}

@@ -1,3 +1,7 @@
+# v1.8.0
+
+- Updated to factorio version 1.1.69
+
 # v1.7.4
 
 - Fix advanced types of method returns (nullability, string unions, etc.)
