@@ -1,6 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { fileURLToPath } from "url"
+import child_process from "child_process"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -30,7 +31,7 @@ if (factorioVersion === "0.0.0") {
   throw new Error("No runtime api json found")
 }
 
-const [major, minor] = require("../package.json").version.split(".")
+const [major, minor] = JSON.parse(fs.readFileSync(path.join(__dirname, "../package.json"), "utf8")).version.split(".")
 const nextVersion = `${major}.${Number(minor) + 1}.0`
 
 const sectionHeader = `# v${nextVersion}\n`
@@ -49,3 +50,8 @@ if (changelogContent.includes(noteContent)) {
 
 const newContent = `${sectionHeader}\n${noteContent}\n${changelogContent}`
 fs.writeFileSync(changelogDir, newContent)
+
+child_process.execSync("git add .", { cwd: path.resolve(__dirname, "..") })
+child_process.execSync(`git commit -m "update to factorio version ${factorioVersion}"`, {
+  cwd: path.resolve(__dirname, ".."),
+})

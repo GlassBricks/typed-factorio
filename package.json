@@ -8,9 +8,7 @@
   "repository": "https://github.com/GlassBricks/typed-factorio",
   "license": "MIT",
   "files": [
-    "**/*.d.ts",
-    "*.d.ts",
-    "!generator/**/*"
+    "**/*.d.ts", "*.d.ts", "!generator/**/*"
   ],
   "type": "module",
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
@@ -23,7 +21,7 @@
     "prepublishOnly": "yarn run check",
     "download-latest-runtime-api": "ts-node --esm ./scripts/download-latest.ts",
     "new-version-changelog": "ts-node --esm ./scripts/new-version-changelog.ts",
-    "next-version": "yarn run download-latest-runtime-api && yarn run clean && yarn run check && yarn run new-version-changelog && git add . && yarn version --minor"
+    "next-factorio-version": "yarn run download-latest-runtime-api && yarn run clean && yarn run check && yarn run new-version-changelog && npm version minor"
   },
   "peerDependencies": {
     "lua-types": "^2.13.0",
