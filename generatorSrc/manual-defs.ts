@@ -412,8 +412,13 @@ interface LuaPlayer {
 
 // other
 
+interface Any {}
+
 interface LuaRemote {
   add_interface(name: string, functions: Record<string, (...args: any) => void>): void
+
+  call<T extends (...args: any) => any>(_interface: string, _function: string, ...args: Parameters<T>): ReturnType<T>
+  call(_interface: string, _function: string, ...args: readonly Any[]): Any | nil
 }
 
 // events

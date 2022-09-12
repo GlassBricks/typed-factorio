@@ -19496,6 +19496,7 @@ interface LuaRemote {
    * @param args Arguments to pass to the called function.
    * @see {@link https://lua-api.factorio.com/latest/LuaRemote.html#LuaRemote.call Online documentation}
    */
+  call<T extends (...args: any) => any>(_interface: string, _function: string, ...args: Parameters<T>): ReturnType<T>
   call(_interface: string, _function: string, ...args: readonly Any[]): Any | nil
   /**
    * List of all registered interfaces. For each interface name, `remote.interfaces[name]` is a dictionary mapping the interface's registered functions to the value `true`.
