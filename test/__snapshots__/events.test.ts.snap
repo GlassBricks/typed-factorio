@@ -8,7 +8,7 @@ exports[`on_event set handler 1`] = `
     end
 )
 script.on_event(
-    \\"someInput\\",
+    "someInput",
     function(e)
         log(serpent.block(e))
     end
