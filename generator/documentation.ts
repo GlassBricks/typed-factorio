@@ -30,14 +30,14 @@ function mapLink(context: GenerationContext, origLink: string): { link: string; 
   if (referenceMatch) {
     const { link: clazz } = mapLink(context, referenceMatch[1])
     const field = referenceMatch[2]
-    const operator = field.match(/(?<=operator )(.*)/)?.[1]
+    const operator = field.match(/^(.*)_operator$/)?.[1]
     let fieldRef: string
     if (!operator) {
       fieldRef = "#" + field
-    } else if (operator === "#") {
-      fieldRef = ".length"
+    } else if (operator === "length") {
+      fieldRef = "#length"
     } else if (operator === "[]" || operator === "()") {
-      fieldRef = "" // not supported, at least not until declaration links get standardized
+      fieldRef = "" //; not supported, at least not until declaration links get standardized
     } else {
       throw new Error(`Unknown operator ${operator}`)
     }
@@ -94,7 +94,22 @@ function getDocumentationUrl(context: GenerationContext, reference: string): str
     relative_link = "Libraries.html#2.-new-functions"
   } else if (reference.includes(".")) {
     const className = reference.substring(0, reference.indexOf("."))
-    return getDocumentationUrl(context, className) + "#" + reference
+    const memberName = reference.substring(reference.indexOf(".") + 1)
+    const operatorMatch = memberName.match(/^operator%20(.*)$/)?.[1]
+    let referenceLink: string
+    if (!operatorMatch) {
+      referenceLink = reference
+    } else if (operatorMatch === "#") {
+      referenceLink = className + ".length_operator"
+    } else if (operatorMatch === "[]") {
+      referenceLink = className + ".index_operator"
+    } else if (operatorMatch === "()") {
+      referenceLink = className + ".call_operator"
+    } else {
+      context.warning(`Unknown operator ${operatorMatch}`)
+      referenceLink = reference
+    }
+    return getDocumentationUrl(context, className) + "#" + referenceLink
   } else {
     context.warning("Could not get documentation url:", reference)
     relative_link = ""

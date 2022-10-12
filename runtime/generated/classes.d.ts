@@ -684,7 +684,7 @@ interface LuaBurnerPrototype {
 interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {
   /**
    * Gets the next chunk position if the iterator is not yet done and increments the it.
-   * @see {@link https://lua-api.factorio.com/latest/LuaChunkIterator.html#LuaChunkIterator.operator%20() Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaChunkIterator.html#LuaChunkIterator.call_operator Online documentation}
    */
   (): ChunkPositionAndArea | nil
   /**
@@ -1281,10 +1281,19 @@ interface LuaControl {
       | LuaPlayer
       | LuaGuiElement
       | LuaInventory
+      | LuaTechnology
       | defines.gui_type
       | nil
   )
-  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | LuaInventory | nil
+  get opened():
+    | LuaEntity
+    | LuaEquipment
+    | LuaEquipmentGrid
+    | LuaPlayer
+    | LuaGuiElement
+    | LuaInventory
+    | LuaTechnology
+    | nil
   /**
    * Size of the crafting queue.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.crafting_queue_size Online documentation}
@@ -1737,7 +1746,7 @@ interface LuaCustomInputPrototype {
 type CustomTableIndexer<K extends string | number, V> =
   /**
    * Access an element of this custom table.
-   * @see {@link https://lua-api.factorio.com/latest/LuaCustomTable.html#LuaCustomTable.operator%20[] Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaCustomTable.html#LuaCustomTable.index_operator Online documentation}
    */
   {
     [P in K]: V
@@ -1749,7 +1758,7 @@ type CustomTableIndexer<K extends string | number, V> =
 interface LuaCustomTableMembers {
   /**
    * Number of elements in this table.
-   * @see {@link https://lua-api.factorio.com/latest/LuaCustomTable.html#LuaCustomTable.operator%20# Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaCustomTable.html#LuaCustomTable.length_operator Online documentation}
    */
   readonly length: LuaLengthMethod<uint>
   /**
@@ -10698,14 +10707,14 @@ interface LuaFluidBox extends Array<Fluid | nil> {
   flush(index: uint, fluid?: FluidIdentification): Record<string, float>
   /**
    * Number of fluid boxes.
-   * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.operator%20# Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.length_operator Online documentation}
    */
   readonly length: uint
   /**
-   * Access, set or clear a fluid box. The index must always be in bounds (see {@link LuaFluidBox#length_operator LuaFluidBox::length_operator}). New fluidboxes may not be added or removed using this operator.
+   * Access, set or clear a fluid box. The index must always be in bounds (see {@link LuaFluidBox#length LuaFluidBox::length_operator}). New fluidboxes may not be added or removed using this operator.
    *
    * Is `nil` if the given fluid box does not contain any fluid. Writing `nil` removes all fluid from the fluid box.
-   * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.operator%20[] Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.index_operator Online documentation}
    */
   [index: number]: Fluid | nil
   /**
@@ -13324,7 +13333,7 @@ type GuiSpec =
 interface GuiElementIndexer {
   /**
    * The indexing operator. Gets children by name.
-   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.operator%20[] Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.index_operator Online documentation}
    */
   readonly [name: string]: LuaGuiElement | nil
 }
@@ -14984,7 +14993,7 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
    * ```
    * game.player.print(#game.player.get_main_inventory())
    * ```
-   * @see {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.operator%20# Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.length_operator Online documentation}
    */
   readonly length: uint
   /**
@@ -14994,7 +15003,7 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
    * ```
    * game.player.get_main_inventory()[1]
    * ```
-   * @see {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.operator%20[] Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.index_operator Online documentation}
    */
   readonly [index: number]: LuaItemStack
   /**
@@ -19408,7 +19417,7 @@ interface LuaRandomGenerator {
    * Generates a random number. If no parameters are given a number in the [0, 1) range is returned. If a single parameter is given a floored number in the [1, N] range is returned. If 2 parameters are given a floored number in the [N1, N2] range is returned.
    * @param lower Inclusive lower bound on the result
    * @param upper Inclusive upper bound on the result
-   * @see {@link https://lua-api.factorio.com/latest/LuaRandomGenerator.html#LuaRandomGenerator.operator%20() Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaRandomGenerator.html#LuaRandomGenerator.call_operator Online documentation}
    */
   (lower?: int, upper?: int): double
   /**
@@ -24470,12 +24479,12 @@ interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {
   line_equals(other: LuaTransportLine): boolean
   /**
    * Get the number of items on this transport line.
-   * @see {@link https://lua-api.factorio.com/latest/LuaTransportLine.html#LuaTransportLine.operator%20# Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaTransportLine.html#LuaTransportLine.length_operator Online documentation}
    */
   readonly length: uint
   /**
    * The indexing operator.
-   * @see {@link https://lua-api.factorio.com/latest/LuaTransportLine.html#LuaTransportLine.operator%20[] Online documentation}
+   * @see {@link https://lua-api.factorio.com/latest/LuaTransportLine.html#LuaTransportLine.index_operator Online documentation}
    */
   readonly [index: number]: LuaItemStack
   /**

@@ -382,6 +382,7 @@ interface FrameGuiElement {}
 
 interface LuaEquipment {}
 interface LuaEquipmentGrid {}
+interface LuaTechnology {}
 
 interface LuaControl {
   set opened(
@@ -393,11 +394,19 @@ interface LuaControl {
       | LuaPlayer
       | LuaGuiElement
       | LuaInventory
+      | LuaTechnology
       | defines.gui_type
       | nil
   )
-  get opened(): LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | LuaInventory | nil
-
+  get opened():
+    | LuaEntity
+    | LuaEquipment
+    | LuaEquipmentGrid
+    | LuaPlayer
+    | LuaGuiElement
+    | LuaInventory
+    | LuaTechnology
+    | nil
   teleport(position: MapPosition | MapPositionArray, surface?: SurfaceIdentification): boolean
   teleport(x: number, y?: number): boolean
 }

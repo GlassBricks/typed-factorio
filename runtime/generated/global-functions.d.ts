@@ -27,7 +27,7 @@ declare function localised_print(string: LocalisedString): void
  * end
  * ```
  *
- * Note that `table_size()` does not work correctly for {@link LuaCustomTable}, their size has to be determined with {@link LuaCustomTable#length_operator LuaCustomTable::length_operator} instead.
+ * Note that `table_size()` does not work correctly for {@link LuaCustomTable}, their size has to be determined with {@link LuaCustomTable#length LuaCustomTable::length_operator} instead.
  * @see {@link https://lua-api.factorio.com/latest/Libraries.html#2.-new-functions Online documentation}
  */
 declare function table_size(table: table): uint
