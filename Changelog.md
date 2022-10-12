@@ -1,6 +1,7 @@
 # v1.9.0
 
 - Updated to factorio version 1.1.70
+- Fixed online documentation links for operators
 
 # v1.8.1
 
