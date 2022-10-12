@@ -1,3 +1,7 @@
+# v1.9.0
+
+- Updated to factorio version 1.1.70
+
 # v1.8.1
 
 - Added optional typing for remote interface calls

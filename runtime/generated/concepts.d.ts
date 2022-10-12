@@ -654,7 +654,7 @@ interface PollutionMapSettings {
   /**
    * The amount of pollution eaten by a chunk's tiles as a percentage of 1. Defaults to `1`.
    */
-  readonly aeging: double
+  readonly ageing: double
   /**
    * Any amount of pollution larger than this value is visualized as this value instead. Defaults to `150`.
    */
@@ -3166,11 +3166,11 @@ interface WaitCondition {
    */
   readonly compare_type: "and" | "or"
   /**
-   * Number of ticks to wait or of inactivity. Only present when `type` is `"time"` or `"inactivity"`.
+   * Number of ticks to wait when `type` is `"time"`, or number of ticks of inactivity when `type` is `"inactivity"`.
    */
   readonly ticks?: uint
   /**
-   * Only present when `type` is `"item_count"`, `"circuit"` or `"fluid_count"`.
+   * Only present when `type` is `"item_count"`, `"circuit"` or `"fluid_count"`, and a circuit condition is configured.
    */
   readonly condition?: CircuitCondition
 }
@@ -3199,11 +3199,11 @@ interface WaitConditionWrite {
    */
   readonly compare_type: "and" | "or"
   /**
-   * Number of ticks to wait or of inactivity. Only present when `type` is `"time"` or `"inactivity"`.
+   * Number of ticks to wait when `type` is `"time"`, or number of ticks of inactivity when `type` is `"inactivity"`.
    */
   readonly ticks?: uint
   /**
-   * Only present when `type` is `"item_count"`, `"circuit"` or `"fluid_count"`.
+   * Only present when `type` is `"item_count"`, `"circuit"` or `"fluid_count"`, and a circuit condition is configured.
    */
   readonly condition?: CircuitConditionWrite
 }
@@ -3537,7 +3537,7 @@ interface ModuleEffects {
 }
 
 /**
- * A set of flags. Set flags are in the dictionary as `true`, while unset flags aren't present at all.
+ * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
  *
  * By default, none of these flags are set.
  *
@@ -3675,7 +3675,7 @@ interface EntityPrototypeFlags {
 }
 
 /**
- * A set of flags. Set flags are in the dictionary as `true`, while unset flags aren't present at all.
+ * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
  *
  * By default, none of these flags are set.
  *
@@ -3778,7 +3778,7 @@ type CollisionMaskLayer =
   | `layer-${bigint}`
 
 /**
- * A set of flags. Set flags are in the dictionary as `true`, while unset flags aren't present at all.
+ * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#CollisionMask Online documentation}
  */
 type CollisionMask = {
@@ -4018,87 +4018,198 @@ interface OtherAttackParameters extends BaseAttackParameters {
  */
 type AttackParameters = ProjectileAttackParameters | StreamAttackParameters | OtherAttackParameters
 
-interface CapsuleAction {
+interface BaseCapsuleAction {
   /**
-   * One of `"throw"`, `"equipment-remote"`, `"use-on-self"`.
+   * One of `"throw"`, `"equipment-remote"`, `"use-on-self"`, `"artillery-remote"`, `"destroy-cliffs"`.
    */
-  readonly type: "throw" | "equipment-remote" | "use-on-self"
-  /**
-   * Only present when `type` is `"throw"` or `"use-on-self"`.
-   */
-  readonly attack_parameters?: AttackParameters
-  /**
-   * Only present when `type` is `"equipment-remote"`. It is the equipment prototype name.
-   */
-  readonly equipment?: string
+  readonly type: "throw" | "equipment-remote" | "use-on-self" | "artillery-remote" | "destroy-cliffs"
 }
 
 /**
- * A set of flags. Set flags are in the dictionary as `true`, while unset flags aren't present at all.
+ * `"throw"` variant of {@link CapsuleAction}.
+ */
+interface ThrowCapsuleAction extends BaseCapsuleAction {
+  readonly type: "throw"
+  readonly attack_parameters: AttackParameters
+  /**
+   * Whether using the capsule consumes an item from the stack.
+   */
+  readonly uses_stack: boolean
+}
+
+/**
+ * `"equipment-remote"` variant of {@link CapsuleAction}.
+ */
+interface EquipmentRemoteCapsuleAction extends BaseCapsuleAction {
+  readonly type: "equipment-remote"
+  /**
+   * Name of the {@link LuaEquipmentPrototype}.
+   */
+  readonly equipment: string
+}
+
+/**
+ * `"use-on-self"` variant of {@link CapsuleAction}.
+ */
+interface UseOnSelfCapsuleAction extends BaseCapsuleAction {
+  readonly type: "use-on-self"
+  readonly attack_parameters: AttackParameters
+}
+
+/**
+ * `"artillery-remote"` variant of {@link CapsuleAction}.
+ */
+interface ArtilleryRemoteCapsuleAction extends BaseCapsuleAction {
+  readonly type: "artillery-remote"
+  /**
+   * Name of the {@link LuaEntityPrototype flare prototype}.
+   */
+  readonly flare: string
+}
+
+/**
+ * `"destroy-cliffs"` variant of {@link CapsuleAction}.
+ */
+interface DestroyCliffsCapsuleAction extends BaseCapsuleAction {
+  readonly type: "destroy-cliffs"
+  readonly attack_parameters: AttackParameters
+  readonly radius: float
+  readonly timeout: uint
+}
+
+/**
+ * Other attributes may be specified depending on `type`:
+ * - `"throw"`: {@link ThrowCapsuleAction}
+ * - `"equipment-remote"`: {@link EquipmentRemoteCapsuleAction}
+ * - `"use-on-self"`: {@link UseOnSelfCapsuleAction}
+ * - `"artillery-remote"`: {@link ArtilleryRemoteCapsuleAction}
+ * - `"destroy-cliffs"`: {@link DestroyCliffsCapsuleAction}
+ * @see {@link https://lua-api.factorio.com/latest/Concepts.html#CapsuleAction Online documentation}
+ */
+type CapsuleAction =
+  | ThrowCapsuleAction
+  | EquipmentRemoteCapsuleAction
+  | UseOnSelfCapsuleAction
+  | ArtilleryRemoteCapsuleAction
+  | DestroyCliffsCapsuleAction
+
+/**
+ * A set of flags on a selection tool that define how entities and tiles are selected. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
  *
  * **Options:**
- * - `"blueprint"`: Entities that can be selected for blueprint.
- * - `"deconstruct"`: Entities that can be marked for deconstruction.
- * - `"cancel-deconstruct"`: Entities that can be marked for deconstruction cancelling.
- * - `"item"`
- * - `"trees"`
- * - `"buildable-type"`: Buildable entities.
- * - `"nothing"`: Only select an area.
- * - `"items-to-place"`: Entities that can be placed using an item.
- * - `"any-entity"`
- * - `"any-tile"`
- * - `"same-force"`: Entities with the same force as the selector.
- * - `"not-same-force"`
- * - `"friend"`
- * - `"enemy"`
- * - `"upgrade"`
- * - `"cancel-upgrade"`
- * - `"entity-with-health"`
- * - `"entity-with-force"`
- * - `"entity-with-owner"`
+ * - `"blueprint"`: Selects entities and tiles as if selecting them for a blueprint.
+ * - `"deconstruct"`: Selects entities and tiles as if selecting them for deconstruction.
+ * - `"cancel-deconstruct"`: Selects entities and tiles as if selecting them for deconstruction cancellation.
+ * - `"items"`: Selects items on the ground.
+ * - `"trees"`: Selects trees.
+ * - `"buildable-type"`: Selects entities which are considered a {@link LuaEntityPrototype#is_building building}, plus landmines.
+ * - `"nothing"`: Selects no entities or tiles, but is useful to select an area.
+ * - `"items-to-place"`: Selects entities and tiles that can be {@link LuaItemPrototype#place_result built by an item}.
+ * - `"any-entity"`: Selects all entities.
+ * - `"any-tile"`: Selects all tiles.
+ * - `"same-force"`: Selects entities with the same force as the selecting player.
+ * - `"not-same-force"`: Selects entities with a different force as the selecting player.
+ * - `"friend"`: Selects entities from a {@link LuaForce#is_friend friendly} force.
+ * - `"enemy"`: Selects entities from an {@link LuaForce#is_enemy enemy} force.
+ * - `"upgrade"`: Selects entities as if selecting them for upgrading.
+ * - `"cancel-upgrade"`: Selects entities as if selecting them for upgrade cancellation.
+ * - `"downgrade"`: Selects entities as if selecting them for downgrading.
+ * - `"entity-with-health"`: Selects entities that are {@link LuaEntity#is_entity_with_health entities with health}.
+ * - `"entity-with-force"`: Deprecated. Replaced by `is-military-target`.
+ * - `"is-military-target"`: Selects entities that are {@link LuaEntity#is_military_target military targets}.
+ * - `"entity-with-owner"`: Selects entities that are {@link LuaEntity#is_entity_with_owner entities with owner}.
+ * - `"avoid-rolling-stock"`: Selects entities that are not `rolling-stocks`.
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#SelectionModeFlags Online documentation}
  */
 interface SelectionModeFlags {
   /**
-   * Entities that can be selected for blueprint.
+   * Selects entities and tiles as if selecting them for a blueprint.
    */
   readonly blueprint?: true
   /**
-   * Entities that can be marked for deconstruction.
+   * Selects entities and tiles as if selecting them for deconstruction.
    */
   readonly deconstruct?: true
   /**
-   * Entities that can be marked for deconstruction cancelling.
+   * Selects entities and tiles as if selecting them for deconstruction cancellation.
    */
   readonly "cancel-deconstruct"?: true
-  readonly item?: true
+  /**
+   * Selects items on the ground.
+   */
+  readonly items?: true
+  /**
+   * Selects trees.
+   */
   readonly trees?: true
   /**
-   * Buildable entities.
+   * Selects entities which are considered a {@link LuaEntityPrototype#is_building building}, plus landmines.
    */
   readonly "buildable-type"?: true
   /**
-   * Only select an area.
+   * Selects no entities or tiles, but is useful to select an area.
    */
   readonly nothing?: true
   /**
-   * Entities that can be placed using an item.
+   * Selects entities and tiles that can be {@link LuaItemPrototype#place_result built by an item}.
    */
   readonly "items-to-place"?: true
+  /**
+   * Selects all entities.
+   */
   readonly "any-entity"?: true
+  /**
+   * Selects all tiles.
+   */
   readonly "any-tile"?: true
   /**
-   * Entities with the same force as the selector.
+   * Selects entities with the same force as the selecting player.
    */
   readonly "same-force"?: true
+  /**
+   * Selects entities with a different force as the selecting player.
+   */
   readonly "not-same-force"?: true
+  /**
+   * Selects entities from a {@link LuaForce#is_friend friendly} force.
+   */
   readonly friend?: true
+  /**
+   * Selects entities from an {@link LuaForce#is_enemy enemy} force.
+   */
   readonly enemy?: true
+  /**
+   * Selects entities as if selecting them for upgrading.
+   */
   readonly upgrade?: true
+  /**
+   * Selects entities as if selecting them for upgrade cancellation.
+   */
   readonly "cancel-upgrade"?: true
+  /**
+   * Selects entities as if selecting them for downgrading.
+   */
+  readonly downgrade?: true
+  /**
+   * Selects entities that are {@link LuaEntity#is_entity_with_health entities with health}.
+   */
   readonly "entity-with-health"?: true
+  /**
+   * Deprecated. Replaced by `is-military-target`.
+   */
   readonly "entity-with-force"?: true
+  /**
+   * Selects entities that are {@link LuaEntity#is_military_target military targets}.
+   */
+  readonly "is-military-target"?: true
+  /**
+   * Selects entities that are {@link LuaEntity#is_entity_with_owner entities with owner}.
+   */
   readonly "entity-with-owner"?: true
+  /**
+   * Selects entities that are not `rolling-stocks`.
+   */
+  readonly "avoid-rolling-stock"?: true
 }
 
 interface LogisticFilter {
@@ -4298,7 +4409,7 @@ interface ScriptRenderTarget {
 }
 
 /**
- * A set of flags. Set flags are in the dictionary as `true`, while unset flags aren't present at all.
+ * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
  *
  * To write to this, use an array[`string`] of the mouse buttons that should be possible to use with on button. The flag `"left-and-right"` can also be set, which will set `"left"` and `"right"` to `true`.
  *

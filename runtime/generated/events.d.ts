@@ -2056,7 +2056,8 @@ interface OnPlayerDisplayScaleChangedEvent extends EventData {
 }
 
 /**
- * Called when the player's driving state has changed, this means a player has either entered or left a vehicle.
+ * Called when the player's driving state has changed, meaning a player has either entered or left a vehicle.
+ * @remarks This event is not raised when the player is ejected from a vehicle due to it being destroyed.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_player_driving_changed_state Online documentation}
  */
 interface OnPlayerDrivingChangedStateEvent extends EventData {
@@ -3094,7 +3095,7 @@ interface OnPrePlayerLeftGameEvent extends EventData {
 }
 
 /**
- * Called when the player finishes mining an entity, before the entity is removed from map. Can be filtered using {@link LuaPrePlayerMinedEntityEventFilter}.
+ * Called when the player completes a mining action, but before the entity is potentially removed from the map. This is called even if the entity does not end up being removed. Can be filtered using {@link LuaPrePlayerMinedEntityEventFilter}.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_pre_player_mined_item Online documentation}
  */
 interface OnPrePlayerMinedItemEvent extends EventData {
