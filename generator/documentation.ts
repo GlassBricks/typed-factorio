@@ -37,7 +37,7 @@ function mapLink(context: GenerationContext, origLink: string): { link: string; 
     } else if (operator === "length") {
       fieldRef = "#length"
     } else if (operator === "[]" || operator === "()") {
-      fieldRef = "" //; not supported, at least not until declaration links get standardized
+      fieldRef = "" // not supported, at least not until declaration links get standardized
     } else {
       throw new Error(`Unknown operator ${operator}`)
     }
