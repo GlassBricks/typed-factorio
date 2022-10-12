@@ -18,7 +18,7 @@ function versionGreater(v1: string, v2: string) {
 }
 
 const factorioVersion = fs
-  .readdirSync(path.resolve(__dirname, "../generatorSrc"))
+  .readdirSync(path.resolve(__dirname, "../generator/input"))
   .map((file) => file.match(/runtime-api-(\d+)\.(\d+)\.(\d+)\.json$/))
   .filter(isNotNull)
   .map(([, major, minor, patch]) => `${major}.${minor}.${patch}`)

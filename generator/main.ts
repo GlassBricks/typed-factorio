@@ -9,7 +9,7 @@ import { fileURLToPath } from "url"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const srcDir = path.resolve(__dirname, "../generatorSrc")
+const srcDir = path.resolve(__dirname, "./input")
 
 const srcFiles = fs.readdirSync(srcDir)
 

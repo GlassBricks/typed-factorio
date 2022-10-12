@@ -9,7 +9,7 @@ const url = "https://lua-api.factorio.com/latest/runtime-api.json"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const destinationFolder = path.resolve(__dirname, "../generatorSrc")
+const destinationFolder = path.resolve(__dirname, "../generator/input")
 const destination = path.join(destinationFolder, "downloaded-runtime-api.json")
 new Promise((resolve, reject) => {
   const file = fs.createWriteStream(destination)

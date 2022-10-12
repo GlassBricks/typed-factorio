@@ -1,6 +1,6 @@
 **/*.d.ts
 **/*.js
-generatorSrc/manual-defs.ts
+generator/input
 scripts
 test
 runtime/*.ts

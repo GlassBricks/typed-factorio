@@ -5,14 +5,14 @@
 /// <reference types="lua-types/5.2" />
 
 // generated
-/// <reference types="typed-factorio/generated/builtin-types.d.ts" />
-/// <reference types="typed-factorio/generated/global-objects.d.ts" />
-/// <reference types="typed-factorio/generated/global-functions.d.ts" />
-/// <reference types="typed-factorio/generated/defines.d.ts" />
-/// <reference types="typed-factorio/generated/events.d.ts" />
-/// <reference types="typed-factorio/generated/classes.d.ts" />
-/// <reference types="typed-factorio/generated/concepts.d.ts" />
-/// <reference types="typed-factorio/generated/index-types.d.ts" />
+/// <reference types="typed-factorio/runtime/generated/builtin-types.d.ts" />
+/// <reference types="typed-factorio/runtime/generated/global-objects.d.ts" />
+/// <reference types="typed-factorio/runtime/generated/global-functions.d.ts" />
+/// <reference types="typed-factorio/runtime/generated/defines.d.ts" />
+/// <reference types="typed-factorio/runtime/generated/events.d.ts" />
+/// <reference types="typed-factorio/runtime/generated/classes.d.ts" />
+/// <reference types="typed-factorio/runtime/generated/concepts.d.ts" />
+/// <reference types="typed-factorio/runtime/generated/index-types.d.ts" />
 
 // other runtime
 /// <reference types="typed-factorio/runtime/librariesAndFunctions.d.ts" />

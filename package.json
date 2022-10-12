@@ -19,7 +19,7 @@
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "scripts": {
     "generate": "ts-node --esm -P generator/tsconfig.json generator/main.ts",
-    "clean": "rimraf generated",
+    "clean": "rimraf runtime/generated",
     "test": "jest",
     "lint": "eslint .",
     "check": "yarn run lint && yarn run generate && yarn run test",

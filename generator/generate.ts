@@ -41,7 +41,7 @@ export function generateDefinitions(
       content += printer.printNode(ts.EmitHint.Unspecified, statement, context.manualDefinitionsSource)
       content += "\n\n"
     }
-    result.set(path.join("generated", name + ".d.ts"), content)
+    result.set(path.join("runtime/generated", name + ".d.ts"), content)
   }
 
   const indexFiles = generateIndexFiles(files.map((f) => f.name))
@@ -85,7 +85,7 @@ function generateIndexFiles(fileNames: Iterable<string>): Map<string, string> {
   const indexTemplateFile = path.resolve(__dirname, "../runtime/index-template.ts")
   let references = ""
   for (const file of fileNames) {
-    references += `/// <reference path="../generated/${file}.d.ts" />\n`
+    references += `/// <reference path="./generated/${file}.d.ts" />\n`
   }
   const indexFileContent = fs.readFileSync(indexTemplateFile, "utf8").replace("// generated\n", (m) => m + references)
   result.set("runtime/index.d.ts", indexFileContent)

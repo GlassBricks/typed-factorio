@@ -7,8 +7,7 @@
   "parserOptions": {
     "project": [
       "./tsconfig.json",
-      "./generator/tsconfig.json",
-      "./generatorSrc/tsconfig.json"
+      "./generator/tsconfig.json"
     ]
   },
   "extends": ["standard", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
