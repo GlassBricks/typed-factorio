@@ -1538,6 +1538,45 @@ interface OnPickedUpItemEvent extends EventData {
 }
 
 /**
+ * Called after a player alt-reverse-selects an area with a selection-tool item.
+ * @see {@link https://lua-api.factorio.com/latest/events.html#on_player_alt_reverse_selected_area Online documentation}
+ */
+interface OnPlayerAltReverseSelectedAreaEvent extends EventData {
+  /**
+   * The player doing the selection.
+   */
+  readonly player_index: PlayerIndex
+  /**
+   * The surface selected.
+   */
+  readonly surface: LuaSurface
+  /**
+   * The area selected.
+   */
+  readonly area: BoundingBox
+  /**
+   * The item used to select the area.
+   */
+  readonly item: string
+  /**
+   * The entities selected.
+   */
+  readonly entities: LuaEntity[]
+  /**
+   * The tiles selected.
+   */
+  readonly tiles: LuaTile[]
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_player_alt_reverse_selected_area
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
  * Called after a player alt-selects an area with a selection-tool item.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_player_alt_selected_area Online documentation}
  */

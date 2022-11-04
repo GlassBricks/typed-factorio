@@ -2290,7 +2290,7 @@ interface InfinityInventoryFilter {
    */
   readonly mode?: "at-least" | "at-most" | "exactly"
   /**
-   * The index of this filter in the filters list.
+   * The index of this filter in the filters list. Not required when writing a filter.
    */
   readonly index: uint
 }

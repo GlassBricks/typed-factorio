@@ -1323,6 +1323,10 @@ declare namespace defines {
      * Event type: {@link OnPlayerReverseSelectedAreaEvent}
      */
     const on_player_reverse_selected_area: EventId<OnPlayerReverseSelectedAreaEvent>
+    /**
+     * Event type: {@link OnPlayerAltReverseSelectedAreaEvent}
+     */
+    const on_player_alt_reverse_selected_area: EventId<OnPlayerAltReverseSelectedAreaEvent>
   }
   /**
    * See the {@linkplain https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
@@ -1377,6 +1381,7 @@ declare namespace defines {
     add_permission_group,
     add_train_station,
     admin_action,
+    alt_reverse_select_area,
     alt_select_area,
     alt_select_blueprint_entities,
     alternative_copy,

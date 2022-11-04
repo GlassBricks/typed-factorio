@@ -204,7 +204,7 @@ interface LuaAutoplaceControlPrototype {
 interface LuaBootstrap {
   /**
    * Register a function to be run on mod initialization. This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@linkplain https://lua-api.factorio.com/latest/Global.html global} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
-   * @param f The handler for this event. Passing `nil` will unregister it.
+   * @param handler The handler for this event. Passing `nil` will unregister it.
    * @example Initialize a `players` table in `global` for later use.
    *
    * ```
@@ -215,7 +215,7 @@ interface LuaBootstrap {
    * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_init Online documentation}
    */
-  on_init(f: (() => void) | nil): void
+  on_init(handler: (() => void) | nil): void
   /**
    * Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session. It gives the mod the opportunity to do some very specific actions, should it need to. Doing anything other than these three will lead to desyncs, which breaks multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@linkplain https://lua-api.factorio.com/latest/Global.html global} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
    *
@@ -225,11 +225,11 @@ interface LuaBootstrap {
    * - Create local references to data stored in the {@linkplain https://lua-api.factorio.com/latest/Global.html global} table.
    *
    * For all other purposes, {@link LuaBootstrap#on_init LuaBootstrap::on_init}, {@link LuaBootstrap#on_configuration_changed LuaBootstrap::on_configuration_changed} or {@linkplain https://lua-api.factorio.com/latest/Migrations.html migrations} should be used instead.
-   * @param f The handler for this event. Passing `nil` will unregister it.
+   * @param handler The handler for this event. Passing `nil` will unregister it.
    * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_load Online documentation}
    */
-  on_load(f: (() => void) | nil): void
+  on_load(handler: (() => void) | nil): void
   /**
    * Register a metatable to have linkage recorded and restored when saving/loading. The metatable itself will not be saved. Instead, only the linkage to a registered metatable is saved, and the metatable registered under that name will be used when loading the table.
    * @param name The name of this metatable. Names must be unique per mod.
@@ -240,15 +240,15 @@ interface LuaBootstrap {
   register_metatable(name: string, metatable: table): void
   /**
    * Register a function to be run when mod configuration changes. This is called when the major game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, or when any prototypes have been added or removed. It allows the mod to make any changes it deems appropriate to both the data structures in its {@linkplain https://lua-api.factorio.com/latest/Global.html global} table or to the game state through {@link LuaGameScript}.
-   * @param f The handler for this event. Passing `nil` will unregister it.
+   * @param handler The handler for this event. Passing `nil` will unregister it.
    * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_configuration_changed Online documentation}
    */
-  on_configuration_changed(f: ((arg1: ConfigurationChangedData) => void) | nil): void
+  on_configuration_changed(handler: ((arg1: ConfigurationChangedData) => void) | nil): void
   /**
    * Register a handler to run on the specified event(s). Each mod can only register once for every event, as any additional registration will overwrite the previous one. This holds true even if different filters are used for subsequent registrations.
    * @param event The event(s) or custom-input to invoke the handler on.
-   * @param f The handler for this event. Passing `nil` will unregister it.
+   * @param handler The handler for this event. Passing `nil` will unregister it.
    * @param filters The filters for this event. Can only be used when registering for individual events.
    * @example Register for the {@link OnTickEvent on_tick} event to print the current tick to console each tick.
    *
@@ -275,10 +275,10 @@ interface LuaBootstrap {
   /**
    * Register a handler to run every nth-tick(s). When the game is on tick 0 it will trigger all registered handlers.
    * @param tick The nth-tick(s) to invoke the handler on. Passing `nil` as the only parameter will unregister all nth-tick handlers.
-   * @param f The handler to run. Passing `nil` will unregister it for the provided nth-tick(s).
+   * @param handler The handler to run. Passing `nil` will unregister it for the provided nth-tick(s).
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_nth_tick Online documentation}
    */
-  on_nth_tick(tick: uint | readonly uint[] | nil, f: ((arg1: NthTickEventData) => void) | nil): void
+  on_nth_tick(tick: uint | readonly uint[] | nil, handler: ((arg1: NthTickEventData) => void) | nil): void
   /**
    * Registers an entity so that after it's destroyed, {@link OnEntityDestroyedEvent on_entity_destroyed} is called. Once an entity is registered, it stays registered until it is actually destroyed, even through save/load cycles. The registration is global across all mods, meaning once one mod registers an entity, all mods listening to {@link OnEntityDestroyedEvent on_entity_destroyed} will receive the event when it is destroyed. Registering the same entity multiple times will still only fire the destruction event once, and will return the same registration number.
    * @param entity The entity to register.
@@ -1992,7 +1992,7 @@ interface LuaEntity extends LuaControl {
    * _Can only be used if this is EntityWithHealth_
    * @param damage The amount of damage to be done.
    * @param force The force that will be doing the damage.
-   * @param type The type of damage to be done, defaults to "impact".
+   * @param type The type of damage to be done, defaults to "impact". Can't be `nil`.
    * @param dealer The entity to consider as the damage dealer. Needs to be on the same surface as the entity being damaged.
    * @returns the total damage actually applied after resistances.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.damage Online documentation}
@@ -5130,7 +5130,7 @@ interface EntityWithHealthEntity extends BaseEntity {
    * _Can only be used if this is EntityWithHealth_
    * @param damage The amount of damage to be done.
    * @param force The force that will be doing the damage.
-   * @param type The type of damage to be done, defaults to "impact".
+   * @param type The type of damage to be done, defaults to "impact". Can't be `nil`.
    * @param dealer The entity to consider as the damage dealer. Needs to be on the same surface as the entity being damaged.
    * @returns the total damage actually applied after resistances.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.damage Online documentation}
@@ -11865,14 +11865,14 @@ interface LuaGameScript {
    */
   create_force(force: string): LuaForce
   /**
-   * Marks two forces to be merged together. All entities in the source force will be reassigned to the target force. The source force will then be destroyed.
+   * Marks two forces to be merged together. All players and entities in the source force will be reassigned to the target force. The source force will then be destroyed. Importantly, this does not merge technologies or bonuses, which are instead retained from the target force.
    *
    * **Raised events:**
    * - {@link OnForcesMergingEvent on_forces_merging} _future_tick_
    * - {@link OnForcesMergedEvent on_forces_merged} _future_tick_
    * @param source The force to remove.
    * @param destination The force to reassign all entities to.
-   * @remarks The three built-in forces -- player, enemy and neutral -- can't be destroyed. I.e. they can't be used as the source argument to this function.<br>The source force is not removed until the end of the current tick, or if called during the {@link OnForcesMergingEvent on_forces_merging} or {@link OnForcesMergedEvent on_forces_merged} event, the end of the next tick.
+   * @remarks The three built-in forces (player, enemy and neutral) can't be destroyed, meaning they can't be used as the source argument to this function.<br>The source force is not removed until the end of the current tick, or if called during the {@link OnForcesMergingEvent on_forces_merging} or {@link OnForcesMergedEvent on_forces_merged} event, the end of the next tick.
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.merge_forces Online documentation}
    */
   merge_forces(source: ForceIdentification, destination: ForceIdentification): void
@@ -13433,6 +13433,11 @@ interface BaseGuiElement {
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.bring_to_front Online documentation}
    */
   bring_to_front(): void
+  /**
+   * Closes the dropdown list if this is a dropdown and it is open.
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.close_dropdown Online documentation}
+   */
+  close_dropdown(): void
   /**
    * The index of this GUI element (unique amongst the GUI elements of a LuaPlayer).
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.index Online documentation}
@@ -15375,6 +15380,13 @@ interface LuaItemPrototype {
    */
   readonly reverse_selection_border_color?: Color
   /**
+   * The color used when doing alt reverse selection with this selection tool prototype.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_selection_border_color Online documentation}
+   */
+  readonly alt_reverse_selection_border_color?: Color
+  /**
    * Flags that affect which entities will be selected.
    *
    * _Can only be used if this is SelectionTool_
@@ -15396,6 +15408,13 @@ interface LuaItemPrototype {
    */
   readonly reverse_selection_mode_flags?: SelectionModeFlags
   /**
+   * Flags that affect which entities will be selected during alt reverse selection.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_selection_mode_flags Online documentation}
+   */
+  readonly alt_reverse_selection_mode_flags?: SelectionModeFlags
+  /**
    * _Can only be used if this is SelectionTool_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.selection_cursor_box_type Online documentation}
    */
@@ -15410,6 +15429,11 @@ interface LuaItemPrototype {
    * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_selection_cursor_box_type Online documentation}
    */
   readonly reverse_selection_cursor_box_type?: string
+  /**
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_selection_cursor_box_type Online documentation}
+   */
+  readonly alt_reverse_selection_cursor_box_type?: string
   /**
    * If tiles area always included when doing selection with this selection tool prototype.
    *
@@ -15439,6 +15463,13 @@ interface LuaItemPrototype {
    */
   readonly reverse_alt_entity_filter_mode?: string
   /**
+   * The alt reverse entity filter mode used by this selection tool.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_alt_entity_filter_mode Online documentation}
+   */
+  readonly alt_reverse_alt_entity_filter_mode?: string
+  /**
    * The tile filter mode used by this selection tool.
    *
    * _Can only be used if this is SelectionTool_
@@ -15460,6 +15491,13 @@ interface LuaItemPrototype {
    */
   readonly reverse_tile_filter_mode?: string
   /**
+   * The alt reverse tile filter mode used by this selection tool.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_tile_filter_mode Online documentation}
+   */
+  readonly alt_reverse_tile_filter_mode?: string
+  /**
    * The entity filters used by this selection tool indexed by entity name.
    *
    * _Can only be used if this is SelectionTool_
@@ -15480,6 +15518,13 @@ interface LuaItemPrototype {
    * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_entity_filters Online documentation}
    */
   readonly reverse_entity_filters?: Record<string, LuaEntityPrototype>
+  /**
+   * The alt reverse entity filters used by this selection tool indexed by entity name.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_entity_filters Online documentation}
+   */
+  readonly alt_reverse_entity_filters?: Record<string, LuaEntityPrototype>
   /**
    * The entity type filters used by this selection tool indexed by entity type.
    *
@@ -15505,6 +15550,14 @@ interface LuaItemPrototype {
    */
   readonly reverse_entity_type_filters?: Record<string, boolean>
   /**
+   * The alt reverse entity type filters used by this selection tool indexed by entity type.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_entity_type_filters Online documentation}
+   */
+  readonly alt_reverse_entity_type_filters?: Record<string, boolean>
+  /**
    * The tile filters used by this selection tool indexed by tile name.
    *
    * _Can only be used if this is SelectionTool_
@@ -15525,6 +15578,13 @@ interface LuaItemPrototype {
    * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_tile_filters Online documentation}
    */
   readonly reverse_tile_filters?: Record<string, LuaTilePrototype>
+  /**
+   * The alt reverse tile filters used by this selection tool indexed by tile name.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_tile_filters Online documentation}
+   */
+  readonly alt_reverse_tile_filters?: Record<string, LuaTilePrototype>
   /**
    * The number of entity filters this deconstruction item has.
    *
@@ -15949,6 +16009,13 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly reverse_selection_border_color?: Color
   /**
+   * The color used when doing alt reverse selection with this selection tool prototype.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_selection_border_color Online documentation}
+   */
+  readonly alt_reverse_selection_border_color?: Color
+  /**
    * Flags that affect which entities will be selected.
    *
    * _Can only be used if this is SelectionTool_
@@ -15970,6 +16037,13 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly reverse_selection_mode_flags?: SelectionModeFlags
   /**
+   * Flags that affect which entities will be selected during alt reverse selection.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_selection_mode_flags Online documentation}
+   */
+  readonly alt_reverse_selection_mode_flags?: SelectionModeFlags
+  /**
    * _Can only be used if this is SelectionTool_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.selection_cursor_box_type Online documentation}
    */
@@ -15984,6 +16058,11 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_selection_cursor_box_type Online documentation}
    */
   readonly reverse_selection_cursor_box_type?: string
+  /**
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_selection_cursor_box_type Online documentation}
+   */
+  readonly alt_reverse_selection_cursor_box_type?: string
   /**
    * If tiles area always included when doing selection with this selection tool prototype.
    *
@@ -16013,6 +16092,13 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly reverse_alt_entity_filter_mode?: string
   /**
+   * The alt reverse entity filter mode used by this selection tool.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_alt_entity_filter_mode Online documentation}
+   */
+  readonly alt_reverse_alt_entity_filter_mode?: string
+  /**
    * The tile filter mode used by this selection tool.
    *
    * _Can only be used if this is SelectionTool_
@@ -16034,6 +16120,13 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly reverse_tile_filter_mode?: string
   /**
+   * The alt reverse tile filter mode used by this selection tool.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_tile_filter_mode Online documentation}
+   */
+  readonly alt_reverse_tile_filter_mode?: string
+  /**
    * The entity filters used by this selection tool indexed by entity name.
    *
    * _Can only be used if this is SelectionTool_
@@ -16054,6 +16147,13 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_entity_filters Online documentation}
    */
   readonly reverse_entity_filters?: Record<string, LuaEntityPrototype>
+  /**
+   * The alt reverse entity filters used by this selection tool indexed by entity name.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_entity_filters Online documentation}
+   */
+  readonly alt_reverse_entity_filters?: Record<string, LuaEntityPrototype>
   /**
    * The entity type filters used by this selection tool indexed by entity type.
    *
@@ -16079,6 +16179,14 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    */
   readonly reverse_entity_type_filters?: Record<string, boolean>
   /**
+   * The alt reverse entity type filters used by this selection tool indexed by entity type.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_entity_type_filters Online documentation}
+   */
+  readonly alt_reverse_entity_type_filters?: Record<string, boolean>
+  /**
    * The tile filters used by this selection tool indexed by tile name.
    *
    * _Can only be used if this is SelectionTool_
@@ -16099,6 +16207,13 @@ interface SelectionToolItemPrototype extends BaseItemPrototype {
    * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.reverse_tile_filters Online documentation}
    */
   readonly reverse_tile_filters?: Record<string, LuaTilePrototype>
+  /**
+   * The alt reverse tile filters used by this selection tool indexed by tile name.
+   *
+   * _Can only be used if this is SelectionTool_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemPrototype.html#LuaItemPrototype.alt_reverse_tile_filters Online documentation}
+   */
+  readonly alt_reverse_tile_filters?: Record<string, LuaTilePrototype>
 }
 
 interface DeconstructionItemPrototype extends BaseItemPrototype {
@@ -17791,7 +17906,7 @@ interface LuaLogisticCell {
  */
 interface LuaLogisticContainerControlBehavior extends LuaControlBehavior {
   /**
-   * The circuit mode of operations for the logistic container.
+   * The circuit mode of operations for the logistic container. Can only be set on containers whose {@link LuaEntityPrototype#logistic_mode logistic_mode} is set to "requester".
    * @see {@link https://lua-api.factorio.com/latest/LuaLogisticContainerControlBehavior.html#LuaLogisticContainerControlBehavior.circuit_mode_of_operation Online documentation}
    */
   circuit_mode_of_operation: defines.control_behavior.logistic_container.circuit_mode_of_operation
@@ -18695,7 +18810,7 @@ interface LuaPlayer extends LuaControl {
    */
   pipette_entity(entity: string | LuaEntity | LuaEntityPrototype): boolean
   /**
-   * Checks if this player can build the give entity at the given location on the surface the player is on.
+   * Checks if this player can build the given entity at the given location on the surface the player is on.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.can_place_entity Online documentation}
    */
   can_place_entity(params: {
@@ -18970,8 +19085,6 @@ interface LuaPlayer extends LuaControl {
   get_infinity_inventory_filter(index: uint): InfinityInventoryFilter | nil
   /**
    * Sets the filter for this map editor infinity filters at the given index.
-   *
-   * _Can only be used if this is InfinityContainer_
    * @param index The index to set.
    * @param filter The new filter or `nil` to clear the filter.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.set_infinity_inventory_filter Online documentation}
