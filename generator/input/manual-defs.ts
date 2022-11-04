@@ -341,6 +341,8 @@ type LuaGuiElement = {
   set_slider_discrete_slider()
   /** @subclasses slider */
   set_slider_discrete_values()
+  /** @subclasses dropdown */
+  close_dropdown()
   /** @subclasses sprite-button sprite */
   sprite
   /** @subclasses sprite */

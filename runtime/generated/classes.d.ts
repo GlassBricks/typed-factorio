@@ -13434,11 +13434,6 @@ interface BaseGuiElement {
    */
   bring_to_front(): void
   /**
-   * Closes the dropdown list if this is a dropdown and it is open.
-   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.close_dropdown Online documentation}
-   */
-  close_dropdown(): void
-  /**
    * The index of this GUI element (unique amongst the GUI elements of a LuaPlayer).
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.index Online documentation}
    */
@@ -13646,6 +13641,11 @@ interface DropDownGuiElementMembers extends BaseGuiElement {
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.remove_item Online documentation}
    */
   remove_item(index: uint): void
+  /**
+   * Closes the dropdown list if this is a dropdown and it is open.
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.close_dropdown Online documentation}
+   */
+  close_dropdown(): void
   /**
    * The items in this dropdown or listbox.
    *
