@@ -1,3 +1,7 @@
+# v1.11.0
+
+- BlueprintEntity.infinity_filters can also be of type InfinityPipeFilter
+
 # v1.10.0
 
 - Updated to factorio version 1.1.71

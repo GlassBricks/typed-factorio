@@ -655,6 +655,8 @@ interface OtherTechnologyModifier {
 }
 // Skipped: EntityPrototypeIdentification, ItemStackIdentification
 
+interface InfinityPipeFilter {}
+
 /** @addProperties */
 interface BlueprintEntity {
   /** Orientation of the cargo wagon or locomotive, value 0 to 1 */
@@ -667,11 +669,11 @@ interface BlueprintEntity {
   readonly bar?: uint16
   /** Cargo wagon inventory configuration */
   readonly inventory?: BlueprintInventory
-  /** Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
-  readonly infinity_settings?: BlueprintInfinitySettings
-  /** Type of the underground belt or loader. Either "input" or "output". */
+  /** ;Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
+  readonly infinity_settings?: BlueprintInfinitySettings | InfinityPipeFilter
+  /** ;Type of the underground belt or loader. Either "input" or "output". */
   readonly type?: "input" | "output"
-  /** Input priority of the splitter. Either "right" or "left", "none" is omitted. */
+  /** ;Input priority of the splitter. Either "right" or "left", "none" is omitted. */
   readonly input_priority?: "right" | "left"
   /** Output priority of the splitter. Either "right" or "left", "none" is omitted. */
   readonly output_priority?: "right" | "left"
