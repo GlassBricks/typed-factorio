@@ -1230,7 +1230,7 @@ interface BlueprintInfinitySettings {
 interface BlueprintControlBehavior {
   readonly condition?: CircuitCondition
   readonly circuit_condition?: CircuitCondition
-  readonly filters?: Signal[]
+  readonly filters?: ConstantCombinatorParameters[]
   readonly is_on?: boolean
   readonly arithmetic_conditions?: ArithmeticCombinatorParameters
   readonly decider_conditions?: DeciderCombinatorParameters

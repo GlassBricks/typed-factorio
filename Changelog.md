@@ -1,4 +1,8 @@
-# v1.11.0
+# v1.10.2
+
+- Fix BlueprintControlBehavior.filters
+
+# v1.10.1
 
 - BlueprintEntity.infinity_filters can also be of type InfinityPipeFilter
 
