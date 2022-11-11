@@ -1,3 +1,7 @@
+# v1.11.0
+
+- Updated to factorio version 1.1.72
+
 # v1.10.2
 
 - Fix BlueprintControlBehavior.filters

@@ -14883,6 +14883,11 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
    */
   is_empty(): boolean
   /**
+   * Is every stack in this inventory full? Ignores stacks blocked by the current bar.
+   * @see {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.is_full Online documentation}
+   */
+  is_full(): boolean
+  /**
    * Get counts of all items in this inventory.
    * @returns The counts, indexed by item names.
    * @see {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.get_contents Online documentation}
@@ -14959,9 +14964,10 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
   /**
    * Counts the number of empty stacks.
    * @param include_filtered If true, filtered slots will be included. Defaults to false.
+   * @param include_bar If true, slots blocked by the current bar will be included. Defaults to true.
    * @see {@link https://lua-api.factorio.com/latest/LuaInventory.html#LuaInventory.count_empty_stacks Online documentation}
    */
-  count_empty_stacks(include_filtered?: boolean): uint
+  count_empty_stacks(include_filtered?: boolean, include_bar?: boolean): uint
   /**
    * Gets the number of the given item that can be inserted into this inventory.
    * @param item The item to check.
