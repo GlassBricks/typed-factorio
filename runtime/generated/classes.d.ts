@@ -19078,11 +19078,21 @@ interface LuaPlayer extends LuaControl {
    *
    * **Raised events:**
    * - {@link OnStringTranslatedEvent on_string_translated}? _future_tick_ Raised if the request was successfully sent.
-   * @returns Whether the request was sent or not.
+   * @returns The unique id for the requested translation.
    * @remarks Does nothing if this player is not connected. (see {@link LuaPlayer#connected LuaPlayer::connected}).
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.request_translation Online documentation}
    */
-  request_translation(localised_string: LocalisedString): boolean
+  request_translation(localised_string: LocalisedString): uint | nil
+  /**
+   * Requests a translation for the given localised strings. If the request is successful the {@link OnStringTranslatedEvent on_string_translated} event will be fired at a later time with the results.
+   *
+   * **Raised events:**
+   * - {@link OnStringTranslatedEvent on_string_translated}? _future_tick_ Raised if the request was successfully sent.
+   * @returns The unique id for the requested translation.
+   * @remarks Does nothing if this player is not connected. (see {@link LuaPlayer#connected LuaPlayer::connected}).
+   * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.request_translations Online documentation}
+   */
+  request_translations(localised_strings: readonly LocalisedString[]): uint[] | nil
   /**
    * Gets the filter for this map editor infinity filters at the given index or `nil` if the filter index doesn't exist or is empty.
    * @param index The index to get.
@@ -19292,6 +19302,11 @@ interface LuaPlayer extends LuaControl {
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.hand_location Online documentation}
    */
   hand_location?: ItemStackLocation
+  /**
+   * Returns true if the current item stack in cursor will be destroyed after clearing the cursor. Manually putting it into inventory still preserves the item. If the cursor stack is not one of the supported types (blueprint, blueprint-book, deconstruction-planner, upgrade-planner), write operation will be silently ignored.
+   * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.cursor_stack_temporary Online documentation}
+   */
+  cursor_stack_temporary: boolean
   /**
    * The player's zoom-level.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.zoom Online documentation}

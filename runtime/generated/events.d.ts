@@ -3815,6 +3815,10 @@ interface OnStringTranslatedEvent extends EventData {
    */
   readonly result: string
   /**
+   * The unique id for this translation request.
+   */
+  readonly id: uint
+  /**
    * Whether the requested localised string was valid and could be translated.
    */
   readonly translated: boolean
