@@ -242,6 +242,8 @@ interface OldTileAndPosition {
 
 /**
  * A dictionary of string to the four basic Lua types: `string`, `boolean`, `number`, `table`.
+ *
+ * Note that the API returns tags as a simple table, meaning any modifications to it will not propagate back to the game. Thus, to modify a set of tags, the whole table needs to be written back to the respective property.
  * @example
  *
  * ```
@@ -544,6 +546,17 @@ interface DecorativeResult {
   readonly position: TilePosition
   readonly decorative: LuaDecorativePrototype
   readonly amount: uint
+}
+
+interface PrototypeHistory {
+  /**
+   * The mod that created this prototype.
+   */
+  readonly created: string
+  /**
+   * The mods that changed this prototype in the order they changed it.
+   */
+  readonly changed: string[]
 }
 
 /**
@@ -2636,11 +2649,23 @@ interface WireConnectionDefinition {
   /**
    * Mandatory if the source entity has more than one wire connection using copper wire.
    */
-  readonly source_wire_id?: defines.circuit_connector_id
+  readonly source_wire_id?: defines.wire_connection_id
   /**
    * Mandatory if the target entity has more than one wire connection using copper wire.
    */
-  readonly target_wire_id?: defines.circuit_connector_id
+  readonly target_wire_id?: defines.wire_connection_id
+}
+
+interface DragTarget {
+  readonly target_entity: LuaEntity
+  /**
+   * If the wire being dragged is a circuit wire this is the connector id.
+   */
+  readonly target_circuit_id?: defines.circuit_connector_id
+  /**
+   * If the wire being dragged is copper wire this is the wire id.
+   */
+  readonly target_wire_id?: defines.wire_connection_id
 }
 
 interface InventoryFilter {

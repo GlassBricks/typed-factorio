@@ -239,7 +239,7 @@ interface LuaBootstrap {
    */
   register_metatable(name: string, metatable: table): void
   /**
-   * Register a function to be run when mod configuration changes. This is called when the major game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, or when any prototypes have been added or removed. It allows the mod to make any changes it deems appropriate to both the data structures in its {@linkplain https://lua-api.factorio.com/latest/Global.html global} table or to the game state through {@link LuaGameScript}.
+   * Register a function to be run when mod configuration changes. This is called when the game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, when any prototypes have been added or removed, or when a migration was applied. It allows the mod to make any changes it deems appropriate to both the data structures in its {@linkplain https://lua-api.factorio.com/latest/Global.html global} table or to the game state through {@link LuaGameScript}.
    * @param handler The handler for this event. Passing `nil` will unregister it.
    * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/Data-Lifecycle.html Data Lifecycle} page.
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_configuration_changed Online documentation}
@@ -336,6 +336,11 @@ interface LuaBootstrap {
    */
   get_event_filter<E extends EventId<any, table>>(event: E): E["_filter"][] | nil
   /**
+   * Gets the prototype history for the given type and name.
+   * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.get_prototype_history Online documentation}
+   */
+  get_prototype_history(type: string, name: string): PrototypeHistory
+  /**
    * Raise an event. Only events generated with {@link LuaBootstrap#generate_event_name LuaBootstrap::generate_event_name} and the following can be raised:
    *
    * - {@link OnConsoleChatEvent on_console_chat}
@@ -413,6 +418,10 @@ interface LuaBootstrap {
      * Whether the transfer was from player to entity. If `false`, the transfer was from entity to player.
      */
     readonly from_player: boolean
+    /**
+     * Whether the transfer was a split action (half stack).
+     */
+    readonly is_split: boolean
   }): void
   /**
    * **Raised events:**
@@ -1239,6 +1248,11 @@ interface LuaControl {
    */
   readonly surface: LuaSurface
   /**
+   * Unique ID associated with the surface this entity is currently on.
+   * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.surface_index Online documentation}
+   */
+  readonly surface_index: SurfaceIndex
+  /**
    * The current position of the entity.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.position Online documentation}
    */
@@ -1254,6 +1268,11 @@ interface LuaControl {
    */
   get force(): LuaForce
   set force(value: ForceIdentification)
+  /**
+   * Unique ID associated with the force of this entity.
+   * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.force_index Online documentation}
+   */
+  readonly force_index: uint
   /**
    * The currently selected entity. Assigning an entity will select it if is selectable, otherwise the selection is cleared.
    *
@@ -2146,7 +2165,7 @@ interface LuaEntity extends LuaControl {
    * Sets the entity to be deconstructed by construction robots.
    *
    * **Raised events:**
-   * - {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction}? _instantly_ Raised if the entity way successfully marked for deconstruction.
+   * - {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction}? _instantly_ Raised if the entity was successfully marked for deconstruction.
    * @param force The force whose robots are supposed to do the deconstruction.
    * @param player The player to set the `last_user` to if any.
    * @returns if the entity was marked for deconstruction.
@@ -2172,7 +2191,7 @@ interface LuaEntity extends LuaControl {
    * Sets the entity to be upgraded by construction robots.
    *
    * **Raised events:**
-   * - {@link OnMarkedForUpgradeEvent on_marked_for_upgrade}? _instantly_ Raised if the entity way successfully marked for upgrade.
+   * - {@link OnMarkedForUpgradeEvent on_marked_for_upgrade}? _instantly_ Raised if the entity was successfully marked for upgrade.
    * @returns Whether the entity was marked for upgrade.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.order_upgrade Online documentation}
    */
@@ -3646,6 +3665,12 @@ interface LuaEntity extends LuaControl {
    */
   readonly electric_network_statistics: LuaFlowStatistics
   /**
+   * Returns the current target pickup count of the inserter.
+   * @remarks This considers the circuit network, manual override and the inserter stack size limit based on technology.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.inserter_target_pickup_count Online documentation}
+   */
+  readonly inserter_target_pickup_count: uint
+  /**
    * Sets the stack size limit on this inserter. If the stack size is > than the force stack size limit the value is ignored.
    * @remarks Set to 0 to reset.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.inserter_stack_size_override Online documentation}
@@ -4184,7 +4209,7 @@ interface BaseEntity extends LuaControl {
    * Sets the entity to be deconstructed by construction robots.
    *
    * **Raised events:**
-   * - {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction}? _instantly_ Raised if the entity way successfully marked for deconstruction.
+   * - {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction}? _instantly_ Raised if the entity was successfully marked for deconstruction.
    * @param force The force whose robots are supposed to do the deconstruction.
    * @param player The player to set the `last_user` to if any.
    * @returns if the entity was marked for deconstruction.
@@ -4210,7 +4235,7 @@ interface BaseEntity extends LuaControl {
    * Sets the entity to be upgraded by construction robots.
    *
    * **Raised events:**
-   * - {@link OnMarkedForUpgradeEvent on_marked_for_upgrade}? _instantly_ Raised if the entity way successfully marked for upgrade.
+   * - {@link OnMarkedForUpgradeEvent on_marked_for_upgrade}? _instantly_ Raised if the entity was successfully marked for upgrade.
    * @returns Whether the entity was marked for upgrade.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.order_upgrade Online documentation}
    */
@@ -4979,6 +5004,12 @@ interface BaseEntity extends LuaControl {
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.sticked_to Online documentation}
    */
   readonly sticked_to: LuaEntity
+  /**
+   * Returns the current target pickup count of the inserter.
+   * @remarks This considers the circuit network, manual override and the inserter stack size limit based on technology.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.inserter_target_pickup_count Online documentation}
+   */
+  readonly inserter_target_pickup_count: uint
   /**
    * Sets the stack size limit on this inserter. If the stack size is > than the force stack size limit the value is ignored.
    * @remarks Set to 0 to reset.
@@ -7687,6 +7718,11 @@ interface LuaEntityPrototype {
    */
   readonly alert_icon_shift: Vector
   /**
+   * The alert icon scale of this entity prototype.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.alert_icon_scale Online documentation}
+   */
+  readonly alert_icon_scale: float
+  /**
    * The item prototype names that are the inputs of this lab prototype.
    *
    * _Can only be used if this is Lab_
@@ -8458,6 +8494,11 @@ interface BaseEntityPrototype {
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.alert_icon_shift Online documentation}
    */
   readonly alert_icon_shift: Vector
+  /**
+   * The alert icon scale of this entity prototype.
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.alert_icon_scale Online documentation}
+   */
+  readonly alert_icon_scale: float
   /**
    * Whether this entity prototype could possibly ever be rotated.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.supports_direction Online documentation}
@@ -12458,6 +12499,11 @@ interface LuaGameScript {
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.map_gen_presets Online documentation}
    */
   readonly map_gen_presets: LuaCustomTable<string, MapGenPreset>
+  /**
+   * Whether a console command has been used.
+   * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.console_command_used Online documentation}
+   */
+  readonly console_command_used: boolean
   /**
    * The styles that {@link LuaGuiElement} can use, indexed by `name`.
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.styles Online documentation}
@@ -18835,10 +18881,6 @@ interface LuaPlayer extends LuaControl {
   }): boolean
   /**
    * Checks if this player can build what ever is in the cursor on the surface the player is on.
-   *
-   * **Raised events:**
-   * - {@link OnPreBuildEvent on_pre_build}? _instantly_ Raised if the cursor was successfully built.
-   * - {@link OnBuiltEntityEvent on_built_entity}? _instantly_ Raised if the cursor was successfully built.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.can_build_from_cursor Online documentation}
    */
   can_build_from_cursor(params: {
@@ -18864,8 +18906,11 @@ interface LuaPlayer extends LuaControl {
     readonly skip_fog_of_war?: boolean
   }): boolean
   /**
-   * Builds what ever is in the cursor on the surface the player is on.
-   * @remarks Anything built will fire normal player-built events.<br>The cursor stack will automatically be reduced as if the player built normally.
+   * Builds what ever is in the cursor on the surface the player is on. The cursor stack will automatically be reduced as if the player built normally.
+   *
+   * **Raised events:**
+   * - {@link OnPreBuildEvent on_pre_build}? _instantly_ Raised if the cursor was successfully built.
+   * - {@link OnBuiltEntityEvent on_built_entity}? _instantly_ Raised if the cursor was successfully built.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.build_from_cursor Online documentation}
    */
   build_from_cursor(params: {
@@ -19006,15 +19051,17 @@ interface LuaPlayer extends LuaControl {
    */
   exit_cutscene(): void
   /**
-   * Queues a request to open the map at the specified position. If the map is already opened, the request will simply set the position (and scale). Render mode change requests are processed before rendering of the next frame.
+   * Queues a request to open the map at the specified position. If the map is already opened, the request will simply set the position, scale, and entity to follow. Render mode change requests are processed before rendering of the next frame.
+   * @param entity The entity to follow. If not given the current entity being followed will be cleared.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.open_map Online documentation}
    */
-  open_map(position: MapPosition | MapPositionArray, scale?: double): void
+  open_map(position: MapPosition | MapPositionArray, scale?: double, entity?: LuaEntity): void
   /**
-   * Queues a request to zoom to world at the specified position. If the player is already zooming to world, the request will simply set the position (and scale). Render mode change requests are processed before rendering of the next frame.
+   * Queues a request to zoom to world at the specified position. If the player is already zooming to world, the request will simply set the position, scale, and entity to follow. Render mode change requests are processed before rendering of the next frame.
+   * @param entity The entity to follow. If not given the current entity being followed will be cleared.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.zoom_to_world Online documentation}
    */
-  zoom_to_world(position: MapPosition | MapPositionArray, scale?: double): void
+  zoom_to_world(position: MapPosition | MapPositionArray, scale?: double, entity?: LuaEntity): void
   /**
    * Queues request to switch to the normal game view from the map or zoom to world view. Render mode change requests are processed before rendering of the next frame.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.close_map Online documentation}
@@ -19308,6 +19355,11 @@ interface LuaPlayer extends LuaControl {
    */
   cursor_stack_temporary: boolean
   /**
+   * The wire drag target for this player, if any.
+   * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.drag_target Online documentation}
+   */
+  readonly drag_target?: DragTarget
+  /**
    * The player's zoom-level.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.zoom Online documentation}
    */
@@ -19476,6 +19528,11 @@ interface LuaRailPath {
    * @see {@link https://lua-api.factorio.com/latest/LuaRailPath.html#LuaRailPath.rails Online documentation}
    */
   readonly rails: LuaCustomTable<uint, LuaEntity>
+  /**
+   * If the path goes from the front of the train
+   * @see {@link https://lua-api.factorio.com/latest/LuaRailPath.html#LuaRailPath.is_front Online documentation}
+   */
+  readonly is_front: boolean
   /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
@@ -21269,7 +21326,7 @@ interface LuaShortcutPrototype {
    */
   readonly item_to_spawn?: LuaItemPrototype
   /**
-   * The technology to unlock when this shortcut is used, if any.
+   * The technology that needs to be researched once (in any save) for this shortcut to be unlocked (in all saves).
    * @see {@link https://lua-api.factorio.com/latest/LuaShortcutPrototype.html#LuaShortcutPrototype.technology_to_unlock Online documentation}
    */
   readonly technology_to_unlock?: LuaTechnologyPrototype
@@ -23642,6 +23699,7 @@ interface LuaSurface {
    */
   get_total_pollution(): double
   /**
+   * Whether the given entity prototype collides at the given position and direction.
    * @param prototype The entity prototype to check
    * @param position The position to check
    * @param use_map_generation_bounding_box If the map generation bounding box should be used instead of the collision bounding box
@@ -23652,13 +23710,14 @@ interface LuaSurface {
     position: MapPosition | MapPositionArray,
     use_map_generation_bounding_box: boolean,
     direction?: defines.direction
-  ): void
+  ): boolean
   /**
+   * Whether the given decorative prototype collides at the given position and direction.
    * @param prototype The decorative prototype to check
    * @param position The position to check
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.decorative_prototype_collides Online documentation}
    */
-  decorative_prototype_collides(prototype: string, position: MapPosition | MapPositionArray): void
+  decorative_prototype_collides(prototype: string, position: MapPosition | MapPositionArray): boolean
   /**
    * @param property_names Names of properties (e.g. "elevation") to calculate
    * @param positions Positions for which to calculate property values
@@ -23684,6 +23743,9 @@ interface LuaSurface {
   build_checkerboard(area: BoundingBoxWrite | BoundingBoxArray): void
   /**
    * The name of this surface. Names are unique among surfaces.
+   *
+   * **Raised events:**
+   * - {@link OnSurfaceRenamedEvent on_surface_renamed} _instantly_
    * @remarks the default surface can't be renamed.
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.name Online documentation}
    */
@@ -23776,7 +23838,7 @@ interface LuaSurface {
    */
   solar_power_multiplier: double
   /**
-   * The minimal brightness during the night. Default is `0.15`. The value has an effect on the game simalution only, it doesn't have any effect on rendering.
+   * The minimal brightness during the night. Defaults to `0.15`. This has an effect on both rendering and game mechanics such as biter spawns and solar power.
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.min_brightness Online documentation}
    */
   min_brightness: double

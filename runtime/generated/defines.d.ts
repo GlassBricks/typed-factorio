@@ -1332,7 +1332,7 @@ declare namespace defines {
    * See the {@linkplain https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
    * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.events Online documentation}
    */
-  type events = typeof events[keyof typeof events]
+  type events = (typeof events)[keyof typeof events]
   enum flow_precision_index {
     five_seconds,
     one_minute,

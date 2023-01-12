@@ -2153,6 +2153,10 @@ interface OnPlayerFastTransferredEvent extends EventData {
    */
   readonly from_player: boolean
   /**
+   * Whether the transfer was a split action (half stack).
+   */
+  readonly is_split: boolean
+  /**
    * Identifier of the event
    */
   readonly name: typeof defines.events.on_player_fast_transferred
@@ -2920,15 +2924,15 @@ interface OnPreBuildEvent extends EventData {
    */
   readonly direction: defines.direction
   /**
-   * If building this blueprint was flipped horizontally.
+   * Whether the blueprint was flipped horizontally. `nil` if not built by a blueprint.
    */
-  readonly flip_horizontal: boolean
+  readonly flip_horizontal: boolean | nil
   /**
-   * If building this blueprint was flipped vertically.
+   * Whether the blueprint was flipped vertically. `nil` if not built by a blueprint.
    */
-  readonly flip_vertical: boolean
+  readonly flip_vertical: boolean | nil
   /**
-   * Item was placed while moving.
+   * Whether the item was placed while moving.
    */
   readonly created_by_moving: boolean
   /**
