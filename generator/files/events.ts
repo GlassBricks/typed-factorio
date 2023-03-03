@@ -13,6 +13,10 @@ export function preprocessEvents(context: GenerationContext) {
     for (const parameter of event.data) {
       analyzeType(context, parameter.type, RWUsage.Read)
     }
+    const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
+    if (eventFilterName) {
+      analyzeType(context, eventFilterName, RWUsage.ReadWrite)
+    }
   }
 }
 

@@ -940,6 +940,12 @@ declare namespace defines {
      */
     const script_raised_revive: EventId<ScriptRaisedReviveEvent, LuaScriptRaisedReviveEventFilter>
     /**
+     * Event type: {@link ScriptRaisedTeleportedEvent}
+     *
+     * Event filter: {@link LuaScriptRaisedTeleportedEventFilter}
+     */
+    const script_raised_teleported: EventId<ScriptRaisedTeleportedEvent, LuaScriptRaisedTeleportedEventFilter>
+    /**
      * Event type: {@link ScriptRaisedSetTilesEvent}
      */
     const script_raised_set_tiles: EventId<ScriptRaisedSetTilesEvent>

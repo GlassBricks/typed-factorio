@@ -12,7 +12,7 @@ export interface IndexType {
   }
   identificationConcept?: string
   attributePattern?: RegExp
-  typeOverride?: string // default uint
+  expectedTypes?: string[] // default uint
 }
 
 export const IndexTypes: IndexType[] = [
@@ -35,6 +35,16 @@ export const IndexTypes: IndexType[] = [
     attributePattern: /^surface_index$/,
   },
   {
+    name: "ForceIndex",
+    expectedTypes: ["uint", "uint8"],
+    mainAttributePath: {
+      parent: "LuaForce",
+      name: "index",
+    },
+    identificationConcept: "ForceIdentification",
+    attributePattern: /^force_index$/,
+  },
+  {
     name: "UnitNumber",
     mainAttributePath: {
       parent: "LuaEntity",
@@ -51,7 +61,7 @@ export const IndexTypes: IndexType[] = [
   },
   {
     name: "RegistrationNumber",
-    typeOverride: "uint64",
+    expectedTypes: ["uint64"],
     mainAttributePath: {
       parent: "LuaBootstrap",
       name: "register_on_entity_destroyed",
@@ -72,7 +82,7 @@ export function generateIndexTypesFile(context: GenerationContext): DefinitionsF
     // type ${name} = uint & { _${name}Brand: void } ( | 1 )
     const typeArguments = [Types.stringLiteral(`_${decapitalize(indexType.name)}Brand`)]
     const typeNode = ts.factory.createIntersectionTypeNode([
-      ts.factory.createTypeReferenceNode(indexType.typeOverride ?? "uint"),
+      ts.factory.createTypeReferenceNode(indexType.expectedTypes?.[0] ?? "uint"),
       ts.factory.createTypeReferenceNode("IndexBrand", typeArguments),
     ])
     const statement = ts.factory.createTypeAliasDeclaration(undefined, indexType.name, undefined, typeNode)

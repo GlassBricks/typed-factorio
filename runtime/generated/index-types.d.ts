@@ -17,6 +17,13 @@ type PlayerIndex = uint & IndexBrand<"_playerIndexBrand">
 type SurfaceIndex = uint & IndexBrand<"_surfaceIndexBrand">
 
 /**
+ * See {@link LuaForce#index LuaForce.index}.
+ *
+ * If using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. `1 as ForceIndex`.
+ */
+type ForceIndex = uint & IndexBrand<"_forceIndexBrand">
+
+/**
  * See {@link LuaEntity#unit_number LuaEntity.unit_number}.
  *
  * If using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. `1 as UnitNumber`.

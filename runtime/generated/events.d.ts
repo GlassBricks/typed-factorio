@@ -3802,7 +3802,7 @@ interface OnSpiderCommandCompletedEvent extends EventData {
 }
 
 /**
- * Called when a translation request generated through {@link LuaPlayer#request_translation LuaPlayer::request_translation} is translated.
+ * Called when a translation request generated through {@link LuaPlayer#request_translation LuaPlayer::request_translation} or {@link LuaPlayer#request_translations LuaPlayer::request_translations} has been completed.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_string_translated Online documentation}
  */
 interface OnStringTranslatedEvent extends EventData {
@@ -4209,6 +4209,33 @@ interface ScriptRaisedSetTilesEvent extends EventData {
    * Identifier of the event
    */
   readonly name: typeof defines.events.script_raised_set_tiles
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
+ * A static event mods can use to tell other mods they teleported something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_teleported LuaBootstrap::raise_script_teleported}, or when `raise_teleported` is passed to {@link LuaControl#teleport LuaControl::teleport}. Can be filtered using {@link LuaScriptRaisedTeleportedEventFilter}.
+ * @see {@link https://lua-api.factorio.com/latest/events.html#script_raised_teleported Online documentation}
+ */
+interface ScriptRaisedTeleportedEvent extends EventData {
+  /**
+   * The entity that was teleported.
+   */
+  readonly entity: LuaEntity
+  /**
+   * The entity's surface before the teleportation.
+   */
+  readonly old_surface_index: uint8
+  /**
+   * The entity's position before the teleportation.
+   */
+  readonly old_position: MapPosition
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.script_raised_teleported
   /**
    * Tick the event was generated.
    */

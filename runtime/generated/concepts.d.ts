@@ -3093,14 +3093,15 @@ type SimpleItemStack = string | ItemStackDefinition
 type FluidIdentification = string | LuaFluidPrototype | Fluid
 
 /**
- * A force may be specified in one of two ways.
+ * A force may be specified in one of three ways.
  *
  * **Options:**
+ * - ForceIndex: The force index.
  * - `string`: The force name.
  * - {@link LuaForce}: A reference to {@link LuaForce} may be passed directly.
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#ForceIdentification Online documentation}
  */
-type ForceIdentification = string | LuaForce
+type ForceIdentification = ForceIndex | string | LuaForce
 
 /**
  * A technology may be specified in one of three ways.
@@ -4260,7 +4261,7 @@ interface ModSetting {
   /**
    * The value of the mod setting. The type depends on the kind of setting.
    */
-  readonly value: int | double | boolean | string
+  readonly value: int | double | boolean | string | Color
 }
 
 /**
@@ -5194,7 +5195,7 @@ type ModSettingPrototypeFilter =
  */
 interface BaseTechnologyPrototypeFilter {
   /**
-   * The condition to filter on. One of `"enabled"`, `"hidden"`, `"upgrade"`, `"visible-when-disabled"`, `"has-effects"`, `"has-prerequisites"`, `"research-unit-ingredient"`, `"level"`, `"max-level"`, `"time"`.
+   * The condition to filter on. One of `"enabled"`, `"hidden"`, `"upgrade"`, `"visible-when-disabled"`, `"has-effects"`, `"has-prerequisites"`, `"research-unit-ingredient"`, `"unlocks-recipe"`, `"level"`, `"max-level"`, `"time"`.
    */
   readonly filter:
     | "enabled"
@@ -5204,6 +5205,7 @@ interface BaseTechnologyPrototypeFilter {
     | "has-effects"
     | "has-prerequisites"
     | "research-unit-ingredient"
+    | "unlocks-recipe"
     | "level"
     | "max-level"
     | "time"
@@ -5226,6 +5228,17 @@ interface ResearchUnitIngredientTechnologyPrototypeFilter extends BaseTechnology
    * The research ingredient to check.
    */
   readonly ingredient: string
+}
+
+/**
+ * `"unlocks-recipe"` variant of {@link TechnologyPrototypeFilter}.
+ */
+interface UnlocksRecipeTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
+  readonly filter: "unlocks-recipe"
+  /**
+   * The recipe to check.
+   */
+  readonly recipe: string
 }
 
 /**
@@ -5305,6 +5318,7 @@ interface OtherTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
  *
  * Other attributes may be specified depending on `filter`:
  * - `"research-unit-ingredient"`: {@link ResearchUnitIngredientTechnologyPrototypeFilter}
+ * - `"unlocks-recipe"`: {@link UnlocksRecipeTechnologyPrototypeFilter}
  * - `"level"`: {@link LevelTechnologyPrototypeFilter}
  * - `"max-level"`: {@link MaxLevelTechnologyPrototypeFilter}
  * - `"time"`: {@link TimeTechnologyPrototypeFilter}
@@ -5312,6 +5326,7 @@ interface OtherTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
  */
 type TechnologyPrototypeFilter =
   | ResearchUnitIngredientTechnologyPrototypeFilter
+  | UnlocksRecipeTechnologyPrototypeFilter
   | LevelTechnologyPrototypeFilter
   | MaxLevelTechnologyPrototypeFilter
   | TimeTechnologyPrototypeFilter
@@ -5323,6 +5338,7 @@ type TechnologyPrototypeFilter =
  */
 type TechnologyPrototypeFilterWrite =
   | ResearchUnitIngredientTechnologyPrototypeFilter
+  | UnlocksRecipeTechnologyPrototypeFilter
   | LevelTechnologyPrototypeFilterWrite
   | MaxLevelTechnologyPrototypeFilterWrite
   | TimeTechnologyPrototypeFilterWrite
@@ -7313,6 +7329,120 @@ type LuaPlayerRepairedEntityEventFilter =
   | GhostTypePlayerRepairedEntityEventFilter
   | GhostNamePlayerRepairedEntityEventFilter
   | OtherPlayerRepairedEntityEventFilter
+
+/**
+ * Common attributes to all variants of {@link LuaScriptRaisedTeleportedEventFilter}.
+ */
+interface BaseScriptRaisedTeleportedEventFilter {
+  /**
+   * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+   */
+  readonly filter:
+    | "ghost"
+    | "rail"
+    | "rail-signal"
+    | "rolling-stock"
+    | "robot-with-logistics-interface"
+    | "vehicle"
+    | "turret"
+    | "crafting-machine"
+    | "wall-connectable"
+    | "transport-belt-connectable"
+    | "circuit-network-connectable"
+    | "type"
+    | "name"
+    | "ghost_type"
+    | "ghost_name"
+  /**
+   * How to combine this with the previous filter. Must be `"or"` or `"and"`. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+   */
+  readonly mode?: "or" | "and"
+  /**
+   * Inverts the condition. Default is `false`.
+   */
+  readonly invert?: boolean
+}
+
+/**
+ * `"type"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
+ */
+interface TypeScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
+  readonly filter: "type"
+  /**
+   * The prototype type
+   */
+  readonly type: string
+}
+
+/**
+ * `"name"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
+ */
+interface NameScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
+  readonly filter: "name"
+  /**
+   * The prototype name
+   */
+  readonly name: string
+}
+
+/**
+ * `"ghost_type"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
+ */
+interface GhostTypeScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
+  readonly filter: "ghost_type"
+  /**
+   * The ghost prototype type
+   */
+  readonly type: string
+}
+
+/**
+ * `"ghost_name"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
+ */
+interface GhostNameScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
+  readonly filter: "ghost_name"
+  /**
+   * The ghost prototype name
+   */
+  readonly name: string
+}
+
+/**
+ * Variants of {@link LuaScriptRaisedTeleportedEventFilter} with no additional attributes.
+ */
+interface OtherScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
+  readonly filter:
+    | "ghost"
+    | "rail"
+    | "rail-signal"
+    | "rolling-stock"
+    | "robot-with-logistics-interface"
+    | "vehicle"
+    | "turret"
+    | "crafting-machine"
+    | "wall-connectable"
+    | "transport-belt-connectable"
+    | "circuit-network-connectable"
+}
+
+/**
+ * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
+ *
+ * Base attributes: {@link BaseScriptRaisedTeleportedEventFilter}
+ *
+ * Other attributes may be specified depending on `filter`:
+ * - `"type"`: {@link TypeScriptRaisedTeleportedEventFilter}
+ * - `"name"`: {@link NameScriptRaisedTeleportedEventFilter}
+ * - `"ghost_type"`: {@link GhostTypeScriptRaisedTeleportedEventFilter}
+ * - `"ghost_name"`: {@link GhostNameScriptRaisedTeleportedEventFilter}
+ * @see {@link https://lua-api.factorio.com/latest/Concepts.html#LuaScriptRaisedTeleportedEventFilter Online documentation}
+ */
+type LuaScriptRaisedTeleportedEventFilter =
+  | TypeScriptRaisedTeleportedEventFilter
+  | NameScriptRaisedTeleportedEventFilter
+  | GhostTypeScriptRaisedTeleportedEventFilter
+  | GhostNameScriptRaisedTeleportedEventFilter
+  | OtherScriptRaisedTeleportedEventFilter
 
 /**
  * Common attributes to all variants of {@link LuaEntityMarkedForUpgradeEventFilter}.

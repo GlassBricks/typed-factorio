@@ -496,6 +496,25 @@ interface LuaBootstrap {
   }): void
   /**
    * **Raised events:**
+   * - {@link ScriptRaisedTeleportedEvent script_raised_teleported} _instantly_ Raised with the provided arguments.
+   * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_script_teleported Online documentation}
+   */
+  raise_script_teleported(params: {
+    /**
+     * The entity that was teleported.
+     */
+    readonly entity: LuaEntity
+    /**
+     * The entity's surface before the teleportation.
+     */
+    readonly old_surface_index: uint8
+    /**
+     * The entity's position before the teleportation.
+     */
+    readonly old_position: MapPosition | MapPositionArray
+  }): void
+  /**
+   * **Raised events:**
    * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles} _instantly_ Raised with the provided arguments.
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.raise_script_set_tiles Online documentation}
    */
@@ -785,7 +804,7 @@ interface LuaCombinatorControlBehavior extends LuaControlBehavior {
 }
 
 /**
- * Allows for the registration of custom console commands. Similarly to {@link LuaBootstrap#on_event event subscriptions}, these don't persist through a save-and-load cycle.
+ * Allows for the registration of custom console commands through the global object named `commands`. Similarly to {@link LuaBootstrap#on_event event subscriptions}, these don't persist through a save-and-load cycle.
  * @see {@link https://lua-api.factorio.com/latest/LuaCommandProcessor.html Online documentation}
  * @noSelf
  */
@@ -980,6 +999,11 @@ interface LuaControl {
    */
   get_inventory(inventory: defines.inventory): LuaInventory | nil
   /**
+   * The maximum inventory index this entity may use.
+   * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.get_max_inventory_index Online documentation}
+   */
+  get_max_inventory_index(): defines.inventory
+  /**
    * Gets the main inventory for this character or player if this is a character or player.
    * @returns The inventory or `nil` if this entity is not a character or player.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.get_main_inventory Online documentation}
@@ -1048,10 +1072,12 @@ interface LuaControl {
    *
    * **Raised events:**
    * - {@link OnPlayerChangedPositionEvent on_player_changed_position}? _instantly_ Raised if the teleported entity is a player character.
+   * - {@link ScriptRaisedTeleportedEvent script_raised_teleported}? _instantly_ Raised if the `raise_teleported` flag was set and the entity was successfully teleported.
    * @param position Where to teleport to.
    * @param surface Surface to teleport to. If not given, will teleport to the entity's current surface. Only players, cars, and spidertrons can be teleported cross-surface.
+   * @param raise_teleported If true, {@link defines.events.script_raised_teleported} will be fired on successful entity teleportation.
    * @returns `true` if the entity was successfully teleported.
-   * @remarks Some entities may not be teleported. For instance, transport belts won't allow teleportation and this method will always return `false` when used on any such entity.<br>You can also pass 1 or 2 numbers as the parameters and they will be used as relative teleport coordinates `'teleport(0, 1)'` to move the entity 1 tile positive y. `'teleport(4)'` to move the entity 4 tiles to the positive x.
+   * @remarks Some entities may not be teleported. For instance, transport belts won't allow teleportation and this method will always return `false` when used on any such entity.<br>You can also pass 1 or 2 numbers as the parameters and they will be used as relative teleport coordinates `'teleport(0, 1)'` to move the entity 1 tile positive y. `'teleport(4)'` to move the entity 4 tiles to the positive x.<br>`script_raised_teleported` will not be raised if teleporting a player with no character.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.teleport Online documentation}
    */
   teleport(position: MapPosition | MapPositionArray, surface?: SurfaceIdentification): boolean
@@ -1272,7 +1298,7 @@ interface LuaControl {
    * Unique ID associated with the force of this entity.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.force_index Online documentation}
    */
-  readonly force_index: uint
+  readonly force_index: ForceIndex
   /**
    * The currently selected entity. Assigning an entity will select it if is selectable, otherwise the selection is cleared.
    *
@@ -7190,7 +7216,7 @@ interface LuaEntityPrototype {
   readonly fluid?: LuaFluidPrototype
   /**
    * The fluid capacity of this entity or 0 if this entity doesn't support fluids.
-   * @remarks Crafting machines will report 0 due to their fluid capacity being what ever a given recipe needs.
+   * @remarks Crafting machines will report 0 due to their fluid capacity being whatever a given recipe needs.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.fluid_capacity Online documentation}
    */
   readonly fluid_capacity: double
@@ -8391,7 +8417,7 @@ interface BaseEntityPrototype {
   readonly building_grid_bit_shift: uint
   /**
    * The fluid capacity of this entity or 0 if this entity doesn't support fluids.
-   * @remarks Crafting machines will report 0 due to their fluid capacity being what ever a given recipe needs.
+   * @remarks Crafting machines will report 0 due to their fluid capacity being whatever a given recipe needs.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.fluid_capacity Online documentation}
    */
   readonly fluid_capacity: double
@@ -10692,10 +10718,10 @@ interface LuaFlowStatistics {
  */
 interface LuaFluidBox extends Array<Fluid | nil> {
   /**
-   * The prototype of this fluidbox index.
+   * The prototype of this fluidbox index. If this is used on a fluidbox of a crafting machine which due to recipe was created by merging multiple prototypes, a table of prototypes that were merged will be returned instead
    * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.get_prototype Online documentation}
    */
-  get_prototype(index: uint): LuaFluidBoxPrototype
+  get_prototype(index: uint): LuaFluidBoxPrototype | LuaFluidBoxPrototype[]
   /**
    * The capacity of the given fluidbox index.
    * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.get_capacity Online documentation}
@@ -11588,7 +11614,7 @@ interface LuaForce {
    * Unique ID associated with this force.
    * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.index Online documentation}
    */
-  readonly index: uint
+  readonly index: ForceIndex
   /**
    * The research queue of this force. The first technology in the array is the currently active one. Reading this attribute gives an array of {@link LuaTechnology}.
    *
@@ -16943,6 +16969,21 @@ interface LuaItemStack {
    */
   connected_entity?: LuaEntity
   /**
+   * If this is an item with entity data, get the stored entity label.
+   *
+   * _Can only be used if this is ItemWithEntityData_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.entity_label Online documentation}
+   */
+  entity_label?: string
+  /**
+   * If this is an item with entity data, get the stored entity color.
+   *
+   * _Can only be used if this is ItemWithEntityData_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.entity_color Online documentation}
+   */
+  get entity_color(): Color | nil
+  set entity_color(value: Color | ColorArray | nil)
+  /**
    * If this is a blueprint item.
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.is_blueprint Online documentation}
    */
@@ -17720,6 +17761,21 @@ interface ItemWithEntityDataItemStack extends BaseItemStack {
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.create_grid Online documentation}
    */
   create_grid(): LuaEquipmentGrid
+  /**
+   * If this is an item with entity data, get the stored entity label.
+   *
+   * _Can only be used if this is ItemWithEntityData_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.entity_label Online documentation}
+   */
+  entity_label?: string
+  /**
+   * If this is an item with entity data, get the stored entity color.
+   *
+   * _Can only be used if this is ItemWithEntityData_
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.entity_color Online documentation}
+   */
+  get entity_color(): Color | nil
+  set entity_color(value: Color | ColorArray | nil)
 }
 
 interface ItemWithLabelItemStack extends BaseItemStack {
@@ -18906,7 +18962,7 @@ interface LuaPlayer extends LuaControl {
     readonly skip_fog_of_war?: boolean
   }): boolean
   /**
-   * Builds what ever is in the cursor on the surface the player is on. The cursor stack will automatically be reduced as if the player built normally.
+   * Builds whatever is in the cursor on the surface the player is on. The cursor stack will automatically be reduced as if the player built normally.
    *
    * **Raised events:**
    * - {@link OnPreBuildEvent on_pre_build}? _instantly_ Raised if the cursor was successfully built.
@@ -19121,22 +19177,22 @@ interface LuaPlayer extends LuaControl {
    */
   toggle_map_editor(): void
   /**
-   * Requests a translation for the given localised string. If the request is successful the {@link OnStringTranslatedEvent on_string_translated} event will be fired at a later time with the results.
+   * Requests a translation for the given localised string. If the request is successful, the {@link OnStringTranslatedEvent on_string_translated} event will be fired with the results.
    *
    * **Raised events:**
    * - {@link OnStringTranslatedEvent on_string_translated}? _future_tick_ Raised if the request was successfully sent.
-   * @returns The unique id for the requested translation.
-   * @remarks Does nothing if this player is not connected. (see {@link LuaPlayer#connected LuaPlayer::connected}).
+   * @returns The unique ID for the requested translation.
+   * @remarks Does nothing if this player is not connected (see {@link LuaPlayer#connected LuaPlayer::connected}).
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.request_translation Online documentation}
    */
   request_translation(localised_string: LocalisedString): uint | nil
   /**
-   * Requests a translation for the given localised strings. If the request is successful the {@link OnStringTranslatedEvent on_string_translated} event will be fired at a later time with the results.
+   * Requests translation for the given set of localised strings. If the request is successful, a {@link OnStringTranslatedEvent on_string_translated} event will be fired for each string with the results.
    *
    * **Raised events:**
    * - {@link OnStringTranslatedEvent on_string_translated}? _future_tick_ Raised if the request was successfully sent.
-   * @returns The unique id for the requested translation.
-   * @remarks Does nothing if this player is not connected. (see {@link LuaPlayer#connected LuaPlayer::connected}).
+   * @returns The unique IDs for the requested translations.
+   * @remarks Does nothing if this player is not connected (see {@link LuaPlayer#connected LuaPlayer::connected}).
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.request_translations Online documentation}
    */
   request_translations(localised_strings: readonly LocalisedString[]): uint[] | nil
@@ -19457,7 +19513,7 @@ interface LuaProgrammableSpeakerControlBehavior extends LuaControlBehavior {
 }
 
 /**
- * An interface to send messages to the calling RCON interface.
+ * An interface to send messages to the calling RCON interface through the global object named `rcon`.
  * @see {@link https://lua-api.factorio.com/latest/LuaRCON.html Online documentation}
  * @noSelf
  */
@@ -19966,7 +20022,7 @@ interface LuaRemote {
 }
 
 /**
- * Allows rendering of geometric shapes, text and sprites in the game world. Each render object is identified by an id that is universally unique for the lifetime of a whole game.
+ * Allows rendering of geometric shapes, text and sprites in the game world through the global object named `rendering`. Each render object is identified by an id that is universally unique for the lifetime of a whole game.
  * @remarks If an entity target of an object is destroyed or changes surface, then the object is also destroyed.
  * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html Online documentation}
  * @noSelf
@@ -20077,7 +20133,7 @@ interface LuaRendering {
      */
     readonly visible?: boolean
     /**
-     * If this should be drawn below sprites and entities.
+     * If this should be drawn below sprites and entities. Rich text does not support this option.
      */
     readonly draw_on_ground?: boolean
     /**
@@ -20100,6 +20156,10 @@ interface LuaRendering {
      * If this should only be rendered in alt mode. Defaults to false.
      */
     readonly only_in_alt_mode?: boolean
+    /**
+     * If rich text rendering is enabled. Defaults to false.
+     */
+    readonly use_rich_text?: boolean
   }): uint64
   /**
    * Create a circle.
@@ -20850,6 +20910,21 @@ interface LuaRendering {
    * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.set_scale_with_zoom Online documentation}
    */
   set_scale_with_zoom(id: uint64, scale_with_zoom: boolean): void
+  /**
+   * Get if the text with this id parses rich text tags.
+   *
+   * _Can only be used if this is Text_
+   * @returns `nil` if the object is not a text.
+   * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.get_use_rich_text Online documentation}
+   */
+  get_use_rich_text(id: uint64): boolean | nil
+  /**
+   * Set if the text with this id parses rich text tags.
+   *
+   * _Can only be used if this is Text_
+   * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.set_use_rich_text Online documentation}
+   */
+  set_use_rich_text(id: uint64, use_rich_text: boolean): void
   /**
    * Get if the circle or rectangle with this id is filled.
    *
@@ -22692,6 +22767,7 @@ interface LuaSurface {
     readonly to_be_upgraded?: boolean
     readonly limit?: uint
     readonly is_military_target?: boolean
+    readonly has_item_inside?: LuaItemPrototype
     /**
      * Whether the filters should be inverted.
      */

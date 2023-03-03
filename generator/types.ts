@@ -175,10 +175,10 @@ function tryUseIndexTypeFromBasicType(
   type: string,
   typeContext: TypeContext | undefined
 ): IntermediateType | undefined {
-  if (!typeContext || !(type === "uint" || type === "uint64")) return
+  if (!typeContext || !type.startsWith("uint")) return undefined
   for (const indexType of IndexTypes) {
-    const expectedType = indexType.typeOverride ?? "uint"
-    if (type !== expectedType) continue
+    const expectedType = indexType.expectedTypes ?? ["uint"]
+    if (!expectedType.includes(type)) continue
     if (typeContext.contextName === indexType.identificationConcept) {
       return {
         mainType: ts.factory.createTypeReferenceNode(indexType.name),
@@ -614,10 +614,10 @@ function tryUseIndexType(
   parent: string,
   type: Type
 ): RWType | undefined {
-  if (type !== "uint" && type !== "uint64") return undefined
+  if (!(typeof type === "string" && type.startsWith("uint"))) return
   for (const indexType of IndexTypes) {
-    const expectedType = indexType.typeOverride ?? "uint"
-    if (type !== expectedType) continue
+    const expectedType = indexType.expectedTypes ?? ["uint"]
+    if (!expectedType.includes(type)) continue
     if (
       (indexType.mainAttributePath.parent === parent && member.name === indexType.mainAttributePath.name) ||
       parent === indexType.mainAttributePath.parent + "." + indexType.mainAttributePath.name ||
@@ -626,7 +626,6 @@ function tryUseIndexType(
       return mapBasicType(context, indexType.name, undefined, RWUsage.Read)
     }
   }
-  return undefined
 }
 
 function tryUseStringEnum(
