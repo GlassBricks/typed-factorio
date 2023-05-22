@@ -88,47 +88,47 @@ declare namespace defines {
      * Attack another entity.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.attack Online documentation}
      */
-    attack = 0,
+    attack,
     /**
      * Go to a specific position.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.go_to_location Online documentation}
      */
-    go_to_location = 1,
+    go_to_location,
     /**
      * Chain commands together, see {@link defines.compound_command}.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.compound Online documentation}
      */
-    compound = 2,
+    compound,
     /**
      * Do what your group wants you to do.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.group Online documentation}
      */
-    group = 3,
+    group,
     /**
      * Go to a place and attack what you see.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.attack_area Online documentation}
      */
-    attack_area = 4,
+    attack_area,
     /**
      * Chill.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.wander Online documentation}
      */
-    wander = 5,
+    wander,
     /**
      * Flee from another entity.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.flee Online documentation}
      */
-    flee = 6,
+    flee,
     /**
      * Stop moving and stay where you are.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.stop Online documentation}
      */
-    stop = 7,
+    stop,
     /**
      * Go to a position and build a base there.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.build_base Online documentation}
      */
-    build_base = 8,
+    build_base,
   }
   /**
    * How commands are joined together in a compound command (see {@link defines.command.compound}).
@@ -1333,6 +1333,22 @@ declare namespace defines {
      * Event type: {@link OnPlayerAltReverseSelectedAreaEvent}
      */
     const on_player_alt_reverse_selected_area: EventId<OnPlayerAltReverseSelectedAreaEvent>
+    /**
+     * Event type: {@link OnGuiHoverEvent}
+     */
+    const on_gui_hover: EventId<OnGuiHoverEvent>
+    /**
+     * Event type: {@link OnGuiLeaveEvent}
+     */
+    const on_gui_leave: EventId<OnGuiLeaveEvent>
+    /**
+     * Event type: {@link OnCutsceneStartedEvent}
+     */
+    const on_cutscene_started: EventId<OnCutsceneStartedEvent>
+    /**
+     * Event type: {@link OnCutsceneFinishedEvent}
+     */
+    const on_cutscene_finished: EventId<OnCutsceneFinishedEvent>
   }
   /**
    * See the {@linkplain https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
@@ -1458,6 +1474,8 @@ declare namespace defines {
     gui_click,
     gui_confirmed,
     gui_elem_changed,
+    gui_hover,
+    gui_leave,
     gui_location_changed,
     gui_selected_tab_changed,
     gui_selection_state_changed,

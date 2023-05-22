@@ -9,7 +9,7 @@
  *
  * The template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.
  *
- * As a special case, when the key is just the empty string, all the parameters will be concatenated (after processing, if any are localised strings). If there is only one parameter, it will be used as is.
+ * There are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`""`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`"?"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.
  *
  * Furthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number, boolean or `nil`, which will be converted to their textual representation.
  * @example In the English translation, this will print `"No ammo"`; in the Czech translation, it will print `"Bez munice"`:
@@ -34,6 +34,13 @@
  * ```
  * game.print({"", {"item-name.iron-plate"}, ": ", 60})
  * ```
+ * @example As an example of a localised string with fallback, consider this:
+ *
+ * ```
+ * {"?", {"", {"entity-description.furnace"}, "\n"}, {"item-description.furnace"}, "optional fallback"}
+ * ```
+ *
+ *  If `entity-description.furnace` exists, it is concatenated with `"\n"` and returned. Otherwise, if `item-description.furnace` exists, it is returned as-is. Otherwise, `"optional fallback"` is returned. If this value wasn't specified, the translation result would be `"Unknown key: 'item-description.furnace'"`.
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#LocalisedString Online documentation}
  */
 type LocalisedString = string | number | boolean | LuaObject | nil | readonly [string, ...LocalisedString[]]
@@ -291,7 +298,7 @@ interface SmokeSource {
 type Vector = MapPositionArray
 
 /**
- * Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with {@link MapPosition}, the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero, however it is ignored when provided to the game.
+ * Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with {@link MapPosition}, the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero.
  * @see BoundingBoxArray
  * @example Explicit definition:
  *
@@ -1071,17 +1078,6 @@ interface MapAndDifficultySettings {
 interface MapExchangeStringData {
   readonly map_settings: MapAndDifficultySettings
   readonly map_gen_settings: MapGenSettings
-}
-
-interface BlueprintItemIcon {
-  /**
-   * Name of the item prototype whose icon should be used.
-   */
-  readonly name: string
-  /**
-   * Index of the icon in the blueprint icons slots. Has to be an integer in the range [1, 4].
-   */
-  readonly index: uint
 }
 
 interface BlueprintSignalIcon {
@@ -2631,7 +2627,7 @@ interface CircuitConnectionDefinition {
 
 interface WireConnectionDefinition {
   /**
-   * Wire color, either {@link defines.wire_type.red} or {@link defines.wire_type.green}.
+   * The type of wire used.
    */
   readonly wire: defines.wire_type
   /**
@@ -4144,7 +4140,9 @@ type CapsuleAction =
  * - `"entity-with-force"`: Deprecated. Replaced by `is-military-target`.
  * - `"is-military-target"`: Selects entities that are {@link LuaEntity#is_military_target military targets}.
  * - `"entity-with-owner"`: Selects entities that are {@link LuaEntity#is_entity_with_owner entities with owner}.
- * - `"avoid-rolling-stock"`: Selects entities that are not `rolling-stocks`.
+ * - `"avoid-rolling-stock"`: Selects entities that are not `rolling-stock`s.
+ * - `"entity-ghost"`: Selects entities that are `entity-ghost`s.
+ * - `"tile-ghost"`: Selects entities that are `tile-ghost`s.
  * @see {@link https://lua-api.factorio.com/latest/Concepts.html#SelectionModeFlags Online documentation}
  */
 interface SelectionModeFlags {
@@ -4233,9 +4231,17 @@ interface SelectionModeFlags {
    */
   readonly "entity-with-owner"?: true
   /**
-   * Selects entities that are not `rolling-stocks`.
+   * Selects entities that are not `rolling-stock`s.
    */
   readonly "avoid-rolling-stock"?: true
+  /**
+   * Selects entities that are `entity-ghost`s.
+   */
+  readonly "entity-ghost"?: true
+  /**
+   * Selects entities that are `tile-ghost`s.
+   */
+  readonly "tile-ghost"?: true
 }
 
 interface LogisticFilter {
@@ -4253,10 +4259,6 @@ interface LogisticFilter {
   readonly count: uint
 }
 
-/**
- * @remarks Runtime settings can be changed through console commands and by the mod that owns the settings by writing a new table to the ModSetting.
- * @see {@link https://lua-api.factorio.com/latest/Concepts.html#ModSetting Online documentation}
- */
 interface ModSetting {
   /**
    * The value of the mod setting. The type depends on the kind of setting.

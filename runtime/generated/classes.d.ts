@@ -24,7 +24,7 @@ interface LuaAISettings {
    */
   do_separation: boolean
   /**
-   * The pathing resolution modifier, must be between -8 and 8.
+   * Defines how coarse the pathfinder's grid is, where smaller values mean a coarser grid. Defaults to `0`, which equals a resolution of `1x1` tiles, centered on tile centers. Values range from `-8` to `8` inclusive, where each integer increment doubles/halves the resolution. So, a resolution of `-8` equals a grid of `256x256` tiles, and a resolution of `8` equals `1/256` of a tile.
    * @see {@link https://lua-api.factorio.com/latest/LuaAISettings.html#LuaAISettings.path_resolution_modifier Online documentation}
    */
   path_resolution_modifier: int8
@@ -217,9 +217,11 @@ interface LuaBootstrap {
    */
   on_init(handler: (() => void) | nil): void
   /**
-   * Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session. It gives the mod the opportunity to do some very specific actions, should it need to. Doing anything other than these three will lead to desyncs, which breaks multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@linkplain https://lua-api.factorio.com/latest/Global.html global} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
+   * Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session.
    *
-   * The only legitimate uses of this event are the following:
+   * It gives the mod the opportunity to rectify potential differences in local state introduced by the save/load cycle. Doing anything other than the following three will lead to desyncs, breaking multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@linkplain https://lua-api.factorio.com/latest/Global.html global} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
+   *
+   * The only legitimate uses of this event are these:
    * - Re-setup {@linkplain https://www.lua.org/pil/13.html metatables} as they are not persisted through the save/load cycle.
    * - Re-setup conditional event handlers, meaning subscribing to an event only when some condition is met to save processing time.
    * - Create local references to data stored in the {@linkplain https://lua-api.factorio.com/latest/Global.html global} table.
@@ -230,14 +232,6 @@ interface LuaBootstrap {
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.on_load Online documentation}
    */
   on_load(handler: (() => void) | nil): void
-  /**
-   * Register a metatable to have linkage recorded and restored when saving/loading. The metatable itself will not be saved. Instead, only the linkage to a registered metatable is saved, and the metatable registered under that name will be used when loading the table.
-   * @param name The name of this metatable. Names must be unique per mod.
-   * @param metatable The metatable to register.
-   * @remarks `register_metatable()` can not be used in the console, in event listeners or during a `remote.call()`.
-   * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.register_metatable Online documentation}
-   */
-  register_metatable(name: string, metatable: table): void
   /**
    * Register a function to be run when mod configuration changes. This is called when the game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, when any prototypes have been added or removed, or when a migration was applied. It allows the mod to make any changes it deems appropriate to both the data structures in its {@linkplain https://lua-api.factorio.com/latest/Global.html global} table or to the game state through {@link LuaGameScript}.
    * @param handler The handler for this event. Passing `nil` will unregister it.
@@ -287,6 +281,31 @@ interface LuaBootstrap {
    * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.register_on_entity_destroyed Online documentation}
    */
   register_on_entity_destroyed(entity: LuaEntity): RegistrationNumber
+  /**
+   * Register a metatable to have linkage recorded and restored when saving/loading. The metatable itself will not be saved. Instead, only the linkage to a registered metatable is saved, and the metatable registered under that name will be used when loading the table.
+   * @param name The name of this metatable. Names must be unique per mod.
+   * @param metatable The metatable to register.
+   * @example The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in {@linkplain https://lua-api.factorio.com/latest/Global.html global}.
+   *
+   * ```
+   * local metatable = {
+   *    __index = function(key)
+   *       return "no value for key " .. key
+   *    end
+   * }
+   * script.register_metatable("my_metatable", metatable)
+   * ```
+   *
+   *  This previously defined `metatable` can then be set on any table as usual:
+   *
+   * ```
+   * local table = {key="value"}
+   * setmetatable(table, metatable)
+   * ```
+   * @remarks `register_metatable()` can not be used in the console, in event listeners or during a `remote.call()`.
+   * @see {@link https://lua-api.factorio.com/latest/LuaBootstrap.html#LuaBootstrap.register_metatable Online documentation}
+   */
+  register_metatable(name: string, metatable: table): void
   /**
    * Generate a new, unique event ID that can be used to raise custom events with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event}.
    * @returns The newly generated event ID.
@@ -351,6 +370,7 @@ interface LuaBootstrap {
    * - {@link ScriptRaisedBuiltEvent script_raised_built}
    * - {@link ScriptRaisedDestroyEvent script_raised_destroy}
    * - {@link ScriptRaisedReviveEvent script_raised_revive}
+   * - {@link ScriptRaisedTeleportedEvent script_raised_teleported}
    * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}
    * @param event ID of the event to raise.
    * @param data Table with extra data that will be passed to the event handler. Any invalid LuaObjects will silently stop the event from being raised.
@@ -615,7 +635,7 @@ interface LuaBurner {
    */
   remaining_burning_fuel: double
   /**
-   * The currently burning item.
+   * The currently burning item. Writing `nil` will void the currently burning item without producing a {@link LuaBurner#burnt_result LuaBurner::burnt_result}.
    * @remarks Writing to this automatically handles correcting {@link LuaBurner#remaining_burning_fuel LuaBurner::remaining_burning_fuel}.
    * @see {@link https://lua-api.factorio.com/latest/LuaBurner.html#LuaBurner.currently_burning Online documentation}
    */
@@ -859,10 +879,11 @@ interface LuaCommandProcessor {
  */
 interface LuaConstantCombinatorControlBehavior extends LuaControlBehavior {
   /**
-   * Sets the signal at the given index
+   * Sets the signal at the given index.
+   * @param signal Passing `nil` clears the signal.
    * @see {@link https://lua-api.factorio.com/latest/LuaConstantCombinatorControlBehavior.html#LuaConstantCombinatorControlBehavior.set_signal Online documentation}
    */
-  set_signal(index: uint, signal: Signal): void
+  set_signal(index: uint, signal?: Signal): void
   /**
    * Gets the signal at the given index. Returned {@link Signal} will not contain signal if none is set for the index.
    * @see {@link https://lua-api.factorio.com/latest/LuaConstantCombinatorControlBehavior.html#LuaConstantCombinatorControlBehavior.get_signal Online documentation}
@@ -881,7 +902,7 @@ interface LuaConstantCombinatorControlBehavior extends LuaControlBehavior {
    */
   enabled: boolean
   /**
-   * The number of signals this constant combinator supports
+   * The number of signals this constant combinator supports.
    * @see {@link https://lua-api.factorio.com/latest/LuaConstantCombinatorControlBehavior.html#LuaConstantCombinatorControlBehavior.signals_count Online documentation}
    */
   readonly signals_count: uint
@@ -999,7 +1020,12 @@ interface LuaControl {
    */
   get_inventory(inventory: defines.inventory): LuaInventory | nil
   /**
-   * The maximum inventory index this entity may use.
+   * The highest index of all inventories this entity can use. Allows iteration over all of them if desired.
+   * @example
+   *
+   * ```
+   *  for k = 1, entity.get_max_inventory_index() do [...] end
+   * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.get_max_inventory_index Online documentation}
    */
   get_max_inventory_index(): defines.inventory
@@ -1274,7 +1300,7 @@ interface LuaControl {
    */
   readonly surface: LuaSurface
   /**
-   * Unique ID associated with the surface this entity is currently on.
+   * Unique {@link LuaSurface#index index} (ID) associated with the surface this entity is currently on.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.surface_index Online documentation}
    */
   readonly surface_index: SurfaceIndex
@@ -1295,7 +1321,7 @@ interface LuaControl {
   get force(): LuaForce
   set force(value: ForceIdentification)
   /**
-   * Unique ID associated with the force of this entity.
+   * Unique {@link LuaForce#index index} (ID) associated with the force of this entity.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.force_index Online documentation}
    */
   readonly force_index: ForceIndex
@@ -1375,26 +1401,26 @@ interface LuaControl {
   riding_state: RidingState
   /**
    * Current mining state.
-   * @remarks When the player isn't mining tiles the player will mine what ever entity is currently selected. See {@link LuaControl#selected LuaControl::selected} and {@link LuaControl#update_selected_entity LuaControl::update_selected_entity}.
+   * @remarks When the player isn't mining tiles, the player will mine what ever entity is currently selected. See {@link LuaControl#selected LuaControl::selected} and {@link LuaControl#update_selected_entity LuaControl::update_selected_entity}.
    * @see {@link https://lua-api.factorio.com/latest/LuaControl.html#LuaControl.mining_state Online documentation}
    */
   get mining_state(): {
     /**
-     * Whether the player is mining at all
+     * Whether the player is mining at all.
      */
     readonly mining: boolean
     /**
-     * What tiles the player is mining; only used when the player is mining tiles (holding a tile in the cursor).
+     * What location the player is mining. Only relevant if `mining` is `true`.
      */
     readonly position?: MapPosition
   }
   set mining_state(value: {
     /**
-     * Whether the player is mining at all
+     * Whether the player is mining at all.
      */
     readonly mining: boolean
     /**
-     * What tiles the player is mining; only used when the player is mining tiles (holding a tile in the cursor).
+     * What location the player is mining. Only relevant if `mining` is `true`.
      */
     readonly position?: MapPosition | MapPositionArray
   })
@@ -2638,21 +2664,21 @@ interface LuaEntity extends LuaControl {
    */
   update_connections(): void
   /**
-   * Current recipe being assembled by this machine or `nil` if no recipe is set.
+   * Current recipe being assembled by this machine, if any.
    *
    * _Can only be used if this is CraftingMachine_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_recipe Online documentation}
    */
   get_recipe(): LuaRecipe | nil
   /**
-   * Sets the current recipe in this assembly machine.
+   * Sets the given recipe in this assembly machine.
    *
    * _Can only be used if this is AssemblingMachine_
-   * @param recipe The new recipe or `nil` to clear the recipe.
+   * @param recipe The new recipe. Writing `nil` clears the recipe, if any.
    * @returns Any items removed from this entity as a result of setting the recipe.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_recipe Online documentation}
    */
-  set_recipe(recipe: string | LuaRecipe | nil): Record<string, uint>
+  set_recipe(recipe?: string | LuaRecipe): Record<string, uint>
   /**
    * Rotates this entity as if the player rotated it.
    *
@@ -2699,11 +2725,11 @@ interface LuaEntity extends LuaControl {
    * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
    *
    * _Can only be used if this is Vehicle_
-   * @param driver The new driver or `nil` to eject the current driver if any.
-   * @remarks This differs over {@link LuaEntity#set_passenger LuaEntity::set_passenger} in that the passenger can't drive the vehicle.
+   * @param driver The new driver. Writing `nil` ejects the current driver, if any.
+   * @remarks This differs from {@link LuaEntity#set_passenger LuaEntity::set_passenger} in that the passenger can't drive the vehicle.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_driver Online documentation}
    */
-  set_driver(driver: LuaEntity | PlayerIdentification | nil): void
+  set_driver(driver?: LuaEntity | PlayerIdentification): void
   /**
    * Gets the passenger of this car or spidertron if any.
    *
@@ -2720,10 +2746,11 @@ interface LuaEntity extends LuaControl {
    * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
    *
    * _Can only be used if this is Car or SpiderVehicle_
-   * @remarks This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
+   * @param passenger The new passenger. Writing `nil` ejects the current passenger, if any.
+   * @remarks This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_passenger Online documentation}
    */
-  set_passenger(passenger: LuaEntity | PlayerIdentification): void
+  set_passenger(passenger?: LuaEntity | PlayerIdentification): void
   /**
    * Returns `true` if this entity produces or consumes electricity and is connected to an electric network that has at least one entity that can produce power.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.is_connected_to_electric_network Online documentation}
@@ -3014,6 +3041,18 @@ interface LuaEntity extends LuaControl {
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.stop_spider Online documentation}
    */
   stop_spider(): void
+  /**
+   * Returns a table with all beacons affecting this effect receiver. Can only be used when the entity has an effect receiver (AssemblingMachine, Furnace, Lab, MiningDrills)
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_beacons Online documentation}
+   */
+  get_beacons(): LuaEntity[] | nil
+  /**
+   * Returns a table with all entities affected by this beacon
+   *
+   * _Can only be used if this is Beacon_
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_beacon_effect_receivers Online documentation}
+   */
+  get_beacon_effect_receivers(): LuaEntity[]
   /**
    * Name of the entity prototype. E.g. "inserter" or "filter-inserter".
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.name Online documentation}
@@ -3316,7 +3355,7 @@ interface LuaEntity extends LuaControl {
    */
   backer_name?: string
   /**
-   * The label on this entity, if any. `nil` if this is not a spider-vehicule.
+   * The label on this spider-vehicle entity, if any. `nil` if this is not a spider-vehicle.
    *
    * **Raised events:**
    * - {@link OnEntityRenamedEvent on_entity_renamed} _instantly_
@@ -3410,14 +3449,14 @@ interface LuaEntity extends LuaControl {
    */
   readonly consumption_bonus: double
   /**
-   * `"input"` or `"output"`, depending on whether this underground belt goes down or up.
+   * Whether this underground belt goes into or out of the ground.
    *
    * _Can only be used if this is TransportBeltToGround_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.belt_to_ground_type Online documentation}
    */
   readonly belt_to_ground_type: "input" | "output"
   /**
-   * `"input"` or `"output"`, depending on whether this loader puts to or gets from a container.
+   * Whether this loader gets items from or puts item into a container.
    *
    * _Can only be used if this is Loader_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.loader_type Online documentation}
@@ -3510,7 +3549,9 @@ interface LuaEntity extends LuaControl {
    */
   readonly electric_emissions?: double
   /**
-   * A universally unique number identifying this entity for the lifetime of the save. Only entities inheriting from {@linkplain https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner}, as well as {@linkplain https://wiki.factorio.com/Prototype/ItemRequestProxy ItemRequestProxy} and {@linkplain https://wiki.factorio.com/Prototype/EntityGhost EntityGhost} are assigned a unit number. `nil` if this entity doesn't have a unit number.
+   * A unique number identifying this entity for the lifetime of the save. These are allocated sequentially, and not re-used (until overflow).
+   *
+   * Only entities inheriting from {@linkplain https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner}, as well as {@linkplain https://wiki.factorio.com/Prototype/ItemRequestProxy ItemRequestProxy} and {@linkplain https://wiki.factorio.com/Prototype/EntityGhost EntityGhost} are assigned a unit number. Returns `nil` otherwise.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.unit_number Online documentation}
    */
   readonly unit_number?: UnitNumber
@@ -3729,6 +3770,11 @@ interface LuaEntity extends LuaControl {
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.effects Online documentation}
    */
   readonly effects?: ModuleEffects
+  /**
+   * Number of beacons affecting this effect receiver. Can only be used when the entity has an effect receiver (AssemblingMachine, Furnace, Lab, MiningDrills)
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.beacons_count Online documentation}
+   */
+  readonly beacons_count?: uint
   /**
    * The filters for this infinity container.
    *
@@ -4007,7 +4053,7 @@ interface LuaEntity extends LuaControl {
    */
   time_to_next_effect: uint
   /**
-   * Destination of this spidertron's autopilot, if any.
+   * Destination of this spidertron's autopilot, if any. Writing `nil` clears all destinations.
    *
    * _Can only be used if this is SpiderVehicle_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destination Online documentation}
@@ -4673,6 +4719,11 @@ interface BaseEntity extends LuaControl {
    */
   is_registered_for_repair(): boolean
   /**
+   * Returns a table with all beacons affecting this effect receiver. Can only be used when the entity has an effect receiver (AssemblingMachine, Furnace, Lab, MiningDrills)
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_beacons Online documentation}
+   */
+  get_beacons(): LuaEntity[] | nil
+  /**
    * Name of the entity prototype. E.g. "inserter" or "filter-inserter".
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.name Online documentation}
    */
@@ -4816,7 +4867,7 @@ interface BaseEntity extends LuaControl {
    */
   backer_name?: string
   /**
-   * The label on this entity, if any. `nil` if this is not a spider-vehicule.
+   * The label on this spider-vehicle entity, if any. `nil` if this is not a spider-vehicle.
    *
    * **Raised events:**
    * - {@link OnEntityRenamedEvent on_entity_renamed} _instantly_
@@ -4902,7 +4953,9 @@ interface BaseEntity extends LuaControl {
    */
   readonly electric_emissions?: double
   /**
-   * A universally unique number identifying this entity for the lifetime of the save. Only entities inheriting from {@linkplain https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner}, as well as {@linkplain https://wiki.factorio.com/Prototype/ItemRequestProxy ItemRequestProxy} and {@linkplain https://wiki.factorio.com/Prototype/EntityGhost EntityGhost} are assigned a unit number. `nil` if this entity doesn't have a unit number.
+   * A unique number identifying this entity for the lifetime of the save. These are allocated sequentially, and not re-used (until overflow).
+   *
+   * Only entities inheriting from {@linkplain https://wiki.factorio.com/Prototype/EntityWithOwner EntityWithOwner}, as well as {@linkplain https://wiki.factorio.com/Prototype/ItemRequestProxy ItemRequestProxy} and {@linkplain https://wiki.factorio.com/Prototype/EntityGhost EntityGhost} are assigned a unit number. Returns `nil` otherwise.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.unit_number Online documentation}
    */
   readonly unit_number?: UnitNumber
@@ -5062,6 +5115,11 @@ interface BaseEntity extends LuaControl {
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.effects Online documentation}
    */
   readonly effects?: ModuleEffects
+  /**
+   * Number of beacons affecting this effect receiver. Can only be used when the entity has an effect receiver (AssemblingMachine, Furnace, Lab, MiningDrills)
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.beacons_count Online documentation}
+   */
+  readonly beacons_count?: uint
   /**
    * The status of this entity, if any.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.status Online documentation}
@@ -5352,7 +5410,7 @@ interface CraftingMachineEntity extends BaseEntity {
    */
   is_crafting(): boolean
   /**
-   * Current recipe being assembled by this machine or `nil` if no recipe is set.
+   * Current recipe being assembled by this machine, if any.
    *
    * _Can only be used if this is CraftingMachine_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_recipe Online documentation}
@@ -5763,14 +5821,14 @@ interface ProgrammableSpeakerEntity extends BaseEntity {
  */
 interface AssemblingMachineEntity extends BaseEntity {
   /**
-   * Sets the current recipe in this assembly machine.
+   * Sets the given recipe in this assembly machine.
    *
    * _Can only be used if this is AssemblingMachine_
-   * @param recipe The new recipe or `nil` to clear the recipe.
+   * @param recipe The new recipe. Writing `nil` clears the recipe, if any.
    * @returns Any items removed from this entity as a result of setting the recipe.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_recipe Online documentation}
    */
-  set_recipe(recipe: string | LuaRecipe | nil): Record<string, uint>
+  set_recipe(recipe?: string | LuaRecipe): Record<string, uint>
   /**
    * When locked; the recipe in this assembling machine can't be changed by the player.
    *
@@ -5799,11 +5857,11 @@ interface VehicleEntity extends BaseEntity {
    * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
    *
    * _Can only be used if this is Vehicle_
-   * @param driver The new driver or `nil` to eject the current driver if any.
-   * @remarks This differs over {@link LuaEntity#set_passenger LuaEntity::set_passenger} in that the passenger can't drive the vehicle.
+   * @param driver The new driver. Writing `nil` ejects the current driver, if any.
+   * @remarks This differs from {@link LuaEntity#set_passenger LuaEntity::set_passenger} in that the passenger can't drive the vehicle.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_driver Online documentation}
    */
-  set_driver(driver: LuaEntity | PlayerIdentification | nil): void
+  set_driver(driver?: LuaEntity | PlayerIdentification): void
   /**
    * Whether equipment grid logistics are enabled while this vehicle is moving.
    *
@@ -5833,10 +5891,11 @@ interface CarEntity extends BaseEntity {
    * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
    *
    * _Can only be used if this is Car or SpiderVehicle_
-   * @remarks This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
+   * @param passenger The new passenger. Writing `nil` ejects the current passenger, if any.
+   * @remarks This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_passenger Online documentation}
    */
-  set_passenger(passenger: LuaEntity | PlayerIdentification): void
+  set_passenger(passenger?: LuaEntity | PlayerIdentification): void
   /**
    * Multiplies the acceleration the vehicle can create for one unit of energy. Defaults to `1`.
    *
@@ -5899,10 +5958,11 @@ interface SpiderVehicleEntity extends BaseEntity {
    * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
    *
    * _Can only be used if this is Car or SpiderVehicle_
-   * @remarks This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
+   * @param passenger The new passenger. Writing `nil` ejects the current passenger, if any.
+   * @remarks This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.set_passenger Online documentation}
    */
-  set_passenger(passenger: LuaEntity | PlayerIdentification): void
+  set_passenger(passenger?: LuaEntity | PlayerIdentification): void
   /**
    * Adds the given position to this spidertron's autopilot's queue of destinations.
    *
@@ -5954,7 +6014,7 @@ interface SpiderVehicleEntity extends BaseEntity {
    */
   selected_gun_index?: uint
   /**
-   * Destination of this spidertron's autopilot, if any.
+   * Destination of this spidertron's autopilot, if any. Writing `nil` clears all destinations.
    *
    * _Can only be used if this is SpiderVehicle_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.autopilot_destination Online documentation}
@@ -6140,6 +6200,19 @@ interface LinkedBeltEntity extends BaseEntity {
   readonly linked_belt_neighbour?: LuaEntity
 }
 
+/**
+ * @noSelf
+ */
+interface BeaconEntity extends BaseEntity {
+  /**
+   * Returns a table with all entities affected by this beacon
+   *
+   * _Can only be used if this is Beacon_
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.get_beacon_effect_receivers Online documentation}
+   */
+  get_beacon_effect_receivers(): LuaEntity[]
+}
+
 interface GhostEntity extends BaseEntity {
   /**
    * Name of the entity or tile contained in this ghost
@@ -6304,7 +6377,7 @@ interface FlyingTextEntity extends BaseEntity {
 
 interface TransportBeltToGroundEntity extends BaseEntity {
   /**
-   * `"input"` or `"output"`, depending on whether this underground belt goes down or up.
+   * Whether this underground belt goes into or out of the ground.
    *
    * _Can only be used if this is TransportBeltToGround_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.belt_to_ground_type Online documentation}
@@ -6314,7 +6387,7 @@ interface TransportBeltToGroundEntity extends BaseEntity {
 
 interface LoaderEntity extends BaseEntity {
   /**
-   * `"input"` or `"output"`, depending on whether this loader puts to or gets from a container.
+   * Whether this loader gets items from or puts item into a container.
    *
    * _Can only be used if this is Loader_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.loader_type Online documentation}
@@ -6635,10 +6708,10 @@ interface LuaEntityPrototype {
     readonly mining_trigger?: TriggerItem[]
   }
   /**
-   * Items that when placed will produce this entity, if any. Construction bots will always choose the first item in this list to build this entity.
+   * Items that when placed will produce this entity, if any. Construction bots will choose the first item in the list to build this entity.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.items_to_place_this Online documentation}
    */
-  readonly items_to_place_this?: SimpleItemStack[]
+  readonly items_to_place_this?: ItemStackDefinition[]
   /**
    * The bounding box used for collision checking.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.collision_box Online documentation}
@@ -7054,7 +7127,7 @@ interface LuaEntityPrototype {
    */
   readonly guns?: Record<string, LuaItemPrototype>
   /**
-   * A vector of the gun prototypes of this car, spider vehicule, or artillery wagon or turret.
+   * A vector of the gun prototypes of this car, spider vehicle, artillery wagon, or turret.
    *
    * _Can only be used if this is Car, SpiderVehicle, ArtilleryTurret or ArtilleryWagon_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.indexed_guns Online documentation}
@@ -7196,7 +7269,7 @@ interface LuaEntityPrototype {
   /**
    * The default maximum power output of this generator prototype.
    *
-   * _Can only be used if this is Generator_
+   * _Can only be used if this is BurnerGenerator or Generator_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.max_power_output Online documentation}
    */
   readonly max_power_output?: double
@@ -8170,10 +8243,10 @@ interface BaseEntityPrototype {
     readonly mining_trigger?: TriggerItem[]
   }
   /**
-   * Items that when placed will produce this entity, if any. Construction bots will always choose the first item in this list to build this entity.
+   * Items that when placed will produce this entity, if any. Construction bots will choose the first item in the list to build this entity.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.items_to_place_this Online documentation}
    */
-  readonly items_to_place_this?: SimpleItemStack[]
+  readonly items_to_place_this?: ItemStackDefinition[]
   /**
    * The bounding box used for collision checking.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.collision_box Online documentation}
@@ -9104,7 +9177,7 @@ interface CarEntityPrototype extends BaseEntityPrototype {
    */
   readonly turret_rotation_speed?: double
   /**
-   * A vector of the gun prototypes of this car, spider vehicule, or artillery wagon or turret.
+   * A vector of the gun prototypes of this car, spider vehicle, artillery wagon, or turret.
    *
    * _Can only be used if this is Car, SpiderVehicle, ArtilleryTurret or ArtilleryWagon_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.indexed_guns Online documentation}
@@ -9165,7 +9238,7 @@ interface GeneratorEntityPrototype extends BaseEntityPrototype {
   /**
    * The default maximum power output of this generator prototype.
    *
-   * _Can only be used if this is Generator_
+   * _Can only be used if this is BurnerGenerator or Generator_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.max_power_output Online documentation}
    */
   readonly max_power_output?: double
@@ -9190,7 +9263,7 @@ interface RollingStockEntityPrototype extends BaseEntityPrototype {
 
 interface SpiderVehicleEntityPrototype extends BaseEntityPrototype {
   /**
-   * A vector of the gun prototypes of this car, spider vehicule, or artillery wagon or turret.
+   * A vector of the gun prototypes of this car, spider vehicle, artillery wagon, or turret.
    *
    * _Can only be used if this is Car, SpiderVehicle, ArtilleryTurret or ArtilleryWagon_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.indexed_guns Online documentation}
@@ -9242,7 +9315,7 @@ interface SpiderVehicleEntityPrototype extends BaseEntityPrototype {
 
 interface ArtilleryTurretEntityPrototype extends BaseEntityPrototype {
   /**
-   * A vector of the gun prototypes of this car, spider vehicule, or artillery wagon or turret.
+   * A vector of the gun prototypes of this car, spider vehicle, artillery wagon, or turret.
    *
    * _Can only be used if this is Car, SpiderVehicle, ArtilleryTurret or ArtilleryWagon_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.indexed_guns Online documentation}
@@ -9259,7 +9332,7 @@ interface ArtilleryTurretEntityPrototype extends BaseEntityPrototype {
 
 interface ArtilleryWagonEntityPrototype extends BaseEntityPrototype {
   /**
-   * A vector of the gun prototypes of this car, spider vehicule, or artillery wagon or turret.
+   * A vector of the gun prototypes of this car, spider vehicle, artillery wagon, or turret.
    *
    * _Can only be used if this is Car, SpiderVehicle, ArtilleryTurret or ArtilleryWagon_
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.indexed_guns Online documentation}
@@ -9428,6 +9501,16 @@ interface RobotWithLogisticsInterfaceEntityPrototype extends BaseEntityPrototype
    * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.draw_cargo Online documentation}
    */
   readonly draw_cargo?: boolean
+}
+
+interface BurnerGeneratorEntityPrototype extends BaseEntityPrototype {
+  /**
+   * The default maximum power output of this generator prototype.
+   *
+   * _Can only be used if this is BurnerGenerator or Generator_
+   * @see {@link https://lua-api.factorio.com/latest/LuaEntityPrototype.html#LuaEntityPrototype.max_power_output Online documentation}
+   */
+  readonly max_power_output?: double
 }
 
 interface BoilerEntityPrototype extends BaseEntityPrototype {
@@ -10248,7 +10331,7 @@ interface LuaEquipmentGrid {
    */
   readonly max_shield: float
   /**
-   * True if this movement bonus equipment is turned off, otherwise false.
+   * Whether this grid's equipment movement bonus is active.
    * @see {@link https://lua-api.factorio.com/latest/LuaEquipmentGrid.html#LuaEquipmentGrid.inhibit_movement_bonus Online documentation}
    */
   inhibit_movement_bonus: boolean
@@ -11127,9 +11210,10 @@ interface LuaForce {
   clear_chart(surface?: SurfaceIdentification): void
   /**
    * Force a rechart of the whole chart.
+   * @param surface Which surface to rechart or all if not given.
    * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.rechart Online documentation}
    */
-  rechart(): void
+  rechart(surface?: SurfaceIdentification): void
   /**
    * Chart all generated chunks.
    * @param surface Which surface to chart or all if not given.
@@ -11611,7 +11695,7 @@ interface LuaForce {
    */
   research_queue_enabled: boolean
   /**
-   * Unique ID associated with this force.
+   * This force's index in {@link LuaGameScript#forces LuaGameScript::forces} (unique ID). It is assigned when a force is created, and remains so until it is {@link OnForcesMergedEvent merged} (ie. deleted). Indexes of merged forces can be reused.
    * @see {@link https://lua-api.factorio.com/latest/LuaForce.html#LuaForce.index Online documentation}
    */
   readonly index: ForceIndex
@@ -11916,7 +12000,7 @@ interface LuaGameScript {
    */
   remove_offline_players(players?: readonly (LuaPlayer | string)[]): void
   /**
-   * Force a CRC check. Tells all peers to calculate their current map CRC; these CRC are then compared against each other. If a mismatch is detected, the game is desynced and some peers are forced to reconnect.
+   * Force a CRC check. Tells all peers to calculate their current CRC, which are then compared to each other. If a mismatch is detected, the game desyncs and some peers are forced to reconnect.
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.force_crc Online documentation}
    */
   force_crc(): void
@@ -12112,7 +12196,7 @@ interface LuaGameScript {
    */
   count_pipe_groups(): void
   /**
-   * Is the map loaded is multiplayer?
+   * Whether the save is loaded as a multiplayer map.
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.is_multiplayer Online documentation}
    */
   is_multiplayer(): boolean
@@ -12901,6 +12985,14 @@ interface ButtonGuiSpec extends BaseGuiSpec {
    * Which mouse buttons the button responds to. Defaults to `"left-and-right"`.
    */
   readonly mouse_button_filter?: MouseButtonFlagsWrite
+  /**
+   * Whether the button will automatically toggle when clicked. Defaults to `false`.
+   */
+  readonly auto_toggle?: boolean
+  /**
+   * The initial toggled state of the button. Defaults to `false`.
+   */
+  readonly toggled?: boolean
 }
 
 /**
@@ -13049,6 +13141,14 @@ interface SpriteButtonGuiSpec extends BaseGuiSpec {
    * The mouse buttons that the button responds to. Defaults to `"left-and-right"`.
    */
   readonly mouse_button_filter?: MouseButtonFlagsWrite
+  /**
+   * Whether the button will automatically toggle when clicked. Defaults to `false`.
+   */
+  readonly auto_toggle?: boolean
+  /**
+   * The initial toggled state of the button. Defaults to `false`.
+   */
+  readonly toggled?: boolean
 }
 
 /**
@@ -13595,6 +13695,11 @@ interface BaseGuiElement {
    */
   tags: Tags
   /**
+   * Whether this element will raise {@link OnGuiHoverEvent on_gui_hover} and {@link OnGuiLeaveEvent on_gui_leave}.
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.raise_hover_events Online documentation}
+   */
+  raise_hover_events: boolean
+  /**
    * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
    */
   readonly valid: boolean
@@ -13962,6 +14067,20 @@ interface SpriteButtonGuiElementMembers extends BaseGuiElement {
    */
   show_percent_for_small_numbers: boolean
   /**
+   * Whether this button will automatically toggle when clicked.
+   *
+   * _Can only be used if this is button or sprite-button_
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.auto_toggle Online documentation}
+   */
+  auto_toggle: boolean
+  /**
+   * Whether this button is currently toggled.
+   *
+   * _Can only be used if this is button or sprite-button_
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.toggled Online documentation}
+   */
+  toggled: boolean
+  /**
    * The mouse button filters for this button or sprite-button.
    *
    * _Can only be used if this is button or sprite-button_
@@ -14126,6 +14245,20 @@ interface ButtonGuiElementMembers extends BaseGuiElement {
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.type Online documentation}
    */
   readonly type: "button"
+  /**
+   * Whether this button will automatically toggle when clicked.
+   *
+   * _Can only be used if this is button or sprite-button_
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.auto_toggle Online documentation}
+   */
+  auto_toggle: boolean
+  /**
+   * Whether this button is currently toggled.
+   *
+   * _Can only be used if this is button or sprite-button_
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.toggled Online documentation}
+   */
+  toggled: boolean
   /**
    * The mouse button filters for this button or sprite-button.
    *
@@ -14763,7 +14896,7 @@ type GuiElementMembers =
  * - `"progressbar"`: A partially filled bar that can be used to indicate progress.
  * - `"table"`: An invisible container that lays out its children in a specific number of columns. The width of each column is determined by the widest element it contains.
  * - `"textfield"`: A single-line box the user can type into. Relevant events: {@link OnGuiTextChangedEvent on_gui_text_changed}, {@link OnGuiConfirmedEvent on_gui_confirmed}
- * - `"radiobutton"`: A clickable element that is functionally identical to a `checkbox`, but has a circular appearance. Relevant event: {@link OnGuiCheckedStateChangedEvent on_gui_checked_state_changed}
+ * - `"radiobutton"`: An element that is similar to a `checkbox`, but with a circular appearance. Clicking a selected radio button will not unselect it. Radio buttons are not linked to each other in any way. Relevant event: {@link OnGuiCheckedStateChangedEvent on_gui_checked_state_changed}
  * - `"sprite"`: An element that shows an image.
  * - `"scroll-pane"`: An invisible element that is similar to a `flow`, but has the ability to show and use scroll bars.
  * - `"drop-down"`: A drop-down containing strings of text. Relevant event: {@link OnGuiSelectionStateChangedEvent on_gui_selection_state_changed}
@@ -16405,6 +16538,14 @@ interface LuaItemStack {
    */
   drain_durability(amount: double): void
   /**
+   * Use the capsule item with the entity as the source, targeting the given position.
+   * @param entity The entity to use the capsule item with.
+   * @param target_position The position to use the capsule item with.
+   * @returns Array of the entities that were created by the capsule action.
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.use_capsule Online documentation}
+   */
+  use_capsule(entity: LuaEntity, target_position: MapPosition | MapPositionArray): LuaEntity[]
+  /**
    * Would a call to {@link LuaItemStack#set_stack LuaItemStack::set_stack} succeed?
    * @param stack Stack that would be set, possibly `nil`.
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.can_set_stack Online documentation}
@@ -16873,7 +17014,7 @@ interface LuaItemStack {
    * _Can only be used if this is BlueprintItem_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.default_icons Online documentation}
    */
-  readonly default_icons: BlueprintItemIcon[]
+  readonly default_icons: BlueprintSignalIcon[]
   /**
    * _Can only be used if this is ItemWithTags_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.tags Online documentation}
@@ -17076,6 +17217,14 @@ interface BaseItemStack {
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.is_blueprint_setup Online documentation}
    */
   is_blueprint_setup(): boolean
+  /**
+   * Use the capsule item with the entity as the source, targeting the given position.
+   * @param entity The entity to use the capsule item with.
+   * @param target_position The position to use the capsule item with.
+   * @returns Array of the entities that were created by the capsule action.
+   * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.use_capsule Online documentation}
+   */
+  use_capsule(entity: LuaEntity, target_position: MapPosition | MapPositionArray): LuaEntity[]
   /**
    * Would a call to {@link LuaItemStack#set_stack LuaItemStack::set_stack} succeed?
    * @param stack Stack that would be set, possibly `nil`.
@@ -17537,7 +17686,7 @@ interface BlueprintItemStack extends BaseItemStack {
    * _Can only be used if this is BlueprintItem_
    * @see {@link https://lua-api.factorio.com/latest/LuaItemStack.html#LuaItemStack.default_icons Online documentation}
    */
-  readonly default_icons: BlueprintItemIcon[]
+  readonly default_icons: BlueprintSignalIcon[]
 }
 
 /**
@@ -19254,7 +19403,7 @@ interface LuaPlayer extends LuaControl {
    */
   readonly cutscene_character: LuaEntity | nil
   /**
-   * This player's unique index in {@link LuaGameScript#players LuaGameScript::players}. It is given to them when they are {@link OnPlayerCreatedEvent created} and remains assigned to them until they are {@link OnPlayerRemovedEvent removed}.
+   * This player's index in {@link LuaGameScript#players LuaGameScript::players} (unique ID). It is assigned when a player is created, and remains so (even when the player is not {@link LuaPlayer#connected connected}) until the player is irreversably {@link OnPlayerRemovedEvent removed}. Indexes of removed players can be reused.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.index Online documentation}
    */
   readonly index: PlayerIndex
@@ -19340,8 +19489,15 @@ interface LuaPlayer extends LuaControl {
    */
   permission_group?: LuaPermissionGroup
   /**
-   * The current per-player settings for the this player, indexed by prototype name. Returns the same structure as {@link LuaSettings#get_player_settings LuaSettings::get_player_settings}.
-   * @remarks This table will become invalid if its associated player does.
+   * The current per-player settings for the this player, indexed by prototype name. Returns the same structure as {@link LuaSettings#get_player_settings LuaSettings::get_player_settings}. This table becomes invalid if its associated player does.
+   *
+   * Even though this attribute is marked as read-only, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
+   * @example
+   *
+   * ```
+   * -- Change the value of the "active_lifestyle" setting
+   * player.mod_settings["active_lifestyle"] = {value = true}
+   * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.mod_settings Online documentation}
    */
   readonly mod_settings: LuaCustomTable<string, ModSetting>
@@ -19719,22 +19875,22 @@ interface LuaRecipe {
    */
   readonly category: string
   /**
-   * Ingredients for this recipe.
-   * @example What the "steel-chest" recipe would return
+   * The ingredients to this recipe.
+   * @example The ingredients of `"advanced-oil-processing"` would look like this:
    *
    * ```
-   * {{type="item", name="steel-plate", amount=8}}
-   * ```
-   * @example What the "advanced-oil-processing" recipe would return
-   *
-   * ```
-   * {{type="fluid", name="crude-oil", amount=10}, {type="fluid", name="water", amount=5}}
+   * {{type="fluid", name="crude-oil", amount=100}, {type="fluid", name="water", amount=50}}
    * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaRecipe.html#LuaRecipe.ingredients Online documentation}
    */
   readonly ingredients: Ingredient[]
   /**
-   * The results of this recipe.
+   * The results/products of this recipe.
+   * @example The products of `"advanced-oil-processing"` would look like this:
+   *
+   * ```
+   * {{type="fluid", name="heavy-oil", amount=25}, {type="fluid", name="light-oil", amount=45}, {type="fluid", name="petroleum-gas", amount=55}}
+   * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaRecipe.html#LuaRecipe.products Online documentation}
    */
   readonly products: Product[]
@@ -19847,12 +20003,22 @@ interface LuaRecipePrototype {
    */
   readonly category: string
   /**
-   * Ingredients for this recipe.
+   * The ingredients to this recipe.
+   * @example The ingredients of `"advanced-oil-processing"` would look like this:
+   *
+   * ```
+   * {{type="fluid", name="crude-oil", amount=100}, {type="fluid", name="water", amount=50}}
+   * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaRecipePrototype.html#LuaRecipePrototype.ingredients Online documentation}
    */
   readonly ingredients: Ingredient[]
   /**
-   * The results of this recipe.
+   * The results/products of this recipe.
+   * @example The products of `"advanced-oil-processing"` would look like this:
+   *
+   * ```
+   * {{type="fluid", name="heavy-oil", amount=25}, {type="fluid", name="light-oil", amount=45}, {type="fluid", name="petroleum-gas", amount=55}}
+   * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaRecipePrototype.html#LuaRecipePrototype.products Online documentation}
    */
   readonly products: Product[]
@@ -20344,6 +20510,10 @@ interface LuaRendering {
      * Only used if `orientation_target` is a LuaEntity.
      */
     readonly orientation_target_offset?: Vector
+    /**
+     * Only used if `orientation_target` is a LuaEntity.
+     */
+    readonly use_target_orientation?: boolean
     readonly surface: SurfaceIdentification
     /**
      * In ticks. Defaults to living forever.
@@ -20409,6 +20579,10 @@ interface LuaRendering {
      * Only used if `orientation_target` is a LuaEntity.
      */
     readonly orientation_target_offset?: Vector
+    /**
+     * Only used if `orientation_target` is a LuaEntity.
+     */
+    readonly use_target_orientation?: boolean
     /**
      * Offsets the center of the sprite if `orientation_target` is given. This offset will rotate together with the sprite.
      */
@@ -20546,6 +20720,10 @@ interface LuaRendering {
      */
     readonly orientation_target_offset?: Vector
     /**
+     * Only used if `orientation_target` is a LuaEntity.
+     */
+    readonly use_target_orientation?: boolean
+    /**
      * Offsets the center of the animation if `orientation_target` is given. This offset will rotate together with the animation.
      */
     readonly oriented_offset?: Vector
@@ -20596,13 +20774,13 @@ interface LuaRendering {
   is_valid(id: uint64): boolean
   /**
    * Gets an array of all valid object ids.
-   * @param mod_name If provided, get only the render objects created by this mod.
+   * @param mod_name If provided, get only the render objects created by this mod. An empty string (`""`) refers to all objects not belonging to a mod, such as those created using console commands.
    * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.get_all_ids Online documentation}
    */
   get_all_ids(mod_name?: string): uint64[]
   /**
-   * Destroys all render objects.
-   * @param mod_name If provided, only the render objects created by this mod are destroyed.
+   * Destroys all render objects. Passing an empty string (`""`)
+   * @param mod_name If provided, only the render objects created by this mod are destroyed. An empty string (`""`) refers to all objects not belonging to a mod, such as those created using console commands.
    * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.clear Online documentation}
    */
   clear(mod_name?: string): void
@@ -20687,6 +20865,17 @@ interface LuaRendering {
    * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.set_only_in_alt_mode Online documentation}
    */
   set_only_in_alt_mode(id: uint64, only_in_alt_mode: boolean): void
+  /**
+   * Get whether this uses the target orientation.
+   * @returns `nil` if the object is not a sprite, polygon, or animation.
+   * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.get_use_target_orientation Online documentation}
+   */
+  get_use_target_orientation(id: uint64): boolean | nil
+  /**
+   * Set whether this uses the target orientation.
+   * @see {@link https://lua-api.factorio.com/latest/LuaRendering.html#LuaRendering.set_use_target_orientation Online documentation}
+   */
+  set_use_target_orientation(id: uint64, use_target_orientation: boolean): void
   /**
    * Get the color or tint of the object with this id.
    *
@@ -21346,8 +21535,15 @@ interface LuaRoboportControlBehavior extends LuaControlBehavior {
  */
 interface LuaSettings {
   /**
-   * Gets the current per-player settings for the given player, indexed by prototype name. Returns the same structure as {@link LuaPlayer#mod_settings LuaPlayer::mod_settings}.
-   * @remarks This table will become invalid if its associated player does.
+   * Gets the current per-player settings for the given player, indexed by prototype name. Returns the same structure as {@link LuaPlayer#mod_settings LuaPlayer::mod_settings}. This table becomes invalid if its associated player does.
+   *
+   * Even though this attribute is marked as read-only, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
+   * @example
+   *
+   * ```
+   * -- Change the value of the "active_lifestyle" setting
+   * settings.get_player_settings(player_index)["active_lifestyle"] = {value = true}
+   * ```
    * @see {@link https://lua-api.factorio.com/latest/LuaSettings.html#LuaSettings.get_player_settings Online documentation}
    */
   get_player_settings(player: PlayerIdentification): LuaCustomTable<string, ModSetting>
@@ -21359,14 +21555,14 @@ interface LuaSettings {
   /**
    * The current global mod settings, indexed by prototype name.
    *
-   * Even though these are marked as read-only, they can be changed by overwriting individual {@link ModSetting} tables in the custom table. Mods can only change their own settings. Using the in-game console, all global settings can be changed.
+   * Even though this attribute is marked as read-only, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
    * @see {@link https://lua-api.factorio.com/latest/LuaSettings.html#LuaSettings.global Online documentation}
    */
   readonly global: LuaCustomTable<string, ModSetting>
   /**
    * The default player mod settings for this map, indexed by prototype name.
    *
-   * Even though these are marked as read-only, they can be changed by overwriting individual {@link ModSetting} tables in the custom table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
+   * Even though this attribute is marked as read-only, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
    * @see {@link https://lua-api.factorio.com/latest/LuaSettings.html#LuaSettings.player Online documentation}
    */
   readonly player: LuaCustomTable<string, ModSetting>
@@ -22263,7 +22459,7 @@ interface BaseSurfaceCreateEntity {
    */
   readonly target?: LuaEntity | (MapPosition | MapPositionArray)
   /**
-   * Source entity. Used for beams and highlight-boxes.
+   * Source entity. Used for beams, projectiles, and highlight-boxes.
    */
   readonly source?: LuaEntity | (MapPosition | MapPositionArray)
   /**
@@ -22274,6 +22470,10 @@ interface BaseSurfaceCreateEntity {
    * If given set the last_user to this player. If fast_replace is true simulate fast replace using this player.
    */
   readonly player?: PlayerIdentification
+  /**
+   * If fast_replace is true simulate fast replace using this character.
+   */
+  readonly character?: LuaEntity
   /**
    * If false while fast_replace is true and player is nil any items from fast-replacing will be deleted instead of dropped on the ground.
    */
@@ -23673,7 +23873,7 @@ interface LuaSurface {
      */
     readonly can_open_gates?: boolean
     /**
-     * Defines how coarse the pathfinder's grid is. Smaller values mean a coarser grid (negative numbers allowed). Allowed values are from -8 to 8. Defaults to `0`.
+     * Defines how coarse the pathfinder's grid is, where smaller values mean a coarser grid. Defaults to `0`, which equals a resolution of `1x1` tiles, centered on tile centers. Values range from `-8` to `8` inclusive, where each integer increment doubles/halves the resolution. So, a resolution of `-8` equals a grid of `256x256` tiles, and a resolution of `8` equals `1/256` of a tile.
      */
     readonly path_resolution_modifier?: int
     /**
@@ -23827,12 +24027,12 @@ interface LuaSurface {
    */
   name: string
   /**
-   * Unique ID associated with this surface.
+   * This surface's index in {@link LuaGameScript#surfaces LuaGameScript::surfaces} (unique ID). It is assigned when a surface is created, and remains so until it is {@link OnSurfaceDeletedEvent deleted}. Indexes of deleted surfaces can be reused.
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.index Online documentation}
    */
   readonly index: SurfaceIndex
   /**
-   * The generation settings for this surface. These can be modified to after surface generation, but note that this will not retroactively update the surface. To manually adjust it, {@link LuaSurface#regenerate_entity LuaSurface::regenerate_entity}, {@link LuaSurface#regenerate_decorative LuaSurface::regenerate_decorative} and {@link LuaSurface#delete_chunk LuaSurface::delete_chunk} can be used.
+   * The generation settings for this surface. These can be modified after surface generation, but note that this will not retroactively update the surface. To manually regenerate it, {@link LuaSurface#regenerate_entity LuaSurface::regenerate_entity}, {@link LuaSurface#regenerate_decorative LuaSurface::regenerate_decorative}, and {@link LuaSurface#delete_chunk LuaSurface::delete_chunk} can be used.
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.map_gen_settings Online documentation}
    */
   get map_gen_settings(): MapGenSettings
@@ -23858,7 +24058,7 @@ interface LuaSurface {
    */
   readonly darkness: float
   /**
-   * Current wind speed.
+   * Current wind speed in tiles per tick.
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.wind_speed Online documentation}
    */
   wind_speed: double
@@ -24042,7 +24242,7 @@ interface LuaTechnology {
    */
   level: uint
   /**
-   * The count formula used for this infinite research. `nil` if this research isn't infinite.
+   * The count formula, if this research has any. See the {@linkplain https://wiki.factorio.com/Prototype/Technology#Technology_data wiki} for details.
    * @see {@link https://lua-api.factorio.com/latest/LuaTechnology.html#LuaTechnology.research_unit_count_formula Online documentation}
    */
   readonly research_unit_count_formula?: string
@@ -24145,7 +24345,7 @@ interface LuaTechnologyPrototype {
    */
   readonly max_level: uint
   /**
-   * The count formula used for this infinite research. `nil` if this research isn't infinite.
+   * The count formula, if this research has any. See the {@linkplain https://wiki.factorio.com/Prototype/Technology#Technology_data wiki} for details.
    * @see {@link https://lua-api.factorio.com/latest/LuaTechnologyPrototype.html#LuaTechnologyPrototype.research_unit_count_formula Online documentation}
    */
   readonly research_unit_count_formula?: string
@@ -24322,10 +24522,10 @@ interface LuaTilePrototype {
    */
   readonly next_direction?: LuaTilePrototype
   /**
-   * Items that when placed will produce this tile. It is a dictionary indexed by the item prototype name. `nil` (instead of an empty table) if no items can place this tile.
+   * Items that when placed will produce this tile, if any. Construction bots will choose the first item in the list to build this tile.
    * @see {@link https://lua-api.factorio.com/latest/LuaTilePrototype.html#LuaTilePrototype.items_to_place_this Online documentation}
    */
-  readonly items_to_place_this: SimpleItemStack[] | nil
+  readonly items_to_place_this?: ItemStackDefinition[]
   /**
    * False if this tile is not allowed in blueprints regardless of the ability to build it.
    * @see {@link https://lua-api.factorio.com/latest/LuaTilePrototype.html#LuaTilePrototype.can_be_part_of_blueprint Online documentation}

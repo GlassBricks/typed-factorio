@@ -450,6 +450,44 @@ interface OnCutsceneCancelledEvent extends EventData {
 }
 
 /**
+ * Called when a cutscene finishes naturally (was not cancelled).
+ * @see {@link https://lua-api.factorio.com/latest/events.html#on_cutscene_finished Online documentation}
+ */
+interface OnCutsceneFinishedEvent extends EventData {
+  /**
+   * The player the cutscene was shown to.
+   */
+  readonly player_index: PlayerIndex
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_cutscene_finished
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
+ * Called when a cutscene starts.
+ * @see {@link https://lua-api.factorio.com/latest/events.html#on_cutscene_started Online documentation}
+ */
+interface OnCutsceneStartedEvent extends EventData {
+  /**
+   * The player the cutscene is being shown to.
+   */
+  readonly player_index: PlayerIndex
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_cutscene_started
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
  * Called when a cutscene is playing, each time it reaches a waypoint in that cutscene.
  *
  * This refers to an index in the table previously passed to set_controller which started the cutscene.
@@ -1077,6 +1115,52 @@ interface OnGuiElemChangedEvent extends EventData {
    * Identifier of the event
    */
   readonly name: typeof defines.events.on_gui_elem_changed
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
+ * Called when {@link LuaGuiElement} is hovered by the mouse.
+ * @see {@link https://lua-api.factorio.com/latest/events.html#on_gui_hover Online documentation}
+ */
+interface OnGuiHoverEvent extends EventData {
+  /**
+   * The element that is being hovered over.
+   */
+  readonly element: LuaGuiElement
+  /**
+   * The player whose cursor is hovering.
+   */
+  readonly player_index: PlayerIndex
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_gui_hover
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
+ * Called when the player's cursor leaves a {@link LuaGuiElement} that was previously hovered.
+ * @see {@link https://lua-api.factorio.com/latest/events.html#on_gui_leave Online documentation}
+ */
+interface OnGuiLeaveEvent extends EventData {
+  /**
+   * The element that was being hovered.
+   */
+  readonly element: LuaGuiElement
+  /**
+   * The player whose cursor was hovering.
+   */
+  readonly player_index: PlayerIndex
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_gui_leave
   /**
    * Tick the event was generated.
    */
@@ -1962,7 +2046,7 @@ interface OnPlayerCreatedEvent extends EventData {
 }
 
 /**
- * Called after a players cursorstack changed in some way.
+ * Called after a player's {@link LuaControl#cursor_stack cursor stack} changed in some way.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_player_cursor_stack_changed Online documentation}
  */
 interface OnPlayerCursorStackChangedEvent extends EventData {
@@ -2455,12 +2539,12 @@ interface OnPlayerPromotedEvent extends EventData {
 }
 
 /**
- * Called when a player is removed (deleted) from the game. Not to be confused with the player logging of this is different in that the player is deleted as if he never existed in the save file.
+ * Called when a player is removed (deleted) from the game. This is markedly different from a player temporarily {@link OnPlayerLeftGameEvent leaving} the game, and instead behaves like the player never existed in the save file.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_player_removed Online documentation}
  */
 interface OnPlayerRemovedEvent extends EventData {
   /**
-   * The player index that was removed
+   * The index of the removed player.
    */
   readonly player_index: PlayerIndex
   /**
@@ -3158,12 +3242,12 @@ interface OnPrePlayerMinedItemEvent extends EventData {
 }
 
 /**
- * Called before a player is removed (deleted) from the game. Not to be confused with the player logging of this is different in that the player is deleted as if he never existed in the save file.
+ * Called before a player is removed (deleted) from the game. This is markedly different from a player temporarily {@link OnPlayerLeftGameEvent leaving} the game, and instead behaves like the player never existed in the save file.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_pre_player_removed Online documentation}
  */
 interface OnPrePlayerRemovedEvent extends EventData {
   /**
-   * The player index that will be removed
+   * The index of the removed player.
    */
   readonly player_index: PlayerIndex
   /**
@@ -3886,7 +3970,7 @@ interface OnSurfaceDeletedEvent extends EventData {
 }
 
 /**
- * Called after a surface is imported.
+ * Called after a surface is imported via the map editor.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_surface_imported Online documentation}
  */
 interface OnSurfaceImportedEvent extends EventData {

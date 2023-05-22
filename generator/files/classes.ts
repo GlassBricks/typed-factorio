@@ -385,7 +385,10 @@ function generateClass(
 
     function getSubclasses(member: Method | Attribute): string[] | undefined {
       const existingMember = existing?.members[member.name]?.[0]
-      return (existingMember && getAnnotations(existingMember as ts.JSDocContainer).subclasses) ?? member.subclasses
+      return (
+        (existingMember && getAnnotations(existingMember as unknown as ts.JSDocContainer).subclasses) ??
+        member.subclasses
+      )
     }
   }
 

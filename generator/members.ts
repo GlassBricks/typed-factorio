@@ -210,7 +210,7 @@ export function mapMethod(
   if (method.takes_table && method.variant_parameter_groups !== undefined) {
     assert(!method.variadic_type)
     const name =
-      (firstExistingMethod && getAnnotations(firstExistingMethod as ts.JSDocContainer).variantsName?.[0]) ??
+      (firstExistingMethod && getAnnotations(firstExistingMethod as unknown as ts.JSDocContainer).variantsName?.[0]) ??
       removeLuaPrefix(parent!) + toPascalCase(method.name)
     const { description } = createVariantParameterTypes(context, name, method, RWUsage.Write, statements)
     method.description += `\n\n${description}`
