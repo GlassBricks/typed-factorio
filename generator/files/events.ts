@@ -7,7 +7,7 @@ import { mapParameterToProperty } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { sortByOrder } from "../util.js"
 
-export function preprocessEvents(context: GenerationContext) {
+export function preprocessEvents(context: GenerationContext): void {
   for (const event of context.apiDocs.events) {
     context.typeNames[event.name] = getMappedEventName(event.name)
     for (const parameter of event.data) {

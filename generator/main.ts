@@ -36,7 +36,7 @@ if (!jsonFile) {
 }
 
 console.log("Reading input")
-const apiJson = JSON.parse(fs.readFileSync(path.join(srcDir, jsonFile!), "utf-8")) as FactorioApiJson
+const apiJson = JSON.parse(fs.readFileSync(path.join(srcDir, jsonFile), "utf-8")) as FactorioApiJson
 const jsonVersion = apiJson.application_version
 
 console.log(`  factorio version ${jsonVersion}`)
@@ -56,6 +56,7 @@ const { files, hasWarnings } = generateDefinitions(apiJson, manualDefines, typeC
 console.log("Writing files")
 
 const outDir = path.resolve(__dirname, "..")
+// eslint-disable-next-line prefer-const
 for (let [name, content] of files) {
   console.log(`  formatting ${name}`)
   content = prettier.format(content, {
@@ -64,7 +65,7 @@ for (let [name, content] of files) {
     semi: false,
   })
   const fileName = path.join(outDir, name)
-  // make sure directory exists
+  // make sure the directory exists
   fs.mkdirSync(path.dirname(fileName), { recursive: true })
   fs.writeFileSync(fileName, content)
 }

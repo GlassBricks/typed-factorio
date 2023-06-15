@@ -1,51 +1,62 @@
 {
   "root": true,
-  "env": {
-    "es2021": true
-  },
+  "plugins": ["@typescript-eslint", "import"],
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": [
-      "./tsconfig.json",
-      "./generator/tsconfig.json"
-    ]
-  },
-  "extends": ["standard", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
-  "plugins": ["@typescript-eslint"],
   "settings": {
-    "import/resolver": {
-      "typescript": {}
-    }
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
+    "import/resolver": "typescript"
   },
+  "parserOptions": {
+    "project": ["tsconfig.json", "generator/tsconfig.json"]
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:eslint-comments/recommended",
+    "plugin:prettier/recommended"
+  ],
   "rules": {
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": "off",
-    "no-shadow": "off",
-    "@typescript-eslint/no-shadow": ["warn"],
+    // fixes
     "no-useless-constructor": "off",
-    "@typescript-eslint/no-useless-constructor": "warn",
-    "max-len": "off",
-    "camelcase": "off",
-    "spaced-comment": "warn",
-    "lines-between-class-members": "warn",
-    "prettier/prettier": "warn",
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-useless-constructor": "error",
+    // off
+    "no-inner-declarations": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/restrict-plus-operands": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    // modifications/weakening
     "@typescript-eslint/no-inferrable-types": [
-      "warn",
-      {
-        "ignoreParameters": true,
-        "ignoreProperties": true
+      "warn", {
+        "ignoreProperties": true,
+        "ignoreParameters": true
       }
     ],
-    "import/prefer-default-export": "off",
-    "@typescript-eslint/no-empty-interface": "warn",
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "quotes": [
-      "warn",
-      "double",
-      {
-        "avoidEscape": true
+    "no-constant-condition": [
+      "error", {
+        "checkLoops": false
       }
-    ]
+    ],
+    "prettier/prettier": "warn",
+    // on
+    "no-template-curly-in-string": "error",
+    "no-lonely-if": "error",
+    "eslint-comments/no-unused-disable": "error",
+    "eslint-comments/disable-enable-pair": [
+      "error", {
+        "allowWholeFile": true
+      }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "error"
   }
 }

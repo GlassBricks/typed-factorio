@@ -183,7 +183,7 @@ function createDef(node: ts.Statement): AnyDef {
   function getNamespaceMembers(namespace: ts.NamespaceDeclaration): Record<string, NamespaceDefMember> {
     const result: Record<string, NamespaceDefMember> = {}
     if (!ts.isModuleBlock(namespace.body)) return getNamespaceMembers(namespace.body)
-    for (const statement of (namespace.body as ts.ModuleBlock).statements) {
+    for (const statement of namespace.body.statements) {
       const def = createDef(statement)
       if (!def) continue
       if (def.kind === "namespace" || def.kind === "const" || def.kind === "enum") {
@@ -212,7 +212,7 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
   return result
 }
 
-export function preprocessManualDefinitions(context: GenerationContext) {
+export function preprocessManualDefinitions(context: GenerationContext): void {
   for (const def of Object.values(context._manualDefinitions as Record<string, RootDef>)) {
     const addBefore = def.annotations.addBefore?.[0]
     const addAfter = def.annotations.addAfter?.[0]
@@ -251,7 +251,7 @@ export function preprocessManualDefinitions(context: GenerationContext) {
   }
 }
 
-export function checkManualDefinitions(context: GenerationContext) {
+export function checkManualDefinitions(context: GenerationContext): void {
   const typeNames = new Set(Object.values(context.typeNames))
   for (const [name, d] of Object.entries(context._manualDefinitions)) {
     const def = d!

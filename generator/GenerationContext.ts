@@ -78,7 +78,7 @@ export default class GenerationContext {
     return undefined
   }
 
-  warning(...args: unknown[]) {
+  warning(...args: unknown[]): void {
     console.log(chalk.yellow(...args))
     this.hasWarnings = true
   }

@@ -8,7 +8,7 @@ import { analyzeType, RWUsage } from "../read-write-types.js"
 import { mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
 
-export function preprocessBuiltins(context: GenerationContext) {
+export function preprocessBuiltins(context: GenerationContext): void {
   for (const builtin of context.apiDocs.builtin_types) {
     if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
     context.typeNames[builtin.name] = builtin.name
@@ -18,14 +18,14 @@ export function preprocessBuiltins(context: GenerationContext) {
   }
 }
 
-export function preprocessGlobalObjects(context: GenerationContext) {
+export function preprocessGlobalObjects(context: GenerationContext): void {
   for (const globalObject of context.apiDocs.global_objects) {
     context.typeNames[globalObject.name] = globalObject.name
     analyzeType(context, globalObject.type, RWUsage.Read)
   }
 }
 
-export function preprocessGlobalFunctions(context: GenerationContext) {
+export function preprocessGlobalFunctions(context: GenerationContext): void {
   for (const globalFunction of context.apiDocs.global_functions) {
     context.typeNames[globalFunction.name] = globalFunction.name
     analyzeMethod(context, globalFunction)

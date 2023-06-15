@@ -8,7 +8,7 @@ import { AnyDef } from "../manualDefinitions.js"
 import { sortByOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
 
-export function preprocessDefines(context: GenerationContext) {
+export function preprocessDefines(context: GenerationContext): void {
   const addDefine = (define: Define, parent: string) => {
     const name = parent + (parent ? "." : "") + define.name
     context.typeNames[name] = name

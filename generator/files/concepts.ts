@@ -20,7 +20,7 @@ const tableOrArrayConcepts = new Map<Concept, { table: TableComplexType; array: 
  * Should be last to preprocess
  * @param context
  */
-export function preprocessConcepts(context: GenerationContext) {
+export function preprocessConcepts(context: GenerationContext): void {
   const concepts = context.apiDocs.concepts
   concepts.sort(sortByOrder)
 

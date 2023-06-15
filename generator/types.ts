@@ -241,10 +241,8 @@ function mapUnionType(
       .map((x) => x.trim())
       .join("\n")
     description = unionDescriptionHeader + description
-  } else {
-    if (types.some((t) => t.description)) {
-      context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
-    }
+  } else if (types.some((t) => t.description)) {
+    context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
   }
 
   let altType: ts.TypeNode[] | undefined

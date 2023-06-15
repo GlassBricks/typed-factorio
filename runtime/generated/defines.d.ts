@@ -88,47 +88,47 @@ declare namespace defines {
      * Attack another entity.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.attack Online documentation}
      */
-    attack,
+    attack = 0,
     /**
      * Go to a specific position.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.go_to_location Online documentation}
      */
-    go_to_location,
+    go_to_location = 1,
     /**
      * Chain commands together, see {@link defines.compound_command}.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.compound Online documentation}
      */
-    compound,
+    compound = 2,
     /**
      * Do what your group wants you to do.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.group Online documentation}
      */
-    group,
+    group = 3,
     /**
      * Go to a place and attack what you see.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.attack_area Online documentation}
      */
-    attack_area,
+    attack_area = 4,
     /**
      * Chill.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.wander Online documentation}
      */
-    wander,
+    wander = 5,
     /**
      * Flee from another entity.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.flee Online documentation}
      */
-    flee,
+    flee = 6,
     /**
      * Stop moving and stay where you are.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.stop Online documentation}
      */
-    stop,
+    stop = 7,
     /**
      * Go to a position and build a base there.
      * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.command.build_base Online documentation}
      */
-    build_base,
+    build_base = 8,
   }
   /**
    * How commands are joined together in a compound command (see {@link defines.command.compound}).

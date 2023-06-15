@@ -10,7 +10,7 @@ import { mapType } from "../types.js"
 import { assertNever, sortByOrder } from "../util.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 
-export function preprocessClasses(context: GenerationContext) {
+export function preprocessClasses(context: GenerationContext): void {
   for (const clazz of context.apiDocs.classes) {
     context.typeNames[clazz.name] = clazz.name
     for (const method of clazz.methods) {

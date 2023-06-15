@@ -6,7 +6,7 @@ export const printer = ts.createPrinter({
 })
 
 const emptySourceFile = ts.createSourceFile("", "", ts.ScriptTarget.ESNext)
-export function printNode(node: ts.Node) {
+export function printNode(node: ts.Node): string {
   return printer.printNode(ts.EmitHint.Unspecified, node, emptySourceFile)
 }
 
@@ -103,7 +103,7 @@ export function removeLuaPrefix(str: string): string {
   return str
 }
 
-export function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc, sourceFile?: ts.SourceFile) {
+export function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc, sourceFile?: ts.SourceFile): ts.Node {
   const text: string = sourceFile ? jsDoc.getText(sourceFile) + "\n" : printNode(jsDoc)
   node.emitNode = node.emitNode ?? {}
   ts.addSyntheticLeadingComment(

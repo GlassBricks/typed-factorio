@@ -11,7 +11,7 @@ import { makeNullable, mapMemberType, mapType, RWType } from "./types.js"
 import { getFirst, sortByOrder } from "./util.js"
 import { createVariantParameterTypes } from "./variantParameterGroups.js"
 
-export function analyzeMethod(context: GenerationContext, method: Method) {
+export function analyzeMethod(context: GenerationContext, method: Method): void {
   for (const parameter of method.parameters) {
     analyzeType(context, parameter.type, RWUsage.Write)
   }
@@ -211,7 +211,7 @@ export function mapMethod(
     assert(!method.variadic_type)
     const name =
       (firstExistingMethod && getAnnotations(firstExistingMethod as unknown as ts.JSDocContainer).variantsName?.[0]) ??
-      removeLuaPrefix(parent!) + toPascalCase(method.name)
+      removeLuaPrefix(parent) + toPascalCase(method.name)
     const { description } = createVariantParameterTypes(context, name, method, RWUsage.Write, statements)
     method.description += `\n\n${description}`
 

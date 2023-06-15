@@ -66,7 +66,7 @@ export function analyzeType(context: GenerationContext, type: Type, usage: RWUsa
   }
 }
 
-export function finalizeConceptUsageAnalysis(context: GenerationContext) {
+export function finalizeConceptUsageAnalysis(context: GenerationContext): void {
   while (context.conceptUsagesToPropagate.size > 0) {
     const [concept, usage] = context.conceptUsagesToPropagate.entries().next().value
     context.conceptUsagesToPropagate.delete(concept)
@@ -76,7 +76,7 @@ export function finalizeConceptUsageAnalysis(context: GenerationContext) {
   }
 }
 
-export function recordConceptDependencies(context: GenerationContext, concept: Concept) {
+export function recordConceptDependencies(context: GenerationContext, concept: Concept): void {
   analyzeTypeWorker(concept.type)
 
   function analyzeTypeWorker(type: Type): void {
@@ -119,7 +119,7 @@ export function setReadWriteType(
   context: GenerationContext,
   concept: Concept,
   type: { read: string | ts.TypeNode; write: string | ts.TypeNode }
-) {
+): void {
   const { conceptUsages, conceptReferencedBy, conceptReadWriteTypes } = context
   if (conceptUsages.get(concept) !== RWUsage.ReadWrite) {
     context.warning(
