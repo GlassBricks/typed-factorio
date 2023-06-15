@@ -20,6 +20,10 @@ interface CustomInputEvent extends EventData {
    */
   readonly cursor_position: MapPosition
   /**
+   * The mouse cursor display location when the custom input was activated.
+   */
+  readonly cursor_display_location: GuiLocation
+  /**
    * Information about the prototype that is selected when the custom input is used. Needs to be enabled on the custom input's prototype. `nil` if none is selected.
    */
   readonly selected_prototype?: SelectedPrototypeData
@@ -549,6 +553,25 @@ interface OnEntityClonedEvent extends EventData {
 }
 
 /**
+ * Called after an entity has been recolored either by the player or through script.
+ * @see {@link https://lua-api.factorio.com/latest/events.html#on_entity_color_changed Online documentation}
+ */
+interface OnEntityColorChangedEvent extends EventData {
+  /**
+   * The entity that was recolored.
+   */
+  readonly entity: LuaEntity
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_entity_color_changed
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
  * Called when an entity is damaged. Can be filtered using {@link LuaEntityDamagedEventFilter}.
  * @remarks This is not called when an entities health is set directly by another mod.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_entity_damaged Online documentation}
@@ -983,6 +1006,10 @@ interface OnGuiClickEvent extends EventData {
    * The mouse button used if any.
    */
   readonly button: defines.mouse_button_type
+  /**
+   * The display location of the player's cursor.
+   */
+  readonly cursor_display_location: GuiLocation
   /**
    * If alt was pressed.
    */
@@ -2295,6 +2322,26 @@ interface OnPlayerGunInventoryChangedEvent extends EventData {
    * Identifier of the event
    */
   readonly name: typeof defines.events.on_player_gun_inventory_changed
+  /**
+   * Tick the event was generated.
+   */
+  readonly tick: uint
+}
+
+/**
+ * Called when a player's input method changes.
+ * @remarks See {@link LuaPlayer#input_method LuaPlayer::input_method}.
+ * @see {@link https://lua-api.factorio.com/latest/events.html#on_player_input_method_changed Online documentation}
+ */
+interface OnPlayerInputMethodChangedEvent extends EventData {
+  /**
+   * The player whose input method changed.
+   */
+  readonly player_index: PlayerIndex
+  /**
+   * Identifier of the event
+   */
+  readonly name: typeof defines.events.on_player_input_method_changed
   /**
    * Tick the event was generated.
    */

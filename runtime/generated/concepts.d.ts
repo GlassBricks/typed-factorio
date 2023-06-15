@@ -800,26 +800,26 @@ interface EnemyExpansionMapSettings {
    */
   readonly settler_group_max_size: uint
   /**
-   * The minimum time between expansions in ticks. The actual cooldown is adjusted to the current evolution levels. Defaults to `4*3,600=14,400` ticks.
+   * The minimum time between expansions in ticks. The actual cooldown is adjusted to the current evolution levels. Defaults to `4*3'600=14'400` ticks.
    */
   readonly min_expansion_cooldown: uint
   /**
-   * The maximum time between expansions in ticks. The actual cooldown is adjusted to the current evolution levels. Defaults to `60*3,600=216,000` ticks.
+   * The maximum time between expansions in ticks. The actual cooldown is adjusted to the current evolution levels. Defaults to `60*3'600=216'000` ticks.
    */
   readonly max_expansion_cooldown: uint
 }
 
 interface UnitGroupMapSettings {
   /**
-   * The minimum amount of time in ticks a group will spend gathering before setting off. The actual time is a random time between the minimum and maximum times. Defaults to `3,600` ticks.
+   * The minimum amount of time in ticks a group will spend gathering before setting off. The actual time is a random time between the minimum and maximum times. Defaults to `3'600` ticks.
    */
   readonly min_group_gathering_time: uint
   /**
-   * The maximum amount of time in ticks a group will spend gathering before setting off. The actual time is a random time between the minimum and maximum times. Defaults to `10*3,600=36,000` ticks.
+   * The maximum amount of time in ticks a group will spend gathering before setting off. The actual time is a random time between the minimum and maximum times. Defaults to `10*3'600=36'000` ticks.
    */
   readonly max_group_gathering_time: uint
   /**
-   * After gathering has finished, the group is allowed to wait this long in ticks for delayed members. New members are not accepted anymore however. Defaults to `2*3,600=7,200` ticks.
+   * After gathering has finished, the group is allowed to wait this long in ticks for delayed members. New members are not accepted anymore however. Defaults to `2*3'600=7'200` ticks.
    */
   readonly max_wait_time_for_late_members: uint
   /**
@@ -889,11 +889,11 @@ interface PathFinderMapSettings {
    */
   readonly goal_pressure_ratio: double
   /**
-   * The maximum number of nodes that are expanded per tick. Defaults to `1,000`.
+   * The maximum number of nodes that are expanded per tick. Defaults to `1'000`.
    */
   readonly max_steps_worked_per_tick: double
   /**
-   * The maximum amount of work each pathfinding job is allowed to do per tick. Defaults to `8,000`.
+   * The maximum amount of work each pathfinding job is allowed to do per tick. Defaults to `8'000`.
    */
   readonly max_work_done_per_tick: uint
   /**

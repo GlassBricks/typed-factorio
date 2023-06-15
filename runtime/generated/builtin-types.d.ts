@@ -15,7 +15,7 @@ type float = number
 type double = number
 
 /**
- * 32-bit signed integer. Possible values are -2,147,483,648 to 2,147,483,647.
+ * 32-bit signed integer. Possible values are -2'147'483'648 to 2'147'483'647.
  * @see {@link https://lua-api.factorio.com/latest/Builtin-Types.html#int Online documentation}
  */
 type int = number
@@ -27,7 +27,7 @@ type int = number
 type int8 = number
 
 /**
- * 32-bit unsigned integer. Possible values are 0 to 4,294,967,295.
+ * 32-bit unsigned integer. Possible values are 0 to 4'294'967'295.
  * @see {@link https://lua-api.factorio.com/latest/Builtin-Types.html#uint Online documentation}
  */
 type uint = number
@@ -45,7 +45,7 @@ type uint8 = number
 type uint16 = number
 
 /**
- * 64-bit unsigned integer. Possible values are 0 to 18,446,744,073,709,551,615.
+ * 64-bit unsigned integer. Possible values are 0 to 18'446'744'073'709'551'615.
  * @see {@link https://lua-api.factorio.com/latest/Builtin-Types.html#uint64 Online documentation}
  */
 type uint64 = number

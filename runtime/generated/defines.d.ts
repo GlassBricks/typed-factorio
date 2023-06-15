@@ -1342,6 +1342,10 @@ declare namespace defines {
      */
     const on_gui_leave: EventId<OnGuiLeaveEvent>
     /**
+     * Event type: {@link OnEntityColorChangedEvent}
+     */
+    const on_entity_color_changed: EventId<OnEntityColorChangedEvent>
+    /**
      * Event type: {@link OnCutsceneStartedEvent}
      */
     const on_cutscene_started: EventId<OnCutsceneStartedEvent>
@@ -1349,6 +1353,10 @@ declare namespace defines {
      * Event type: {@link OnCutsceneFinishedEvent}
      */
     const on_cutscene_finished: EventId<OnCutsceneFinishedEvent>
+    /**
+     * Event type: {@link OnPlayerInputMethodChangedEvent}
+     */
+    const on_player_input_method_changed: EventId<OnPlayerInputMethodChangedEvent>
   }
   /**
    * See the {@linkplain https://lua-api.factorio.com/latest/events.html events page} for more info on what events contain and when they get raised.
@@ -1364,6 +1372,23 @@ declare namespace defines {
     fifty_hours,
     two_hundred_fifty_hours,
     one_thousand_hours,
+  }
+  enum game_controller_interaction {
+    /**
+     * Game controller will always hover this element regardless of type or state.
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.game_controller_interaction.always Online documentation}
+     */
+    always,
+    /**
+     * Hover according to the element type and implementation.
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.game_controller_interaction.never Online documentation}
+     */
+    never,
+    /**
+     * Never hover this element with a game controller.
+     * @see {@link https://lua-api.factorio.com/latest/defines.html#defines.game_controller_interaction.normal Online documentation}
+     */
+    normal,
   }
   enum group_state {
     gathering,

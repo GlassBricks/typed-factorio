@@ -1761,6 +1761,16 @@ interface LuaCustomInputPrototype {
    */
   readonly alternative_key_sequence?: string
   /**
+   * The default controller key sequence for this custom input, if any
+   * @see {@link https://lua-api.factorio.com/latest/LuaCustomInputPrototype.html#LuaCustomInputPrototype.controller_key_sequence Online documentation}
+   */
+  readonly controller_key_sequence?: string
+  /**
+   * The default controller alternative key sequence for this custom input, if any
+   * @see {@link https://lua-api.factorio.com/latest/LuaCustomInputPrototype.html#LuaCustomInputPrototype.controller_alternative_key_sequence Online documentation}
+   */
+  readonly controller_alternative_key_sequence?: string
+  /**
    * The linked game control name, if any.
    * @see {@link https://lua-api.factorio.com/latest/LuaCustomInputPrototype.html#LuaCustomInputPrototype.linked_game_control Online documentation}
    */
@@ -3350,6 +3360,9 @@ interface LuaEntity extends LuaControl {
   fluidbox: LuaFluidBox
   /**
    * The backer name assigned to this entity. Entities that support backer names are labs, locomotives, radars, roboports, and train stops. `nil` if this entity doesn't support backer names.
+   *
+   * **Raised events:**
+   * - {@link OnEntityRenamedEvent on_entity_renamed} _instantly_
    * @remarks While train stops get the name of a backer when placed down, players can rename them if they want to. In this case, `backer_name` returns the player-given name of the entity.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.backer_name Online documentation}
    */
@@ -3365,7 +3378,7 @@ interface LuaEntity extends LuaControl {
   /**
    * The ticks left before a ghost, combat robot, highlight box or smoke with trigger is destroyed.
    *
-   * - for ghosts set to uint32 max (4,294,967,295) to never expire.
+   * - for ghosts set to uint32 max (4'294'967'295) to never expire.
    * - for ghosts Cannot be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.time_to_live Online documentation}
    */
@@ -4862,6 +4875,9 @@ interface BaseEntity extends LuaControl {
   fluidbox: LuaFluidBox
   /**
    * The backer name assigned to this entity. Entities that support backer names are labs, locomotives, radars, roboports, and train stops. `nil` if this entity doesn't support backer names.
+   *
+   * **Raised events:**
+   * - {@link OnEntityRenamedEvent on_entity_renamed} _instantly_
    * @remarks While train stops get the name of a backer when placed down, players can rename them if they want to. In this case, `backer_name` returns the player-given name of the entity.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.backer_name Online documentation}
    */
@@ -4877,7 +4893,7 @@ interface BaseEntity extends LuaControl {
   /**
    * The ticks left before a ghost, combat robot, highlight box or smoke with trigger is destroyed.
    *
-   * - for ghosts set to uint32 max (4,294,967,295) to never expire.
+   * - for ghosts set to uint32 max (4'294'967'295) to never expire.
    * - for ghosts Cannot be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.time_to_live Online documentation}
    */
@@ -12035,7 +12051,7 @@ interface LuaGameScript {
    * @param name Name of the new surface.
    * @param settings Map generation settings.
    * @returns The surface that was just created.
-   * @remarks The game currently supports a maximum of 4,294,967,295 surfaces, including the default surface.<br>Surface names must be unique.
+   * @remarks The game currently supports a maximum of 4'294'967'295 surfaces, including the default surface.<br>Surface names must be unique.
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.create_surface Online documentation}
    */
   create_surface(name: string, settings?: MapGenSettingsWrite): LuaSurface
@@ -12454,7 +12470,7 @@ interface LuaGameScript {
    */
   readonly difficulty: defines.difficulty
   /**
-   * Get a table of all the forces that currently exist. This sparse table allows you to find forces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the array part of the table. Iterating with `ipairs()` will not work at all.
+   * Get a table of all the forces that currently exist. This sparse table allows you to find forces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the hash part of the table. Iterating with `ipairs()` will not work at all.
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.forces Online documentation}
    */
   readonly forces: LuaCustomTable<uint | string, LuaForce>
@@ -12625,8 +12641,9 @@ interface LuaGameScript {
    */
   readonly tick: uint
   /**
-   * The number of ticks since this game was 'created'. A game is 'created' either by using "new game" or "new game from scenario".
-   * @remarks This differs over {@link LuaGameScript#tick LuaGameScript::tick} in that making a game from a scenario always starts with ticks_played value at 0 even if the scenario has its own level data where the {@link LuaGameScript#tick LuaGameScript::tick} is > 0.<br>This value has no relation with {@link LuaGameScript#tick LuaGameScript::tick} and can be completely different values.
+   * The number of ticks since this game was created using either "new game" or "new game from scenario". Notably, this number progresses even when the game is {@link LuaGameScript#tick_paused tick_paused}.
+   *
+   * This differs from {@link LuaGameScript#tick LuaGameScript::tick} in that creating a game from a scenario always starts with this value at `0`, even if the scenario has its own level data where the `tick` has progressed past `0`.
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.ticks_played Online documentation}
    */
   readonly ticks_played: uint
@@ -12657,7 +12674,7 @@ interface LuaGameScript {
    */
   speed: float
   /**
-   * Get a table of all the surfaces that currently exist. This sparse table allows you to find surfaces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the array part of the table. Iterating with `ipairs()` will not work at all.
+   * Get a table of all the surfaces that currently exist. This sparse table allows you to find surfaces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the hash part of the table. Iterating with `ipairs()` will not work at all.
    * @see {@link https://lua-api.factorio.com/latest/LuaGameScript.html#LuaGameScript.surfaces Online documentation}
    */
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
@@ -12974,6 +12991,14 @@ interface BaseGuiSpec {
    * Where to position the child element when in the `relative` element.
    */
   readonly anchor?: GuiAnchor
+  /**
+   * How the element should interact with game controllers. Defaults to {@link defines.game_controller_interaction.normal}.
+   */
+  readonly game_controller_interaction?: defines.game_controller_interaction
+  /**
+   * Whether this element will raise {@link OnGuiHoverEvent on_gui_hover} and {@link OnGuiLeaveEvent on_gui_leave}. Defaults to `false`.
+   */
+  readonly raise_hover_events?: boolean
 }
 
 /**
@@ -13675,6 +13700,11 @@ interface BaseGuiElement {
   get location(): GuiLocation | nil
   set location(value: GuiLocation | GuiLocationArray | nil)
   /**
+   * How this element should interact with game controllers.
+   * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.game_controller_interaction Online documentation}
+   */
+  game_controller_interaction: defines.game_controller_interaction
+  /**
    * Whether this GUI element is enabled. Disabled GUI elements don't trigger events when clicked.
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.enabled Online documentation}
    */
@@ -14074,7 +14104,7 @@ interface SpriteButtonGuiElementMembers extends BaseGuiElement {
    */
   auto_toggle: boolean
   /**
-   * Whether this button is currently toggled.
+   * Whether this button is currently toggled. When a button is toggled, it will use the `selected_graphical_set` and `selected_font_color` defined in its style.
    *
    * _Can only be used if this is button or sprite-button_
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.toggled Online documentation}
@@ -14253,7 +14283,7 @@ interface ButtonGuiElementMembers extends BaseGuiElement {
    */
   auto_toggle: boolean
   /**
-   * Whether this button is currently toggled.
+   * Whether this button is currently toggled. When a button is toggled, it will use the `selected_graphical_set` and `selected_font_color` defined in its style.
    *
    * _Can only be used if this is button or sprite-button_
    * @see {@link https://lua-api.factorio.com/latest/LuaGuiElement.html#LuaGuiElement.toggled Online documentation}
@@ -18518,6 +18548,11 @@ interface LuaMiningDrillControlBehavior extends LuaGenericOnOffControlBehavior {
  */
 interface LuaModSettingPrototype {
   /**
+   * Type of this prototype.
+   * @see {@link https://lua-api.factorio.com/latest/LuaModSettingPrototype.html#LuaModSettingPrototype.type Online documentation}
+   */
+  readonly type: string
+  /**
    * Name of this prototype.
    * @see {@link https://lua-api.factorio.com/latest/LuaModSettingPrototype.html#LuaModSettingPrototype.name Online documentation}
    */
@@ -19531,6 +19566,11 @@ interface LuaPlayer extends LuaControl {
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.render_mode Online documentation}
    */
   readonly render_mode: defines.render_mode
+  /**
+   * The input method of the player, mouse and keyboard or game controller
+   * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.input_method Online documentation}
+   */
+  readonly input_method: defines.input_method
   /**
    * If `true`, zoom-to-world noise effect will be disabled and environmental sounds will be based on zoom-to-world view instead of position of player's character.
    * @see {@link https://lua-api.factorio.com/latest/LuaPlayer.html#LuaPlayer.spectator Online documentation}
@@ -22904,7 +22944,7 @@ interface LuaSurface {
     readonly force?: ForceIdentification
   }): boolean
   /**
-   * Find a specific entity at a specific position.
+   * Find an entity of the given type at the given position. This checks both the exact position and the bounding box of the entity.
    * @param entity Entity to look for.
    * @param position Coordinates to look at.
    * @returns `nil` if no such entity is found.
@@ -23426,6 +23466,16 @@ interface LuaSurface {
     force: ForceIdentification
   ): LuaLogisticNetwork | nil
   /**
+   * Find the logistic network with a cell closest to a given position.
+   * @param force Force the logistic network should belong to.
+   * @returns The found network or `nil` if no such network was found.
+   * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_closest_logistic_network_by_position Online documentation}
+   */
+  find_closest_logistic_network_by_position(
+    position: MapPosition | MapPositionArray,
+    force: ForceIdentification
+  ): LuaLogisticNetwork | nil
+  /**
    * Finds all of the logistics networks whose construction area intersects with the given position.
    * @param force Force the logistic networks should belong to.
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.find_logistic_networks_by_construction_area Online documentation}
@@ -23568,11 +23618,18 @@ interface LuaSurface {
    * Gets all tiles of the given types that are connected horizontally or vertically to the given tile position including the given tile position.
    * @param position The tile position to start at.
    * @param tiles The tiles to search for.
+   * @param include_diagonal Include tiles that are connected diagonally.
+   * @param area The area to find connected tiles in. If provided the start position must be in this area.
    * @returns The resulting set of tiles.
    * @remarks This won't find tiles in non-generated chunks.
    * @see {@link https://lua-api.factorio.com/latest/LuaSurface.html#LuaSurface.get_connected_tiles Online documentation}
    */
-  get_connected_tiles(position: TilePosition | TilePositionArray, tiles: readonly string[]): TilePosition[]
+  get_connected_tiles(
+    position: TilePosition | TilePositionArray,
+    tiles: readonly string[],
+    include_diagonal?: boolean,
+    area?: BoundingBoxWrite | BoundingBoxArray
+  ): TilePosition[]
   /**
    * **Raised events:**
    * - {@link OnPreChunkDeletedEvent on_pre_chunk_deleted} _future_tick_
