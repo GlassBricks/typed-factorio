@@ -4020,7 +4020,7 @@ interface LuaEntity extends LuaControl {
    * The storage filter for this logistic storage container.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.storage_filter Online documentation}
    */
-  storage_filter: LuaItemPrototype
+  storage_filter?: LuaItemPrototype
   /**
    * Whether this requester chest is set to also request from buffer chests.
    * @remarks Useable only on entities that have requester slots.
@@ -5165,7 +5165,7 @@ interface BaseEntity extends LuaControl {
    * The storage filter for this logistic storage container.
    * @see {@link https://lua-api.factorio.com/latest/LuaEntity.html#LuaEntity.storage_filter Online documentation}
    */
-  storage_filter: LuaItemPrototype
+  storage_filter?: LuaItemPrototype
   /**
    * Whether this requester chest is set to also request from buffer chests.
    * @remarks Useable only on entities that have requester slots.
@@ -10832,6 +10832,11 @@ interface LuaFluidBox extends Array<Fluid | nil> {
    */
   get_connections(index: uint): LuaFluidBox[]
   /**
+   * Get the fluid box's connections and associated data.
+   * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.get_pipe_connections Online documentation}
+   */
+  get_pipe_connections(index: uint): PipeConnection[]
+  /**
    * Get a fluid box filter
    * @param index The index of the filter to get.
    * @returns The filter at the requested index, or `nil` if there isn't one.
@@ -10864,6 +10869,12 @@ interface LuaFluidBox extends Array<Fluid | nil> {
    * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.get_fluid_system_id Online documentation}
    */
   get_fluid_system_id(index: uint): uint | nil
+  /**
+   * Gets counts of all fluids in the fluid system. May return `nil` for fluid wagon, fluid turret's internal buffer, or a fluidbox which does not belong to a fluid system.
+   * @returns The counts, indexed by fluid name.
+   * @see {@link https://lua-api.factorio.com/latest/LuaFluidBox.html#LuaFluidBox.get_fluid_system_contents Online documentation}
+   */
+  get_fluid_system_contents(index: uint): Record<string, uint> | nil
   /**
    * Flushes all fluid from this fluidbox and its fluid system.
    * @param fluid If provided, only this fluid is flushed.
@@ -20263,6 +20274,10 @@ interface LuaRendering {
      * Length of the dashes that this line has. Used only if gap_length > 0. Default is 0.
      */
     readonly dash_length?: double
+    /**
+     * Starting offset to apply to dashes. Cannot be greater than dash_length + gap_length. Default is 0.
+     */
+    readonly dash_offset?: double
     readonly from: (MapPosition | MapPositionArray) | LuaEntity
     /**
      * Only used if `from` is a LuaEntity.
@@ -20610,6 +20625,9 @@ interface LuaRendering {
      */
     readonly y_scale?: double
     readonly tint?: Color | ColorArray
+    /**
+     * Render layer of the sprite. Defaults to `"arrow"`.
+     */
     readonly render_layer?: RenderLayer
     /**
      * If given, the sprite rotates so that it faces this target. Note that `orientation` is still applied to the sprite.
@@ -20742,6 +20760,9 @@ interface LuaRendering {
      */
     readonly y_scale?: double
     readonly tint?: Color | ColorArray
+    /**
+     * Render layer of the animation. Defaults to `"arrow"`.
+     */
     readonly render_layer?: RenderLayer
     /**
      * How many frames the animation goes forward per tick. Default is 1.

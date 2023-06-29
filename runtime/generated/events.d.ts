@@ -554,6 +554,7 @@ interface OnEntityClonedEvent extends EventData {
 
 /**
  * Called after an entity has been recolored either by the player or through script.
+ * @remarks Automatic recoloring due to {@link LuaPlayer#color LuaPlayer::color} will not raise events, as that is a separate mechanism.
  * @see {@link https://lua-api.factorio.com/latest/events.html#on_entity_color_changed Online documentation}
  */
 interface OnEntityColorChangedEvent extends EventData {

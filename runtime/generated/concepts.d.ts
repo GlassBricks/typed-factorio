@@ -628,6 +628,11 @@ interface GameViewSettings {
    */
   show_map_view_options: boolean
   /**
+   * Shows or hides the tooltip that is displayed when selecting an entity.
+   * @see {@link https://lua-api.factorio.com/latest/Concepts.html#GameViewSettings#GameViewSettings.show_entity_tooltip Online documentation}
+   */
+  show_entity_tooltip: boolean
+  /**
    * Shows or hides quickbar of shortcuts.
    * @see {@link https://lua-api.factorio.com/latest/Concepts.html#GameViewSettings#GameViewSettings.show_quickbar Online documentation}
    */
@@ -637,6 +642,21 @@ interface GameViewSettings {
    * @see {@link https://lua-api.factorio.com/latest/Concepts.html#GameViewSettings#GameViewSettings.show_shortcut_bar Online documentation}
    */
   show_shortcut_bar: boolean
+  /**
+   * Shows or hides the crafting queue.
+   * @see {@link https://lua-api.factorio.com/latest/Concepts.html#GameViewSettings#GameViewSettings.show_crafting_queue Online documentation}
+   */
+  show_crafting_queue: boolean
+  /**
+   * Shows or hides the tool window with the weapons and armor.
+   * @see {@link https://lua-api.factorio.com/latest/Concepts.html#GameViewSettings#GameViewSettings.show_tool_bar Online documentation}
+   */
+  show_tool_bar: boolean
+  /**
+   * Shows or hides the mouse and keyboard/controller button hints in the bottom left corner if they are enabled in the interface settings.
+   * @see {@link https://lua-api.factorio.com/latest/Concepts.html#GameViewSettings#GameViewSettings.show_hotkey_suggestions Online documentation}
+   */
+  show_hotkey_suggestions: boolean
 }
 
 /**
@@ -2387,7 +2407,7 @@ interface HeatConnection {
  */
 interface FluidBoxConnection {
   /**
-   * The connection type: "input", "output", or "input-output".
+   * One of "input", "output", or "input-output".
    */
   readonly type: "input" | "output" | "input-output"
   /**
@@ -2398,6 +2418,37 @@ interface FluidBoxConnection {
    * The maximum tile distance this underground connection can connect at if this is an underground pipe.
    */
   readonly max_underground_distance?: uint
+}
+
+/**
+ * A single pipe connection for a given fluidbox.
+ * @see {@link https://lua-api.factorio.com/latest/Concepts.html#PipeConnection Online documentation}
+ */
+interface PipeConnection {
+  /**
+   * One of "input", "output", or "input-output".
+   */
+  readonly flow_direction: "input" | "output" | "input-output"
+  /**
+   * One of "normal" or "underground".
+   */
+  readonly connection_type: "normal" | "underground"
+  /**
+   * The absolute position of this connection within the entity.
+   */
+  readonly position: MapPosition
+  /**
+   * The absolute position of the connection's intended target.
+   */
+  readonly target_position: MapPosition
+  /**
+   * The connected fluidbox, if any.
+   */
+  readonly target?: LuaFluidBox
+  /**
+   * The index of the connected fluidbox, if any.
+   */
+  readonly target_index?: uint
 }
 
 interface ArithmeticCombinatorParameters {
