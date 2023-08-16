@@ -20,13 +20,14 @@
   "scripts": {
     "generate": "ts-node --esm -P generator/tsconfig.json generator/main.ts",
     "clean": "rimraf runtime/generated",
+    "pretest": "npm run generate",
     "test": "jest",
     "lint": "eslint .",
-    "check": "yarn run lint && yarn run generate && yarn run test",
-    "prepublishOnly": "yarn run check",
+    "check": "npm run lint && npm run test",
+    "prepublishOnly": "npm run check",
     "download-latest-runtime-api": "ts-node --esm ./scripts/download-latest.ts",
     "new-version-changelog": "ts-node --esm ./scripts/new-version-changelog.ts",
-    "next-factorio-version": "yarn run download-latest-runtime-api && yarn run clean && yarn run check && yarn run new-version-changelog && npm version minor"
+    "next-factorio-version": "npm run download-latest-runtime-api && npm run clean && npm run check && npm run new-version-changelog && npm version minor"
   },
   "peerDependencies": {
     "lua-types": "^2.13.1",
@@ -43,7 +44,7 @@
     "eslint": "~8.42.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-import-resolver-typescript": "^3.5.5",
-    "eslint-plugin-eslint-comments": "latest",
+    "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -55,6 +56,5 @@
     "ts-node": "^10.9.1",
     "typescript": "~5.1.3",
     "typescript-to-lua": "^1.16.2"
-  },
-  "packageManager": "yarn@3.2.3"
+  }
 }
