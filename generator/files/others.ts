@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
 import { addJsDoc } from "../documentation.js"
-import GenerationContext from "../GenerationContext.js"
+import { GenerationContext } from "../GenerationContext.js"
 import { createConst, Modifiers } from "../genUtil.js"
 import { analyzeMethod, mapFunction } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"

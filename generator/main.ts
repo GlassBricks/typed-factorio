@@ -3,7 +3,7 @@ import * as fs from "fs"
 import * as path from "path"
 import * as prettier from "prettier"
 import ts from "typescript"
-import { FactorioApiJson } from "./FactorioApiJson.js"
+import { FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
 import { generateDefinitions } from "./generate.js"
 import { fileURLToPath } from "url"
 
@@ -36,7 +36,7 @@ if (!jsonFile) {
 }
 
 console.log("Reading input")
-const apiJson = JSON.parse(fs.readFileSync(path.join(srcDir, jsonFile), "utf-8")) as FactorioApiJson
+const apiJson = JSON.parse(fs.readFileSync(path.join(srcDir, jsonFile), "utf-8")) as FactorioRuntimeApiJson
 const jsonVersion = apiJson.application_version
 
 console.log(`  factorio version ${jsonVersion}`)

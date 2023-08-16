@@ -2,7 +2,7 @@ import * as fs from "fs"
 import * as path from "path"
 import ts from "typescript"
 import { DefinitionsFile } from "./DefinitionsFile.js"
-import { FactorioApiJson } from "./FactorioApiJson.js"
+import { FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
 import { generateClasses, preprocessClasses } from "./files/classes.js"
 import { generateConcepts, preprocessConcepts } from "./files/concepts.js"
 import { generateDefines, preprocessDefines } from "./files/defines.js"
@@ -16,7 +16,7 @@ import {
   preprocessGlobalFunctions,
   preprocessGlobalObjects,
 } from "./files/others.js"
-import GenerationContext from "./GenerationContext.js"
+import { GenerationContext } from "./GenerationContext.js"
 import { printer } from "./genUtil.js"
 import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions.js"
 import { fileURLToPath } from "url"
@@ -26,7 +26,7 @@ const __dirname = path.dirname(__filename)
 
 const header = "// This is an auto-generated file. Do not edit directly!\n\n"
 export function generateDefinitions(
-  apiJson: FactorioApiJson,
+  apiJson: FactorioRuntimeApiJson,
   manualDefinitionsSource: ts.SourceFile,
   checker: ts.TypeChecker
 ): { files: Map<string, string>; hasWarnings: boolean } {

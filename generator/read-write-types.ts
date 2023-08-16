@@ -1,7 +1,7 @@
 import assert from "assert"
 import ts from "typescript"
-import { Attribute, Concept, Type } from "./FactorioApiJson.js"
-import GenerationContext from "./GenerationContext.js"
+import { Attribute, Concept, Type } from "./FactorioRuntimeApiJson.js"
+import { GenerationContext } from "./GenerationContext.js"
 import { assertNever } from "./util.js"
 
 export enum RWUsage {
@@ -38,7 +38,7 @@ export function analyzeType(context: GenerationContext, type: Type, usage: RWUsa
       return type.options.forEach((t) => analyzeType(context, t, usage))
     case "function":
       return type.parameters.forEach((p) => analyzeType(context, p, RWUsage.Read))
-    case "struct":
+    case "LuaStruct":
       return type.attributes.forEach((a) => analyzeType(context, a.type, usage))
     case "table":
     case "tuple": {
@@ -99,7 +99,7 @@ export function recordConceptDependencies(context: GenerationContext, concept: C
         return type.options.forEach(analyzeTypeWorker)
       case "function":
         return // function parameters are always Read, so don't need to record dependencies
-      case "struct":
+      case "LuaStruct":
         return type.attributes.forEach((a) => analyzeTypeWorker(a.type))
       case "table":
       case "tuple": {

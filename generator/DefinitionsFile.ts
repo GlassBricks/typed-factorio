@@ -1,5 +1,5 @@
 import ts from "typescript"
-import GenerationContext from "./GenerationContext.js"
+import { GenerationContext } from "./GenerationContext.js"
 import { createComment } from "./genUtil.js"
 
 export class StatementsList {

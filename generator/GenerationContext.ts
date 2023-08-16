@@ -1,10 +1,10 @@
 import chalk from "chalk"
 import ts from "typescript"
-import { Class, Concept, Define, Event, FactorioApiJson } from "./FactorioApiJson.js"
+import { Class, Concept, Define, Event, FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
 import { InterfaceDef, NamespaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions.js"
 import { RWUsage } from "./read-write-types.js"
 
-export default class GenerationContext {
+export class GenerationContext {
   public readonly _manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)
 
   builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
@@ -32,14 +32,14 @@ export default class GenerationContext {
   hasWarnings: boolean = false
 
   constructor(
-    readonly apiDocs: FactorioApiJson,
+    readonly apiDocs: FactorioRuntimeApiJson,
     readonly manualDefinitionsSource: ts.SourceFile,
     private readonly checker: ts.TypeChecker
   ) {
     if (apiDocs.application !== "factorio") {
       throw new Error("Unsupported application " + apiDocs.application)
     }
-    if (apiDocs.api_version !== 3) {
+    if (apiDocs.api_version !== 4) {
       throw new Error("Unsupported api version " + apiDocs.api_version)
     }
   }

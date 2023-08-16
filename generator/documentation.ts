@@ -1,7 +1,7 @@
 import ts from "typescript"
-import { EventRaised, WithNotes } from "./FactorioApiJson.js"
+import { EventRaised, WithNotes } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./files/events.js"
-import GenerationContext from "./GenerationContext.js"
+import { GenerationContext } from "./GenerationContext.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
 

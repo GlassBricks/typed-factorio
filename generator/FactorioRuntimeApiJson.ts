@@ -1,8 +1,10 @@
-export interface FactorioApiJson {
+// runtime stage
+// reference: https://lua-api.factorio.com/1.1.89/auxiliary/json-docs-runtime.html
+export interface FactorioRuntimeApiJson {
   application: "factorio"
   stage: "runtime"
   application_version: string
-  api_version: 3
+  api_version: 4
 
   classes: Class[]
   events: Event[]
@@ -12,7 +14,6 @@ export interface FactorioApiJson {
   global_objects: GlobalObject[]
   global_functions: Method[]
 }
-
 export interface BasicMember {
   name: string
   order: number
@@ -71,70 +72,72 @@ export interface GlobalObject extends BasicMember {
   type: string
 }
 
-export interface BaseComplexType {
-  complex_type: string
+export interface EventRaised extends BasicMember {
+  timeframe: "instantly" | "current_tick" | "future_tick"
+  optional: boolean
 }
 
-export interface TypeComplexType {
+// type
+
+export type Type =
+  | string
+  | TypeType
+  | UnionType
+  | ArrayType
+  | DictionaryType
+  | FunctionType
+  | LiteralType
+  | LuaLazyLoadedValueType
+  | LuaStructType
+  | TableType
+
+export interface TypeType {
   complex_type: "type"
   value: Type
   description: string
 }
 
-export interface UnionComplexType extends BaseComplexType {
+export interface UnionType {
   complex_type: "union"
   options: Type[]
   full_format: boolean
 }
 
-export interface ArrayComplexType extends BaseComplexType {
+export interface ArrayType {
   complex_type: "array"
   value: Type
 }
 
-export interface DictionaryComplexType extends BaseComplexType {
+export interface DictionaryType {
   complex_type: "dictionary" | "LuaCustomTable"
   key: Type
   value: Type
 }
 
-export interface FunctionComplexType extends BaseComplexType {
+export interface FunctionType {
   complex_type: "function"
   parameters: Type[]
 }
 
-export interface LiteralComplexType extends BaseComplexType {
+export interface LiteralType {
   complex_type: "literal"
   value: string | number | boolean
   description?: string
 }
 
-export interface LuaLazyLoadedValueComplexType extends BaseComplexType {
+export interface LuaLazyLoadedValueType {
   complex_type: "LuaLazyLoadedValue"
   value: Type
 }
 
-export interface StructComplexType extends BaseComplexType {
-  complex_type: "struct"
+export interface LuaStructType {
+  complex_type: "LuaStruct"
   attributes: Attribute[]
 }
 
-export interface TableComplexType extends BaseComplexType, WithVariantParameterGroups {
+export interface TableType extends WithVariantParameterGroups {
   complex_type: "table" | "tuple"
 }
-
-export type ComplexType =
-  | TypeComplexType
-  | UnionComplexType
-  | ArrayComplexType
-  | DictionaryComplexType
-  | FunctionComplexType
-  | LiteralComplexType
-  | LuaLazyLoadedValueComplexType
-  | StructComplexType
-  | TableComplexType
-
-export type Type = string | ComplexType
 
 export interface EventRaised extends BasicMember {
   timeframe: "instantly" | "current_tick" | "future_tick"
@@ -151,13 +154,13 @@ export interface ParameterGroup extends BasicMember {
 }
 
 export interface Method extends BasicMember, WithNotes, WithVariantParameterGroups {
+  raises?: EventRaised[]
   subclasses?: string[]
   variadic_type?: Type
   variadic_description?: string
   takes_table: boolean
   table_is_optional?: boolean
   return_values: Omit<Parameter, "name">[]
-  raises?: EventRaised[]
 }
 
 export interface Attribute extends BasicMember, WithNotes {

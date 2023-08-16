@@ -2,8 +2,8 @@ import assert from "assert"
 import ts from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
 import { addJsDoc, createSeeTag } from "../documentation.js"
-import { Concept, TableComplexType } from "../FactorioApiJson.js"
-import GenerationContext from "../GenerationContext.js"
+import { Concept, TableType } from "../FactorioRuntimeApiJson.js"
+import { GenerationContext } from "../GenerationContext.js"
 import { addFakeJSDoc } from "../genUtil.js"
 import {
   finalizeConceptUsageAnalysis,
@@ -15,7 +15,7 @@ import { mapConceptType, mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 
-const tableOrArrayConcepts = new Map<Concept, { table: TableComplexType; array: TableComplexType }>()
+const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableType }>()
 /**
  * Should be last to preprocess
  * @param context
@@ -73,8 +73,8 @@ function tryGetTableOrArrayConcept(
   concept: Concept
 ):
   | {
-      table: TableComplexType
-      array: TableComplexType
+      table: TableType
+      array: TableType
     }
   | undefined {
   const type = concept.type
@@ -83,8 +83,8 @@ function tryGetTableOrArrayConcept(
   const arrayType = type.options.find((o) => typeof o !== "string" && o.complex_type === "tuple")
   if (!tableType || !arrayType) return undefined
   return {
-    table: tableType as TableComplexType,
-    array: arrayType as TableComplexType,
+    table: tableType as TableType,
+    array: arrayType as TableType,
   }
 }
 
@@ -105,7 +105,7 @@ function createVariantParameterConcept(
   const {
     description,
     declarations: [readDecl, writeDecl],
-  } = createVariantParameterTypes(context, concept.name, concept.type as TableComplexType, conceptUsage, statements)
+  } = createVariantParameterTypes(context, concept.name, concept.type as TableType, conceptUsage, statements)
   concept.description += `\n\n${description}`
   addJsDoc(context, readDecl, concept, concept.name)
   if (writeDecl) {
@@ -204,7 +204,7 @@ function createTableOrArrayConcept(
   context: GenerationContext,
   statements: StatementsList,
   concept: Concept,
-  tableOrArray: { table: TableComplexType; array: TableComplexType }
+  tableOrArray: { table: TableType; array: TableType }
 ): void {
   // /** description */
   // interface Concept { ...table read }

@@ -2,19 +2,19 @@ import assert from "assert"
 import ts, { TypeNode } from "typescript"
 import { addJsDoc } from "./documentation.js"
 import {
-  ArrayComplexType,
-  DictionaryComplexType,
-  FunctionComplexType,
-  LiteralComplexType,
-  LuaLazyLoadedValueComplexType,
-  StructComplexType,
-  TableComplexType,
+  ArrayType,
+  DictionaryType,
+  FunctionType,
+  LiteralType,
+  LuaLazyLoadedValueType,
+  LuaStructType,
+  TableType,
   Type,
-  TypeComplexType,
-  UnionComplexType,
-} from "./FactorioApiJson.js"
+  TypeType,
+  UnionType,
+} from "./FactorioRuntimeApiJson.js"
 import { IndexTypes } from "./files/index-types.js"
-import GenerationContext from "./GenerationContext.js"
+import { GenerationContext } from "./GenerationContext.js"
 import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./members.js"
@@ -106,7 +106,7 @@ function mapTypeInternal(
       return mapLiteralType(context, type)
     case "LuaLazyLoadedValue":
       return mapLuaLazyLoadedValueType(context, type, usage)
-    case "struct":
+    case "LuaStruct":
       return mapStructType(context, type, typeContext)
     case "table":
       return mapTableType(context, type, typeContext, usage)
@@ -145,8 +145,9 @@ function getRwType(
         mainType: getTypeNode(rwType.write),
         asString: toString(rwType.write),
       }
+    default:
+      throw new Error("unknown usage: " + usage)
   }
-  throw new Error("unknown usage: " + usage)
 }
 
 function mapBasicType(
@@ -191,7 +192,7 @@ function tryUseIndexTypeFromBasicType(
 
 function mapTypeType(
   context: GenerationContext,
-  type: TypeComplexType,
+  type: TypeType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -208,7 +209,7 @@ function mapTypeType(
 const unionDescriptionHeader = "\n**Options:**\n"
 function mapUnionType(
   context: GenerationContext,
-  type: UnionComplexType,
+  type: UnionType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -293,7 +294,7 @@ function makeUnion(types: ts.TypeNode[]): ts.TypeNode {
   return ts.factory.createUnionTypeNode(typesArray)
 }
 
-function mapArrayType(context: GenerationContext, type: ArrayComplexType, usage: RWUsage): IntermediateType {
+function mapArrayType(context: GenerationContext, type: ArrayType, usage: RWUsage): IntermediateType {
   const elementType = mapTypeInternal(context, type.value, undefined, usage)
   let mainType: ts.TypeNode = ts.factory.createArrayTypeNode(elementType.mainType)
   // add readonly modifier if write but not read
@@ -345,7 +346,7 @@ function getIndexableType(context: GenerationContext, type: Type): IndexType {
 
 function mapDictionaryType(
   context: GenerationContext,
-  type: DictionaryComplexType,
+  type: DictionaryType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -453,11 +454,7 @@ function makeFlagsType(
   }
 }
 
-function mapLuaCustomTableType(
-  context: GenerationContext,
-  type: DictionaryComplexType,
-  usage: RWUsage
-): IntermediateType {
+function mapLuaCustomTableType(context: GenerationContext, type: DictionaryType, usage: RWUsage): IntermediateType {
   const keyType = mapTypeInternal(context, type.key, undefined, usage)
   const valueType = mapTypeInternal(context, type.value, undefined, usage)
   if (keyType.description || valueType.description) {
@@ -472,7 +469,7 @@ function mapLuaCustomTableType(
   }
 }
 
-function mapFunctionType(context: GenerationContext, type: FunctionComplexType): IntermediateType {
+function mapFunctionType(context: GenerationContext, type: FunctionType): IntermediateType {
   const parameters = type.parameters.map((value, index) => {
     const paramType = mapTypeInternal(context, value, undefined, RWUsage.Read)
     if (paramType.description) context.warning("Function type has parameter with description: " + JSON.stringify(type))
@@ -491,7 +488,7 @@ function mapFunctionType(context: GenerationContext, type: FunctionComplexType):
   }
 }
 
-function mapLiteralType(context: GenerationContext, type: LiteralComplexType): IntermediateType {
+function mapLiteralType(context: GenerationContext, type: LiteralType): IntermediateType {
   const value = type.value
   if (typeof value === "string") {
     return { mainType: Types.stringLiteral(value), asString: `\`"${value}"\``, description: type.description }
@@ -504,7 +501,7 @@ function mapLiteralType(context: GenerationContext, type: LiteralComplexType): I
 
 function mapLuaLazyLoadedValueType(
   context: GenerationContext,
-  type: LuaLazyLoadedValueComplexType,
+  type: LuaLazyLoadedValueType,
   usage: RWUsage
 ): IntermediateType {
   if (usage !== RWUsage.Read) {
@@ -521,7 +518,7 @@ function mapLuaLazyLoadedValueType(
 
 function mapStructType(
   context: GenerationContext,
-  type: StructComplexType,
+  type: LuaStructType,
   typeContext: TypeContext | undefined
 ): IntermediateType {
   assert(typeContext)
@@ -538,7 +535,7 @@ function mapStructType(
 
 function mapTableType(
   context: GenerationContext,
-  type: TableComplexType,
+  type: TableType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -577,7 +574,7 @@ function mapTableType(
 
 function mapTupleType(
   context: GenerationContext,
-  type: TableComplexType,
+  type: TableType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
