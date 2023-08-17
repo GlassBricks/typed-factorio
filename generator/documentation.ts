@@ -154,11 +154,11 @@ function getSubclassesComment(subclasses: string[] | undefined): string | undefi
 }
 
 function processExample(context: GenerationContext, example: string): string {
-  if (example.startsWith("```")) {
-    example = "\n" + example
-  }
+  // get header, and code block, possibly spanning multiple lines
+  const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
+  const result = header + "\n" + codeBlock.trim()
   // add " * " to each line that is not the first
-  return processDescription(context, example)!.replaceAll("\n", "\n * ")
+  return result.replaceAll("\n", "\n * ")
 }
 
 export function addJsDoc<T extends ts.Node>(

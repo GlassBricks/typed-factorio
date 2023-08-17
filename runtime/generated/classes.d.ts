@@ -206,12 +206,9 @@ interface LuaBootstrap {
    * Register a function to be run on mod initialization. This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@linkplain https://lua-api.factorio.com/1.1.89/global.html global} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
    * @param handler The handler for this event. Passing `nil` will unregister it.
    * @example Initialize a `players` table in `global` for later use.
-   *
-   * ```
    * script.on_init(function()
    *   global.players = {}
    * end)
-   * ```
    * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/1.1.89/data-lifecycle.html Data Lifecycle} page.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.on_init Online documentation}
    */
@@ -244,19 +241,13 @@ interface LuaBootstrap {
    * @param event The event(s) or custom-input to invoke the handler on.
    * @param handler The handler for this event. Passing `nil` will unregister it.
    * @param filters The filters for this event. Can only be used when registering for individual events.
-   * @example Register for the {@link OnTickEvent on_tick} event to print the current tick to console each tick.
-   *
-   * ```
+   * @example Register for the [on_tick](runtime:on_tick) event to print the current tick to console each tick.
    * script.on_event(defines.events.on_tick,
    * function(event) game.print(event.tick) end)
-   * ```
-   * @example Register for the {@link OnBuiltEntityEvent on_built_entity} event, limiting it to only be received when a `"fast-inserter"` is built.
-   *
-   * ```
+   * @example Register for the [on_built_entity](runtime:on_built_entity) event, limiting it to only be received when a `"fast-inserter"` is built.
    * script.on_event(defines.events.on_built_entity,
    * function(event) game.print("Gotta go fast!") end,
    * {{filter = "name", name = "fast-inserter"}})
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.on_event Online documentation}
    */
   on_event<E extends EventId<any, table>>(
@@ -285,23 +276,13 @@ interface LuaBootstrap {
    * Register a metatable to have linkage recorded and restored when saving/loading. The metatable itself will not be saved. Instead, only the linkage to a registered metatable is saved, and the metatable registered under that name will be used when loading the table.
    * @param name The name of this metatable. Names must be unique per mod.
    * @param metatable The metatable to register.
-   * @example The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in {@linkplain https://lua-api.factorio.com/1.1.89/global.html global}.
-   *
-   * ```
+   * @example The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in [global](runtime:global).
    * local metatable = {
    *    __index = function(key)
    *       return "no value for key " .. key
    *    end
    * }
    * script.register_metatable("my_metatable", metatable)
-   * ```
-   *
-   *  This previously defined `metatable` can then be set on any table as usual:
-   *
-   * ```
-   * local table = {key="value"}
-   * setmetatable(table, metatable)
-   * ```
    * @remarks `register_metatable()` can not be used in the console, in event listeners or during a `remote.call()`.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.register_metatable Online documentation}
    */
@@ -329,21 +310,12 @@ interface LuaBootstrap {
    * Sets the filters for the given event. The filters are only retained when set after the actual event registration, because registering for an event with different or no filters will overwrite previously set ones.
    * @param event ID of the event to filter.
    * @param filters The filters or `nil` to clear them.
-   * @example Limit the {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction} event to only be received when a non-ghost entity is marked for deconstruction.
-   *
-   * ```
+   * @example Limit the [on_marked_for_deconstruction](runtime:on_marked_for_deconstruction) event to only be received when a non-ghost entity is marked for deconstruction.
    * script.set_event_filter(defines.events.on_marked_for_deconstruction, {{filter = "ghost", invert = true}})
-   * ```
-   * @example Limit the {@link OnBuiltEntityEvent on_built_entity} event to only be received when either a `unit` or a `unit-spawner` is built.
-   *
-   * ```
+   * @example Limit the [on_built_entity](runtime:on_built_entity) event to only be received when either a `unit` or a `unit-spawner` is built.
    * script.set_event_filter(defines.events.on_built_entity, {{filter = "type", type = "unit"}, {filter = "type", type = "unit-spawner"}})
-   * ```
-   * @example Limit the {@link OnEntityDamagedEvent on_entity_damaged} event to only be received when a `rail` is damaged by an `acid` attack.
-   *
-   * ```
+   * @example Limit the [on_entity_damaged](runtime:on_entity_damaged) event to only be received when a `rail` is damaged by an `acid` attack.
    * script.set_event_filter(defines.events.on_entity_damaged, {{filter = "rail"}, {filter = "damage-type", type = "acid", mode = "and"}})
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.set_event_filter Online documentation}
    */
   set_event_filter<E extends EventId<any, table>>(event: E, filters: E["_filter"][] | nil): void
@@ -374,12 +346,9 @@ interface LuaBootstrap {
    * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}
    * @param event ID of the event to raise.
    * @param data Table with extra data that will be passed to the event handler. Any invalid LuaObjects will silently stop the event from being raised.
-   * @example Raise the {@link OnConsoleChatEvent on_console_chat} event with the desired message 'from' the first player.
-   *
-   * ```
+   * @example Raise the [on_console_chat](runtime:on_console_chat) event with the desired message 'from' the first player.
    * local data = {player_index = 1, message = "Hello friends!"}
    * script.raise_event(defines.events.on_console_chat, data)
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.raise_event Online documentation}
    */
   raise_event<E extends RaiseableEvents | CustomEventId<any>>(
@@ -582,12 +551,9 @@ interface LuaBootstrap {
   /**
    * A dictionary listing the names of all currently active mods and mapping them to their version.
    * @example This will print the names and versions of all active mods to the console.
-   *
-   * ```
    * for name, version in pairs(script.active_mods) do
    *   game.print(name .. " version " .. version)
    * end
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.active_mods Online documentation}
    */
   readonly active_mods: Record<string, string>
@@ -719,13 +685,10 @@ interface LuaBurnerPrototype {
  *
  * The returned type is a {@link ChunkPositionAndArea} containing the chunk coordinates and its area.
  * @example
- *
- * ```
  * for chunk in some_surface.get_chunks() do
  *   game.player.print("x: " .. chunk.x .. ", y: " .. chunk.y)
  *   game.player.print("area: " .. serpent.line(chunk.area))
  * end
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaChunkIterator.html Online documentation}
  * @noSelf
  */
@@ -835,8 +798,6 @@ interface LuaCommandProcessor {
    * @param help The localised help message. It will be shown to players using the `/help` command.
    * @param _function The function that will be called when this command is invoked.
    * @example This will register a custom event called `print_tick` that prints the current tick to either the player issuing the command or to everyone on the server, depending on the command parameter. It shows the usage of the table that gets passed to any function handling a custom command. This specific example makes use of the `tick` and the optional `player_index` and `parameter` fields. The user is supposed to either call it without any parameter (`"/print_tick"`) or with the `"me"` parameter (`"/print_tick me"`).
-   *
-   * ```
    * commands.add_command("print_tick", nil, function(command)
    *   if command.player_index ~= nil and command.parameter == "me" then
    *     game.get_player(command.player_index).print(command.tick)
@@ -844,7 +805,6 @@ interface LuaCommandProcessor {
    *     game.print(command.tick)
    *   end
    * end)
-   * ```
    * @remarks Trying to add a command with the `name` of a game command or the name of a custom command that is already in use will result in an error.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaCommandProcessor.html#LuaCommandProcessor.add_command Online documentation}
    */
@@ -1014,10 +974,7 @@ interface LuaControl {
   /**
    * The highest index of all inventories this entity can use. Allows iteration over all of them if desired.
    * @example
-   *
-   * ```
-   *  for k = 1, entity.get_max_inventory_index() do [...] end
-   * ```
+   * for k = 1, entity.get_max_inventory_index() do [...] end
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaControl.html#LuaControl.get_max_inventory_index Online documentation}
    */
   get_max_inventory_index(): defines.inventory
@@ -1370,10 +1327,7 @@ interface LuaControl {
   /**
    * Current walking state.
    * @example Make the player go north. Note that a one-shot action like this will only make the player walk for one tick.
-   *
-   * ```
    * game.player.walking_state = {walking = true, direction = defines.direction.north}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaControl.html#LuaControl.walking_state Online documentation}
    */
   walking_state: {
@@ -1471,11 +1425,8 @@ interface LuaControl {
   })
   /**
    * The player's cursor stack. `nil` if the player controller is a spectator.
-   * @example Even though this property is marked as read-only, it returns a {@link LuaItemStack}, meaning it can be manipulated like so:
-   *
-   * ```
+   * @example Even though this property is marked as read-only, it returns a [LuaItemStack](runtime:LuaItemStack), meaning it can be manipulated like so:
    * player.cursor_stack.clear()
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaControl.html#LuaControl.cursor_stack Online documentation}
    */
   readonly cursor_stack?: LuaItemStack
@@ -1861,26 +1812,14 @@ type LuaCustomTableIterKey<K> = [number] extends [K extends number ? number : K]
  * Lazily evaluated table. For performance reasons, we sometimes return a custom table-like type instead of a native Lua table. This custom type lazily constructs the necessary Lua wrappers of the corresponding C++ objects, therefore preventing their unnecessary construction in some cases.
  *
  * There are some notable consequences to the usage of a custom table type rather than the native Lua table type: Iterating a custom table is only possible using the `pairs` Lua function; `ipairs` won't work. Another key difference is that custom tables cannot be serialised into a game save file -- if saving the game would require serialisation of a custom table, an error will be displayed and the game will not be saved.
- * @example In previous versions of Factorio, this would create a {@link LuaPlayer} instance for every player in the game, even though only one such wrapper is needed. In the current version, accessing {@link LuaGameScript#players game.players} by itself does not create any {@link LuaPlayer} instances; they are created lazily when accessed. Therefore, this example only constructs one {@link LuaPlayer} instance, no matter how many elements there are in `game.players`.
- *
- * ```
+ * @example In previous versions of Factorio, this would create a [LuaPlayer](runtime:LuaPlayer) instance for every player in the game, even though only one such wrapper is needed. In the current version, accessing [game.players](runtime:LuaGameScript::players) by itself does not create any [LuaPlayer](runtime:LuaPlayer) instances; they are created lazily when accessed. Therefore, this example only constructs one [LuaPlayer](runtime:LuaPlayer) instance, no matter how many elements there are in `game.players`.
  * game.players["Oxyd"].character.die()
- * ```
  * @example Custom tables may be iterated using `pairs`.
- *
- * ```
  * for _, p in pairs(game.players) do game.player.print(p.name); end
- * ```
  * @example The following will produce no output because `ipairs` is not supported with custom tables.
- *
- * ```
  * for _, p in ipairs(game.players) do game.player.print(p.name); end  -- incorrect; use pairs instead
- * ```
  * @example This statement will execute successfully and `global.p` will be useable as one might expect. However, as soon as the user tries to save the game, a "LuaCustomTable cannot be serialized" error will be shown. The game will remain unsaveable so long as `global.p` refers to an instance of a custom table.
- *
- * ```
  * global.p = game.players  -- This has high potential to make the game unsaveable
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaCustomTable.html Online documentation}
  */
 type LuaCustomTable<K extends string | number, V> = LuaCustomTableMembers &
@@ -2132,10 +2071,7 @@ interface LuaEntity extends LuaControl {
    * @param cause The cause to attribute the kill to.
    * @returns Whether the entity was successfully killed.
    * @example This function can be called with only the `cause` argument and no `force`:
-   *
-   * ```
    * entity.die(nil, killer_entity)
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.die Online documentation}
    */
   die(force?: ForceIdentification, cause?: LuaEntity): boolean
@@ -2161,15 +2097,9 @@ interface LuaEntity extends LuaControl {
    *
    * _Can only be used if this is Market_
    * @example Adds market offer, 1 copper ore for 10 iron ore.
-   *
-   * ```
    * market.add_market_item{price={{"iron-ore", 10}}, offer={type="give-item", item="copper-ore"}}
-   * ```
    * @example Adds market offer, 1 copper ore for 5 iron ore and 5 stone ore.
-   *
-   * ```
    * market.add_market_item{price={{"iron-ore", 5}, {"stone", 5}}, offer={type="give-item", item="copper-ore"}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.add_market_item Online documentation}
    */
   add_market_item(offer: Offer): void
@@ -3202,10 +3132,7 @@ interface LuaEntity extends LuaControl {
    *
    * _Can only be used if this is Car_
    * @example This will allow the car to go much faster
-   *
-   * ```
    * game.player.vehicle.friction_modifier = 0.5
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.friction_modifier Online documentation}
    */
   friction_modifier: float
@@ -3292,11 +3219,8 @@ interface LuaEntity extends LuaControl {
   /**
    * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities that don't have the concept of energy stored inside.
    * @example
-   *
-   * ```
    * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
    * game.player.selected.energy = 3000
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.energy Online documentation}
    */
   energy: double
@@ -4269,10 +4193,7 @@ interface BaseEntity extends LuaControl {
    * @param cause The cause to attribute the kill to.
    * @returns Whether the entity was successfully killed.
    * @example This function can be called with only the `cause` argument and no `force`:
-   *
-   * ```
    * entity.die(nil, killer_entity)
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.die Online documentation}
    */
   die(force?: ForceIdentification, cause?: LuaEntity): boolean
@@ -4855,11 +4776,8 @@ interface BaseEntity extends LuaControl {
   /**
    * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities that don't have the concept of energy stored inside.
    * @example
-   *
-   * ```
    * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
    * game.player.selected.energy = 3000
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.energy Online documentation}
    */
   energy: double
@@ -5398,15 +5316,9 @@ interface MarketEntity extends BaseEntity {
    *
    * _Can only be used if this is Market_
    * @example Adds market offer, 1 copper ore for 10 iron ore.
-   *
-   * ```
    * market.add_market_item{price={{"iron-ore", 10}}, offer={type="give-item", item="copper-ore"}}
-   * ```
    * @example Adds market offer, 1 copper ore for 5 iron ore and 5 stone ore.
-   *
-   * ```
    * market.add_market_item{price={{"iron-ore", 5}, {"stone", 5}}, offer={type="give-item", item="copper-ore"}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.add_market_item Online documentation}
    */
   add_market_item(offer: Offer): void
@@ -5953,10 +5865,7 @@ interface CarEntity extends BaseEntity {
    *
    * _Can only be used if this is Car_
    * @example This will allow the car to go much faster
-   *
-   * ```
    * game.player.vehicle.friction_modifier = 0.5
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.friction_modifier Online documentation}
    */
   friction_modifier: float
@@ -10859,12 +10768,9 @@ interface LuaFlowStatistics {
  *
  * Do note that reading from a {@link LuaFluidBox} creates a new table and writing will copy the given fields from the table into the engine's own fluid box structure. Therefore, the correct way to update a fluidbox of an entity is to read it first, modify the table, then write the modified table back. Directly accessing the returned table's attributes won't have the desired effect.
  * @example Double the temperature of the fluid in `entity`'s first fluid box.
- *
- * ```
  * fluid = entity.fluidbox[1]
  * fluid.temperature = fluid.temperature * 2
  * entity.fluidbox[1] = fluid
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaFluidBox.html Online documentation}
  * @noSelf
  */
@@ -11275,10 +11181,7 @@ interface LuaForce {
    * Chart a portion of the map. The chart for the given area is refreshed; it creates chart for any parts of the given area that haven't been charted yet.
    * @param area The area on the given surface to chart.
    * @example Charts a 2048x2048 rectangle centered around the origin.
-   *
-   * ```
    * game.player.force.chart(game.player.surface, {{x = -1024, y = -1024}, {x = 1024, y = 1024}})
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaForce.html#LuaForce.chart Online documentation}
    */
   chart(surface: SurfaceIdentification, area: BoundingBoxWrite | BoundingBoxArray): void
@@ -11543,50 +11446,35 @@ interface LuaForce {
   /**
    * Name of the force.
    * @example Prints "`player`"
-   *
-   * ```
    * game.player.print(game.player.force.name)
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaForce.html#LuaForce.name Online documentation}
    */
   readonly name: string
   /**
    * Technologies owned by this force, indexed by `name`.
    * @example Researches the technology for the player's force
-   *
-   * ```
    * game.player.force.technologies["steel-processing"].researched = true
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaForce.html#LuaForce.technologies Online documentation}
    */
   readonly technologies: LuaCustomTable<string, LuaTechnology>
   /**
    * Recipes available to this force, indexed by `name`.
    * @example Prints the category of the given recipe
-   *
-   * ```
    * game.player.print(game.player.force.recipes["transport-belt"].category)
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaForce.html#LuaForce.recipes Online documentation}
    */
   readonly recipes: LuaCustomTable<string, LuaRecipe>
   /**
    * Multiplier of the manual mining speed. Default value is `0`. The actual mining speed will be multiplied by `1 + manual_mining_speed_modifier`.
    * @example Double the player's mining speed
-   *
-   * ```
    * game.player.force.manual_mining_speed_modifier = 1
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaForce.html#LuaForce.manual_mining_speed_modifier Online documentation}
    */
   manual_mining_speed_modifier: double
   /**
    * Multiplier of the manual crafting speed. Default value is `0`. The actual crafting speed will be multiplied by `1 + manual_crafting_speed_modifier`.
    * @example Double the player's crafting speed
-   *
-   * ```
    * game.player.force.manual_crafting_speed_modifier = 1
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaForce.html#LuaForce.manual_crafting_speed_modifier Online documentation}
    */
   manual_crafting_speed_modifier: double
@@ -12340,21 +12228,15 @@ interface LuaGameScript {
    * @param expression The expression to evaluate.
    * @param variables Variables to be substituted.
    * @example Calculate the number of research units required to unlock mining productivity level 10.
-   *
-   * ```
    * local formula = game.forces["player"].technologies["mining-productivity-4"].research_unit_count_formula
    * local units = game.evaluate_expression(formula, { L = 10, l = 10 })
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.evaluate_expression Online documentation}
    */
   evaluate_expression(expression: string, variables?: Record<string, double>): double
   /**
    * Returns a dictionary of all LuaEntityPrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every entity prototype that can craft recipes involving fluids in the way some assembling machines can.
-   *
-   * ```
    * local prototypes = game.get_filtered_entity_prototypes{{filter="crafting-category", crafting_category="crafting-with-fluid"}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_entity_prototypes Online documentation}
    */
   get_filtered_entity_prototypes(
@@ -12363,20 +12245,14 @@ interface LuaGameScript {
   /**
    * Returns a dictionary of all LuaItemPrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every item prototype that, when launched with a rocket, produces a result.
-   *
-   * ```
    * local prototypes = game.get_filtered_item_prototypes{{filter="has-rocket-launch-products"}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_item_prototypes Online documentation}
    */
   get_filtered_item_prototypes(filters: readonly ItemPrototypeFilterWrite[]): LuaCustomTable<string, LuaItemPrototype>
   /**
    * Returns a dictionary of all LuaEquipmentPrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every equipment prototype that functions as a battery.
-   *
-   * ```
    * local prototypes = game.get_filtered_equipment_prototypes{{filter="type", type="battery-equipment"}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_equipment_prototypes Online documentation}
    */
   get_filtered_equipment_prototypes(
@@ -12385,10 +12261,7 @@ interface LuaGameScript {
   /**
    * Returns a dictionary of all LuaModSettingPrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every mod setting prototype that belongs to the specified mod.
-   *
-   * ```
    * local prototypes = game.get_filtered_mod_setting_prototypes{{filter="mod", mod="space-exploration"}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_mod_setting_prototypes Online documentation}
    */
   get_filtered_mod_setting_prototypes(
@@ -12397,10 +12270,7 @@ interface LuaGameScript {
   /**
    * Returns a dictionary of all LuaAchievementPrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every achievement prototype that is not allowed to be completed on the peaceful difficulty setting.
-   *
-   * ```
    * local prototypes = game.get_filtered_achievement_prototypes{{filter="allowed-without-fight", invert=true}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_achievement_prototypes Online documentation}
    */
   get_filtered_achievement_prototypes(
@@ -12409,20 +12279,14 @@ interface LuaGameScript {
   /**
    * Returns a dictionary of all LuaTilePrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every tile prototype that improves a player's walking speed by at least 50%.
-   *
-   * ```
    * local prototypes = game.get_filtered_tile_prototypes{{filter="walking-speed-modifier", comparison="≥", value=1.5}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_tile_prototypes Online documentation}
    */
   get_filtered_tile_prototypes(filters: readonly TilePrototypeFilterWrite[]): LuaCustomTable<string, LuaTilePrototype>
   /**
    * Returns a dictionary of all LuaDecorativePrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every decorative prototype that is auto-placed.
-   *
-   * ```
    * local prototypes = game.get_filtered_decorative_prototypes{{filter="autoplace"}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_decorative_prototypes Online documentation}
    */
   get_filtered_decorative_prototypes(
@@ -12431,10 +12295,7 @@ interface LuaGameScript {
   /**
    * Returns a dictionary of all LuaFluidPrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every fluid prototype that has a heat capacity of exactly `100`.
-   *
-   * ```
    * local prototypes = game.get_filtered_fluid_prototypes{{filter="heat-capacity", comparison="=", value=100}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_fluid_prototypes Online documentation}
    */
   get_filtered_fluid_prototypes(
@@ -12443,10 +12304,7 @@ interface LuaGameScript {
   /**
    * Returns a dictionary of all LuaRecipePrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every recipe prototype that takes less than half a second to craft (at crafting speed `1`).
-   *
-   * ```
    * local prototypes = game.get_filtered_recipe_prototypes{{filter="energy", comparison="<", value=0.5}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_recipe_prototypes Online documentation}
    */
   get_filtered_recipe_prototypes(
@@ -12455,10 +12313,7 @@ interface LuaGameScript {
   /**
    * Returns a dictionary of all LuaTechnologyPrototypes that fit the given filters. The prototypes are indexed by `name`.
    * @example Get every technology prototype that can be researched at the start of the game.
-   *
-   * ```
    * local prototypes = game.get_filtered_technology_prototypes{{filter="has-prerequisites", invert=true}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_technology_prototypes Online documentation}
    */
   get_filtered_technology_prototypes(
@@ -12521,10 +12376,7 @@ interface LuaGameScript {
   /**
    * The currently active set of difficulty settings. Even though this property is marked as read-only, the members of the dictionary that is returned can be modified mid-game. This is however not recommended as different difficulties can have differing technology and recipe trees, which can cause problems for players.
    * @example This will set the technology price multiplier to 12.
-   *
-   * ```
    * game.difficulty_settings.technology_price_multiplier = 12
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.difficulty_settings Online documentation}
    */
   readonly difficulty_settings: DifficultySettings
@@ -12745,12 +12597,9 @@ interface LuaGameScript {
   /**
    * The active mods versions. The keys are mod names, the values are the versions.
    * @example This will print the names and versions of active mods to player p's console.
-   *
-   * ```
    * for name, version in pairs(game.active_mods) do
    *   p.print(name .. " version " .. version)
    * end
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.active_mods Online documentation}
    */
   readonly active_mods: Record<string, string>
@@ -12822,12 +12671,9 @@ interface LuaGenericOnOffControlBehavior extends LuaControlBehavior {
   /**
    * The circuit condition. Writing `nil` clears the circuit condition.
    * @example Tell an entity to be active (e.g. a lamp to be lit) when it receives a circuit signal of more than 4 chain signals.
-   *
-   * ```
    * a_behavior.circuit_condition = {condition={comparator=">",
    *                                            first_signal={type="item", name="rail-chain-signal"},
    *                                            constant=4}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGenericOnOffControlBehavior.html#LuaGenericOnOffControlBehavior.circuit_condition Online documentation}
    */
   get circuit_condition(): CircuitConditionDefinition | nil
@@ -12835,12 +12681,9 @@ interface LuaGenericOnOffControlBehavior extends LuaControlBehavior {
   /**
    * The logistic condition. Writing `nil` clears the logistic condition.
    * @example Tell an entity to be active (e.g. a lamp to be lit) when the logistics network it's connected to has more than four chain signals.
-   *
-   * ```
    * a_behavior.logistic_condition = {condition={comparator=">",
    *                                             first_signal={type="item", name="rail-chain-signal"},
    *                                             constant=4}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGenericOnOffControlBehavior.html#LuaGenericOnOffControlBehavior.logistic_condition Online documentation}
    */
   get logistic_condition(): CircuitConditionDefinition | nil
@@ -13619,20 +13462,14 @@ interface BaseGuiElement {
   /**
    * Remove children of this element. Any {@link LuaGuiElement} objects referring to the destroyed elements become invalid after this operation.
    * @example
-   *
-   * ```
    * game.player.gui.top.clear()
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.clear Online documentation}
    */
   clear(): void
   /**
    * Remove this element, along with its children. Any {@link LuaGuiElement} objects referring to the destroyed elements become invalid after this operation.
    * @example
-   *
-   * ```
    * game.player.gui.top.greeting.destroy()
-   * ```
    * @remarks The top-level GUI elements - {@link LuaGui#top LuaGui::top}, {@link LuaGui#left LuaGui::left}, {@link LuaGui#center LuaGui::center} and {@link LuaGui#screen LuaGui::screen} - can't be destroyed.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.destroy Online documentation}
    */
@@ -13685,10 +13522,7 @@ interface BaseGuiElement {
   /**
    * The name of this element. `""` if no name was set.
    * @example
-   *
-   * ```
    * game.player.gui.top.greeting.name == "greeting"
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.name Online documentation}
    */
   name: string
@@ -13918,13 +13752,10 @@ interface FlowGuiElementMembers extends BaseGuiElement {
    *
    * _Can only be used if this is flow, frame, label, table or empty-widget_
    * @example This creates a frame that contains a dragging handle which can move the frame.
-   *
-   * ```
    * local frame = player.gui.screen.add{type="frame", direction="vertical"}
    * local dragger = frame.add{type="empty-widget", style="draggable_space"}
    * dragger.style.size = {128, 24}
    * dragger.drag_target = frame
-   * ```
    * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.drag_target Online documentation}
    */
@@ -13971,13 +13802,10 @@ interface FrameGuiElementMembers extends BaseGuiElement {
    *
    * _Can only be used if this is flow, frame, label, table or empty-widget_
    * @example This creates a frame that contains a dragging handle which can move the frame.
-   *
-   * ```
    * local frame = player.gui.screen.add{type="frame", direction="vertical"}
    * local dragger = frame.add{type="empty-widget", style="draggable_space"}
    * dragger.style.size = {128, 24}
    * dragger.drag_target = frame
-   * ```
    * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.drag_target Online documentation}
    */
@@ -13997,13 +13825,10 @@ interface LabelGuiElementMembers extends BaseGuiElement {
    *
    * _Can only be used if this is flow, frame, label, table or empty-widget_
    * @example This creates a frame that contains a dragging handle which can move the frame.
-   *
-   * ```
    * local frame = player.gui.screen.add{type="frame", direction="vertical"}
    * local dragger = frame.add{type="empty-widget", style="draggable_space"}
    * dragger.style.size = {128, 24}
    * dragger.drag_target = frame
-   * ```
    * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.drag_target Online documentation}
    */
@@ -14092,13 +13917,10 @@ interface TableGuiElementMembers extends BaseGuiElement {
    *
    * _Can only be used if this is flow, frame, label, table or empty-widget_
    * @example This creates a frame that contains a dragging handle which can move the frame.
-   *
-   * ```
    * local frame = player.gui.screen.add{type="frame", direction="vertical"}
    * local dragger = frame.add{type="empty-widget", style="draggable_space"}
    * dragger.style.size = {128, 24}
    * dragger.drag_target = frame
-   * ```
    * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.drag_target Online documentation}
    */
@@ -14130,15 +13952,9 @@ interface TextFieldGuiElementMembers extends BaseGuiElement {
    * @param start The index of the first character to select
    * @param end The index of the last character to select
    * @example Select the characters `amp` from `example`:
-   *
-   * ```
    * textbox.select(3, 5)
-   * ```
    * @example Move the cursor to the start of the text box:
-   *
-   * ```
    * textbox.select(1, 0)
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.select Online documentation}
    */
   select(start: int, end: int): void
@@ -14515,20 +14331,11 @@ interface ChooseElemButtonGuiElementMembers extends BaseGuiElement {
    *
    * _Can only be used if this is choose-elem-button_
    * @example This will configure a choose-elem-button of type `"entity"` to only show items of type `"furnace"`.
-   *
-   * ```
    * button.elem_filters = {{filter = "type", type = "furnace"}}
-   * ```
-   * @example Then, there are some types of filters that work on a specific kind of attribute. The following will configure a choose-elem-button of type `"entity"` to only show entities that have their `"hidden"` {@link EntityPrototypeFlags flags} set.
-   *
-   * ```
+   * @example Then, there are some types of filters that work on a specific kind of attribute. The following will configure a choose-elem-button of type `"entity"` to only show entities that have their `"hidden"` [flags](runtime:EntityPrototypeFlags) set.
    * button.elem_filters = {{filter = "hidden"}}
-   * ```
    * @example Lastly, these filters can be combined at will, taking care to specify how they should be combined (either `"and"` or `"or"`. The following will filter for any `"entities"` that are `"furnaces"` and that are not `"hidden"`.
-   *
-   * ```
    * button.elem_filters = {{filter = "type", type = "furnace"}, {filter = "hidden", invert = true, mode = "and"}}
-   * ```
    * @remarks Writing to this field does not change or clear the currently selected element.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.elem_filters Online documentation}
    */
@@ -14595,15 +14402,9 @@ interface TextBoxGuiElementMembers extends BaseGuiElement {
    * @param start The index of the first character to select
    * @param end The index of the last character to select
    * @example Select the characters `amp` from `example`:
-   *
-   * ```
    * textbox.select(3, 5)
-   * ```
    * @example Move the cursor to the start of the text box:
-   *
-   * ```
    * textbox.select(1, 0)
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.select Online documentation}
    */
   select(start: int, end: int): void
@@ -14794,13 +14595,10 @@ interface EmptyWidgetGuiElementMembers extends BaseGuiElement {
    *
    * _Can only be used if this is flow, frame, label, table or empty-widget_
    * @example This creates a frame that contains a dragging handle which can move the frame.
-   *
-   * ```
    * local frame = player.gui.screen.add{type="frame", direction="vertical"}
    * local dragger = frame.add{type="empty-widget", style="draggable_space"}
    * dragger.style.size = {128, 24}
    * dragger.drag_target = frame
-   * ```
    * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html#LuaGuiElement.drag_target Online documentation}
    */
@@ -14959,15 +14757,10 @@ type GuiElementMembers =
  *
  * Each GUI element allows access to its children by having them as attributes. Thus, one can use the `parent.child` syntax to refer to children. Lua also supports the `parent["child"]` syntax to refer to the same element. This can be used in cases where the child has a name that isn't a valid Lua identifier.
  * @example This will add a label called `greeting` to the top flow. Immediately after, it will change its text to illustrate accessing child elements.
- *
- * ```
  * game.player.gui.top.add{type="label", name="greeting", caption="Hi"}
  * game.player.gui.top.greeting.caption = "Hello there!"
  * game.player.gui.top["greeting"].caption = "Actually, never mind, I don't like your face"
- * ```
  * @example This will add a tabbed-pane and 2 tabs with contents.
- *
- * ```
  * local tabbed_pane = game.player.gui.top.add{type="tabbed-pane"}
  * local tab1 = tabbed_pane.add{type="tab", caption="Tab 1"}
  * local tab2 = tabbed_pane.add{type="tab", caption="Tab 2"}
@@ -14975,7 +14768,6 @@ type GuiElementMembers =
  * local label2 = tabbed_pane.add{type="label", caption="Label 2"}
  * tabbed_pane.add_tab(tab1, label1)
  * tabbed_pane.add_tab(tab2, label2)
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGuiElement.html Online documentation}
  */
 type LuaGuiElement = GuiElementMembers & GuiElementIndexer
@@ -15250,20 +15042,14 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
   /**
    * Get the number of slots in this inventory.
    * @example Will print the number of slots in the player's main inventory.
-   *
-   * ```
    * game.player.print(#game.player.get_main_inventory())
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaInventory.html#LuaInventory.length_operator Online documentation}
    */
   readonly length: uint
   /**
    * The indexing operator.
    * @example Will get the first item in the player's inventory.
-   *
-   * ```
    * game.player.get_main_inventory()[1]
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaInventory.html#LuaInventory.index_operator Online documentation}
    */
   readonly [index: number]: LuaItemStack
@@ -15309,10 +15095,7 @@ interface LuaInventory extends ReadonlyArray<LuaItemStack> {
 /**
  * Prototype of an item.
  * @example
- *
- * ```
  * game.item_prototypes["iron-plate"]
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaItemPrototype.html Online documentation}
  * @noSelf
  */
@@ -19543,11 +19326,8 @@ interface LuaPlayer extends LuaControl {
    *
    * Even though this attribute is marked as read-only, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
    * @example
-   *
-   * ```
    * -- Change the value of the "active_lifestyle" setting
    * player.mod_settings["active_lifestyle"] = {value = true}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaPlayer.html#LuaPlayer.mod_settings Online documentation}
    */
   readonly mod_settings: LuaCustomTable<string, ModSetting>
@@ -19856,11 +19636,8 @@ interface LuaRailSignalControlBehavior extends LuaControlBehavior {
 /**
  * A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state. Note this is entirely different from calling {@linkplain https://lua-api.factorio.com/1.1.89/libraries.html math.random}() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.
  * @example Create a generator and use it to print a random number.
- *
- * ```
  * global.generator = game.create_random_generator()
  * game.player.print(global.generator())
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRandomGenerator.html Online documentation}
  * @noSelf
  */
@@ -19932,20 +19709,14 @@ interface LuaRecipe {
   /**
    * The ingredients to this recipe.
    * @example The ingredients of `"advanced-oil-processing"` would look like this:
-   *
-   * ```
    * {{type="fluid", name="crude-oil", amount=100}, {type="fluid", name="water", amount=50}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRecipe.html#LuaRecipe.ingredients Online documentation}
    */
   readonly ingredients: Ingredient[]
   /**
    * The results/products of this recipe.
    * @example The products of `"advanced-oil-processing"` would look like this:
-   *
-   * ```
    * {{type="fluid", name="heavy-oil", amount=25}, {type="fluid", name="light-oil", amount=45}, {type="fluid", name="petroleum-gas", amount=55}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRecipe.html#LuaRecipe.products Online documentation}
    */
   readonly products: Product[]
@@ -20060,20 +19831,14 @@ interface LuaRecipePrototype {
   /**
    * The ingredients to this recipe.
    * @example The ingredients of `"advanced-oil-processing"` would look like this:
-   *
-   * ```
    * {{type="fluid", name="crude-oil", amount=100}, {type="fluid", name="water", amount=50}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRecipePrototype.html#LuaRecipePrototype.ingredients Online documentation}
    */
   readonly ingredients: Ingredient[]
   /**
    * The results/products of this recipe.
    * @example The products of `"advanced-oil-processing"` would look like this:
-   *
-   * ```
    * {{type="fluid", name="heavy-oil", amount=25}, {type="fluid", name="light-oil", amount=45}, {type="fluid", name="petroleum-gas", amount=55}}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRecipePrototype.html#LuaRecipePrototype.products Online documentation}
    */
   readonly products: Product[]
@@ -20189,15 +19954,12 @@ interface LuaRecipePrototype {
 /**
  * Registry of interfaces between scripts. An interface is simply a dictionary mapping names to functions. A script or mod can then register an interface with {@link LuaRemote}, after that any script can call the registered functions, provided it knows the interface name and the desired function name. An instance of LuaRemote is available through the global object named `remote`.
  * @example Will register a remote interface containing two functions. Later, it will call these functions through `remote`.
- *
- * ```
  * remote.add_interface("human interactor",
  *                      {hello = function() game.player.print("Hi!") end,
  *                       bye = function(name) game.player.print("Bye " .. name) end})
  * -- Some time later, possibly in a different mod...
  * remote.call("human interactor", "hello")
  * remote.call("human interactor", "bye", "dear reader")
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRemote.html Online documentation}
  * @noSelf
  */
@@ -20228,11 +19990,8 @@ interface LuaRemote {
   /**
    * List of all registered interfaces. For each interface name, `remote.interfaces[name]` is a dictionary mapping the interface's registered functions to `true`.
    * @example Assuming the "human interactor" interface is registered as above
-   *
-   * ```
    * game.player.print(tostring(remote.interfaces["human interactor"]["hello"]))        -- prints true
    * game.player.print(tostring(remote.interfaces["human interactor"]["nonexistent"]))  -- prints nil
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRemote.html#LuaRemote.interfaces Online documentation}
    */
   readonly interfaces: Record<string, Record<string, true>>
@@ -20253,15 +20012,9 @@ interface LuaRendering {
    * Create a line.
    * @returns Id of the render object
    * @example Draw a white and 2 pixel wide line from {0, 0} to {2, 2}.
-   *
-   * ```
    * rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {2, 2}, color = {1, 1, 1}, width = 2}
-   * ```
    * @example Draw a red and 3 pixel wide line from {0, 0} to {0, 5}. The line has 1 tile long dashes and gaps.
-   *
-   * ```
    * rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {0, 5}, color = {r = 1}, width = 3, gap_length = 1, dash_length = 1}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRendering.html#LuaRendering.draw_line Online documentation}
    */
   draw_line(params: {
@@ -20603,15 +20356,9 @@ interface LuaRendering {
    * Create a sprite.
    * @returns Id of the render object
    * @example This will draw an iron plate icon at the character's feet. The sprite will move together with the character.
-   *
-   * ```
    * rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, surface = game.player.surface}
-   * ```
    * @example This will draw an iron plate icon at the character's head. The sprite will move together with the character.
-   *
-   * ```
    * rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, target_offset = {0, -2}, surface = game.player.surface}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRendering.html#LuaRendering.draw_sprite Online documentation}
    */
   draw_sprite(params: {
@@ -21535,15 +21282,9 @@ interface BaseRendering {
    * Create a line.
    * @returns Id of the render object
    * @example Draw a white and 2 pixel wide line from {0, 0} to {2, 2}.
-   *
-   * ```
    * rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {2, 2}, color = {1, 1, 1}, width = 2}
-   * ```
    * @example Draw a red and 3 pixel wide line from {0, 0} to {0, 5}. The line has 1 tile long dashes and gaps.
-   *
-   * ```
    * rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {0, 5}, color = {r = 1}, width = 3, gap_length = 1, dash_length = 1}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRendering.html#LuaRendering.draw_line Online documentation}
    */
   draw_line(params: {
@@ -21885,15 +21626,9 @@ interface BaseRendering {
    * Create a sprite.
    * @returns Id of the render object
    * @example This will draw an iron plate icon at the character's feet. The sprite will move together with the character.
-   *
-   * ```
    * rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, surface = game.player.surface}
-   * ```
    * @example This will draw an iron plate icon at the character's head. The sprite will move together with the character.
-   *
-   * ```
    * rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, target_offset = {0, -2}, surface = game.player.surface}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRendering.html#LuaRendering.draw_sprite Online documentation}
    */
   draw_sprite(params: {
@@ -23477,11 +23212,8 @@ interface LuaSettings {
    *
    * Even though this attribute is marked as read-only, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
    * @example
-   *
-   * ```
    * -- Change the value of the "active_lifestyle" setting
    * settings.get_player_settings(player_index)["active_lifestyle"] = {value = true}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSettings.html#LuaSettings.get_player_settings Online documentation}
    */
   get_player_settings(player: PlayerIdentification): LuaCustomTable<string, ModSetting>
@@ -23787,10 +23519,7 @@ interface LuaStyle {
   /**
    * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
    * @example
-   *
-   * ```
    * table_element.style.column_alignments[1] = "center"
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaStyle.html#LuaStyle.column_alignments Online documentation}
    */
   readonly column_alignments: LuaCustomTable<uint, Alignment>
@@ -24016,10 +23745,7 @@ interface BaseStyle {
   /**
    * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
    * @example
-   *
-   * ```
    * table_element.style.column_alignments[1] = "center"
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaStyle.html#LuaStyle.column_alignments Online documentation}
    */
   readonly column_alignments: LuaCustomTable<uint, Alignment>
@@ -24777,10 +24503,7 @@ interface LuaSurface {
   /**
    * Get the pollution for a given position.
    * @example
-   *
-   * ```
    * game.surfaces[1].get_pollution({1,2})
-   * ```
    * @remarks Pollution is stored per chunk, so this will return the same value for all positions in one chunk.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.get_pollution Online documentation}
    */
@@ -24847,10 +24570,7 @@ interface LuaSurface {
    * @param position Coordinates to look at.
    * @returns `nil` if no such entity is found.
    * @example
-   *
-   * ```
    * game.player.selected.surface.find_entity('filter-inserter', {0,0})
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.find_entity Online documentation}
    */
   find_entity(entity: string, position: MapPosition | MapPositionArray): LuaEntity | nil
@@ -24859,10 +24579,7 @@ interface LuaSurface {
    *
    * If no area is given all entities on the surface are returned.
    * @example Will evaluate to a list of all entities within given area.
-   *
-   * ```
    * game.surfaces["nauvis"].find_entities({{-10, -10}, {10, 10}})
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.find_entities Online documentation}
    */
   find_entities(area?: BoundingBoxWrite | BoundingBoxArray): LuaEntity[]
@@ -24876,15 +24593,12 @@ interface LuaSurface {
    * - If `position` and `radius` are given, this returns the entities within the radius of the position. Looks for the center of entities.
    * - If `area` is specified, this returns the entities colliding with that area.
    * @example
-   *
-   * ```
    * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, type = "resource"} -- gets all resources in the rectangle
    * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, name = "iron-ore"} -- gets all iron ores in the rectangle
    * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, name = {"iron-ore", "copper-ore"}} -- gets all iron ore and copper ore in the rectangle
    * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, force = "player"}  -- gets player owned entities in the rectangle
    * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, limit = 5}  -- gets the first 5 entities in the rectangle
    * game.surfaces[1].find_entities_filtered{position = {0, 0}, radius = 10}  -- gets all entities within 10 tiles of the position [0,0].
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.find_entities_filtered Online documentation}
    */
   find_entities_filtered(params: {
@@ -25066,10 +24780,7 @@ interface LuaSurface {
    * @param radius Radius of the circular search area
    * @param force Force to find enemies of. If not given, uses the player force.
    * @example Find all units who would be interested to attack the player, within 100-tile area.
-   *
-   * ```
    * local enemies = game.player.surface.find_enemy_units(game.player.position, 100)
-   * ```
    * @remarks This is more efficient than {@link LuaSurface#find_entities LuaSurface::find_entities}.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.find_enemy_units Online documentation}
    */
@@ -25077,15 +24788,9 @@ interface LuaSurface {
   /**
    * Find units (entities with type "unit") of a given force and force condition within a given area.
    * @example Find friendly units to "player" force
-   *
-   * ```
    * local friendly_units = game.player.surface.find_units({area = {{-10, -10},{10, 10}}, force = "player", condition = "friend")
-   * ```
    * @example Find units of "player" force
-   *
-   * ```
    * local units = game.player.surface.find_units({area = {{-10, -10},{10, 10}}, force = "player", condition = "same"})
-   * ```
    * @remarks This is more efficient than {@link LuaSurface#find_entities LuaSurface::find_entities}.
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.find_units Online documentation}
    */
@@ -25198,13 +24903,8 @@ interface LuaSurface {
    * - {@link ScriptRaisedBuiltEvent script_raised_built}? _instantly_ Raised if the `raise_built` flag was set and the entity was successfully created.
    * @returns The created entity or `nil` if the creation failed.
    * @example
-   *
-   * ```
    * asm = game.surfaces[1].create_entity{name = "assembling-machine-1", position = {15, 3}, force = game.forces.player, recipe = "iron-stick"}
-   * ```
    * @example Creates a filter inserter with circuit conditions and a filter
-   *
-   * ```
    * game.surfaces[1].create_entity{
    *   name = "filter-inserter", position = {20, 15}, force = game.player.force,
    *   conditions = {red = {name = "wood", count = 3, operator = ">"},
@@ -25212,26 +24912,16 @@ interface LuaSurface {
    *   logistics = {name = "wood", count = 3, operator = "="}},
    *   filters = {{index = 1, name = "iron-ore"}}
    * }
-   * ```
    * @example Creates a requester chest already set to request 128 iron plates.
-   *
-   * ```
    * game.surfaces[1].create_entity{
    *   name = "logistic-chest-requester", position = {game.player.position.x+3, game.player.position.y},
    *   force = game.player.force, request_filters = {{index = 1, name = "iron-plate", count = 128}}
    * }
-   * ```
    * @example
-   *
-   * ```
    * game.surfaces[1].create_entity{name = "big-biter", position = {15, 3}, force = game.forces.player} -- Friendly biter
    * game.surfaces[1].create_entity{name = "medium-biter", position = {15, 3}, force = game.forces.enemy} -- Enemy biter
-   * ```
    * @example Creates a basic inserter at the player's location facing north
-   *
-   * ```
    * game.surfaces[1].create_entity{name = "inserter", position = game.player.position, direction = defines.direction.north}
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.create_entity Online documentation}
    */
   create_entity(params: SurfaceCreateEntity): LuaEntity | nil
@@ -25602,11 +25292,8 @@ interface LuaSurface {
    *
    * If no filters are given, returns all decoratives in the search area. If multiple filters are specified, returns only decoratives matching every given filter. If no area and no position are given, the entire surface is searched.
    * @example
-   *
-   * ```
    * game.surfaces[1].find_decoratives_filtered{area = {{-10, -10}, {10, 10}}, name = "sand-decal"} -- gets all sand-decals in the rectangle
    * game.surfaces[1].find_decoratives_filtered{area = {{-10, -10}, {10, 10}}, limit = 5}  -- gets the first 5 decoratives in the rectangle
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.find_decoratives_filtered Online documentation}
    */
   find_decoratives_filtered(params: {
@@ -26079,11 +25766,8 @@ interface LuaSurface {
    * The LUT is multiplied by `((1 - weight) + brightness * weight)` and result is clamped to range [0, 1].
    *
    * Default is `{0, 0, 0}`, which means no influence.
-   * @example Makes night on the surface pitch black, assuming {@link LuaSurface#min_brightness LuaSurface::min_brightness} being set to default value `0.15`.
-   *
-   * ```
+   * @example Makes night on the surface pitch black, assuming [LuaSurface::min_brightness](runtime:LuaSurface::min_brightness) being set to default value `0.15`.
    * game.surfaces[1].brightness_visual_weights = { 1 / 0.85, 1 / 0.85, 1 / 0.85 }
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.brightness_visual_weights Online documentation}
    */
   get brightness_visual_weights(): ColorModifier
@@ -26327,10 +26011,7 @@ interface LuaTile {
   /**
    * What type of things can collide with this tile?
    * @example Check if the character would collide with a tile
-   *
-   * ```
    * game.player.print(tostring(game.player.surface.get_tile(1, 1).collides_with("player-layer")))
-   * ```
    * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaTile.html#LuaTile.collides_with Online documentation}
    */
   collides_with(layer: CollisionMaskLayer): boolean

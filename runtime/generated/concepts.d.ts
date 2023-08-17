@@ -13,34 +13,15 @@
  *
  * Furthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number, boolean or `nil`, which will be converted to their textual representation.
  * @example In the English translation, this will print `"No ammo"`; in the Czech translation, it will print `"Bez munice"`:
- *
- * ```
  * game.player.print({"description.no-ammo"})
- * ```
- *
- *  The `description.no-ammo` template contains no placeholders, so no further parameters are necessary.
  * @example In the English translation, this will print `"Durability: 5/9"`; in the Japanese one, it will print `"耐久度: 5/9"`:
- *
- * ```
  * game.player.print({"description.durability", 5, 9})
- * ```
  * @example This will print `"hello"` in all translations:
- *
- * ```
  * game.player.print({"", "hello"})
- * ```
  * @example This will print `"Iron plate: 60"` in the English translation and `"Eisenplatte: 60"` in the German translation.
- *
- * ```
  * game.print({"", {"item-name.iron-plate"}, ": ", 60})
- * ```
  * @example As an example of a localised string with fallback, consider this:
- *
- * ```
  * {"?", {"", {"entity-description.furnace"}, "\n"}, {"item-description.furnace"}, "optional fallback"}
- * ```
- *
- *  If `entity-description.furnace` exists, it is concatenated with `"\n"` and returned. Otherwise, if `item-description.furnace` exists, it is returned as-is. Otherwise, `"optional fallback"` is returned. If this value wasn't specified, the translation result would be `"Unknown key: 'item-description.furnace'"`.
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#LocalisedString Online documentation}
  */
 type LocalisedString = string | number | boolean | LuaObject | nil | readonly [string, ...LocalisedString[]]
@@ -73,16 +54,10 @@ type RealOrientation = float
  * The coordinates are saved as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.
  * @see MapPositionArray
  * @example Explicit definition:
- *
- * ```
  * {x = 5.5, y = 2}
  * {y = 2.25, x = 5.125}
- * ```
  * @example Shorthand:
- *
- * ```
  * {1.625, 2.375}
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#MapPosition Online documentation}
  */
 interface MapPosition {
@@ -150,16 +125,10 @@ type TilePositionTable = TilePosition
  * Position inside an equipment grid. This uses the same format as {@link MapPosition}, meaning it can be specified either with or without explicit keys.
  * @see EquipmentPositionArray
  * @example Explicit definition:
- *
- * ```
  * {x = 5, y = 2}
  * {y = 2, x = 5}
- * ```
  * @example Shorthand:
- *
- * ```
  * {1, 2}
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#EquipmentPosition Online documentation}
  */
 interface EquipmentPosition {
@@ -252,10 +221,7 @@ interface OldTileAndPosition {
  *
  * Note that the API returns tags as a simple table, meaning any modifications to it will not propagate back to the game. Thus, to modify a set of tags, the whole table needs to be written back to the respective property.
  * @example
- *
- * ```
  * {a = 1, b = true, c = "three", d = {e = "f"}}
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#Tags Online documentation}
  */
 type Tags = Record<string, AnyBasic>
@@ -289,10 +255,7 @@ interface SmokeSource {
 /**
  * A vector is a two-element array containing the `x` and `y` components. In some specific cases, the vector is a table with `x` and `y` keys instead, which the documentation will point out.
  * @example
- *
- * ```
  * right = {1.0, 0.0}
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#Vector Online documentation}
  */
 type Vector = MapPositionArray
@@ -301,15 +264,9 @@ type Vector = MapPositionArray
  * Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with {@link MapPosition}, the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero.
  * @see BoundingBoxArray
  * @example Explicit definition:
- *
- * ```
  * {left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}
- * ```
  * @example Shorthand:
- *
- * ```
  * {{-2, -3}, {5, 8}}
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#BoundingBox Online documentation}
  */
 interface BoundingBox {
@@ -405,13 +362,10 @@ type ScriptPositionRead = ScriptPosition
  * Similar to {@link MapPosition}, Color allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).
  * @see ColorArray
  * @example
- *
- * ```
  * red1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red
  * red2 = {r = 0.5, a = 0.5}                -- Same color as red1
  * black = {}                               -- All channels omitted: black
  * red1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#Color Online documentation}
  */
 interface Color {
@@ -1037,10 +991,7 @@ interface PathFinderMapSettings {
 /**
  * Various game-related settings. Updating any of the attributes will immediately take effect in the game engine.
  * @example Increase the number of short paths the pathfinder can cache.
- *
- * ```
  * game.map_settings.path_finder.short_cache_size = 15
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#MapSettings Online documentation}
  */
 interface MapSettings {
@@ -1569,22 +1520,13 @@ interface OtherProduct extends BaseProduct {
  * Other attributes may be specified depending on `type`:
  * - `"fluid"`: {@link FluidProduct}
  * @example Products of the "steel-chest" recipe (an array of Product):
- *
- * ```
  * {{type="item", name="steel-chest", amount=1}}
- * ```
  * @example Products of the "advanced-oil-processing" recipe:
- *
- * ```
  * {{type="fluid", name="heavy-oil", amount=1},
  *  {type="fluid", name="light-oil", amount=4.5},
  *  {type="fluid", name="petroleum-gas", amount=5.5}}
- * ```
  * @example What a custom recipe would look like that had a probability of 0.5 to return a minimum amount of 1 and a maximum amount of 5:
- *
- * ```
  * {{type="item", name="custom-item", probability=0.5, amount_min=1, amount_max=5}}
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#Product Online documentation}
  */
 type Product = FluidProduct | OtherProduct
@@ -2096,25 +2038,15 @@ type CliffPlacementSettingsRead = CliffPlacementSettings
  * The 'map type' dropdown in the map generation GUI is actually a selector for elevation generator. The base game sets `property_expression_names.elevation` to `"0_16-elevation"` to reproduce terrain from 0.16 or to `"0_17-island"` for the island preset. If generators are available for other properties, the 'map type' dropdown in the GUI will be renamed to 'elevation' and shown along with selectors for the other selectable properties.
  * @see MapGenSettingsWrite
  * @example Assuming a NamedNoiseExpression with the name "my-alternate-grass1-probability" is defined
- *
- * ```
  * local surface = game.player.surface
  * local mgs = surface.map_gen_settings
  * mgs.property_expression_names["tile:grass1:probability"] = "my-alternate-grass1-probability"
  * surface.map_gen_settings = mgs
- * ```
- *
- *  would override the probability of grass1 being placed at any given point on the current surface.
  * @example To make there be no deep water on (newly generated chunks) a surface:
- *
- * ```
  * local surface = game.player.surface
  * local mgs = surface.map_gen_settings
  * mgs.property_expression_names["tile:deepwater:probability"] = -1000
  * surface.map_gen_settings = mgs
- * ```
- *
- *  This does not require a NamedNoiseExpression to be defined, since literal numbers (and strings naming literal numbers, e.g. `"123"`) are understood to stand for constant value expressions.
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#MapGenSettings Online documentation}
  */
 interface MapGenSettings {
@@ -3124,32 +3056,11 @@ interface ItemStackDefinition {
  * - `string`: The name of the item, which represents a full stack of that item.
  * - {@link ItemStackDefinition}: The detailed definition of an item stack.
  * @example Both of these lines specify an item stack of one iron plate:
- *
- * ```
  * {name="iron-plate"}
- * ```
- *
- *
- *
- * ```
- * {name="iron-plate", count=1}
- * ```
  * @example This is a stack of 47 copper plates:
- *
- * ```
  * {name="copper-plate", count=47}
- * ```
  * @example These are both full stacks of iron plates (for iron-plate, a full stack is 100 plates):
- *
- * ```
  * "iron-plate"
- * ```
- *
- *
- *
- * ```
- * {name="iron-plate", count=100}
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#SimpleItemStack Online documentation}
  */
 type SimpleItemStack = string | ItemStackDefinition
@@ -3619,13 +3530,10 @@ interface ModuleEffectValue {
 
 /**
  * @example These are the effects of the vanilla Productivity Module 3 (up to floating point imprecisions):
- *
- * ```
  * {consumption={bonus=0.6},
  *  speed={bonus=-0.15},
  *  productivity={bonus=0.06},
  *  pollution={bonus=0.075}}
- * ```
  * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#ModuleEffects Online documentation}
  */
 interface ModuleEffects {
