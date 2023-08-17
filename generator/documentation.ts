@@ -5,7 +5,6 @@ import { GenerationContext } from "./GenerationContext.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
 
-const docUrlBase = "https://lua-api.factorio.com/latest/"
 const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
 function mapLink(context: GenerationContext, origLink: string, warn = true): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {
@@ -13,7 +12,7 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
   }
   // hardcoded exception
   if (origLink === "libraries.html") {
-    return docUrlBase + "libraries.html"
+    return context.docUrlBase() + "libraries.html"
   }
 
   const match = origLink.match(/(.*?):(.*?)(?:::(.*))?$/)
@@ -33,7 +32,7 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
     return undefined
   }
   if (pageLinks.has(name)) {
-    return docUrlBase + name + ".html"
+    return context.docUrlBase() + name + ".html"
   }
 
   if (!context.typeNames[name]) {
@@ -127,7 +126,7 @@ function getDocumentationUrl(context: GenerationContext, reference: string): str
     context.warning("Could not get documentation url:", reference)
     relative_link = ""
   }
-  return docUrlBase + relative_link
+  return context.docUrlBase() + relative_link
 }
 
 function getRaisesComment(context: GenerationContext, raises: EventRaised[] | undefined): string | undefined {

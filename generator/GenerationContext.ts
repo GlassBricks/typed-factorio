@@ -66,4 +66,8 @@ export class GenerationContext {
     console.log(chalk.yellow(...args))
     this.hasWarnings = true
   }
+
+  docUrlBase(): string {
+    return `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
+  }
 }
