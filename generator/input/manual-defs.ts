@@ -486,20 +486,6 @@ interface LuaGameScript {
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
 }
 
-// strict index types
-
-/** @addTo index-types */
-interface __OptInFeatures {}
-/** @addTo index-types */
-/**
- * Equals a branded type when __OptInFeatures contains strictIndexTypes, otherwise equals `unknown`.
- */
-type IndexBrand<B extends string> = "strictIndexTypes" extends keyof __OptInFeatures
-  ? {
-      [K in B]: any
-    }
-  : unknown
-
 //  -- Concepts --
 
 /** @unionReplace array */

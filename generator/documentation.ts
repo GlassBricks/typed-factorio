@@ -25,7 +25,7 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
   if (stage === "prototype") {
     const link2 = mapLink(context, `runtime:${name}${member ? "::" + member : ""}`, (warn = false))
     if (link2) return link2
-    context.warning(`todo: prototype link: ${origLink}`)
+    // context.warning(`todo: prototype link: ${origLink}`)
     return undefined
   } else if (stage !== "runtime") {
     context.warning(`unknown doc link stage: ${origLink}`)

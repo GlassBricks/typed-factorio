@@ -55,14 +55,3 @@ type GuiElementIndex = uint & {
 type RegistrationNumber = uint64 & {
   _registrationNumberBrand: void
 }
-
-interface __OptInFeatures {}
-
-/**
- * Equals a branded type when __OptInFeatures contains strictIndexTypes, otherwise equals `unknown`.
- */
-type IndexBrand<B extends string> = "strictIndexTypes" extends keyof __OptInFeatures
-  ? {
-      [K in B]: any
-    }
-  : unknown
