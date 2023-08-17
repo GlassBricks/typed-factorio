@@ -34,7 +34,7 @@ export class GenerationContext {
   constructor(
     readonly apiDocs: FactorioRuntimeApiJson,
     readonly manualDefinitionsSource: ts.SourceFile,
-    private readonly checker: ts.TypeChecker
+    readonly checker: ts.TypeChecker
   ) {
     if (apiDocs.application !== "factorio") {
       throw new Error("Unsupported application " + apiDocs.application)
@@ -60,22 +60,6 @@ export class GenerationContext {
       throw new Error(`Existing definitions for ${name} is not a namespace`)
     }
     return result
-  }
-
-  tryGetStringEnumType(typeNode: ts.TypeNode): string[] | undefined {
-    if (ts.isUnionTypeNode(typeNode)) {
-      if (typeNode.types.some((t) => !ts.isLiteralTypeNode(t) || !ts.isStringLiteral(t.literal))) return undefined
-      return typeNode.types.map((t) => ((t as ts.LiteralTypeNode).literal as ts.StringLiteral).text)
-    }
-
-    let type = this.checker.getTypeFromTypeNode(typeNode)
-    while (!type.isUnion() && type.symbol) {
-      type = this.checker.getDeclaredTypeOfSymbol(type.symbol)
-    }
-    if (type.isUnion() && type.types.every((t) => t.isStringLiteral())) {
-      return type.types.map((t) => (t as ts.StringLiteralType).value)
-    }
-    return undefined
   }
 
   warning(...args: unknown[]): void {

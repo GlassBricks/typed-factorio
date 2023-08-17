@@ -167,7 +167,7 @@ function mapBasicType(
   const typeName = context.typeNames[type]
   return {
     mainType: ts.factory.createTypeReferenceNode(type),
-    asString: typeName ? `[${typeName}](${type})` : `\`${type}\``,
+    asString: typeName ? `[${typeName}](runtime:${type})` : `\`${type}\``,
   }
 }
 
@@ -231,17 +231,18 @@ function mapUnionType(
 
   let description: string | undefined
   if (type.full_format) {
-    description = types
-      .map((t) => {
-        if (!t.asString) context.warning("Union type with full format has no asString: " + JSON.stringify(type))
-        if (t.description) {
-          return `- ${t.asString}: ${t.description}`
-        }
-        return `- ${t.asString}`
-      })
-      .map((x) => x.trim())
-      .join("\n")
-    description = unionDescriptionHeader + description
+    description =
+      unionDescriptionHeader +
+      types
+        .map((t) => {
+          if (!t.asString) context.warning("Union type with full format has no asString: " + JSON.stringify(type))
+          if (t.description) {
+            return `- ${t.asString}: ${t.description}`
+          }
+          return `- ${t.asString}`
+        })
+        .map((x) => x.trim())
+        .join("\n")
   } else if (types.some((t) => t.description)) {
     context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
   }

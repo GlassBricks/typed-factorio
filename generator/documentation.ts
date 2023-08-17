@@ -6,46 +6,57 @@ import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
 
 const docUrlBase = "https://lua-api.factorio.com/latest/"
-const hardCodedLinks: Record<string, string> = {
-  global: "Global.html",
-  "data-lifecycle": "Data-Lifecycle.html",
-  migrations: "Migrations.html",
-  classes: "Classes.html",
-}
-
-function mapLink(context: GenerationContext, origLink: string): { link: string; isWebLink?: true } {
+const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
+function mapLink(context: GenerationContext, origLink: string, warn = true): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {
-    return { link: origLink, isWebLink: true }
-  } else if (origLink.match(/\.html($|#)/)) {
-    return { link: docUrlBase + origLink, isWebLink: true }
-  } else if (context.typeNames[origLink]) {
-    return { link: context.typeNames[origLink] }
-  } else if (hardCodedLinks[origLink]) {
-    return {
-      link: docUrlBase + hardCodedLinks[origLink],
-      isWebLink: true,
-    }
+    return origLink
   }
-  const referenceMatch = origLink.match(/^(.+?)::(.+)$/)
-  if (referenceMatch) {
-    const { link: clazz } = mapLink(context, referenceMatch[1])
-    const field = referenceMatch[2]
-    const operator = field.match(/^(.*)_operator$/)?.[1]
-    let fieldRef: string
-    if (!operator) {
-      fieldRef = "#" + field
-    } else if (operator === "length") {
-      fieldRef = "#length"
-    } else if (operator === "[]" || operator === "()") {
-      fieldRef = "" // not supported, at least not until declaration links get standardized
-    } else {
-      throw new Error(`Unknown operator ${operator}`)
-    }
-    return { link: clazz + fieldRef }
+  // hardcoded exception
+  if (origLink === "libraries.html") {
+    return docUrlBase + "libraries.html"
+  }
+
+  const match = origLink.match(/(.*?):(.*?)(?:::(.*))?$/)
+  if (!match) {
+    context.warning(`unknown doc link: ${origLink}`)
+    return undefined
+  }
+  const [, stage, name, member] = match
+
+  if (stage === "prototype") {
+    const link2 = mapLink(context, `runtime:${name}${member ? "::" + member : ""}`, (warn = false))
+    if (link2) return link2
+    context.warning(`todo: prototype link: ${origLink}`)
+    return undefined
+  } else if (stage !== "runtime") {
+    context.warning(`unknown doc link stage: ${origLink}`)
+    return undefined
+  }
+  if (pageLinks.has(name)) {
+    return docUrlBase + name + ".html"
+  }
+
+  if (!context.typeNames[name]) {
+    if (warn) context.warning(`unresolved doc reference: ${origLink}`)
+    return undefined
+  }
+  const typeName = context.typeNames[name]
+  if (!member) {
+    return typeName
+  }
+
+  let fieldRef: string
+  const operator = member.match(/^(.*)_operator$/)?.[1]
+  if (!operator) {
+    fieldRef = "#" + member
+  } else if (operator === "length") {
+    fieldRef = "#length"
+  } else if (operator === "[]" || operator === "()") {
+    fieldRef = "" // not supported, at least not until declaration links get standardized
   } else {
-    context.warning(`unresolved doc reference: ${origLink}`)
-    return { link: origLink }
+    throw new Error(`Unknown operator ${operator}`)
   }
+  return typeName + fieldRef
 }
 
 export function processDescription(context: GenerationContext, description: string | undefined): string | undefined {
@@ -58,7 +69,9 @@ export function processDescription(context: GenerationContext, description: stri
         if (name === "string" || name === "number" || name === "boolean") {
           return `\`${name}\``
         }
-        const { link, isWebLink } = mapLink(context, origLink)
+        let link = mapLink(context, origLink)
+        if (!link) link = origLink
+        const isWebLink = link.startsWith("http")
         const tag = isWebLink ? "linkplain" : "link"
         if (link === name) {
           return `{@${tag} ${link}}`
@@ -79,19 +92,19 @@ export function processDescription(context: GenerationContext, description: stri
 function getDocumentationUrl(context: GenerationContext, reference: string): string {
   let relative_link: string
   if (context.builtins.has(reference)) {
-    relative_link = "Builtin-Types.html#" + reference
+    relative_link = "builtin-types.html#" + reference
   } else if (context.classes.has(reference)) {
-    relative_link = reference + ".html"
+    relative_link = `classes/${reference}.html`
   } else if (context.events.has(reference)) {
     relative_link = "events.html#" + reference
   } else if (reference.startsWith("defines.")) {
     relative_link = "defines.html#" + reference
   } else if (context.concepts.has(reference)) {
-    relative_link = "Concepts.html#" + reference
+    relative_link = "concepts.html#" + reference
   } else if (context.globalObjects.has(reference)) {
     relative_link = ""
   } else if (context.globalFunctions.has(reference)) {
-    relative_link = "Libraries.html#2.-new-functions"
+    relative_link = "auxiliary/libraries.html#new-functions"
   } else if (reference.includes(".")) {
     const className = reference.substring(0, reference.indexOf("."))
     const memberName = reference.substring(reference.indexOf(".") + 1)

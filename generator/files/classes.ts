@@ -9,6 +9,7 @@ import { analyzeMethod, mapAttribute, mapMethod } from "../members.js"
 import { mapType } from "../types.js"
 import { assertNever, sortByOrder } from "../util.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
+import { tryGetStringEnumType } from "../variantParameterGroups.js"
 
 export function preprocessClasses(context: GenerationContext): void {
   for (const clazz of context.apiDocs.classes) {
@@ -275,8 +276,6 @@ function generateClass(
   }
 
   function processSubclasses() {
-    /// hardcoded for now
-    if (clazz.name === "LuaRendering") return
     type MapName = string & { _mapNameBrand: never }
     type UseName = string & { _useNameBrand: never }
 
@@ -297,7 +296,7 @@ function generateClass(
       if (Array.isArray(memberNode) || !ts.isPropertySignature(memberNode)) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} should be a property signature`)
       }
-      const types = context.tryGetStringEnumType(memberNode.type!)
+      const types = tryGetStringEnumType(context, (property.original as Attribute).type, memberNode.type!)
       if (!types) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} is not a string literal union`)
       }

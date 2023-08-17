@@ -87,7 +87,7 @@ export function generateIndexTypesFile(context: GenerationContext): DefinitionsF
     ])
     const statement = ts.factory.createTypeAliasDeclaration(undefined, indexType.name, undefined, typeNode)
     const { parent, name } = indexType.mainAttributePath
-    const description = `See [${parent}.${name}](${parent}::${name}).\n\nIf using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. \`1 as ${indexType.name}\`.`
+    const description = `See [${parent}.${name}](runtime:${parent}::${name}).\n\nIf using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. \`1 as ${indexType.name}\`.`
     addJsDoc(context, statement, { description }, undefined, undefined)
     statements.add(statement)
   }

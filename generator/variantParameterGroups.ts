@@ -2,7 +2,7 @@ import assert from "assert"
 import ts from "typescript"
 import { StatementsList } from "./DefinitionsFile.js"
 import { addJsDoc, processDescription } from "./documentation.js"
-import { Parameter, ParameterGroup, WithVariantParameterGroups } from "./FactorioRuntimeApiJson.js"
+import { LiteralType, Parameter, ParameterGroup, Type, WithVariantParameterGroups } from "./FactorioRuntimeApiJson.js"
 import { GenerationContext } from "./GenerationContext.js"
 import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil.js"
 import { mapParameterToProperty } from "./members.js"
@@ -188,7 +188,7 @@ export function createVariantParameterTypes(
         .map((group) => {
           const variantName = group.name
           const typeName = variantToTypeName(variantName)
-          return `- ${variantToLink(variantName)}: [${typeName}](${typeName})`
+          return `- ${variantToLink(variantName)}: [${typeName}](runtime:${typeName})`
         })
         .join("\n")
     const result = processDescription(context, rawDescription)
@@ -198,7 +198,7 @@ export function createVariantParameterTypes(
 
   function variantToLink(variantName: string) {
     if (variantName === "Other") return "Other types"
-    return isDefine ? `[${variantName}](${variantName})` : `\`"${variantName}"\``
+    return isDefine ? `[${variantName}](runtime:${variantName})` : `\`"${variantName}"\``
   }
 }
 
@@ -210,35 +210,95 @@ function getAllVariants(
     member: { mainProperty: ts.PropertySignature }
   }[],
   name: string
-) {
+): {
+  discriminantProperty?: string
+  variants?: Set<string>
+  isDefine?: boolean
+} {
   const discriminantProperty = withVariants.variant_parameter_description.match(/depending on `(.+?)`:/)?.[1]
-  let isDefine = false
-  let variants: Set<string> | undefined
-  if (discriminantProperty) {
-    const property = baseProperties.find((p) => p.original.name === discriminantProperty)
-    if (property === undefined) {
-      throw new Error(`Discriminant property ${discriminantProperty} was not found on ${name}`)
-    }
-    const originalType = property.original.type
-    let types: string[] | undefined
-    if (typeof originalType === "string" && originalType.startsWith("defines.")) {
-      isDefine = true
-      types = context.defines.get(originalType)?.values?.map((value) => originalType + "." + value.name)
-      if (!types) {
-        throw new Error(
-          `Discriminant property ${name}.${discriminantProperty} has nonexistent define type ${originalType}`
-        )
-      }
-    } else {
-      const memberType = property.member.mainProperty
-      types = context.tryGetStringEnumType(memberType.type!)
-      if (!types) {
-        throw new Error(`Discriminant property ${name}.${discriminantProperty} is not a string literal union`)
-      }
-    }
-    variants = new Set<string>(types)
+  if (!discriminantProperty) return {}
+
+  const property = baseProperties.find((p) => p.original.name === discriminantProperty)
+  if (property === undefined) {
+    throw new Error(`Discriminant property ${discriminantProperty} was not found on ${name}`)
   }
-  return { isDefine, variants, discriminantProperty }
+
+  const apiType = property.original.type
+  // check for defines property
+  if (typeof apiType === "string" && apiType.startsWith("defines.")) {
+    const types = context.defines.get(apiType)?.values?.map((value) => apiType + "." + value.name)
+    if (!types) {
+      throw new Error(`Discriminant property ${name}.${discriminantProperty} has nonexistent define type ${apiType}`)
+    }
+    return {
+      isDefine: true,
+      variants: new Set<string>(types),
+      discriminantProperty,
+    }
+  }
+
+  // check for concept enum
+  const stringEnumType = tryGetStringEnumType(context, apiType, property.member.mainProperty.type!)
+  if (stringEnumType) {
+    return {
+      variants: new Set<string>(stringEnumType),
+      discriminantProperty,
+    }
+  }
+
+  throw new Error(`Could not determine values of discriminant property ${name}.${discriminantProperty}`)
+}
+
+export function tryGetStringEnumType(
+  context: GenerationContext,
+  apiType: Type,
+  tsType: ts.TypeNode
+): string[] | undefined {
+  if (typeof apiType === "string") {
+    const result = tryGetStringUnionValuesFromConcept(context, apiType)
+    if (result) return result
+  }
+  if (ts.isTypeReferenceNode(tsType)) {
+    const result = tryGetStringUnionValuesFromConcept(context, tsType.typeName.getText())
+    if (result) return result
+  }
+
+  // check for string literal union
+  return tryGetStringUnionValuesFromTsType(context, tsType)
+}
+
+function tryGetStringUnionValuesFromConcept(context: GenerationContext, conceptName: string): string[] | undefined {
+  const concept = context.concepts.get(conceptName)
+  if (!concept) return undefined
+
+  const conceptType = concept.type
+  function isStringLiteralType(type: Type): type is LiteralType & { value: string } {
+    return typeof type !== "string" && type.complex_type === "literal" && typeof type.value === "string"
+  }
+  if (
+    typeof conceptType !== "string" &&
+    conceptType.complex_type === "union" &&
+    conceptType.options.every(isStringLiteralType)
+  ) {
+    return conceptType.options.map((option) => option.value)
+  }
+}
+function tryGetStringUnionValuesFromTsType(context: GenerationContext, typeNode: ts.TypeNode): string[] | undefined {
+  if (ts.isUnionTypeNode(typeNode)) {
+    if (typeNode.types.some((t) => !ts.isLiteralTypeNode(t) || !ts.isStringLiteral(t.literal))) return undefined
+    return typeNode.types.map((t) => ((t as ts.LiteralTypeNode).literal as ts.StringLiteral).text)
+  }
+
+  let type = context.checker.getTypeFromTypeNode(typeNode)
+  while (!type.isUnion() && type.symbol) {
+    const newType = context.checker.getDeclaredTypeOfSymbol(type.symbol)
+    if (type === newType) break
+    type = newType
+  }
+  if (!type.isUnion() || !type.types.every((t) => t.isStringLiteral())) {
+    return undefined
+  }
+  return type.types.map((t) => (t as ts.StringLiteralType).value)
 }
 
 function addOtherVariant(

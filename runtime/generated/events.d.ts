@@ -3,7 +3,7 @@
 /** @noSelfInFile */
 
 /**
- * Called when a {@linkplain https://wiki.factorio.com/Prototype/CustomInput CustomInput} is activated.
+ * Called when a {@link prototype:CustomInputPrototype CustomInputPrototype} is activated.
  * @see {@link https://lua-api.factorio.com/latest/events.html#CustomInputEvent Online documentation}
  */
 interface CustomInputEvent extends EventData {

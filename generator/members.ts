@@ -233,20 +233,17 @@ export function mapMethod(
 
   let signatures: ts.MethodSignature[] | ts.MethodSignature
   if (existingMethods) {
-    existingMethods.forEach((m) => {
-      if (!ts.isMethodSignature(m)) {
-        throw new Error(
-          `Manual define for ${thisPath} should be a method signature, got ${ts.SyntaxKind[m.kind]} instead`
-        )
-      }
-    })
-    signatures = (existingMethods as ts.MethodSignature[]).map((m) => {
+    if (!existingMethods.every(ts.isMethodSignature)) {
+      throw new Error(`Manual define for ${thisPath} should be a method signature`)
+    }
+    const existingHasParameters = existingMethods.some((m) => m.parameters.length > 0)
+    signatures = existingMethods.map((m) => {
       const member = ts.factory.createMethodSignature(
         m.modifiers,
         m.name,
         m.questionToken,
         m.typeParameters,
-        m.parameters.length > 0 ? m.parameters : parameters,
+        existingHasParameters ? m.parameters : parameters,
         m.type ?? returnType
       )
       ts.setEmitFlags(member.name, ts.EmitFlags.NoComments)

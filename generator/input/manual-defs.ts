@@ -43,6 +43,8 @@ declare namespace defines {
   /** @numericEnum */
   enum direction {}
 
+  enum logistic_member_index {}
+
   namespace control_behavior {
     namespace mining_drill {
       enum resource_read_mode {}
@@ -93,36 +95,6 @@ interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 
 interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
 
-// Gui element
-
-/** @addBefore BaseGuiSpec */
-type GuiElementType =
-  | "choose-elem-button"
-  | "drop-down"
-  | "empty-widget"
-  | "entity-preview"
-  | "list-box"
-  | "scroll-pane"
-  | "sprite-button"
-  | "tabbed-pane"
-  | "text-box"
-  | "button"
-  | "camera"
-  | "checkbox"
-  | "flow"
-  | "frame"
-  | "label"
-  | "line"
-  | "minimap"
-  | "progressbar"
-  | "radiobutton"
-  | "slider"
-  | "sprite"
-  | "switch"
-  | "tab"
-  | "table"
-  | "textfield"
-
 /** @addTo concepts */
 type StyleValuesArray =
   | readonly [topBottom: int, leftRight: int]
@@ -140,6 +112,7 @@ interface LuaStyle {
   set extra_margin_when_activated(value: int | StyleValuesArray)
 }
 
+interface GuiElementType {}
 interface BaseGuiSpec {
   readonly type: GuiElementType
 }
@@ -413,7 +386,12 @@ interface LuaControl {
   teleport(x: number, y?: number): boolean
 }
 
-interface LuaEntity {}
+interface LuaLogisticPoint {}
+
+interface LuaEntity {
+  get_logistic_point(index: defines.logistic_member_index): LuaLogisticPoint | nil
+  get_logistic_point(): Record<defines.logistic_member_index, LuaLogisticPoint> | nil
+}
 
 interface LuaItemStack {}
 
