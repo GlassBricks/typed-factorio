@@ -67,16 +67,19 @@ declare namespace defines {
 
 // -- classes --
 
-// generics and extensions
+/** @addBefore LuaCustomTable */
+/**
+ * This type gives:
+ * - a number type, if K includes a number in its union
+ * - K otherwise
+ *
+ * It also preserves number branding.
+ */
+type LuaCustomTableIterKey<K> = [number] extends [K extends number ? number : K] ? (K extends string ? never : K) : K
 
 type LuaCustomTable<K extends string | number, V> = {
   [P in K]: V
-} & LuaPairsIterable<
-  // this convoluted expression gives a number type if K includes a number, even if it includes a string, and K otherwise.
-  // it also preserves number branding
-  [number] extends [K extends number ? number : K] ? (K extends string ? never : K) : K,
-  V
->
+} & LuaPairsIterable<LuaCustomTableIterKey<K>, V>
 
 interface LuaLazyLoadedValue<T> {
   get(): T

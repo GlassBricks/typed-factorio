@@ -1849,6 +1849,15 @@ interface LuaCustomTableMembers {
 }
 
 /**
+ * This type gives:
+ * - a number type, if K includes a number in its union
+ * - K otherwise
+ *
+ * It also preserves number branding.
+ */
+type LuaCustomTableIterKey<K> = [number] extends [K extends number ? number : K] ? (K extends string ? never : K) : K
+
+/**
  * Lazily evaluated table. For performance reasons, we sometimes return a custom table-like type instead of a native Lua table. This custom type lazily constructs the necessary Lua wrappers of the corresponding C++ objects, therefore preventing their unnecessary construction in some cases.
  *
  * There are some notable consequences to the usage of a custom table type rather than the native Lua table type: Iterating a custom table is only possible using the `pairs` Lua function; `ipairs` won't work. Another key difference is that custom tables cannot be serialised into a game save file -- if saving the game would require serialisation of a custom table, an error will be displayed and the game will not be saved.
@@ -1876,12 +1885,7 @@ interface LuaCustomTableMembers {
  */
 type LuaCustomTable<K extends string | number, V> = LuaCustomTableMembers &
   CustomTableIndexer<K, V> &
-  LuaPairsIterable<
-    // this convoluted expression gives a number type if K includes a number, even if it includes a string, and K otherwise.
-    // it also preserves number branding
-    [number] extends [K extends number ? number : K] ? (K extends string ? never : K) : K,
-    V
-  >
+  LuaPairsIterable<LuaCustomTableIterKey<K>, V>
 
 /**
  * Prototype of a damage.

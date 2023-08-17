@@ -5,44 +5,56 @@
 /**
  * See {@link LuaPlayer#index LuaPlayer.index}.
  *
- * If using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. `1 as PlayerIndex`.
+ * You can cast a raw number to this type, e.g. `1 as PlayerIndex`.
  */
-type PlayerIndex = uint & IndexBrand<"_playerIndexBrand">
+type PlayerIndex = uint & {
+  _playerIndexBrand: void
+}
 
 /**
  * See {@link LuaSurface#index LuaSurface.index}.
  *
- * If using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. `1 as SurfaceIndex`.
+ * You can cast a raw number to this type, e.g. `1 as SurfaceIndex`.
  */
-type SurfaceIndex = uint & IndexBrand<"_surfaceIndexBrand">
+type SurfaceIndex = uint & {
+  _surfaceIndexBrand: void
+}
 
 /**
  * See {@link LuaForce#index LuaForce.index}.
  *
- * If using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. `1 as ForceIndex`.
+ * You can cast a raw number to this type, e.g. `1 as ForceIndex`.
  */
-type ForceIndex = uint & IndexBrand<"_forceIndexBrand">
+type ForceIndex = uint & {
+  _forceIndexBrand: void
+}
 
 /**
  * See {@link LuaEntity#unit_number LuaEntity.unit_number}.
  *
- * If using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. `1 as UnitNumber`.
+ * You can cast a raw number to this type, e.g. `1 as UnitNumber`.
  */
-type UnitNumber = uint & IndexBrand<"_unitNumberBrand">
+type UnitNumber = uint & {
+  _unitNumberBrand: void
+}
 
 /**
  * See {@link LuaGuiElement#index LuaGuiElement.index}.
  *
- * If using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. `1 as GuiElementIndex`.
+ * You can cast a raw number to this type, e.g. `1 as GuiElementIndex`.
  */
-type GuiElementIndex = uint & IndexBrand<"_guiElementIndexBrand">
+type GuiElementIndex = uint & {
+  _guiElementIndexBrand: void
+}
 
 /**
  * See {@link LuaBootstrap#register_on_entity_destroyed LuaBootstrap.register_on_entity_destroyed}.
  *
- * If using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. `1 as RegistrationNumber`.
+ * You can cast a raw number to this type, e.g. `1 as RegistrationNumber`.
  */
-type RegistrationNumber = uint64 & IndexBrand<"_registrationNumberBrand">
+type RegistrationNumber = uint64 & {
+  _registrationNumberBrand: void
+}
 
 interface __OptInFeatures {}
 

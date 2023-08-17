@@ -2,7 +2,7 @@ import ts from "typescript"
 import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
 import { addJsDoc } from "../documentation.js"
 import { GenerationContext } from "../GenerationContext.js"
-import { decapitalize, Types } from "../genUtil.js"
+import { decapitalize } from "../genUtil.js"
 
 export interface IndexType {
   name: string
@@ -79,15 +79,21 @@ export function preprocessIndexTypes(context: GenerationContext): void {
 export function generateIndexTypesFile(context: GenerationContext): DefinitionsFile {
   const statements = new StatementsList(context, "index-types")
   for (const indexType of IndexTypes) {
-    // type ${name} = uint & { _${name}Brand: void } ( | 1 )
-    const typeArguments = [Types.stringLiteral(`_${decapitalize(indexType.name)}Brand`)]
+    // type ${name} = uint & { _${name}Brand: void }
     const typeNode = ts.factory.createIntersectionTypeNode([
       ts.factory.createTypeReferenceNode(indexType.expectedTypes?.[0] ?? "uint"),
-      ts.factory.createTypeReferenceNode("IndexBrand", typeArguments),
+      ts.factory.createTypeLiteralNode([
+        ts.factory.createPropertySignature(
+          undefined,
+          ts.factory.createIdentifier(`_${decapitalize(indexType.name)}Brand`),
+          undefined,
+          ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+        ),
+      ]),
     ])
     const statement = ts.factory.createTypeAliasDeclaration(undefined, indexType.name, undefined, typeNode)
     const { parent, name } = indexType.mainAttributePath
-    const description = `See [${parent}.${name}](runtime:${parent}::${name}).\n\nIf using strict-index-types, and you need to use a plain number for this type, you can use a cast, e.g. \`1 as ${indexType.name}\`.`
+    const description = `See [${parent}.${name}](runtime:${parent}::${name}).\n\nYou can cast a raw number to this type, e.g. \`1 as ${indexType.name}\`.`
     addJsDoc(context, statement, { description }, undefined, undefined)
     statements.add(statement)
   }
