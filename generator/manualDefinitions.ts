@@ -32,6 +32,8 @@ export enum AnnotationKind {
 
   ReadType = "readType",
   WriteType = "writeType",
+
+  Overload = "overload",
 }
 
 const annotationValues = new Set<string>(Object.values(AnnotationKind))

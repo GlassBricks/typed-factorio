@@ -161,7 +161,7 @@ function generateClass(context: GenerationContext, clazz: Class, existing: Inter
     const callOperator = clazz.operators.find((x) => x.name === "call") as CallOperator | undefined
     if (callOperator) {
       // manual define for operator not supported yet
-      const asMethod = mapMethod(
+      const [asMethod] = mapMethod(
         context,
         {
           ...callOperator,
@@ -169,7 +169,7 @@ function generateClass(context: GenerationContext, clazz: Class, existing: Inter
         },
         clazz.name,
         existing
-      ) as ts.MethodSignature
+      )
       const callSignature = ts.factory.createCallSignature(undefined, asMethod.parameters, asMethod.type)
       ts.setSyntheticLeadingComments(callSignature, ts.getSyntheticLeadingComments(asMethod))
       members.push({ original: callOperator, member: callSignature })

@@ -15,9 +15,11 @@ export interface LuaObject {
 
 declare namespace defines {
   const prototypes: {
-    readonly [Type in string]?: {
-      readonly [Name in string]?: 0 & { _notFalsyBrand: any }
-    }
+    readonly [type: string]:
+      | {
+          readonly [name: string]: (0 & { _notFalsyBrand: void }) | nil
+        }
+      | nil
   }
 
   namespace difficulty_settings {
@@ -25,9 +27,13 @@ declare namespace defines {
 
     enum technology_difficulty {}
   }
+
   enum circuit_connector_id {}
+
   enum gui_type {}
+
   enum rail_direction {}
+
   namespace events {
     const on_console_chat: EventId<any>
     const on_player_crafted_item: EventId<any>
@@ -37,10 +43,13 @@ declare namespace defines {
     const script_raised_built: EventId<any>
     const script_raised_destroy: EventId<any>
     const script_raised_revive: EventId<any>
+    const script_raised_teleported: EventId<any>
     const script_raised_set_tiles: EventId<any>
   }
+
   /** @numericEnum */
   enum command {}
+
   /** @numericEnum */
   enum direction {}
 
@@ -55,6 +64,7 @@ declare namespace defines {
     }
     namespace inserter {
       enum circuit_mode_of_operation {}
+
       enum hand_read_mode {}
     }
     namespace logistic_container {
@@ -91,6 +101,7 @@ export interface LuaLazyLoadedValue<T> {
 }
 
 export interface ChunkPositionAndArea {}
+
 export interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
 // Array-likeTypes
@@ -112,24 +123,32 @@ export type SizeArray = readonly [width: int, height: int]
 
 export interface LuaStyle {
   set size(value: int | SizeArray)
+
   set padding(value: int | StyleValuesArray)
+
   set margin(value: int | StyleValuesArray)
+
   /** @subclasses scroll-pane */
   set extra_padding_when_activated(value: int | StyleValuesArray)
+
   /** @subclasses scroll-pane */
   set extra_margin_when_activated(value: int | StyleValuesArray)
 }
 
 export interface GuiElementType {}
+
 export interface BaseGuiSpec {
   readonly type: GuiElementType
 }
+
 export interface FlowGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
+
 export interface FrameGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
+
 export interface LineGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
@@ -137,13 +156,21 @@ export interface LineGuiSpec {
 export interface SignalID {}
 
 export interface ItemPrototypeFilter {}
+
 export interface TilePrototypeFilter {}
+
 export interface EntityPrototypeFilter {}
+
 export interface FluidPrototypeFilter {}
+
 export interface RecipePrototypeFilter {}
+
 export interface DecorativePrototypeFilter {}
+
 export interface AchievementPrototypeFilter {}
+
 export interface EquipmentPrototypeFilter {}
+
 export interface TechnologyPrototypeFilter {}
 
 /** @addBefore ChooseElemButtonGuiSpec */
@@ -294,16 +321,6 @@ export type LuaGuiElement = {
   // @ts-ignore
   elem_filters: ChooseElemButtonFilters[this["elem_type"]] | nil
 
-  /** @subclasses dropdown list-box */
-  clear_items()
-  /** @subclasses dropdown list-box */
-  get_item()
-  /** @subclasses dropdown list-box */
-  set_item()
-  /** @subclasses dropdown list-box */
-  add_item()
-  /** @subclasses dropdown list-box */
-  remove_item()
   /** @subclasses slider */
   get_slider_minimum()
   /** @subclasses slider */
@@ -324,36 +341,8 @@ export type LuaGuiElement = {
   set_slider_discrete_values()
   /** @subclasses dropdown */
   close_dropdown()
-  /** @subclasses sprite-button sprite */
-  sprite
-  /** @subclasses sprite */
-  resize_to_sprite
-  /** @subclasses sprite-button */
-  clicked_sprite
-  /** @subclasses dropdown list-box */
-  items
-  /** @subclasses dropdown list-box */
-  selected_index
-  /** @subclasses sprite-button */
-  number
-  /** @subclasses sprite-button */
-  show_percent_for_small_numbers
-  /** @subclasses camera minimap */
-  position
-  /** @subclasses camera minimap */
-  surface_index
-  /** @subclasses camera minimap */
-  zoom
-  /** @subclasses minimap */
-  force
-  /** @subclasses button sprite-button */
-  mouse_button_filter
   /** @subclasses flow frame label table empty-widget */
   drag_target?: FrameGuiElement
-  /** @subclasses tabbed-pane */
-  readonly tabs
-  /** @subclasses entity-preview camera minimap */
-  entity
 
   set style(style: LuaStyle | string)
   get style(): LuaStyle
@@ -364,7 +353,9 @@ export interface FrameGuiElement {}
 // nullability, multi-return, different read/write types
 
 export interface LuaEquipment {}
+
 export interface LuaEquipmentGrid {}
+
 export interface LuaTechnology {}
 
 export interface LuaControl {
@@ -381,6 +372,7 @@ export interface LuaControl {
       | defines.gui_type
       | nil
   )
+
   get opened():
     | LuaEntity
     | LuaEquipment
@@ -390,7 +382,8 @@ export interface LuaControl {
     | LuaInventory
     | LuaTechnology
     | nil
-  teleport(position: MapPosition | MapPositionArray, surface?: SurfaceIdentification): boolean
+
+  /** @overload */
   teleport(x: number, y?: number): boolean
 }
 
@@ -415,6 +408,7 @@ export interface LuaRemote {
   add_interface(name: string, functions: Record<string, (...args: any) => void>): void
 
   call<T extends (...args: any) => any>(_interface: string, _function: string, ...args: Parameters<T>): ReturnType<T>
+
   call(_interface: string, _function: string, ...args: readonly Any[]): Any | nil
 }
 
@@ -430,15 +424,14 @@ export type RaiseableEvents =
   | typeof defines.events.script_raised_built
   | typeof defines.events.script_raised_destroy
   | typeof defines.events.script_raised_revive
+  | typeof defines.events.script_raised_teleported
   | typeof defines.events.script_raised_set_tiles
 
 export interface EventData {
   readonly name: EventId<EventData> | string
 }
 
-export interface CustomInputEvent {
-  readonly name: string
-}
+export interface CustomInputEvent {}
 
 /** @addTo events */
 /** An event id. */
@@ -459,18 +452,22 @@ export type CustomEventId<T extends table> = EventId<T> & {
 export interface LuaBootstrap {
   on_event<E extends EventId<any, table>>(
     event: E,
-    f: ((data: E["_eventData"]) => void) | nil,
+    handler: ((data: E["_eventData"]) => void) | nil,
     filters?: E["_filter"][]
   ): void
+
   on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | nil): void
+
   on_event(event: string, f: ((data: CustomInputEvent) => void) | nil): void
 
   generate_event_name<T extends table>(): CustomEventId<T>
 
   get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | nil
+
   get_event_handler(event: string): (data: CustomInputEvent) => void | nil
 
   get_event_filter<E extends EventId<any, table>>(event: E): E["_filter"][] | nil
+
   set_event_filter<E extends EventId<any, table>>(event: E, filters: E["_filter"][] | nil): void
 
   raise_event<E extends RaiseableEvents | CustomEventId<any>>(
@@ -485,8 +482,10 @@ export type PlayerIndex = uint
 export type SurfaceIndex = uint
 
 export interface LuaGameScript {
-  get_player(index: PlayerIndex | string): LuaPlayer | nil
-  get_surface(index: SurfaceIndex | string): LuaSurface | nil
+  get_player(player: PlayerIndex | string): LuaPlayer | nil
+
+  get_surface(surface: SurfaceIndex | string): LuaSurface | nil
+
   readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
 }
@@ -499,7 +498,9 @@ export type LocalisedString = readonly [string, ...LocalisedString[]]
 export interface RealOrientation {}
 
 export interface MapPosition {}
+
 export interface MapPositionArray {}
+
 export interface Color {}
 
 /** @replace */
@@ -510,6 +511,7 @@ export interface MapGenSize {}
 
 /** @readType ComparatorStringRead */
 export interface ComparatorString {}
+
 /** @addAfter ComparatorString */
 /** @see ComparatorString */
 export type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
@@ -520,6 +522,7 @@ export interface ArithmeticCombinatorParameters {
 
 /** @writeType MouseButtonFlagsWrite */
 export interface MouseButtonFlags {}
+
 /** @addAfter MouseButtonFlags */
 /** @see MouseButtonFlags */
 export type MouseButtonFlagsWrite = MouseButtonFlags | ReadonlyArray<keyof MouseButtonFlags | "left-and-right">
@@ -570,6 +573,7 @@ export type RenderLayer = `${bigint}`
 
 /** @omit */
 export interface EventFilter {}
+
 /** @omit */
 export interface PrototypeFilter {}
 
@@ -622,9 +626,6 @@ export interface PlayerIdentification {}
 /** @readType LuaItemPrototype */
 export interface ItemPrototypeIdentification {}
 
-export interface OtherTechnologyModifier {
-  readonly modifier?: double
-}
 // Skipped: EntityPrototypeIdentification, ItemStackIdentification
 
 export interface InfinityPipeFilter {}
@@ -691,6 +692,7 @@ export interface BlueprintConnectionData {
   /** The circuit connector id of the entity this connection is connected to, see {@link defines.circuit_connector_id} */
   circuit_id?: defines.circuit_connector_id
 }
+
 /** @addAfter BlueprintEntity */
 /**
  * The actual point where a wire is connected to. Contains information about where it is connected to.
@@ -709,6 +711,7 @@ export interface BlueprintConnectionPoint {
    */
   green?: BlueprintConnectionData[]
 }
+
 /** @addAfter BlueprintEntity */
 /**
  * Object containing information about the connections to other entities formed by red or green wires.
@@ -738,14 +741,23 @@ export interface BlueprintInfinitySettings {
 }
 
 export interface InventoryFilter {}
+
 export interface LogisticFilter {}
+
 export interface InfinityInventoryFilter {}
+
 export interface ProgrammableSpeakerParameters {}
+
 export interface ProgrammableSpeakerAlertParameters {}
+
 export interface CircuitCondition {}
+
 export interface Signal {}
+
 export interface DeciderCombinatorParameters {}
+
 export interface ProgrammableSpeakerCircuitParameters {}
+
 export interface ConstantCombinatorParameters {}
 
 /** @addAfter BlueprintEntity */

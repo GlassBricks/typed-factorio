@@ -199,7 +199,7 @@ export function mapMethod(
   method: Method,
   parent: string,
   existingContainer: InterfaceDef | TypeAliasDef | undefined
-): ts.MethodSignature[] | ts.MethodSignature {
+): ts.MethodSignature[] {
   const existingMethods = existingContainer?.members[method.name]
   const firstExistingMethod = existingMethods?.[0]
   const thisPath = parent ? parent + "." + method.name : method.name
@@ -229,26 +229,32 @@ export function mapMethod(
 
   const returnType = getReturnType(context, method, parent)
 
-  let signatures: ts.MethodSignature[] | ts.MethodSignature
+  if (existingMethods && !existingMethods.every(ts.isMethodSignature)) {
+    throw new Error(`Manual define for ${thisPath} should be a method signature`)
+  }
+
+  const signatures: ts.MethodSignature[] = []
+  if (!existingMethods || existingMethods?.some((m) => getAnnotations(m).overload)) {
+    signatures.push(
+      ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
+    )
+  }
   if (existingMethods) {
-    if (!existingMethods.every(ts.isMethodSignature)) {
-      throw new Error(`Manual define for ${thisPath} should be a method signature`)
-    }
     const existingHasParameters = existingMethods.some((m) => m.parameters.length > 0)
-    signatures = existingMethods.map((m) => {
-      const member = ts.factory.createMethodSignature(
-        m.modifiers,
-        m.name,
-        m.questionToken,
-        m.typeParameters,
-        existingHasParameters ? m.parameters : parameters,
-        m.type ?? returnType
-      )
-      ts.setEmitFlags(member.name, ts.EmitFlags.NoComments)
-      return member
-    })
-  } else {
-    signatures = ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
+    signatures.push(
+      ...existingMethods.map((m) => {
+        const member = ts.factory.createMethodSignature(
+          m.modifiers,
+          m.name,
+          m.questionToken,
+          m.typeParameters,
+          existingHasParameters ? m.parameters : parameters,
+          m.type ?? returnType
+        )
+        ts.setEmitFlags(member.name, ts.EmitFlags.NoComments)
+        return member
+      })
+    )
   }
   const firstSignature = getFirst(signatures)
   addMethodJSDoc(context, firstSignature, method, thisPath)
@@ -387,6 +393,7 @@ function mapParameterToParameter(
 }
 
 const keywords = new Set(["function", "interface"])
+
 function escapeParameterName(name: string): string {
   if (keywords.has(name)) {
     return "_" + name

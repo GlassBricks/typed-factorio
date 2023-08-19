@@ -19,6 +19,7 @@
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "scripts": {
     "generate": "ts-node --esm -P generator/tsconfig.json generator/main.ts",
+    "generate-no-format": "ts-node --swc -T --esm -P generator/tsconfig.json generator/main.ts --no-format",
     "clean": "rimraf runtime/generated",
     "pretest": "npm run generate",
     "test": "jest",
@@ -34,6 +35,7 @@
     "typescript-to-lua": "^1.6.1"
   },
   "devDependencies": {
+    "@swc/core": "^1.3.78",
     "@types/jest": "^29.5.2",
     "@types/node": "^20.3.1",
     "@types/prettier": "^2.7.3",

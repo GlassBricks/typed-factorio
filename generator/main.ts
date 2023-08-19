@@ -12,6 +12,7 @@ const __dirname = path.dirname(__filename)
 const srcDir = path.resolve(__dirname, "./input")
 
 const srcFiles = fs.readdirSync(srcDir)
+const noFormat = process.argv.includes("--no-format")
 
 const manualDefinesFileName = "manual-defs.ts"
 if (!srcFiles.some((x) => x === manualDefinesFileName)) {
@@ -59,12 +60,14 @@ const outDir = path.resolve(__dirname, "..")
 
 // eslint-disable-next-line prefer-const
 for (let [name, content] of files) {
-  console.log(`  formatting ${name}`)
-  content = prettier.format(content, {
-    parser: "typescript",
-    printWidth: 120,
-    semi: false,
-  })
+  if (!noFormat) {
+    console.log(`  formatting ${name}`)
+    content = prettier.format(content, {
+      parser: "typescript",
+      printWidth: 120,
+      semi: false,
+    })
+  }
   const fileName = path.join(outDir, name)
   // make sure the directory exists
   fs.mkdirSync(path.dirname(fileName), { recursive: true })
