@@ -6,6 +6,7 @@ import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
 
 const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
+
 function mapLink(context: GenerationContext, origLink: string, warn = true): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {
     return origLink
@@ -23,7 +24,7 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
   const [, stage, name, member] = match
 
   if (stage === "prototype") {
-    const link2 = mapLink(context, `runtime:${name}${member ? "::" + member : ""}`, (warn = false))
+    const link2 = mapLink(context, `runtime:${name}${member ? "::" + member : ""}`, false)
     if (link2) return link2
     // context.warning(`todo: prototype link: ${origLink}`)
     return undefined
@@ -58,28 +59,33 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
   return typeName + fieldRef
 }
 
-export function processDescription(context: GenerationContext, description: string | undefined): string | undefined {
+export function processDescription(
+  context: GenerationContext,
+  description: string | undefined,
+  normalizeNewlines = true
+): string | undefined {
   if (!description) return undefined
   let result = ""
 
   for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|```((?:(?!```).)*)```)/gs)) {
-    const withLinks = text
-      .replace(/\[(?!\[)(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
-        if (name === "string" || name === "number" || name === "boolean") {
-          return `\`${name}\``
-        }
-        let link = mapLink(context, origLink)
-        if (!link) link = origLink
-        const isWebLink = link.startsWith("http")
-        const tag = isWebLink ? "linkplain" : "link"
-        if (link === name) {
-          return `{@${tag} ${link}}`
-        } else {
-          return `{@${tag} ${link} ${name}}`
-        }
-      })
-      .replace("__1__\n   ", "__1__") // fix for LocalisedString description
-      .replace(/\n(?!([\n-]))/g, "\n\n")
+    let withLinks = text.replace(/\[(?!\[)(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
+      if (name === "string" || name === "number" || name === "boolean") {
+        return `\`${name}\``
+      }
+      let link = mapLink(context, origLink)
+      if (!link) link = origLink
+      const isWebLink = link.startsWith("http")
+      const tag = isWebLink ? "linkplain" : "link"
+      if (link === name) {
+        return `{@${tag} ${link}}`
+      } else {
+        return `{@${tag} ${link} ${name}}`
+      }
+    })
+    // .replace("__1__\n   ", "__1__") // fix for LocalisedString description
+    if (normalizeNewlines) {
+      withLinks = withLinks.replace(/\n(?!([\n-]))/g, "\n\n")
+    }
     result += withLinks
 
     if (codeBlock) result += "```" + codeBlock + "```"
@@ -154,10 +160,8 @@ function getSubclassesComment(subclasses: string[] | undefined): string | undefi
 }
 
 function processExample(context: GenerationContext, example: string): string {
-  // get header, and code block, possibly spanning multiple lines
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
-  const result = header + "\n" + codeBlock.trim()
-  // add " * " to each line that is not the first
+  const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
   return result.replaceAll("\n", "\n * ")
 }
 

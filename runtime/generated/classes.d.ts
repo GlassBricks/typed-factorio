@@ -236,10 +236,10 @@ declare namespace FactorioRuntime {
      * @param event The event(s) or custom-input to invoke the handler on.
      * @param handler The handler for this event. Passing `nil` will unregister it.
      * @param filters The filters for this event. Can only be used when registering for individual events.
-     * @example Register for the [on_tick](runtime:on_tick) event to print the current tick to console each tick.
+     * @example Register for the {@link OnTickEvent on_tick} event to print the current tick to console each tick.
      * script.on_event(defines.events.on_tick,
      * function(event) game.print(event.tick) end)
-     * @example Register for the [on_built_entity](runtime:on_built_entity) event, limiting it to only be received when a `"fast-inserter"` is built.
+     * @example Register for the {@link OnBuiltEntityEvent on_built_entity} event, limiting it to only be received when a `"fast-inserter"` is built.
      * script.on_event(defines.events.on_built_entity,
      * function(event) game.print("Gotta go fast!") end,
      * {{filter = "name", name = "fast-inserter"}})
@@ -271,7 +271,7 @@ declare namespace FactorioRuntime {
      * Register a metatable to have linkage recorded and restored when saving/loading. The metatable itself will not be saved. Instead, only the linkage to a registered metatable is saved, and the metatable registered under that name will be used when loading the table.
      * @param name The name of this metatable. Names must be unique per mod.
      * @param metatable The metatable to register.
-     * @example The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in [global](runtime:global).
+     * @example The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in {@linkplain https://lua-api.factorio.com/1.1.89/global.html global}.
      * local metatable = {
      *    __index = function(key)
      *       return "no value for key " .. key
@@ -305,11 +305,11 @@ declare namespace FactorioRuntime {
      * Sets the filters for the given event. The filters are only retained when set after the actual event registration, because registering for an event with different or no filters will overwrite previously set ones.
      * @param event ID of the event to filter.
      * @param filters The filters or `nil` to clear them.
-     * @example Limit the [on_marked_for_deconstruction](runtime:on_marked_for_deconstruction) event to only be received when a non-ghost entity is marked for deconstruction.
+     * @example Limit the {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction} event to only be received when a non-ghost entity is marked for deconstruction.
      * script.set_event_filter(defines.events.on_marked_for_deconstruction, {{filter = "ghost", invert = true}})
-     * @example Limit the [on_built_entity](runtime:on_built_entity) event to only be received when either a `unit` or a `unit-spawner` is built.
+     * @example Limit the {@link OnBuiltEntityEvent on_built_entity} event to only be received when either a `unit` or a `unit-spawner` is built.
      * script.set_event_filter(defines.events.on_built_entity, {{filter = "type", type = "unit"}, {filter = "type", type = "unit-spawner"}})
-     * @example Limit the [on_entity_damaged](runtime:on_entity_damaged) event to only be received when a `rail` is damaged by an `acid` attack.
+     * @example Limit the {@link OnEntityDamagedEvent on_entity_damaged} event to only be received when a `rail` is damaged by an `acid` attack.
      * script.set_event_filter(defines.events.on_entity_damaged, {{filter = "rail"}, {filter = "damage-type", type = "acid", mode = "and"}})
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.set_event_filter Online documentation}
      */
@@ -341,7 +341,7 @@ declare namespace FactorioRuntime {
      * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}
      * @param event ID of the event to raise.
      * @param data Table with extra data that will be passed to the event handler. Any invalid LuaObjects will silently stop the event from being raised.
-     * @example Raise the [on_console_chat](runtime:on_console_chat) event with the desired message 'from' the first player.
+     * @example Raise the {@link OnConsoleChatEvent on_console_chat} event with the desired message 'from' the first player.
      * local data = {player_index = 1, message = "Hello friends!"}
      * script.raise_event(defines.events.on_console_chat, data)
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.raise_event Online documentation}
@@ -1404,7 +1404,7 @@ declare namespace FactorioRuntime {
     })
     /**
      * The player's cursor stack. `nil` if the player controller is a spectator.
-     * @example Even though this property is marked as read-only, it returns a [LuaItemStack](runtime:LuaItemStack), meaning it can be manipulated like so:
+     * @example Even though this property is marked as read-only, it returns a {@link LuaItemStack}, meaning it can be manipulated like so:
      * player.cursor_stack.clear()
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaControl.html#LuaControl.cursor_stack Online documentation}
      */
@@ -1788,7 +1788,7 @@ declare namespace FactorioRuntime {
    * Lazily evaluated table. For performance reasons, we sometimes return a custom table-like type instead of a native Lua table. This custom type lazily constructs the necessary Lua wrappers of the corresponding C++ objects, therefore preventing their unnecessary construction in some cases.
    *
    * There are some notable consequences to the usage of a custom table type rather than the native Lua table type: Iterating a custom table is only possible using the `pairs` Lua function; `ipairs` won't work. Another key difference is that custom tables cannot be serialised into a game save file -- if saving the game would require serialisation of a custom table, an error will be displayed and the game will not be saved.
-   * @example In previous versions of Factorio, this would create a [LuaPlayer](runtime:LuaPlayer) instance for every player in the game, even though only one such wrapper is needed. In the current version, accessing [game.players](runtime:LuaGameScript::players) by itself does not create any [LuaPlayer](runtime:LuaPlayer) instances; they are created lazily when accessed. Therefore, this example only constructs one [LuaPlayer](runtime:LuaPlayer) instance, no matter how many elements there are in `game.players`.
+   * @example In previous versions of Factorio, this would create a {@link LuaPlayer} instance for every player in the game, even though only one such wrapper is needed. In the current version, accessing {@link LuaGameScript#players game.players} by itself does not create any {@link LuaPlayer} instances; they are created lazily when accessed. Therefore, this example only constructs one {@link LuaPlayer} instance, no matter how many elements there are in `game.players`.
    * game.players["Oxyd"].character.die()
    * @example Custom tables may be iterated using `pairs`.
    * for _, p in pairs(game.players) do game.player.print(p.name); end
@@ -14106,7 +14106,7 @@ declare namespace FactorioRuntime {
      * _Can only be used if this is choose-elem-button_
      * @example This will configure a choose-elem-button of type `"entity"` to only show items of type `"furnace"`.
      * button.elem_filters = {{filter = "type", type = "furnace"}}
-     * @example Then, there are some types of filters that work on a specific kind of attribute. The following will configure a choose-elem-button of type `"entity"` to only show entities that have their `"hidden"` [flags](runtime:EntityPrototypeFlags) set.
+     * @example Then, there are some types of filters that work on a specific kind of attribute. The following will configure a choose-elem-button of type `"entity"` to only show entities that have their `"hidden"` {@link EntityPrototypeFlags flags} set.
      * button.elem_filters = {{filter = "hidden"}}
      * @example Lastly, these filters can be combined at will, taking care to specify how they should be combined (either `"and"` or `"or"`. The following will filter for any `"entities"` that are `"furnaces"` and that are not `"hidden"`.
      * button.elem_filters = {{filter = "type", type = "furnace"}, {filter = "hidden", invert = true, mode = "and"}}
@@ -25409,7 +25409,7 @@ declare namespace FactorioRuntime {
      * The LUT is multiplied by `((1 - weight) + brightness * weight)` and result is clamped to range [0, 1].
      *
      * Default is `{0, 0, 0}`, which means no influence.
-     * @example Makes night on the surface pitch black, assuming [LuaSurface::min_brightness](runtime:LuaSurface::min_brightness) being set to default value `0.15`.
+     * @example Makes night on the surface pitch black, assuming {@link LuaSurface#min_brightness LuaSurface::min_brightness} being set to default value `0.15`.
      * game.surfaces[1].brightness_visual_weights = { 1 / 0.85, 1 / 0.85, 1 / 0.85 }
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSurface.html#LuaSurface.brightness_visual_weights Online documentation}
      */

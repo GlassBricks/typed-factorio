@@ -6,7 +6,9 @@ declare namespace FactorioRuntime {
   /**
    * Localised strings are a way to support translation of in-game text. It is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.
    *
-   * The key identifies the string template. For example, `"gui-alert-tooltip.attack"` (for the template `"__1__ objects are being damaged"`; see the file `data/core/locale/en.cfg`).
+   * The key identifies the string template. For example, `"gui-alert-tooltip.attack"` (for the template `"__1__
+   *
+   *     objects are being damaged"`; see the file `data/core/locale/en.cfg`).
    *
    * The template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.
    *
