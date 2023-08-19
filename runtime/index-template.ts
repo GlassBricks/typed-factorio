@@ -1,11 +1,14 @@
-/// <reference types="lua-types/5.2" />
+// This file declares all globals for factorio runtime.
 
-// generated
+/// <reference path="../index.d.ts" />
+
+// globals
+
+declare const defines: typeof FactorioRuntime.defines
 
 // other runtime
-/// <reference path="librariesAndFunctions.d.ts" />
 /// <reference path="pairs.d.ts" />
+/// <reference path="libraries-and-functions.d.ts" />
 
 // lualib
-/// <reference path="util.d.ts" />
-/// <reference path="mod-gui.d.ts" />
+/// <reference path="../lualib/mod-gui.d.ts" />

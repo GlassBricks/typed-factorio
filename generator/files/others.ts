@@ -1,11 +1,12 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { GenerationContext, OutputFile } from "../GenerationContext.js"
+import { GenerationContext } from "../GenerationContext.js"
 import { createConst, Modifiers } from "../genUtil.js"
 import { analyzeMethod, mapFunction } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
+import { OutputFile } from "../OutputFile"
 
 export function preprocessBuiltins(context: GenerationContext): void {
   for (const builtin of context.apiDocs.builtin_types) {

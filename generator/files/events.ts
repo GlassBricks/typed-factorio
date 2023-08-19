@@ -1,10 +1,11 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { GenerationContext, OutputFile } from "../GenerationContext.js"
+import { GenerationContext } from "../GenerationContext.js"
 import { createExtendsClause, toPascalCase } from "../genUtil.js"
 import { mapParameterToProperty } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { sortByOrder } from "../util.js"
+import { OutputFile } from "../OutputFile"
 
 export function preprocessEvents(context: GenerationContext): void {
   for (const event of context.apiDocs.events) {

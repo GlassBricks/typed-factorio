@@ -2,8 +2,6 @@
 
 /** @noSelfInFile */
 
-declare const defines: typeof FactorioRuntime.defines
-
 declare namespace FactorioRuntime {
   namespace defines {
     enum alert_type {

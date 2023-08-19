@@ -5,3 +5,4 @@ scripts
 test
 runtime/*.ts
 .yarn
+**/index-template.ts

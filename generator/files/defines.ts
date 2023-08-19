@@ -1,11 +1,12 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Define } from "../FactorioRuntimeApiJson.js"
-import { GenerationContext, OutputFile } from "../GenerationContext.js"
-import { createConst, createNamespace, Modifiers, Types } from "../genUtil.js"
+import { GenerationContext } from "../GenerationContext.js"
+import { createConst, createNamespace, Types } from "../genUtil.js"
 import { AnyDef } from "../manualDefinitions.js"
 import { sortByOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
+import { OutputFile } from "../OutputFile"
 
 export function preprocessDefines(context: GenerationContext): void {
   function addDefine(define: Define, parent: string) {
@@ -35,14 +36,7 @@ export function generateDefines(context: GenerationContext): OutputFile {
     "",
     context.getNamespaceDef("defines")
   )
-  return context.createFile("defines", "namespace", () => {
-    context.currentFile.add(defines)
-    context.currentFile.addGlobal(
-      createConst("defines", ts.factory.createTypeReferenceNode(`typeof ${context.namespaceName}.defines`, undefined), [
-        Modifiers.declare,
-      ])
-    )
-  })
+  return context.createFile("defines", "namespace", () => context.currentFile.add(defines))
 }
 
 function generateEventsDefine(context: GenerationContext, define: Define) {

@@ -56,6 +56,7 @@ const { files, hasWarnings } = generateDefinitions(apiJson, manualDefines, typeC
 console.log("Writing files")
 
 const outDir = path.resolve(__dirname, "..")
+
 // eslint-disable-next-line prefer-const
 for (let [name, content] of files) {
   console.log(`  formatting ${name}`)

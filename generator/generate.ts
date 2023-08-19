@@ -15,15 +15,17 @@ import {
   preprocessGlobalFunctions,
   preprocessGlobalObjects,
 } from "./files/others.js"
-import { GenerationContext, OutputFile } from "./GenerationContext.js"
+import { GenerationContext } from "./GenerationContext.js"
 import { printer } from "./genUtil.js"
 import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions.js"
 import { fileURLToPath } from "url"
+import { OutputFile } from "./OutputFile"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const header = "// This is an auto-generated file. Do not edit directly!\n\n"
+
 export function generateDefinitions(
   apiJson: FactorioRuntimeApiJson,
   manualDefinitionsSource: ts.SourceFile,
@@ -40,10 +42,10 @@ export function generateDefinitions(
       content += printer.printNode(ts.EmitHint.Unspecified, statement, context.manualDefinitionsSource)
       content += "\n\n"
     }
-    result.set(path.join("runtime/generated", name + ".d.ts"), content)
+    result.set(path.join(`${context.folderName}/generated`, name + ".d.ts"), content)
   }
 
-  const indexFiles = generateIndexFiles(files.map((f) => f.name))
+  const indexFiles = generateIndexFiles(context, files)
   for (const [fileName, content] of indexFiles) {
     result.set(fileName, content)
   }
@@ -79,15 +81,37 @@ function generateAll(context: GenerationContext): OutputFile[] {
   return files
 }
 
-function generateIndexFiles(fileNames: Iterable<string>): Map<string, string> {
+function generateIndexFiles(context: GenerationContext, outFiles: OutputFile[]): Map<string, string> {
   const result = new Map<string, string>()
-  const indexTemplateFile = path.resolve(__dirname, "../runtime/index-template.ts")
-  let references = ""
-  for (const file of fileNames) {
-    references += `/// <reference path="./generated/${file}.d.ts" />\n`
+
+  let globalReferences = ""
+  for (const file of outFiles) {
+    if (file.moduleType === "global") {
+      globalReferences += `/// <reference path="./generated/${file.name}.d.ts" />\n`
+    }
   }
-  const indexFileContent = fs.readFileSync(indexTemplateFile, "utf8").replace("// generated\n", (m) => m + references)
-  result.set("runtime/index.d.ts", indexFileContent)
+
+  const globalIndexTemplate = fs.readFileSync(
+    path.resolve(__dirname, `../${context.folderName}/index-template.ts`),
+    "utf8"
+  )
+  result.set(
+    "runtime/index.d.ts",
+    globalIndexTemplate.replace("// globals\n", (m) => m + globalReferences)
+  )
+
+  let namespaceReferences = ""
+  for (const file of outFiles) {
+    if (file.moduleType === "namespace") {
+      namespaceReferences += `/// <reference path="./${context.folderName}/generated/${file.name}.d.ts" />\n`
+    }
+  }
+
+  const namespaceIndexTemplate = fs.readFileSync(path.resolve(__dirname, `../index-template.ts`), "utf8")
+  result.set(
+    "index.d.ts",
+    namespaceIndexTemplate.replace(`// ${context.namespaceName}\n`, (m) => m + namespaceReferences)
+  )
 
   return result
 }
