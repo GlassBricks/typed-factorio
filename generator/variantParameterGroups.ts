@@ -1,6 +1,5 @@
 import assert from "assert"
 import ts from "typescript"
-import { StatementsList } from "./DefinitionsFile.js"
 import { addJsDoc, processDescription } from "./documentation.js"
 import { LiteralType, Parameter, ParameterGroup, Type, WithVariantParameterGroups } from "./FactorioRuntimeApiJson.js"
 import { GenerationContext } from "./GenerationContext.js"
@@ -13,16 +12,16 @@ export function createVariantParameterTypes(
   context: GenerationContext,
   name: string,
   value: WithVariantParameterGroups,
-  usage: RWUsage,
-  statements: StatementsList
+  usage: RWUsage
 ): {
   declarations: [mainType: ts.TypeAliasDeclaration, altWriteType?: ts.TypeAliasDeclaration]
   description: string
 } {
-  context.typeNames[name] = name
+  context.references.set(name, name)
   const shortName = removeLuaPrefix(name)
 
   const baseName = "Base" + shortName
+  context.references.set(baseName, name)
   const existingBase = context.getInterfaceDef(baseName)
 
   value.variant_parameter_groups!.sort(sortByOrder)
@@ -38,7 +37,7 @@ export function createVariantParameterTypes(
   {
     assert(!baseProperties.some((p) => p.member.altWriteProperty)) // not supported for now
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
-      undefined,
+      [Modifiers.export],
       baseName,
       undefined,
       undefined,
@@ -54,8 +53,7 @@ export function createVariantParameterTypes(
         undefined
       )
     }
-    statements.add(baseDeclaration)
-    context.typeNames[baseName] = name
+    context.currentFile.add(baseDeclaration)
   }
 
   addOtherVariant(context, value, variants)
@@ -70,9 +68,9 @@ export function createVariantParameterTypes(
       continue
     }
 
-    const typeName = variantToTypeName(group.name)
+    const variantName = variantToTypeName(group.name)
 
-    const existing = context.getInterfaceDef(typeName)
+    const existing = context.getInterfaceDef(variantName)
 
     let declarations: (ts.InterfaceDeclaration | ts.TypeAliasDeclaration)[]
     if (existing?.kind === "type") {
@@ -92,14 +90,14 @@ export function createVariantParameterTypes(
       declarations = []
       const properties = group.parameters
         .sort(sortByOrder)
-        .map((p) => mapParameterToProperty(context, p, typeName, usage, existing))
+        .map((p) => mapParameterToProperty(context, p, variantName, usage, existing))
 
       const readMembers = properties.map((p) => p.mainProperty)
       if (discriminantMember) readMembers.unshift(discriminantMember)
       declarations.push(
         ts.factory.createInterfaceDeclaration(
-          undefined,
-          typeName,
+          [Modifiers.export],
+          variantName,
           undefined,
           createExtendsClause(baseName),
           readMembers
@@ -112,31 +110,31 @@ export function createVariantParameterTypes(
         if (discriminantMember) writeMembers.unshift(discriminantMember)
         declarations.push(
           ts.factory.createInterfaceDeclaration(
-            undefined,
-            typeName + "Write",
+            [Modifiers.export],
+            variantName + "Write",
             undefined,
             createExtendsClause(baseName),
             writeMembers
           )
         )
-        writeTypeNames.push(typeName + "Write")
+        writeTypeNames.push(variantName + "Write")
       } else {
-        writeTypeNames.push(typeName)
+        writeTypeNames.push(variantName)
       }
     }
     const variantDescription = getVariantDescription(group)
     group.description = variantDescription + "\n\n" + (group.description ?? "")
     addJsDoc(context, declarations[0], group, undefined)
-    declarations.forEach((d) => statements.add(d))
+    declarations.forEach((d) => context.currentFile.add(d))
 
-    context.typeNames[typeName] = typeName
+    context.references.set(variantName, variantName)
 
     if (isOtherTypes) variants?.clear()
   }
 
   const resultDeclarations: ts.TypeAliasDeclaration[] = []
   const unionDeclaration: ts.TypeAliasDeclaration = ts.factory.createTypeAliasDeclaration(
-    undefined,
+    [Modifiers.export],
     name,
     undefined,
     ts.factory.createUnionTypeNode(
@@ -150,14 +148,14 @@ export function createVariantParameterTypes(
   let writeUnionDeclaration: ts.TypeAliasDeclaration | undefined
   if (hasSeparateWrite) {
     writeUnionDeclaration = ts.factory.createTypeAliasDeclaration(
-      undefined,
+      [Modifiers.export],
       name + "Write",
       undefined,
       ts.factory.createUnionTypeNode(writeTypeNames.map((x) => ts.factory.createTypeReferenceNode(x)))
     )
     resultDeclarations.push(writeUnionDeclaration)
   }
-  resultDeclarations.forEach((d) => statements.add(d))
+  resultDeclarations.forEach((d) => context.currentFile.add(d))
 
   const description = getMainResultDescription()
   return { declarations: resultDeclarations as never, description }

@@ -1,7 +1,6 @@
 import * as fs from "fs"
 import * as path from "path"
 import ts from "typescript"
-import { DefinitionsFile } from "./DefinitionsFile.js"
 import { FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
 import { generateClasses, preprocessClasses } from "./files/classes.js"
 import { generateConcepts, preprocessConcepts } from "./files/concepts.js"
@@ -16,7 +15,7 @@ import {
   preprocessGlobalFunctions,
   preprocessGlobalObjects,
 } from "./files/others.js"
-import { GenerationContext } from "./GenerationContext.js"
+import { GenerationContext, OutputFile } from "./GenerationContext.js"
 import { printer } from "./genUtil.js"
 import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions.js"
 import { fileURLToPath } from "url"
@@ -65,7 +64,7 @@ function preprocessAll(context: GenerationContext) {
   preprocessManualDefinitions(context)
 }
 
-function generateAll(context: GenerationContext): DefinitionsFile[] {
+function generateAll(context: GenerationContext): OutputFile[] {
   const files = [
     generateBuiltins(context),
     generateGlobalObjects(context),

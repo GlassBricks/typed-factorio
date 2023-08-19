@@ -1,14 +1,15 @@
-type double = number
-type float = number
-type table = object
-type int = number
-type int8 = number
-type uint = number
-type uint8 = number
-type uint16 = number
-type uint64 = number
-type nil = undefined
-interface LuaObject {
+export type double = number
+export type float = number
+export type table = object
+export type int = number
+export type int8 = number
+export type uint = number
+export type uint8 = number
+export type uint16 = number
+export type uint64 = number
+export type nil = undefined
+
+export interface LuaObject {
   readonly object_name: string
 }
 
@@ -75,37 +76,41 @@ declare namespace defines {
  *
  * It also preserves number branding.
  */
-type LuaCustomTableIterKey<K> = [number] extends [K extends number ? number : K] ? (K extends string ? never : K) : K
+export type LuaCustomTableIterKey<K> = [number] extends [K extends number ? number : K]
+  ? K extends string
+    ? never
+    : K
+  : K
 
-type LuaCustomTable<K extends string | number, V> = {
+export type LuaCustomTable<K extends string | number, V> = {
   [P in K]: V
 } & LuaPairsIterable<LuaCustomTableIterKey<K>, V>
 
-interface LuaLazyLoadedValue<T> {
+export interface LuaLazyLoadedValue<T> {
   get(): T
 }
 
-interface ChunkPositionAndArea {}
-interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
+export interface ChunkPositionAndArea {}
+export interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
 // Array-likeTypes
 
-interface Fluid {}
+export interface Fluid {}
 
-interface LuaFluidBox extends Array<Fluid | nil> {}
+export interface LuaFluidBox extends Array<Fluid | nil> {}
 
-interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
+export interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 
-interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
+export interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
 
 /** @addTo concepts */
-type StyleValuesArray =
+export type StyleValuesArray =
   | readonly [topBottom: int, leftRight: int]
   | readonly [top: int, right: int, bottom: int, left: int]
 /** @addTo concepts */
-type SizeArray = readonly [width: int, height: int]
+export type SizeArray = readonly [width: int, height: int]
 
-interface LuaStyle {
+export interface LuaStyle {
   set size(value: int | SizeArray)
   set padding(value: int | StyleValuesArray)
   set margin(value: int | StyleValuesArray)
@@ -115,34 +120,34 @@ interface LuaStyle {
   set extra_margin_when_activated(value: int | StyleValuesArray)
 }
 
-interface GuiElementType {}
-interface BaseGuiSpec {
+export interface GuiElementType {}
+export interface BaseGuiSpec {
   readonly type: GuiElementType
 }
-interface FlowGuiSpec {
+export interface FlowGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
-interface FrameGuiSpec {
+export interface FrameGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
-interface LineGuiSpec {
+export interface LineGuiSpec {
   readonly direction?: "horizontal" | "vertical"
 }
 
-interface SignalID {}
+export interface SignalID {}
 
-interface ItemPrototypeFilter {}
-interface TilePrototypeFilter {}
-interface EntityPrototypeFilter {}
-interface FluidPrototypeFilter {}
-interface RecipePrototypeFilter {}
-interface DecorativePrototypeFilter {}
-interface AchievementPrototypeFilter {}
-interface EquipmentPrototypeFilter {}
-interface TechnologyPrototypeFilter {}
+export interface ItemPrototypeFilter {}
+export interface TilePrototypeFilter {}
+export interface EntityPrototypeFilter {}
+export interface FluidPrototypeFilter {}
+export interface RecipePrototypeFilter {}
+export interface DecorativePrototypeFilter {}
+export interface AchievementPrototypeFilter {}
+export interface EquipmentPrototypeFilter {}
+export interface TechnologyPrototypeFilter {}
 
 /** @addBefore ChooseElemButtonGuiSpec */
-type ChooseElemButtonType =
+export type ChooseElemButtonType =
   | "item"
   | "tile"
   | "entity"
@@ -156,7 +161,7 @@ type ChooseElemButtonType =
   | "technology"
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface ChooseElemButtonFilters {
+export interface ChooseElemButtonFilters {
   item: ItemPrototypeFilter[]
   tile: TilePrototypeFilter[]
   entity: EntityPrototypeFilter[]
@@ -171,7 +176,7 @@ interface ChooseElemButtonFilters {
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface BaseChooseElemButtonSpec extends BaseGuiSpec {
+export interface BaseChooseElemButtonSpec extends BaseGuiSpec {
   readonly type: "choose-elem-button"
   /** The type of the button - one of the following values. */
   readonly elem_type: ChooseElemButtonType
@@ -180,83 +185,83 @@ interface BaseChooseElemButtonSpec extends BaseGuiSpec {
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface ItemChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface ItemChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "item"
   /** If type is `"item"` - the default value for the button. */
   readonly item?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface TileChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface TileChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "tile"
   /** If type is `"tile"` - the default value for the button. */
   readonly tile?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface EntityChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface EntityChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "entity"
   /** If type is `"entity"` - the default value for the button. */
   readonly entity?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface SignalChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface SignalChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "signal"
   /** If type is `"signal"` - the default value for the button. */
   readonly signal?: SignalID
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface FluidChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface FluidChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "fluid"
   /** If type is `"fluid"` - the default value for the button. */
   readonly fluid?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface RecipeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface RecipeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "recipe"
   /** If type is `"recipe"` - the default value for the button. */
   readonly recipe?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface DecorativeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface DecorativeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "decorative"
   /** If type is `"decorative"` - the default value for the button. */
   readonly decorative?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface ItemGroupChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface ItemGroupChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "item-group"
   /** If type is `"item-group"` - the default value for the button. */
   readonly "item-group"?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface AchievementChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface AchievementChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "achievement"
   /** If type is `"achievement"` - the default value for the button. */
   readonly achievement?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface EquipmentChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface EquipmentChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "equipment"
   /** If type is `"equipment"` - the default value for the button. */
   readonly equipment?: string
 }
 
 /** @addBefore ChooseElemButtonGuiSpec */
-interface TechnologyChooseElemButtonSpec extends BaseChooseElemButtonSpec {
+export interface TechnologyChooseElemButtonSpec extends BaseChooseElemButtonSpec {
   readonly elem_type: "technology"
   /** If type is `"technology"` - the default value for the button. */
   readonly technology?: string
 }
 
-type ChooseElemButtonGuiSpec =
+export type ChooseElemButtonGuiSpec =
   | ItemChooseElemButtonSpec
   | TileChooseElemButtonSpec
   | EntityChooseElemButtonSpec
@@ -270,12 +275,12 @@ type ChooseElemButtonGuiSpec =
   | TechnologyChooseElemButtonSpec
 
 // stub only
-interface GuiSpec {
+export interface GuiSpec {
   type
 }
 
 /** @discriminatedUnion type */
-type LuaGuiElement = {
+export type LuaGuiElement = {
   readonly [name: string]: LuaGuiElement | nil
 } & {
   readonly type: GuiElementType
@@ -354,15 +359,15 @@ type LuaGuiElement = {
   get style(): LuaStyle
 }
 
-interface FrameGuiElement {}
+export interface FrameGuiElement {}
 
 // nullability, multi-return, different read/write types
 
-interface LuaEquipment {}
-interface LuaEquipmentGrid {}
-interface LuaTechnology {}
+export interface LuaEquipment {}
+export interface LuaEquipmentGrid {}
+export interface LuaTechnology {}
 
-interface LuaControl {
+export interface LuaControl {
   set opened(
     value:
       | LuaEntity
@@ -389,24 +394,24 @@ interface LuaControl {
   teleport(x: number, y?: number): boolean
 }
 
-interface LuaLogisticPoint {}
+export interface LuaLogisticPoint {}
 
-interface LuaEntity {
+export interface LuaEntity {
   get_logistic_point(index: defines.logistic_member_index): LuaLogisticPoint | nil
   get_logistic_point(): Record<defines.logistic_member_index, LuaLogisticPoint> | nil
 }
 
-interface LuaItemStack {}
+export interface LuaItemStack {}
 
-interface LuaPlayer {
+export interface LuaPlayer {
   readonly cutscene_character: LuaEntity | nil
 }
 
 // other
 
-interface Any {}
+export interface Any {}
 
-interface LuaRemote {
+export interface LuaRemote {
   add_interface(name: string, functions: Record<string, (...args: any) => void>): void
 
   call<T extends (...args: any) => any>(_interface: string, _function: string, ...args: Parameters<T>): ReturnType<T>
@@ -416,7 +421,7 @@ interface LuaRemote {
 // events
 
 /** @addTo concepts */
-type RaiseableEvents =
+export type RaiseableEvents =
   | typeof defines.events.on_console_chat
   | typeof defines.events.on_player_crafted_item
   | typeof defines.events.on_player_fast_transferred
@@ -427,17 +432,17 @@ type RaiseableEvents =
   | typeof defines.events.script_raised_revive
   | typeof defines.events.script_raised_set_tiles
 
-interface EventData {
+export interface EventData {
   readonly name: EventId<EventData> | string
 }
 
-interface CustomInputEvent {
+export interface CustomInputEvent {
   readonly name: string
 }
 
 /** @addTo events */
 /** An event id. */
-type EventId<T extends table, F = unknown> = uint & {
+export type EventId<T extends table, F = unknown> = uint & {
   readonly _eventData: T
   readonly _filter: F
 }
@@ -447,11 +452,11 @@ type EventId<T extends table, F = unknown> = uint & {
  * An event id generated by {@link LuaBootstrap#generate_event_name LuaBootstrap::generate_event_name} and raiseable via
  * {@link LuaBootstrap#raise_event LuaBootstrap::raise_event}.
  */
-type CustomEventId<T extends table> = EventId<T> & {
+export type CustomEventId<T extends table> = EventId<T> & {
   _customEventIdBrand: any
 }
 
-interface LuaBootstrap {
+export interface LuaBootstrap {
   on_event<E extends EventId<any, table>>(
     event: E,
     f: ((data: E["_eventData"]) => void) | nil,
@@ -474,12 +479,12 @@ interface LuaBootstrap {
   ): void
 }
 
-interface LuaSurface {}
+export interface LuaSurface {}
 
-type PlayerIndex = uint
-type SurfaceIndex = uint
+export type PlayerIndex = uint
+export type SurfaceIndex = uint
 
-interface LuaGameScript {
+export interface LuaGameScript {
   get_player(index: PlayerIndex | string): LuaPlayer | nil
   get_surface(index: SurfaceIndex | string): LuaSurface | nil
   readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
@@ -489,38 +494,38 @@ interface LuaGameScript {
 //  -- Concepts --
 
 /** @unionReplace array */
-type LocalisedString = readonly [string, ...LocalisedString[]]
+export type LocalisedString = readonly [string, ...LocalisedString[]]
 
-interface RealOrientation {}
+export interface RealOrientation {}
 
-interface MapPosition {}
-interface MapPositionArray {}
-interface Color {}
+export interface MapPosition {}
+export interface MapPositionArray {}
+export interface Color {}
 
 /** @replace */
-type Vector = MapPositionArray
+export type Vector = MapPositionArray
 
 /** @readType float */
-interface MapGenSize {}
+export interface MapGenSize {}
 
 /** @readType ComparatorStringRead */
-interface ComparatorString {}
+export interface ComparatorString {}
 /** @addAfter ComparatorString */
 /** @see ComparatorString */
-type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
+export type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
 
-interface ArithmeticCombinatorParameters {
+export interface ArithmeticCombinatorParameters {
   readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
 }
 
 /** @writeType MouseButtonFlagsWrite */
-interface MouseButtonFlags {}
+export interface MouseButtonFlags {}
 /** @addAfter MouseButtonFlags */
 /** @see MouseButtonFlags */
-type MouseButtonFlagsWrite = MouseButtonFlags | ReadonlyArray<keyof MouseButtonFlags | "left-and-right">
+export type MouseButtonFlagsWrite = MouseButtonFlags | ReadonlyArray<keyof MouseButtonFlags | "left-and-right">
 
 /** @addBefore SpritePath */
-type SpriteType =
+export type SpriteType =
   | "item"
   | "entity"
   | "technology"
@@ -535,10 +540,10 @@ type SpriteType =
   | "utility"
 
 /** @replace */
-type SpritePath = (string & { _?: never }) | `${SpriteType}/${string}`
+export type SpritePath = (string & { _?: never }) | `${SpriteType}/${string}`
 
 /** @addBefore SoundPath */
-type SoundCategory =
+export type SoundCategory =
   | "utility"
   | "ambient"
   | "tile-walking"
@@ -555,22 +560,22 @@ type SoundCategory =
   | "entity-close"
 
 /** @replace */
-type SoundPath = (string & { _?: never }) | `${SoundCategory}/${string}`
+export type SoundPath = (string & { _?: never }) | `${SoundCategory}/${string}`
 
 /** @unionAdd */
-type CollisionMaskLayer = `layer-${bigint}`
+export type CollisionMaskLayer = `layer-${bigint}`
 
 /** @unionReplace type */
-type RenderLayer = `${bigint}`
+export type RenderLayer = `${bigint}`
 
 /** @omit */
-interface EventFilter {}
+export interface EventFilter {}
 /** @omit */
-interface PrototypeFilter {}
+export interface PrototypeFilter {}
 
 // where a vector is supposed to be a position table instead
 
-interface SmokeSource {
+export interface SmokeSource {
   readonly position?: MapPosition
   readonly north_position?: MapPosition
   readonly east_position?: MapPosition
@@ -578,22 +583,22 @@ interface SmokeSource {
   readonly west_position?: MapPosition
 }
 
-interface FluidBoxConnection {
+export interface FluidBoxConnection {
   readonly positions: MapPosition[]
 }
 
-interface CircularParticleCreationSpecification {
+export interface CircularParticleCreationSpecification {
   readonly center: MapPosition
 }
 
 /** @writeType BoundingBoxWrite BoundingBoxArray */
-interface BoundingBox {}
+export interface BoundingBox {}
 
 /** @addAfter BoundingBox */
 /**
  * Write form of {@link BoundingBox}, as a table, where positions are allowed to take an array form.
  */
-interface BoundingBoxWrite {
+export interface BoundingBoxWrite {
   readonly left_top: MapPosition | MapPositionArray
   readonly right_bottom: MapPosition | MapPositionArray
   readonly orientation?: RealOrientation
@@ -603,29 +608,29 @@ interface BoundingBoxWrite {
 // interface FluidIdentification {}
 
 /** @readType LuaForce */
-interface ForceIdentification {}
+export interface ForceIdentification {}
 
 /** @readType LuaTechnology */
-interface TechnologyIdentification {}
+export interface TechnologyIdentification {}
 
 // /** @readType LuaSurface */
-interface SurfaceIdentification {}
+export interface SurfaceIdentification {}
 
 /** @readType LuaPlayer */
-interface PlayerIdentification {}
+export interface PlayerIdentification {}
 
 /** @readType LuaItemPrototype */
-interface ItemPrototypeIdentification {}
+export interface ItemPrototypeIdentification {}
 
-interface OtherTechnologyModifier {
+export interface OtherTechnologyModifier {
   readonly modifier?: double
 }
 // Skipped: EntityPrototypeIdentification, ItemStackIdentification
 
-interface InfinityPipeFilter {}
+export interface InfinityPipeFilter {}
 
 /** @addProperties */
-interface BlueprintEntity {
+export interface BlueprintEntity {
   /** Orientation of the cargo wagon or locomotive, value 0 to 1 */
   readonly orientation?: RealOrientation
   /** Copper wire connections, array of entity_numbers */
@@ -636,11 +641,11 @@ interface BlueprintEntity {
   readonly bar?: uint16
   /** Cargo wagon inventory configuration */
   readonly inventory?: BlueprintInventory
-  /** ;Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
+  /** Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
   readonly infinity_settings?: BlueprintInfinitySettings | InfinityPipeFilter
-  /** ;Type of the underground belt or loader. Either "input" or "output". */
+  /** Type of the underground belt or loader. Either "input" or "output". */
   readonly type?: "input" | "output"
-  /** ;Input priority of the splitter. Either "right" or "left", "none" is omitted. */
+  /** Input priority of the splitter. Either "right" or "left", "none" is omitted. */
   readonly input_priority?: "right" | "left"
   /** Output priority of the splitter. Either "right" or "left", "none" is omitted. */
   readonly output_priority?: "right" | "left"
@@ -680,7 +685,7 @@ interface BlueprintEntity {
  *
  * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_data_object View Documentation}
  */
-interface BlueprintConnectionData {
+export interface BlueprintConnectionData {
   /** ID of the entity this connection is connected with. */
   entity_id: uint
   /** The circuit connector id of the entity this connection is connected to, see {@link defines.circuit_connector_id} */
@@ -692,7 +697,7 @@ interface BlueprintConnectionData {
  *
  * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_point_object View Documentation}
  */
-interface BlueprintConnectionPoint {
+export interface BlueprintConnectionPoint {
   /**
    * An array of {@link BlueprintConnectionData Connection data object} containing all the connections from this point
    * created by red wire.
@@ -710,7 +715,7 @@ interface BlueprintConnectionPoint {
  *
  * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_object View Documentation}
  */
-interface BlueprintCircuitConnection {
+export interface BlueprintCircuitConnection {
   /** First connection point. The default for everything that doesn't have multiple connection points. */
   "1"?: BlueprintConnectionPoint
   /** Second connection point. For example, the "output" part of an arithmetic combinator. */
@@ -718,33 +723,33 @@ interface BlueprintCircuitConnection {
 }
 
 /** @addAfter BlueprintEntity */
-interface BlueprintInventory {
+export interface BlueprintInventory {
   readonly filters?: InventoryFilter[]
   /** The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
   readonly bar?: uint16
 }
 
 /** @addAfter BlueprintEntity */
-interface BlueprintInfinitySettings {
+export interface BlueprintInfinitySettings {
   /** Whether the "remove unfiltered items" checkbox is checked. */
   readonly remove_unfiltered_items: boolean
   /** Filters of the infinity container. */
   readonly filters?: InfinityInventoryFilter[]
 }
 
-interface InventoryFilter {}
-interface LogisticFilter {}
-interface InfinityInventoryFilter {}
-interface ProgrammableSpeakerParameters {}
-interface ProgrammableSpeakerAlertParameters {}
-interface CircuitCondition {}
-interface Signal {}
-interface DeciderCombinatorParameters {}
-interface ProgrammableSpeakerCircuitParameters {}
-interface ConstantCombinatorParameters {}
+export interface InventoryFilter {}
+export interface LogisticFilter {}
+export interface InfinityInventoryFilter {}
+export interface ProgrammableSpeakerParameters {}
+export interface ProgrammableSpeakerAlertParameters {}
+export interface CircuitCondition {}
+export interface Signal {}
+export interface DeciderCombinatorParameters {}
+export interface ProgrammableSpeakerCircuitParameters {}
+export interface ConstantCombinatorParameters {}
 
 /** @addAfter BlueprintEntity */
-interface BlueprintControlBehavior {
+export interface BlueprintControlBehavior {
   readonly condition?: CircuitCondition
   readonly circuit_condition?: CircuitCondition
   readonly filters?: ConstantCombinatorParameters[]

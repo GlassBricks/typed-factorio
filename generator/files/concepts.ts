@@ -1,10 +1,9 @@
 import assert from "assert"
 import ts from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
 import { addJsDoc, createSeeTag } from "../documentation.js"
 import { Concept, TableType } from "../FactorioRuntimeApiJson.js"
-import { GenerationContext } from "../GenerationContext.js"
-import { addFakeJSDoc } from "../genUtil.js"
+import { GenerationContext, OutputFile } from "../GenerationContext.js"
+import { addFakeJSDoc, Modifiers } from "../genUtil.js"
 import {
   finalizeConceptUsageAnalysis,
   recordConceptDependencies,
@@ -25,7 +24,7 @@ export function preprocessConcepts(context: GenerationContext): void {
   concepts.sort(sortByOrder)
 
   for (const concept of concepts) {
-    context.typeNames[concept.name] = concept.name
+    context.references.set(concept.name, concept.name)
     const existing = context.getInterfaceDef(concept.name)
     if (!existing?.annotations.omit) recordConceptDependencies(context, concept)
   }
@@ -88,37 +87,32 @@ function tryGetTableOrArrayConcept(
   }
 }
 
-export function generateConcepts(context: GenerationContext): DefinitionsFile {
-  const statements = new StatementsList(context, "concepts")
-  for (const concept of context.apiDocs.concepts) {
-    generateConcept(context, concept, statements)
-  }
-  return statements.getResult()
+export function generateConcepts(context: GenerationContext): OutputFile {
+  return context.createFile("concepts", "namespace", () => {
+    for (const concept of context.apiDocs.concepts) {
+      generateConcept(context, concept)
+    }
+  })
 }
 
-function createVariantParameterConcept(
-  context: GenerationContext,
-  concept: Concept,
-  conceptUsage: RWUsage,
-  statements: StatementsList
-): void {
+function createVariantParameterConcept(context: GenerationContext, concept: Concept, conceptUsage: RWUsage): void {
   const {
     description,
     declarations: [readDecl, writeDecl],
-  } = createVariantParameterTypes(context, concept.name, concept.type as TableType, conceptUsage, statements)
+  } = createVariantParameterTypes(context, concept.name, concept.type as TableType, conceptUsage)
   concept.description += `\n\n${description}`
   addJsDoc(context, readDecl, concept, concept.name)
   if (writeDecl) {
     addJsDoc(context, writeDecl, { description: getWriteDescription(concept) }, concept.name)
   }
 }
-function generateConcept(context: GenerationContext, concept: Concept, statements: StatementsList): void {
+function generateConcept(context: GenerationContext, concept: Concept): void {
   const existing = context.getInterfaceDef(concept.name)
 
   if (existing?.annotations) {
     if (existing.annotations.replace) {
       const node = existing.node
-      statements.add(node)
+      context.currentFile.add(node)
       ts.setEmitFlags(node, ts.EmitFlags.NoComments)
       addJsDoc(context, node, concept, concept.name)
       return
@@ -131,13 +125,13 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
     concept.type.complex_type === "table" &&
     concept.type.variant_parameter_groups
   ) {
-    createVariantParameterConcept(context, concept, conceptUsage, statements)
+    createVariantParameterConcept(context, concept, conceptUsage)
     return
   }
 
   const tableOrArray = tableOrArrayConcepts.get(concept)
   if (tableOrArray) {
-    createTableOrArrayConcept(context, statements, concept, tableOrArray)
+    createTableOrArrayConcept(context, concept, tableOrArray)
     return
   }
 
@@ -162,7 +156,7 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
     tags = [createSeeTag(writeName)]
   }
   addJsDoc(context, mainResult, concept, concept.name, tags)
-  statements.add(mainResult)
+  context.currentFile.add(mainResult)
 
   if (altWriteType) {
     const writeResult = typeToDeclaration(altWriteType, writeName)
@@ -175,16 +169,16 @@ function generateConcept(context: GenerationContext, concept: Concept, statement
       concept.name
     )
 
-    statements.add(writeResult)
+    context.currentFile.add(writeResult)
 
     const deprecatedReadResult = ts.factory.createTypeAliasDeclaration(
-      undefined,
+      [Modifiers.export],
       concept.name + "Read",
       undefined,
       ts.factory.createTypeReferenceNode(concept.name)
     )
     addJsDoc(context, deprecatedReadResult, { description: "" }, undefined, [createDeprecatedTag(concept.name)])
-    statements.add(deprecatedReadResult)
+    context.currentFile.add(deprecatedReadResult)
   }
 }
 
@@ -194,15 +188,14 @@ function getWriteDescription(concept: Concept): string {
 
 function typeToDeclaration(type: ts.TypeNode, name: string): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
   if (ts.isTypeLiteralNode(type)) {
-    return ts.factory.createInterfaceDeclaration(undefined, name, undefined, undefined, type.members)
+    return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, undefined, type.members)
   } else {
-    return ts.factory.createTypeAliasDeclaration(undefined, name, undefined, type)
+    return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
   }
 }
 
 function createTableOrArrayConcept(
   context: GenerationContext,
-  statements: StatementsList,
   concept: Concept,
   tableOrArray: { table: TableType; array: TableType }
 ): void {
@@ -224,30 +217,30 @@ function createTableOrArrayConcept(
   const arrayName = `${concept.name}Array`
 
   const conceptInterface = ts.factory.createInterfaceDeclaration(
-    undefined,
+    [Modifiers.export],
     name,
     undefined,
     undefined,
     tableForm.mainType.members
   )
   addJsDoc(context, conceptInterface, concept, concept.name, [createSeeTag(arrayName)])
-  statements.add(conceptInterface)
+  context.currentFile.add(conceptInterface)
 
-  const conceptArray = ts.factory.createTypeAliasDeclaration(undefined, arrayName, undefined, arrayForm)
+  const conceptArray = ts.factory.createTypeAliasDeclaration([Modifiers.export], arrayName, undefined, arrayForm)
   const arrayDescription = `Array form of {@link ${concept.name}}.`
   addJsDoc(context, conceptArray, { description: arrayDescription }, name, [createSeeTag(name)])
-  statements.add(conceptArray)
+  context.currentFile.add(conceptArray)
 
   const conceptTable = ts.factory.createTypeAliasDeclaration(
-    undefined,
+    [Modifiers.export],
     name + "Table",
     undefined,
     ts.factory.createTypeReferenceNode(name)
   )
   addFakeJSDoc(conceptTable, ts.factory.createJSDocComment("", [createDeprecatedTag(name)]))
-  statements.add(conceptTable)
+  context.currentFile.add(conceptTable)
 
-  context.typeNames[arrayName] = name
+  context.references.set(arrayName, name)
 }
 
 function createDeprecatedTag(useInstead: string): ts.JSDocUnknownTag {

@@ -1,6 +1,5 @@
 import assert from "assert"
 import ts from "typescript"
-import { StatementsList } from "./DefinitionsFile.js"
 import { addJsDoc, processDescription } from "./documentation.js"
 import { Attribute, Method, Parameter } from "./FactorioRuntimeApiJson.js"
 import { GenerationContext } from "./GenerationContext.js"
@@ -199,8 +198,7 @@ export function mapMethod(
   context: GenerationContext,
   method: Method,
   parent: string,
-  existingContainer: InterfaceDef | TypeAliasDef | undefined,
-  statements: StatementsList
+  existingContainer: InterfaceDef | TypeAliasDef | undefined
 ): ts.MethodSignature[] | ts.MethodSignature {
   const existingMethods = existingContainer?.members[method.name]
   const firstExistingMethod = existingMethods?.[0]
@@ -212,7 +210,7 @@ export function mapMethod(
     const name =
       (firstExistingMethod && getAnnotations(firstExistingMethod as unknown as ts.JSDocContainer).variantsName?.[0]) ??
       removeLuaPrefix(parent) + toPascalCase(method.name)
-    const { description } = createVariantParameterTypes(context, name, method, RWUsage.Write, statements)
+    const { description } = createVariantParameterTypes(context, name, method, RWUsage.Write)
     method.description += `\n\n${description}`
 
     const type = ts.factory.createTypeReferenceNode(name)

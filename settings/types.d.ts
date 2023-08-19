@@ -9,8 +9,8 @@ export interface BaseSettingDefinition {
    * all mods. Because of that it is recommended to prefix mod settings with your mod name,
    */
   name: string
-  localized_name?: LocalisedString
-  localized_description?: LocalisedString
+  localized_name?: FactorioRuntime.LocalisedString
+  localized_description?: FactorioRuntime.LocalisedString
 
   /**
    * The order property can be used to change how the mod settings are ordered in the settings gui. Mod settings are sorted

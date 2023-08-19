@@ -13,6 +13,7 @@ export function printNode(node: ts.Node): string {
 export const Modifiers = {
   declare: ts.factory.createModifier(ts.SyntaxKind.DeclareKeyword),
   readonly: ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword),
+  export: ts.factory.createModifier(ts.SyntaxKind.ExportKeyword),
 }
 
 export const Types = {

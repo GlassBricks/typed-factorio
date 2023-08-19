@@ -1,8 +1,7 @@
 import ts from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
 import { addJsDoc } from "../documentation.js"
 import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioRuntimeApiJson.js"
-import { GenerationContext } from "../GenerationContext.js"
+import { GenerationContext, OutputFile } from "../GenerationContext.js"
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { analyzeMethod, mapAttribute, mapMethod } from "../members.js"
@@ -13,7 +12,7 @@ import { tryGetStringEnumType } from "../variantParameterGroups.js"
 
 export function preprocessClasses(context: GenerationContext): void {
   for (const clazz of context.apiDocs.classes) {
-    context.typeNames[clazz.name] = clazz.name
+    context.references.set(clazz.name, clazz.name)
     for (const method of clazz.methods) {
       analyzeMethod(context, method)
     }
@@ -31,20 +30,17 @@ export function preprocessClasses(context: GenerationContext): void {
 }
 
 function analyzeAttribute(context: GenerationContext, attribute: Attribute) {
-  // context.mapTypeSimple(attribute.type, attribute.read, attribute.write)
   const rwType = attribute.read && attribute.write ? RWUsage.ReadWrite : attribute.read ? RWUsage.Read : RWUsage.Write
   analyzeType(context, attribute.type, rwType)
 }
 
-export function generateClasses(context: GenerationContext): DefinitionsFile {
-  const statements = new StatementsList(context, "classes")
-
-  for (const clazz of context.apiDocs.classes.sort(sortByOrder)) {
-    const existing = context.getInterfaceDef(clazz.name)
-    generateClass(context, clazz, existing, statements)
-  }
-
-  return statements.getResult()
+export function generateClasses(context: GenerationContext): OutputFile {
+  return context.createFile("classes", "namespace", () => {
+    for (const clazz of context.apiDocs.classes.sort(sortByOrder)) {
+      const existing = context.getInterfaceDef(clazz.name)
+      generateClass(context, clazz, existing)
+    }
+  })
 }
 
 interface MemberAndOriginal {
@@ -52,12 +48,7 @@ interface MemberAndOriginal {
   member: ts.TypeElement | ts.TypeElement[]
 }
 
-function generateClass(
-  context: GenerationContext,
-  clazz: Class,
-  existing: InterfaceDef | TypeAliasDef | undefined,
-  statements: StatementsList
-) {
+function generateClass(context: GenerationContext, clazz: Class, existing: InterfaceDef | TypeAliasDef | undefined) {
   const superTypes = getSupertypes()
   const arrayType = getArrayType()
 
@@ -137,7 +128,7 @@ function generateClass(
     const shortName = removeLuaPrefix(clazz.name)
     if (ts.isMappedTypeNode(existingIndexOp)) {
       return ts.factory.createTypeAliasDeclaration(
-        undefined,
+        [Modifiers.export],
         shortName + "Indexer",
         existing.node.typeParameters,
         addJsDoc(context, existingIndexOp, indexOperator, clazz.name + ".operator%20[]", undefined)
@@ -151,7 +142,7 @@ function generateClass(
         clazz.name + ".operator%20[]",
         undefined
       )
-      return ts.factory.createInterfaceDeclaration(undefined, shortName + "Indexer", undefined, undefined, [
+      return ts.factory.createInterfaceDeclaration([Modifiers.export], shortName + "Indexer", undefined, undefined, [
         indexSignature,
       ])
     }
@@ -162,7 +153,7 @@ function generateClass(
     members.push(
       ...clazz.methods.sort(sortByOrder).map((method) => ({
         original: method,
-        member: mapMethod(context, method, clazz.name, existing, statements),
+        member: mapMethod(context, method, clazz.name, existing),
       }))
     )
 
@@ -176,8 +167,7 @@ function generateClass(
           name: "operator%20()",
         },
         clazz.name,
-        existing,
-        statements
+        existing
       ) as ts.MethodSignature
       const callSignature = ts.factory.createCallSignature(undefined, asMethod.parameters, asMethod.type)
       ts.setSyntheticLeadingComments(callSignature, ts.getSyntheticLeadingComments(asMethod))
@@ -403,7 +393,7 @@ function generateClass(
     if (!indexTypeName) baseSupertypes.push(...declarationSupertypes)
 
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
-      undefined,
+      [Modifiers.export],
       indexTypeName ? name + "Members" : name,
       indexTypeName ? undefined : existing?.node.typeParameters,
       baseSupertypes.length !== 0
@@ -411,8 +401,8 @@ function generateClass(
         : undefined,
       thisMembers.flatMap((m) => m.member)
     )
-    statements.add(baseDeclaration)
-    context.typeNames[name] = name
+    context.currentFile.add(baseDeclaration)
+    if (!context.references.has(name)) context.references.set(name, name)
 
     if (!indexTypeName) {
       if (classForDocs) {
@@ -430,7 +420,7 @@ function generateClass(
       addNoSelfAnnotationOnly(baseDeclaration)
       const typeArguments = existing?.node.typeParameters?.map((p) => ts.factory.createTypeReferenceNode(p.name))
       const declaration = ts.factory.createTypeAliasDeclaration(
-        undefined,
+        [Modifiers.export],
         name,
         existing?.node.typeParameters,
         ts.factory.createIntersectionTypeNode([
@@ -442,13 +432,13 @@ function generateClass(
       if (classForDocs) {
         addJsDoc(context, declaration, classForDocs, classForDocs.name, undefined)
       }
-      statements.add(declaration)
+      context.currentFile.add(declaration)
     }
   }
 
   function generateDeclarations() {
     if (indexType) {
-      statements.add(indexType)
+      context.currentFile.add(indexType)
     }
     const shortName = removeLuaPrefix(clazz.name)
     const indexTypeName = indexType ? shortName + "Indexer" : undefined
@@ -479,7 +469,7 @@ function generateClass(
         ts.factory.createUnionTypeNode(allSubclassTypes.map((x) => ts.factory.createTypeReferenceNode(x)))
       )
       if (!indexTypeName) addJsDoc(context, unionDeclaration, clazz, clazz.name, undefined)
-      statements.add(unionDeclaration)
+      context.currentFile.add(unionDeclaration)
     }
 
     // if (existing?.annotations.generateByTypeIndex) {
@@ -496,7 +486,7 @@ function generateClass(
     //   statements.add(
     //     ts.factory.createInterfaceDeclaration(undefined, undefined, outName, undefined, undefined, typeMembers)
     //   )
-    //   context.typeNames[outName] = outName
+    //   context.references[outName] = outName
     // }
 
     if (indexTypeName) {
@@ -510,7 +500,7 @@ function generateClass(
         ])
       )
       addJsDoc(context, declaration, clazz, clazz.name, undefined)
-      statements.add(declaration)
+      context.currentFile.add(declaration)
     }
   }
 }

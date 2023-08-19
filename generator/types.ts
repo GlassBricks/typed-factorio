@@ -117,17 +117,25 @@ function mapTypeInternal(
   }
 }
 
-function getRwType(
+function mapConceptRwType(
+  context: GenerationContext,
   rwType: { read: string | ts.TypeNode; write: string | ts.TypeNode },
   usage: RWUsage
 ): IntermediateType {
   assert(usage)
+
   function getTypeNode(value: string | ts.TypeNode): ts.TypeNode {
-    return typeof value === "string" ? ts.factory.createTypeReferenceNode(value) : value
+    if (typeof value === "string") {
+      return createTypeNode(context, value)
+    }
+    assert(context.currentFile.moduleType === "namespace")
+    return value
   }
+
   function toString(value: string | ts.TypeNode): string {
     return typeof value === "string" ? value : printNode(value)
   }
+
   switch (usage) {
     case RWUsage.ReadWrite:
       return {
@@ -150,6 +158,15 @@ function getRwType(
   }
 }
 
+// possibly prefixes with namespace, if needed
+function createTypeNode(context: GenerationContext, typeName: string) {
+  if (context.currentFile.moduleType === "global" && context.references.has(typeName))
+    return ts.factory.createTypeReferenceNode(
+      ts.factory.createQualifiedName(ts.factory.createIdentifier(context.namespaceName), typeName)
+    )
+  return ts.factory.createTypeReferenceNode(typeName)
+}
+
 function mapBasicType(
   context: GenerationContext,
   type: string,
@@ -161,12 +178,12 @@ function mapBasicType(
   const concept = context.concepts.get(type)
   const rwType = concept && context.conceptReadWriteTypes.get(concept)
   if (rwType) {
-    return getRwType(rwType, usage)
+    return mapConceptRwType(context, rwType, usage)
   }
 
-  const typeName = context.typeNames[type]
+  const typeName = context.references.get(type)
   return {
-    mainType: ts.factory.createTypeReferenceNode(type),
+    mainType: createTypeNode(context, type),
     asString: typeName ? `[${typeName}](runtime:${type})` : `\`${type}\``,
   }
 }
@@ -182,7 +199,7 @@ function tryUseIndexTypeFromBasicType(
     if (!expectedType.includes(type)) continue
     if (typeContext.contextName === indexType.identificationConcept) {
       return {
-        mainType: ts.factory.createTypeReferenceNode(indexType.name),
+        mainType: createTypeNode(context, indexType.name),
         asString: indexType.name,
       }
     }
@@ -207,6 +224,7 @@ function mapTypeType(
 }
 
 const unionDescriptionHeader = "\n**Options:**\n"
+
 function mapUnionType(
   context: GenerationContext,
   type: UnionType,
@@ -645,12 +663,12 @@ function tryUseStringEnum(
     }
   }
   /*
-  else {
-    if (member.name === "type") {
-      console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
-    }
-  }
-  */
+              else {
+                if (member.name === "type") {
+                  console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
+                }
+              }
+              */
 
   return undefined
 }

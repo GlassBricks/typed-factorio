@@ -1,7 +1,6 @@
 import ts from "typescript"
-import { DefinitionsFile, StatementsList } from "../DefinitionsFile.js"
 import { addJsDoc } from "../documentation.js"
-import { GenerationContext } from "../GenerationContext.js"
+import { GenerationContext, OutputFile } from "../GenerationContext.js"
 import { decapitalize } from "../genUtil.js"
 
 export interface IndexType {
@@ -72,31 +71,30 @@ export const IndexTypes: IndexType[] = [
 
 export function preprocessIndexTypes(context: GenerationContext): void {
   for (const indexType of IndexTypes) {
-    context.typeNames[indexType.name] = indexType.name
+    context.references.set(indexType.name, indexType.name)
   }
 }
 
-export function generateIndexTypesFile(context: GenerationContext): DefinitionsFile {
-  const statements = new StatementsList(context, "index-types")
-  for (const indexType of IndexTypes) {
-    // type ${name} = uint & { _${name}Brand: void }
-    const typeNode = ts.factory.createIntersectionTypeNode([
-      ts.factory.createTypeReferenceNode(indexType.expectedTypes?.[0] ?? "uint"),
-      ts.factory.createTypeLiteralNode([
-        ts.factory.createPropertySignature(
-          undefined,
-          ts.factory.createIdentifier(`_${decapitalize(indexType.name)}Brand`),
-          undefined,
-          ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
-        ),
-      ]),
-    ])
-    const statement = ts.factory.createTypeAliasDeclaration(undefined, indexType.name, undefined, typeNode)
-    const { parent, name } = indexType.mainAttributePath
-    const description = `See [${parent}.${name}](runtime:${parent}::${name}).\n\nYou can cast a raw number to this type, e.g. \`1 as ${indexType.name}\`.`
-    addJsDoc(context, statement, { description }, undefined, undefined)
-    statements.add(statement)
-  }
-
-  return statements.getResult()
+export function generateIndexTypesFile(context: GenerationContext): OutputFile {
+  return context.createFile("index-types", "namespace", () => {
+    for (const indexType of IndexTypes) {
+      // type ${name} = uint & { _${name}Brand: void }
+      const typeNode = ts.factory.createIntersectionTypeNode([
+        ts.factory.createTypeReferenceNode(indexType.expectedTypes?.[0] ?? "uint"),
+        ts.factory.createTypeLiteralNode([
+          ts.factory.createPropertySignature(
+            undefined,
+            ts.factory.createIdentifier(`_${decapitalize(indexType.name)}Brand`),
+            undefined,
+            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+          ),
+        ]),
+      ])
+      const statement = ts.factory.createTypeAliasDeclaration(undefined, indexType.name, undefined, typeNode)
+      const { parent, name } = indexType.mainAttributePath
+      const description = `See [${parent}.${name}](runtime:${parent}::${name}).\n\nYou can cast a raw number to this type, e.g. \`1 as ${indexType.name}\`.`
+      addJsDoc(context, statement, { description }, undefined, undefined)
+      context.currentFile.add(statement)
+    }
+  })
 }

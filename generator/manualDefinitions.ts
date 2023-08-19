@@ -1,6 +1,6 @@
 import ts from "typescript"
 import { GenerationContext } from "./GenerationContext.js"
-import { addFakeJSDoc } from "./genUtil.js"
+import { addFakeJSDoc } from "./genUtil.js" // preprocessed TS AST easier to use
 
 // preprocessed TS AST easier to use
 
@@ -252,11 +252,11 @@ export function preprocessManualDefinitions(context: GenerationContext): void {
 }
 
 export function checkManualDefinitions(context: GenerationContext): void {
-  const typeNames = new Set(Object.values(context.typeNames))
+  const typeNames = new Set(context.references.values())
   for (const [name, d] of Object.entries(context._manualDefinitions)) {
     const def = d!
     const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
-    const isExisting = typeNames.has(name) || name in context.typeNames
+    const isExisting = typeNames.has(name) || context.references.has(name)
     if (!!hasAdd === isExisting) {
       context.warning(
         `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${

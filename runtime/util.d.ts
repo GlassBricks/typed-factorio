@@ -5,6 +5,14 @@
 
 /** @noResolution */
 declare module "util" {
+  import table = FactorioRuntime.table
+  import MapPosition = FactorioRuntime.MapPosition
+  import MapPositionArray = FactorioRuntime.MapPositionArray
+  import Color = FactorioRuntime.Color
+  import ColorArray = FactorioRuntime.ColorArray
+  import defines = FactorioRuntime.defines
+  import nil = FactorioRuntime.nil
+  import LuaEntity = FactorioRuntime.LuaEntity
   namespace table {
     function deepcopy<T>(table: T): T
 

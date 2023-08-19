@@ -35,11 +35,11 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
     return context.docUrlBase() + name + ".html"
   }
 
-  if (!context.typeNames[name]) {
+  const typeName = context.references.get(name)
+  if (!typeName) {
     if (warn) context.warning(`unresolved doc reference: ${origLink}`)
     return undefined
   }
-  const typeName = context.typeNames[name]
   if (!member) {
     return typeName
   }
