@@ -3,7 +3,7 @@ import ts from "typescript"
 import { addJsDoc, createSeeTag } from "../documentation.js"
 import { Concept, TableType } from "../FactorioRuntimeApiJson.js"
 import { GenerationContext } from "../GenerationContext.js"
-import { addFakeJSDoc, Modifiers } from "../genUtil.js"
+import { Modifiers } from "../genUtil.js"
 import {
   finalizeConceptUsageAnalysis,
   recordConceptDependencies,
@@ -171,15 +171,6 @@ function generateConcept(context: GenerationContext, concept: Concept): void {
     )
 
     context.currentFile.add(writeResult)
-
-    const deprecatedReadResult = ts.factory.createTypeAliasDeclaration(
-      [Modifiers.export],
-      concept.name + "Read",
-      undefined,
-      ts.factory.createTypeReferenceNode(concept.name)
-    )
-    addJsDoc(context, deprecatedReadResult, { description: "" }, undefined, [createDeprecatedTag(concept.name)])
-    context.currentFile.add(deprecatedReadResult)
   }
 }
 
@@ -206,9 +197,6 @@ function createTableOrArrayConcept(
   // /** Array form of @{link Concept}. */
   // type ConceptArray = Array write
 
-  // /** @deprecated Use @{link Concept} instead */
-  // type ConceptTable = Concept
-
   const tableForm = mapType(context, tableOrArray.table, concept.name, RWUsage.ReadWrite)
   const arrayForm = mapType(context, tableOrArray.array, concept.name, RWUsage.Write).mainType
   assert(ts.isTypeLiteralNode(tableForm.mainType))
@@ -232,21 +220,5 @@ function createTableOrArrayConcept(
   addJsDoc(context, conceptArray, { description: arrayDescription }, name, [createSeeTag(name)])
   context.currentFile.add(conceptArray)
 
-  const conceptTable = ts.factory.createTypeAliasDeclaration(
-    [Modifiers.export],
-    name + "Table",
-    undefined,
-    ts.factory.createTypeReferenceNode(name)
-  )
-  addFakeJSDoc(conceptTable, ts.factory.createJSDocComment("", [createDeprecatedTag(name)]))
-  context.currentFile.add(conceptTable)
-
   context.references.set(arrayName, name)
-}
-
-function createDeprecatedTag(useInstead: string): ts.JSDocUnknownTag {
-  return ts.factory.createJSDocUnknownTag(
-    ts.factory.createIdentifier("deprecated"),
-    `Use {@link ${useInstead}} instead`
-  )
 }

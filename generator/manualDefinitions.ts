@@ -32,8 +32,6 @@ export enum AnnotationKind {
 
   ReadType = "readType",
   WriteType = "writeType",
-
-  Deprecated = "deprecated",
 }
 
 const annotationValues = new Set<string>(Object.values(AnnotationKind))

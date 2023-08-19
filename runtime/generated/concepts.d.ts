@@ -68,10 +68,6 @@ declare namespace FactorioRuntime {
    */
   export type MapPositionArray = readonly [x: double, y: double]
   /**
-   * @deprecated Use {@link MapPosition} instead
-   */
-  export type MapPositionTable = MapPosition
-  /**
    * Coordinates of a chunk in a {@link LuaSurface} where each integer `x`/`y` represents a different chunk. This uses the same format as {@link MapPosition}, meaning it can be specified either with or without explicit keys. A {@link MapPosition} can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.
    * @see ChunkPositionArray
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#ChunkPosition Online documentation}
@@ -87,10 +83,6 @@ declare namespace FactorioRuntime {
    */
   export type ChunkPositionArray = readonly [x: int, y: int]
   /**
-   * @deprecated Use {@link ChunkPosition} instead
-   */
-  export type ChunkPositionTable = ChunkPosition
-  /**
    * Coordinates of a tile on a {@link LuaSurface} where each integer `x`/`y` represents a different tile. This uses the same format as {@link MapPosition}, except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.
    * @see TilePositionArray
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#TilePosition Online documentation}
@@ -105,10 +97,6 @@ declare namespace FactorioRuntime {
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#TilePosition Online documentation}
    */
   export type TilePositionArray = readonly [x: int, y: int]
-  /**
-   * @deprecated Use {@link TilePosition} instead
-   */
-  export type TilePositionTable = TilePosition
   /**
    * Position inside an equipment grid. This uses the same format as {@link MapPosition}, meaning it can be specified either with or without explicit keys.
    * @see EquipmentPositionArray
@@ -130,10 +118,6 @@ declare namespace FactorioRuntime {
    */
   export type EquipmentPositionArray = readonly [x: int, y: int]
   /**
-   * @deprecated Use {@link EquipmentPosition} instead
-   */
-  export type EquipmentPositionTable = EquipmentPosition
-  /**
    * Screen coordinates of a GUI element in a {@link LuaGui}. This uses the same format as {@link TilePosition}, meaning it can be specified either with or without explicit keys.
    * @see GuiLocationArray
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GuiLocation Online documentation}
@@ -148,10 +132,6 @@ declare namespace FactorioRuntime {
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GuiLocation Online documentation}
    */
   export type GuiLocationArray = readonly [x: int, y: int]
-  /**
-   * @deprecated Use {@link GuiLocation} instead
-   */
-  export type GuiLocationTable = GuiLocation
   /**
    * A {@link ChunkPosition} with an added bounding box for the area of the chunk.
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#ChunkPositionAndArea Online documentation}
@@ -267,10 +247,6 @@ declare namespace FactorioRuntime {
     orientation?: RealOrientation
   ]
   /**
-   * @deprecated Use {@link BoundingBox} instead
-   */
-  export type BoundingBoxTable = BoundingBox
-  /**
    * An area defined using the map editor.
    * @see ScriptAreaWrite
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#ScriptArea Online documentation}
@@ -292,10 +268,6 @@ declare namespace FactorioRuntime {
     readonly id: uint
   }
   /**
-   * @deprecated Use {@link ScriptArea} instead
-   */
-  export type ScriptAreaRead = ScriptArea
-  /**
    * A position defined using the map editor.
    * @see ScriptPositionWrite
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#ScriptPosition Online documentation}
@@ -316,10 +288,6 @@ declare namespace FactorioRuntime {
     readonly color: Color | ColorArray
     readonly id: uint
   }
-  /**
-   * @deprecated Use {@link ScriptPosition} instead
-   */
-  export type ScriptPositionRead = ScriptPosition
   /**
    * Red, green, blue and alpha values, all in range [0, 1] or all in range [0, 255] if any value is > 1. All values here are optional. Color channels default to `0`, the alpha channel defaults to `1`.
    *
@@ -345,10 +313,6 @@ declare namespace FactorioRuntime {
    */
   export type ColorArray = readonly [r?: float, g?: float, b?: float, a?: float]
   /**
-   * @deprecated Use {@link Color} instead
-   */
-  export type ColorTable = Color
-  /**
    * Same as {@link Color}, but red, green, blue and alpha values can be any floating point number, without any special handling of the range [1, 255].
    * @see ColorModifierArray
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#ColorModifier Online documentation}
@@ -365,10 +329,6 @@ declare namespace FactorioRuntime {
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#ColorModifier Online documentation}
    */
   export type ColorModifierArray = readonly [r?: float, g?: float, b?: float, a?: float]
-  /**
-   * @deprecated Use {@link ColorModifier} instead
-   */
-  export type ColorModifierTable = ColorModifier
   export interface CraftingQueueItem {
     /**
      * The index of the item in the crafting queue.
@@ -1281,10 +1241,6 @@ declare namespace FactorioRuntime {
     readonly station?: string
   }
   /**
-   * @deprecated Use {@link BlueprintEntity} instead
-   */
-  export type BlueprintEntityRead = BlueprintEntity
-  /**
    * @see TileWrite
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#Tile Online documentation}
    */
@@ -1312,10 +1268,6 @@ declare namespace FactorioRuntime {
      */
     readonly name: string
   }
-  /**
-   * @deprecated Use {@link Tile} instead
-   */
-  export type TileRead = Tile
   export interface Fluid {
     /**
      * Fluid prototype name of the fluid.
@@ -1844,10 +1796,6 @@ declare namespace FactorioRuntime {
     readonly richness: MapGenSize
   }
   /**
-   * @deprecated Use {@link AutoplaceControl} instead
-   */
-  export type AutoplaceControlRead = AutoplaceControl
-  /**
    * @see AutoplaceSettingsWrite
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#AutoplaceSettings Online documentation}
    */
@@ -1869,10 +1817,6 @@ declare namespace FactorioRuntime {
     readonly treat_missing_as_default: boolean
     readonly settings: Record<string, AutoplaceControlWrite>
   }
-  /**
-   * @deprecated Use {@link AutoplaceSettings} instead
-   */
-  export type AutoplaceSettingsRead = AutoplaceSettings
   /**
    * @see CliffPlacementSettingsWrite
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#CliffPlacementSettings Online documentation}
@@ -1917,10 +1861,6 @@ declare namespace FactorioRuntime {
      */
     readonly richness: MapGenSize
   }
-  /**
-   * @deprecated Use {@link CliffPlacementSettings} instead
-   */
-  export type CliffPlacementSettingsRead = CliffPlacementSettings
   /**
    * The 'map type' dropdown in the map generation GUI is actually a selector for elevation generator. The base game sets `property_expression_names.elevation` to `"0_16-elevation"` to reproduce terrain from 0.16 or to `"0_17-island"` for the island preset. If generators are available for other properties, the 'map type' dropdown in the GUI will be renamed to 'elevation' and shown along with selectors for the other selectable properties.
    * @see MapGenSettingsWrite
@@ -2072,10 +2012,6 @@ declare namespace FactorioRuntime {
      */
     readonly property_expression_names: Record<string, string>
   }
-  /**
-   * @deprecated Use {@link MapGenSettings} instead
-   */
-  export type MapGenSettingsRead = MapGenSettings
   export interface AdvancedMapGenSettings {
     readonly pollution: PollutionMapSettings
     readonly enemy_evolution: EnemyEvolutionMapSettings
@@ -2393,10 +2329,6 @@ declare namespace FactorioRuntime {
      */
     readonly copy_count_from_input?: boolean
   }
-  /**
-   * @deprecated Use {@link DeciderCombinatorParameters} instead
-   */
-  export type DeciderCombinatorParametersRead = DeciderCombinatorParameters
   export interface InserterCircuitConditions {
     readonly circuit?: CircuitConditionWrite
     readonly logistics?: CircuitConditionWrite
@@ -2446,10 +2378,6 @@ declare namespace FactorioRuntime {
     readonly constant?: int
   }
   /**
-   * @deprecated Use {@link CircuitCondition} instead
-   */
-  export type CircuitConditionRead = CircuitCondition
-  /**
    * @see CircuitConditionDefinitionWrite
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#CircuitConditionDefinition Online documentation}
    */
@@ -2471,10 +2399,6 @@ declare namespace FactorioRuntime {
      */
     readonly fulfilled?: boolean
   }
-  /**
-   * @deprecated Use {@link CircuitConditionDefinition} instead
-   */
-  export type CircuitConditionDefinitionRead = CircuitConditionDefinition
   export interface CircuitConnectionDefinition {
     /**
      * Wire color, either {@link defines.wire_type.red} or {@link defines.wire_type.green}.
@@ -3039,10 +2963,6 @@ declare namespace FactorioRuntime {
     readonly condition?: CircuitConditionWrite
   }
   /**
-   * @deprecated Use {@link WaitCondition} instead
-   */
-  export type WaitConditionRead = WaitCondition
-  /**
    * @see TrainScheduleRecordWrite
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#TrainScheduleRecord Online documentation}
    */
@@ -3089,10 +3009,6 @@ declare namespace FactorioRuntime {
     readonly temporary?: boolean
   }
   /**
-   * @deprecated Use {@link TrainScheduleRecord} instead
-   */
-  export type TrainScheduleRecordRead = TrainScheduleRecord
-  /**
    * @see TrainScheduleWrite
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#TrainSchedule Online documentation}
    */
@@ -3114,10 +3030,6 @@ declare namespace FactorioRuntime {
     readonly current: uint
     readonly records: readonly TrainScheduleRecordWrite[]
   }
-  /**
-   * @deprecated Use {@link TrainSchedule} instead
-   */
-  export type TrainScheduleRead = TrainSchedule
   export interface BaseGuiArrowSpecification {
     /**
      * This determines which of the following fields will be required. Must be one of `"nowhere"` (will remove the arrow entirely), `"goal"` (will point to the current goal), `"entity_info"`, `"active_window"`, `"entity"`, `"position"`, `"crafting_queue"` or `"item_stack"` (will point to a given item stack in an inventory). Depending on this value, other fields may have to be specified.
@@ -4521,10 +4433,6 @@ declare namespace FactorioRuntime {
     | EquipmentPrototypeFilter
     | TechnologyPrototypeFilterWrite
   )[]
-  /**
-   * @deprecated Use {@link PrototypeFilter} instead
-   */
-  export type PrototypeFilterRead = PrototypeFilter
   /**
    * Common attributes to all variants of {@link ItemPrototypeFilter}.
    */
@@ -6205,10 +6113,6 @@ declare namespace FactorioRuntime {
     | LuaPlayerBuiltEntityEventFilter
     | LuaPlayerRepairedEntityEventFilter
   )[]
-  /**
-   * @deprecated Use {@link EventFilter} instead
-   */
-  export type EventFilterRead = EventFilter
   export interface RollingStockDrawData {
     readonly position: MapPosition
     readonly orientaton: RealOrientation
