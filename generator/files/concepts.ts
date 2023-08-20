@@ -13,7 +13,7 @@ import {
 import { mapConceptType, mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
-import { OutputFile } from "../OutputFile"
+import { Section, SectionType } from "../Section.js"
 
 const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableType }>()
 /**
@@ -88,8 +88,8 @@ function tryGetTableOrArrayConcept(
   }
 }
 
-export function generateConcepts(context: GenerationContext): OutputFile {
-  return context.createFile("concepts", "namespace", () => {
+export function generateConcepts(context: GenerationContext): Section {
+  return context.createSection("concepts", SectionType.Types, () => {
     for (const concept of context.apiDocs.concepts) {
       generateConcept(context, concept)
     }

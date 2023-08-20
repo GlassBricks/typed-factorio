@@ -2,11 +2,11 @@ import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Define } from "../FactorioRuntimeApiJson.js"
 import { GenerationContext } from "../GenerationContext.js"
-import { createConst, createNamespace, Types } from "../genUtil.js"
+import { createConst, createNamespace, Modifiers, Types } from "../genUtil.js"
 import { AnyDef } from "../manualDefinitions.js"
 import { sortByOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
-import { OutputFile } from "../OutputFile"
+import { Section, SectionType } from "../Section.js"
 
 export function preprocessDefines(context: GenerationContext): void {
   function addDefine(define: Define, parent: string) {
@@ -29,14 +29,15 @@ export function preprocessDefines(context: GenerationContext): void {
   addDefine(createRootDefine(context), "")
 }
 
-export function generateDefines(context: GenerationContext): OutputFile {
+export function generateDefines(context: GenerationContext): Section {
   const [defines] = generateDefinesDeclaration(
     context,
     createRootDefine(context),
     "",
-    context.getNamespaceDef("defines")
+    context.getNamespaceDef("defines"),
+    [Modifiers.export, Modifiers.declare]
   )
-  return context.createFile("defines", "namespace", () => context.currentFile.add(defines))
+  return context.createSection("defines", SectionType.Types, () => context.currentFile.add(defines))
 }
 
 function generateEventsDefine(context: GenerationContext, define: Define) {
@@ -79,7 +80,8 @@ function generateDefinesDeclaration(
   context: GenerationContext,
   define: Define,
   parent: string,
-  existing: AnyDef | undefined
+  existing: AnyDef | undefined,
+  modifiers?: ts.Modifier[]
 ): ts.Statement[] {
   let declarations: ts.Statement[]
   const thisPath = parent + (parent ? "." : "") + define.name
@@ -115,7 +117,7 @@ function generateDefinesDeclaration(
     const subkeys = define.subkeys
       .sort(sortByOrder)
       .flatMap((d) => generateDefinesDeclaration(context, d, thisPath, existing?.members[d.name]))
-    declarations = [createNamespace(undefined, define.name, subkeys)]
+    declarations = [createNamespace(modifiers, define.name, subkeys)]
   } else if (!existing) {
     context.warning("Incomplete define for", thisPath)
     declarations = [ts.factory.createTypeAliasDeclaration(undefined, define.name, undefined, Types.unknown)]

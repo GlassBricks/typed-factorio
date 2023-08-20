@@ -3,7 +3,8 @@ import ts from "typescript"
 import { Class, Concept, Define, Event, FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
 import { InterfaceDef, NamespaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions.js"
 import { RWUsage } from "./read-write-types.js"
-import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
+import { Section, SectionBuilder, SectionBuilderImpl, SectionType } from "./Section.js"
+import { capitalize } from "./genUtil.js"
 
 export class GenerationContext {
   public readonly _manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)
@@ -32,11 +33,11 @@ export class GenerationContext {
 
   hasWarnings: boolean = false
 
-  namespaceName = "FactorioRuntime"
-  folderName = "runtime"
+  stageName = this.apiDocs.stage
+  namespaceName = "Factorio" + capitalize(this.apiDocs.stage)
 
-  private _currentFile: OutputFileBuilder | undefined
-  get currentFile(): OutputFileBuilder {
+  private _currentFile: SectionBuilder | undefined
+  get currentFile(): SectionBuilder {
     if (!this._currentFile) throw new Error("No current file")
     return this._currentFile
   }
@@ -81,12 +82,12 @@ export class GenerationContext {
     return `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
   }
 
-  createFile(fileName: string, moduleType: ModuleType, fn: () => void): OutputFile {
-    if (this._currentFile) throw new Error("Nested createFile")
-    const builder = new OutputFileBuilderImpl(this, fileName, moduleType)
+  createSection(fileName: string, moduleType: SectionType, fn: () => void): Section {
+    if (this._currentFile) throw new Error("Nested createSection")
+    const builder = new SectionBuilderImpl(this, fileName, moduleType)
     this._currentFile = builder
     fn()
     this._currentFile = undefined
-    return builder.getResult()
+    return builder.build()
   }
 }

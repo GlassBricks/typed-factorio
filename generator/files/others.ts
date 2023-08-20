@@ -6,7 +6,7 @@ import { analyzeMethod, mapFunction } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
-import { OutputFile } from "../OutputFile"
+import { Section, SectionType } from "../Section.js"
 
 export function preprocessBuiltins(context: GenerationContext): void {
   for (const builtin of context.apiDocs.builtin_types) {
@@ -32,8 +32,8 @@ export function preprocessGlobalFunctions(context: GenerationContext): void {
   }
 }
 
-export function generateBuiltins(context: GenerationContext): OutputFile {
-  return context.createFile("builtin-types", "namespace", () => {
+export function generateBuiltins(context: GenerationContext): Section {
+  return context.createSection("builtin-types", SectionType.Types, () => {
     for (const builtin of context.apiDocs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
       const existing = context.getInterfaceDef(builtin.name)
@@ -46,8 +46,8 @@ export function generateBuiltins(context: GenerationContext): OutputFile {
   })
 }
 
-export function generateGlobalObjects(context: GenerationContext): OutputFile {
-  return context.createFile("global-objects", "global", () => {
+export function generateGlobalObjects(context: GenerationContext): Section {
+  return context.createSection("global-objects", SectionType.Globals, () => {
     for (const globalObject of context.apiDocs.global_objects.sort(sortByOrder)) {
       const definition = createConst(
         globalObject.name,
@@ -60,8 +60,8 @@ export function generateGlobalObjects(context: GenerationContext): OutputFile {
   })
 }
 
-export function generateGlobalFunctions(context: GenerationContext): OutputFile {
-  return context.createFile("global-functions", "global", () => {
+export function generateGlobalFunctions(context: GenerationContext): Section {
+  return context.createSection("global-functions", SectionType.Globals, () => {
     for (const globalFunction of context.apiDocs.global_functions.sort(sortByOrder)) {
       const definition = mapFunction(context, globalFunction)
       context.currentFile.add(definition)

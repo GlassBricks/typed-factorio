@@ -5,7 +5,7 @@ import { createExtendsClause, toPascalCase } from "../genUtil.js"
 import { mapParameterToProperty } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { sortByOrder } from "../util.js"
-import { OutputFile } from "../OutputFile"
+import { Section, SectionType } from "../Section.js"
 
 export function preprocessEvents(context: GenerationContext): void {
   for (const event of context.apiDocs.events) {
@@ -20,8 +20,8 @@ export function preprocessEvents(context: GenerationContext): void {
   }
 }
 
-export function generateEvents(context: GenerationContext): OutputFile {
-  return context.createFile("events", "namespace", () => {
+export function generateEvents(context: GenerationContext): Section {
+  return context.createSection("events", SectionType.Types, () => {
     const heritageClause = createExtendsClause("EventData")
     for (const event of context.apiDocs.events.sort(sortByOrder)) {
       const name = getMappedEventName(event.name)

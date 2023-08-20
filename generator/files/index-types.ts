@@ -2,7 +2,7 @@ import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { GenerationContext } from "../GenerationContext.js"
 import { decapitalize } from "../genUtil.js"
-import { OutputFile } from "../OutputFile"
+import { Section, SectionType } from "../Section.js"
 
 export interface IndexType {
   name: string
@@ -76,8 +76,8 @@ export function preprocessIndexTypes(context: GenerationContext): void {
   }
 }
 
-export function generateIndexTypesFile(context: GenerationContext): OutputFile {
-  return context.createFile("index-types", "namespace", () => {
+export function generateIndexTypesFile(context: GenerationContext): Section {
+  return context.createSection("index-types", SectionType.Types, () => {
     for (const indexType of IndexTypes) {
       // type ${name} = uint & { _${name}Brand: void }
       const typeNode = ts.factory.createIntersectionTypeNode([

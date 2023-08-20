@@ -1,5 +1,3 @@
-import * as fs from "fs"
-import * as path from "path"
 import ts from "typescript"
 import { FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
 import { generateClasses, preprocessClasses } from "./files/classes.js"
@@ -16,15 +14,16 @@ import {
   preprocessGlobalObjects,
 } from "./files/others.js"
 import { GenerationContext } from "./GenerationContext.js"
-import { printer } from "./genUtil.js"
 import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions.js"
+import { getGlobalsFile, getIndexFile, Section } from "./Section.js"
+import * as fs from "fs"
 import { fileURLToPath } from "url"
-import { OutputFile } from "./OutputFile"
+import path from "path"
+
+const header = "// This is an auto-generated file. Do not edit directly!\n\n"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-const header = "// This is an auto-generated file. Do not edit directly!\n\n"
 
 export function generateDefinitions(
   apiJson: FactorioRuntimeApiJson,
@@ -33,25 +32,25 @@ export function generateDefinitions(
 ): { files: Map<string, string>; hasWarnings: boolean } {
   const context = new GenerationContext(apiJson, manualDefinitionsSource, checker)
   preprocessAll(context)
-  const files = generateAll(context)
+  const sections = generateAllSections(context)
 
-  const result = new Map<string, string>()
-  for (const { name, statements } of files) {
-    let content = header
-    for (const statement of statements) {
-      content += printer.printNode(ts.EmitHint.Unspecified, statement, context.manualDefinitionsSource)
-      content += "\n\n"
-    }
-    result.set(path.join(`${context.folderName}/generated`, name + ".d.ts"), content)
+  const indexFooter = getFooter(context, "index")
+  const globalsFooter = getFooter(context, "globals")
+
+  const files = {
+    [`${context.stageName}/index.d.ts`]: getIndexFile(context, sections, header, indexFooter),
+    [`${context.stageName}/globals.d.ts`]: getGlobalsFile(context, sections, header, globalsFooter),
   }
 
-  const indexFiles = generateIndexFiles(context, files)
-  for (const [fileName, content] of indexFiles) {
-    result.set(fileName, content)
-  }
+  return { files: new Map(Object.entries(files)), hasWarnings: context.hasWarnings }
+}
 
-  const hasWarnings = context.hasWarnings
-  return { files: result, hasWarnings }
+function getFooter(context: GenerationContext, sectionName: string) {
+  const fileContent = fs.readFileSync(
+    path.join(__dirname, `../${context.stageName}/${sectionName}-additional.ts`),
+    "utf-8"
+  )
+  return fileContent.substring(fileContent.indexOf("\n\n") + 2)
 }
 
 function preprocessAll(context: GenerationContext) {
@@ -66,8 +65,8 @@ function preprocessAll(context: GenerationContext) {
   preprocessManualDefinitions(context)
 }
 
-function generateAll(context: GenerationContext): OutputFile[] {
-  const files = [
+function generateAllSections(context: GenerationContext): Section[] {
+  const sections = [
     generateBuiltins(context),
     generateGlobalObjects(context),
     generateGlobalFunctions(context),
@@ -78,40 +77,5 @@ function generateAll(context: GenerationContext): OutputFile[] {
     generateIndexTypesFile(context),
   ]
   checkManualDefinitions(context)
-  return files
-}
-
-function generateIndexFiles(context: GenerationContext, outFiles: OutputFile[]): Map<string, string> {
-  const result = new Map<string, string>()
-
-  let globalReferences = ""
-  for (const file of outFiles) {
-    if (file.moduleType === "global") {
-      globalReferences += `/// <reference path="./generated/${file.name}.d.ts" />\n`
-    }
-  }
-
-  const globalIndexTemplate = fs.readFileSync(
-    path.resolve(__dirname, `../${context.folderName}/index-template.ts`),
-    "utf8"
-  )
-  result.set(
-    "runtime/index.d.ts",
-    globalIndexTemplate.replace("// globals\n", (m) => m + globalReferences)
-  )
-
-  let namespaceReferences = ""
-  for (const file of outFiles) {
-    if (file.moduleType === "namespace") {
-      namespaceReferences += `/// <reference path="./${context.folderName}/generated/${file.name}.d.ts" />\n`
-    }
-  }
-
-  const namespaceIndexTemplate = fs.readFileSync(path.resolve(__dirname, `../index-template.ts`), "utf8")
-  result.set(
-    "index.d.ts",
-    namespaceIndexTemplate.replace(`// ${context.namespaceName}\n`, (m) => m + namespaceReferences)
-  )
-
-  return result
+  return sections
 }

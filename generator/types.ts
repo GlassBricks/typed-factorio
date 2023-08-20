@@ -20,6 +20,7 @@ import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./members.js"
 import { RWUsage } from "./read-write-types.js"
 import { assertNever, sortByOrder } from "./util.js"
+import { SectionType } from "./Section.js"
 
 export interface TypeContext {
   contextName: string
@@ -128,7 +129,7 @@ function mapConceptRwType(
     if (typeof value === "string") {
       return createTypeNode(context, value)
     }
-    assert(context.currentFile.moduleType === "namespace")
+    assert(context.currentFile.sectionType === SectionType.Types)
     return value
   }
 
@@ -160,7 +161,7 @@ function mapConceptRwType(
 
 // possibly prefixes with namespace, if needed
 function createTypeNode(context: GenerationContext, typeName: string) {
-  if (context.currentFile.moduleType === "global" && context.references.has(typeName))
+  if (context.currentFile.sectionType === SectionType.Globals && context.references.has(typeName))
     return ts.factory.createTypeReferenceNode(
       ts.factory.createQualifiedName(ts.factory.createIdentifier(context.namespaceName), typeName)
     )
