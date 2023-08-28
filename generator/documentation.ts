@@ -1,9 +1,9 @@
 import ts from "typescript"
 import { EventRaised, WithNotes } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
-import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
+import { RuntimeGenerationContext } from "./runtime/context.js"
 
 const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
 

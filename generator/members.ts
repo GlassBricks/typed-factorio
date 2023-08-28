@@ -2,13 +2,13 @@ import assert from "assert"
 import ts from "typescript"
 import { addJsDoc, processDescription } from "./documentation.js"
 import { Attribute, Method, Parameter } from "./FactorioRuntimeApiJson.js"
-import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { analyzeType, getUsage, RWUsage } from "./read-write-types.js"
 import { makeNullable, mapMemberType, mapType, RWType } from "./types.js"
 import { getFirst, sortByOrder } from "./util.js"
 import { createVariantParameterTypes } from "./variantParameterGroups.js"
+import { RuntimeGenerationContext } from "./runtime/context.js"
 
 export function analyzeMethod(context: RuntimeGenerationContext, method: Method): void {
   for (const parameter of method.parameters) {

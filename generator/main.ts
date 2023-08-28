@@ -4,8 +4,8 @@ import * as path from "path"
 import * as prettier from "prettier"
 import ts from "typescript"
 import { FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
-import { generateRuntimeDeclaration } from "./generate.js"
 import { fileURLToPath } from "url"
+import generateRuntime from "./runtime/index.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -52,7 +52,7 @@ if (!manualDefines) {
 const typeChecker = tsProgram.getTypeChecker()
 
 console.log("Generating files")
-const { files, hasWarnings } = generateRuntimeDeclaration(apiJson, manualDefines, typeChecker)
+const { files, hasWarnings } = generateRuntime(apiJson, manualDefines, typeChecker)
 
 console.log("Writing files")
 

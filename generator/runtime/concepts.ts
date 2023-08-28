@@ -2,7 +2,6 @@ import assert from "assert"
 import ts from "typescript"
 import { addJsDoc, createSeeTag } from "../documentation.js"
 import { Concept, TableType } from "../FactorioRuntimeApiJson.js"
-import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { Modifiers } from "../genUtil.js"
 import {
   finalizeConceptUsageAnalysis,
@@ -14,6 +13,7 @@ import { mapConceptType, mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { DeclarationType } from "../OutputFile.js"
+import { RuntimeGenerationContext } from "./context.js"
 
 const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableType }>()
 /**

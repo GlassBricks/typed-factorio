@@ -1,8 +1,8 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { decapitalize } from "../genUtil.js"
 import { DeclarationType } from "../OutputFile.js"
+import { RuntimeGenerationContext } from "./context.js"
 
 export interface IndexType {
   name: string

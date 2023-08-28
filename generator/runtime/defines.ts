@@ -1,12 +1,12 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Define } from "../FactorioRuntimeApiJson.js"
-import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { createConst, createNamespace, Types } from "../genUtil.js"
 import { AnyDef } from "../manualDefinitions.js"
 import { sortByOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
 import { DeclarationType } from "../OutputFile.js"
+import { RuntimeGenerationContext } from "./context.js"
 
 export function preprocessDefines(context: RuntimeGenerationContext): void {
   function addDefine(define: Define, parent: string) {

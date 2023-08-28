@@ -1,7 +1,6 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioRuntimeApiJson.js"
-import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { analyzeMethod, mapAttribute, mapMethod } from "../members.js"
@@ -10,6 +9,7 @@ import { assertNever, sortByOrder } from "../util.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
 import { DeclarationType } from "../OutputFile.js"
+import { RuntimeGenerationContext } from "./context.js"
 
 export function preprocessClasses(context: RuntimeGenerationContext): void {
   for (const clazz of context.apiDocs.classes) {

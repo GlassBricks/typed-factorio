@@ -1,23 +1,8 @@
 import * as fs from "fs"
 import * as path from "path"
 import ts from "typescript"
-import { FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
-import { generateClasses, preprocessClasses } from "./runtime/classes.js"
-import { generateConcepts, preprocessConcepts } from "./runtime/concepts.js"
-import { generateDefines, preprocessDefines } from "./runtime/defines.js"
-import { generateEvents, preprocessEvents } from "./runtime/events.js"
-import { generateIndexTypesFile, preprocessIndexTypes } from "./runtime/index-types.js"
-import {
-  generateBuiltins,
-  generateGlobalFunctions,
-  generateGlobalObjects,
-  preprocessBuiltins,
-  preprocessGlobalFunctions,
-  preprocessGlobalObjects,
-} from "./runtime/others.js"
-import { GenerationContext, RuntimeGenerationContext } from "./GenerationContext.js"
+import { GenerationContext } from "./GenerationContext.js"
 import { emptySourceFile, printer } from "./genUtil.js"
-import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions.js"
 import { fileURLToPath } from "url"
 import { OutputFile } from "./OutputFile.js"
 
@@ -26,19 +11,7 @@ const __dirname = path.dirname(__filename)
 
 const header = "// This is an auto-generated file. Do not edit directly!\n\n"
 
-export function generateRuntimeDeclaration(
-  apiJson: FactorioRuntimeApiJson,
-  manualDefinitionsSource: ts.SourceFile,
-  checker: ts.TypeChecker
-): { files: Map<string, string>; hasWarnings: boolean } {
-  const context = new RuntimeGenerationContext(apiJson, manualDefinitionsSource, checker)
-  preprocessRuntime(context)
-  generateRuntime(context)
-
-  return generateFiles(context)
-}
-
-function generateFiles(context: GenerationContext): {
+export function getGenerationResult(context: GenerationContext): {
   files: Map<string, string>
   hasWarnings: boolean
 } {
@@ -65,30 +38,6 @@ function generateFiles(context: GenerationContext): {
   }
 
   return { files: result, hasWarnings: context.hasWarnings }
-}
-
-function preprocessRuntime(context: RuntimeGenerationContext) {
-  preprocessBuiltins(context)
-  preprocessGlobalObjects(context)
-  preprocessGlobalFunctions(context)
-  preprocessDefines(context)
-  preprocessEvents(context)
-  preprocessClasses(context)
-  preprocessConcepts(context)
-  preprocessIndexTypes(context)
-  preprocessManualDefinitions(context)
-}
-
-function generateRuntime(context: RuntimeGenerationContext) {
-  generateBuiltins(context)
-  generateGlobalObjects(context)
-  generateGlobalFunctions(context)
-  generateDefines(context)
-  generateEvents(context)
-  generateClasses(context)
-  generateConcepts(context)
-  generateIndexTypesFile(context)
-  checkManualDefinitions(context)
 }
 
 function generateIndexFiles(context: GenerationContext, outFiles: OutputFile[]): Map<string, string> {

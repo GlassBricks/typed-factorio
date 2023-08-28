@@ -1,6 +1,6 @@
 import ts from "typescript"
-import { RuntimeGenerationContext } from "./GenerationContext.js"
-import { addFakeJSDoc } from "./genUtil.js" // preprocessed TS AST easier to use
+import { addFakeJSDoc } from "./genUtil.js"
+import { RuntimeGenerationContext } from "./runtime/context.js" // preprocessed TS AST easier to use
 
 // preprocessed TS AST easier to use
 

@@ -14,12 +14,12 @@ import {
   UnionType,
 } from "./FactorioRuntimeApiJson.js"
 import { IndexTypes } from "./runtime/index-types.js"
-import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./members.js"
 import { RWUsage } from "./read-write-types.js"
 import { assertNever, sortByOrder } from "./util.js"
+import { RuntimeGenerationContext } from "./runtime/context.js"
 
 export interface TypeContext {
   contextName: string
