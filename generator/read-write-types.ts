@@ -2,7 +2,7 @@ import assert from "assert"
 import ts from "typescript"
 import { Attribute, Concept, Type } from "./FactorioRuntimeApiJson.js"
 import { assertNever } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime/context.js"
+import { RuntimeGenerationContext } from "./runtime/index.js"
 
 export enum RWUsage {
   None = 0,

@@ -9,7 +9,7 @@ import { assertNever, sortByOrder } from "../util.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
 import { DeclarationType } from "../OutputFile.js"
-import { RuntimeGenerationContext } from "./context.js"
+import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessClasses(context: RuntimeGenerationContext): void {
   for (const clazz of context.apiDocs.classes) {

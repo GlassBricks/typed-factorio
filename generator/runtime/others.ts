@@ -6,7 +6,7 @@ import { analyzeType, RWUsage } from "../read-write-types.js"
 import { mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { DeclarationType } from "../OutputFile.js"
-import { RuntimeGenerationContext } from "./context.js"
+import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessBuiltins(context: RuntimeGenerationContext): void {
   for (const builtin of context.apiDocs.builtin_types) {

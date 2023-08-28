@@ -2,6 +2,7 @@
 
 /** @noSelfInFile */
 
+
 /**
  * The main scripting interface through which most of the API is accessed.
  * @see {@link https://lua-api.factorio.com/1.1.89/ Online documentation}
@@ -43,3 +44,4 @@ declare const rcon: import("factorio:runtime").LuaRCON
  * @see {@link https://lua-api.factorio.com/1.1.89/ Online documentation}
  */
 declare const rendering: import("factorio:runtime").LuaRendering
+

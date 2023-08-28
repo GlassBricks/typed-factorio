@@ -13,7 +13,7 @@ import { mapConceptType, mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { DeclarationType } from "../OutputFile.js"
-import { RuntimeGenerationContext } from "./context.js"
+import { RuntimeGenerationContext } from "./index.js"
 
 const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableType }>()
 /**

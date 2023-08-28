@@ -6,7 +6,7 @@ import { AnyDef } from "../manualDefinitions.js"
 import { sortByOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
 import { DeclarationType } from "../OutputFile.js"
-import { RuntimeGenerationContext } from "./context.js"
+import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessDefines(context: RuntimeGenerationContext): void {
   function addDefine(define: Define, parent: string) {

@@ -8,7 +8,7 @@ import { analyzeType, getUsage, RWUsage } from "./read-write-types.js"
 import { makeNullable, mapMemberType, mapType, RWType } from "./types.js"
 import { getFirst, sortByOrder } from "./util.js"
 import { createVariantParameterTypes } from "./variantParameterGroups.js"
-import { RuntimeGenerationContext } from "./runtime/context.js"
+import { RuntimeGenerationContext } from "./runtime/index.js"
 
 export function analyzeMethod(context: RuntimeGenerationContext, method: Method): void {
   for (const parameter of method.parameters) {

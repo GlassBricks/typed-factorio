@@ -1,16 +1,33 @@
-import ts from "typescript"
+import { FactorioPrototypeApiJson, Prototype } from "../FactorioPrototypeApiJson.js"
+import { GenerationContext } from "../GenerationContext.js"
+import { generatePrototypes, preprocessPrototypes } from "./prototypes.js"
+import { generateTypes, preprocessTypes } from "./types.js"
 
-import { PrototypeGenerationContext } from "./context.js"
-import { getGenerationResult } from "../generate.js"
-import { FactorioPrototypeApiJson } from "../FactorioPrototypeApiJson.js"
+export class PrototypeGenerationContext extends GenerationContext<FactorioPrototypeApiJson> {
+  stageName = "prototype"
 
-export default function generate(
-  apiJson: FactorioPrototypeApiJson,
-  checker: ts.TypeChecker
-): { files: Map<string, string>; hasWarnings: boolean } {
-  const context = new PrototypeGenerationContext(apiJson, checker)
+  prototypes = new Map<string, Prototype>(this.apiDocs.prototypes.map((e) => [e.name, e]))
+  types = new Set<string>(this.apiDocs.types.map((e) => e.name))
 
-  // todo
+  getOnlineDocUrl(reference: string): string {
+    let relative_link: string
+    if (this.prototypes.has(reference)) {
+      relative_link = `prototypes/${reference}.html`
+    } else if (this.types.has(reference)) {
+      relative_link = "types.html#" + reference
+    } else {
+      this.warning(`Could not get doc url for ${reference}`)
+      relative_link = ""
+    }
+    return this.docUrlBase() + relative_link
+  }
+  preprocessAll(): void {
+    preprocessPrototypes(this)
+    preprocessTypes(this)
+  }
 
-  return getGenerationResult(context)
+  generateAll(): void {
+    generatePrototypes(this)
+    generateTypes(this)
+  }
 }

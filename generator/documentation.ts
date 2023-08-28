@@ -3,11 +3,12 @@ import { EventRaised, WithNotes } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime/context.js"
+import { PrototypeWithExamples } from "./FactorioPrototypeApiJson.js"
+import { GenerationContext } from "./GenerationContext.js"
 
 const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
 
-function mapLink(context: RuntimeGenerationContext, origLink: string, warn = true): string | undefined {
+function mapLink(context: GenerationContext, origLink: string, warn = true): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {
     return origLink
   }
@@ -23,44 +24,46 @@ function mapLink(context: RuntimeGenerationContext, origLink: string, warn = tru
   }
   const [, stage, name, member] = match
 
-  if (stage === "prototype") {
-    const link2 = mapLink(context, `runtime:${name}${member ? "::" + member : ""}`, false)
-    if (link2) return link2
-    // context.warning(`todo: prototype link: ${origLink}`)
-    return undefined
-  } else if (stage !== "runtime") {
-    context.warning(`unknown doc link stage: ${origLink}`)
-    return undefined
-  }
   if (pageLinks.has(name)) {
     return context.docUrlBase() + name + ".html"
   }
 
-  const typeName = context.references.get(name)
-  if (!typeName) {
-    if (warn) context.warning(`unresolved doc reference: ${origLink}`)
-    return undefined
-  }
-  if (!member) {
-    return typeName
+  let typeName: string | undefined
+  if (stage !== context.stageName) {
+    if (stage !== "runtime" && stage !== "prototype") {
+      context.warning(`unknown doc link stage: ${origLink}`)
+    }
+  } else {
+    typeName = context.references.get(name)
+    if (!typeName) {
+      if (warn) context.warning(`unresolved doc reference: ${origLink}`)
+      return undefined
+    }
   }
 
-  let fieldRef: string
-  const operator = member.match(/^(.*)_operator$/)?.[1]
-  if (!operator) {
-    fieldRef = "#" + member
-  } else if (operator === "length") {
-    fieldRef = "#length"
-  } else if (operator === "[]" || operator === "()") {
-    fieldRef = "" // not supported, at least not until declaration links get standardized
-  } else {
-    throw new Error(`Unknown operator ${operator}`)
+  let fieldRef = ""
+  if (member) {
+    const operator = member.match(/^(.*)_operator$/)?.[1]
+    if (!operator) {
+      fieldRef = "#" + member
+    } else if (operator === "length") {
+      fieldRef = "#length"
+    } else if (operator === "[]" || operator === "()") {
+      fieldRef = "" // not supported, at least not until declaration links get standardized
+    } else {
+      throw new Error(`Unknown operator ${operator}`)
+    }
+  }
+
+  if (stage !== context.stageName) {
+    // prepend import("factorio:${stage}")
+    return `import("factorio:${stage}").${typeName}${fieldRef}`
   }
   return typeName + fieldRef
 }
 
 export function processDescription(
-  context: RuntimeGenerationContext,
+  context: GenerationContext,
   description: string | undefined,
   normalizeNewlines = true
 ): string | undefined {
@@ -94,48 +97,7 @@ export function processDescription(
   return result
 }
 
-function getDocumentationUrl(context: RuntimeGenerationContext, reference: string): string {
-  let relative_link: string
-  if (context.builtins.has(reference)) {
-    relative_link = "builtin-types.html#" + reference
-  } else if (context.classes.has(reference)) {
-    relative_link = `classes/${reference}.html`
-  } else if (context.events.has(reference)) {
-    relative_link = "events.html#" + reference
-  } else if (reference.startsWith("defines.")) {
-    relative_link = "defines.html#" + reference
-  } else if (context.concepts.has(reference)) {
-    relative_link = "concepts.html#" + reference
-  } else if (context.globalObjects.has(reference)) {
-    relative_link = ""
-  } else if (context.globalFunctions.has(reference)) {
-    relative_link = "auxiliary/libraries.html#new-functions"
-  } else if (reference.includes(".")) {
-    const className = reference.substring(0, reference.indexOf("."))
-    const memberName = reference.substring(reference.indexOf(".") + 1)
-    const operatorMatch = memberName.match(/^operator%20(.*)$/)?.[1]
-    let referenceLink: string
-    if (!operatorMatch) {
-      referenceLink = reference
-    } else if (operatorMatch === "#") {
-      referenceLink = className + ".length_operator"
-    } else if (operatorMatch === "[]") {
-      referenceLink = className + ".index_operator"
-    } else if (operatorMatch === "()") {
-      referenceLink = className + ".call_operator"
-    } else {
-      context.warning(`Unknown operator ${operatorMatch}`)
-      referenceLink = reference
-    }
-    return getDocumentationUrl(context, className) + "#" + referenceLink
-  } else {
-    context.warning("Could not get documentation url:", reference)
-    relative_link = ""
-  }
-  return context.docUrlBase() + relative_link
-}
-
-function getRaisesComment(context: RuntimeGenerationContext, raises: EventRaised[] | undefined): string | undefined {
+function getRaisesComment(context: GenerationContext, raises: EventRaised[] | undefined): string | undefined {
   if (!raises || raises.length === 0) return
   let result = "**Raised events:**\n"
   for (const event of raises.sort(sortByOrder)) {
@@ -159,21 +121,23 @@ function getSubclassesComment(subclasses: string[] | undefined): string | undefi
   }_`
 }
 
-function processExample(context: RuntimeGenerationContext, example: string): string {
+function processExample(context: GenerationContext, example: string): string {
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
   const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
   return result.replaceAll("\n", "\n * ")
 }
 
+export interface Describable extends WithNotes, PrototypeWithExamples {
+  description: string
+  subclasses?: string[]
+  raises?: EventRaised[]
+}
+
 export function addJsDoc<T extends ts.Node>(
-  context: RuntimeGenerationContext,
+  context: GenerationContext,
   node: T,
-  element: {
-    description: string
-    subclasses?: string[]
-    raises?: EventRaised[]
-  } & WithNotes,
-  reference: string | undefined,
+  element: Describable,
+  onlineReferenceName: string | undefined,
   tags?: ts.JSDocTag[]
 ): T {
   let comment = [
@@ -202,10 +166,12 @@ export function addJsDoc<T extends ts.Node>(
     )
   }
 
+  // TODO: lists, examples, images
+
   if (!comment && tags.length === 0) return node
 
-  if (reference) {
-    tags.push(createSeeTag(`{@link ${getDocumentationUrl(context, reference)} Online documentation}`))
+  if (onlineReferenceName) {
+    tags.push(createSeeTag(`{@link ${context.getOnlineDocUrl(onlineReferenceName)} Online documentation}`))
   }
   // move @noSelf annotation to the end
   const noSelfIndex = tags.findIndex((x) => x.tagName.text === "noSelf")

@@ -19,7 +19,7 @@ import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./members.js"
 import { RWUsage } from "./read-write-types.js"
 import { assertNever, sortByOrder } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime/context.js"
+import { RuntimeGenerationContext } from "./runtime/index.js"
 
 export interface TypeContext {
   contextName: string
