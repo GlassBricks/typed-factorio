@@ -3,7 +3,10 @@
 /** @noSelfInFile */
 
 
-declare namespace FactorioRuntime {
+/**
+ * @noResolution
+ */
+declare module "factorio:runtime" {
     namespace defines {
         enum alert_type {
             entity_destroyed,

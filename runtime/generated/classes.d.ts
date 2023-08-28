@@ -3,7 +3,10 @@
 /** @noSelfInFile */
 
 
-declare namespace FactorioRuntime {
+/**
+ * @noResolution
+ */
+declare module "factorio:runtime" {
     /**
      * Collection of settings for overriding default ai behavior.
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaAISettings.html Online documentation}

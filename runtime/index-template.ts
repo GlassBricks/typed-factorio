@@ -4,7 +4,7 @@
 
 // globals
 
-declare const defines: typeof FactorioRuntime.defines
+declare const defines: typeof import("factorio:runtime").defines
 
 // other runtime
 /// <reference path="pairs.d.ts" />

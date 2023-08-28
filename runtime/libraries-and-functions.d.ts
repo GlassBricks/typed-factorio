@@ -3,7 +3,7 @@
 
 /** @noSelfInFile */
 
-declare namespace FactorioRuntime {
+declare module "factorio/runtime" {
   /** @noSelf */
   interface SerpentOptions {
     /** Indentation; triggers long multi-line output. */
@@ -94,4 +94,4 @@ declare namespace FactorioRuntime {
  * Furthermore, two options were added: `refcomment` (true/false/maxlevel) and `tablecomment` (true/false/maxlevel),
  * which allow to separately control the self-reference and table value output of the `comment` option.
  */
-declare const serpent: typeof FactorioRuntime.serpent
+declare const serpent: typeof import("factorio/runtime").serpent

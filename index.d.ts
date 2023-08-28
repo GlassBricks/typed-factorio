@@ -3,7 +3,7 @@
 
 /// <reference types="lua-types/5.2" />
 
-// FactorioRuntime
+// runtime
 /// <reference path="./runtime/generated/builtin-types.d.ts" />
 /// <reference path="./runtime/generated/defines.d.ts" />
 /// <reference path="./runtime/generated/events.d.ts" />

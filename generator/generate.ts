@@ -42,7 +42,7 @@ export function generateDefinitions(
       content += printer.printNode(ts.EmitHint.Unspecified, statement, context.manualDefinitionsSource)
       content += "\n\n"
     }
-    result.set(path.join(`${context.folderName}/generated`, name + ".d.ts"), content)
+    result.set(path.join(`${context.stageName}/generated`, name + ".d.ts"), content)
   }
 
   const indexFiles = generateIndexFiles(context, files)
@@ -92,7 +92,7 @@ function generateIndexFiles(context: GenerationContext, outFiles: OutputFile[]):
   }
 
   const globalIndexTemplate = fs.readFileSync(
-    path.resolve(__dirname, `../${context.folderName}/index-template.ts`),
+    path.resolve(__dirname, `../${context.stageName}/index-template.ts`),
     "utf8"
   )
   result.set(
@@ -103,14 +103,14 @@ function generateIndexFiles(context: GenerationContext, outFiles: OutputFile[]):
   let namespaceReferences = ""
   for (const file of outFiles) {
     if (file.moduleType === "namespace") {
-      namespaceReferences += `/// <reference path="./${context.folderName}/generated/${file.name}.d.ts" />\n`
+      namespaceReferences += `/// <reference path="./${context.stageName}/generated/${file.name}.d.ts" />\n`
     }
   }
 
   const namespaceIndexTemplate = fs.readFileSync(path.resolve(__dirname, `../index-template.ts`), "utf8")
   result.set(
     "index.d.ts",
-    namespaceIndexTemplate.replace(`// ${context.namespaceName}\n`, (m) => m + namespaceReferences)
+    namespaceIndexTemplate.replace(`// ${context.stageName}\n`, (m) => m + namespaceReferences)
   )
 
   return result

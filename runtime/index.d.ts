@@ -6,7 +6,7 @@
 /// <reference path="./generated/global-objects.d.ts" />
 /// <reference path="./generated/global-functions.d.ts" />
 
-declare const defines: typeof FactorioRuntime.defines
+declare const defines: typeof import("factorio:runtime").defines
 
 // other runtime
 /// <reference path="pairs.d.ts" />

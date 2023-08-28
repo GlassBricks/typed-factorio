@@ -160,10 +160,13 @@ function mapConceptRwType(
 
 // possibly prefixes with namespace, if needed
 function createTypeNode(context: GenerationContext, typeName: string) {
-  if (context.currentFile.moduleType === "global" && context.references.has(typeName))
-    return ts.factory.createTypeReferenceNode(
-      ts.factory.createQualifiedName(ts.factory.createIdentifier(context.namespaceName), typeName)
+  if (context.currentFile.moduleType === "global" && context.references.has(typeName)) {
+    return ts.factory.createImportTypeNode(
+      Types.stringLiteral(`factorio:${context.stageName}`),
+      undefined,
+      ts.factory.createIdentifier(typeName)
     )
+  }
   return ts.factory.createTypeReferenceNode(typeName)
 }
 

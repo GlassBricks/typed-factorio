@@ -3,7 +3,10 @@
 /** @noSelfInFile */
 
 
-declare namespace FactorioRuntime {
+/**
+ * @noResolution
+ */
+declare module "factorio:runtime" {
     /**
      * Localised strings are a way to support translation of in-game text. It is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.
      *

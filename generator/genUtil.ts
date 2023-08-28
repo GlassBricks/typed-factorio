@@ -73,6 +73,23 @@ export function createNamespace(
   )
 }
 
+const noResolutionAnnotation = ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("noResolution"))
+function addNoResolutionAnnotation(node: ts.Node) {
+  const jsDoc = ts.factory.createJSDocComment(undefined, [noResolutionAnnotation])
+  addFakeJSDoc(node, jsDoc)
+}
+export function createDeclareModule(name: string, statements: ts.Statement[]): ts.ModuleDeclaration {
+  const module = ts.factory.createModuleDeclaration(
+    [Modifiers.declare],
+    ts.factory.createStringLiteral(name),
+    ts.factory.createModuleBlock(statements),
+    undefined
+    // ts.NodeFlags.GlobalAugmentation
+  )
+  addNoResolutionAnnotation(module)
+  return module
+}
+
 export function createConst(name: string, type: ts.TypeNode, modifiers?: ts.Modifier[]): ts.VariableStatement {
   return ts.factory.createVariableStatement(
     modifiers,

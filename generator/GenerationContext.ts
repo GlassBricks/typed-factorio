@@ -32,8 +32,7 @@ export class GenerationContext {
 
   hasWarnings: boolean = false
 
-  namespaceName = "FactorioRuntime"
-  folderName = "runtime"
+  stageName = "runtime"
 
   private _currentFile: OutputFileBuilder | undefined
   get currentFile(): OutputFileBuilder {

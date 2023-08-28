@@ -3,7 +3,7 @@
 
 /// <reference types="lua-types/5.2" />
 
-// FactorioRuntime
+// runtime
 
 // common lualib
 /// <reference path="lualib/util.d.ts" />

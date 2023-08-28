@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { createComment, createNamespace, Modifiers } from "./genUtil.js"
+import { createComment, createDeclareModule } from "./genUtil.js"
 import type { GenerationContext } from "./GenerationContext.js"
 
 export interface OutputFileBuilder {
@@ -69,7 +69,7 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
 
     if (this.moduleType === "namespace") {
       // wrap everything in `declare namespace`...
-      result.push(createNamespace([Modifiers.declare], this.context.namespaceName, this.statements))
+      result.push(createDeclareModule("factorio:" + this.context.stageName, this.statements))
     } else {
       result.push(...this.statements)
     }
