@@ -1,18 +1,9 @@
 import assert from "assert"
 import ts, { TypeNode } from "typescript"
 import { addJsDoc } from "./documentation.js"
-import {
-  ArrayType,
-  DictionaryType,
-  FunctionType,
-  LiteralType,
-  LuaLazyLoadedValueType,
-  LuaStructType,
-  TableType,
-  Type,
-  TypeType,
-  UnionType,
-} from "./FactorioRuntimeApiJson.js"
+
+import type * as prototype from "./FactorioPrototypeApiJson.js"
+import type * as runtime from "./FactorioRuntimeApiJson.js"
 import { IndexTypes } from "./runtime/index-types.js"
 import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
@@ -20,6 +11,8 @@ import { mapAttribute, mapParameterToProperty } from "./members.js"
 import { RWUsage } from "./read-write-types.js"
 import { assertNever, sortByOrder } from "./util.js"
 import { RuntimeGenerationContext } from "./runtime/index.js"
+import { GenerationContext } from "./GenerationContext.js"
+import { PrototypeGenerationContext } from "./prototype/index.js"
 
 export interface TypeContext {
   contextName: string
@@ -33,16 +26,20 @@ export interface RWType {
 
 export function mapMemberType(
   context: RuntimeGenerationContext,
-  member: { description: string; name?: string; optional?: boolean },
+  member: {
+    description: string
+    name?: string
+    optional?: boolean
+  },
   parent: string,
-  type: Type,
+  type: runtime.Type,
   usage: RWUsage
 ): RWType {
   const result =
     tryUseIndexType(context, member, parent, type) ??
     tryUseStringEnum(member, type) ??
     tryUseFlagValue(context, member, type) ??
-    mapType(context, type, parent + (member.name ? "." + member.name : ""), usage)
+    mapRuntimeType(context, type, parent + (member.name ? "." + member.name : ""), usage)
 
   const isNullable = !member.optional && isNullableFromDescription(context, member, parent)
   return isNullable
@@ -53,9 +50,9 @@ export function mapMemberType(
     : result
 }
 
-export function mapType(
+export function mapRuntimeType(
   context: RuntimeGenerationContext,
-  type: Type,
+  type: runtime.Type,
   name: string | undefined,
   usage: RWUsage
 ): RWType {
@@ -68,7 +65,7 @@ export function mapType(
 
 export function mapConceptType(
   context: RuntimeGenerationContext,
-  type: Type,
+  type: runtime.Type,
   typeContext: TypeContext,
   usage: RWUsage
 ): {
@@ -79,6 +76,14 @@ export function mapConceptType(
   return mapTypeInternal(context, type, typeContext, usage)
 }
 
+export function mapPrototypeType(context: PrototypeGenerationContext, type: prototype.Type): ts.TypeNode {
+  return mapTypeInternal(context, type, undefined, RWUsage.Write).mainType
+}
+
+function assertIsRuntimeGenerationContext(context: GenerationContext): asserts context is RuntimeGenerationContext {
+  assert(context instanceof RuntimeGenerationContext)
+}
+
 interface IntermediateType {
   mainType: ts.TypeNode
   altWriteType?: ts.TypeNode
@@ -87,8 +92,8 @@ interface IntermediateType {
 }
 
 function mapTypeInternal(
-  context: RuntimeGenerationContext,
-  type: Type,
+  context: GenerationContext,
+  type: runtime.Type | prototype.Type,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -112,11 +117,15 @@ function mapTypeInternal(
     case "LuaLazyLoadedValue":
       return mapLuaLazyLoadedValueType(context, type, usage)
     case "LuaStruct":
-      return mapStructType(context, type, typeContext)
+      return mapLuaStructType(context, type, typeContext)
     case "table":
       return mapTableType(context, type, typeContext, usage)
     case "tuple":
       return mapTupleType(context, type, typeContext, usage)
+    case "struct": {
+      context.warning("todo: handle struct type")
+      return { mainType: Types.unknown, asString: undefined }
+    }
     default:
       assertNever(type)
   }
@@ -124,7 +133,10 @@ function mapTypeInternal(
 
 function mapConceptRwType(
   context: RuntimeGenerationContext,
-  rwType: { read: string | ts.TypeNode; write: string | ts.TypeNode },
+  rwType: {
+    read: string | ts.TypeNode
+    write: string | ts.TypeNode
+  },
   usage: RWUsage
 ): IntermediateType {
   assert(usage)
@@ -164,7 +176,7 @@ function mapConceptRwType(
 }
 
 // possibly prefixes with namespace, if needed
-function createTypeNode(context: RuntimeGenerationContext, typeName: string) {
+function createTypeNode(context: GenerationContext, typeName: string) {
   if (context.currentFile.declarationType === "global" && context.references.has(typeName)) {
     return ts.factory.createImportTypeNode(
       Types.stringLiteral(`factorio:${context.stageName}`),
@@ -176,17 +188,20 @@ function createTypeNode(context: RuntimeGenerationContext, typeName: string) {
 }
 
 function mapBasicType(
-  context: RuntimeGenerationContext,
+  context: GenerationContext,
   type: string,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
-  const usingIndex = tryUseIndexTypeFromBasicType(context, type, typeContext)
-  if (usingIndex) return usingIndex
-  const concept = context.concepts.get(type)
-  const rwType = concept && context.conceptReadWriteTypes.get(concept)
-  if (rwType) {
-    return mapConceptRwType(context, rwType, usage)
+  if (context instanceof RuntimeGenerationContext) {
+    // hard-coded ish for now
+    const usingIndex = tryUseIndexTypeFromBasicType(context, type, typeContext)
+    if (usingIndex) return usingIndex
+    const concept = context.concepts.get(type)
+    const rwType = concept && context.conceptReadWriteTypes.get(concept)
+    if (rwType) {
+      return mapConceptRwType(context, rwType, usage)
+    }
   }
 
   const typeName = context.references.get(type)
@@ -216,8 +231,8 @@ function tryUseIndexTypeFromBasicType(
 }
 
 function mapTypeType(
-  context: RuntimeGenerationContext,
-  type: TypeType,
+  context: GenerationContext,
+  type: runtime.TypeType | prototype.TypeType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -234,8 +249,8 @@ function mapTypeType(
 const unionDescriptionHeader = "\n**Options:**\n"
 
 function mapUnionType(
-  context: RuntimeGenerationContext,
-  type: UnionType,
+  context: GenerationContext,
+  type: runtime.UnionType | prototype.UnionType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -321,7 +336,11 @@ function makeUnion(types: ts.TypeNode[]): ts.TypeNode {
   return ts.factory.createUnionTypeNode(typesArray)
 }
 
-function mapArrayType(context: RuntimeGenerationContext, type: ArrayType, usage: RWUsage): IntermediateType {
+function mapArrayType(
+  context: GenerationContext,
+  type: runtime.ArrayType | prototype.ArrayType,
+  usage: RWUsage
+): IntermediateType {
   const elementType = mapTypeInternal(context, type.value, undefined, usage)
   let mainType: ts.TypeNode = ts.factory.createArrayTypeNode(elementType.mainType)
   // add readonly modifier if write but not read
@@ -350,9 +369,13 @@ enum IndexType {
   StringUnion = (1 << 1) | Basic,
 }
 
-function getIndexableType(context: RuntimeGenerationContext, type: Type): IndexType {
+function getIndexableType(context: GenerationContext, type: runtime.Type | prototype.Type): IndexType {
   if (typeof type === "string") {
-    if (type === "string" || type === "number" || type.startsWith("defines.") || context.numericTypes.has(type))
+    if (
+      type === "string" ||
+      type === "number" ||
+      (context instanceof RuntimeGenerationContext && (type.startsWith("defines.") || context.numericTypes.has(type)))
+    )
       return IndexType.Basic
     if (type === "CollisionMaskLayer") return IndexType.StringUnion
     return IndexType.None
@@ -372,8 +395,8 @@ function getIndexableType(context: RuntimeGenerationContext, type: Type): IndexT
 }
 
 function mapDictionaryType(
-  context: RuntimeGenerationContext,
-  type: DictionaryType,
+  context: GenerationContext,
+  type: runtime.DictionaryType | prototype.DictionaryType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -385,6 +408,7 @@ function mapDictionaryType(
   }
   // flags
   if (
+    context instanceof RuntimeGenerationContext &&
     indexType === IndexType.StringUnion &&
     typeContext?.contextName &&
     typeof type.value !== "string" &&
@@ -392,7 +416,7 @@ function mapDictionaryType(
     type.value.value === true
   ) {
     // Record<... true>
-    return makeFlagsType(context, typeContext, type.key, usage)
+    return makeFlagsType(context, typeContext, type.key as runtime.Type, usage)
   }
 
   const keyType = mapTypeInternal(context, type.key, undefined, usage)
@@ -421,7 +445,7 @@ function mapDictionaryType(
 function makeFlagsType(
   context: RuntimeGenerationContext,
   typeContext: TypeContext,
-  keyType: Type,
+  keyType: runtime.Type,
   usage: RWUsage
 ): IntermediateType {
   const isUnion = typeof keyType !== "string" && keyType.complex_type === "union"
@@ -482,10 +506,11 @@ function makeFlagsType(
 }
 
 function mapLuaCustomTableType(
-  context: RuntimeGenerationContext,
-  type: DictionaryType,
+  context: GenerationContext,
+  type: runtime.DictionaryType,
   usage: RWUsage
 ): IntermediateType {
+  assertIsRuntimeGenerationContext(context)
   const keyType = mapTypeInternal(context, type.key, undefined, usage)
   const valueType = mapTypeInternal(context, type.value, undefined, usage)
   if (keyType.description || valueType.description) {
@@ -500,7 +525,8 @@ function mapLuaCustomTableType(
   }
 }
 
-function mapFunctionType(context: RuntimeGenerationContext, type: FunctionType): IntermediateType {
+function mapFunctionType(context: GenerationContext, type: runtime.FunctionType): IntermediateType {
+  assertIsRuntimeGenerationContext(context)
   const parameters = type.parameters.map((value, index) => {
     const paramType = mapTypeInternal(context, value, undefined, RWUsage.Read)
     if (paramType.description) context.warning("Function type has parameter with description: " + JSON.stringify(type))
@@ -519,7 +545,7 @@ function mapFunctionType(context: RuntimeGenerationContext, type: FunctionType):
   }
 }
 
-function mapLiteralType(context: RuntimeGenerationContext, type: LiteralType): IntermediateType {
+function mapLiteralType(context: GenerationContext, type: runtime.LiteralType): IntermediateType {
   const value = type.value
   if (typeof value === "string") {
     return { mainType: Types.stringLiteral(value), asString: `\`"${value}"\``, description: type.description }
@@ -531,10 +557,11 @@ function mapLiteralType(context: RuntimeGenerationContext, type: LiteralType): I
 }
 
 function mapLuaLazyLoadedValueType(
-  context: RuntimeGenerationContext,
-  type: LuaLazyLoadedValueType,
+  context: GenerationContext,
+  type: runtime.LuaLazyLoadedValueType,
   usage: RWUsage
 ): IntermediateType {
+  assertIsRuntimeGenerationContext(context)
   if (usage !== RWUsage.Read) {
     context.warning("LuaLazyLoadedValue can only be read")
   }
@@ -547,11 +574,12 @@ function mapLuaLazyLoadedValueType(
   }
 }
 
-function mapStructType(
-  context: RuntimeGenerationContext,
-  type: LuaStructType,
+function mapLuaStructType(
+  context: GenerationContext,
+  type: runtime.LuaStructType,
   typeContext: TypeContext | undefined
 ): IntermediateType {
+  assertIsRuntimeGenerationContext(context)
   assert(typeContext)
   const attributes = type.attributes
     .sort(sortByOrder)
@@ -565,11 +593,12 @@ function mapStructType(
 }
 
 function mapTableType(
-  context: RuntimeGenerationContext,
-  type: TableType,
+  context: GenerationContext,
+  type: runtime.TableType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
+  assertIsRuntimeGenerationContext(context)
   assert(typeContext)
   if (type.variant_parameter_groups) {
     context.warning("variant_parameter_groups is not supported in mapType")
@@ -604,8 +633,23 @@ function mapTableType(
 }
 
 function mapTupleType(
+  context: GenerationContext,
+  type: runtime.TableType | prototype.TupleType,
+  typeContext: TypeContext | undefined,
+  usage: RWUsage
+): IntermediateType {
+  if (context instanceof RuntimeGenerationContext) {
+    return mapRuntimeTupleType(context, type as runtime.TableType, typeContext, usage)
+  }
+  if (context instanceof PrototypeGenerationContext) {
+    return mapPrototypeTupleType(context, type as prototype.TupleType, typeContext, usage)
+  }
+  throw new Error("unknown context type: " + context.constructor.name)
+}
+
+function mapRuntimeTupleType(
   context: RuntimeGenerationContext,
-  type: TableType,
+  type: runtime.TableType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
@@ -633,12 +677,34 @@ function mapTupleType(
     asString: undefined,
   }
 }
+function mapPrototypeTupleType(
+  context: PrototypeGenerationContext,
+  type: prototype.TupleType,
+  typeContext: TypeContext | undefined,
+  usage: RWUsage
+): IntermediateType {
+  const values = type.values.map((v) => {
+    const type = mapTypeInternal(context, v, typeContext, usage)
+    if (type.description) {
+      context.warning("Unknown description for tuple member: " + type.description)
+    }
+    return type.mainType
+  })
+
+  const result = ts.factory.createTupleTypeNode(values)
+  return {
+    mainType: result,
+    asString: undefined,
+  }
+}
 
 function tryUseIndexType(
   context: RuntimeGenerationContext,
-  member: { name?: string },
+  member: {
+    name?: string
+  },
   parent: string,
-  type: Type
+  type: runtime.Type
 ): RWType | undefined {
   if (!(typeof type === "string" && type.startsWith("uint"))) return
   for (const indexType of IndexTypes) {
@@ -659,7 +725,7 @@ function tryUseStringEnum(
     description: string
     name?: string
   },
-  type: Type
+  type: runtime.Type
 ): RWType | undefined {
   if (type === "string") {
     const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
@@ -691,7 +757,7 @@ function tryUseFlagValue(
     description: string
     name?: string
   },
-  type: Type
+  type: runtime.Type
 ): RWType | undefined {
   if (member.name !== "flag" || type !== "string") return undefined
   const match = member.description.match(/\[([A-Z][a-zA-Z]+Flags)]/)

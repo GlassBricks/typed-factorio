@@ -4,7 +4,7 @@ import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method }
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { analyzeMethod, mapAttribute, mapMethod } from "../members.js"
-import { mapType } from "../types.js"
+import { mapRuntimeType } from "../types.js"
 import { assertNever, sortByOrder } from "../util.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
@@ -182,7 +182,7 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = mapType(context, lengthOperator.type, clazz.name + ".length", RWUsage.Read).mainType
+      const type = mapRuntimeType(context, lengthOperator.type, clazz.name + ".length", RWUsage.Read).mainType
       const lengthProperty = addJsDoc(
         context,
         ts.factory.createPropertySignature(

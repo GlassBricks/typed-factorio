@@ -3,7 +3,7 @@ import { addJsDoc } from "../documentation.js"
 import { createConst, Modifiers } from "../genUtil.js"
 import { analyzeMethod, mapFunction } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
-import { mapType } from "../types.js"
+import { mapRuntimeType } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { DeclarationType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
@@ -51,7 +51,7 @@ export function generateGlobalObjects(context: RuntimeGenerationContext): void {
     for (const globalObject of context.apiDocs.global_objects.sort(sortByOrder)) {
       const definition = createConst(
         globalObject.name,
-        mapType(context, globalObject.type, globalObject.name, RWUsage.Read).mainType,
+        mapRuntimeType(context, globalObject.type, globalObject.name, RWUsage.Read).mainType,
         [Modifiers.declare]
       )
       addJsDoc(context, definition, globalObject, globalObject.name, undefined)

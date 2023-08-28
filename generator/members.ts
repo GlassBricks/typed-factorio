@@ -5,7 +5,7 @@ import { Attribute, Method, Parameter } from "./FactorioRuntimeApiJson.js"
 import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { analyzeType, getUsage, RWUsage } from "./read-write-types.js"
-import { makeNullable, mapMemberType, mapType, RWType } from "./types.js"
+import { makeNullable, mapMemberType, mapRuntimeType, RWType } from "./types.js"
 import { getFirst, sortByOrder } from "./util.js"
 import { createVariantParameterTypes } from "./variantParameterGroups.js"
 import { RuntimeGenerationContext } from "./runtime/index.js"
@@ -298,7 +298,7 @@ function getParameters(context: RuntimeGenerationContext, method: Method, thisPa
     parameters = method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(context, m, thisPath))
   }
   if (method.variadic_type) {
-    const type = mapType(
+    const type = mapRuntimeType(
       context,
       {
         complex_type: "array",

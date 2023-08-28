@@ -15,10 +15,14 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
       relative_link = `prototypes/${reference}.html`
     } else if (this.types.has(reference)) {
       relative_link = "types.html#" + reference
+    } else if (reference.includes(".")) {
+      const className = reference.substring(0, reference.indexOf("."))
+      return this.getOnlineDocUrl(className) + "#" + reference
     } else {
       this.warning(`Could not get doc url for ${reference}`)
       relative_link = ""
     }
+
     return this.docUrlBase() + relative_link
   }
   preprocessAll(): void {

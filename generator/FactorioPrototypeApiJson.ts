@@ -39,7 +39,7 @@ export interface PrototypeConcept extends BasicMember, PrototypeWithExamples {
   properties?: Property[]
 }
 
-interface Property extends BasicMember, PrototypeWithExamples {
+export interface Property extends BasicMember, PrototypeWithExamples {
   alt_name: string
   override: boolean
   type: Type
@@ -65,6 +65,7 @@ export interface TupleType {
 }
 
 export interface UnionType {
+  complex_type: "union"
   options: Type[]
   full_format: boolean
 }
@@ -78,6 +79,7 @@ export interface LiteralType {
 export interface TypeType {
   complex_type: "type"
   value: Type
+  description: string
 }
 
 export interface StructType {

@@ -9,7 +9,7 @@ import {
   RWUsage,
   setReadWriteType,
 } from "../read-write-types.js"
-import { mapConceptType, mapType } from "../types.js"
+import { mapConceptType, mapRuntimeType } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { DeclarationType } from "../OutputFile.js"
@@ -201,8 +201,8 @@ function createTableOrArrayConcept(
   // /** Array form of @{link Concept}. */
   // type ConceptArray = Array write
 
-  const tableForm = mapType(context, tableOrArray.table, concept.name, RWUsage.ReadWrite)
-  const arrayForm = mapType(context, tableOrArray.array, concept.name, RWUsage.Write).mainType
+  const tableForm = mapRuntimeType(context, tableOrArray.table, concept.name, RWUsage.ReadWrite)
+  const arrayForm = mapRuntimeType(context, tableOrArray.array, concept.name, RWUsage.Write).mainType
   assert(ts.isTypeLiteralNode(tableForm.mainType))
   assert(tableOrArray.array.complex_type === "tuple")
 
