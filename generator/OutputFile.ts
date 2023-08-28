@@ -5,23 +5,26 @@ import { GenerationContext } from "./GenerationContext.js"
 export interface OutputFileBuilder {
   fileName: string
 
-  moduleType: ModuleType
+  declarationType: DeclarationType
 
   add(statement: ts.Statement): void
 }
 
-export type ModuleType = "namespace" | "global"
+export enum DeclarationType {
+  Types = "namespace",
+  Globals = "global",
+}
 
 export interface OutputFile {
   name: string
-  moduleType: ModuleType
+  moduleType: DeclarationType
   statements: readonly ts.Statement[]
 }
 
 export class OutputFileBuilderImpl implements OutputFileBuilder {
   private statements: ts.Statement[] = []
 
-  constructor(private context: GenerationContext, public fileName: string, public moduleType: ModuleType) {}
+  constructor(private context: GenerationContext, public fileName: string, public declarationType: DeclarationType) {}
 
   add(statement: ts.Statement): this {
     const name = OutputFileBuilderImpl.getName(statement)
@@ -58,7 +61,7 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
     return name
   }
 
-  getResult(): OutputFile {
+  build(): OutputFile {
     const addTo = this.context.addTo.get(this.fileName)
     if (addTo) {
       this.statements.push(...addTo)
@@ -67,7 +70,7 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
     const result: ts.Statement[] = []
     result.push(createComment("* @noSelfInFile ", true))
 
-    if (this.moduleType === "namespace") {
+    if (this.declarationType === "namespace") {
       // wrap everything in `declare namespace`...
       result.push(createDeclareModule("factorio:" + this.context.stageName, this.statements))
     } else {
@@ -76,7 +79,7 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
 
     return {
       name: this.fileName,
-      moduleType: this.moduleType,
+      moduleType: this.declarationType,
       statements: result,
     }
   }

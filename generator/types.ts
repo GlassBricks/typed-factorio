@@ -133,7 +133,7 @@ function mapConceptRwType(
     if (typeof value === "string") {
       return createTypeNode(context, value)
     }
-    assert(context.currentFile.moduleType === "namespace")
+    assert(context.currentFile.declarationType === "namespace")
     return value
   }
 
@@ -165,7 +165,7 @@ function mapConceptRwType(
 
 // possibly prefixes with namespace, if needed
 function createTypeNode(context: RuntimeGenerationContext, typeName: string) {
-  if (context.currentFile.moduleType === "global" && context.references.has(typeName)) {
+  if (context.currentFile.declarationType === "global" && context.references.has(typeName)) {
     return ts.factory.createImportTypeNode(
       Types.stringLiteral(`factorio:${context.stageName}`),
       undefined,

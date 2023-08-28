@@ -19,7 +19,7 @@ import { GenerationContext, RuntimeGenerationContext } from "./GenerationContext
 import { emptySourceFile, printer } from "./genUtil.js"
 import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions.js"
 import { fileURLToPath } from "url"
-import { OutputFile } from "./OutputFile"
+import { OutputFile } from "./OutputFile.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -33,21 +33,20 @@ export function generateRuntimeDeclaration(
 ): { files: Map<string, string>; hasWarnings: boolean } {
   const context = new RuntimeGenerationContext(apiJson, manualDefinitionsSource, checker)
   preprocessRuntime(context)
-  const files = generateRuntime(context)
+  generateRuntime(context)
 
-  return generateFiles(context, files)
+  return generateFiles(context)
 }
 
-function generateFiles(
-  context: GenerationContext,
-  files: OutputFile[]
-): {
+function generateFiles(context: GenerationContext): {
   files: Map<string, string>
   hasWarnings: boolean
 } {
   const result = new Map<string, string>()
 
-  for (const { name, statements } of files) {
+  const outFiles = context.getAllFiles()
+
+  for (const { name, statements } of outFiles) {
     let content = header
     for (const statement of statements) {
       content += printer.printNode(
@@ -60,7 +59,7 @@ function generateFiles(
     result.set(`${context.stageName}/generated/${name}.d.ts`, content)
   }
 
-  const indexFiles = generateIndexFiles(context, files)
+  const indexFiles = generateIndexFiles(context, outFiles)
   for (const [fileName, content] of indexFiles) {
     result.set(fileName, content)
   }
@@ -80,19 +79,16 @@ function preprocessRuntime(context: RuntimeGenerationContext) {
   preprocessManualDefinitions(context)
 }
 
-function generateRuntime(context: RuntimeGenerationContext): OutputFile[] {
-  const files = [
-    generateBuiltins(context),
-    generateGlobalObjects(context),
-    generateGlobalFunctions(context),
-    generateDefines(context),
-    generateEvents(context),
-    generateClasses(context),
-    generateConcepts(context),
-    generateIndexTypesFile(context),
-  ]
+function generateRuntime(context: RuntimeGenerationContext) {
+  generateBuiltins(context)
+  generateGlobalObjects(context)
+  generateGlobalFunctions(context)
+  generateDefines(context)
+  generateEvents(context)
+  generateClasses(context)
+  generateConcepts(context)
+  generateIndexTypesFile(context)
   checkManualDefinitions(context)
-  return files
 }
 
 function generateIndexFiles(context: GenerationContext, outFiles: OutputFile[]): Map<string, string> {

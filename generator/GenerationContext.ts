@@ -3,10 +3,10 @@ import ts from "typescript"
 import { Class, Concept, Define, Event, FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
 import { InterfaceDef, NamespaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions.js"
 import { RWUsage } from "./read-write-types.js"
-import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
+import { DeclarationType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
 import { FactorioPrototypeApiJson } from "./FactorioPrototypeApiJson.js"
 
-interface AnyApiJson {
+export interface AnyApiJson {
   application: "factorio"
   stage: string
   api_version: 4
@@ -24,8 +24,13 @@ export abstract class GenerationContext {
   addTo = new Map<string, ts.Statement[]>()
 
   hasWarnings = false
-  abstract readonly stageName: string
+
+  abstract apiDocs: AnyApiJson
   abstract readonly manualDefinitionsSource: ts.SourceFile | undefined
+
+  get stageName(): string {
+    return this.apiDocs.stage
+  }
 
   protected constructor(readonly checker: ts.TypeChecker) {}
 
@@ -35,18 +40,24 @@ export abstract class GenerationContext {
     return this._currentFile
   }
 
+  private allFiles: OutputFile[] = []
+
   warning(...args: unknown[]): void {
     console.log(chalk.yellow(...args))
     this.hasWarnings = true
   }
 
-  createFile(fileName: string, moduleType: ModuleType, fn: () => void): OutputFile {
-    if (this._currentFile) throw new Error("Nested createFile")
-    const builder = new OutputFileBuilderImpl(this, fileName, moduleType)
+  addFile(fileName: string, decType: DeclarationType, fn: () => void): void {
+    if (this._currentFile) throw new Error("Nested addFile")
+    const builder = new OutputFileBuilderImpl(this, fileName, decType)
     this._currentFile = builder
     fn()
     this._currentFile = undefined
-    return builder.getResult()
+    this.allFiles.push(builder.build())
+  }
+
+  getAllFiles(): OutputFile[] {
+    return this.allFiles
   }
 }
 
@@ -70,8 +81,6 @@ export class RuntimeGenerationContext extends GenerationContext {
   conceptReferencedBy = new Map<Concept, Set<Concept>>(this.apiDocs.concepts.map((e) => [e, new Set()]))
   conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
   // ^: empty object = has separate read/write types, but not yet known form (may use default)
-
-  stageName = "runtime"
 
   constructor(
     readonly apiDocs: FactorioRuntimeApiJson,
@@ -103,13 +112,13 @@ export class RuntimeGenerationContext extends GenerationContext {
     }
     return result
   }
+
   docUrlBase(): string {
     return `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
   }
 }
 
 export class PrototypeGenerationContext extends GenerationContext {
-  stageName = "prototype"
   manualDefinitionsSource = undefined
   constructor(readonly apiDocs: FactorioPrototypeApiJson, checker: ts.TypeChecker) {
     super(checker)

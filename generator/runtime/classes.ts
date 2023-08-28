@@ -9,7 +9,7 @@ import { mapType } from "../types.js"
 import { assertNever, sortByOrder } from "../util.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
-import { OutputFile } from "../OutputFile"
+import { DeclarationType } from "../OutputFile.js"
 
 export function preprocessClasses(context: RuntimeGenerationContext): void {
   for (const clazz of context.apiDocs.classes) {
@@ -35,8 +35,8 @@ function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribut
   analyzeType(context, attribute.type, rwType)
 }
 
-export function generateClasses(context: RuntimeGenerationContext): OutputFile {
-  return context.createFile("classes", "namespace", () => {
+export function generateClasses(context: RuntimeGenerationContext): void {
+  context.addFile("classes", DeclarationType.Types, () => {
     for (const clazz of context.apiDocs.classes.sort(sortByOrder)) {
       const existing = context.getInterfaceDef(clazz.name)
       generateClass(context, clazz, existing)
