@@ -26,7 +26,7 @@
     "lint": "eslint .",
     "check": "npm run lint && npm run test",
     "prepublishOnly": "npm run check",
-    "download-latest-runtime-api": "ts-node --esm ./scripts/download-latest.ts",
+    "download-latest-json-apis": "ts-node --esm ./scripts/download-latest.ts",
     "new-version-changelog": "ts-node --esm ./scripts/new-version-changelog.ts",
     "next-factorio-version": "npm run download-latest-runtime-api && npm run clean && npm run check && npm run new-version-changelog && npm version minor"
   },
