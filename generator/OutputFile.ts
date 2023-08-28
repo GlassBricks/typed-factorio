@@ -1,6 +1,6 @@
 import ts from "typescript"
 import { createComment, createDeclareModule } from "./genUtil.js"
-import type { GenerationContext } from "./GenerationContext.js"
+import { GenerationContext } from "./GenerationContext.js"
 
 export interface OutputFileBuilder {
   fileName: string

@@ -13,8 +13,8 @@ import {
   TypeType,
   UnionType,
 } from "./FactorioRuntimeApiJson.js"
-import { IndexTypes } from "./files/index-types.js"
-import { GenerationContext } from "./GenerationContext.js"
+import { IndexTypes } from "./runtime/index-types.js"
+import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./members.js"
@@ -32,7 +32,7 @@ export interface RWType {
 }
 
 export function mapMemberType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   member: { description: string; name?: string; optional?: boolean },
   parent: string,
   type: Type,
@@ -53,7 +53,12 @@ export function mapMemberType(
     : result
 }
 
-export function mapType(context: GenerationContext, type: Type, name: string | undefined, usage: RWUsage): RWType {
+export function mapType(
+  context: RuntimeGenerationContext,
+  type: Type,
+  name: string | undefined,
+  usage: RWUsage
+): RWType {
   const result = mapTypeInternal(context, type, name !== undefined ? { contextName: name } : undefined, usage)
   if (result.description) {
     context.warning("Don't have use for type description: " + JSON.stringify(type))
@@ -62,7 +67,7 @@ export function mapType(context: GenerationContext, type: Type, name: string | u
 }
 
 export function mapConceptType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: Type,
   typeContext: TypeContext,
   usage: RWUsage
@@ -82,7 +87,7 @@ interface IntermediateType {
 }
 
 function mapTypeInternal(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: Type,
   typeContext: TypeContext | undefined,
   usage: RWUsage
@@ -118,7 +123,7 @@ function mapTypeInternal(
 }
 
 function mapConceptRwType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   rwType: { read: string | ts.TypeNode; write: string | ts.TypeNode },
   usage: RWUsage
 ): IntermediateType {
@@ -159,7 +164,7 @@ function mapConceptRwType(
 }
 
 // possibly prefixes with namespace, if needed
-function createTypeNode(context: GenerationContext, typeName: string) {
+function createTypeNode(context: RuntimeGenerationContext, typeName: string) {
   if (context.currentFile.moduleType === "global" && context.references.has(typeName)) {
     return ts.factory.createImportTypeNode(
       Types.stringLiteral(`factorio:${context.stageName}`),
@@ -171,7 +176,7 @@ function createTypeNode(context: GenerationContext, typeName: string) {
 }
 
 function mapBasicType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: string,
   typeContext: TypeContext | undefined,
   usage: RWUsage
@@ -192,7 +197,7 @@ function mapBasicType(
 }
 
 function tryUseIndexTypeFromBasicType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: string,
   typeContext: TypeContext | undefined
 ): IntermediateType | undefined {
@@ -211,7 +216,7 @@ function tryUseIndexTypeFromBasicType(
 }
 
 function mapTypeType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: TypeType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
@@ -229,7 +234,7 @@ function mapTypeType(
 const unionDescriptionHeader = "\n**Options:**\n"
 
 function mapUnionType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: UnionType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
@@ -316,7 +321,7 @@ function makeUnion(types: ts.TypeNode[]): ts.TypeNode {
   return ts.factory.createUnionTypeNode(typesArray)
 }
 
-function mapArrayType(context: GenerationContext, type: ArrayType, usage: RWUsage): IntermediateType {
+function mapArrayType(context: RuntimeGenerationContext, type: ArrayType, usage: RWUsage): IntermediateType {
   const elementType = mapTypeInternal(context, type.value, undefined, usage)
   let mainType: ts.TypeNode = ts.factory.createArrayTypeNode(elementType.mainType)
   // add readonly modifier if write but not read
@@ -345,7 +350,7 @@ enum IndexType {
   StringUnion = (1 << 1) | Basic,
 }
 
-function getIndexableType(context: GenerationContext, type: Type): IndexType {
+function getIndexableType(context: RuntimeGenerationContext, type: Type): IndexType {
   if (typeof type === "string") {
     if (type === "string" || type === "number" || type.startsWith("defines.") || context.numericTypes.has(type))
       return IndexType.Basic
@@ -367,7 +372,7 @@ function getIndexableType(context: GenerationContext, type: Type): IndexType {
 }
 
 function mapDictionaryType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: DictionaryType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
@@ -414,7 +419,7 @@ function mapDictionaryType(
 }
 
 function makeFlagsType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   typeContext: TypeContext,
   keyType: Type,
   usage: RWUsage
@@ -476,7 +481,11 @@ function makeFlagsType(
   }
 }
 
-function mapLuaCustomTableType(context: GenerationContext, type: DictionaryType, usage: RWUsage): IntermediateType {
+function mapLuaCustomTableType(
+  context: RuntimeGenerationContext,
+  type: DictionaryType,
+  usage: RWUsage
+): IntermediateType {
   const keyType = mapTypeInternal(context, type.key, undefined, usage)
   const valueType = mapTypeInternal(context, type.value, undefined, usage)
   if (keyType.description || valueType.description) {
@@ -491,7 +500,7 @@ function mapLuaCustomTableType(context: GenerationContext, type: DictionaryType,
   }
 }
 
-function mapFunctionType(context: GenerationContext, type: FunctionType): IntermediateType {
+function mapFunctionType(context: RuntimeGenerationContext, type: FunctionType): IntermediateType {
   const parameters = type.parameters.map((value, index) => {
     const paramType = mapTypeInternal(context, value, undefined, RWUsage.Read)
     if (paramType.description) context.warning("Function type has parameter with description: " + JSON.stringify(type))
@@ -510,7 +519,7 @@ function mapFunctionType(context: GenerationContext, type: FunctionType): Interm
   }
 }
 
-function mapLiteralType(context: GenerationContext, type: LiteralType): IntermediateType {
+function mapLiteralType(context: RuntimeGenerationContext, type: LiteralType): IntermediateType {
   const value = type.value
   if (typeof value === "string") {
     return { mainType: Types.stringLiteral(value), asString: `\`"${value}"\``, description: type.description }
@@ -522,7 +531,7 @@ function mapLiteralType(context: GenerationContext, type: LiteralType): Intermed
 }
 
 function mapLuaLazyLoadedValueType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: LuaLazyLoadedValueType,
   usage: RWUsage
 ): IntermediateType {
@@ -539,7 +548,7 @@ function mapLuaLazyLoadedValueType(
 }
 
 function mapStructType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: LuaStructType,
   typeContext: TypeContext | undefined
 ): IntermediateType {
@@ -556,7 +565,7 @@ function mapStructType(
 }
 
 function mapTableType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: TableType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
@@ -595,7 +604,7 @@ function mapTableType(
 }
 
 function mapTupleType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   type: TableType,
   typeContext: TypeContext | undefined,
   usage: RWUsage
@@ -626,7 +635,7 @@ function mapTupleType(
 }
 
 function tryUseIndexType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   member: { name?: string },
   parent: string,
   type: Type
@@ -677,7 +686,7 @@ function tryUseStringEnum(
 }
 
 function tryUseFlagValue(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   member: {
     description: string
     name?: string
@@ -698,7 +707,7 @@ function tryUseFlagValue(
 }
 
 function isNullableFromDescription(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   member: {
     description: string
     name?: string

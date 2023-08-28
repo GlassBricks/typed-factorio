@@ -1,6 +1,6 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { GenerationContext } from "../GenerationContext.js"
+import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { decapitalize } from "../genUtil.js"
 import { OutputFile } from "../OutputFile"
 
@@ -70,13 +70,13 @@ export const IndexTypes: IndexType[] = [
   },
 ]
 
-export function preprocessIndexTypes(context: GenerationContext): void {
+export function preprocessIndexTypes(context: RuntimeGenerationContext): void {
   for (const indexType of IndexTypes) {
     context.references.set(indexType.name, indexType.name)
   }
 }
 
-export function generateIndexTypesFile(context: GenerationContext): OutputFile {
+export function generateIndexTypesFile(context: RuntimeGenerationContext): OutputFile {
   return context.createFile("index-types", "namespace", () => {
     for (const indexType of IndexTypes) {
       // type ${name} = uint & { _${name}Brand: void }

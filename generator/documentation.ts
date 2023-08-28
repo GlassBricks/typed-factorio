@@ -1,13 +1,13 @@
 import ts from "typescript"
 import { EventRaised, WithNotes } from "./FactorioRuntimeApiJson.js"
-import { getMappedEventName } from "./files/events.js"
-import { GenerationContext } from "./GenerationContext.js"
+import { getMappedEventName } from "./runtime/events.js"
+import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
 
 const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
 
-function mapLink(context: GenerationContext, origLink: string, warn = true): string | undefined {
+function mapLink(context: RuntimeGenerationContext, origLink: string, warn = true): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {
     return origLink
   }
@@ -60,7 +60,7 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
 }
 
 export function processDescription(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   description: string | undefined,
   normalizeNewlines = true
 ): string | undefined {
@@ -94,7 +94,7 @@ export function processDescription(
   return result
 }
 
-function getDocumentationUrl(context: GenerationContext, reference: string): string {
+function getDocumentationUrl(context: RuntimeGenerationContext, reference: string): string {
   let relative_link: string
   if (context.builtins.has(reference)) {
     relative_link = "builtin-types.html#" + reference
@@ -135,7 +135,7 @@ function getDocumentationUrl(context: GenerationContext, reference: string): str
   return context.docUrlBase() + relative_link
 }
 
-function getRaisesComment(context: GenerationContext, raises: EventRaised[] | undefined): string | undefined {
+function getRaisesComment(context: RuntimeGenerationContext, raises: EventRaised[] | undefined): string | undefined {
   if (!raises || raises.length === 0) return
   let result = "**Raised events:**\n"
   for (const event of raises.sort(sortByOrder)) {
@@ -159,14 +159,14 @@ function getSubclassesComment(subclasses: string[] | undefined): string | undefi
   }_`
 }
 
-function processExample(context: GenerationContext, example: string): string {
+function processExample(context: RuntimeGenerationContext, example: string): string {
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
   const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
   return result.replaceAll("\n", "\n * ")
 }
 
 export function addJsDoc<T extends ts.Node>(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   node: T,
   element: {
     description: string

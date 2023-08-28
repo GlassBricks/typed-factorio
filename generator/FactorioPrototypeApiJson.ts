@@ -1,7 +1,7 @@
 // prototype stage
 // reference: https://lua-api.factorio.com/1.1.89/auxiliary/json-docs-prototype.html
 
-export interface FactorioDataApiJson {
+export interface FactorioPrototypeApiJson {
   application: "factorio"
   stage: "prototype"
   application_version: string

@@ -2,14 +2,14 @@ import assert from "assert"
 import ts from "typescript"
 import { addJsDoc, processDescription } from "./documentation.js"
 import { LiteralType, Parameter, ParameterGroup, Type, WithVariantParameterGroups } from "./FactorioRuntimeApiJson.js"
-import { GenerationContext } from "./GenerationContext.js"
+import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil.js"
 import { mapParameterToProperty } from "./members.js"
 import { RWUsage } from "./read-write-types.js"
 import { sortByOrder } from "./util.js"
 
 export function createVariantParameterTypes(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   name: string,
   value: WithVariantParameterGroups,
   usage: RWUsage
@@ -201,7 +201,7 @@ export function createVariantParameterTypes(
 }
 
 function getAllVariants(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   withVariants: WithVariantParameterGroups,
   baseProperties: {
     original: Parameter
@@ -248,7 +248,7 @@ function getAllVariants(
 }
 
 export function tryGetStringEnumType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   apiType: Type,
   tsType: ts.TypeNode
 ): string[] | undefined {
@@ -265,7 +265,10 @@ export function tryGetStringEnumType(
   return tryGetStringUnionValuesFromTsType(context, tsType)
 }
 
-function tryGetStringUnionValuesFromConcept(context: GenerationContext, conceptName: string): string[] | undefined {
+function tryGetStringUnionValuesFromConcept(
+  context: RuntimeGenerationContext,
+  conceptName: string
+): string[] | undefined {
   const concept = context.concepts.get(conceptName)
   if (!concept) return undefined
 
@@ -281,7 +284,10 @@ function tryGetStringUnionValuesFromConcept(context: GenerationContext, conceptN
     return conceptType.options.map((option) => option.value)
   }
 }
-function tryGetStringUnionValuesFromTsType(context: GenerationContext, typeNode: ts.TypeNode): string[] | undefined {
+function tryGetStringUnionValuesFromTsType(
+  context: RuntimeGenerationContext,
+  typeNode: ts.TypeNode
+): string[] | undefined {
   if (ts.isUnionTypeNode(typeNode)) {
     if (typeNode.types.some((t) => !ts.isLiteralTypeNode(t) || !ts.isStringLiteral(t.literal))) return undefined
     return typeNode.types.map((t) => ((t as ts.LiteralTypeNode).literal as ts.StringLiteral).text)
@@ -300,7 +306,7 @@ function tryGetStringUnionValuesFromTsType(context: GenerationContext, typeNode:
 }
 
 function addOtherVariant(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   variants: WithVariantParameterGroups,
   allVariants: Set<string> | undefined
 ): void {

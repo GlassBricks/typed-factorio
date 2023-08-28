@@ -5,7 +5,7 @@ export const printer = ts.createPrinter({
   newLine: ts.NewLineKind.LineFeed,
 })
 
-const emptySourceFile = ts.createSourceFile("", "", ts.ScriptTarget.ESNext)
+export const emptySourceFile = ts.createSourceFile("", "", ts.ScriptTarget.ESNext)
 export function printNode(node: ts.Node): string {
   return printer.printNode(ts.EmitHint.Unspecified, node, emptySourceFile)
 }

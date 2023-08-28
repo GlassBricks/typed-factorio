@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioRuntimeApiJson.js"
-import { GenerationContext } from "../GenerationContext.js"
+import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { analyzeMethod, mapAttribute, mapMethod } from "../members.js"
@@ -11,7 +11,7 @@ import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
 import { OutputFile } from "../OutputFile"
 
-export function preprocessClasses(context: GenerationContext): void {
+export function preprocessClasses(context: RuntimeGenerationContext): void {
   for (const clazz of context.apiDocs.classes) {
     context.references.set(clazz.name, clazz.name)
     for (const method of clazz.methods) {
@@ -30,12 +30,12 @@ export function preprocessClasses(context: GenerationContext): void {
   }
 }
 
-function analyzeAttribute(context: GenerationContext, attribute: Attribute) {
+function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribute) {
   const rwType = attribute.read && attribute.write ? RWUsage.ReadWrite : attribute.read ? RWUsage.Read : RWUsage.Write
   analyzeType(context, attribute.type, rwType)
 }
 
-export function generateClasses(context: GenerationContext): OutputFile {
+export function generateClasses(context: RuntimeGenerationContext): OutputFile {
   return context.createFile("classes", "namespace", () => {
     for (const clazz of context.apiDocs.classes.sort(sortByOrder)) {
       const existing = context.getInterfaceDef(clazz.name)
@@ -49,7 +49,11 @@ interface MemberAndOriginal {
   member: ts.TypeElement | ts.TypeElement[]
 }
 
-function generateClass(context: GenerationContext, clazz: Class, existing: InterfaceDef | TypeAliasDef | undefined) {
+function generateClass(
+  context: RuntimeGenerationContext,
+  clazz: Class,
+  existing: InterfaceDef | TypeAliasDef | undefined
+) {
   const superTypes = getSupertypes()
   const arrayType = getArrayType()
 
@@ -478,7 +482,7 @@ function generateClass(context: GenerationContext, clazz: Class, existing: Inter
     //     ([subclassName, origName]) =>
     //       ts.factory.createPropertySignature(
     //         undefined,
-    //         GenerationContext.escapePropertyName(origName),
+    //         RuntimeGenerationContext.escapePropertyName(origName),
     //         undefined,
     //         ts.factory.createTypeReferenceNode(toPascalCase(subclassName) + shortName)
     //       )

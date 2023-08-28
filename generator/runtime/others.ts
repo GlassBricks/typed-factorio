@@ -1,6 +1,6 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { GenerationContext } from "../GenerationContext.js"
+import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { createConst, Modifiers } from "../genUtil.js"
 import { analyzeMethod, mapFunction } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
@@ -8,7 +8,7 @@ import { mapType } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { OutputFile } from "../OutputFile"
 
-export function preprocessBuiltins(context: GenerationContext): void {
+export function preprocessBuiltins(context: RuntimeGenerationContext): void {
   for (const builtin of context.apiDocs.builtin_types) {
     if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
     context.references.set(builtin.name, builtin.name)
@@ -18,21 +18,21 @@ export function preprocessBuiltins(context: GenerationContext): void {
   }
 }
 
-export function preprocessGlobalObjects(context: GenerationContext): void {
+export function preprocessGlobalObjects(context: RuntimeGenerationContext): void {
   for (const globalObject of context.apiDocs.global_objects) {
     context.references.set(globalObject.name, globalObject.name)
     analyzeType(context, globalObject.type, RWUsage.Read)
   }
 }
 
-export function preprocessGlobalFunctions(context: GenerationContext): void {
+export function preprocessGlobalFunctions(context: RuntimeGenerationContext): void {
   for (const globalFunction of context.apiDocs.global_functions) {
     context.references.set(globalFunction.name, globalFunction.name)
     analyzeMethod(context, globalFunction)
   }
 }
 
-export function generateBuiltins(context: GenerationContext): OutputFile {
+export function generateBuiltins(context: RuntimeGenerationContext): OutputFile {
   return context.createFile("builtin-types", "namespace", () => {
     for (const builtin of context.apiDocs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
@@ -46,7 +46,7 @@ export function generateBuiltins(context: GenerationContext): OutputFile {
   })
 }
 
-export function generateGlobalObjects(context: GenerationContext): OutputFile {
+export function generateGlobalObjects(context: RuntimeGenerationContext): OutputFile {
   return context.createFile("global-objects", "global", () => {
     for (const globalObject of context.apiDocs.global_objects.sort(sortByOrder)) {
       const definition = createConst(
@@ -60,7 +60,7 @@ export function generateGlobalObjects(context: GenerationContext): OutputFile {
   })
 }
 
-export function generateGlobalFunctions(context: GenerationContext): OutputFile {
+export function generateGlobalFunctions(context: RuntimeGenerationContext): OutputFile {
   return context.createFile("global-functions", "global", () => {
     for (const globalFunction of context.apiDocs.global_functions.sort(sortByOrder)) {
       const definition = mapFunction(context, globalFunction)

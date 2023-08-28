@@ -1,7 +1,7 @@
 import assert from "assert"
 import ts from "typescript"
 import { Attribute, Concept, Type } from "./FactorioRuntimeApiJson.js"
-import { GenerationContext } from "./GenerationContext.js"
+import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { assertNever } from "./util.js"
 
 export enum RWUsage {
@@ -22,7 +22,7 @@ export function getUsage(attribute: Attribute): RWUsage {
   return usage
 }
 
-export function analyzeType(context: GenerationContext, type: Type, usage: RWUsage): void {
+export function analyzeType(context: RuntimeGenerationContext, type: Type, usage: RWUsage): void {
   assert(usage)
   if (typeof type === "string") return analyzeBasicType(type)
   switch (type.complex_type) {
@@ -66,7 +66,7 @@ export function analyzeType(context: GenerationContext, type: Type, usage: RWUsa
   }
 }
 
-export function finalizeConceptUsageAnalysis(context: GenerationContext): void {
+export function finalizeConceptUsageAnalysis(context: RuntimeGenerationContext): void {
   while (context.conceptUsagesToPropagate.size > 0) {
     const [concept, usage] = context.conceptUsagesToPropagate.entries().next().value
     context.conceptUsagesToPropagate.delete(concept)
@@ -76,7 +76,7 @@ export function finalizeConceptUsageAnalysis(context: GenerationContext): void {
   }
 }
 
-export function recordConceptDependencies(context: GenerationContext, concept: Concept): void {
+export function recordConceptDependencies(context: RuntimeGenerationContext, concept: Concept): void {
   analyzeTypeWorker(concept.type)
 
   function analyzeTypeWorker(type: Type): void {
@@ -116,7 +116,7 @@ export function recordConceptDependencies(context: GenerationContext, concept: C
 }
 
 export function setReadWriteType(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   concept: Concept,
   type: { read: string | ts.TypeNode; write: string | ts.TypeNode }
 ): void {

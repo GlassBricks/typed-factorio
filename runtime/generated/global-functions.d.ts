@@ -2,7 +2,6 @@
 
 /** @noSelfInFile */
 
-
 /**
  * `log()` can print {@link LocalisedString LocalisedStrings} to the Factorio {@linkplain https://wiki.factorio.com/Log_file log file}. This, in combination with the serpent library, makes debugging in the data stage easier because it allows the inspection of entire prototype tables. For example, printing all properties of the sulfur item prototype can be done like so: `log(serpent.block(data.raw["item"]["sulfur"]))`
  * @see {@link https://lua-api.factorio.com/1.1.89/auxiliary/libraries.html#new-functions Online documentation}
@@ -32,4 +31,3 @@ declare function localised_print(string: import("factorio:runtime").LocalisedStr
  * @see {@link https://lua-api.factorio.com/1.1.89/auxiliary/libraries.html#new-functions Online documentation}
  */
 declare function table_size(table: import("factorio:runtime").table): import("factorio:runtime").uint
-

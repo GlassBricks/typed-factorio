@@ -2,7 +2,7 @@ import assert from "assert"
 import ts from "typescript"
 import { addJsDoc, createSeeTag } from "../documentation.js"
 import { Concept, TableType } from "../FactorioRuntimeApiJson.js"
-import { GenerationContext } from "../GenerationContext.js"
+import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { Modifiers } from "../genUtil.js"
 import {
   finalizeConceptUsageAnalysis,
@@ -20,7 +20,7 @@ const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableTy
  * Should be last to preprocess
  * @param context
  */
-export function preprocessConcepts(context: GenerationContext): void {
+export function preprocessConcepts(context: RuntimeGenerationContext): void {
   const concepts = context.apiDocs.concepts
   concepts.sort(sortByOrder)
 
@@ -69,7 +69,7 @@ function stringsToType(types: string[] | undefined) {
 }
 
 function tryGetTableOrArrayConcept(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   concept: Concept
 ):
   | {
@@ -88,7 +88,7 @@ function tryGetTableOrArrayConcept(
   }
 }
 
-export function generateConcepts(context: GenerationContext): OutputFile {
+export function generateConcepts(context: RuntimeGenerationContext): OutputFile {
   return context.createFile("concepts", "namespace", () => {
     for (const concept of context.apiDocs.concepts) {
       generateConcept(context, concept)
@@ -96,7 +96,11 @@ export function generateConcepts(context: GenerationContext): OutputFile {
   })
 }
 
-function createVariantParameterConcept(context: GenerationContext, concept: Concept, conceptUsage: RWUsage): void {
+function createVariantParameterConcept(
+  context: RuntimeGenerationContext,
+  concept: Concept,
+  conceptUsage: RWUsage
+): void {
   const {
     description,
     declarations: [readDecl, writeDecl],
@@ -107,7 +111,7 @@ function createVariantParameterConcept(context: GenerationContext, concept: Conc
     addJsDoc(context, writeDecl, { description: getWriteDescription(concept) }, concept.name)
   }
 }
-function generateConcept(context: GenerationContext, concept: Concept): void {
+function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
   const existing = context.getInterfaceDef(concept.name)
 
   if (existing?.annotations) {
@@ -187,7 +191,7 @@ function typeToDeclaration(type: ts.TypeNode, name: string): ts.InterfaceDeclara
 }
 
 function createTableOrArrayConcept(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   concept: Concept,
   tableOrArray: { table: TableType; array: TableType }
 ): void {

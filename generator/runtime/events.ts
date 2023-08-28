@@ -1,13 +1,13 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { GenerationContext } from "../GenerationContext.js"
+import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { createExtendsClause, toPascalCase } from "../genUtil.js"
 import { mapParameterToProperty } from "../members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { sortByOrder } from "../util.js"
 import { OutputFile } from "../OutputFile"
 
-export function preprocessEvents(context: GenerationContext): void {
+export function preprocessEvents(context: RuntimeGenerationContext): void {
   for (const event of context.apiDocs.events) {
     context.references.set(event.name, getMappedEventName(event.name))
     for (const parameter of event.data) {
@@ -20,7 +20,7 @@ export function preprocessEvents(context: GenerationContext): void {
   }
 }
 
-export function generateEvents(context: GenerationContext): OutputFile {
+export function generateEvents(context: RuntimeGenerationContext): OutputFile {
   return context.createFile("events", "namespace", () => {
     const heritageClause = createExtendsClause("EventData")
     for (const event of context.apiDocs.events.sort(sortByOrder)) {

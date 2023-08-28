@@ -2,11 +2,11 @@ import * as fs from "fs"
 import * as path from "path"
 import ts from "typescript"
 import { FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson.js"
-import { generateClasses, preprocessClasses } from "./files/classes.js"
-import { generateConcepts, preprocessConcepts } from "./files/concepts.js"
-import { generateDefines, preprocessDefines } from "./files/defines.js"
-import { generateEvents, preprocessEvents } from "./files/events.js"
-import { generateIndexTypesFile, preprocessIndexTypes } from "./files/index-types.js"
+import { generateClasses, preprocessClasses } from "./runtime/classes.js"
+import { generateConcepts, preprocessConcepts } from "./runtime/concepts.js"
+import { generateDefines, preprocessDefines } from "./runtime/defines.js"
+import { generateEvents, preprocessEvents } from "./runtime/events.js"
+import { generateIndexTypesFile, preprocessIndexTypes } from "./runtime/index-types.js"
 import {
   generateBuiltins,
   generateGlobalFunctions,
@@ -14,9 +14,9 @@ import {
   preprocessBuiltins,
   preprocessGlobalFunctions,
   preprocessGlobalObjects,
-} from "./files/others.js"
-import { GenerationContext } from "./GenerationContext.js"
-import { printer } from "./genUtil.js"
+} from "./runtime/others.js"
+import { GenerationContext, RuntimeGenerationContext } from "./GenerationContext.js"
+import { emptySourceFile, printer } from "./genUtil.js"
 import { checkManualDefinitions, preprocessManualDefinitions } from "./manualDefinitions.js"
 import { fileURLToPath } from "url"
 import { OutputFile } from "./OutputFile"
@@ -26,23 +26,38 @@ const __dirname = path.dirname(__filename)
 
 const header = "// This is an auto-generated file. Do not edit directly!\n\n"
 
-export function generateDefinitions(
+export function generateRuntimeDeclaration(
   apiJson: FactorioRuntimeApiJson,
   manualDefinitionsSource: ts.SourceFile,
   checker: ts.TypeChecker
 ): { files: Map<string, string>; hasWarnings: boolean } {
-  const context = new GenerationContext(apiJson, manualDefinitionsSource, checker)
-  preprocessAll(context)
-  const files = generateAll(context)
+  const context = new RuntimeGenerationContext(apiJson, manualDefinitionsSource, checker)
+  preprocessRuntime(context)
+  const files = generateRuntime(context)
 
+  return generateFiles(context, files)
+}
+
+function generateFiles(
+  context: GenerationContext,
+  files: OutputFile[]
+): {
+  files: Map<string, string>
+  hasWarnings: boolean
+} {
   const result = new Map<string, string>()
+
   for (const { name, statements } of files) {
     let content = header
     for (const statement of statements) {
-      content += printer.printNode(ts.EmitHint.Unspecified, statement, context.manualDefinitionsSource)
+      content += printer.printNode(
+        ts.EmitHint.Unspecified,
+        statement,
+        context.manualDefinitionsSource ?? emptySourceFile
+      )
       content += "\n\n"
     }
-    result.set(path.join(`${context.stageName}/generated`, name + ".d.ts"), content)
+    result.set(`${context.stageName}/generated/${name}.d.ts`, content)
   }
 
   const indexFiles = generateIndexFiles(context, files)
@@ -50,11 +65,10 @@ export function generateDefinitions(
     result.set(fileName, content)
   }
 
-  const hasWarnings = context.hasWarnings
-  return { files: result, hasWarnings }
+  return { files: result, hasWarnings: context.hasWarnings }
 }
 
-function preprocessAll(context: GenerationContext) {
+function preprocessRuntime(context: RuntimeGenerationContext) {
   preprocessBuiltins(context)
   preprocessGlobalObjects(context)
   preprocessGlobalFunctions(context)
@@ -66,7 +80,7 @@ function preprocessAll(context: GenerationContext) {
   preprocessManualDefinitions(context)
 }
 
-function generateAll(context: GenerationContext): OutputFile[] {
+function generateRuntime(context: RuntimeGenerationContext): OutputFile[] {
   const files = [
     generateBuiltins(context),
     generateGlobalObjects(context),

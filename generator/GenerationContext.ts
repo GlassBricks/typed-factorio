@@ -4,8 +4,53 @@ import { Class, Concept, Define, Event, FactorioRuntimeApiJson } from "./Factori
 import { InterfaceDef, NamespaceDef, processManualDefinitions, TypeAliasDef } from "./manualDefinitions.js"
 import { RWUsage } from "./read-write-types.js"
 import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
+import { FactorioPrototypeApiJson } from "./FactorioPrototypeApiJson.js"
 
-export class GenerationContext {
+interface AnyApiJson {
+  application: "factorio"
+  stage: string
+  api_version: 4
+}
+function checkApiJson(actual: AnyApiJson, expected: AnyApiJson) {
+  for (const [k, v] of Object.entries(expected)) {
+    if (actual[k as keyof AnyApiJson] !== v) {
+      throw new Error(`Expected ${k}=${v}, got ${actual[k as keyof AnyApiJson]}`)
+    }
+  }
+}
+export abstract class GenerationContext {
+  addBefore = new Map<string, ts.Statement[]>()
+  addAfter = new Map<string, ts.Statement[]>()
+  addTo = new Map<string, ts.Statement[]>()
+
+  hasWarnings = false
+  abstract readonly stageName: string
+  abstract readonly manualDefinitionsSource: ts.SourceFile | undefined
+
+  protected constructor(readonly checker: ts.TypeChecker) {}
+
+  private _currentFile: OutputFileBuilder | undefined
+  get currentFile(): OutputFileBuilder {
+    if (!this._currentFile) throw new Error("No current file")
+    return this._currentFile
+  }
+
+  warning(...args: unknown[]): void {
+    console.log(chalk.yellow(...args))
+    this.hasWarnings = true
+  }
+
+  createFile(fileName: string, moduleType: ModuleType, fn: () => void): OutputFile {
+    if (this._currentFile) throw new Error("Nested createFile")
+    const builder = new OutputFileBuilderImpl(this, fileName, moduleType)
+    this._currentFile = builder
+    fn()
+    this._currentFile = undefined
+    return builder.getResult()
+  }
+}
+
+export class RuntimeGenerationContext extends GenerationContext {
   public readonly _manualDefinitions = processManualDefinitions(this.manualDefinitionsSource)
 
   builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
@@ -20,37 +65,25 @@ export class GenerationContext {
   // This is also a record of which types exist
   references = new Map<string, string>()
 
-  addBefore = new Map<string, ts.Statement[]>()
-  addAfter = new Map<string, ts.Statement[]>()
-  addTo = new Map<string, ts.Statement[]>()
-
   conceptUsages = new Map<Concept, RWUsage>(this.apiDocs.concepts.map((e) => [e, RWUsage.None]))
   conceptUsagesToPropagate = new Map<Concept, RWUsage>()
   conceptReferencedBy = new Map<Concept, Set<Concept>>(this.apiDocs.concepts.map((e) => [e, new Set()]))
   conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
   // ^: empty object = has separate read/write types, but not yet known form (may use default)
 
-  hasWarnings: boolean = false
-
   stageName = "runtime"
-
-  private _currentFile: OutputFileBuilder | undefined
-  get currentFile(): OutputFileBuilder {
-    if (!this._currentFile) throw new Error("No current file")
-    return this._currentFile
-  }
 
   constructor(
     readonly apiDocs: FactorioRuntimeApiJson,
     readonly manualDefinitionsSource: ts.SourceFile,
-    readonly checker: ts.TypeChecker
+    checker: ts.TypeChecker
   ) {
-    if (apiDocs.application !== "factorio") {
-      throw new Error("Unsupported application " + apiDocs.application)
-    }
-    if (apiDocs.api_version !== 4) {
-      throw new Error("Unsupported api version " + apiDocs.api_version)
-    }
+    super(checker)
+    checkApiJson(apiDocs, {
+      application: "factorio",
+      api_version: 4,
+      stage: "runtime",
+    })
   }
 
   getInterfaceDef(name: string): InterfaceDef | TypeAliasDef | undefined {
@@ -70,22 +103,20 @@ export class GenerationContext {
     }
     return result
   }
-
-  warning(...args: unknown[]): void {
-    console.log(chalk.yellow(...args))
-    this.hasWarnings = true
-  }
-
   docUrlBase(): string {
     return `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
   }
+}
 
-  createFile(fileName: string, moduleType: ModuleType, fn: () => void): OutputFile {
-    if (this._currentFile) throw new Error("Nested createFile")
-    const builder = new OutputFileBuilderImpl(this, fileName, moduleType)
-    this._currentFile = builder
-    fn()
-    this._currentFile = undefined
-    return builder.getResult()
+export class PrototypeGenerationContext extends GenerationContext {
+  stageName = "prototype"
+  manualDefinitionsSource = undefined
+  constructor(readonly apiDocs: FactorioPrototypeApiJson, checker: ts.TypeChecker) {
+    super(checker)
+    checkApiJson(apiDocs, {
+      application: "factorio",
+      api_version: 4,
+      stage: "prototype",
+    })
   }
 }

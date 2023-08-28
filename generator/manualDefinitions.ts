@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { GenerationContext } from "./GenerationContext.js"
+import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { addFakeJSDoc } from "./genUtil.js" // preprocessed TS AST easier to use
 
 // preprocessed TS AST easier to use
@@ -212,7 +212,7 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
   return result
 }
 
-export function preprocessManualDefinitions(context: GenerationContext): void {
+export function preprocessManualDefinitions(context: RuntimeGenerationContext): void {
   for (const def of Object.values(context._manualDefinitions as Record<string, RootDef>)) {
     const addBefore = def.annotations.addBefore?.[0]
     const addAfter = def.annotations.addAfter?.[0]
@@ -251,7 +251,7 @@ export function preprocessManualDefinitions(context: GenerationContext): void {
   }
 }
 
-export function checkManualDefinitions(context: GenerationContext): void {
+export function checkManualDefinitions(context: RuntimeGenerationContext): void {
   const typeNames = new Set(context.references.values())
   for (const [name, d] of Object.entries(context._manualDefinitions)) {
     const def = d!

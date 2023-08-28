@@ -1,14 +1,14 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Define } from "../FactorioRuntimeApiJson.js"
-import { GenerationContext } from "../GenerationContext.js"
+import { RuntimeGenerationContext } from "../GenerationContext.js"
 import { createConst, createNamespace, Types } from "../genUtil.js"
 import { AnyDef } from "../manualDefinitions.js"
 import { sortByOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
 import { OutputFile } from "../OutputFile"
 
-export function preprocessDefines(context: GenerationContext): void {
+export function preprocessDefines(context: RuntimeGenerationContext): void {
   function addDefine(define: Define, parent: string) {
     const name = parent + (parent ? "." : "") + define.name
     context.references.set(name, name)
@@ -29,7 +29,7 @@ export function preprocessDefines(context: GenerationContext): void {
   addDefine(createRootDefine(context), "")
 }
 
-export function generateDefines(context: GenerationContext): OutputFile {
+export function generateDefines(context: RuntimeGenerationContext): OutputFile {
   const [defines] = generateDefinesDeclaration(
     context,
     createRootDefine(context),
@@ -39,7 +39,7 @@ export function generateDefines(context: GenerationContext): OutputFile {
   return context.createFile("defines", "namespace", () => context.currentFile.add(defines))
 }
 
-function generateEventsDefine(context: GenerationContext, define: Define) {
+function generateEventsDefine(context: RuntimeGenerationContext, define: Define) {
   // namespace events { const member: EventId<Id> }
   const members = define.values!.sort(sortByOrder).map((m) => {
     const eventType = getMappedEventName(m.name)
@@ -76,7 +76,7 @@ function generateEventsDefine(context: GenerationContext, define: Define) {
 }
 
 function generateDefinesDeclaration(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   define: Define,
   parent: string,
   existing: AnyDef | undefined
@@ -128,7 +128,7 @@ function generateDefinesDeclaration(
   return declarations
 }
 
-function createRootDefine(context: GenerationContext): Define {
+function createRootDefine(context: RuntimeGenerationContext): Define {
   return {
     order: 0,
     name: "defines",

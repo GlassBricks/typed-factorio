@@ -2,7 +2,7 @@ import assert from "assert"
 import ts from "typescript"
 import { addJsDoc, processDescription } from "./documentation.js"
 import { Attribute, Method, Parameter } from "./FactorioRuntimeApiJson.js"
-import { GenerationContext } from "./GenerationContext.js"
+import { RuntimeGenerationContext } from "./GenerationContext.js"
 import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "./genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { analyzeType, getUsage, RWUsage } from "./read-write-types.js"
@@ -10,7 +10,7 @@ import { makeNullable, mapMemberType, mapType, RWType } from "./types.js"
 import { getFirst, sortByOrder } from "./util.js"
 import { createVariantParameterTypes } from "./variantParameterGroups.js"
 
-export function analyzeMethod(context: GenerationContext, method: Method): void {
+export function analyzeMethod(context: RuntimeGenerationContext, method: Method): void {
   for (const parameter of method.parameters) {
     analyzeType(context, parameter.type, RWUsage.Write)
   }
@@ -28,7 +28,7 @@ export function analyzeMethod(context: GenerationContext, method: Method): void 
 }
 
 export function mapAttribute(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   attribute: Attribute,
   parent: string,
   existingContainer: InterfaceDef | TypeAliasDef | undefined
@@ -81,7 +81,7 @@ export function mapAttribute(
 }
 
 function mergeAttributeWithExisting(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   parent: string,
   attribute: Attribute,
   type: RWType,
@@ -156,7 +156,7 @@ function mergeAttributeWithExisting(
 }
 
 export function mapParameterToProperty(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   parameter: Parameter,
   parent: string,
   usage: RWUsage,
@@ -195,7 +195,7 @@ export function mapParameterToProperty(
 }
 
 export function mapMethod(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   method: Method,
   parent: string,
   existingContainer: InterfaceDef | TypeAliasDef | undefined
@@ -261,7 +261,7 @@ export function mapMethod(
   return signatures
 }
 
-export function mapFunction(context: GenerationContext, method: Method): ts.FunctionDeclaration {
+export function mapFunction(context: RuntimeGenerationContext, method: Method): ts.FunctionDeclaration {
   const parameters = getParameters(context, method, method.name)
   const returnType = getReturnType(context, method, "")
   const func = ts.factory.createFunctionDeclaration(
@@ -277,7 +277,7 @@ export function mapFunction(context: GenerationContext, method: Method): ts.Func
   return func
 }
 
-function getParameters(context: GenerationContext, method: Method, thisPath: string): ts.ParameterDeclaration[] {
+function getParameters(context: RuntimeGenerationContext, method: Method, thisPath: string): ts.ParameterDeclaration[] {
   let parameters: ts.ParameterDeclaration[]
   if (method.takes_table) {
     const type = ts.factory.createTypeLiteralNode(
@@ -312,7 +312,7 @@ function getParameters(context: GenerationContext, method: Method, thisPath: str
   return parameters
 }
 
-function getReturnType(context: GenerationContext, method: Method, parent: string): ts.TypeNode {
+function getReturnType(context: RuntimeGenerationContext, method: Method, parent: string): ts.TypeNode {
   function mapReturnType(type: Omit<Parameter, "name">): ts.TypeNode {
     const result = mapMemberType(
       context,
@@ -338,7 +338,7 @@ function getReturnType(context: GenerationContext, method: Method, parent: strin
   }
 }
 
-function addMethodJSDoc(context: GenerationContext, node: ts.Node, method: Method, thisPath: string): void {
+function addMethodJSDoc(context: RuntimeGenerationContext, node: ts.Node, method: Method, thisPath: string): void {
   const tags = []
   if (!method.takes_table) {
     tags.push(
@@ -378,7 +378,7 @@ function addMethodJSDoc(context: GenerationContext, node: ts.Node, method: Metho
 }
 
 function mapParameterToParameter(
-  context: GenerationContext,
+  context: RuntimeGenerationContext,
   parameter: Parameter,
   parent: string
 ): ts.ParameterDeclaration {
