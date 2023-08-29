@@ -1,4 +1,4 @@
-import { FactorioPrototypeApiJson, Prototype } from "../FactorioPrototypeApiJson.js"
+import { FactorioPrototypeApiJson, Prototype, PrototypeConcept } from "../FactorioPrototypeApiJson.js"
 import { GenerationContext } from "../GenerationContext.js"
 import { generatePrototypes, preprocessPrototypes } from "./prototypes.js"
 import { generateTypes, preprocessTypes } from "./types.js"
@@ -7,14 +7,14 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
   stageName = "prototype"
 
   prototypes = new Map<string, Prototype>(this.apiDocs.prototypes.map((e) => [e.name, e]))
-  types = new Set<string>(this.apiDocs.types.map((e) => e.name))
+  types = new Map<string, PrototypeConcept>(this.apiDocs.types.map((e) => [e.name, e]))
 
   getOnlineDocUrl(reference: string): string {
     let relative_link: string
     if (this.prototypes.has(reference)) {
       relative_link = `prototypes/${reference}.html`
     } else if (this.types.has(reference)) {
-      relative_link = "types.html#" + reference
+      relative_link = `types/${reference}.html`
     } else if (reference.includes(".")) {
       const className = reference.substring(0, reference.indexOf("."))
       return this.getOnlineDocUrl(className) + "#" + reference
