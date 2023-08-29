@@ -8,7 +8,7 @@
  */
 declare module "factorio:runtime" {
     /**
-     * Called when a {@link import("factorio:prototype").undefined CustomInputPrototype} is activated.
+     * Called when a {@link import("factorio:prototype").CustomInputPrototype CustomInputPrototype} is activated.
      * @see {@link https://lua-api.factorio.com/1.1.89/events.html#CustomInputEvent Online documentation}
      */
     interface CustomInputEvent extends EventData {

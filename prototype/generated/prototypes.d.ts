@@ -260,13 +260,13 @@ declare module "factorio:prototype" {
         entity_info_icon_shift?: Vector;
     }
     /**
-     * Specifies an animation that can be used with {@link import("factorio:runtime").undefined#draw_animation LuaRendering::draw_animation} at runtime.
+     * Specifies an animation that can be used with {@link import("factorio:runtime").LuaRendering#draw_animation LuaRendering::draw_animation} at runtime.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AnimationPrototype.html Online documentation}
      */
     export interface AnimationPrototype {
         type: "animation";
         /**
-         * Name of the animation. Can be used with {@link import("factorio:runtime").undefined#draw_animation LuaRendering::draw_animation} at runtime.
+         * Name of the animation. Can be used with {@link import("factorio:runtime").LuaRendering#draw_animation LuaRendering::draw_animation} at runtime.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AnimationPrototype.html#AnimationPrototype.name Online documentation}
          */
         name: string;
@@ -1657,7 +1657,7 @@ declare module "factorio:prototype" {
          */
         inventory_type?: "with_bar" | "with_filters_and_bar";
         /**
-         * If the inventory limiter (red X) is visible in the chest's GUI. This does not change the inventory itself ({@link import("factorio:runtime").undefined#supports_bar LuaInventory::supports_bar} will not change and the bar can still be modified by script).
+         * If the inventory limiter (red X) is visible in the chest's GUI. This does not change the inventory itself ({@link import("factorio:runtime").LuaInventory#supports_bar LuaInventory::supports_bar} will not change and the bar can still be modified by script).
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ContainerPrototype.html#ContainerPrototype.enable_inventory_bar Online documentation}
          */
         enable_inventory_bar?: bool;
@@ -2067,7 +2067,7 @@ declare module "factorio:prototype" {
         enabled_while_spectating?: bool;
         enabled_while_in_cutscene?: bool;
         /**
-         * If true, the type and name of the currently selected prototype will be provided as "selected_prototype" in the raised {@link import("factorio:runtime").undefined Lua event}. {@linkplain https://forums.factorio.com/96125 This also works in GUIs}, not just the game world.
+         * If true, the type and name of the currently selected prototype will be provided as "selected_prototype" in the raised {@link import("factorio:runtime").CustomInputEvent Lua event}. {@linkplain https://forums.factorio.com/96125 This also works in GUIs}, not just the game world.
          *
          * This will also return an item in the cursor such as copper-wire or rail-planner, if nothing is beneath the cursor.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CustomInputPrototype.html#CustomInputPrototype.include_selected_prototype Online documentation}
@@ -2079,7 +2079,7 @@ declare module "factorio:prototype" {
          */
         item_to_spawn?: ItemID;
         /**
-         * A {@link import("factorio:runtime").undefined Lua event} is only raised if the action is "lua".
+         * A {@link import("factorio:runtime").CustomInputEvent Lua event} is only raised if the action is "lua".
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CustomInputPrototype.html#CustomInputPrototype.action Online documentation}
          */
         action?: "lua" | "spawn-item" | "toggle-personal-roboport" | "toggle-personal-logistic-requests" | "toggle-equipment-movement-bonus";
@@ -2559,7 +2559,7 @@ declare module "factorio:prototype" {
     /**
      * Abstract base of all entities in the game. Entity is nearly everything that can be on the map(except tiles).
      *
-     * For in game script access to entity, take a look at {@link import("factorio:runtime").undefined LuaEntity}.
+     * For in game script access to entity, take a look at {@link import("factorio:runtime").LuaEntity LuaEntity}.
      * @example
      * {
      *   type = "container",
@@ -2691,7 +2691,7 @@ declare module "factorio:prototype" {
          */
         build_grid_size?: uint8;
         /**
-         * Whether this entity should remove decoratives that collide with it when this entity is built. When set to "automatic", if the entity type is considered {@link import("factorio:runtime").undefined#is_building a building} (e.g. an assembling machine or a wall) it will remove decoratives.
+         * Whether this entity should remove decoratives that collide with it when this entity is built. When set to "automatic", if the entity type is considered {@link import("factorio:runtime").LuaEntityPrototype#is_building a building} (e.g. an assembling machine or a wall) it will remove decoratives.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityPrototype.html#EntityPrototype.remove_decoratives Online documentation}
          */
         remove_decoratives?: "automatic" | "true" | "false";
@@ -2773,7 +2773,7 @@ declare module "factorio:prototype" {
         /**
          * Names of the entity prototypes this entity prototype can be pasted on to in addition to the standard supported types.
          *
-         * This is used to allow copying between types that aren't compatible on the C++ code side, by allowing mods to receive the {@link import("factorio:runtime").undefined on_entity_settings_pasted} event for the given entity and do the setting pasting via script.
+         * This is used to allow copying between types that aren't compatible on the C++ code side, by allowing mods to receive the {@link import("factorio:runtime").on_entity_settings_pasted on_entity_settings_pasted} event for the given entity and do the setting pasting via script.
          * @example
          * additional_pastable_entities = {"steel-chest", "iron-chest"}
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityPrototype.html#EntityPrototype.additional_pastable_entities Online documentation}
@@ -2917,7 +2917,7 @@ declare module "factorio:prototype" {
         integration_patch?: Sprite4Way;
     }
     /**
-     * Abstract base of all entities with a force in the game. These entities have a {@link import("factorio:runtime").undefined#unit_number LuaEntity::unit_number} during runtime. Can be high priority {@linkplain https://wiki.factorio.com/Military_units_and_structures military targets}.
+     * Abstract base of all entities with a force in the game. These entities have a {@link import("factorio:runtime").LuaEntity#unit_number LuaEntity::unit_number} during runtime. Can be high priority {@linkplain https://wiki.factorio.com/Military_units_and_structures military targets}.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityWithOwnerPrototype.html Online documentation}
      */
     export interface EntityWithOwnerPrototype extends EntityWithHealthPrototype {
@@ -3154,7 +3154,7 @@ declare module "factorio:prototype" {
         collision_mask?: CollisionMask;
     }
     /**
-     * Entity that spawns in water tiles, which can be mined. Moves around unless deactivated with {@link import("factorio:runtime").undefined#active LuaEntity::active} = false.
+     * Entity that spawns in water tiles, which can be mined. Moves around unless deactivated with {@link import("factorio:runtime").LuaEntity#active LuaEntity::active} = false.
      * @example
      * {
      *   type = "fish",
@@ -3477,7 +3477,7 @@ declare module "factorio:prototype" {
         collision_mask?: CollisionMask;
     }
     /**
-     * An upwards flying text that disappears after a certain time (setting {@link import("factorio:runtime").undefined#active LuaEntity::active} = false stops the flying and the disappearing.)
+     * An upwards flying text that disappears after a certain time (setting {@link import("factorio:runtime").LuaEntity#active LuaEntity::active} = false stops the flying and the disappearing.)
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FlyingTextPrototype.html Online documentation}
      */
     export interface FlyingTextPrototype extends EntityPrototype {
@@ -3772,7 +3772,7 @@ declare module "factorio:prototype" {
         collision_mask?: CollisionMask;
     }
     /**
-     * Used to attach graphics for {@link CursorBoxType cursor boxes} to entities during runtime. HighlightBoxEntity can also be independent from entities so it is simply drawn somewhere in the world. See {@link import("factorio:runtime").undefined#create_entity LuaSurface::create_entity} for the available options for type "highlight-box".
+     * Used to attach graphics for {@link CursorBoxType cursor boxes} to entities during runtime. HighlightBoxEntity can also be independent from entities so it is simply drawn somewhere in the world. See {@link import("factorio:runtime").LuaSurface#create_entity LuaSurface::create_entity} for the available options for type "highlight-box".
      *
      * The {@link EntityPrototype#collision_box collision_box} of the highlight box prototype is ignored during runtime, instead the "bounding_box" given in create_entity() or the selection box of the target entity is used.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/HighlightBoxEntityPrototype.html Online documentation}
@@ -4256,7 +4256,7 @@ declare module "factorio:prototype" {
         draw_label_for_cursor_render?: bool;
     }
     /**
-     * Item type that can store any basic arbitrary Lua data, see {@link import("factorio:runtime").undefined#tags LuaItemStack::tags}.
+     * Item type that can store any basic arbitrary Lua data, see {@link import("factorio:runtime").LuaItemStack#tags LuaItemStack::tags}.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemWithTagsPrototype.html Online documentation}
      */
     export interface ItemWithTagsPrototype extends OmitType<ItemWithLabelPrototype> {
@@ -4572,7 +4572,7 @@ declare module "factorio:prototype" {
     export interface LeafParticlePrototype extends OmitType<EntityParticlePrototype> {
     }
     /**
-     * A belt that can be connected to a belt anywhere else, including on a different surface. The linked belts have to be {@linkplain https://wiki.factorio.com/Console#Connect_linked_belts connected with console commands} or runtime scripting in mods or scenarios. {@link import("factorio:runtime").undefined#connect_linked_belts LuaEntity::connect_linked_belts} and other runtime functions.
+     * A belt that can be connected to a belt anywhere else, including on a different surface. The linked belts have to be {@linkplain https://wiki.factorio.com/Console#Connect_linked_belts connected with console commands} or runtime scripting in mods or scenarios. {@link import("factorio:runtime").LuaEntity#connect_linked_belts LuaEntity::connect_linked_belts} and other runtime functions.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedBeltPrototype.html Online documentation}
      */
     export interface LinkedBeltPrototype extends TransportBeltConnectablePrototype {
@@ -4588,7 +4588,7 @@ declare module "factorio:prototype" {
         collision_mask?: CollisionMask;
     }
     /**
-     * A container that shares its inventory with containers with the same {@link import("factorio:runtime").undefined#link_id link_id}, which can be set via the GUI. The link IDs are per prototype and force, so only containers with the **same ID**, **same prototype name** and **same force** will share inventories.
+     * A container that shares its inventory with containers with the same {@link import("factorio:runtime").LuaEntity#link_id link_id}, which can be set via the GUI. The link IDs are per prototype and force, so only containers with the **same ID**, **same prototype name** and **same force** will share inventories.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedContainerPrototype.html Online documentation}
      */
     export interface LinkedContainerPrototype extends EntityWithOwnerPrototype {
@@ -5019,7 +5019,7 @@ declare module "factorio:prototype" {
         /**
          * Array of recipe names this module can **not** be used on, implicitly allowing its use on all other recipes. This property has no effect if set to an empty table.
          *
-         * Note that the game converts this into a normal list of limitations internally, so reading {@link import("factorio:runtime").undefined#limitations LuaItemPrototype::limitations} at runtime will be the product of both ways of defining limitations.
+         * Note that the game converts this into a normal list of limitations internally, so reading {@link import("factorio:runtime").LuaItemPrototype#limitations LuaItemPrototype::limitations} at runtime will be the product of both ways of defining limitations.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ModulePrototype.html#ModulePrototype.limitation_blacklist Online documentation}
          */
         limitation_blacklist?: readonly RecipeID[];
@@ -7058,7 +7058,7 @@ declare module "factorio:prototype" {
      */
     export interface ShortcutPrototype extends PrototypeBase {
         /**
-         * If this is `"lua"`, {@link import("factorio:runtime").undefined on_lua_shortcut} is raised when the shortcut is clicked.
+         * If this is `"lua"`, {@link import("factorio:runtime").on_lua_shortcut on_lua_shortcut} is raised when the shortcut is clicked.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ShortcutPrototype.html#ShortcutPrototype.action Online documentation}
          */
         action: "toggle-alt-mode" | "undo" | "copy" | "cut" | "paste" | "import-string" | "toggle-personal-roboport" | "toggle-equipment-movement-bonus" | "spawn-item" | "lua";
@@ -7080,7 +7080,7 @@ declare module "factorio:prototype" {
          */
         technology_to_unlock?: TechnologyID;
         /**
-         * Must be enabled for the Factorio API to be able to set the toggled state on the shortcut button, see {@link import("factorio:runtime").undefined#set_shortcut_toggled LuaPlayer::set_shortcut_toggled}.
+         * Must be enabled for the Factorio API to be able to set the toggled state on the shortcut button, see {@link import("factorio:runtime").LuaPlayer#set_shortcut_toggled LuaPlayer::set_shortcut_toggled}.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ShortcutPrototype.html#ShortcutPrototype.toggleable Online documentation}
          */
         toggleable?: bool;
@@ -7316,13 +7316,13 @@ declare module "factorio:prototype" {
         overlay?: SpriteVariations;
     }
     /**
-     * Specifies a sound that can be used with {@link import("factorio:runtime").undefined SoundPath} at runtime.
+     * Specifies a sound that can be used with {@link import("factorio:runtime").SoundPath SoundPath} at runtime.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SoundPrototype.html Online documentation}
      */
     export interface SoundPrototype {
         type: "sound";
         /**
-         * Name of the sound. Can be used as a {@link import("factorio:runtime").undefined SoundPath} at runtime.
+         * Name of the sound. Can be used as a {@link import("factorio:runtime").SoundPath SoundPath} at runtime.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SoundPrototype.html#SoundPrototype.name Online documentation}
          */
         name: string;
@@ -7537,7 +7537,7 @@ declare module "factorio:prototype" {
         collision_mask?: CollisionMask;
     }
     /**
-     * Specifies an image that can be used with {@link import("factorio:runtime").undefined SpritePath} at runtime.
+     * Specifies an image that can be used with {@link import("factorio:runtime").SpritePath SpritePath} at runtime.
      * @example
      * {
      *   type = "sprite"
@@ -7553,7 +7553,7 @@ declare module "factorio:prototype" {
     export interface SpritePrototype {
         type: "sprite";
         /**
-         * Name of the sprite. Can be used as a {@link import("factorio:runtime").undefined SpritePath} at runtime.
+         * Name of the sprite. Can be used as a {@link import("factorio:runtime").SpritePath SpritePath} at runtime.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpritePrototype.html#SpritePrototype.name Online documentation}
          */
         name: string;
@@ -7992,7 +7992,7 @@ declare module "factorio:prototype" {
          */
         visible_when_disabled?: bool;
         /**
-         * Controls whether the technology cost ignores the tech cost multiplier set in the {@link import("factorio:runtime").undefined DifficultySettings}, e.g. `4` for the default expensive difficulty.
+         * Controls whether the technology cost ignores the tech cost multiplier set in the {@link DifficultySettings}, e.g. `4` for the default expensive difficulty.
          *
          * Only loaded if neither `normal` nor `expensive` are defined.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TechnologyPrototype.html#TechnologyPrototype.ignore_tech_cost_multiplier Online documentation}

@@ -1589,7 +1589,7 @@ declare module "factorio:runtime" {
         readonly random_probability_penalty: double;
     }
     /**
-     * A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the {@link import("factorio:prototype").undefined prototype docs}.
+     * A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the {@link import("factorio:prototype").NamedNoiseExpression prototype docs}.
      * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#NoiseExpression Online documentation}
      */
     export interface NoiseExpression {
@@ -3021,7 +3021,7 @@ declare module "factorio:runtime" {
     }
     export type SpriteType = "item" | "entity" | "technology" | "recipe" | "item-group" | "fluid" | "tile" | "virtual-signal" | "achievement" | "equipment" | "file" | "utility";
     /**
-     * It can be either the name of a {@link import("factorio:prototype").undefined SpritePrototype} defined in the data stage, or a path in form "type/name".
+     * It can be either the name of a {@link import("factorio:prototype").SpritePrototype SpritePrototype} defined in the data stage, or a path in form "type/name".
      *
      * The validity of a SpritePath can be verified at runtime using {@link LuaGameScript#is_valid_sprite_path LuaGameScript::is_valid_sprite_path}.
      *
@@ -3045,33 +3045,33 @@ declare module "factorio:runtime" {
     }) | `${SpriteType}/${string}`;
     export type SoundCategory = "utility" | "ambient" | "tile-walking" | "tile-mined" | "tile-build-small" | "tile-build-medium" | "tile-build-large" | "entity-build" | "entity-mined" | "entity-mining" | "entity-vehicle_impact" | "entity-rotated" | "entity-open" | "entity-close";
     /**
-     * It can be either the name of a {@link import("factorio:prototype").undefined SoundPrototype} defined in the data stage, or a path in the form `"type/name"`. The latter option can be sorted into three categories.
+     * It can be either the name of a {@link import("factorio:prototype").SoundPrototype SoundPrototype} defined in the data stage, or a path in the form `"type/name"`. The latter option can be sorted into three categories.
      *
      * The validity of a SoundPath can be verified at runtime using {@link LuaGameScript#is_valid_sound_path LuaGameScript::is_valid_sound_path}.
      *
      * The utility and ambient types each contain general use sound prototypes defined by the game itself.
-     * - `"utility"` - Uses {@link import("factorio:prototype").undefined UtilitySounds}. Example: `"utility/wire_connect_pole"`
-     * - `"ambient"` - Uses {@link import("factorio:prototype").undefined AmbientSound}. Example: `"ambient/resource-deficiency"`
+     * - `"utility"` - Uses {@link import("factorio:prototype").UtilitySounds UtilitySounds}. Example: `"utility/wire_connect_pole"`
+     * - `"ambient"` - Uses {@link import("factorio:prototype").AmbientSound AmbientSound}. Example: `"ambient/resource-deficiency"`
      *
      * The following types can be combined with any tile name as long as its prototype defines the
      *
      *     corresponding sound.
-     * - `"tile-walking"` - Uses {@link import("factorio:prototype").undefined#walking_sound TilePrototype::walking_sound}. Example: `"tile-walking/concrete"`
-     * - `"tile-mined"` - Uses {@link import("factorio:prototype").undefined#mined_sound TilePrototype::mined_sound}
-     * - `"tile-build-small"` - Uses {@link import("factorio:prototype").undefined#build_sound TilePrototype::build_sound}. Example: `"tile-build-small/concrete"`
-     * - `"tile-build-medium"` - Uses {@link import("factorio:prototype").undefined#build_sound TilePrototype::build_sound}
-     * - `"tile-build-large"` - Uses {@link import("factorio:prototype").undefined#build_sound TilePrototype::build_sound}
+     * - `"tile-walking"` - Uses {@link import("factorio:prototype").TilePrototype#walking_sound TilePrototype::walking_sound}. Example: `"tile-walking/concrete"`
+     * - `"tile-mined"` - Uses {@link import("factorio:prototype").TilePrototype#mined_sound TilePrototype::mined_sound}
+     * - `"tile-build-small"` - Uses {@link import("factorio:prototype").TilePrototype#build_sound TilePrototype::build_sound}. Example: `"tile-build-small/concrete"`
+     * - `"tile-build-medium"` - Uses {@link import("factorio:prototype").TilePrototype#build_sound TilePrototype::build_sound}
+     * - `"tile-build-large"` - Uses {@link import("factorio:prototype").TilePrototype#build_sound TilePrototype::build_sound}
      *
      * The following types can be combined with any entity name as long as its prototype defines the
      *
      *     corresponding sound.
-     * - `"entity-build"` - Uses {@link import("factorio:prototype").undefined#build_sound Entity::build_sound}. Example: `"entity-build/wooden-chest"`
-     * - `"entity-mined"` - Uses {@link import("factorio:prototype").undefined#mined_sound Entity::mined_sound}
-     * - `"entity-mining"` - Uses {@link import("factorio:prototype").undefined#mining_sound Entity::mining_sound}
-     * - `"entity-vehicle_impact"` - Uses {@link import("factorio:prototype").undefined#vehicle_impact_sound EntityPrototype::vehicle_impact_sound}
-     * - `"entity-rotated"` - Uses {@link import("factorio:prototype").undefined#rotated_sound EntityPrototype::rotated_sound}
-     * - `"entity-open"` - Uses {@link import("factorio:prototype").undefined#open_sound Entity::open_sound}
-     * - `"entity-close"` - Uses {@link import("factorio:prototype").undefined#close_sound Entity::close_sound}
+     * - `"entity-build"` - Uses {@link import("factorio:prototype").EntityPrototype#build_sound Entity::build_sound}. Example: `"entity-build/wooden-chest"`
+     * - `"entity-mined"` - Uses {@link import("factorio:prototype").EntityPrototype#mined_sound Entity::mined_sound}
+     * - `"entity-mining"` - Uses {@link import("factorio:prototype").EntityPrototype#mining_sound Entity::mining_sound}
+     * - `"entity-vehicle_impact"` - Uses {@link import("factorio:prototype").EntityPrototype#vehicle_impact_sound EntityPrototype::vehicle_impact_sound}
+     * - `"entity-rotated"` - Uses {@link import("factorio:prototype").EntityPrototype#rotated_sound EntityPrototype::rotated_sound}
+     * - `"entity-open"` - Uses {@link import("factorio:prototype").EntityPrototype#open_sound Entity::open_sound}
+     * - `"entity-close"` - Uses {@link import("factorio:prototype").EntityPrototype#close_sound Entity::close_sound}
      * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#SoundPath Online documentation}
      */
     export type SoundPath = (string & {

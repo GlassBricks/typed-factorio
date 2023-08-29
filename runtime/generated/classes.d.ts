@@ -3461,12 +3461,12 @@ declare module "factorio:runtime" {
         /**
          * A unique number identifying this entity for the lifetime of the save. These are allocated sequentially, and not re-used (until overflow).
          *
-         * Only entities inheriting from {@link import("factorio:prototype").undefined EntityWithOwnerPrototype}, as well as {@link import("factorio:prototype").undefined ItemRequestProxyPrototype} and {@link import("factorio:prototype").undefined EntityGhostPrototype} are assigned a unit number. Returns `nil` otherwise.
+         * Only entities inheriting from {@link import("factorio:prototype").EntityWithOwnerPrototype EntityWithOwnerPrototype}, as well as {@link import("factorio:prototype").ItemRequestProxyPrototype ItemRequestProxyPrototype} and {@link import("factorio:prototype").EntityGhostPrototype EntityGhostPrototype} are assigned a unit number. Returns `nil` otherwise.
          * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.unit_number Online documentation}
          */
         readonly unit_number?: UnitNumber;
         /**
-         * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link import("factorio:prototype").undefined EntityWithOwnerPrototype} that was destroyed to create this ghost. If it was created by other means, or if the inner entity does not support unit numbers, this property is `nil`.
+         * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link import("factorio:prototype").EntityWithOwnerPrototype EntityWithOwnerPrototype} that was destroyed to create this ghost. If it was created by other means, or if the inner entity does not support unit numbers, this property is `nil`.
          *
          * _Can only be used if this is EntityGhost_
          * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.ghost_unit_number Online documentation}
@@ -4891,7 +4891,7 @@ declare module "factorio:runtime" {
         /**
          * A unique number identifying this entity for the lifetime of the save. These are allocated sequentially, and not re-used (until overflow).
          *
-         * Only entities inheriting from {@link import("factorio:prototype").undefined EntityWithOwnerPrototype}, as well as {@link import("factorio:prototype").undefined ItemRequestProxyPrototype} and {@link import("factorio:prototype").undefined EntityGhostPrototype} are assigned a unit number. Returns `nil` otherwise.
+         * Only entities inheriting from {@link import("factorio:prototype").EntityWithOwnerPrototype EntityWithOwnerPrototype}, as well as {@link import("factorio:prototype").ItemRequestProxyPrototype ItemRequestProxyPrototype} and {@link import("factorio:prototype").EntityGhostPrototype EntityGhostPrototype} are assigned a unit number. Returns `nil` otherwise.
          * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.unit_number Online documentation}
          */
         readonly unit_number?: UnitNumber;
@@ -5278,7 +5278,7 @@ declare module "factorio:runtime" {
          */
         ghost_has_flag(flag: keyof EntityPrototypeFlags): boolean;
         /**
-         * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link import("factorio:prototype").undefined EntityWithOwnerPrototype} that was destroyed to create this ghost. If it was created by other means, or if the inner entity does not support unit numbers, this property is `nil`.
+         * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link import("factorio:prototype").EntityWithOwnerPrototype EntityWithOwnerPrototype} that was destroyed to create this ghost. If it was created by other means, or if the inner entity does not support unit numbers, this property is `nil`.
          *
          * _Can only be used if this is EntityGhost_
          * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.ghost_unit_number Online documentation}
@@ -12106,7 +12106,7 @@ declare module "factorio:runtime" {
          */
         create_profiler(stopped?: boolean): LuaProfiler;
         /**
-         * Evaluate an expression, substituting variables as provided. For details on the formula, see {@link import("factorio:prototype").undefined#unit TechnologyPrototype::unit}.
+         * Evaluate an expression, substituting variables as provided. For details on the formula, see {@link import("factorio:prototype").TechnologyPrototype#unit TechnologyPrototype::unit}.
          * @param expression The expression to evaluate.
          * @param variables Variables to be substituted.
          * @example Calculate the number of research units required to unlock mining productivity level 10.
@@ -20159,7 +20159,7 @@ declare module "factorio:runtime" {
          */
         draw_animation(params: {
             /**
-             * Name of an {@link import("factorio:prototype").undefined AnimationPrototype}.
+             * Name of an {@link import("factorio:prototype").AnimationPrototype AnimationPrototype}.
              */
             readonly animation: string;
             /**
@@ -21414,7 +21414,7 @@ declare module "factorio:runtime" {
          */
         draw_animation(params: {
             /**
-             * Name of an {@link import("factorio:prototype").undefined AnimationPrototype}.
+             * Name of an {@link import("factorio:prototype").AnimationPrototype AnimationPrototype}.
              */
             readonly animation: string;
             /**
@@ -25383,7 +25383,7 @@ declare module "factorio:runtime" {
          */
         level: uint;
         /**
-         * The count formula, if this research has any. See {@link import("factorio:prototype").undefined#count_formula TechnologyUnit::count_formula} for details.
+         * The count formula, if this research has any. See {@link import("factorio:prototype").TechnologyUnit#count_formula TechnologyUnit::count_formula} for details.
          * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaTechnology.html#LuaTechnology.research_unit_count_formula Online documentation}
          */
         readonly research_unit_count_formula?: string;
@@ -25486,7 +25486,7 @@ declare module "factorio:runtime" {
          */
         readonly max_level: uint;
         /**
-         * The count formula, if this research has any. See {@link import("factorio:prototype").undefined#count_formula TechnologyUnit::count_formula} for details.
+         * The count formula, if this research has any. See {@link import("factorio:prototype").TechnologyUnit#count_formula TechnologyUnit::count_formula} for details.
          * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaTechnologyPrototype.html#LuaTechnologyPrototype.research_unit_count_formula Online documentation}
          */
         readonly research_unit_count_formula?: string;

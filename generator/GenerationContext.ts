@@ -1,7 +1,14 @@
 import chalk from "chalk"
 import ts from "typescript"
 import { DeclarationType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
-import { checkManualDefinitions, preprocessManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
+import {
+  checkManualDefinitions,
+  InterfaceDef,
+  NamespaceDef,
+  preprocessManualDefinitions,
+  processManualDefinitions,
+  TypeAliasDef,
+} from "./manualDefinitions.js"
 import { fileURLToPath } from "url"
 import path from "path"
 import { printer } from "./genUtil.js"
@@ -93,6 +100,24 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
     this.generateAll()
     checkManualDefinitions(this)
     return getGenerationResult(this)
+  }
+
+  getInterfaceDef(name: string): InterfaceDef | TypeAliasDef | undefined {
+    const result = this._manualDefinitions[name]
+    if (!result) return
+    if (result.kind !== "interface" && result.kind !== "type") {
+      throw new Error(`Existing definition for ${name} is not an interface`)
+    }
+    return result
+  }
+
+  getNamespaceDef(name: string): NamespaceDef | undefined {
+    const result = this._manualDefinitions[name]
+    if (!result) return
+    if (result.kind !== "namespace") {
+      throw new Error(`Existing definitions for ${name} is not a namespace`)
+    }
+    return result
   }
 }
 

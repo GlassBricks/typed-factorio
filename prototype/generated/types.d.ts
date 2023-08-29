@@ -419,9 +419,9 @@ declare module "factorio:prototype" {
      * Loaded as one of the {@link BaseAttackParameters} extensions, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined ProjectileAttackParameters}: Loaded when the `type` is `"projectile"`.
-     * - {@link import("factorio:runtime").undefined BeamAttackParameters}: Loaded when the `type` is `"beam"`.
-     * - {@link import("factorio:runtime").undefined StreamAttackParameters}: Loaded when the `type` is `"stream"`.
+     * - {@link ProjectileAttackParameters}: Loaded when the `type` is `"projectile"`.
+     * - {@link BeamAttackParameters}: Loaded when the `type` is `"beam"`.
+     * - {@link StreamAttackParameters}: Loaded when the `type` is `"stream"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#AttackParameters Online documentation}
      */
     export type AttackParameters = ProjectileAttackParameters | BeamAttackParameters | StreamAttackParameters;
@@ -711,7 +711,7 @@ declare module "factorio:prototype" {
          */
         control?: AutoplaceControlID;
         /**
-         * Indicates whether the thing should be placed even if {@link import("factorio:runtime").undefined MapGenSettings} do not provide frequency/size/richness for it. (either for the specific prototype or for the control named by AutoplaceSpecification.control).
+         * Indicates whether the thing should be placed even if {@link MapGenSettings} do not provide frequency/size/richness for it. (either for the specific prototype or for the control named by AutoplaceSpecification.control).
          *
          * If true, normal frequency/size/richness (`value=1`) are used in that case.  Otherwise it is treated as if 'none' were selected.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#AutoplaceSpecification#AutoplaceSpecification.default_enabled Online documentation}
@@ -1423,11 +1423,11 @@ declare module "factorio:prototype" {
      * Loaded as one of the capsule actions, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined ThrowCapsuleAction}: Loaded when the `type` is `"throw"`.
-     * - {@link import("factorio:runtime").undefined ActivateEquipmentCapsuleAction}: Loaded when the `type` is `"equipment-remote"`.
-     * - {@link import("factorio:runtime").undefined UseOnSelfCapsuleAction}: Loaded when the `type` is `"use-on-self"`.
-     * - {@link import("factorio:runtime").undefined DestroyCliffsCapsuleAction}: Loaded when the `type` is `"destroy-cliffs"`.
-     * - {@link import("factorio:runtime").undefined ArtilleryRemoteCapsuleAction}: Loaded when the `type` is `"artillery-remote"`.
+     * - {@link ThrowCapsuleAction}: Loaded when the `type` is `"throw"`.
+     * - {@link ActivateEquipmentCapsuleAction}: Loaded when the `type` is `"equipment-remote"`.
+     * - {@link UseOnSelfCapsuleAction}: Loaded when the `type` is `"use-on-self"`.
+     * - {@link DestroyCliffsCapsuleAction}: Loaded when the `type` is `"destroy-cliffs"`.
+     * - {@link ArtilleryRemoteCapsuleAction}: Loaded when the `type` is `"artillery-remote"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#CapsuleAction Online documentation}
      */
     export type CapsuleAction = ThrowCapsuleAction | ActivateEquipmentCapsuleAction | UseOnSelfCapsuleAction | DestroyCliffsCapsuleAction | ArtilleryRemoteCapsuleAction;
@@ -1731,7 +1731,7 @@ declare module "factorio:prototype" {
      * The three options in addition to the standard layers are not collision masks, instead they control other aspects of collision.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined CollisionMaskLayer}: A standard collision mask layer.
+     * - {@link CollisionMaskLayer}: A standard collision mask layer.
      * - `"not-colliding-with-itself"`: Any two entities that both have this option enabled on their prototype and have an identical collision mask layers list will not collide. Other collision mask options are not included in the identical layer list check. This does mean that two different prototypes with the same collision mask layers and this option enabled will not collide.
      * - `"consider-tile-transitions"`: Uses the prototypes position rather than its collision box when doing collision checks with tile prototypes. Allows the prototype to overlap colliding tiles up until its center point. This is only respected for character movement and cars driven by players.
      * - `"colliding-with-tiles-only"`: Any prototype with this collision option will only be checked for collision with other prototype's collision masks if they are a tile.
@@ -1761,7 +1761,7 @@ declare module "factorio:prototype" {
      * - `"transport-belt-layer"`
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#CollisionMaskLayer Online documentation}
      */
-    export type CollisionMaskLayer = "ground-tile" | "water-tile" | "resource-layer" | "doodad-layer" | "floor-layer" | "item-layer" | "ghost-layer" | "object-layer" | "player-layer" | "train-layer" | "rail-layer" | "transport-belt-layer";
+    export type CollisionMaskLayer = "ground-tile" | "water-tile" | "resource-layer" | "doodad-layer" | "floor-layer" | "item-layer" | "ghost-layer" | "object-layer" | "player-layer" | "train-layer" | "rail-layer" | "transport-belt-layer" | `layer-${bigint}`;
     /**
      * Table of red, green, blue, and alpha float values between 0 and 1.Alternatively, values can be from 0-255, they are interpreted as such if at least one value is `> 1`.
      *
@@ -1950,7 +1950,7 @@ declare module "factorio:prototype" {
         entity_name: EntityID;
         offset_deviation?: BoundingBox;
         /**
-         * If `true`, the {@link import("factorio:runtime").undefined on_trigger_created_entity} event will be raised.
+         * If `true`, the {@link import("factorio:runtime").on_trigger_created_entity on_trigger_created_entity} event will be raised.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#CreateEntityTriggerEffectItem#CreateEntityTriggerEffectItem.trigger_created_entity Online documentation}
          */
         trigger_created_entity?: bool;
@@ -2028,7 +2028,7 @@ declare module "factorio:prototype" {
         sticker: EntityID;
         show_in_tooltip?: bool;
         /**
-         * If `true`, {@link import("factorio:runtime").undefined on_trigger_created_entity} will be triggered when the sticker is created.
+         * If `true`, {@link import("factorio:runtime").on_trigger_created_entity on_trigger_created_entity} will be triggered when the sticker is created.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#CreateStickerTriggerEffectItem#CreateStickerTriggerEffectItem.trigger_created_entity Online documentation}
          */
         trigger_created_entity?: bool;
@@ -2253,12 +2253,12 @@ declare module "factorio:prototype" {
     }
     export interface DifficultySettings {
         /**
-         * A {@link import("factorio:runtime").undefined defines.difficulty_settings.recipe_difficulty}.
+         * A {@link import("factorio:runtime").defines.difficulty_settings.recipe_difficulty defines.difficulty_settings.recipe_difficulty}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#DifficultySettings#DifficultySettings.recipe_difficulty Online documentation}
          */
         recipe_difficulty: uint8;
         /**
-         * A {@link import("factorio:runtime").undefined defines.difficulty_settings.technology_difficulty}.
+         * A {@link import("factorio:runtime").defines.difficulty_settings.technology_difficulty defines.difficulty_settings.technology_difficulty}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#DifficultySettings#DifficultySettings.technology_difficulty Online documentation}
          */
         technology_difficulty: uint8;
@@ -2378,7 +2378,7 @@ declare module "factorio:prototype" {
          */
         output_flow_limit?: Energy;
         /**
-         * How much energy (per second) will be continuously removed from the energy buffer. In-game, this is shown in the tooltip as "Min. {@link import("factorio:runtime").undefined#active Minimum] Consumption". Applied as a constant consumption-per-tick, even when the entity has the property [active} set to `false`.
+         * How much energy (per second) will be continuously removed from the energy buffer. In-game, this is shown in the tooltip as "Min. {@link import("factorio:runtime").LuaEntity#active Minimum] Consumption". Applied as a constant consumption-per-tick, even when the entity has the property [active} set to `false`.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#ElectricEnergySource#ElectricEnergySource.drain Online documentation}
          */
         drain?: Energy;
@@ -2680,11 +2680,11 @@ declare module "factorio:prototype" {
      * Loaded as one of the {@link BaseEnergySource} extensions, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined ElectricEnergySource}: Loaded when the `type` is `"electric"`.
-     * - {@link import("factorio:runtime").undefined BurnerEnergySource}: Loaded when the `type` is `"burner"`.
-     * - {@link import("factorio:runtime").undefined HeatEnergySource}: Loaded when the `type` is `"heat"`.
-     * - {@link import("factorio:runtime").undefined FluidEnergySource}: Loaded when the `type` is `"fluid"`.
-     * - {@link import("factorio:runtime").undefined VoidEnergySource}: Loaded when the `type` is `"void"`.
+     * - {@link ElectricEnergySource}: Loaded when the `type` is `"electric"`.
+     * - {@link BurnerEnergySource}: Loaded when the `type` is `"burner"`.
+     * - {@link HeatEnergySource}: Loaded when the `type` is `"heat"`.
+     * - {@link FluidEnergySource}: Loaded when the `type` is `"fluid"`.
+     * - {@link VoidEnergySource}: Loaded when the `type` is `"void"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#EnergySource Online documentation}
      */
     export type EnergySource = ElectricEnergySource | BurnerEnergySource | HeatEnergySource | FluidEnergySource | VoidEnergySource;
@@ -2706,7 +2706,7 @@ declare module "factorio:prototype" {
      * - `"placeable-player"`: Determines the default force when placing entities in the map editor and using the *AUTO* option for the force.
      * - `"placeable-enemy"`: Determines the default force when placing entities in the map editor and using the *AUTO* option for the force.
      * - `"placeable-off-grid"`: Refers to the fact that most entities are placed on an invisible 'grid' within the world, entities with this flag do not have to line up with this grid (like trees and land-mines).
-     * - `"player-creation"`: Makes it possible for the biter AI to target the entity as a distraction in distraction mode {@link import("factorio:runtime").undefined by_anything}. Makes it possible to blueprint, deconstruct, and repair the entity (can be turned off again using the specific flags). Enables smoke to be created automatically when building the entity. If the entity does not have {@link EntityPrototype#map_color EntityPrototype::map_color} set, this flag makes the entity appear on the map/minimap with the default color specified in the {@link UtilityConstants}. Entities that are {@link import("factorio:runtime").undefined#is_building buildings} and have this flag set are considered for multiple enemy/unit behaviors: [1] Autonomous enemy attacks (usually triggered by pollution) can only attack within chunks that contain at least one entity that is both a building and a player-creation. [2] Enemy expansion considers entities that are both buildings and player-creations as "enemy" entities that may block expansion.
+     * - `"player-creation"`: Makes it possible for the biter AI to target the entity as a distraction in distraction mode {@link import("factorio:runtime").defines.distraction.by_anything by_anything}. Makes it possible to blueprint, deconstruct, and repair the entity (can be turned off again using the specific flags). Enables smoke to be created automatically when building the entity. If the entity does not have {@link EntityPrototype#map_color EntityPrototype::map_color} set, this flag makes the entity appear on the map/minimap with the default color specified in the {@link UtilityConstants}. Entities that are {@link import("factorio:runtime").LuaEntityPrototype#is_building buildings} and have this flag set are considered for multiple enemy/unit behaviors: [1] Autonomous enemy attacks (usually triggered by pollution) can only attack within chunks that contain at least one entity that is both a building and a player-creation. [2] Enemy expansion considers entities that are both buildings and player-creations as "enemy" entities that may block expansion.
      * - `"building-direction-8-way"`: Uses 45 degree angle increments when selecting direction.
      * - `"filter-directions"`: Used to automatically detect the proper direction, if possible. Used by base with the pump, train stop, and train signal.
      * - `"fast-replaceable-no-build-while-moving"`: Fast replace will not apply when building while moving.
@@ -3656,8 +3656,8 @@ declare module "factorio:prototype" {
      * Defaults to loading ingredients as items.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined ItemIngredientPrototype}: Loaded when the `type` is `"item"`.
-     * - {@link import("factorio:runtime").undefined FluidIngredientPrototype}: Loaded when the `type` is `"fluid"`.
+     * - {@link ItemIngredientPrototype}: Loaded when the `type` is `"item"`.
+     * - {@link FluidIngredientPrototype}: Loaded when the `type` is `"fluid"`.
      * @example
      * {type="item", name="steel-plate", amount=8}
      * @example
@@ -3801,7 +3801,7 @@ declare module "factorio:prototype" {
      * - `"not-stackable"`: The item can never be stacked. Additionally, the item does not show an item count when in the cursor. This also prevents the item from stacking in assembling machine input slots, which otherwise can exceed the item stack size if required by the recipe.
      * - `"can-extend-inventory"`: Must be set on {@link ItemWithInventoryPrototype} when the item should act as an extension to the inventory that it is placed in. Does nothing for other item types.
      * - `"primary-place-result"`: Item will be preferred by construction bots when building the entity specified by the item's {@link ItemPrototype#place_result place_result}.
-     * - `"mod-openable"`: Only works for {@link SelectionToolPrototype} and derived classes. Corresponds to the runtime {@link import("factorio:runtime").undefined on_mod_item_opened} event.
+     * - `"mod-openable"`: Only works for {@link SelectionToolPrototype} and derived classes. Corresponds to the runtime {@link import("factorio:runtime").on_mod_item_opened on_mod_item_opened} event.
      * - `"only-in-cursor"`: Item is deleted when removed from the cursor by pressing `Q` ("clear cursor"). Used for example by the copy/paste tools.
      * - `"spawnable"`: Item is able to be spawned by a {@link ShortcutPrototype} or {@link CustomInputPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#ItemPrototypeFlags Online documentation}
@@ -4193,12 +4193,12 @@ declare module "factorio:prototype" {
     }
     export interface MapGenPresetDifficultySettings {
         /**
-         * A {@link import("factorio:runtime").undefined defines.difficulty_settings.recipe_difficulty}.
+         * A {@link import("factorio:runtime").defines.difficulty_settings.recipe_difficulty defines.difficulty_settings.recipe_difficulty}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#MapGenPresetDifficultySettings#MapGenPresetDifficultySettings.recipe_difficulty Online documentation}
          */
         recipe_difficulty?: uint8;
         /**
-         * A {@link import("factorio:runtime").undefined defines.difficulty_settings.technology_difficulty}.
+         * A {@link import("factorio:runtime").defines.difficulty_settings.technology_difficulty defines.difficulty_settings.technology_difficulty}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#MapGenPresetDifficultySettings#MapGenPresetDifficultySettings.technology_difficulty Online documentation}
          */
         technology_difficulty?: uint8;
@@ -4334,7 +4334,7 @@ declare module "factorio:prototype" {
      * Each of the values in a triplet (such as "low", "small", and "poor") are synonymous. In-game the values can be set from `0.166` to `6` via the GUI (respective to the percentages), while `0` is used to disable the autoplace control.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined float}: Specifying a map gen dimension.
+     * - {@link float}: Specifying a map gen dimension.
      * - `"none"`: equivalent to `0`.
      * - `"very-low"`: equivalent to `1/2`.
      * - `"very-small"`: equivalent to `1/2`.
@@ -4539,47 +4539,47 @@ declare module "factorio:prototype" {
      * Loaded as one of the {@link BaseModifier} extensions, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined InserterStackSizeBonusModifier}: Loaded when the `type` is `"inserter-stack-size-bonus"`.
-     * - {@link import("factorio:runtime").undefined StackInserterCapacityBonusModifier}: Loaded when the `type` is `"stack-inserter-capacity-bonus"`.
-     * - {@link import("factorio:runtime").undefined LaboratorySpeedModifier}: Loaded when the `type` is `"laboratory-speed"`.
-     * - {@link import("factorio:runtime").undefined LaboratoryProductivityModifier}: Loaded when the `type` is `"laboratory-productivity"`.
-     * - {@link import("factorio:runtime").undefined MaximumFollowingRobotsCountModifier}: Loaded when the `type` is `"maximum-following-robots-count"`.
-     * - {@link import("factorio:runtime").undefined WorkerRobotSpeedModifier}: Loaded when the `type` is `"worker-robot-speed"`.
-     * - {@link import("factorio:runtime").undefined WorkerRobotStorageModifier}: Loaded when the `type` is `"worker-robot-storage"`.
-     * - {@link import("factorio:runtime").undefined WorkerRobotBatteryModifier}: Loaded when the `type` is `"worker-robot-battery"`.
-     * - {@link import("factorio:runtime").undefined FollowerRobotLifetimeModifier}: Loaded when the `type` is `"follower-robot-lifetime"`.
-     * - {@link import("factorio:runtime").undefined GhostTimeToLiveModifier}: Loaded when the `type` is `"ghost-time-to-live"`.
-     * - {@link import("factorio:runtime").undefined DeconstructionTimeToLiveModifier}: Loaded when the `type` is `"deconstruction-time-to-live"`.
-     * - {@link import("factorio:runtime").undefined TurretAttackModifier}: Loaded when the `type` is `"turret-attack"`.
-     * - {@link import("factorio:runtime").undefined AmmoDamageModifier}: Loaded when the `type` is `"ammo-damage"`.
-     * - {@link import("factorio:runtime").undefined ArtilleryRangeModifier}: Loaded when the `type` is `"artillery-range"`.
-     * - {@link import("factorio:runtime").undefined GiveItemModifier}: Loaded when the `type` is `"give-item"`.
-     * - {@link import("factorio:runtime").undefined GunSpeedModifier}: Loaded when the `type` is `"gun-speed"`.
-     * - {@link import("factorio:runtime").undefined UnlockRecipeModifier}: Loaded when the `type` is `"unlock-recipe"`.
-     * - {@link import("factorio:runtime").undefined CharacterCraftingSpeedModifier}: Loaded when the `type` is `"character-crafting-speed"`.
-     * - {@link import("factorio:runtime").undefined CharacterMiningSpeedModifier}: Loaded when the `type` is `"character-mining-speed"`.
-     * - {@link import("factorio:runtime").undefined CharacterRunningSpeedModifier}: Loaded when the `type` is `"character-running-speed"`.
-     * - {@link import("factorio:runtime").undefined CharacterBuildDistanceModifier}: Loaded when the `type` is `"character-build-distance"`.
-     * - {@link import("factorio:runtime").undefined CharacterItemDropDistanceModifier}: Loaded when the `type` is `"character-item-drop-distance"`.
-     * - {@link import("factorio:runtime").undefined CharacterReachDistanceModifier}: Loaded when the `type` is `"character-reach-distance"`.
-     * - {@link import("factorio:runtime").undefined CharacterResourceReachDistanceModifier}: Loaded when the `type` is `"character-resource-reach-distance"`.
-     * - {@link import("factorio:runtime").undefined CharacterItemPickupDistanceModifier}: Loaded when the `type` is `"character-item-pickup-distance"`.
-     * - {@link import("factorio:runtime").undefined CharacterLootPickupDistanceModifier}: Loaded when the `type` is `"character-loot-pickup-distance"`.
-     * - {@link import("factorio:runtime").undefined CharacterInventorySlotsBonusModifier}: Loaded when the `type` is `"character-inventory-slots-bonus"`.
-     * - {@link import("factorio:runtime").undefined CharacterHealthBonusModifier}: Loaded when the `type` is `"character-health-bonus"`.
-     * - {@link import("factorio:runtime").undefined CharacterLogisticRequestsModifier}: Loaded when the `type` is `"character-logistic-requests"`.
-     * - {@link import("factorio:runtime").undefined CharacterLogisticTrashSlotsModifier}: Loaded when the `type` is `"character-logistic-trash-slots"`.
-     * - {@link import("factorio:runtime").undefined MaxFailedAttemptsPerTickPerConstructionQueueModifier}: Loaded when the `type` is `"max-failed-attempts-per-tick-per-construction-queue"`.
-     * - {@link import("factorio:runtime").undefined MaxSuccessfulAttemptsPerTickPerConstructionQueueModifier}: Loaded when the `type` is `"max-successful-attempts-per-tick-per-construction-queue"`.
-     * - {@link import("factorio:runtime").undefined MiningDrillProductivityBonusModifier}: Loaded when the `type` is `"mining-drill-productivity-bonus"`.
-     * - {@link import("factorio:runtime").undefined TrainBrakingForceBonusModifier}: Loaded when the `type` is `"train-braking-force-bonus"`.
-     * - {@link import("factorio:runtime").undefined ZoomToWorldEnabledModifier}: Loaded when the `type` is `"zoom-to-world-enabled"`.
-     * - {@link import("factorio:runtime").undefined ZoomToWorldGhostBuildingEnabledModifier}: Loaded when the `type` is `"zoom-to-world-ghost-building-enabled"`.
-     * - {@link import("factorio:runtime").undefined ZoomToWorldBlueprintEnabledModifier}: Loaded when the `type` is `"zoom-to-world-blueprint-enabled"`.
-     * - {@link import("factorio:runtime").undefined ZoomToWorldDeconstructionPlannerEnabledModifier}: Loaded when the `type` is `"zoom-to-world-deconstruction-planner-enabled"`.
-     * - {@link import("factorio:runtime").undefined ZoomToWorldUpgradePlannerEnabledModifier}: Loaded when the `type` is `"zoom-to-world-upgrade-planner-enabled"`.
-     * - {@link import("factorio:runtime").undefined ZoomToWorldSelectionToolEnabledModifier}: Loaded when the `type` is `"zoom-to-world-selection-tool-enabled"`.
-     * - {@link import("factorio:runtime").undefined NothingModifier}: Loaded when the `type` is `"nothing"`.
+     * - {@link InserterStackSizeBonusModifier}: Loaded when the `type` is `"inserter-stack-size-bonus"`.
+     * - {@link StackInserterCapacityBonusModifier}: Loaded when the `type` is `"stack-inserter-capacity-bonus"`.
+     * - {@link LaboratorySpeedModifier}: Loaded when the `type` is `"laboratory-speed"`.
+     * - {@link LaboratoryProductivityModifier}: Loaded when the `type` is `"laboratory-productivity"`.
+     * - {@link MaximumFollowingRobotsCountModifier}: Loaded when the `type` is `"maximum-following-robots-count"`.
+     * - {@link WorkerRobotSpeedModifier}: Loaded when the `type` is `"worker-robot-speed"`.
+     * - {@link WorkerRobotStorageModifier}: Loaded when the `type` is `"worker-robot-storage"`.
+     * - {@link WorkerRobotBatteryModifier}: Loaded when the `type` is `"worker-robot-battery"`.
+     * - {@link FollowerRobotLifetimeModifier}: Loaded when the `type` is `"follower-robot-lifetime"`.
+     * - {@link GhostTimeToLiveModifier}: Loaded when the `type` is `"ghost-time-to-live"`.
+     * - {@link DeconstructionTimeToLiveModifier}: Loaded when the `type` is `"deconstruction-time-to-live"`.
+     * - {@link TurretAttackModifier}: Loaded when the `type` is `"turret-attack"`.
+     * - {@link AmmoDamageModifier}: Loaded when the `type` is `"ammo-damage"`.
+     * - {@link ArtilleryRangeModifier}: Loaded when the `type` is `"artillery-range"`.
+     * - {@link GiveItemModifier}: Loaded when the `type` is `"give-item"`.
+     * - {@link GunSpeedModifier}: Loaded when the `type` is `"gun-speed"`.
+     * - {@link UnlockRecipeModifier}: Loaded when the `type` is `"unlock-recipe"`.
+     * - {@link CharacterCraftingSpeedModifier}: Loaded when the `type` is `"character-crafting-speed"`.
+     * - {@link CharacterMiningSpeedModifier}: Loaded when the `type` is `"character-mining-speed"`.
+     * - {@link CharacterRunningSpeedModifier}: Loaded when the `type` is `"character-running-speed"`.
+     * - {@link CharacterBuildDistanceModifier}: Loaded when the `type` is `"character-build-distance"`.
+     * - {@link CharacterItemDropDistanceModifier}: Loaded when the `type` is `"character-item-drop-distance"`.
+     * - {@link CharacterReachDistanceModifier}: Loaded when the `type` is `"character-reach-distance"`.
+     * - {@link CharacterResourceReachDistanceModifier}: Loaded when the `type` is `"character-resource-reach-distance"`.
+     * - {@link CharacterItemPickupDistanceModifier}: Loaded when the `type` is `"character-item-pickup-distance"`.
+     * - {@link CharacterLootPickupDistanceModifier}: Loaded when the `type` is `"character-loot-pickup-distance"`.
+     * - {@link CharacterInventorySlotsBonusModifier}: Loaded when the `type` is `"character-inventory-slots-bonus"`.
+     * - {@link CharacterHealthBonusModifier}: Loaded when the `type` is `"character-health-bonus"`.
+     * - {@link CharacterLogisticRequestsModifier}: Loaded when the `type` is `"character-logistic-requests"`.
+     * - {@link CharacterLogisticTrashSlotsModifier}: Loaded when the `type` is `"character-logistic-trash-slots"`.
+     * - {@link MaxFailedAttemptsPerTickPerConstructionQueueModifier}: Loaded when the `type` is `"max-failed-attempts-per-tick-per-construction-queue"`.
+     * - {@link MaxSuccessfulAttemptsPerTickPerConstructionQueueModifier}: Loaded when the `type` is `"max-successful-attempts-per-tick-per-construction-queue"`.
+     * - {@link MiningDrillProductivityBonusModifier}: Loaded when the `type` is `"mining-drill-productivity-bonus"`.
+     * - {@link TrainBrakingForceBonusModifier}: Loaded when the `type` is `"train-braking-force-bonus"`.
+     * - {@link ZoomToWorldEnabledModifier}: Loaded when the `type` is `"zoom-to-world-enabled"`.
+     * - {@link ZoomToWorldGhostBuildingEnabledModifier}: Loaded when the `type` is `"zoom-to-world-ghost-building-enabled"`.
+     * - {@link ZoomToWorldBlueprintEnabledModifier}: Loaded when the `type` is `"zoom-to-world-blueprint-enabled"`.
+     * - {@link ZoomToWorldDeconstructionPlannerEnabledModifier}: Loaded when the `type` is `"zoom-to-world-deconstruction-planner-enabled"`.
+     * - {@link ZoomToWorldUpgradePlannerEnabledModifier}: Loaded when the `type` is `"zoom-to-world-upgrade-planner-enabled"`.
+     * - {@link ZoomToWorldSelectionToolEnabledModifier}: Loaded when the `type` is `"zoom-to-world-selection-tool-enabled"`.
+     * - {@link NothingModifier}: Loaded when the `type` is `"nothing"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#Modifier Online documentation}
      */
     export type Modifier = InserterStackSizeBonusModifier | StackInserterCapacityBonusModifier | LaboratorySpeedModifier | LaboratoryProductivityModifier | MaximumFollowingRobotsCountModifier | WorkerRobotSpeedModifier | WorkerRobotStorageModifier | WorkerRobotBatteryModifier | FollowerRobotLifetimeModifier | GhostTimeToLiveModifier | DeconstructionTimeToLiveModifier | TurretAttackModifier | AmmoDamageModifier | ArtilleryRangeModifier | GiveItemModifier | GunSpeedModifier | UnlockRecipeModifier | CharacterCraftingSpeedModifier | CharacterMiningSpeedModifier | CharacterRunningSpeedModifier | CharacterBuildDistanceModifier | CharacterItemDropDistanceModifier | CharacterReachDistanceModifier | CharacterResourceReachDistanceModifier | CharacterItemPickupDistanceModifier | CharacterLootPickupDistanceModifier | CharacterInventorySlotsBonusModifier | CharacterHealthBonusModifier | CharacterLogisticRequestsModifier | CharacterLogisticTrashSlotsModifier | MaxFailedAttemptsPerTickPerConstructionQueueModifier | MaxSuccessfulAttemptsPerTickPerConstructionQueueModifier | MiningDrillProductivityBonusModifier | TrainBrakingForceBonusModifier | ZoomToWorldEnabledModifier | ZoomToWorldGhostBuildingEnabledModifier | ZoomToWorldBlueprintEnabledModifier | ZoomToWorldDeconstructionPlannerEnabledModifier | ZoomToWorldUpgradePlannerEnabledModifier | ZoomToWorldSelectionToolEnabledModifier | NothingModifier;
@@ -4679,16 +4679,16 @@ declare module "factorio:prototype" {
      * See {@linkplain https://togos.github.io/togos-example-noise-programs/ here} for a tutorial on authoring noise expressions.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined NoiseVariable}: Loaded when the `type` is `"variable"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionApplication}: Loaded when the `type` is `"function-application"`.
-     * - {@link import("factorio:runtime").undefined NoiseLiteralBoolean}: Loaded when the `type` is `"literal-boolean"`.
-     * - {@link import("factorio:runtime").undefined NoiseLiteralNumber}: Loaded when the `type` is `"literal-number"`.
-     * - {@link import("factorio:runtime").undefined NoiseLiteralString}: Loaded when the `type` is `"literal-string"`.
-     * - {@link import("factorio:runtime").undefined NoiseLiteralObject}: Loaded when the `type` is `"literal-object"`.
-     * - {@link import("factorio:runtime").undefined NoiseLiteralExpression}: Loaded when the `type` is `"literal-expression"`.
-     * - {@link import("factorio:runtime").undefined NoiseArrayConstruction}: Loaded when the `type` is `"array-construction"`.
-     * - {@link import("factorio:runtime").undefined NoiseProcedureDelimiter}: Loaded when the `type` is `"procedure-delimiter"`.
-     * - {@link import("factorio:runtime").undefined NoiseIfElseChain}: Loaded when the `type` is `"if-else-chain"`.
+     * - {@link NoiseVariable}: Loaded when the `type` is `"variable"`.
+     * - {@link NoiseFunctionApplication}: Loaded when the `type` is `"function-application"`.
+     * - {@link NoiseLiteralBoolean}: Loaded when the `type` is `"literal-boolean"`.
+     * - {@link NoiseLiteralNumber}: Loaded when the `type` is `"literal-number"`.
+     * - {@link NoiseLiteralString}: Loaded when the `type` is `"literal-string"`.
+     * - {@link NoiseLiteralObject}: Loaded when the `type` is `"literal-object"`.
+     * - {@link NoiseLiteralExpression}: Loaded when the `type` is `"literal-expression"`.
+     * - {@link NoiseArrayConstruction}: Loaded when the `type` is `"array-construction"`.
+     * - {@link NoiseProcedureDelimiter}: Loaded when the `type` is `"procedure-delimiter"`.
+     * - {@link NoiseIfElseChain}: Loaded when the `type` is `"if-else-chain"`.
      * @example
      * -- "noise" library required beforehand
      * expression = noise.define_noise_function(function(x, y, tile, map)
@@ -4750,40 +4750,40 @@ declare module "factorio:prototype" {
      * Function calls are their own class of expression (as opposed to every function just being its own expression type) because function calls all have similar properties -- arguments are themselves expressions, a function call with all-constant arguments can be constant-folded (due to {@linkplain http://en.wikipedia.org/wiki/Referential_transparency referential transparency}), etc.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAdd}: Loaded when the `function_name` is `"add"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionSubtract}: Loaded when the `function_name` is `"subtract"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionMultiply}: Loaded when the `function_name` is `"multiply"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionDivide}: Loaded when the `function_name` is `"divide"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionExponentiate}: Loaded when the `function_name` is `"exponentiate"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAbsoluteValue}: Loaded when the `function_name` is `"absolute-value"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionClamp}: Loaded when the `function_name` is `"clamp"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionCompileTimeLog}: Loaded when the `function_name` is `"compile-time-log"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionDistanceFromNearestPoint}: Loaded when the `function_name` is `"distance-from-nearest-point"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionRidge}: Loaded when the `function_name` is `"ridge"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionTerrace}: Loaded when the `function_name` is `"terrace"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionModulo}: Loaded when the `function_name` is `"modulo"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionFloor}: Loaded when the `function_name` is `"floor"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionCeil}: Loaded when the `function_name` is `"ceil"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionBitwiseAnd}: Loaded when the `function_name` is `"bitwise-and"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionBitwiseOr}: Loaded when the `function_name` is `"bitwise-or"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionBitwiseXor}: Loaded when the `function_name` is `"bitwise-xor"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionBitwiseNot}: Loaded when the `function_name` is `"bitwise-not"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionSin}: Loaded when the `function_name` is `"sin"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionCos}: Loaded when the `function_name` is `"cos"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAtan2}: Loaded when the `function_name` is `"atan2"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionLessThan}: Loaded when the `function_name` is `"less-than"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionLessOrEqual}: Loaded when the `function_name` is `"less-or-equal"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionEquals}: Loaded when the `function_name` is `"equals"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionFactorioBasisNoise}: Loaded when the `function_name` is `"factorio-basis-noise"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionFactorioQuickMultioctaveNoise}: Loaded when the `function_name` is `"factorio-quick-multioctave-noise"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionRandomPenalty}: Loaded when the `function_name` is `"random-penalty"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionLog2}: Loaded when the `function_name` is `"log2"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionNoiseLayerNameToID}: Loaded when the `function_name` is `"noise-layer-name-to-id"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAutoplaceProbability}: Loaded when the `function_name` is `"autoplace-probability"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAutoplaceRichness}: Loaded when the `function_name` is `"autoplace-richness"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionOffsetPoints}: Loaded when the `function_name` is `"offset-points"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionFactorioMultioctaveNoise}: Loaded when the `function_name` is `"factorio-multioctave-noise"`.
-     * - {@link import("factorio:runtime").undefined NoiseFunctionSpotNoise}: Loaded when the `function_name` is `"spot-noise"`.
+     * - {@link NoiseFunctionAdd}: Loaded when the `function_name` is `"add"`.
+     * - {@link NoiseFunctionSubtract}: Loaded when the `function_name` is `"subtract"`.
+     * - {@link NoiseFunctionMultiply}: Loaded when the `function_name` is `"multiply"`.
+     * - {@link NoiseFunctionDivide}: Loaded when the `function_name` is `"divide"`.
+     * - {@link NoiseFunctionExponentiate}: Loaded when the `function_name` is `"exponentiate"`.
+     * - {@link NoiseFunctionAbsoluteValue}: Loaded when the `function_name` is `"absolute-value"`.
+     * - {@link NoiseFunctionClamp}: Loaded when the `function_name` is `"clamp"`.
+     * - {@link NoiseFunctionCompileTimeLog}: Loaded when the `function_name` is `"compile-time-log"`.
+     * - {@link NoiseFunctionDistanceFromNearestPoint}: Loaded when the `function_name` is `"distance-from-nearest-point"`.
+     * - {@link NoiseFunctionRidge}: Loaded when the `function_name` is `"ridge"`.
+     * - {@link NoiseFunctionTerrace}: Loaded when the `function_name` is `"terrace"`.
+     * - {@link NoiseFunctionModulo}: Loaded when the `function_name` is `"modulo"`.
+     * - {@link NoiseFunctionFloor}: Loaded when the `function_name` is `"floor"`.
+     * - {@link NoiseFunctionCeil}: Loaded when the `function_name` is `"ceil"`.
+     * - {@link NoiseFunctionBitwiseAnd}: Loaded when the `function_name` is `"bitwise-and"`.
+     * - {@link NoiseFunctionBitwiseOr}: Loaded when the `function_name` is `"bitwise-or"`.
+     * - {@link NoiseFunctionBitwiseXor}: Loaded when the `function_name` is `"bitwise-xor"`.
+     * - {@link NoiseFunctionBitwiseNot}: Loaded when the `function_name` is `"bitwise-not"`.
+     * - {@link NoiseFunctionSin}: Loaded when the `function_name` is `"sin"`.
+     * - {@link NoiseFunctionCos}: Loaded when the `function_name` is `"cos"`.
+     * - {@link NoiseFunctionAtan2}: Loaded when the `function_name` is `"atan2"`.
+     * - {@link NoiseFunctionLessThan}: Loaded when the `function_name` is `"less-than"`.
+     * - {@link NoiseFunctionLessOrEqual}: Loaded when the `function_name` is `"less-or-equal"`.
+     * - {@link NoiseFunctionEquals}: Loaded when the `function_name` is `"equals"`.
+     * - {@link NoiseFunctionFactorioBasisNoise}: Loaded when the `function_name` is `"factorio-basis-noise"`.
+     * - {@link NoiseFunctionFactorioQuickMultioctaveNoise}: Loaded when the `function_name` is `"factorio-quick-multioctave-noise"`.
+     * - {@link NoiseFunctionRandomPenalty}: Loaded when the `function_name` is `"random-penalty"`.
+     * - {@link NoiseFunctionLog2}: Loaded when the `function_name` is `"log2"`.
+     * - {@link NoiseFunctionNoiseLayerNameToID}: Loaded when the `function_name` is `"noise-layer-name-to-id"`.
+     * - {@link NoiseFunctionAutoplaceProbability}: Loaded when the `function_name` is `"autoplace-probability"`.
+     * - {@link NoiseFunctionAutoplaceRichness}: Loaded when the `function_name` is `"autoplace-richness"`.
+     * - {@link NoiseFunctionOffsetPoints}: Loaded when the `function_name` is `"offset-points"`.
+     * - {@link NoiseFunctionFactorioMultioctaveNoise}: Loaded when the `function_name` is `"factorio-multioctave-noise"`.
+     * - {@link NoiseFunctionSpotNoise}: Loaded when the `function_name` is `"spot-noise"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#NoiseFunctionApplication Online documentation}
      */
     export type NoiseFunctionApplication = NoiseFunctionAdd | NoiseFunctionSubtract | NoiseFunctionMultiply | NoiseFunctionDivide | NoiseFunctionExponentiate | NoiseFunctionAbsoluteValue | NoiseFunctionClamp | NoiseFunctionCompileTimeLog | NoiseFunctionDistanceFromNearestPoint | NoiseFunctionRidge | NoiseFunctionTerrace | NoiseFunctionModulo | NoiseFunctionFloor | NoiseFunctionCeil | NoiseFunctionBitwiseAnd | NoiseFunctionBitwiseOr | NoiseFunctionBitwiseXor | NoiseFunctionBitwiseNot | NoiseFunctionSin | NoiseFunctionCos | NoiseFunctionAtan2 | NoiseFunctionLessThan | NoiseFunctionLessOrEqual | NoiseFunctionEquals | NoiseFunctionFactorioBasisNoise | NoiseFunctionFactorioQuickMultioctaveNoise | NoiseFunctionRandomPenalty | NoiseFunctionLog2 | NoiseFunctionNoiseLayerNameToID | NoiseFunctionAutoplaceProbability | NoiseFunctionAutoplaceRichness | NoiseFunctionOffsetPoints | NoiseFunctionFactorioMultioctaveNoise | NoiseFunctionSpotNoise;
@@ -5289,44 +5289,44 @@ declare module "factorio:prototype" {
      * This encompasses all {@link NoiseExpression NoiseExpressions}, except for {@link NoiseLiteralBoolean}, {@link NoiseLiteralString}, {@link NoiseLiteralObject}, {@link NoiseLiteralExpression}, {@link NoiseArrayConstruction}, and {@link NoiseFunctionOffsetPoints}.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined NoiseVariable}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionApplication}
-     * - {@link import("factorio:runtime").undefined NoiseLiteralNumber}
-     * - {@link import("factorio:runtime").undefined NoiseProcedureDelimiter}
-     * - {@link import("factorio:runtime").undefined NoiseIfElseChain}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAdd}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionSubtract}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionMultiply}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionDivide}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionExponentiate}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionFactorioQuickMultioctaveNoise}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionFactorioMultioctaveNoise}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionDistanceFromNearestPoint}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionFactorioBasisNoise}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAbsoluteValue}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionClamp}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionRidge}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionTerrace}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionSpotNoise}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionRandomPenalty}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionLog2}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionModulo}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionFloor}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionCeil}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionBitwiseAnd}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionBitwiseOr}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionBitwiseXor}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionBitwiseNot}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionSin}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAtan2}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionCos}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionLessThan}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionLessOrEqual}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionEquals}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionCompileTimeLog}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionNoiseLayerNameToID}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAutoplaceProbability}
-     * - {@link import("factorio:runtime").undefined NoiseFunctionAutoplaceRichness}
+     * - {@link NoiseVariable}
+     * - {@link NoiseFunctionApplication}
+     * - {@link NoiseLiteralNumber}
+     * - {@link NoiseProcedureDelimiter}
+     * - {@link NoiseIfElseChain}
+     * - {@link NoiseFunctionAdd}
+     * - {@link NoiseFunctionSubtract}
+     * - {@link NoiseFunctionMultiply}
+     * - {@link NoiseFunctionDivide}
+     * - {@link NoiseFunctionExponentiate}
+     * - {@link NoiseFunctionFactorioQuickMultioctaveNoise}
+     * - {@link NoiseFunctionFactorioMultioctaveNoise}
+     * - {@link NoiseFunctionDistanceFromNearestPoint}
+     * - {@link NoiseFunctionFactorioBasisNoise}
+     * - {@link NoiseFunctionAbsoluteValue}
+     * - {@link NoiseFunctionClamp}
+     * - {@link NoiseFunctionRidge}
+     * - {@link NoiseFunctionTerrace}
+     * - {@link NoiseFunctionSpotNoise}
+     * - {@link NoiseFunctionRandomPenalty}
+     * - {@link NoiseFunctionLog2}
+     * - {@link NoiseFunctionModulo}
+     * - {@link NoiseFunctionFloor}
+     * - {@link NoiseFunctionCeil}
+     * - {@link NoiseFunctionBitwiseAnd}
+     * - {@link NoiseFunctionBitwiseOr}
+     * - {@link NoiseFunctionBitwiseXor}
+     * - {@link NoiseFunctionBitwiseNot}
+     * - {@link NoiseFunctionSin}
+     * - {@link NoiseFunctionAtan2}
+     * - {@link NoiseFunctionCos}
+     * - {@link NoiseFunctionLessThan}
+     * - {@link NoiseFunctionLessOrEqual}
+     * - {@link NoiseFunctionEquals}
+     * - {@link NoiseFunctionCompileTimeLog}
+     * - {@link NoiseFunctionNoiseLayerNameToID}
+     * - {@link NoiseFunctionAutoplaceProbability}
+     * - {@link NoiseFunctionAutoplaceRichness}
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#NoiseNumber Online documentation}
      */
     export type NoiseNumber = NoiseVariable | NoiseFunctionApplication | NoiseLiteralNumber | NoiseProcedureDelimiter | NoiseIfElseChain | NoiseFunctionAdd | NoiseFunctionSubtract | NoiseFunctionMultiply | NoiseFunctionDivide | NoiseFunctionExponentiate | NoiseFunctionFactorioQuickMultioctaveNoise | NoiseFunctionFactorioMultioctaveNoise | NoiseFunctionDistanceFromNearestPoint | NoiseFunctionFactorioBasisNoise | NoiseFunctionAbsoluteValue | NoiseFunctionClamp | NoiseFunctionRidge | NoiseFunctionTerrace | NoiseFunctionSpotNoise | NoiseFunctionRandomPenalty | NoiseFunctionLog2 | NoiseFunctionModulo | NoiseFunctionFloor | NoiseFunctionCeil | NoiseFunctionBitwiseAnd | NoiseFunctionBitwiseOr | NoiseFunctionBitwiseXor | NoiseFunctionBitwiseNot | NoiseFunctionSin | NoiseFunctionAtan2 | NoiseFunctionCos | NoiseFunctionLessThan | NoiseFunctionLessOrEqual | NoiseFunctionEquals | NoiseFunctionCompileTimeLog | NoiseFunctionNoiseLayerNameToID | NoiseFunctionAutoplaceProbability | NoiseFunctionAutoplaceRichness;
@@ -5840,8 +5840,8 @@ declare module "factorio:prototype" {
      * Defaults to loading products as items.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined ItemProductPrototype}: Loaded when the `type` is `"item"`.
-     * - {@link import("factorio:runtime").undefined FluidProductPrototype}: Loaded when the `type` is `"fluid"`.
+     * - {@link ItemProductPrototype}: Loaded when the `type` is `"item"`.
+     * - {@link FluidProductPrototype}: Loaded when the `type` is `"fluid"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#ProductPrototype Online documentation}
      */
     export type ProductPrototype = ItemProductPrototype | FluidProductPrototype;
@@ -6696,7 +6696,7 @@ declare module "factorio:prototype" {
     export interface ScriptTriggerEffectItem {
         type: "script";
         /**
-         * The effect ID that will be provided in {@link import("factorio:runtime").undefined on_script_trigger_effect}.
+         * The effect ID that will be provided in {@link import("factorio:runtime").on_script_trigger_effect on_script_trigger_effect}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#ScriptTriggerEffectItem#ScriptTriggerEffectItem.effect_id Online documentation}
          */
         effect_id: string;
@@ -6741,7 +6741,7 @@ declare module "factorio:prototype" {
      * - `"cancel-deconstruct"`: Selects entities and tiles as if selecting them for deconstruction cancellation.
      * - `"items"`: Selects items on the ground.
      * - `"trees"`: Selects trees.
-     * - `"buildable-type"`: Selects entities which are considered {@link import("factorio:runtime").undefined#is_building a building}, plus landmines.
+     * - `"buildable-type"`: Selects entities which are considered {@link import("factorio:runtime").LuaEntityPrototype#is_building a building}, plus landmines.
      * - `"nothing"`: Selects no entities or tiles, but is useful to select an area.
      * - `"items-to-place"`: Selects entities and tiles that can be built by an item.
      * - `"any-entity"`: Selects all entities.
@@ -6870,26 +6870,26 @@ declare module "factorio:prototype" {
          */
         save?: FileName;
         /**
-         * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").undefined here}.
+         * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").libraries here}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#SimulationDefinition#SimulationDefinition.init_file Online documentation}
          */
         init_file?: FileName;
         /**
          * Only loaded if `init_file` is not defined.
          *
-         * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").undefined here}.
+         * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").libraries here}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#SimulationDefinition#SimulationDefinition.init Online documentation}
          */
         init?: string;
         /**
-         * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").undefined here}.
+         * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").libraries here}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#SimulationDefinition#SimulationDefinition.update_file Online documentation}
          */
         update_file?: FileName;
         /**
          * Only loaded if `update_file` is not defined.
          *
-         * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").undefined here}.
+         * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").libraries here}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#SimulationDefinition#SimulationDefinition.update Online documentation}
          */
         update?: string;
@@ -7739,37 +7739,37 @@ declare module "factorio:prototype" {
      * Loaded as one of the {@link BaseStyleSpecification} extensions, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined ActivityBarStyleSpecification}: Loaded when the `type` is `"activity_bar_style"`.
-     * - {@link import("factorio:runtime").undefined ButtonStyleSpecification}: Loaded when the `type` is `"button_style"`.
-     * - {@link import("factorio:runtime").undefined CameraStyleSpecification}: Loaded when the `type` is `"camera_style"`.
-     * - {@link import("factorio:runtime").undefined CheckBoxStyleSpecification}: Loaded when the `type` is `"checkbox_style"`.
-     * - {@link import("factorio:runtime").undefined DropDownStyleSpecification}: Loaded when the `type` is `"dropdown_style"`.
-     * - {@link import("factorio:runtime").undefined FlowStyleSpecification}: Loaded when the `type` is `"flow_style"`.
-     * - {@link import("factorio:runtime").undefined FrameStyleSpecification}: Loaded when the `type` is `"frame_style"`.
-     * - {@link import("factorio:runtime").undefined GraphStyleSpecification}: Loaded when the `type` is `"graph_style"`.
-     * - {@link import("factorio:runtime").undefined HorizontalFlowStyleSpecification}: Loaded when the `type` is `"horizontal_flow_style"`.
-     * - {@link import("factorio:runtime").undefined LineStyleSpecification}: Loaded when the `type` is `"line_style"`.
-     * - {@link import("factorio:runtime").undefined ImageStyleSpecification}: Loaded when the `type` is `"image_style"`.
-     * - {@link import("factorio:runtime").undefined LabelStyleSpecification}: Loaded when the `type` is `"label_style"`.
-     * - {@link import("factorio:runtime").undefined ListBoxStyleSpecification}: Loaded when the `type` is `"list_box_style"`.
-     * - {@link import("factorio:runtime").undefined ProgressBarStyleSpecification}: Loaded when the `type` is `"progressbar_style"`.
-     * - {@link import("factorio:runtime").undefined RadioButtonStyleSpecification}: Loaded when the `type` is `"radiobutton_style"`.
-     * - {@link import("factorio:runtime").undefined HorizontalScrollBarStyleSpecification}: Loaded when the `type` is `"horizontal_scrollbar_style"`.
-     * - {@link import("factorio:runtime").undefined VerticalScrollBarStyleSpecification}: Loaded when the `type` is `"vertical_scrollbar_style"`.
-     * - {@link import("factorio:runtime").undefined ScrollPaneStyleSpecification}: Loaded when the `type` is `"scroll_pane_style"`.
-     * - {@link import("factorio:runtime").undefined SliderStyleSpecification}: Loaded when the `type` is `"slider_style"`.
-     * - {@link import("factorio:runtime").undefined SwitchStyleSpecification}: Loaded when the `type` is `"switch_style"`.
-     * - {@link import("factorio:runtime").undefined TableStyleSpecification}: Loaded when the `type` is `"table_style"`.
-     * - {@link import("factorio:runtime").undefined TabStyleSpecification}: Loaded when the `type` is `"tab_style"`.
-     * - {@link import("factorio:runtime").undefined TextBoxStyleSpecification}: Loaded when the `type` is `"textbox_style"`.
-     * - {@link import("factorio:runtime").undefined VerticalFlowStyleSpecification}: Loaded when the `type` is `"vertical_flow_style"`.
-     * - {@link import("factorio:runtime").undefined TabbedPaneStyleSpecification}: Loaded when the `type` is `"tabbed_pane_style"`.
-     * - {@link import("factorio:runtime").undefined EmptyWidgetStyleSpecification}: Loaded when the `type` is `"empty_widget_style"`.
-     * - {@link import("factorio:runtime").undefined MinimapStyleSpecification}: Loaded when the `type` is `"minimap_style"`.
-     * - {@link import("factorio:runtime").undefined TechnologySlotStyleSpecification}: Loaded when the `type` is `"technology_slot_style"`.
-     * - {@link import("factorio:runtime").undefined GlowStyleSpecification}: Loaded when the `type` is `"glow_style"`.
-     * - {@link import("factorio:runtime").undefined SpeechBubbleStyleSpecification}: Loaded when the `type` is `"speech_bubble_style"`.
-     * - {@link import("factorio:runtime").undefined DoubleSliderStyleSpecification}: Loaded when the `type` is `"double_slider_style"`.
+     * - {@link ActivityBarStyleSpecification}: Loaded when the `type` is `"activity_bar_style"`.
+     * - {@link ButtonStyleSpecification}: Loaded when the `type` is `"button_style"`.
+     * - {@link CameraStyleSpecification}: Loaded when the `type` is `"camera_style"`.
+     * - {@link CheckBoxStyleSpecification}: Loaded when the `type` is `"checkbox_style"`.
+     * - {@link DropDownStyleSpecification}: Loaded when the `type` is `"dropdown_style"`.
+     * - {@link FlowStyleSpecification}: Loaded when the `type` is `"flow_style"`.
+     * - {@link FrameStyleSpecification}: Loaded when the `type` is `"frame_style"`.
+     * - {@link GraphStyleSpecification}: Loaded when the `type` is `"graph_style"`.
+     * - {@link HorizontalFlowStyleSpecification}: Loaded when the `type` is `"horizontal_flow_style"`.
+     * - {@link LineStyleSpecification}: Loaded when the `type` is `"line_style"`.
+     * - {@link ImageStyleSpecification}: Loaded when the `type` is `"image_style"`.
+     * - {@link LabelStyleSpecification}: Loaded when the `type` is `"label_style"`.
+     * - {@link ListBoxStyleSpecification}: Loaded when the `type` is `"list_box_style"`.
+     * - {@link ProgressBarStyleSpecification}: Loaded when the `type` is `"progressbar_style"`.
+     * - {@link RadioButtonStyleSpecification}: Loaded when the `type` is `"radiobutton_style"`.
+     * - {@link HorizontalScrollBarStyleSpecification}: Loaded when the `type` is `"horizontal_scrollbar_style"`.
+     * - {@link VerticalScrollBarStyleSpecification}: Loaded when the `type` is `"vertical_scrollbar_style"`.
+     * - {@link ScrollPaneStyleSpecification}: Loaded when the `type` is `"scroll_pane_style"`.
+     * - {@link SliderStyleSpecification}: Loaded when the `type` is `"slider_style"`.
+     * - {@link SwitchStyleSpecification}: Loaded when the `type` is `"switch_style"`.
+     * - {@link TableStyleSpecification}: Loaded when the `type` is `"table_style"`.
+     * - {@link TabStyleSpecification}: Loaded when the `type` is `"tab_style"`.
+     * - {@link TextBoxStyleSpecification}: Loaded when the `type` is `"textbox_style"`.
+     * - {@link VerticalFlowStyleSpecification}: Loaded when the `type` is `"vertical_flow_style"`.
+     * - {@link TabbedPaneStyleSpecification}: Loaded when the `type` is `"tabbed_pane_style"`.
+     * - {@link EmptyWidgetStyleSpecification}: Loaded when the `type` is `"empty_widget_style"`.
+     * - {@link MinimapStyleSpecification}: Loaded when the `type` is `"minimap_style"`.
+     * - {@link TechnologySlotStyleSpecification}: Loaded when the `type` is `"technology_slot_style"`.
+     * - {@link GlowStyleSpecification}: Loaded when the `type` is `"glow_style"`.
+     * - {@link SpeechBubbleStyleSpecification}: Loaded when the `type` is `"speech_bubble_style"`.
+     * - {@link DoubleSliderStyleSpecification}: Loaded when the `type` is `"double_slider_style"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#StyleSpecification Online documentation}
      */
     export type StyleSpecification = ActivityBarStyleSpecification | ButtonStyleSpecification | CameraStyleSpecification | CheckBoxStyleSpecification | DropDownStyleSpecification | FlowStyleSpecification | FrameStyleSpecification | GraphStyleSpecification | HorizontalFlowStyleSpecification | LineStyleSpecification | ImageStyleSpecification | LabelStyleSpecification | ListBoxStyleSpecification | ProgressBarStyleSpecification | RadioButtonStyleSpecification | HorizontalScrollBarStyleSpecification | VerticalScrollBarStyleSpecification | ScrollPaneStyleSpecification | SliderStyleSpecification | SwitchStyleSpecification | TableStyleSpecification | TabStyleSpecification | TextBoxStyleSpecification | VerticalFlowStyleSpecification | TabbedPaneStyleSpecification | EmptyWidgetStyleSpecification | MinimapStyleSpecification | TechnologySlotStyleSpecification | GlowStyleSpecification | SpeechBubbleStyleSpecification | DoubleSliderStyleSpecification;
@@ -7902,7 +7902,7 @@ declare module "factorio:prototype" {
          */
         visible_when_disabled?: bool;
         /**
-         * Controls whether the technology cost ignores the tech cost multiplier set in the {@link import("factorio:runtime").undefined DifficultySettings}, e.g. `4` for the default expensive difficulty.
+         * Controls whether the technology cost ignores the tech cost multiplier set in the {@link DifficultySettings}, e.g. `4` for the default expensive difficulty.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#TechnologyData#TechnologyData.ignore_tech_cost_multiplier Online documentation}
          */
         ignore_tech_cost_multiplier?: bool;
@@ -8043,7 +8043,7 @@ declare module "factorio:prototype" {
          *
          * - `SPACE`: Spaces are ignored
          *
-         * Note that this formula can also be used at {@link import("factorio:runtime").undefined#evaluate_expression runtime}.
+         * Note that this formula can also be used at {@link import("factorio:runtime").LuaGameScript#evaluate_expression runtime}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types.html#TechnologyUnit#TechnologyUnit.count_formula Online documentation}
          */
         count_formula?: string;
@@ -8310,35 +8310,35 @@ declare module "factorio:prototype" {
      * Loaded as one of the tip triggers, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined OrTipTrigger}: Loaded when the `type` is `"or"`.
-     * - {@link import("factorio:runtime").undefined AndTipTrigger}: Loaded when the `type` is `"and"`.
-     * - {@link import("factorio:runtime").undefined SequenceTipTrigger}: Loaded when the `type` is `"sequence"`.
-     * - {@link import("factorio:runtime").undefined DependenciesMetTipTrigger}: Loaded when the `type` is `"dependencies-met"`.
-     * - {@link import("factorio:runtime").undefined TimeElapsedTipTrigger}: Loaded when the `type` is `"time-elapsed"`.
-     * - {@link import("factorio:runtime").undefined ResearchTechnologyTipTrigger}: Loaded when the `type` is `"research"`.
-     * - {@link import("factorio:runtime").undefined UnlockRecipeTipTrigger}: Loaded when the `type` is `"unlock-recipe"`.
-     * - {@link import("factorio:runtime").undefined CraftItemTipTrigger}: Loaded when the `type` is `"craft-item"`.
-     * - {@link import("factorio:runtime").undefined BuildEntityTipTrigger}: Loaded when the `type` is `"build-entity"`.
-     * - {@link import("factorio:runtime").undefined ManualTransferTipTrigger}: Loaded when the `type` is `"manual-transfer"`.
-     * - {@link import("factorio:runtime").undefined StackTransferTipTrigger}: Loaded when the `type` is `"stack-transfer"`.
-     * - {@link import("factorio:runtime").undefined EntityTransferTipTrigger}: Loaded when the `type` is `"entity-transfer"`.
-     * - {@link import("factorio:runtime").undefined SetRecipeTipTrigger}: Loaded when the `type` is `"set-recipe"`.
-     * - {@link import("factorio:runtime").undefined SetFilterTipTrigger}: Loaded when the `type` is `"set-filter"`.
-     * - {@link import("factorio:runtime").undefined LimitChestTipTrigger}: Loaded when the `type` is `"limit-chest"`.
-     * - {@link import("factorio:runtime").undefined UsePipetteTipTrigger}: Loaded when the `type` is `"use-pipette"`.
-     * - {@link import("factorio:runtime").undefined SetLogisticRequestTipTrigger}: Loaded when the `type` is `"set-logistic-request"`.
-     * - {@link import("factorio:runtime").undefined UseConfirmTipTrigger}: Loaded when the `type` is `"use-confirm"`.
-     * - {@link import("factorio:runtime").undefined LowPowerTipTrigger}: Loaded when the `type` is `"low-power"`.
-     * - {@link import("factorio:runtime").undefined PasteEntitySettingsTipTrigger}: Loaded when the `type` is `"paste-entity-settings"`.
-     * - {@link import("factorio:runtime").undefined FastReplaceTipTrigger}: Loaded when the `type` is `"fast-replace"`.
-     * - {@link import("factorio:runtime").undefined GroupAttackTipTrigger}: Loaded when the `type` is `"group-attack"`.
-     * - {@link import("factorio:runtime").undefined FastBeltBendTipTrigger}: Loaded when the `type` is `"fast-belt-bend"`.
-     * - {@link import("factorio:runtime").undefined BeltTraverseTipTrigger}: Loaded when the `type` is `"belt-traverse"`.
-     * - {@link import("factorio:runtime").undefined PlaceEquipmentTipTrigger}: Loaded when the `type` is `"place-equipment"`.
-     * - {@link import("factorio:runtime").undefined ClearCursorTipTrigger}: Loaded when the `type` is `"clear-cursor"`.
-     * - {@link import("factorio:runtime").undefined ShiftBuildTipTrigger}: Loaded when the `type` is `"shift-build"`.
-     * - {@link import("factorio:runtime").undefined GateOverRailBuildTipTrigger}: Loaded when the `type` is `"gate-over-rail-build"`.
-     * - {@link import("factorio:runtime").undefined ManualWireDragTipTrigger}: Loaded when the `type` is `"manual-wire-drag"`.
+     * - {@link OrTipTrigger}: Loaded when the `type` is `"or"`.
+     * - {@link AndTipTrigger}: Loaded when the `type` is `"and"`.
+     * - {@link SequenceTipTrigger}: Loaded when the `type` is `"sequence"`.
+     * - {@link DependenciesMetTipTrigger}: Loaded when the `type` is `"dependencies-met"`.
+     * - {@link TimeElapsedTipTrigger}: Loaded when the `type` is `"time-elapsed"`.
+     * - {@link ResearchTechnologyTipTrigger}: Loaded when the `type` is `"research"`.
+     * - {@link UnlockRecipeTipTrigger}: Loaded when the `type` is `"unlock-recipe"`.
+     * - {@link CraftItemTipTrigger}: Loaded when the `type` is `"craft-item"`.
+     * - {@link BuildEntityTipTrigger}: Loaded when the `type` is `"build-entity"`.
+     * - {@link ManualTransferTipTrigger}: Loaded when the `type` is `"manual-transfer"`.
+     * - {@link StackTransferTipTrigger}: Loaded when the `type` is `"stack-transfer"`.
+     * - {@link EntityTransferTipTrigger}: Loaded when the `type` is `"entity-transfer"`.
+     * - {@link SetRecipeTipTrigger}: Loaded when the `type` is `"set-recipe"`.
+     * - {@link SetFilterTipTrigger}: Loaded when the `type` is `"set-filter"`.
+     * - {@link LimitChestTipTrigger}: Loaded when the `type` is `"limit-chest"`.
+     * - {@link UsePipetteTipTrigger}: Loaded when the `type` is `"use-pipette"`.
+     * - {@link SetLogisticRequestTipTrigger}: Loaded when the `type` is `"set-logistic-request"`.
+     * - {@link UseConfirmTipTrigger}: Loaded when the `type` is `"use-confirm"`.
+     * - {@link LowPowerTipTrigger}: Loaded when the `type` is `"low-power"`.
+     * - {@link PasteEntitySettingsTipTrigger}: Loaded when the `type` is `"paste-entity-settings"`.
+     * - {@link FastReplaceTipTrigger}: Loaded when the `type` is `"fast-replace"`.
+     * - {@link GroupAttackTipTrigger}: Loaded when the `type` is `"group-attack"`.
+     * - {@link FastBeltBendTipTrigger}: Loaded when the `type` is `"fast-belt-bend"`.
+     * - {@link BeltTraverseTipTrigger}: Loaded when the `type` is `"belt-traverse"`.
+     * - {@link PlaceEquipmentTipTrigger}: Loaded when the `type` is `"place-equipment"`.
+     * - {@link ClearCursorTipTrigger}: Loaded when the `type` is `"clear-cursor"`.
+     * - {@link ShiftBuildTipTrigger}: Loaded when the `type` is `"shift-build"`.
+     * - {@link GateOverRailBuildTipTrigger}: Loaded when the `type` is `"gate-over-rail-build"`.
+     * - {@link ManualWireDragTipTrigger}: Loaded when the `type` is `"manual-wire-drag"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#TipTrigger Online documentation}
      */
     export type TipTrigger = OrTipTrigger | AndTipTrigger | SequenceTipTrigger | DependenciesMetTipTrigger | TimeElapsedTipTrigger | ResearchTechnologyTipTrigger | UnlockRecipeTipTrigger | CraftItemTipTrigger | BuildEntityTipTrigger | ManualTransferTipTrigger | StackTransferTipTrigger | EntityTransferTipTrigger | SetRecipeTipTrigger | SetFilterTipTrigger | LimitChestTipTrigger | UsePipetteTipTrigger | SetLogisticRequestTipTrigger | UseConfirmTipTrigger | LowPowerTipTrigger | PasteEntitySettingsTipTrigger | FastReplaceTipTrigger | GroupAttackTipTrigger | FastBeltBendTipTrigger | BeltTraverseTipTrigger | PlaceEquipmentTipTrigger | ClearCursorTipTrigger | ShiftBuildTipTrigger | GateOverRailBuildTipTrigger | ManualWireDragTipTrigger;
@@ -8475,10 +8475,10 @@ declare module "factorio:prototype" {
      * Loaded as one of the {@link TriggerItem} extensions, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined DirectTriggerItem}: Loaded when the `type` is `"direct"`.
-     * - {@link import("factorio:runtime").undefined AreaTriggerItem}: Loaded when the `type` is `"area"`.
-     * - {@link import("factorio:runtime").undefined LineTriggerItem}: Loaded when the `type` is `"line"`.
-     * - {@link import("factorio:runtime").undefined ClusterTriggerItem}: Loaded when the `type` is `"cluster"`.
+     * - {@link DirectTriggerItem}: Loaded when the `type` is `"direct"`.
+     * - {@link AreaTriggerItem}: Loaded when the `type` is `"area"`.
+     * - {@link LineTriggerItem}: Loaded when the `type` is `"line"`.
+     * - {@link ClusterTriggerItem}: Loaded when the `type` is `"cluster"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#Trigger Online documentation}
      */
     export type Trigger = (DirectTriggerItem | AreaTriggerItem | LineTriggerItem | ClusterTriggerItem) | readonly (DirectTriggerItem | AreaTriggerItem | LineTriggerItem | ClusterTriggerItem)[];
@@ -8486,12 +8486,12 @@ declare module "factorio:prototype" {
      * Loaded as one of the {@link TriggerDeliveryItem} extensions, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined InstantTriggerDelivery}: Loaded when the `type` is `"instant"`.
-     * - {@link import("factorio:runtime").undefined ProjectileTriggerDelivery}: Loaded when the `type` is `"projectile"`.
-     * - {@link import("factorio:runtime").undefined FlameThrowerExplosionTriggerDelivery}: Loaded when the `type` is `"flame-thrower"`.
-     * - {@link import("factorio:runtime").undefined BeamTriggerDelivery}: Loaded when the `type` is `"beam"`.
-     * - {@link import("factorio:runtime").undefined StreamTriggerDelivery}: Loaded when the `type` is `"stream"`.
-     * - {@link import("factorio:runtime").undefined ArtilleryTriggerDelivery}: Loaded when the `type` is `"artillery"`.
+     * - {@link InstantTriggerDelivery}: Loaded when the `type` is `"instant"`.
+     * - {@link ProjectileTriggerDelivery}: Loaded when the `type` is `"projectile"`.
+     * - {@link FlameThrowerExplosionTriggerDelivery}: Loaded when the `type` is `"flame-thrower"`.
+     * - {@link BeamTriggerDelivery}: Loaded when the `type` is `"beam"`.
+     * - {@link StreamTriggerDelivery}: Loaded when the `type` is `"stream"`.
+     * - {@link ArtilleryTriggerDelivery}: Loaded when the `type` is `"artillery"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#TriggerDelivery Online documentation}
      */
     export type TriggerDelivery = InstantTriggerDelivery | ProjectileTriggerDelivery | FlameThrowerExplosionTriggerDelivery | BeamTriggerDelivery | StreamTriggerDelivery | ArtilleryTriggerDelivery;
@@ -8511,26 +8511,26 @@ declare module "factorio:prototype" {
      * Loaded as one of the {@link TriggerEffectItem} extensions, based on the value of the `type` key.
      *
      * **Options:**
-     * - {@link import("factorio:runtime").undefined DamageTriggerEffectItem}: Loaded when the `type` is `"damage"`.
-     * - {@link import("factorio:runtime").undefined CreateEntityTriggerEffectItem}: Loaded when the `type` is `"create-entity"`.
-     * - {@link import("factorio:runtime").undefined CreateExplosionTriggerEffectItem}: Loaded when the `type` is `"create-explosion"`.
-     * - {@link import("factorio:runtime").undefined CreateFireTriggerEffectItem}: Loaded when the `type` is `"create-fire"`.
-     * - {@link import("factorio:runtime").undefined CreateSmokeTriggerEffectItem}: Loaded when the `type` is `"create-smoke"`.
-     * - {@link import("factorio:runtime").undefined CreateTrivialSmokeEffectItem}: Loaded when the `type` is `"create-trivial-smoke"`.
-     * - {@link import("factorio:runtime").undefined CreateParticleTriggerEffectItem}: Loaded when the `type` is `"create-particle"`.
-     * - {@link import("factorio:runtime").undefined CreateStickerTriggerEffectItem}: Loaded when the `type` is `"create-sticker"`.
-     * - {@link import("factorio:runtime").undefined CreateDecorativesTriggerEffectItem}: Loaded when the `type` is `"create-decorative"`.
-     * - {@link import("factorio:runtime").undefined NestedTriggerEffectItem}: Loaded when the `type` is `"nested-result"`.
-     * - {@link import("factorio:runtime").undefined PlaySoundTriggerEffectItem}: Loaded when the `type` is `"play-sound"`.
-     * - {@link import("factorio:runtime").undefined PushBackTriggerEffectItem}: Loaded when the `type` is `"push-back"`.
-     * - {@link import("factorio:runtime").undefined DestroyCliffsTriggerEffectItem}: Loaded when the `type` is `"destroy-cliffs"`.
-     * - {@link import("factorio:runtime").undefined ShowExplosionOnChartTriggerEffectItem}: Loaded when the `type` is `"show-explosion-on-chart"`.
-     * - {@link import("factorio:runtime").undefined InsertItemTriggerEffectItem}: Loaded when the `type` is `"insert-item"`.
-     * - {@link import("factorio:runtime").undefined ScriptTriggerEffectItem}: Loaded when the `type` is `"script"`.
-     * - {@link import("factorio:runtime").undefined SetTileTriggerEffectItem}: Loaded when the `type` is `"set-tile"`.
-     * - {@link import("factorio:runtime").undefined InvokeTileEffectTriggerEffectItem}: Loaded when the `type` is `"invoke-tile-trigger"`.
-     * - {@link import("factorio:runtime").undefined DestroyDecorativesTriggerEffectItem}: Loaded when the `type` is `"destroy-decoratives"`.
-     * - {@link import("factorio:runtime").undefined CameraEffectTriggerEffectItem}: Loaded when the `type` is `"camera-effect"`.
+     * - {@link DamageTriggerEffectItem}: Loaded when the `type` is `"damage"`.
+     * - {@link CreateEntityTriggerEffectItem}: Loaded when the `type` is `"create-entity"`.
+     * - {@link CreateExplosionTriggerEffectItem}: Loaded when the `type` is `"create-explosion"`.
+     * - {@link CreateFireTriggerEffectItem}: Loaded when the `type` is `"create-fire"`.
+     * - {@link CreateSmokeTriggerEffectItem}: Loaded when the `type` is `"create-smoke"`.
+     * - {@link CreateTrivialSmokeEffectItem}: Loaded when the `type` is `"create-trivial-smoke"`.
+     * - {@link CreateParticleTriggerEffectItem}: Loaded when the `type` is `"create-particle"`.
+     * - {@link CreateStickerTriggerEffectItem}: Loaded when the `type` is `"create-sticker"`.
+     * - {@link CreateDecorativesTriggerEffectItem}: Loaded when the `type` is `"create-decorative"`.
+     * - {@link NestedTriggerEffectItem}: Loaded when the `type` is `"nested-result"`.
+     * - {@link PlaySoundTriggerEffectItem}: Loaded when the `type` is `"play-sound"`.
+     * - {@link PushBackTriggerEffectItem}: Loaded when the `type` is `"push-back"`.
+     * - {@link DestroyCliffsTriggerEffectItem}: Loaded when the `type` is `"destroy-cliffs"`.
+     * - {@link ShowExplosionOnChartTriggerEffectItem}: Loaded when the `type` is `"show-explosion-on-chart"`.
+     * - {@link InsertItemTriggerEffectItem}: Loaded when the `type` is `"insert-item"`.
+     * - {@link ScriptTriggerEffectItem}: Loaded when the `type` is `"script"`.
+     * - {@link SetTileTriggerEffectItem}: Loaded when the `type` is `"set-tile"`.
+     * - {@link InvokeTileEffectTriggerEffectItem}: Loaded when the `type` is `"invoke-tile-trigger"`.
+     * - {@link DestroyDecorativesTriggerEffectItem}: Loaded when the `type` is `"destroy-decoratives"`.
+     * - {@link CameraEffectTriggerEffectItem}: Loaded when the `type` is `"camera-effect"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#TriggerEffect Online documentation}
      */
     export type TriggerEffect = (DamageTriggerEffectItem | CreateEntityTriggerEffectItem | CreateExplosionTriggerEffectItem | CreateFireTriggerEffectItem | CreateSmokeTriggerEffectItem | CreateTrivialSmokeEffectItem | CreateParticleTriggerEffectItem | CreateStickerTriggerEffectItem | CreateDecorativesTriggerEffectItem | NestedTriggerEffectItem | PlaySoundTriggerEffectItem | PushBackTriggerEffectItem | DestroyCliffsTriggerEffectItem | ShowExplosionOnChartTriggerEffectItem | InsertItemTriggerEffectItem | ScriptTriggerEffectItem | SetTileTriggerEffectItem | InvokeTileEffectTriggerEffectItem | DestroyDecorativesTriggerEffectItem | CameraEffectTriggerEffectItem) | readonly (DamageTriggerEffectItem | CreateEntityTriggerEffectItem | CreateExplosionTriggerEffectItem | CreateFireTriggerEffectItem | CreateSmokeTriggerEffectItem | CreateTrivialSmokeEffectItem | CreateParticleTriggerEffectItem | CreateStickerTriggerEffectItem | CreateDecorativesTriggerEffectItem | NestedTriggerEffectItem | PlaySoundTriggerEffectItem | PushBackTriggerEffectItem | DestroyCliffsTriggerEffectItem | ShowExplosionOnChartTriggerEffectItem | InsertItemTriggerEffectItem | ScriptTriggerEffectItem | SetTileTriggerEffectItem | InvokeTileEffectTriggerEffectItem | DestroyDecorativesTriggerEffectItem | CameraEffectTriggerEffectItem)[];
@@ -8805,7 +8805,7 @@ declare module "factorio:prototype" {
         count?: uint32;
     }
     /**
-     * A vector is a two-element array containing the x and y components. Unlike Positions, vectors don't use the x, y keys. Positive x goes east, positive y goes south. See also: {@link import("factorio:runtime").undefined Runtime Vector}.
+     * A vector is a two-element array containing the x and y components. Unlike Positions, vectors don't use the x, y keys. Positive x goes east, positive y goes south. See also: {@link Vector Runtime Vector}.
      * @example
      * vector = {0, 12}
      * @example
@@ -9135,7 +9135,7 @@ declare module "factorio:prototype" {
      * It is recommended to only use `true` and `false`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#bool Online documentation}
      */
-    export type bool = builtin;
+    export type bool = boolean;
     /**
      * Format uses a dot as its decimal delimiter. Doubles are stored in the {@linkplain http://en.wikipedia.org/wiki/Double-precision_floating-point_format double precision} floating point format.
      * @example
@@ -9143,7 +9143,7 @@ declare module "factorio:prototype" {
      * 6
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#double Online documentation}
      */
-    export type double = builtin;
+    export type double = number;
     /**
      * Format uses a dot as its decimal delimiter. Floats are stored in the {@linkplain https://en.wikipedia.org/wiki/Single-precision_floating-point_format single precision} floating point format.
      * @example
@@ -9151,48 +9151,41 @@ declare module "factorio:prototype" {
      * 6
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#float Online documentation}
      */
-    export type float = builtin;
+    export type float = number;
     /**
      * 16 bit signed integer. Ranges from `-32'768` to `32'767`, or `[-2^15, 2^15-1]`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#int16 Online documentation}
      */
-    export type int16 = builtin;
+    export type int16 = number;
     /**
      * 32 bit signed integer. Ranges from `-2'147'483'648` to `2'147'483'647`, or `[-2^31, 2^31-1]`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#int32 Online documentation}
      */
-    export type int32 = builtin;
+    export type int32 = number;
     /**
      * 8 bit signed integer. Ranges from `-128` to `127`, or `[-2^7, 2^7-1]`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#int8 Online documentation}
      */
-    export type int8 = builtin;
-    /**
-     * Strings are enclosed in double-quotes.
-     * @example
-     * "Hello, world!"
-     * @see {@link https://lua-api.factorio.com/1.1.89/types.html#string Online documentation}
-     */
-    export type string = builtin;
+    export type int8 = number;
     /**
      * 16 bit unsigned integer. Ranges from `0` to `65'535`, or `[0, 2^16-1]`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#uint16 Online documentation}
      */
-    export type uint16 = builtin;
+    export type uint16 = number;
     /**
      * 32 bit unsigned integer. Ranges from `0` to `4'294'967'295`, or `[0, 2^32-1]`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#uint32 Online documentation}
      */
-    export type uint32 = builtin;
+    export type uint32 = number;
     /**
      * 64 bit unsigned integer.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#uint64 Online documentation}
      */
-    export type uint64 = builtin;
+    export type uint64 = number;
     /**
      * 8 bit unsigned integer. Ranges from `0` to `255`, or `[0, 2^8-1]`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types.html#uint8 Online documentation}
      */
-    export type uint8 = builtin;
+    export type uint8 = number;
 }
 

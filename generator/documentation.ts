@@ -8,7 +8,7 @@ import { GenerationContext } from "./GenerationContext.js"
 
 const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
 
-function mapLink(context: GenerationContext, origLink: string, warn = true): string | undefined {
+function mapLink(context: GenerationContext, origLink: string): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {
     return origLink
   }
@@ -28,17 +28,14 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
     return context.docUrlBase() + name + ".html"
   }
 
-  let typeName: string | undefined
-  if (stage !== context.stageName) {
-    if (stage !== "runtime" && stage !== "prototype") {
-      context.warning(`unknown doc link stage: ${origLink}`)
-    }
-  } else {
-    typeName = context.references.get(name)
-    if (!typeName) {
-      if (warn) context.warning(`unresolved doc reference: ${origLink}`)
-      return undefined
-    }
+  if (stage !== "runtime" && stage !== "prototype") {
+    context.warning(`unknown doc link stage: ${origLink}`)
+  }
+
+  const typeName: string | undefined = context.references.get(name)
+  if (stage === context.stageName && !typeName) {
+    context.warning(`unresolved doc reference: ${origLink}`)
+    return undefined
   }
 
   let fieldRef = ""
@@ -55,9 +52,9 @@ function mapLink(context: GenerationContext, origLink: string, warn = true): str
     }
   }
 
-  if (stage !== context.stageName) {
-    // prepend import("factorio:${stage}")
-    return `import("factorio:${stage}").${typeName}${fieldRef}`
+  // if still has reference of same name, don't use import
+  if (!typeName && stage !== context.stageName) {
+    return `import("factorio:${stage}").${name}${fieldRef}`
   }
   return typeName + fieldRef
 }

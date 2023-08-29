@@ -92,13 +92,11 @@ export function mapPrototypeType(
   }
 }
 
-/**
- * A root level "struct" is used for things
- */
 export function mapPrototypeConcept(
   context: PrototypeGenerationContext,
   type: prototype.Type,
-  prototypeProperties: ts.TypeElement[] | undefined
+  prototypeProperties: ts.TypeElement[] | undefined,
+  existingDef: InterfaceDef | TypeAliasDef | undefined
 ): {
   type: ts.TypeNode
   description?: string
@@ -107,6 +105,7 @@ export function mapPrototypeConcept(
     context,
     type,
     {
+      existingDef,
       prototypeConceptProperties: prototypeProperties,
     },
     RWUsage.Write

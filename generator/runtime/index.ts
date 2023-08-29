@@ -1,4 +1,3 @@
-import { InterfaceDef, NamespaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { Class, Concept, Define, Event, FactorioRuntimeApiJson } from "../FactorioRuntimeApiJson.js"
 import { RWUsage } from "../read-write-types.js"
 import ts from "typescript"
@@ -35,24 +34,6 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   conceptReferencedBy = new Map<Concept, Set<Concept>>(this.apiDocs.concepts.map((e) => [e, new Set()]))
   // empty object = has separate read/write types, but not yet known form (may use default)
   conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
-
-  getInterfaceDef(name: string): InterfaceDef | TypeAliasDef | undefined {
-    const result = this._manualDefinitions[name]
-    if (!result) return
-    if (result.kind !== "interface" && result.kind !== "type") {
-      throw new Error(`Existing definition for ${name} is not an interface`)
-    }
-    return result
-  }
-
-  getNamespaceDef(name: string): NamespaceDef | undefined {
-    const result = this._manualDefinitions[name]
-    if (!result) return
-    if (result.kind !== "namespace") {
-      throw new Error(`Existing definitions for ${name} is not a namespace`)
-    }
-    return result
-  }
 
   getOnlineDocUrl(reference: string): string {
     let relative_link: string
