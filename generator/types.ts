@@ -869,10 +869,17 @@ export function makeNullable(typeNode: ts.TypeNode): ts.TypeNode {
   }
   return ts.factory.createUnionTypeNode([...typeNode.types, Types.nil])
 }
-export function typeToDeclaration(type: ts.TypeNode, name: string): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
+export function typeToDeclaration(
+  type: ts.TypeNode,
+  name: string,
+  heritageClauses?: ts.HeritageClause[]
+): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
   if (ts.isTypeLiteralNode(type)) {
-    return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, undefined, type.members)
+    return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, heritageClauses, type.members)
   } else {
+    if (heritageClauses) {
+      throw new Error("Cannot have heritage clauses on non-interface")
+    }
     return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
   }
 }

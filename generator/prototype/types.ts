@@ -5,6 +5,7 @@ import { addJsDoc } from "../documentation.js"
 import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
 import { mapProperty } from "./properties.js"
 import { sortByOrder } from "../util.js"
+import ts from "typescript"
 
 export function preprocessTypes(context: PrototypeGenerationContext): void {
   for (const type of context.apiDocs.types) {
@@ -26,16 +27,12 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
   }
 
   const existing = context.getInterfaceDef(concept.name)
-
   const properties = concept.properties?.sort(sortByOrder).flatMap((p) => mapProperty(context, p, concept.name))
 
+  const heritageClauses = getHeritageClauses(context, concept)
   const { type, description } = mapPrototypeConcept(context, concept.type, properties, existing)
 
-  if (concept.parent || concept.abstract || concept.inline) {
-    // context.warning("TODO")
-  }
-
-  const declaration = typeToDeclaration(type, concept.name)
+  const declaration = typeToDeclaration(type, concept.name, heritageClauses)
 
   if (description) {
     concept.description += `\n\n${description}`
@@ -54,4 +51,31 @@ function generateBuiltinType(context: PrototypeGenerationContext, concept: Proto
     return
   }
   context.currentFile.add(addJsDoc(context, existing.node, concept, name, undefined))
+}
+
+function getHeritageClauses(
+  context: PrototypeGenerationContext,
+  concept: PrototypeConcept
+): ts.HeritageClause[] | undefined {
+  if (!concept.parent) return
+  const parentConcept = context.types.get(concept.parent)
+  if (!parentConcept) {
+    context.warning("Unknown parent type: " + concept.parent)
+    return
+  }
+
+  if (concept.properties?.some((x) => x.name == "type") && parentConcept.properties?.some((x) => x.name == "type")) {
+    return [
+      ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
+        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier("OmitType"), [
+          ts.factory.createTypeReferenceNode(parentConcept.name),
+        ]),
+      ]),
+    ]
+  }
+  return [
+    ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
+      ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(concept.parent), undefined),
+    ]),
+  ]
 }
