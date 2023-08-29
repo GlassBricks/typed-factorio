@@ -780,7 +780,8 @@ function isNullableFromDescription(
   },
   parent: string
 ): boolean {
-  const nullableRegex = /(returns|or|be|possibly|otherwise|else|) [`']?nil[`']?|`?nil`? (if|when|otherwise)/i
+  const nullableRegex =
+    /(passing|returns?|or|be|possibly|otherwise|else|writing|set(ting)?( this)?( to)?) [`']?nil[`']?|`?nil`? (if|when|otherwise|erases)/i
   const nullable = member.description.match(nullableRegex)
   if (nullable) {
     if (!member.description.match(/[`' ]nil/i)) {
@@ -791,6 +792,9 @@ function isNullableFromDescription(
     }
     const exceptionsRegex = /`name` will be `nil`/i
     return !exceptionsRegex.test(member.description)
+  }
+  if (member.description.match(/[`' ]nil/i)) {
+    context.warning("May still be nullable: " + member.description)
   }
   // if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
   //   console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
