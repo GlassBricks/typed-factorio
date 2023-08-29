@@ -7,7 +7,7 @@ import type * as runtime from "./FactorioRuntimeApiJson.js"
 import { IndexTypes } from "./runtime/index-types.js"
 import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
-import { mapAttribute, mapParameterToProperty } from "./members.js"
+import { mapAttribute, mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./read-write-types.js"
 import { assertNever, sortByOrder } from "./util.js"
 import { RuntimeGenerationContext } from "./runtime/index.js"
@@ -15,8 +15,10 @@ import { GenerationContext } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype/index.js"
 
 export interface TypeContext {
-  contextName: string
+  contextName?: string
   existingDef?: InterfaceDef | TypeAliasDef
+
+  prototypeConceptProperties?: ts.TypeElement[]
 }
 
 export interface RWType {
@@ -76,8 +78,43 @@ export function mapConceptType(
   return mapTypeInternal(context, type, typeContext, usage)
 }
 
-export function mapPrototypeType(context: PrototypeGenerationContext, type: prototype.Type): ts.TypeNode {
-  return mapTypeInternal(context, type, undefined, RWUsage.Write).mainType
+export function mapPrototypeType(
+  context: PrototypeGenerationContext,
+  type: prototype.Type
+): {
+  type: ts.TypeNode
+  description?: string
+} {
+  const iType = mapTypeInternal(context, type, undefined, RWUsage.Write)
+  return {
+    type: iType.mainType,
+    description: iType.description,
+  }
+}
+
+/**
+ * A root level "struct" is used for things
+ */
+export function mapPrototypeConcept(
+  context: PrototypeGenerationContext,
+  type: prototype.Type,
+  prototypeProperties: ts.TypeElement[] | undefined
+): {
+  type: ts.TypeNode
+  description?: string
+} {
+  const iType = mapTypeInternal(
+    context,
+    type,
+    {
+      prototypeConceptProperties: prototypeProperties,
+    },
+    RWUsage.Write
+  )
+  return {
+    type: iType.mainType,
+    description: iType.description,
+  }
 }
 
 function assertIsRuntimeGenerationContext(context: GenerationContext): asserts context is RuntimeGenerationContext {
@@ -105,7 +142,7 @@ function mapTypeInternal(
     case "union":
       return mapUnionType(context, type, typeContext, usage)
     case "array":
-      return mapArrayType(context, type, usage)
+      return mapArrayType(context, type, typeContext, usage)
     case "dictionary":
       return mapDictionaryType(context, type, typeContext, usage)
     case "LuaCustomTable":
@@ -122,10 +159,8 @@ function mapTypeInternal(
       return mapTableType(context, type, typeContext, usage)
     case "tuple":
       return mapTupleType(context, type, typeContext, usage)
-    case "struct": {
-      context.warning("todo: handle struct type")
-      return { mainType: Types.unknown, asString: undefined }
-    }
+    case "struct":
+      return mapPrototypeStructType(context, typeContext)
     default:
       assertNever(type)
   }
@@ -247,6 +282,9 @@ function mapTypeType(
 }
 
 const unionDescriptionHeader = "\n**Options:**\n"
+function isFullUnion(t: prototype.Type | runtime.Type): t is runtime.UnionType & { full_format: true } {
+  return typeof t !== "string" && t.complex_type === "union" && t.full_format
+}
 
 function mapUnionType(
   context: GenerationContext,
@@ -284,6 +322,8 @@ function mapUnionType(
         })
         .map((x) => x.trim())
         .join("\n")
+  } else if (type.options.some(isFullUnion)) {
+    description = types[type.options.findIndex(isFullUnion)].description
   } else if (types.some((t) => t.description)) {
     context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
   }
@@ -339,9 +379,10 @@ function makeUnion(types: ts.TypeNode[]): ts.TypeNode {
 function mapArrayType(
   context: GenerationContext,
   type: runtime.ArrayType | prototype.ArrayType,
+  typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
-  const elementType = mapTypeInternal(context, type.value, undefined, usage)
+  const elementType = mapTypeInternal(context, type.value, typeContext, usage)
   let mainType: ts.TypeNode = ts.factory.createArrayTypeNode(elementType.mainType)
   // add readonly modifier if write but not read
   if (usage === RWUsage.Write) {
@@ -580,10 +621,10 @@ function mapLuaStructType(
   typeContext: TypeContext | undefined
 ): IntermediateType {
   assertIsRuntimeGenerationContext(context)
-  assert(typeContext)
+  assert(typeContext && typeContext.contextName)
   const attributes = type.attributes
     .sort(sortByOrder)
-    .flatMap((a) => mapAttribute(context, a, typeContext.contextName, typeContext.existingDef))
+    .flatMap((a) => mapAttribute(context, a, typeContext.contextName!, typeContext.existingDef))
 
   const mainType = ts.factory.createTypeLiteralNode(attributes)
   return {
@@ -599,7 +640,7 @@ function mapTableType(
   usage: RWUsage
 ): IntermediateType {
   assertIsRuntimeGenerationContext(context)
-  assert(typeContext)
+  assert(typeContext && typeContext.contextName)
   if (type.variant_parameter_groups) {
     context.warning("variant_parameter_groups is not supported in mapType")
   }
@@ -607,7 +648,7 @@ function mapTableType(
   const existingDef = typeContext.existingDef
   const parameters = type.parameters
     .sort(sortByOrder)
-    .map((p) => mapParameterToProperty(context, p, typeContext.contextName, usage, existingDef))
+    .map((p) => mapParameterToProperty(context, p, typeContext.contextName!, usage, existingDef))
 
   const parameterNames = new Set(type.parameters.map((p) => p.name))
   if (existingDef?.annotations.addProperties) {
@@ -653,7 +694,7 @@ function mapRuntimeTupleType(
   typeContext: TypeContext | undefined,
   usage: RWUsage
 ): IntermediateType {
-  assert(typeContext)
+  assert(typeContext && typeContext.contextName)
   if (type.variant_parameter_groups) {
     context.warning("variant_parameter_groups is not supported for tuples")
   }
@@ -661,7 +702,7 @@ function mapRuntimeTupleType(
     context.warning("Tuple cannot be read-write")
   }
   const parameters = type.parameters.sort(sortByOrder).map((p) => {
-    const paramType = mapMemberType(context, p, typeContext.contextName, p.type, usage).mainType
+    const paramType = mapMemberType(context, p, typeContext.contextName!, p.type, usage).mainType
     return ts.factory.createNamedTupleMember(
       undefined,
       ts.factory.createIdentifier(p.name),
@@ -691,13 +732,27 @@ function mapPrototypeTupleType(
     return type.mainType
   })
 
-  const result = ts.factory.createTupleTypeNode(values)
+  const result = ts.factory.createTypeOperatorNode(
+    ts.SyntaxKind.ReadonlyKeyword,
+    ts.factory.createTupleTypeNode(values)
+  )
   return {
     mainType: result,
     asString: undefined,
   }
 }
 
+function mapPrototypeStructType(context: GenerationContext, typeContext: TypeContext | undefined): IntermediateType {
+  assert(typeContext)
+  if (!typeContext.prototypeConceptProperties) {
+    context.warning("Need properties for prototype concept")
+  }
+  const properties = typeContext.prototypeConceptProperties
+  return {
+    mainType: ts.factory.createTypeLiteralNode(properties),
+    asString: undefined,
+  }
+}
 function tryUseIndexType(
   context: RuntimeGenerationContext,
   member: {
@@ -814,4 +869,11 @@ export function makeNullable(typeNode: ts.TypeNode): ts.TypeNode {
     return typeNode
   }
   return ts.factory.createUnionTypeNode([...typeNode.types, Types.nil])
+}
+export function typeToDeclaration(type: ts.TypeNode, name: string): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
+  if (ts.isTypeLiteralNode(type)) {
+    return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, undefined, type.members)
+  } else {
+    return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
+  }
 }

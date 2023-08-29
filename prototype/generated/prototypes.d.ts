@@ -204,6 +204,13 @@ declare module "factorio:prototype" {
         sound: Sound;
         /**
          * Lets the game know in what instances the audio file is played.
+         *
+         * **Options:**
+         * - `"menu-track"`: This track is only played in the main menu.
+         * - `"main-track"`: This track is played interleaved (alternating) with `"interlude"` tracks.
+         * - `"early-game"`: This track is considered a main track, with no functional difference to `"main-track"`.
+         * - `"late-game"`: This track is considered a main track, with no functional difference to `"main-track"`.
+         * - `"interlude"`: This track is played in between the main tracks.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AmbientSound.html#AmbientSound.track_type Online documentation}
          */
         track_type: "menu-track" | "main-track" | "early-game" | "late-game" | "interlude";
@@ -302,7 +309,7 @@ declare module "factorio:prototype" {
          * The width and height of one frame. If this is a tuple, the first member of the tuple is the width and the second is the height. Otherwise the size is both width and height. Width and height may only be in the range of 0-8192.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AnimationPrototype.html#AnimationPrototype.size Online documentation}
          */
-        size?: SpriteSizeType | [
+        size?: SpriteSizeType | readonly [
             SpriteSizeType,
             SpriteSizeType
         ];
@@ -340,7 +347,7 @@ declare module "factorio:prototype" {
          * Loaded only when `x` and `y` are both `0`. The first member of the tuple is `x` and the second is `y`.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AnimationPrototype.html#AnimationPrototype.position Online documentation}
          */
-        position?: [
+        position?: readonly [
             SpriteSizeType,
             SpriteSizeType
         ];
@@ -1526,25 +1533,25 @@ declare module "factorio:prototype" {
         activity_led_sprites: Sprite4Way;
         input_connection_bounding_box: BoundingBox;
         output_connection_bounding_box: BoundingBox;
-        activity_led_light_offsets: [
+        activity_led_light_offsets: readonly [
             Vector,
             Vector,
             Vector,
             Vector
         ];
-        screen_light_offsets: [
+        screen_light_offsets: readonly [
             Vector,
             Vector,
             Vector,
             Vector
         ];
-        input_connection_points: [
+        input_connection_points: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint
         ];
-        output_connection_points: [
+        output_connection_points: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
@@ -1569,13 +1576,13 @@ declare module "factorio:prototype" {
         item_slot_count: uint32;
         sprites: Sprite4Way;
         activity_led_sprites: Sprite4Way;
-        activity_led_light_offsets: [
+        activity_led_light_offsets: readonly [
             Vector,
             Vector,
             Vector,
             Vector
         ];
-        circuit_wire_connection_points: [
+        circuit_wire_connection_points: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
@@ -2446,7 +2453,7 @@ declare module "factorio:prototype" {
          * Ticks for cooldown after unit is spawned
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EnemySpawnerPrototype.html#EnemySpawnerPrototype.spawning_cooldown Online documentation}
          */
-        spawning_cooldown: [
+        spawning_cooldown: readonly [
             double,
             double
         ];
@@ -3892,13 +3899,13 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/InserterPrototype.html#InserterPrototype.stack_size_bonus Online documentation}
          */
         stack_size_bonus?: uint8;
-        circuit_wire_connection_points?: [
+        circuit_wire_connection_points?: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint
         ];
-        circuit_connector_sprites?: [
+        circuit_connector_sprites?: readonly [
             CircuitConnectorSprites,
             CircuitConnectorSprites,
             CircuitConnectorSprites,
@@ -4213,6 +4220,12 @@ declare module "factorio:prototype" {
         extends_inventory_by_default?: bool;
         /**
          * The insertion priority mode for this item. This determines if items are first attempted to be put into this items inventory if the item extends the inventory it sits in when items are put into the parent inventory.
+         *
+         * **Options:**
+         * - `"default"`: Items are inserted into this item-with-inventory only if they match the whitelist defined in the prototype for the item and whitelist is used.
+         * - `"never"`: Items are never inserted into this item-with-inventory except explicitly by the player or script.
+         * - `"always"`: All items first try to be inserted into this item-with-inventory.
+         * - `"when-manually-filtered"`: When the inventory contains filters that match the item-to-be-inserted then try to put it into this item before the inventory this item resides in.
          * @example
          * insertion_priority_mode = "never"
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemWithInventoryPrototype.html#ItemWithInventoryPrototype.insertion_priority_mode Online documentation}
@@ -4707,6 +4720,13 @@ declare module "factorio:prototype" {
     export interface LogisticContainerPrototype extends OmitType<ContainerPrototype> {
         /**
          * The way this chest interacts with the logistic network.
+         *
+         * **Options:**
+         * - `"active-provider"`
+         * - `"passive-provider"`
+         * - `"requester"`
+         * - `"storage"`
+         * - `"buffer"`
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LogisticContainerPrototype.html#LogisticContainerPrototype.logistic_mode Online documentation}
          */
         logistic_mode: "active-provider" | "passive-provider" | "requester" | "storage" | "buffer";
@@ -4944,7 +4964,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance  > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MiningDrillPrototype.html#MiningDrillPrototype.circuit_wire_connection_points Online documentation}
          */
-        circuit_wire_connection_points?: [
+        circuit_wire_connection_points?: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
@@ -4954,7 +4974,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance  > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MiningDrillPrototype.html#MiningDrillPrototype.circuit_connector_sprites Online documentation}
          */
-        circuit_connector_sprites?: [
+        circuit_connector_sprites?: readonly [
             CircuitConnectorSprites,
             CircuitConnectorSprites,
             CircuitConnectorSprites,
@@ -5246,7 +5266,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/OffshorePumpPrototype.html#OffshorePumpPrototype.circuit_wire_connection_points Online documentation}
          */
-        circuit_wire_connection_points?: [
+        circuit_wire_connection_points?: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
@@ -5256,7 +5276,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/OffshorePumpPrototype.html#OffshorePumpPrototype.circuit_connector_sprites Online documentation}
          */
-        circuit_connector_sprites?: [
+        circuit_connector_sprites?: readonly [
             CircuitConnectorSprites,
             CircuitConnectorSprites,
             CircuitConnectorSprites,
@@ -5655,7 +5675,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance  > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PumpPrototype.html#PumpPrototype.circuit_wire_connection_points Online documentation}
          */
-        circuit_wire_connection_points?: [
+        circuit_wire_connection_points?: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
@@ -5665,7 +5685,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance  > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PumpPrototype.html#PumpPrototype.circuit_connector_sprites Online documentation}
          */
-        circuit_connector_sprites?: [
+        circuit_connector_sprites?: readonly [
             CircuitConnectorSprites,
             CircuitConnectorSprites,
             CircuitConnectorSprites,
@@ -7598,7 +7618,7 @@ declare module "factorio:prototype" {
          * The width and height of the sprite. If this is a tuple, the first member of the tuple is the width and the second is the height. Otherwise the size is both width and height. Width and height may only be in the range of 0-8192.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpritePrototype.html#SpritePrototype.size Online documentation}
          */
-        size?: SpriteSizeType | [
+        size?: SpriteSizeType | readonly [
             SpriteSizeType,
             SpriteSizeType
         ];
@@ -7636,7 +7656,7 @@ declare module "factorio:prototype" {
          * Loaded only when `x` and `y` are both `0`. The first member of the tuple is `x` and the second is `y`.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpritePrototype.html#SpritePrototype.position Online documentation}
          */
-        position?: [
+        position?: readonly [
             SpriteSizeType,
             SpriteSizeType
         ];
@@ -7833,7 +7853,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance  > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StorageTankPrototype.html#StorageTankPrototype.circuit_wire_connection_points Online documentation}
          */
-        circuit_wire_connection_points?: [
+        circuit_wire_connection_points?: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
@@ -7843,7 +7863,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance  > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StorageTankPrototype.html#StorageTankPrototype.circuit_connector_sprites Online documentation}
          */
-        circuit_connector_sprites?: [
+        circuit_connector_sprites?: readonly [
             CircuitConnectorSprites,
             CircuitConnectorSprites,
             CircuitConnectorSprites,
@@ -8034,19 +8054,19 @@ declare module "factorio:prototype" {
         foam_color_multiplier: float;
         tick_scale: float;
         animation_speed: float;
-        animation_scale: float | [
+        animation_scale: float | readonly [
             float,
             float
         ];
-        dark_threshold: float | [
+        dark_threshold: float | readonly [
             float,
             float
         ];
-        reflection_threshold: float | [
+        reflection_threshold: float | readonly [
             float,
             float
         ];
-        specular_threshold: float | [
+        specular_threshold: float | readonly [
             float,
             float
         ];
@@ -8330,7 +8350,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TrainStopPrototype.html#TrainStopPrototype.circuit_wire_connection_points Online documentation}
          */
-        circuit_wire_connection_points?: [
+        circuit_wire_connection_points?: readonly [
             WireConnectionPoint,
             WireConnectionPoint,
             WireConnectionPoint,
@@ -8340,7 +8360,7 @@ declare module "factorio:prototype" {
          * Mandatory if circuit_wire_max_distance > 0.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TrainStopPrototype.html#TrainStopPrototype.circuit_connector_sprites Online documentation}
          */
-        circuit_connector_sprites?: [
+        circuit_connector_sprites?: readonly [
             CircuitConnectorSprites,
             CircuitConnectorSprites,
             CircuitConnectorSprites,

@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { createConst, Modifiers } from "../genUtil.js"
-import { analyzeMethod, mapFunction } from "../members.js"
+import { analyzeMethod, mapFunction } from "./members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { mapRuntimeType } from "../types.js"
 import { sortByOrder } from "../util.js"

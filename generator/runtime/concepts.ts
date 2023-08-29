@@ -9,7 +9,7 @@ import {
   RWUsage,
   setReadWriteType,
 } from "../read-write-types.js"
-import { mapConceptType, mapRuntimeType } from "../types.js"
+import { mapConceptType, mapRuntimeType, typeToDeclaration } from "../types.js"
 import { sortByOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { DeclarationType } from "../OutputFile.js"
@@ -180,14 +180,6 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
 
 function getWriteDescription(concept: Concept): string {
   return `Write form of {@link ${concept.name}}, where table-or-array concepts are allowed to take an array form.`
-}
-
-function typeToDeclaration(type: ts.TypeNode, name: string): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
-  if (ts.isTypeLiteralNode(type)) {
-    return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, undefined, type.members)
-  } else {
-    return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
-  }
 }
 
 function createTableOrArrayConcept(

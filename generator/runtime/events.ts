@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { createExtendsClause, toPascalCase } from "../genUtil.js"
-import { mapParameterToProperty } from "../members.js"
+import { mapParameterToProperty } from "./members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { sortByOrder } from "../util.js"
 import { DeclarationType } from "../OutputFile.js"
