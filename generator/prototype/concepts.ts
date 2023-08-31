@@ -3,7 +3,7 @@ import { DeclarationType } from "../OutputFile.js"
 import { PrototypeConcept } from "../FactorioPrototypeApiJson.js"
 import { addJsDoc } from "../documentation.js"
 import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
-import { mapProperty } from "./properties.js"
+import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
 import { sortByOrder } from "../util.js"
 import ts from "typescript"
 import { InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
@@ -29,7 +29,7 @@ function generateTypeDeclaration(
 ) {
   const properties = concept.properties?.sort(sortByOrder).flatMap((p) => mapProperty(context, p, concept.name))
 
-  const heritageClauses = getHeritageClauses(context, concept)
+  const heritageClauses = getConceptHeritageClauses(context, concept)
   const { type, description } = mapPrototypeConcept(context, concept.type, properties, existing)
 
   const declaration = typeToDeclaration(type, concept.name, heritageClauses)
@@ -69,29 +69,23 @@ function generateBuiltinType(context: PrototypeGenerationContext, concept: Proto
   context.currentFile.add(addJsDoc(context, existing.node, concept, name, undefined))
 }
 
-function getHeritageClauses(
+function getConceptHeritageClauses(
   context: PrototypeGenerationContext,
   concept: PrototypeConcept
 ): ts.HeritageClause[] | undefined {
   if (!concept.parent) return
+  const overridenAttributes = getOverridenAttributes(context, concept, context.types, context.conceptProperties)
+
   const parentConcept = context.types.get(concept.parent)
   if (!parentConcept) {
-    context.warning("Unknown parent type: " + concept.parent)
+    context.warning("Unknown parent concept: " + concept.parent)
     return
   }
-
-  if (concept.properties?.some((x) => x.name == "type") && parentConcept.properties?.some((x) => x.name == "type")) {
-    return [
-      ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
-        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier("OmitType"), [
-          ts.factory.createTypeReferenceNode(parentConcept.name),
-        ]),
-      ]),
-    ]
+  const overridesType =
+    concept.properties?.some((x) => x.name == "type") && parentConcept.properties?.some((x) => x.name == "type")
+  if (overridesType) {
+    overridenAttributes.push("type")
   }
-  return [
-    ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
-      ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(concept.parent), undefined),
-    ]),
-  ]
+
+  return getHeritageClauses(concept.parent, overridenAttributes)
 }

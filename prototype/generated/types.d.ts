@@ -1416,7 +1416,7 @@ declare module "factorio:prototype" {
         max_distance?: uint16;
         strength?: float;
     }
-    export interface CameraStyleSpecification extends OmitType<EmptyWidgetStyleSpecification> {
+    export interface CameraStyleSpecification extends Omit<EmptyWidgetStyleSpecification, "type"> {
         type: "camera_style";
     }
     /**
@@ -1967,14 +1967,14 @@ declare module "factorio:prototype" {
          */
         offsets?: readonly Vector[];
     }
-    export interface CreateExplosionTriggerEffectItem extends OmitType<CreateEntityTriggerEffectItem> {
+    export interface CreateExplosionTriggerEffectItem extends Omit<CreateEntityTriggerEffectItem, "type"> {
         type: "create-explosion";
         max_movement_distance?: float;
         max_movement_distance_deviation?: float;
         inherit_movement_distance_from_projectile?: bool;
         cycle_while_moving?: bool;
     }
-    export interface CreateFireTriggerEffectItem extends OmitType<CreateEntityTriggerEffectItem> {
+    export interface CreateFireTriggerEffectItem extends Omit<CreateEntityTriggerEffectItem, "type"> {
         type: "create-fire";
         initial_ground_flame_count?: uint8;
     }
@@ -2006,7 +2006,7 @@ declare module "factorio:prototype" {
         tail_width?: float;
         rotate_offsets?: bool;
     }
-    export interface CreateSmokeTriggerEffectItem extends OmitType<CreateEntityTriggerEffectItem> {
+    export interface CreateSmokeTriggerEffectItem extends Omit<CreateEntityTriggerEffectItem, "type"> {
         type: "create-smoke";
         initial_height?: float;
         speed?: Vector;
@@ -2298,7 +2298,7 @@ declare module "factorio:prototype" {
         points: NoiseArrayConstruction;
         maximum_distance?: ConstantNoiseNumber;
     }
-    export interface DoubleSliderStyleSpecification extends OmitType<SliderStyleSpecification> {
+    export interface DoubleSliderStyleSpecification extends Omit<SliderStyleSpecification, "type"> {
         type: "double_slider_style";
     }
     export interface DropDownStyleSpecification extends BaseStyleSpecification {
@@ -4468,7 +4468,7 @@ declare module "factorio:prototype" {
         count?: uint16;
         mining_trigger: Trigger;
     }
-    export interface MinimapStyleSpecification extends OmitType<EmptyWidgetStyleSpecification> {
+    export interface MinimapStyleSpecification extends Omit<EmptyWidgetStyleSpecification, "type"> {
         type: "minimap_style";
     }
     /**
@@ -6590,7 +6590,7 @@ declare module "factorio:prototype" {
      * }
      * @see {@link https://lua-api.factorio.com/1.1.89/types/RotatedSprite.html Online documentation}
      */
-    export interface RotatedSprite extends SpriteParameters {
+    export interface RotatedSprite extends Omit<SpriteParameters, "filename"> {
         /**
          * If this property is present, all RotatedSprite definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
          *
@@ -7951,7 +7951,7 @@ declare module "factorio:prototype" {
      * @see {@link https://lua-api.factorio.com/1.1.89/types/TechnologyID.html Online documentation}
      */
     export type TechnologyID = string;
-    export interface TechnologySlotStyleSpecification extends OmitType<ButtonStyleSpecification> {
+    export interface TechnologySlotStyleSpecification extends Omit<ButtonStyleSpecification, "type"> {
         type: "technology_slot_style";
         highlighted_graphical_set?: ElementImageSet;
         default_background_shadow?: ElementImageSet;
