@@ -53,7 +53,16 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
       relative_link = "auxiliary/libraries.html#new-functions"
     } else if (reference.includes(".")) {
       const className = reference.substring(0, reference.indexOf("."))
-      return this.getOnlineDocUrl(className) + "#" + reference
+      if (this.classes.has(className)) {
+        return this.getOnlineDocUrl(className) + "#" + reference
+      }
+      if (this.concepts.has(className)) {
+        relative_link = "concepts.html#" + reference
+        // concepts.html#Concept.property
+      } else {
+        this.warning(`unknown dot reference ${reference}`)
+        relative_link = ""
+      }
     } else {
       this.warning(`Could not get doc url for ${reference}`)
       relative_link = ""

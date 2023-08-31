@@ -478,77 +478,77 @@ declare module "factorio:runtime" {
     export interface GameViewSettings {
         /**
          * Show the controller GUI elements. This includes the toolbar, the selected tool slot, the armour slot, and the gun and ammunition slots.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_controller_gui Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_controller_gui Online documentation}
          */
         show_controller_gui: boolean;
         /**
          * Show the chart in the upper right-hand corner of the screen.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_minimap Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_minimap Online documentation}
          */
         show_minimap: boolean;
         /**
          * Show research progress and name in the upper right-hand corner of the screen.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_research_info Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_research_info Online documentation}
          */
         show_research_info: boolean;
         /**
          * Show overlay icons on entities. Also known as "alt-mode".
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_entity_info Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_entity_info Online documentation}
          */
         show_entity_info: boolean;
         /**
          * Show the flashing alert icons next to the player's toolbar.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_alert_gui Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_alert_gui Online documentation}
          */
         show_alert_gui: boolean;
         /**
          * When `true` (the default), mousing over an entity will select it. Otherwise, moving the mouse won't update entity selection.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.update_entity_selection Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.update_entity_selection Online documentation}
          */
         update_entity_selection: boolean;
         /**
          * When `true` (`false` is default), the rails will always show the rail block visualisation.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_rail_block_visualisation Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_rail_block_visualisation Online documentation}
          */
         show_rail_block_visualisation: boolean;
         /**
          * Shows or hides the buttons row.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_side_menu Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_side_menu Online documentation}
          */
         show_side_menu: boolean;
         /**
          * Shows or hides the view options when map is opened.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_map_view_options Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_map_view_options Online documentation}
          */
         show_map_view_options: boolean;
         /**
          * Shows or hides the tooltip that is displayed when selecting an entity.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_entity_tooltip Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_entity_tooltip Online documentation}
          */
         show_entity_tooltip: boolean;
         /**
          * Shows or hides quickbar of shortcuts.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_quickbar Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_quickbar Online documentation}
          */
         show_quickbar: boolean;
         /**
          * Shows or hides the shortcut bar.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_shortcut_bar Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_shortcut_bar Online documentation}
          */
         show_shortcut_bar: boolean;
         /**
          * Shows or hides the crafting queue.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_crafting_queue Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_crafting_queue Online documentation}
          */
         show_crafting_queue: boolean;
         /**
          * Shows or hides the tool window with the weapons and armor.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_tool_bar Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_tool_bar Online documentation}
          */
         show_tool_bar: boolean;
         /**
          * Shows or hides the mouse and keyboard/controller button hints in the bottom left corner if they are enabled in the interface settings.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings#GameViewSettings.show_hotkey_suggestions Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#GameViewSettings.show_hotkey_suggestions Online documentation}
          */
         show_hotkey_suggestions: boolean;
     }
@@ -934,7 +934,7 @@ declare module "factorio:runtime" {
         path_finder: PathFinderMapSettings;
         /**
          * If a behavior fails this many times, the enemy (or enemy group) is destroyed. This solves biters getting stuck within their own base.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#MapSettings#MapSettings.max_failed_behavior_count Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#MapSettings.max_failed_behavior_count Online documentation}
          */
         max_failed_behavior_count: uint;
     }
@@ -947,12 +947,12 @@ declare module "factorio:runtime" {
         technology_difficulty: defines.difficulty_settings.technology_difficulty;
         /**
          * A value in range [0.001, 1000].
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#DifficultySettings#DifficultySettings.technology_price_multiplier Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#DifficultySettings.technology_price_multiplier Online documentation}
          */
         technology_price_multiplier: double;
         /**
          * Either `"after-victory"`, `"always"` or `"never"`. Changing this to `"always"` or `"after-victory"` does not automatically unlock the research queue. See {@link LuaForce} for that.
-         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#DifficultySettings#DifficultySettings.research_queue_setting Online documentation}
+         * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#DifficultySettings.research_queue_setting Online documentation}
          */
         research_queue_setting: "after-victory" | "always" | "never";
     }

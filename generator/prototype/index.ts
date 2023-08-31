@@ -28,7 +28,8 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
       relative_link = `types/${reference}.html`
     } else if (reference.includes(".")) {
       const className = reference.substring(0, reference.indexOf("."))
-      return this.getOnlineDocUrl(className) + "#" + reference
+      const memberName = reference.substring(reference.indexOf(".") + 1)
+      return this.getOnlineDocUrl(className) + "#" + memberName
     } else {
       this.warning(`Could not get doc url for ${reference}`)
       relative_link = ""
