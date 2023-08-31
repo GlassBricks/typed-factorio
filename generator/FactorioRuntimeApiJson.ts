@@ -17,7 +17,7 @@ export interface FactorioRuntimeApiJson {
 export interface BasicMember {
   name: string
   order: number
-  description: string
+  readonly description: string
 }
 
 export interface WithNotes {

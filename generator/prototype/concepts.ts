@@ -34,10 +34,7 @@ function generateTypeDeclaration(
 
   const declaration = typeToDeclaration(type, concept.name, heritageClauses)
 
-  if (description) {
-    concept.description += `\n\n${description}`
-  }
-  return declaration
+  return { declaration, description }
 }
 function generateType(context: PrototypeGenerationContext, concept: PrototypeConcept): void {
   if (concept.type == "builtin") {
@@ -47,13 +44,14 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
   const existing = context.manualDefs.getDeclaration(concept.name)
 
   let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
+  let description: string | undefined
   if (existing?.annotations.replace) {
     declaration = existing.node
   } else {
-    declaration = generateTypeDeclaration(concept, context, existing)
+    ;({ declaration, description } = generateTypeDeclaration(concept, context, existing))
   }
 
-  addJsDoc(context, declaration, concept, concept.name)
+  addJsDoc(context, declaration, concept, concept.name, { post: description })
 
   context.currentFile.add(declaration)
 }

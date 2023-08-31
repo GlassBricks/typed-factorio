@@ -123,8 +123,7 @@ export function createVariantParameterTypes(
       }
     }
     const variantDescription = getVariantDescription(group)
-    group.description = variantDescription + "\n\n" + (group.description ?? "")
-    addJsDoc(context, declarations[0], group, undefined)
+    addJsDoc(context, declarations[0], group, undefined, { pre: variantDescription })
     declarations.forEach((d) => context.currentFile.add(d))
 
     context.references.set(variantName, variantName)

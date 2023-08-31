@@ -205,13 +205,13 @@ export function mapMethod(
   const thisPath = parent ? parent + "." + method.name : method.name
 
   let parameters: ts.ParameterDeclaration[]
+  let additionalDescription: string | undefined
   if (method.takes_table && method.variant_parameter_groups !== undefined) {
     assert(!method.variadic_type)
     const name =
       (firstExistingMethod && getAnnotations(firstExistingMethod as unknown as ts.JSDocContainer).variantsName?.[0]) ??
       removeLuaPrefix(parent) + toPascalCase(method.name)
-    const { description } = createVariantParameterTypes(context, name, method, RWUsage.Write)
-    method.description += `\n\n${description}`
+    ;({ description: additionalDescription } = createVariantParameterTypes(context, name, method, RWUsage.Write))
 
     const type = ts.factory.createTypeReferenceNode(name)
     parameters = [
@@ -257,7 +257,7 @@ export function mapMethod(
     )
   }
   const firstSignature = getFirst(signatures)
-  addMethodJSDoc(context, firstSignature, method, thisPath)
+  addMethodJSDoc(context, firstSignature, method, thisPath, additionalDescription)
   return signatures
 }
 
@@ -338,7 +338,13 @@ function getReturnType(context: RuntimeGenerationContext, method: Method, parent
   }
 }
 
-function addMethodJSDoc(context: RuntimeGenerationContext, node: ts.Node, method: Method, thisPath: string): void {
+function addMethodJSDoc(
+  context: RuntimeGenerationContext,
+  node: ts.Node,
+  method: Method,
+  thisPath: string,
+  additionalDescription?: string
+): void {
   const tags = []
   if (!method.takes_table) {
     tags.push(
@@ -374,7 +380,7 @@ function addMethodJSDoc(context: RuntimeGenerationContext, node: ts.Node, method
       )
     )
   }
-  addJsDoc(context, node, method, thisPath, tags)
+  addJsDoc(context, node, method, thisPath, { tags, post: additionalDescription })
 }
 
 function mapParameterToParameter(

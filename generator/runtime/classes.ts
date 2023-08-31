@@ -411,13 +411,9 @@ function generateClass(
 
     if (!indexTypeName) {
       if (classForDocs) {
-        addJsDoc(
-          context,
-          baseDeclaration,
-          classForDocs,
-          classForDocs.name,
-          needsNoSelfAnnotation(baseDeclaration) ? [noSelfAnnotation] : []
-        )
+        addJsDoc(context, baseDeclaration, classForDocs, classForDocs.name, {
+          tags: needsNoSelfAnnotation(baseDeclaration) ? [noSelfAnnotation] : [],
+        })
       } else {
         addNoSelfAnnotationOnly(baseDeclaration)
       }

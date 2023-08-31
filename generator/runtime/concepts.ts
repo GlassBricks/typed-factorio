@@ -105,8 +105,7 @@ function createVariantParameterConcept(
     description,
     declarations: [readDecl, writeDecl],
   } = createVariantParameterTypes(context, concept.name, concept.type as TableType, conceptUsage)
-  concept.description += `\n\n${description}`
-  addJsDoc(context, readDecl, concept, concept.name)
+  addJsDoc(context, readDecl, concept, concept.name, { post: description })
   if (writeDecl) {
     addJsDoc(context, writeDecl, { description: getWriteDescription(concept) }, concept.name)
   }
@@ -151,16 +150,13 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
   )
 
   const mainResult = typeToDeclaration(mainType, concept.name)
-  if (description) {
-    concept.description += "\n\n" + description
-  }
 
   const writeName = `${concept.name}Write`
   let tags: ts.JSDocTag[] | undefined
   if (altWriteType) {
     tags = [createSeeTag(writeName)]
   }
-  addJsDoc(context, mainResult, concept, concept.name, tags)
+  addJsDoc(context, mainResult, concept, concept.name, { tags, post: description })
   context.currentFile.add(mainResult)
 
   if (altWriteType) {
@@ -208,12 +204,12 @@ function createTableOrArrayConcept(
     undefined,
     tableForm.mainType.members
   )
-  addJsDoc(context, conceptInterface, concept, concept.name, [createSeeTag(arrayName)])
+  addJsDoc(context, conceptInterface, concept, concept.name, { tags: [createSeeTag(arrayName)] })
   context.currentFile.add(conceptInterface)
 
   const conceptArray = ts.factory.createTypeAliasDeclaration([Modifiers.export], arrayName, undefined, arrayForm)
   const arrayDescription = `Array form of {@link ${concept.name}}.`
-  addJsDoc(context, conceptArray, { description: arrayDescription }, name, [createSeeTag(name)])
+  addJsDoc(context, conceptArray, { description: arrayDescription }, name, { tags: [createSeeTag(name)] })
   context.currentFile.add(conceptArray)
 
   context.references.set(arrayName, name)

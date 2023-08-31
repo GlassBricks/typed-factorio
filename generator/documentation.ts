@@ -177,13 +177,19 @@ export function addJsDoc<T extends ts.Node>(
   node: T,
   element: Documentable,
   onlineReferenceName: string | undefined,
-  tags: ts.JSDocTag[] = []
+  additions: {
+    pre?: string
+    post?: string
+    tags?: ts.JSDocTag[]
+  } = {}
 ): T {
   const onlineDocUrl = onlineReferenceName && context.getOnlineDocUrl(onlineReferenceName)
 
   const comment = [
     getDefaultComment(element),
+    additions.pre && processDescription(context, additions.pre),
     processDescription(context, element.description),
+    additions.post && processDescription(context, additions.post),
     getRaisesComment(context, element.raises),
     getSubclassesComment(element.subclasses),
     getInstanceLimitComment(element.instance_limit),
@@ -192,6 +198,7 @@ export function addJsDoc<T extends ts.Node>(
   ]
     .filter((x) => x)
     .join("\n\n")
+  const tags = additions.tags ?? []
 
   if (element.deprecated) {
     tags.push(createTag("deprecated"))

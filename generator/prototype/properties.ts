@@ -18,10 +18,7 @@ export function mapProperty(
     property.optional ? Tokens.question : undefined,
     type
   )
-  if (description) {
-    property.description += `\n\n${description}`
-  }
-  addJsDoc(context, mainProperty, property, parentName + "." + property.name)
+  addJsDoc(context, mainProperty, property, parentName + "." + property.name, { post: description })
 
   const result = [mainProperty]
 
