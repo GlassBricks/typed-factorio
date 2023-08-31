@@ -1,4 +1,4 @@
-import { FactorioPrototypeApiJson, Prototype, PrototypeConcept } from "../FactorioPrototypeApiJson.js"
+import { FactorioPrototypeApiJson, Prototype, PrototypeConcept, Type } from "../FactorioPrototypeApiJson.js"
 import { GenerationContext } from "../GenerationContext.js"
 import { generatePrototypes, preprocessPrototypes } from "./prototypes.js"
 import { generateTypes, preprocessTypes } from "./types.js"
@@ -8,6 +8,11 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
 
   prototypes = new Map<string, Prototype>(this.apiDocs.prototypes.map((e) => [e.name, e]))
   types = new Map<string, PrototypeConcept>(this.apiDocs.types.map((e) => [e.name, e]))
+
+  tryGetTypeOfReference(reference: string): Type | undefined {
+    const type = this.types.get(reference)
+    if (type) return type.type
+  }
 
   getOnlineDocUrl(reference: string): string {
     let relative_link: string

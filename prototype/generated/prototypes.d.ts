@@ -1333,7 +1333,7 @@ declare module "factorio:prototype" {
          * Table of key value pairs, the keys are armor names and the values are numbers. The number is the Animation that is associated with the armor, e.g. using `1` will associate the armor with the first Animation in the pictures table.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CharacterCorpsePrototype.html#CharacterCorpsePrototype.armor_picture_mapping Online documentation}
          */
-        armor_picture_mapping?: LuaTable<ItemID, int32>;
+        armor_picture_mapping?: Record<ItemID, int32>;
         /**
          * Two entities can collide only if they share a layer from the collision mask.
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CharacterCorpsePrototype.html#CharacterCorpsePrototype.collision_mask Online documentation}

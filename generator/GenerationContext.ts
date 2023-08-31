@@ -13,6 +13,8 @@ import { fileURLToPath } from "url"
 import path from "path"
 import { printer } from "./genUtil.js"
 import fs from "fs"
+import * as runtime from "./FactorioRuntimeApiJson.js"
+import * as prototype from "./FactorioPrototypeApiJson.js"
 
 export interface AnyApiJson {
   application: "factorio"
@@ -71,6 +73,8 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   getAllFiles(): OutputFile[] {
     return this.allFiles
   }
+
+  abstract tryGetTypeOfReference(reference: string): runtime.Type | prototype.Type | undefined
 
   abstract getOnlineDocUrl(reference: string): string
 

@@ -1,4 +1,4 @@
-import { Class, Concept, Define, Event, FactorioRuntimeApiJson } from "../FactorioRuntimeApiJson.js"
+import { Class, Concept, Define, Event, FactorioRuntimeApiJson, Type } from "../FactorioRuntimeApiJson.js"
 import { RWUsage } from "../read-write-types.js"
 import ts from "typescript"
 import { GenerationContext } from "../GenerationContext.js"
@@ -34,6 +34,11 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   conceptReferencedBy = new Map<Concept, Set<Concept>>(this.apiDocs.concepts.map((e) => [e, new Set()]))
   // empty object = has separate read/write types, but not yet known form (may use default)
   conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
+
+  tryGetTypeOfReference(reference: string): Type | undefined {
+    const concept = this.concepts.get(reference)
+    if (concept) return concept.type
+  }
 
   getOnlineDocUrl(reference: string): string {
     let relative_link: string

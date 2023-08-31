@@ -417,7 +417,9 @@ function getIndexableType(context: GenerationContext, type: runtime.Type | proto
       (context instanceof RuntimeGenerationContext && (type.startsWith("defines.") || context.numericTypes.has(type)))
     )
       return IndexType.Basic
-    if (type === "CollisionMaskLayer") return IndexType.StringUnion
+    // if (type === "CollisionMaskLayer") return IndexType.StringUnion
+    const innerType = context.tryGetTypeOfReference(type)
+    if (innerType) return getIndexableType(context, innerType)
     return IndexType.None
   }
   if (type.complex_type === "literal") {
