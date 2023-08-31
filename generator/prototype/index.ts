@@ -16,6 +16,8 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
     this.apiDocs.types.map((e) => [e.name, new Map(e.properties?.map((p) => [p.name, p]))])
   )
 
+  inlineConceptReferences = new Map<string, string>()
+
   tryGetTypeOfReference(reference: string): Type | undefined {
     return this.types.get(reference)?.type
   }

@@ -24,6 +24,10 @@ declare module "factorio:prototype" {
         bar?: Sprite;
         bar_size_ratio?: float;
     }
+    /**
+     * @see MapGenPreset.advanced_settings
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/MapGenPreset.html#advanced_settings Online documentation}
+     */
     export interface AdvancedMapGenSettings {
         pollution?: MapGenPresetPollutionSettings;
         enemy_evolution?: MapGenPresetEnemyEvolutionSettings;
@@ -169,12 +173,18 @@ declare module "factorio:prototype" {
         triggers: readonly TipTrigger[];
     }
     export interface AnimatedVector {
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/AnimatedVector.html#rotations Online documentation}
+         */
         rotations: readonly VectorRotation[];
         /**
          * Default render layer for the rotations.
          * @see {@link https://lua-api.factorio.com/1.1.89/types/AnimatedVector.html#render_layer Online documentation}
          */
         render_layer?: RenderLayer;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/AnimatedVector.html#direction_shift Online documentation}
+         */
         direction_shift?: DirectionShift;
     }
     /**
@@ -1576,6 +1586,10 @@ declare module "factorio:prototype" {
          */
         slots?: readonly (readonly BeaconModuleVisualization[])[];
     }
+    /**
+     * @see ModulePrototype.beacon_tint
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ModulePrototype.html#beacon_tint Online documentation}
+     */
     export interface BeaconVisualizationTints {
         /**
          * **Default:** `no color`
@@ -1663,7 +1677,8 @@ declare module "factorio:prototype" {
     export type BlendMode = "normal" | "additive" | "additive-soft" | "multiplicative" | "multiplicative-with-alpha" | "overwrite";
     /**
      * The table itself is required, but it can be empty.
-     * @see {@link https://lua-api.factorio.com/1.1.89/types/BoilerFire.html Online documentation}
+     * @see BoilerPrototype.fire
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BoilerPrototype.html#fire Online documentation}
      */
     export interface BoilerFire {
         north?: Animation;
@@ -1673,7 +1688,8 @@ declare module "factorio:prototype" {
     }
     /**
      * The table itself is required, but it can be empty.
-     * @see {@link https://lua-api.factorio.com/1.1.89/types/BoilerFireGlow.html Online documentation}
+     * @see BoilerPrototype.fire_glow
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BoilerPrototype.html#fire_glow Online documentation}
      */
     export interface BoilerFireGlow {
         north?: Animation;
@@ -1681,18 +1697,30 @@ declare module "factorio:prototype" {
         south?: Animation;
         west?: Animation;
     }
+    /**
+     * @see BoilerPrototype.patch
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BoilerPrototype.html#patch Online documentation}
+     */
     export interface BoilerPatch {
         north?: Sprite;
         east?: Sprite;
         south?: Sprite;
         west?: Sprite;
     }
+    /**
+     * @see BoilerPrototype.structure
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BoilerPrototype.html#structure Online documentation}
+     */
     export interface BoilerStructure {
         north: Animation;
         east: Animation;
         south: Animation;
         west: Animation;
     }
+    /**
+     * @see UtilityConstants.bonus_gui_ordering
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#bonus_gui_ordering Online documentation}
+     */
     export interface BonusGuiOrdering {
         artillery_range: Order;
         worker_robots: Order;
@@ -2076,6 +2104,10 @@ declare module "factorio:prototype" {
          */
         use_icon_overlay_constant?: bool;
     }
+    /**
+     * @see UtilityConstants.chart
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#chart Online documentation}
+     */
     export interface ChartUtilityConstants {
         electric_lines_color: Color;
         electric_lines_color_switch_enabled: Color;
@@ -2147,6 +2179,10 @@ declare module "factorio:prototype" {
         intermediate_mark?: Sprite;
         text_padding?: uint32;
     }
+    /**
+     * @see MiningDrillGraphicsSet.circuit_connector_layer
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/MiningDrillGraphicsSet.html#circuit_connector_layer Online documentation}
+     */
     export interface CircuitConnectorLayer {
         /**
          * **Default:** `"object"`
@@ -2169,6 +2205,10 @@ declare module "factorio:prototype" {
          */
         west?: RenderLayer;
     }
+    /**
+     * @see MiningDrillGraphicsSet.circuit_connector_secondary_draw_order
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/MiningDrillGraphicsSet.html#circuit_connector_secondary_draw_order Online documentation}
+     */
     export interface CircuitConnectorSecondaryDrawOrder {
         /**
          * **Default:** `100`
@@ -2434,6 +2474,10 @@ declare module "factorio:prototype" {
         float,
         float
     ];
+    /**
+     * @see UtilityConstants.color_filters
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#color_filters Online documentation}
+     */
     export interface ColorFilterData {
         name: string;
         localised_name: LocalisedString;
@@ -2558,7 +2602,8 @@ declare module "factorio:prototype" {
     }
     /**
      * If no tint is specified, the crafting machine falls back to {@link CraftingMachinePrototype#default_recipe_tint CraftingMachinePrototype::default_recipe_tint}.
-     * @see {@link https://lua-api.factorio.com/1.1.89/types/CraftingMachineTint.html Online documentation}
+     * @see RecipePrototype.crafting_machine_tint
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RecipePrototype.html#crafting_machine_tint Online documentation}
      */
     export interface CraftingMachineTint {
         /**
@@ -2878,6 +2923,10 @@ declare module "factorio:prototype" {
          */
         speed_from_center_deviation?: float;
     }
+    /**
+     * @see UtilitySprites.cursor_box
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilitySprites.html#cursor_box Online documentation}
+     */
     export interface CursorBoxSpecification {
         regular: readonly BoxSpecification[];
         not_allowed: readonly BoxSpecification[];
@@ -3196,12 +3245,20 @@ declare module "factorio:prototype" {
      * @see {@link https://lua-api.factorio.com/1.1.89/types/Direction.html Online documentation}
      */
     export type Direction = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
+    /**
+     * @see AnimatedVector.direction_shift
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/AnimatedVector.html#direction_shift Online documentation}
+     */
     export interface DirectionShift {
         north?: Vector;
         east?: Vector;
         south?: Vector;
         west?: Vector;
     }
+    /**
+     * @see NoiseFunctionDistanceFromNearestPoint.arguments
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionDistanceFromNearestPoint.html#arguments Online documentation}
+     */
     export interface DistanceFromNearestPointArguments {
         x: NoiseNumber;
         y: NoiseNumber;
@@ -3760,7 +3817,8 @@ declare module "factorio:prototype" {
     export type EntityPrototypeFlags = readonly ("not-rotatable" | "placeable-neutral" | "placeable-player" | "placeable-enemy" | "placeable-off-grid" | "player-creation" | "building-direction-8-way" | "filter-directions" | "fast-replaceable-no-build-while-moving" | "breaths-air" | "not-repairable" | "not-on-map" | "not-deconstructable" | "not-blueprintable" | "hidden" | "hide-alt-info" | "fast-replaceable-no-cross-type-while-moving" | "no-gap-fill-while-building" | "not-flammable" | "no-automated-item-removal" | "no-automated-item-insertion" | "no-copy-paste" | "not-selectable-in-game" | "not-upgradable" | "not-in-kill-statistics" | "not-in-made-in")[];
     /**
      * How far (in tiles) entities should be rendered outside the visible area of the screen.
-     * @see {@link https://lua-api.factorio.com/1.1.89/types/EntityRendererSearchBoxLimits.html Online documentation}
+     * @see UtilityConstants.entity_renderer_search_box_limits
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#entity_renderer_search_box_limits Online documentation}
      */
     export interface EntityRendererSearchBoxLimits {
         /**
@@ -3853,6 +3911,10 @@ declare module "factorio:prototype" {
         name: EntityID;
         offset?: Vector;
     };
+    /**
+     * @see NoiseFunctionFactorioBasisNoise.arguments
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioBasisNoise.html#arguments Online documentation}
+     */
     export interface FactorioBasisNoiseArguments {
         x: NoiseNumber;
         y: NoiseNumber;
@@ -3881,6 +3943,10 @@ declare module "factorio:prototype" {
          */
         output_scale?: ConstantNoiseNumber;
     }
+    /**
+     * @see NoiseFunctionFactorioMultioctaveNoise.arguments
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioMultioctaveNoise.html#arguments Online documentation}
+     */
     export interface FactorioMultioctaveNoiseArguments {
         x: NoiseNumber;
         y: NoiseNumber;
@@ -3919,6 +3985,10 @@ declare module "factorio:prototype" {
          */
         octaves: ConstantNoiseNumber;
     }
+    /**
+     * @see NoiseFunctionFactorioQuickMultioctaveNoise.arguments
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioQuickMultioctaveNoise.html#arguments Online documentation}
+     */
     export interface FactorioQuickMultioctaveNoiseArguments {
         x: NoiseNumber;
         y: NoiseNumber;
@@ -4146,6 +4216,10 @@ declare module "factorio:prototype" {
          */
         secondary_draw_orders?: FluidBoxSecondaryDrawOrders;
     }
+    /**
+     * @see FluidBox.secondary_draw_orders
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/FluidBox.html#secondary_draw_orders Online documentation}
+     */
     export interface FluidBoxSecondaryDrawOrders {
         /**
          * **Default:** `1`
@@ -4347,6 +4421,10 @@ declare module "factorio:prototype" {
          */
         show_details_in_recipe_tooltip?: bool;
     }
+    /**
+     * @see PumpPrototype.fluid_wagon_connector_graphics
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PumpPrototype.html#fluid_wagon_connector_graphics Online documentation}
+     */
     export interface FluidWagonConnectorGraphics {
         load_animations: PumpConnectorGraphics;
         unload_animations: PumpConnectorGraphics;
@@ -4597,6 +4675,10 @@ declare module "factorio:prototype" {
          */
         count?: uint32;
     }
+    /**
+     * @see StreamAttackParameters.gun_center_shift
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/StreamAttackParameters.html#gun_center_shift Online documentation}
+     */
     export interface GunShift4Way {
         north: Vector;
         east?: Vector;
@@ -5384,6 +5466,10 @@ declare module "factorio:prototype" {
         width: double;
         range_effects?: TriggerEffect;
     }
+    /**
+     * @see LinkedBeltPrototype.structure
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedBeltPrototype.html#structure Online documentation}
+     */
     export interface LinkedBeltStructure {
         direction_in: Sprite4Way;
         direction_out: Sprite4Way;
@@ -5497,6 +5583,10 @@ declare module "factorio:prototype" {
          */
         count?: uint32;
     }
+    /**
+     * @see UtilityConstants.map_editor
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#map_editor Online documentation}
+     */
     export interface MapEditorConstants {
         clone_editor_copy_source_color: Color;
         clone_editor_copy_destination_allowed_color: Color;
@@ -6355,6 +6445,9 @@ declare module "factorio:prototype" {
     export interface NoiseFunctionDistanceFromNearestPoint {
         type: "function-application";
         function_name: "distance-from-nearest-point";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionDistanceFromNearestPoint.html#arguments Online documentation}
+         */
         arguments: DistanceFromNearestPointArguments;
     }
     /**
@@ -6421,16 +6514,25 @@ declare module "factorio:prototype" {
     export interface NoiseFunctionFactorioBasisNoise {
         type: "function-application";
         function_name: "factorio-basis-noise";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioBasisNoise.html#arguments Online documentation}
+         */
         arguments: FactorioBasisNoiseArguments;
     }
     export interface NoiseFunctionFactorioMultioctaveNoise {
         type: "function-application";
         function_name: "factorio-multioctave-noise";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioMultioctaveNoise.html#arguments Online documentation}
+         */
         arguments: FactorioMultioctaveNoiseArguments;
     }
     export interface NoiseFunctionFactorioQuickMultioctaveNoise {
         type: "function-application";
         function_name: "factorio-quick-multioctave-noise";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioQuickMultioctaveNoise.html#arguments Online documentation}
+         */
         arguments: FactorioQuickMultioctaveNoiseArguments;
     }
     /**
@@ -6535,6 +6637,9 @@ declare module "factorio:prototype" {
     export interface NoiseFunctionRandomPenalty {
         type: "function-application";
         function_name: "random-penalty";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionRandomPenalty.html#arguments Online documentation}
+         */
         arguments: RandomPenaltyArguments;
     }
     /**
@@ -6582,6 +6687,9 @@ declare module "factorio:prototype" {
     export interface NoiseFunctionSpotNoise {
         type: "function-application";
         function_name: "spot-noise";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionSpotNoise.html#arguments Online documentation}
+         */
         arguments: SpotNoiseArguments;
     }
     /**
@@ -6835,6 +6943,10 @@ declare module "factorio:prototype" {
         use_icon_overlay_constant?: bool;
         effect_description?: LocalisedString;
     }
+    /**
+     * @see OffshorePumpPrototype.graphics_set
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/OffshorePumpPrototype.html#graphics_set Online documentation}
+     */
     export interface OffshorePumpGraphicsSet {
         /**
          * Rendered in "object" layer, with secondary draw order 0.
@@ -6924,6 +7036,10 @@ declare module "factorio:prototype" {
         pictures: SpriteVariations;
         fill_volume: uint32;
     }
+    /**
+     * @see CliffPrototype.orientations
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CliffPrototype.html#orientations Online documentation}
+     */
     export interface OrientedCliffPrototypeSet {
         west_to_east: OrientedCliffPrototype;
         north_to_south: OrientedCliffPrototype;
@@ -6946,6 +7062,10 @@ declare module "factorio:prototype" {
         south_to_none: OrientedCliffPrototype;
         none_to_north: OrientedCliffPrototype;
     }
+    /**
+     * @see ProgressBarStyleSpecification.other_colors
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/ProgressBarStyleSpecification.html#other_colors Online documentation}
+     */
     export interface OtherColors {
         less_than: double;
         color?: Color;
@@ -7150,6 +7270,10 @@ declare module "factorio:prototype" {
          */
         type?: "input" | "input-output" | "output";
     }
+    /**
+     * @see PipePrototype.pictures
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PipePrototype.html#pictures Online documentation}
+     */
     export interface PipePictures {
         straight_vertical_single: Sprite;
         straight_vertical: Sprite;
@@ -7177,12 +7301,20 @@ declare module "factorio:prototype" {
         high_temperature_flow: Sprite;
         gas_flow: Animation;
     }
+    /**
+     * @see PipeToGroundPrototype.pictures
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PipeToGroundPrototype.html#pictures Online documentation}
+     */
     export interface PipeToGroundPictures {
         down: Sprite;
         up: Sprite;
         left: Sprite;
         right: Sprite;
     }
+    /**
+     * @see ItemPrototype.place_as_tile
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemPrototype.html#place_as_tile Online documentation}
+     */
     export interface PlaceAsTile {
         result: TileID;
         condition: CollisionMask;
@@ -7203,7 +7335,8 @@ declare module "factorio:prototype" {
      * ## Union members
      * - `"character_actions"`: Play the vibration only if it was caused by the player. For example when shooting a gun, vibration will play when the character shoots but not when a turret shoots.
      * - `"everything"`: Always play the vibration. Useful for example for explosions.
-     * @see {@link https://lua-api.factorio.com/1.1.89/types/PlayFor.html Online documentation}
+     * @see GameControllerVibrationData.play_for
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/GameControllerVibrationData.html#play_for Online documentation}
      */
     export type PlayFor = "character_actions" | "everything";
     export interface PlaySoundTriggerEffectItem extends TriggerEffectItem {
@@ -7243,6 +7376,10 @@ declare module "factorio:prototype" {
          */
         play_on_target_position?: bool;
     }
+    /**
+     * @see UtilityConstants.player_colors
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#player_colors Online documentation}
+     */
     export interface PlayerColorData {
         name: string;
         player_color: Color;
@@ -7310,9 +7447,14 @@ declare module "factorio:prototype" {
      * - `"input"`
      * - `"input-output"`
      * - `"output"`
-     * @see {@link https://lua-api.factorio.com/1.1.89/types/ProductionType.html Online documentation}
+     * @see FluidBox.production_type
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/FluidBox.html#production_type Online documentation}
      */
     export type ProductionType = "None" | "none" | "input" | "input-output" | "output";
+    /**
+     * @see ProgrammableSpeakerPrototype.instruments
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ProgrammableSpeakerPrototype.html#instruments Online documentation}
+     */
     export interface ProgrammableSpeakerInstrument {
         name: string;
         notes: readonly ProgrammableSpeakerNote[];
@@ -7325,6 +7467,9 @@ declare module "factorio:prototype" {
         type: "progressbar_style";
         bar_width?: uint32;
         color?: Color;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/ProgressBarStyleSpecification.html#other_colors Online documentation}
+         */
         other_colors?: readonly OtherColors[];
         bar?: ElementImageSet;
         bar_background?: ElementImageSet;
@@ -7599,6 +7744,10 @@ declare module "factorio:prototype" {
         segment_visualisation_continuing_front?: Sprite;
         segment_visualisation_continuing_back?: Sprite;
     }
+    /**
+     * @see NoiseFunctionRandomPenalty.arguments
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionRandomPenalty.html#arguments Online documentation}
+     */
     export interface RandomPenaltyArguments {
         /**
          * Number used to seed the random generator.
@@ -8415,6 +8564,10 @@ declare module "factorio:prototype" {
         type: "show-explosion-on-chart";
         scale: float;
     }
+    /**
+     * @see LampPrototype.signal_to_color_mapping
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LampPrototype.html#signal_to_color_mapping Online documentation}
+     */
     export interface SignalColorMapping {
         type: "virtual" | "item" | "fluid";
         /**
@@ -8787,6 +8940,10 @@ declare module "factorio:prototype" {
          */
         military_target?: string;
     }
+    /**
+     * @see SpiderLegPrototype.graphics_set
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpiderLegPrototype.html#graphics_set Online documentation}
+     */
     export interface SpiderLegGraphicsSet {
         /**
          * **Default:** `0`
@@ -8900,6 +9057,10 @@ declare module "factorio:prototype" {
          */
         light_positions?: readonly (readonly Vector[])[];
     }
+    /**
+     * @see NoiseFunctionSpotNoise.arguments
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionSpotNoise.html#arguments Online documentation}
+     */
     export interface SpotNoiseArguments {
         x: NoiseNumber;
         y: NoiseNumber;
@@ -9505,10 +9666,18 @@ declare module "factorio:prototype" {
          */
         low_power?: Color;
     }
+    /**
+     * @see MapSettings.steering
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapSettings.html#steering Online documentation}
+     */
     export interface SteeringSettings {
         default: StateSteeringSettings;
         moving: StateSteeringSettings;
     }
+    /**
+     * @see StorageTankPrototype.pictures
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StorageTankPrototype.html#pictures Online documentation}
+     */
     export interface StorageTankPictures {
         picture: Sprite4Way;
         window_background: Sprite;
@@ -9529,6 +9698,9 @@ declare module "factorio:prototype" {
          */
         gun_barrel_length?: float;
         projectile_creation_parameters?: CircularProjectileCreationSpecification;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/types/StreamAttackParameters.html#gun_center_shift Online documentation}
+         */
         gun_center_shift?: Vector | GunShift4Way;
         /**
          * Controls which fluids can fuel this stream attack and their potential damage bonuses.
@@ -9536,6 +9708,10 @@ declare module "factorio:prototype" {
          */
         fluids?: readonly StreamFluidProperties[];
     }
+    /**
+     * @see StreamAttackParameters.fluids
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/StreamAttackParameters.html#fluids Online documentation}
+     */
     export interface StreamFluidProperties {
         type: FluidID;
         /**
@@ -9957,10 +10133,18 @@ declare module "factorio:prototype" {
          */
         uses_stack?: bool;
     }
+    /**
+     * @see FireFlamePrototype.burnt_patch_alpha_variations
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FireFlamePrototype.html#burnt_patch_alpha_variations Online documentation}
+     */
     export interface TileAndAlpha {
         tile: TileID;
         alpha: float;
     }
+    /**
+     * @see TilePrototype.build_sound
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TilePrototype.html#build_sound Online documentation}
+     */
     export interface TileBuildSound {
         small?: Sound;
         medium?: Sound;
@@ -9977,7 +10161,8 @@ declare module "factorio:prototype" {
     export type TileID = string;
     /**
      * Name of an allowed tile, or a list of two tile names for entities allowed on transitions.
-     * @see {@link https://lua-api.factorio.com/1.1.89/types/TileIDRestriction.html Online documentation}
+     * @see AutoplaceSpecification.tile_restriction
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/AutoplaceSpecification.html#tile_restriction Online documentation}
      */
     export type TileIDRestriction = TileID | readonly [
         TileID,
@@ -10181,14 +10366,26 @@ declare module "factorio:prototype" {
          */
         offset_background_layer_by_tile_layer?: bool;
     }
+    /**
+     * @see TilePrototype.transitions_between_transitions
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TilePrototype.html#transitions_between_transitions Online documentation}
+     */
     export interface TileTransitionsBetweenTransitions extends TileTransitions {
         transition_group1: uint8;
         transition_group2: uint8;
     }
+    /**
+     * @see TilePrototype.transitions
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TilePrototype.html#transitions Online documentation}
+     */
     export interface TileTransitionsToTiles extends TileTransitions {
         to_tiles: readonly TileID[];
         transition_group: uint8;
     }
+    /**
+     * @see TilePrototype.variants
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TilePrototype.html#variants Online documentation}
+     */
     export interface TileTransitionsVariants extends TileTransitions {
         main: readonly TileSpriteWithProbability[];
         /**
@@ -10269,6 +10466,10 @@ declare module "factorio:prototype" {
          */
         use_icon_overlay_constant?: bool;
     }
+    /**
+     * @see UtilityConstants.train_path_finding
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#train_path_finding Online documentation}
+     */
     export interface TrainPathFinderConstants {
         train_stop_penalty: uint32;
         stopped_manually_controlled_train_penalty: uint32;
@@ -10287,6 +10488,10 @@ declare module "factorio:prototype" {
         train_with_no_path_penalty: uint32;
         train_auto_without_schedule_penalty: uint32;
     }
+    /**
+     * @see TrainStopPrototype.drawing_boxes
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TrainStopPrototype.html#drawing_boxes Online documentation}
+     */
     export interface TrainStopDrawingBoxes {
         north: BoundingBox;
         east: BoundingBox;
@@ -10661,6 +10866,10 @@ declare module "factorio:prototype" {
          */
         modifier: double;
     }
+    /**
+     * @see UndergroundBeltPrototype.structure
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UndergroundBeltPrototype.html#structure Online documentation}
+     */
     export interface UndergroundBeltStructure {
         direction_in: Sprite4Way;
         direction_out: Sprite4Way;
@@ -10885,6 +11094,10 @@ declare module "factorio:prototype" {
         float,
         float
     ];
+    /**
+     * @see AnimatedVector.rotations
+     * @see {@link https://lua-api.factorio.com/1.1.89/types/AnimatedVector.html#rotations Online documentation}
+     */
     export interface VectorRotation {
         /**
          * The size of all `frames` must be the same.
@@ -10926,6 +11139,10 @@ declare module "factorio:prototype" {
     export interface VoidEnergySource extends BaseEnergySource {
         type: "void";
     }
+    /**
+     * @see WallPrototype.pictures
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/WallPrototype.html#pictures Online documentation}
+     */
     export interface WallPictures {
         single: SpriteVariations;
         straight_vertical: SpriteVariations;

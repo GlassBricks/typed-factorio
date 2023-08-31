@@ -1336,6 +1336,9 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BoilerPrototype.html#target_temperature Online documentation}
          */
         target_temperature: double;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BoilerPrototype.html#structure Online documentation}
+         */
         structure: BoilerStructure;
         /**
          * Animation that is drawn on top of the `structure` when `burning_cooldown` is larger than 1. The animation alpha can be controlled by the energy source light intensity, depending on `fire_flicker_enabled`.
@@ -1789,6 +1792,9 @@ declare module "factorio:prototype" {
      */
     export interface CliffPrototype extends EntityPrototype {
         type: "cliff";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CliffPrototype.html#orientations Online documentation}
+         */
         orientations: OrientedCliffPrototypeSet;
         grid_size: Vector;
         grid_offset: Vector;
@@ -4115,6 +4121,9 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FireFlamePrototype.html#flame_alpha_deviation Online documentation}
          */
         flame_alpha_deviation?: float;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FireFlamePrototype.html#burnt_patch_alpha_variations Online documentation}
+         */
         burnt_patch_alpha_variations?: readonly TileAndAlpha[];
         /**
          * **Default:** `no masks`
@@ -5302,6 +5311,9 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemPrototype.html#burnt_result Online documentation}
          */
         burnt_result?: ItemID;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemPrototype.html#place_as_tile Online documentation}
+         */
         place_as_tile?: PlaceAsTile;
         /**
          * Used to give the item multiple different icons so that they look less uniform on belts etc. For inventory icons and similar, `icon/icons` will be used. Maximum number of variations is 16.
@@ -5838,6 +5850,9 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LampPrototype.html#always_on Online documentation}
          */
         always_on?: bool;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LampPrototype.html#signal_to_color_mapping Online documentation}
+         */
         signal_to_color_mapping?: readonly SignalColorMapping[];
         /**
          * **Default:** `"additive"`
@@ -5930,6 +5945,9 @@ declare module "factorio:prototype" {
      */
     export interface LinkedBeltPrototype extends TransportBeltConnectablePrototype {
         type: "linked-belt";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedBeltPrototype.html#structure Online documentation}
+         */
         structure: LinkedBeltStructure;
         /**
          * **Default:** `"object"`
@@ -6293,6 +6311,9 @@ declare module "factorio:prototype" {
          */
         name: string;
         pollution: PollutionSettings;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapSettings.html#steering Online documentation}
+         */
         steering: SteeringSettings;
         enemy_evolution: EnemyEvolutionSettings;
         enemy_expansion: EnemyExpansionSettings;
@@ -6505,6 +6526,9 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ModulePrototype.html#art_style Online documentation}
          */
         art_style?: string;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ModulePrototype.html#beacon_tint Online documentation}
+         */
         beacon_tint?: BeaconVisualizationTints;
     }
     /**
@@ -6690,6 +6714,9 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/OffshorePumpPrototype.html#fluid Online documentation}
          */
         fluid: FluidID;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/OffshorePumpPrototype.html#graphics_set Online documentation}
+         */
         graphics_set?: OffshorePumpGraphicsSet;
         /**
          * Mandatory if `graphics_set` is not defined.
@@ -6935,6 +6962,9 @@ declare module "factorio:prototype" {
         fluid_box: FluidBox;
         horizontal_window_bounding_box: BoundingBox;
         vertical_window_bounding_box: BoundingBox;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PipePrototype.html#pictures Online documentation}
+         */
         pictures: PipePictures;
     }
     /**
@@ -6944,6 +6974,9 @@ declare module "factorio:prototype" {
     export interface PipeToGroundPrototype extends EntityWithOwnerPrototype {
         type: "pipe-to-ground";
         fluid_box: FluidBox;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PipeToGroundPrototype.html#pictures Online documentation}
+         */
         pictures: PipeToGroundPictures;
         /**
          * **Default:** `false`
@@ -7115,6 +7148,9 @@ declare module "factorio:prototype" {
         energy_usage_per_tick: Energy;
         sprite: Sprite;
         maximum_polyphony: uint32;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ProgrammableSpeakerPrototype.html#instruments Online documentation}
+         */
         instruments: readonly ProgrammableSpeakerInstrument[];
         /**
          * **Default:** `1`
@@ -7364,6 +7400,9 @@ declare module "factorio:prototype" {
             CircuitConnectorSprites,
             CircuitConnectorSprites
         ];
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PumpPrototype.html#fluid_wagon_connector_graphics Online documentation}
+         */
         fluid_wagon_connector_graphics?: FluidWagonConnectorGraphics;
     }
     /**
@@ -9586,6 +9625,9 @@ declare module "factorio:prototype" {
         target_position_randomisation_distance: double;
         minimal_step_size: double;
         movement_based_position_selection_distance: double;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpiderLegPrototype.html#graphics_set Online documentation}
+         */
         graphics_set: SpiderLegGraphicsSet;
         /**
          * **Default:** `1`
@@ -10094,6 +10136,9 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StorageTankPrototype.html#window_bounding_box Online documentation}
          */
         window_bounding_box: BoundingBox;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StorageTankPrototype.html#pictures Online documentation}
+         */
         pictures: StorageTankPictures;
         /**
          * Must be positive.
@@ -10563,6 +10608,9 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TilePrototype.html#transitions Online documentation}
          */
         transitions?: readonly TileTransitionsToTiles[];
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TilePrototype.html#transitions_between_transitions Online documentation}
+         */
         transitions_between_transitions?: readonly TileTransitionsBetweenTransitions[];
         autoplace?: AutoplaceSpecification;
         placeable_by?: ItemToPlace | readonly ItemToPlace[];
@@ -10750,6 +10798,9 @@ declare module "factorio:prototype" {
         chart_name?: bool;
         light1?: TrainStopLight;
         light2?: TrainStopLight;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TrainStopPrototype.html#drawing_boxes Online documentation}
+         */
         drawing_boxes?: TrainStopDrawingBoxes;
         /**
          * Mandatory if circuit_wire_max_distance > 0.
@@ -11325,6 +11376,9 @@ declare module "factorio:prototype" {
     export interface UndergroundBeltPrototype extends TransportBeltConnectablePrototype {
         type: "underground-belt";
         max_distance: uint8;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UndergroundBeltPrototype.html#structure Online documentation}
+         */
         structure: UndergroundBeltStructure;
         underground_sprite: Sprite;
         underground_remove_belts_sprite?: Sprite;
@@ -11706,9 +11760,21 @@ declare module "factorio:prototype" {
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#bonus_gui_ordering Online documentation}
          */
         bonus_gui_ordering: BonusGuiOrdering;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#train_path_finding Online documentation}
+         */
         train_path_finding: TrainPathFinderConstants;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#map_editor Online documentation}
+         */
         map_editor: MapEditorConstants;
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#color_filters Online documentation}
+         */
         color_filters: readonly ColorFilterData[];
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html#entity_renderer_search_box_limits Online documentation}
+         */
         entity_renderer_search_box_limits: EntityRendererSearchBoxLimits;
         /**
          * Can be set to anything from range 0 to 255, but larger values will be clamped to 160. Setting it to larger values can have performance impact (growing geometrically).
@@ -11794,6 +11860,9 @@ declare module "factorio:prototype" {
      */
     export interface UtilitySprites extends PrototypeBase {
         type: "utility-sprites";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilitySprites.html#cursor_box Online documentation}
+         */
         cursor_box: CursorBoxSpecification;
         bookmark: Sprite;
         center: Sprite;
@@ -12462,6 +12531,9 @@ declare module "factorio:prototype" {
      */
     export interface WallPrototype extends EntityWithOwnerPrototype {
         type: "wall";
+        /**
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/WallPrototype.html#pictures Online documentation}
+         */
         pictures: WallPictures;
         /**
          * **Default:** `0`

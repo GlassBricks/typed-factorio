@@ -181,6 +181,7 @@ export function addJsDoc<T extends ts.Node>(
     pre?: string
     post?: string
     tags?: ts.JSDocTag[]
+    allowEmpty?: boolean
   } = {}
 ): T {
   const onlineDocUrl = onlineReferenceName && context.getOnlineDocUrl(onlineReferenceName)
@@ -210,7 +211,9 @@ export function addJsDoc<T extends ts.Node>(
     tags.push(createTag("remarks", processDescription(context, element.notes.join("<br>"))))
   }
 
-  if (!comment && tags.length === 0) return node
+  if (!comment && tags.length === 0 && additions.allowEmpty !== true) {
+    return node
+  }
 
   if (onlineDocUrl) {
     tags.push(createSeeTag(`{@link ${onlineDocUrl} Online documentation}`))

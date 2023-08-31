@@ -4,6 +4,7 @@ import ts from "typescript"
 import { mapPrototypeType } from "../types.js"
 import { Tokens, Types } from "../genUtil.js"
 import { addJsDoc } from "../documentation.js"
+import { maybeRecordInlineConceptReference } from "./concepts.js"
 
 export function mapProperty(
   context: PrototypeGenerationContext,
@@ -12,13 +13,18 @@ export function mapProperty(
 ): ts.TypeElement[] {
   const { type, description } = mapPrototypeType(context, property.type)
 
+  const isInline = maybeRecordInlineConceptReference(context, parentName, property, false)
+
   const mainProperty = ts.factory.createPropertySignature(
     undefined,
     property.name,
     property.optional ? Tokens.question : undefined,
     type
   )
-  addJsDoc(context, mainProperty, property, parentName + "." + property.name, { post: description })
+  addJsDoc(context, mainProperty, property, parentName + "." + property.name, {
+    post: description,
+    allowEmpty: isInline,
+  })
 
   const result = [mainProperty]
 

@@ -6,10 +6,15 @@ import ts from "typescript"
 import { addJsDoc, createTag } from "../documentation.js"
 import { addFakeJSDoc, Modifiers, Types } from "../genUtil.js"
 import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
+import { maybeRecordInlineConceptReference } from "./concepts.js"
 
 export function preprocessPrototypes(context: PrototypeGenerationContext): void {
   for (const prototype of context.apiDocs.prototypes.sort(sortByOrder)) {
     context.references.set(prototype.name, prototype.name)
+
+    for (const property of prototype.properties) {
+      maybeRecordInlineConceptReference(context, prototype.name, property)
+    }
   }
 }
 
