@@ -205,7 +205,7 @@ declare module "factorio:prototype" {
         /**
          * Lets the game know in what instances the audio file is played.
          *
-         * **Options:**
+         * ## Union members
          * - `"menu-track"`: This track is only played in the main menu.
          * - `"main-track"`: This track is played interleaved (alternating) with `"interlude"` tracks.
          * - `"early-game"`: This track is considered a main track, with no functional difference to `"main-track"`.
@@ -4221,7 +4221,7 @@ declare module "factorio:prototype" {
         /**
          * The insertion priority mode for this item. This determines if items are first attempted to be put into this items inventory if the item extends the inventory it sits in when items are put into the parent inventory.
          *
-         * **Options:**
+         * ## Union members
          * - `"default"`: Items are inserted into this item-with-inventory only if they match the whitelist defined in the prototype for the item and whitelist is used.
          * - `"never"`: Items are never inserted into this item-with-inventory except explicitly by the player or script.
          * - `"always"`: All items first try to be inserted into this item-with-inventory.
@@ -4721,7 +4721,7 @@ declare module "factorio:prototype" {
         /**
          * The way this chest interacts with the logistic network.
          *
-         * **Options:**
+         * ## Union members
          * - `"active-provider"`
          * - `"passive-provider"`
          * - `"requester"`

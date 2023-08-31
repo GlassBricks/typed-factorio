@@ -81,7 +81,7 @@ declare module "factorio:prototype" {
      *
      * If ammo is used in an entity that isn't covered by the defined source_types, e.g. only `"player"` and `"vehicle"` are defined and the ammo is used by a turret, the first defined AmmoType in the {@link AmmoItemPrototype#ammo_type AmmoItemPrototype::ammo_type} array is used.
      *
-     * **Options:**
+     * ## Union members
      * - `"default"`
      * - `"player"`
      * - `"turret"`
@@ -418,7 +418,7 @@ declare module "factorio:prototype" {
     /**
      * Loaded as one of the {@link BaseAttackParameters} extensions, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link ProjectileAttackParameters}: Loaded when the `type` is `"projectile"`.
      * - {@link BeamAttackParameters}: Loaded when the `type` is `"beam"`.
      * - {@link StreamAttackParameters}: Loaded when the `type` is `"stream"`.
@@ -967,7 +967,7 @@ declare module "factorio:prototype" {
      *
      * Note that the named noise expressions are all defined in Lua, so mods may remove or change the notable expressions listed here, or change how they are used in the map generation.
      *
-     * **Options:**
+     * ## Union members
      * - `"distance"`: `noise.distance_from(noise.var("x"), noise.var("y"), noise.var("starting_positions"))`, so the distance from the closest starting position. distance is never `< 0`.
      * - `"tier_from_start"`: `noise.max(0.0, noise.var("distance") - noise.var("starting_area_radius")) / noise.var("starting_area_radius")`
      * - `"tier"`: `noise.var("tier_from_start")`, so same as `tier_from_start`.
@@ -1089,7 +1089,7 @@ declare module "factorio:prototype" {
         /**
          * Name of a custom GUI effect, which are hard-coded in the game's engine. Only has one option currently.
          *
-         * **Options:**
+         * ## Union members
          * - `"compilatron-hologram"`
          * @see {@link https://lua-api.factorio.com/1.1.89/types/BaseStyleSpecification.html#BaseStyleSpecification.effect Online documentation}
          */
@@ -1221,7 +1221,7 @@ declare module "factorio:prototype" {
      *
      * Note that in most of Factorio it is assumed colors are in alpha pre-multiplied format, see {@linkplain https://www.factorio.com/blog/post/fff-172 FFF #172 - Blending and Rendering}. Sprites get pre-multiplied when loaded, unless `premul_alpha` is set to `false` on the sprite/animation itself. Since generating mipmaps doesn't respect `premul_alpha`, lower mipmap levels will be in pre-multiplied format regardless.
      *
-     * **Options:**
+     * ## Union members
      * - `"normal"`: The result color is determined with the following formula: `Result = Active_RGB + Background_RGB * ( 1 - Active_Alpha )`. Note that this is alpha blending with an assumption that `Active_RGB` is already pre-multiplied with `Active_Alpha`.
      * - `"additive"`: The result color is determined with the following formula: `Result = Active_RGB + Background_RGB`
      * - `"additive-soft"`: The result color is determined with the following formula: `Result = Active_RGB * ( 1 - Background_RGB ) + Background_RGB`
@@ -1422,7 +1422,7 @@ declare module "factorio:prototype" {
     /**
      * Loaded as one of the capsule actions, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link ThrowCapsuleAction}: Loaded when the `type` is `"throw"`.
      * - {@link ActivateEquipmentCapsuleAction}: Loaded when the `type` is `"equipment-remote"`.
      * - {@link UseOnSelfCapsuleAction}: Loaded when the `type` is `"use-on-self"`.
@@ -1730,7 +1730,7 @@ declare module "factorio:prototype" {
      *
      * The three options in addition to the standard layers are not collision masks, instead they control other aspects of collision.
      *
-     * **Options:**
+     * ## Union members
      * - {@link CollisionMaskLayer}: A standard collision mask layer.
      * - `"not-colliding-with-itself"`: Any two entities that both have this option enabled on their prototype and have an identical collision mask layers list will not collide. Other collision mask options are not included in the identical layer list check. This does mean that two different prototypes with the same collision mask layers and this option enabled will not collide.
      * - `"consider-tile-transitions"`: Uses the prototypes position rather than its collision box when doing collision checks with tile prototypes. Allows the prototype to overlap colliding tiles up until its center point. This is only respected for character movement and cars driven by players.
@@ -1746,7 +1746,7 @@ declare module "factorio:prototype" {
      *
      * In addition to the listed layers, there is `"layer-13"` through `"layer-55"`. These layers are currently unused by the game but may change. If a mod is going to use one of the unused layers it's recommended to use the `collision_mask_util.get_first_unused_layer()` method from the vanilla {@linkplain https://github.com/wube/factorio-data/blob/master/core/lualib/collision-mask-util.lua library}. When not using the library, mods should start at the higher layers because the base game will take from the lower ones.
      *
-     * **Options:**
+     * ## Union members
      * - `"ground-tile"`
      * - `"water-tile"`
      * - `"resource-layer"`
@@ -1824,7 +1824,7 @@ declare module "factorio:prototype" {
          */
         column: uint32;
         /**
-         * **Options:**
+         * ## Union members
          * - `"center"`
          * - `"left"`
          * - `"right"`
@@ -1890,7 +1890,7 @@ declare module "factorio:prototype" {
     /**
      * Defines which other inputs a {@link CustomInputPrototype} consumes.
      *
-     * **Options:**
+     * ## Union members
      * - `"none"`: The associated script event will fire when satisfied and pass through to normal game events.
      * - `"game-only"`: The associated script event will fire when satisfied and block game events that conflict with the key sequence. Actions that are processed regardless of game paused state cannot be blocked.
      * @example
@@ -1902,7 +1902,7 @@ declare module "factorio:prototype" {
         type: "craft-item";
         item?: ItemID;
         /**
-         * **Options:**
+         * ## Union members
          * - `"crafting-of-single-item-ordered"`
          * - `"crafting-of-multiple-items-ordered"`
          * - `"crafting-finished"`
@@ -2063,7 +2063,7 @@ declare module "factorio:prototype" {
     /**
      * One of the following values:
      *
-     * **Options:**
+     * ## Union members
      * - `"entity"`: The normal entity selection box. Yellow by default.
      * - `"electricity"`: The selection box used to specify electric poles an entity is connected to. Light blue by default.
      * - `"copy"`: The selection box used when doing entity copy-paste. Green by default.
@@ -2274,7 +2274,7 @@ declare module "factorio:prototype" {
         filter_enabled?: bool;
     }
     /**
-     * **Options:**
+     * ## Union members
      * - `0`: North
      * - `1`: Northeast
      * - `2`: East
@@ -2338,7 +2338,7 @@ declare module "factorio:prototype" {
     /**
      * A list of module effects, or just a single effect. Modules with other effects cannot be used on the machine. This means that both effects from modules and from surrounding beacons are restricted to the listed effects. If `allowed_effects` is set to `nil`, the machine cannot be affected by modules or beacons.
      *
-     * **Options:**
+     * ## Union members
      * - `"speed"`: Modules that increase or decrease the machine's speed.
      * - `"productivity"`: Modules that make the machine produce bonus items.
      * - `"consumption"`: Modules that increase or decrease the machine's energy consumption.
@@ -2386,7 +2386,7 @@ declare module "factorio:prototype" {
     /**
      * Used to specify priority of energy usage in the {@linkplain https://wiki.factorio.com/Electric_system electric system}.
      *
-     * **Options:**
+     * ## Union members
      * - `"primary-input"`: Used for the most important machines, for example laser turrets.
      * - `"primary-output"`
      * - `"secondary-input"`: Used for all other machines.
@@ -2679,7 +2679,7 @@ declare module "factorio:prototype" {
     /**
      * Loaded as one of the {@link BaseEnergySource} extensions, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link ElectricEnergySource}: Loaded when the `type` is `"electric"`.
      * - {@link BurnerEnergySource}: Loaded when the `type` is `"burner"`.
      * - {@link HeatEnergySource}: Loaded when the `type` is `"heat"`.
@@ -2700,7 +2700,7 @@ declare module "factorio:prototype" {
     /**
      * An array containing the following values.
      *
-     * **Options:**
+     * ## Union members
      * - `"not-rotatable"`: Can't be rotated before or after placing.
      * - `"placeable-neutral"`: Determines the default force when placing entities in the map editor and using the *AUTO* option for the force.
      * - `"placeable-player"`: Determines the default force when placing entities in the map editor and using the *AUTO* option for the force.
@@ -3306,7 +3306,7 @@ declare module "factorio:prototype" {
     /**
      * One of the following values:
      *
-     * **Options:**
+     * ## Union members
      * - `"all"`
      * - `"enemy"`
      * - `"ally"`
@@ -3518,7 +3518,7 @@ declare module "factorio:prototype" {
         connections?: readonly HeatConnection[];
     }
     /**
-     * **Options:**
+     * ## Union members
      * - `"left"`
      * - `"center"`
      * - `"right"`
@@ -3655,7 +3655,7 @@ declare module "factorio:prototype" {
     /**
      * Defaults to loading ingredients as items.
      *
-     * **Options:**
+     * ## Union members
      * - {@link ItemIngredientPrototype}: Loaded when the `type` is `"item"`.
      * - {@link FluidIngredientPrototype}: Loaded when the `type` is `"fluid"`.
      * @example
@@ -3792,7 +3792,7 @@ declare module "factorio:prototype" {
     /**
      * An array containing the following values.
      *
-     * **Options:**
+     * ## Union members
      * - `"draw-logistic-overlay"`: Whether the logistics areas of roboports should be drawn when holding this item. Used for example by the {@linkplain https://wiki.factorio.com/Deconstruction_planner deconstruction planner}.
      * - `"hidden"`: Item will not appear in lists of all items such as those for logistics requests, filters, etc.
      * - `"always-show"`: Always show the item in selection lists (item filter, logistic request etc.) even when locked recipe for that item is present.
@@ -4333,7 +4333,7 @@ declare module "factorio:prototype" {
      *
      * Each of the values in a triplet (such as "low", "small", and "poor") are synonymous. In-game the values can be set from `0.166` to `6` via the GUI (respective to the percentages), while `0` is used to disable the autoplace control.
      *
-     * **Options:**
+     * ## Union members
      * - {@link float}: Specifying a map gen dimension.
      * - `"none"`: equivalent to `0`.
      * - `"very-low"`: equivalent to `1/2`.
@@ -4538,7 +4538,7 @@ declare module "factorio:prototype" {
      *
      * Loaded as one of the {@link BaseModifier} extensions, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link InserterStackSizeBonusModifier}: Loaded when the `type` is `"inserter-stack-size-bonus"`.
      * - {@link StackInserterCapacityBonusModifier}: Loaded when the `type` is `"stack-inserter-capacity-bonus"`.
      * - {@link LaboratorySpeedModifier}: Loaded when the `type` is `"laboratory-speed"`.
@@ -4617,7 +4617,7 @@ declare module "factorio:prototype" {
         module_info_multi_row_initial_height_modifier?: float;
     }
     /**
-     * **Options:**
+     * ## Union members
      * - `"primary"`
      * - `"secondary"`
      * - `"tertiary"`
@@ -4678,7 +4678,7 @@ declare module "factorio:prototype" {
      *
      * See {@linkplain https://togos.github.io/togos-example-noise-programs/ here} for a tutorial on authoring noise expressions.
      *
-     * **Options:**
+     * ## Union members
      * - {@link NoiseVariable}: Loaded when the `type` is `"variable"`.
      * - {@link NoiseFunctionApplication}: Loaded when the `type` is `"function-application"`.
      * - {@link NoiseLiteralBoolean}: Loaded when the `type` is `"literal-boolean"`.
@@ -4749,7 +4749,7 @@ declare module "factorio:prototype" {
      *
      * Function calls are their own class of expression (as opposed to every function just being its own expression type) because function calls all have similar properties -- arguments are themselves expressions, a function call with all-constant arguments can be constant-folded (due to {@linkplain http://en.wikipedia.org/wiki/Referential_transparency referential transparency}), etc.
      *
-     * **Options:**
+     * ## Union members
      * - {@link NoiseFunctionAdd}: Loaded when the `function_name` is `"add"`.
      * - {@link NoiseFunctionSubtract}: Loaded when the `function_name` is `"subtract"`.
      * - {@link NoiseFunctionMultiply}: Loaded when the `function_name` is `"multiply"`.
@@ -5288,7 +5288,7 @@ declare module "factorio:prototype" {
      *
      * This encompasses all {@link NoiseExpression NoiseExpressions}, except for {@link NoiseLiteralBoolean}, {@link NoiseLiteralString}, {@link NoiseLiteralObject}, {@link NoiseLiteralExpression}, {@link NoiseArrayConstruction}, and {@link NoiseFunctionOffsetPoints}.
      *
-     * **Options:**
+     * ## Union members
      * - {@link NoiseVariable}
      * - {@link NoiseFunctionApplication}
      * - {@link NoiseLiteralNumber}
@@ -5384,7 +5384,7 @@ declare module "factorio:prototype" {
     /**
      * A set of constants largely determined by {@link MapGenSettings}.
      *
-     * **Options:**
+     * ## Union members
      * - `string`: Additional constants are generated for all {@link TilePrototype tile}, {@link EntityPrototype entity}, {@link DecorativePrototype decorative}, and {@link AutoplaceControl autoplace-control} prototypes. These follow these three patterns: `control-setting:<name>:frequency`, `control-setting:<name>:size`, and `control-setting:<name>:richness`.
      * - `"map_seed"`: {@link MapGenSettings#seed MapGenSettings::seed}
      * - `"map_width"`: {@link MapGenSettings#width MapGenSettings::width}
@@ -5700,7 +5700,7 @@ declare module "factorio:prototype" {
          */
         max_underground_distance?: uint32;
         /**
-         * **Options:**
+         * ## Union members
          * - `"input"`
          * - `"input-output"`
          * - `"output"`
@@ -5754,7 +5754,7 @@ declare module "factorio:prototype" {
     /**
      * Defines when controller vibrations should be played.
      *
-     * **Options:**
+     * ## Union members
      * - `"character_actions"`: Play the vibration only if it was caused by the player. For example when shooting a gun, vibration will play when the character shoots but not when a turret shoots.
      * - `"everything"`: Always play the vibration. Useful for example for explosions.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/PlayFor.html Online documentation}
@@ -5791,7 +5791,7 @@ declare module "factorio:prototype" {
         chat_color: Color;
     }
     /**
-     * **Options:**
+     * ## Union members
      * - `"all"`
      * - `"keyboard_and_mouse"`
      * - `"game_controller"`
@@ -5839,14 +5839,14 @@ declare module "factorio:prototype" {
     /**
      * Defaults to loading products as items.
      *
-     * **Options:**
+     * ## Union members
      * - {@link ItemProductPrototype}: Loaded when the `type` is `"item"`.
      * - {@link FluidProductPrototype}: Loaded when the `type` is `"fluid"`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ProductPrototype.html Online documentation}
      */
     export type ProductPrototype = ItemProductPrototype | FluidProductPrototype;
     /**
-     * **Options:**
+     * ## Union members
      * - `"None"`
      * - `"none"`
      * - `"input"`
@@ -6303,7 +6303,7 @@ declare module "factorio:prototype" {
     /**
      * The render layer specifies the order of the sprite when rendering, most of the objects have it hardcoded in the source, but some are configurable. The union contains valid values from lowest to highest.
      *
-     * **Options:**
+     * ## Union members
      * - `"water-tile"`
      * - `"ground-tile"`
      * - `"tile-transition"`
@@ -6405,7 +6405,7 @@ declare module "factorio:prototype" {
      */
     export type ResourceCategoryID = string;
     /**
-     * **Options:**
+     * ## Union members
      * - `"enabled"`
      * - `"disabled"`
      * - `"highlight"`
@@ -6735,7 +6735,7 @@ declare module "factorio:prototype" {
     /**
      * An array containing the following values.
      *
-     * **Options:**
+     * ## Union members
      * - `"blueprint"`: Selects entities and tiles as if selecting them for a blueprint.
      * - `"deconstruct"`: Selects entities and tiles as if selecting them for deconstruction.
      * - `"cancel-deconstruct"`: Selects entities and tiles as if selecting them for deconstruction cancellation.
@@ -7056,7 +7056,7 @@ declare module "factorio:prototype" {
     /**
      * This defines which slider in the sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.
      *
-     * **Options:**
+     * ## Union members
      * - `"game-effect"`
      * - `"gui-effect"`
      * - `"ambient"`
@@ -7391,7 +7391,7 @@ declare module "factorio:prototype" {
     /**
      * An array containing the following values.
      *
-     * **Options:**
+     * ## Union members
      * - `"no-crop"`: The sprite won't be automatically cropped.
      * - `"not-compressed"`
      * - `"always-compressed"`
@@ -7570,7 +7570,7 @@ declare module "factorio:prototype" {
     /**
      * This sets the "caching priority" of a sprite, so deciding priority of it being included in VRAM instead of streaming it and is therefore a purely technical value. See {@linkplain https://forums.factorio.com/viewtopic.php?p=437380#p437380 here} and {@linkplain https://www.factorio.com/blog/post/fff-264 here}. The possible values are listed below.
      *
-     * **Options:**
+     * ## Union members
      * - `"extra-high-no-scale"`
      * - `"extra-high"`
      * - `"high"`
@@ -7639,7 +7639,7 @@ declare module "factorio:prototype" {
         type: "stack-transfer";
         count?: uint32;
         /**
-         * **Options:**
+         * ## Union members
          * - `"stack"`
          * - `"inventory"`
          * - `"whole-inventory"`
@@ -7710,7 +7710,7 @@ declare module "factorio:prototype" {
     /**
      * Sets whether a GUI element can be stretched or squashed.
      *
-     * **Options:**
+     * ## Union members
      * - `"on"`: Stretching/squashing is enabled.
      * - `"off"`: Stretching/squashing is disabled even when the container contains stretchable/squashable elements.
      * - `"auto"`: Stretching/squashing depends on the contents of the layout, for example a flow with stretchable element gets stretchable.
@@ -7738,7 +7738,7 @@ declare module "factorio:prototype" {
     /**
      * Loaded as one of the {@link BaseStyleSpecification} extensions, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link ActivityBarStyleSpecification}: Loaded when the `type` is `"activity_bar_style"`.
      * - {@link ButtonStyleSpecification}: Loaded when the `type` is `"button_style"`.
      * - {@link CameraStyleSpecification}: Loaded when the `type` is `"camera_style"`.
@@ -8116,7 +8116,7 @@ declare module "factorio:prototype" {
         TileID
     ];
     /**
-     * **Options:**
+     * ## Union members
      * - `"zero"`
      * - `"water"`
      * - `"water-overlay"`
@@ -8294,7 +8294,7 @@ declare module "factorio:prototype" {
     /**
      * This is used by {@link TipsAndTricksItem} for the initial starting status. One of the following values:
      *
-     * **Options:**
+     * ## Union members
      * - `"locked"`: The tip is hidden.
      * - `"optional"`: Same as `"locked"`.
      * - `"dependencies-not-met"`: The {@link TipsAndTricksItem#trigger trigger} for the tip was already met, but the tip is still hidden because of dependencies.
@@ -8309,7 +8309,7 @@ declare module "factorio:prototype" {
     /**
      * Loaded as one of the tip triggers, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link OrTipTrigger}: Loaded when the `type` is `"or"`.
      * - {@link AndTipTrigger}: Loaded when the `type` is `"and"`.
      * - {@link SequenceTipTrigger}: Loaded when the `type` is `"sequence"`.
@@ -8474,7 +8474,7 @@ declare module "factorio:prototype" {
     /**
      * Loaded as one of the {@link TriggerItem} extensions, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link DirectTriggerItem}: Loaded when the `type` is `"direct"`.
      * - {@link AreaTriggerItem}: Loaded when the `type` is `"area"`.
      * - {@link LineTriggerItem}: Loaded when the `type` is `"line"`.
@@ -8485,7 +8485,7 @@ declare module "factorio:prototype" {
     /**
      * Loaded as one of the {@link TriggerDeliveryItem} extensions, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link InstantTriggerDelivery}: Loaded when the `type` is `"instant"`.
      * - {@link ProjectileTriggerDelivery}: Loaded when the `type` is `"projectile"`.
      * - {@link FlameThrowerExplosionTriggerDelivery}: Loaded when the `type` is `"flame-thrower"`.
@@ -8510,7 +8510,7 @@ declare module "factorio:prototype" {
     /**
      * Loaded as one of the {@link TriggerEffectItem} extensions, based on the value of the `type` key.
      *
-     * **Options:**
+     * ## Union members
      * - {@link DamageTriggerEffectItem}: Loaded when the `type` is `"damage"`.
      * - {@link CreateEntityTriggerEffectItem}: Loaded when the `type` is `"create-entity"`.
      * - {@link CreateExplosionTriggerEffectItem}: Loaded when the `type` is `"create-explosion"`.
@@ -8834,7 +8834,7 @@ declare module "factorio:prototype" {
         render_layer?: RenderLayer;
     }
     /**
-     * **Options:**
+     * ## Union members
      * - `"top"`
      * - `"center"`
      * - `"bottom"`

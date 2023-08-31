@@ -96,7 +96,7 @@ export function processDescription(
 
 function getRaisesComment(context: GenerationContext, raises: EventRaised[] | undefined): string | undefined {
   if (!raises || raises.length === 0) return
-  let result = "**Raised events:**\n"
+  let result = "## Raised events\n"
   for (const event of raises.sort(sortByOrder)) {
     const eventName = event.name
     const eventLink = getMappedEventName(eventName)

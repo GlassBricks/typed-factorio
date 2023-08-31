@@ -280,7 +280,7 @@ function mapTypeType(
   return result
 }
 
-const unionDescriptionHeader = "\n**Options:**\n"
+const unionDescriptionHeader = "\n## Union members\n"
 function isFullUnion(t: prototype.Type | runtime.Type): t is runtime.UnionType & { full_format: true } {
   return typeof t !== "string" && t.complex_type === "union" && t.full_format
 }

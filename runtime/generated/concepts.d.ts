@@ -1663,7 +1663,7 @@ declare module "factorio:runtime" {
      *
      * For backwards compatibility, MapGenSizes can also be specified as one of the following strings, which will be converted to a number (when queried, a number will always be returned):
      *
-     * **Options:**
+     * ## Union members
      * - {@link float}: Specifying a map gen dimension.
      * - `"none"`: equivalent to `0`.
      * - `"very-low"`: equivalent to `1/2`.
@@ -2179,7 +2179,7 @@ declare module "factorio:runtime" {
     /**
      * A string that specifies how the inputs should be compared
      *
-     * **Options:**
+     * ## Union members
      * - `"="`: "equal to"
      * - `">"`: "greater than"
      * - `"<"`: "lesser than"
@@ -2715,7 +2715,7 @@ declare module "factorio:runtime" {
     /**
      * An item stack may be specified in one of two ways.
      *
-     * **Options:**
+     * ## Union members
      * - `string`: The name of the item, which represents a full stack of that item.
      * - {@link ItemStackDefinition}: The detailed definition of an item stack.
      * @example Both of these lines specify an item stack of one iron plate:
@@ -2730,7 +2730,7 @@ declare module "factorio:runtime" {
     /**
      * A fluid may be specified in one of three ways.
      *
-     * **Options:**
+     * ## Union members
      * - `string`: The fluid name.
      * - {@link LuaFluidPrototype}: The fluid prototype.
      * - {@link Fluid}: The fluid.
@@ -2740,7 +2740,7 @@ declare module "factorio:runtime" {
     /**
      * A force may be specified in one of three ways.
      *
-     * **Options:**
+     * ## Union members
      * - ForceIndex: The force index.
      * - `string`: The force name.
      * - {@link LuaForce}: A reference to {@link LuaForce} may be passed directly.
@@ -2750,7 +2750,7 @@ declare module "factorio:runtime" {
     /**
      * A technology may be specified in one of three ways.
      *
-     * **Options:**
+     * ## Union members
      * - `string`: The technology name.
      * - {@link LuaTechnology}: A reference to {@link LuaTechnology} may be passed directly.
      * - {@link LuaTechnologyPrototype}: A reference to {@link LuaTechnologyPrototype} may be passed directly.
@@ -2760,7 +2760,7 @@ declare module "factorio:runtime" {
     /**
      * A surface may be specified in one of three ways.
      *
-     * **Options:**
+     * ## Union members
      * - SurfaceIndex: It will be the index of the surface. `nauvis` has index `1`, the first surface-created surface will have index `2` and so on.
      * - `string`: It will be the surface name. E.g. `"nauvis"`.
      * - {@link LuaSurface}: A reference to {@link LuaSurface} may be passed directly.
@@ -2770,7 +2770,7 @@ declare module "factorio:runtime" {
     /**
      * A player may be specified in one of three ways.
      *
-     * **Options:**
+     * ## Union members
      * - PlayerIndex: The player index.
      * - `string`: The player name.
      * - {@link LuaPlayer}: A reference to {@link LuaPlayer} may be passed directly.
@@ -2780,7 +2780,7 @@ declare module "factorio:runtime" {
     /**
      * An item may be specified in one of two ways.
      *
-     * **Options:**
+     * ## Union members
      * - {@link SimpleItemStack}
      * - {@link LuaItemStack}
      * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#ItemStackIdentification Online documentation}
@@ -2789,7 +2789,7 @@ declare module "factorio:runtime" {
     /**
      * An entity prototype may be specified in one of three ways.
      *
-     * **Options:**
+     * ## Union members
      * - {@link LuaEntity}: The entity.
      * - {@link LuaEntityPrototype}: The entity prototype.
      * - `string`: The prototype name.
@@ -2799,7 +2799,7 @@ declare module "factorio:runtime" {
     /**
      * An item prototype may be specified in one of three ways.
      *
-     * **Options:**
+     * ## Union members
      * - {@link LuaItemStack}: The item.
      * - {@link LuaItemPrototype}: The item prototype.
      * - `string`: The prototype name.
@@ -3102,7 +3102,7 @@ declare module "factorio:runtime" {
      *
      * By default, none of these flags are set.
      *
-     * **Options:**
+     * ## Union members
      * - `"not-rotatable"`: Prevents the entity from being rotated before or after placement.
      * - `"placeable-neutral"`: Determines the default force when placing entities in the map editor and using the "AUTO" option for the force.
      * - `"placeable-player"`: Determines the default force when placing entities in the map editor and using the "AUTO" option for the force.
@@ -3239,7 +3239,7 @@ declare module "factorio:runtime" {
      *
      * By default, none of these flags are set.
      *
-     * **Options:**
+     * ## Union members
      * - `"draw-logistic-overlay"`: Determines whether the logistics areas of roboports should be drawn when holding this item. Used by the deconstruction planner by default.
      * - `"hidden"`: Hides the item in the logistic requests and filters GUIs (among others).
      * - `"always-show"`: Always shows the item in the logistic requests and filters GUIs (among others) even when the recipe for that item is locked.
@@ -3304,7 +3304,7 @@ declare module "factorio:runtime" {
      *
      * In addition to the listed layers, there is `"layer-13"` through `"layer-55"`. These layers are currently unused by the game but may change. If a mod is going to use one of the unused layers it's recommended to start at the higher layers because the base game will take from the lower ones.
      *
-     * **Options:**
+     * ## Union members
      * - `"ground-tile"`
      * - `"water-tile"`
      * - `"resource-layer"`
@@ -3331,7 +3331,7 @@ declare module "factorio:runtime" {
     /**
      * A {@link CollisionMask} which also includes any flags this mask has.
      *
-     * **Options:**
+     * ## Union members
      * - {@link CollisionMaskLayer}
      * - `"not-colliding-with-itself"`: Any two entities that both have this option enabled on their prototype and have an identical collision mask layers list will not collide. Other collision mask options are not included in the identical layer list check. This does mean that two different prototypes with the same collision mask layers and this option enabled will not collide.
      * - `"consider-tile-transitions"`: Uses the prototypes position rather than its collision box when doing collision checks with tile prototypes. Allows the prototype to overlap colliding tiles up until its center point. This is only respected for character movement and cars driven by players.
@@ -3602,7 +3602,7 @@ declare module "factorio:runtime" {
     /**
      * A set of flags on a selection tool that define how entities and tiles are selected. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
      *
-     * **Options:**
+     * ## Union members
      * - `"blueprint"`: Selects entities and tiles as if selecting them for a blueprint.
      * - `"deconstruct"`: Selects entities and tiles as if selecting them for deconstruction.
      * - `"cancel-deconstruct"`: Selects entities and tiles as if selecting them for deconstruction cancellation.
@@ -3780,7 +3780,7 @@ declare module "factorio:runtime" {
     /**
      * A `string` that specifies where a GUI element should be.
      *
-     * **Options:**
+     * ## Union members
      * - `"top-left"`
      * - `"middle-left"`
      * - `"left"`: The same as `"middle-left"`
@@ -3897,7 +3897,7 @@ declare module "factorio:runtime" {
      *
      * To write to this, use an array[`string`] of the mouse buttons that should be possible to use with on button. The flag `"left-and-right"` can also be set, which will set `"left"` and `"right"` to `true`.
      *
-     * **Options:**
+     * ## Union members
      * - `"left"`
      * - `"right"`
      * - `"middle"`
@@ -3923,7 +3923,7 @@ declare module "factorio:runtime" {
     /** @see MouseButtonFlags */
     export type MouseButtonFlagsWrite = MouseButtonFlags | ReadonlyArray<keyof MouseButtonFlags | "left-and-right">;
     /**
-     * **Options:**
+     * ## Union members
      * - `"entity"`: Yellow box.
      * - `"not-allowed"`: Red box.
      * - `"electricity"`: Light blue box.
@@ -3936,7 +3936,7 @@ declare module "factorio:runtime" {
      */
     export type CursorBoxRenderType = "entity" | "not-allowed" | "electricity" | "pair" | "copy" | "train-visualization" | "logistics" | "blueprint-snap-rectangle";
     /**
-     * **Options:**
+     * ## Union members
      * - `"all"`: All forces pass.
      * - `"enemy"`: Forces which will attack pass.
      * - `"ally"`: Forces which won't attack pass.
@@ -3950,7 +3950,7 @@ declare module "factorio:runtime" {
     /**
      * A number between 0 and 255 inclusive, represented by one of the following named strings or the string version of the number. For example `"27"` and `"decals"` are both valid. Higher values are rendered above lower values.
      *
-     * **Options:**
+     * ## Union members
      * - `string`: A string of a number
      * - `"water-tile"`: 15
      * - `"ground-tile"`: 25
@@ -3999,7 +3999,7 @@ declare module "factorio:runtime" {
      */
     export type RenderLayer = `${bigint}` | "water-tile" | "ground-tile" | "tile-transition" | "decals" | "lower-radius-visualization" | "radius-visualization" | "transport-belt-integration" | "resource" | "building-smoke" | "decorative" | "ground-patch" | "ground-patch-higher" | "ground-patch-higher2" | "remnants" | "floor" | "transport-belt" | "transport-belt-endings" | "floor-mechanics-under-corpse" | "corpse" | "floor-mechanics" | "item" | "lower-object" | "transport-belt-circuit-connector" | "lower-object-above-shadow" | "object" | "higher-object-under" | "higher-object-above" | "item-in-inserter-hand" | "wires" | "wires-above" | "entity-info-icon" | "entity-info-icon-above" | "explosion" | "projectile" | "smoke" | "air-object" | "air-entity-info-icon" | "light-effect" | "selection-box" | "higher-selection-box" | "collision-selection-box" | "arrow" | "cursor";
     /**
-     * **Options:**
+     * ## Union members
      * - `"west-to-east"`
      * - `"north-to-south"`
      * - `"east-to-west"`
@@ -4034,7 +4034,7 @@ declare module "factorio:runtime" {
     /**
      * Defines which slider in the game's sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.
      *
-     * **Options:**
+     * ## Union members
      * - `"game-effect"`
      * - `"gui-effect"`
      * - `"ambient"`
@@ -4046,7 +4046,7 @@ declare module "factorio:runtime" {
      */
     export type SoundType = "game-effect" | "gui-effect" | "ambient" | "environment" | "walking" | "alert" | "wind";
     /**
-     * **Options:**
+     * ## Union members
      * - `"button"`: A clickable element. Relevant event: {@link OnGuiClickEvent on_gui_click}
      * - `"sprite-button"`: A `button` that displays a sprite rather than text. Relevant event: {@link OnGuiClickEvent on_gui_click}
      * - `"checkbox"`: A clickable element with a check mark that can be turned off or on. Relevant event: {@link OnGuiCheckedStateChangedEvent on_gui_checked_state_changed}
@@ -4076,7 +4076,7 @@ declare module "factorio:runtime" {
      */
     export type GuiElementType = "button" | "sprite-button" | "checkbox" | "flow" | "frame" | "label" | "line" | "progressbar" | "table" | "textfield" | "radiobutton" | "sprite" | "scroll-pane" | "drop-down" | "list-box" | "camera" | "choose-elem-button" | "text-box" | "slider" | "minimap" | "entity-preview" | "empty-widget" | "tabbed-pane" | "tab" | "switch";
     /**
-     * **Options:**
+     * ## Union members
      * - `"nowhere"`
      * - `"goal"`
      * - `"entity_info"`
@@ -4091,7 +4091,7 @@ declare module "factorio:runtime" {
     /**
      * Types `"signal"` and `"item-group"` do not support filters.
      *
-     * **Options:**
+     * ## Union members
      * - ItemPrototypeFilter: for type `"item"`
      * - TilePrototypeFilter: for type `"tile"`
      * - EntityPrototypeFilter: for type `"entity"`
@@ -5445,7 +5445,7 @@ declare module "factorio:runtime" {
     /**
      * Used to filter out irrelevant event callbacks in a performant way.
      *
-     * **Options:**
+     * ## Union members
      * - {@link LuaEntityClonedEventFilter}
      * - LuaEntityDamagedEventFilter
      * - {@link LuaPlayerMinedEntityEventFilter}
