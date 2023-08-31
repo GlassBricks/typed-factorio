@@ -3,7 +3,10 @@
 
 /** @noSelfInFile */
 
-declare module "factorio/runtime" {
+export {}
+
+/** @noResolution */
+declare module "factorio:runtime" {
   /** @noSelf */
   interface SerpentOptions {
     /** Indentation; triggers long multi-line output. */
@@ -68,30 +71,35 @@ declare module "factorio/runtime" {
     tablecomment: boolean | number
   }
 
-  namespace serpent {
+  /** @noSelf */
+  interface Serpent {
     /** Full serialization; sets name, compact and sparse options; */
-    function dump(tbl: unknown, options?: Partial<SerpentOptions>): string
+    dump(tbl: unknown, options?: Partial<SerpentOptions>): string
 
     /** Single line pretty printing, no self-ref section; sets sortkeys and comment options; */
-    function line(tbl: unknown, options?: Partial<SerpentOptions>): string
+    line(tbl: unknown, options?: Partial<SerpentOptions>): string
 
     /** Multi-line indented pretty printing, no self-ref section; sets indent, sortkeys, and comment options. */
-    function block(tbl: unknown, options?: Partial<SerpentOptions>): string
+    block(tbl: unknown, options?: Partial<SerpentOptions>): string
 
     /**
      * For loading serialized fragments, serpent also provides `load` function that adds safety checks and reports an
      * error if there is any executable code in the fragment.
      */
-    function load<T>(str: string, options?: { safe?: boolean }): LuaMultiReturn<[true, T] | [false, string]>
+    load<T>(str: string, options?: { safe?: boolean }): LuaMultiReturn<[true, T] | [false, string]>
   }
 }
 
-/**
- * Factorio provides the {@link https://github.com/pkulchenko/serpent serpent library} as a global variable `serpent` for
- * all mods to use. It allows for easy debugging of tables, because serpent makes it trivial to print them, for example
- * by using `serpent.block()`. However, serpent cannot pretty-print LuaObjects such as LuaEntity. The serpent library
- * was modified to improve determinism, e.g. comments are turned off by default to avoid returning table addresses.
- * Furthermore, two options were added: `refcomment` (true/false/maxlevel) and `tablecomment` (true/false/maxlevel),
- * which allow to separately control the self-reference and table value output of the `comment` option.
- */
-declare const serpent: typeof import("factorio/runtime").serpent
+import { Serpent } from "factorio:runtime"
+
+declare global {
+  /**
+   * Factorio provides the {@link https://github.com/pkulchenko/serpent serpent library} as a global variable `serpent` for
+   * all mods to use. It allows for easy debugging of tables, because serpent makes it trivial to print them, for example
+   * by using `serpent.block()`. However, serpent cannot pretty-print LuaObjects such as LuaEntity. The serpent library
+   * was modified to improve determinism, e.g. comments are turned off by default to avoid returning table addresses.
+   * Furthermore, two options were added: `refcomment` (true/false/maxlevel) and `tablecomment` (true/false/maxlevel),
+   * which allow to separately control the self-reference and table value output of the `comment` option.
+   */
+  const serpent: Serpent
+}
