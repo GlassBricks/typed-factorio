@@ -29,15 +29,10 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
 
   numericTypes = new Set<string>()
 
-  conceptUsages = new Map<Concept, RWUsage>(this.apiDocs.concepts.map((e) => [e, RWUsage.None]))
-  conceptUsagesToPropagate = new Map<Concept, RWUsage>()
-  conceptReferencedBy = new Map<Concept, Set<Concept>>(this.apiDocs.concepts.map((e) => [e, new Set()]))
-  // empty object = has separate read/write types, but not yet known form (may use default)
-  conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
+  conceptUsageAnalysis = new ConceptUsageAnalysis(this.apiDocs.concepts)
 
   tryGetTypeOfReference(reference: string): Type | undefined {
-    const concept = this.concepts.get(reference)
-    if (concept) return concept.type
+    return this.concepts.get(reference)?.type
   }
 
   getOnlineDocUrl(reference: string): string {
@@ -101,4 +96,13 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     generateConcepts(this)
     generateIndexTypesFile(this)
   }
+}
+
+class ConceptUsageAnalysis {
+  constructor(private concepts: Concept[]) {}
+  conceptUsages = new Map<Concept, RWUsage>(this.concepts.map((e) => [e, RWUsage.None]))
+  conceptUsagesToPropagate = new Map<Concept, RWUsage>()
+  conceptReferencedBy = new Map<Concept, Set<Concept>>(this.concepts.map((e) => [e, new Set()]))
+  // empty object = has separate read/write types, but not yet known form (may use default)
+  conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
 }

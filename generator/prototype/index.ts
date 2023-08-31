@@ -10,8 +10,7 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
   types = new Map<string, PrototypeConcept>(this.apiDocs.types.map((e) => [e.name, e]))
 
   tryGetTypeOfReference(reference: string): Type | undefined {
-    const type = this.types.get(reference)
-    if (type) return type.type
+    return this.types.get(reference)?.type
   }
 
   getOnlineDocUrl(reference: string): string {

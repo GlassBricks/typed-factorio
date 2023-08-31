@@ -32,7 +32,7 @@ export function preprocessConcepts(context: RuntimeGenerationContext): void {
   finalizeConceptUsageAnalysis(context)
 
   for (const concept of concepts) {
-    const usage = context.conceptUsages.get(concept)
+    const usage = context.conceptUsageAnalysis.conceptUsages.get(concept)
     if (usage === RWUsage.None) {
       context.warning(`Unknown concept usage for ${concept.name}`)
     }
@@ -124,7 +124,7 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     }
   }
 
-  const conceptUsage = context.conceptUsages.get(concept)!
+  const conceptUsage = context.conceptUsageAnalysis.conceptUsages.get(concept)!
   if (
     typeof concept.type !== "string" &&
     concept.type.complex_type === "table" &&

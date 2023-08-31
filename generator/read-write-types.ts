@@ -55,23 +55,22 @@ export function analyzeType(context: RuntimeGenerationContext, type: Type, usage
   function analyzeBasicType(basicType: string) {
     const concept = context.concepts.get(basicType)
     if (!concept) return
-    const currentKnownUsage = context.conceptUsages.get(concept)!
+    const { conceptUsagesToPropagate, conceptUsages } = context.conceptUsageAnalysis
+    const currentKnownUsage = conceptUsages.get(concept)!
     const newUsages = usage & ~currentKnownUsage
     if (newUsages) {
-      context.conceptUsagesToPropagate.set(
-        concept,
-        (context.conceptUsagesToPropagate.get(concept) || RWUsage.None) | newUsages
-      )
+      conceptUsagesToPropagate.set(concept, (conceptUsagesToPropagate.get(concept) || RWUsage.None) | newUsages)
     }
   }
 }
 
 export function finalizeConceptUsageAnalysis(context: RuntimeGenerationContext): void {
-  while (context.conceptUsagesToPropagate.size > 0) {
-    const [concept, usage] = context.conceptUsagesToPropagate.entries().next().value
-    context.conceptUsagesToPropagate.delete(concept)
+  const { conceptUsagesToPropagate, conceptUsages } = context.conceptUsageAnalysis
+  while (conceptUsagesToPropagate.size > 0) {
+    const [concept, usage] = conceptUsagesToPropagate.entries().next().value
+    conceptUsagesToPropagate.delete(concept)
     if (!usage) continue
-    context.conceptUsages.set(concept, context.conceptUsages.get(concept)! | usage)
+    conceptUsages.set(concept, conceptUsages.get(concept)! | usage)
     analyzeType(context, concept.type, usage)
   }
 }
@@ -83,7 +82,7 @@ export function recordConceptDependencies(context: RuntimeGenerationContext, con
     if (typeof type === "string") {
       const referencedConcept = context.concepts.get(type)
       if (!referencedConcept) return
-      context.conceptReferencedBy.get(referencedConcept)!.add(concept)
+      context.conceptUsageAnalysis.conceptReferencedBy.get(referencedConcept)!.add(concept)
       return
     }
     switch (type.complex_type) {
@@ -120,7 +119,7 @@ export function setReadWriteType(
   concept: Concept,
   type: { read: string | ts.TypeNode; write: string | ts.TypeNode }
 ): void {
-  const { conceptUsages, conceptReferencedBy, conceptReadWriteTypes } = context
+  const { conceptReferencedBy, conceptUsages, conceptReadWriteTypes } = context.conceptUsageAnalysis
   if (conceptUsages.get(concept) !== RWUsage.ReadWrite) {
     context.warning(
       `Concept ${concept.name} is not read-write, but is being marked as having separate read and write types`

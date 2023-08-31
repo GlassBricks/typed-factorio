@@ -232,7 +232,7 @@ function mapBasicType(
     const usingIndex = tryUseIndexTypeFromBasicType(context, type, typeContext)
     if (usingIndex) return usingIndex
     const concept = context.concepts.get(type)
-    const rwType = concept && context.conceptReadWriteTypes.get(concept)
+    const rwType = concept && context.conceptUsageAnalysis.conceptReadWriteTypes.get(concept)
     if (rwType) {
       return mapConceptRwType(context, rwType, usage)
     }
