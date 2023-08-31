@@ -5,6 +5,7 @@ import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
 import { LiteralType, PrototypeWithExamples } from "./FactorioPrototypeApiJson.js"
 import { GenerationContext } from "./GenerationContext.js"
+import assert from "assert"
 
 export interface Documentable extends WithNotes, PrototypeWithExamples {
   description: string
@@ -138,13 +139,25 @@ function getInstanceLimitComment(instanceLimit: number | undefined): string | un
   return `_Prototype limited to **${instanceLimit}** total instances_`
 }
 
+function getListsComment(element: Documentable, onlineReference: string | undefined): string | undefined {
+  if (!element.lists) return
+  assert(onlineReference)
+  return element.lists
+    .map((list) => {
+      // only get the header, link to online documentation
+      const header = list.substring(0, list.indexOf("\n"))
+      return `{@link ${onlineReference} > ${header}}`
+    })
+    .join("\n\n")
+}
+
 function processExample(context: GenerationContext, example: string): string {
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
   const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
   return result.replaceAll("\n", "\n * ")
 }
 
-export function createTag(tag: string, comment?: string) {
+export function createTag(tag: string, comment?: string): ts.JSDocUnknownTag {
   return ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier(tag), comment)
 }
 
@@ -155,12 +168,15 @@ export function addJsDoc<T extends ts.Node>(
   onlineReferenceName: string | undefined,
   tags: ts.JSDocTag[] = []
 ): T {
-  let comment = [
+  const onlineDocUrl = onlineReferenceName && context.getOnlineDocUrl(onlineReferenceName)
+
+  const comment = [
     getDefaultComment(element),
     processDescription(context, element.description),
     getRaisesComment(context, element.raises),
     getSubclassesComment(element.subclasses),
     getInstanceLimitComment(element.instance_limit),
+    getListsComment(element, onlineDocUrl),
   ]
     .filter((x) => x)
     .join("\n\n")
@@ -175,12 +191,10 @@ export function addJsDoc<T extends ts.Node>(
     tags.push(createTag("remarks", processDescription(context, element.notes.join("<br>"))))
   }
 
-  // TODO: lists, images
-
   if (!comment && tags.length === 0) return node
 
-  if (onlineReferenceName) {
-    tags.push(createSeeTag(`{@link ${context.getOnlineDocUrl(onlineReferenceName)} Online documentation}`))
+  if (onlineDocUrl) {
+    tags.push(createSeeTag(`{@link ${onlineDocUrl} Online documentation}`))
   }
   // move @noSelf annotation to the end
   const noSelfIndex = tags.findIndex((x) => x.tagName.text === "noSelf")
@@ -189,9 +203,9 @@ export function addJsDoc<T extends ts.Node>(
     tags.push(noSelf)
   }
 
-  comment = comment.replace(/\n\n\n+/g, "\n\n").replace(/^\n+|\n+$/, "")
+  const normalizedComment = comment.replace(/\n\n\n+/g, "\n\n").replace(/^\n+|\n+$/, "")
 
-  const jsDoc = ts.factory.createJSDocComment(comment, tags)
+  const jsDoc = ts.factory.createJSDocComment(normalizedComment, tags)
   addFakeJSDoc(node, jsDoc)
 
   return node

@@ -43,7 +43,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
       relative_link = `classes/${reference}.html`
     } else if (this.events.has(reference)) {
       relative_link = "events.html#" + reference
-    } else if (reference.startsWith("defines.")) {
+    } else if (reference.match(/^defines(\.|$)/)) {
       relative_link = "defines.html#" + reference
     } else if (this.concepts.has(reference)) {
       relative_link = "concepts.html#" + reference

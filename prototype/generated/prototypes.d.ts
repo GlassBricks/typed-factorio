@@ -2520,6 +2520,8 @@ declare module "factorio:prototype" {
          * For modifier keys, the following names are used: "CONTROL", "SHIFT", "ALT", "COMMAND".
          *
          * A key binding can contain an unlimited amount of modifier keys (listed above) but only one normal key (listed below).
+         *
+         * {@link https://lua-api.factorio.com/1.1.89/prototypes/CustomInputPrototype.html#key_sequence > These names are available for the normal keys}
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CustomInputPrototype.html#key_sequence Online documentation}
          */
         key_sequence: string;
@@ -2542,6 +2544,8 @@ declare module "factorio:prototype" {
          * **Default:** `""`
          *
          * When a custom-input is linked to a game control it won't show up in the control-settings GUI and will fire when the linked control is pressed.
+         *
+         * {@link https://lua-api.factorio.com/1.1.89/prototypes/CustomInputPrototype.html#linked_game_control > List of internal names of game controls}
          * @example
          * key_sequence = "",
          * linked_game_control = "clear-cursor"
@@ -3278,6 +3282,8 @@ declare module "factorio:prototype" {
          * **Default:** ``{"item-layer", "object-layer", "player-layer", "water-tile"}``
          *
          * Two entities can collide only if they share a layer from the collision mask.
+         *
+         * {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityPrototype.html#collision_mask > Some entity types have their own default that differs from the above default. They are listed here:}
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityPrototype.html#collision_mask Online documentation}
          */
         collision_mask?: CollisionMask;
@@ -3425,6 +3431,8 @@ declare module "factorio:prototype" {
          * This allows you to replace an entity that's already placed, with a different one in your inventory. For example, replacing a burner inserter with a fast inserter. The replacement entity can be a different rotation to the replaced entity and you can replace an entity with the same type.
          *
          * This is simply a string, so any string can be used here. The entity that should be replaced simply has to use the same string here.
+         *
+         * {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityPrototype.html#fast_replaceable_group > The ones the game uses are:}
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityPrototype.html#fast_replaceable_group Online documentation}
          */
         fast_replaceable_group?: string;
@@ -7463,6 +7471,8 @@ declare module "factorio:prototype" {
         collision_mask?: CollisionMask;
         /**
          * All rail {@link EntityPrototype#collision_box collision_boxes} are hardcoded and cannot be modified.
+         *
+         * {@link https://lua-api.factorio.com/1.1.89/prototypes/RailPrototype.html#collision_box > The hardcoded values are:}
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RailPrototype.html#collision_box Online documentation}
          */
         collision_box?: BoundingBox;
@@ -7489,6 +7499,8 @@ declare module "factorio:prototype" {
         build_grid_size?: 2;
         /**
          * All rail remnant {@link EntityPrototype#collision_box collision_boxes} are hardcoded and cannot be modified.
+         *
+         * {@link https://lua-api.factorio.com/1.1.89/prototypes/RailRemnantsPrototype.html#collision_box > The hardcoded values are:}
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RailRemnantsPrototype.html#collision_box Online documentation}
          */
         collision_box?: BoundingBox;
