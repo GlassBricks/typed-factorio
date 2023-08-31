@@ -151,6 +151,17 @@ function getListsComment(element: Documentable, onlineReference: string | undefi
     .join("\n\n")
 }
 
+function getImages(context: GenerationContext, element: Documentable): string | undefined {
+  if (!element.images) return
+  return element.images
+    .map((image) => {
+      const { caption, filename } = image
+      const onlinePath = context.docUrlBase() + "static/images/" + filename
+      return `![${caption || ""}](${onlinePath})`
+    })
+    .join("\n\n")
+}
+
 function processExample(context: GenerationContext, example: string): string {
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
   const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
@@ -177,6 +188,7 @@ export function addJsDoc<T extends ts.Node>(
     getSubclassesComment(element.subclasses),
     getInstanceLimitComment(element.instance_limit),
     getListsComment(element, onlineDocUrl),
+    getImages(context, element),
   ]
     .filter((x) => x)
     .join("\n\n")

@@ -4968,6 +4968,8 @@ declare module "factorio:prototype" {
          * **Default:** `false`
          *
          * Whether the "no network" icon should be rendered on this entity if the entity is not within a logistics network.
+         *
+         * ![](https://lua-api.factorio.com/1.1.89/static/images/too-far-from-roboport-icon.png)
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/InfinityContainerPrototype.html#render_not_in_network_icon Online documentation}
          */
         render_not_in_network_icon?: bool;
@@ -5922,6 +5924,8 @@ declare module "factorio:prototype" {
     }
     /**
      * A belt that can be connected to a belt anywhere else, including on a different surface. The linked belts have to be {@linkplain https://wiki.factorio.com/Console#Connect_linked_belts connected with console commands} or runtime scripting in mods or scenarios. {@link import("factorio:runtime").LuaEntity#connect_linked_belts LuaEntity::connect_linked_belts} and other runtime functions.
+     *
+     * ![](https://lua-api.factorio.com/1.1.89/static/images/Linked_belt_entity.png)
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedBeltPrototype.html Online documentation}
      */
     export interface LinkedBeltPrototype extends TransportBeltConnectablePrototype {
@@ -6152,6 +6156,8 @@ declare module "factorio:prototype" {
          * **Default:** `true`
          *
          * Whether the "no network" icon should be rendered on this entity if the entity is not within a logistics network.
+         *
+         * ![](https://lua-api.factorio.com/1.1.89/static/images/too-far-from-roboport-icon.png)
          * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LogisticContainerPrototype.html#render_not_in_network_icon Online documentation}
          */
         render_not_in_network_icon?: bool;

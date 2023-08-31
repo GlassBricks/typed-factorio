@@ -926,6 +926,8 @@ declare module "factorio:prototype" {
          * **Default:** `0`
          *
          * Parameter of the sharpness filter for post-processing probability of entity placement. Value of `0` disables the filter, with value `1`, the filter is a step function centered around `0.5`.
+         *
+         * ![Example of sharpness filter with value 0.5.](https://lua-api.factorio.com/1.1.89/static/images/AutoplaceSpecification_sharpness.png)
          * @see {@link https://lua-api.factorio.com/1.1.89/types/AutoplaceSpecification.html#sharpness Online documentation}
          */
         sharpness?: double;
@@ -1155,6 +1157,8 @@ declare module "factorio:prototype" {
          * **Default:** `true`
          *
          * Whether to render the "no power" icon if the entity is low on power. Also applies to the "no fuel" icon when using burner energy sources.
+         *
+         * ![](https://lua-api.factorio.com/1.1.89/static/images/no_power_icon.png)
          * @see {@link https://lua-api.factorio.com/1.1.89/types/BaseEnergySource.html#render_no_power_icon Online documentation}
          */
         render_no_power_icon?: bool;
@@ -1162,6 +1166,8 @@ declare module "factorio:prototype" {
          * **Default:** `true`
          *
          * Whether to render the "no network" icon if the entity is not connected to an electric network.
+         *
+         * ![](https://lua-api.factorio.com/1.1.89/static/images/no_network_icon.png)
          * @see {@link https://lua-api.factorio.com/1.1.89/types/BaseEnergySource.html#render_no_network_icon Online documentation}
          */
         render_no_network_icon?: bool;
@@ -3324,6 +3330,10 @@ declare module "factorio:prototype" {
     } | ElementImageSetLayer;
     /**
      * If this is loaded as a Sprite, it gets used as `center`.
+     *
+     * ![How the sprites are laid out graphically when using a composition type element image set layer.](https://lua-api.factorio.com/1.1.89/static/images/ElementImageSetLayer_properties.png)
+     *
+     * ![How the sprites are stretched when using a composition type element image set layer.](https://lua-api.factorio.com/1.1.89/static/images/ElementImageSetLayer_stretching.png)
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ElementImageSetLayer.html Online documentation}
      */
     export type ElementImageSetLayer = {
@@ -3395,6 +3405,8 @@ declare module "factorio:prototype" {
          * If this is a tuple, the first member of the tuple is width and the second is height. Otherwise the size is both width and height.
          *
          * Only loaded if `type` is `"composition"`.
+         *
+         * ![In base game, the corner size is 8 and the sides are 1px long and 8px wide.](https://lua-api.factorio.com/1.1.89/static/images/ElementImageSetLayer_base_sizes.png)
          * @example
          * {
          *   -- How an ElementImageSet is loaded which has only one layer, which uses the corner_size shown in the diagram
@@ -4016,6 +4028,8 @@ declare module "factorio:prototype" {
      * Entities can have multiple fluidboxes. These can be part of a {@link FluidEnergySource}, or be specified directly in the entity prototype.
      *
      * A fluidbox can store only one type of fluid at a time. However, a fluid system (ie. multiple connected fluid boxes) can contain multiple different fluids, see {@linkplain https://wiki.factorio.com/Fluid_system#Fluid_mixing Fluid mixing}.
+     *
+     * ![Visual representation of base_area, base_level and height. When all the fluidboxes are connected, the water leaves fluidbox A and flows into the other 3 boxes through fluidbox B until the water level is equal in all boxes.](https://lua-api.factorio.com/1.1.89/static/images/Fluidboxes.png)
      * @example
      * fluid_box =
      * {
@@ -9327,6 +9341,8 @@ declare module "factorio:prototype" {
          * This property is only used by sprites used in {@link UtilitySprites} that have the `"icon"` flag set.
          *
          * If this is set to `true`, the game will generate an icon shadow (using signed distance fields) for the sprite.
+         *
+         * ![Example of the icon shadow in the character modifier icon used by the steel axe research](https://lua-api.factorio.com/1.1.89/static/images/Generate_sdf_example.png)
          * @see {@link https://lua-api.factorio.com/1.1.89/types/SpriteParameters.html#generate_sdf Online documentation}
          */
         generate_sdf?: bool;
@@ -11275,6 +11291,8 @@ declare module "factorio:prototype" {
      * Booleans used in prototypes can also be be defined by other variable types which are then coerced to boolean values by the game. This type coercion differs from the {@linkplain https://www.lua.org/manual/5.2/manual.html#2.1 standard Lua truthy/falsy} coercion.
      *
      * It is recommended to only use `true` and `false`.
+     *
+     * ![](https://lua-api.factorio.com/1.1.89/static/images/bool_coercion.png)
      * @see {@link https://lua-api.factorio.com/1.1.89/types/bool.html Online documentation}
      */
     export type bool = boolean;
