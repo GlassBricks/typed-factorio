@@ -38,7 +38,7 @@ function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribut
 export function generateClasses(context: RuntimeGenerationContext): void {
   context.addFile("classes", DeclarationType.Types, () => {
     for (const clazz of context.apiDocs.classes.sort(sortByOrder)) {
-      const existing = context.getInterfaceDef(clazz.name)
+      const existing = context.manualDefs.getDeclaration(clazz.name)
       generateClass(context, clazz, existing)
     }
   })

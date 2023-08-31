@@ -80,20 +80,66 @@ export type RootDef = InterfaceDef | TypeAliasDef | NamespaceDef
 export type NamespaceDefMember = NamespaceDef | ConstDef | EnumDef
 export type AnyDef = InterfaceDef | TypeAliasDef | NamespaceDef | ConstDef | EnumDef
 
-export function processManualDefinitions(file: ts.SourceFile): Record<string, RootDef | undefined> {
-  const result: Record<string, RootDef | undefined> = {}
+export class ManualDefinitions {
+  constructor(readonly map: Map<string, RootDef>) {}
+
+  private expectType<T extends string>(def: AnyDef, ...kinds: T[]): asserts def is Extract<AnyDef, { kind: T }> {
+    if (!kinds.includes(def.kind as T)) {
+      throw new Error(`Expected ${kinds.join(" or ")} for ${def.name} but found ${def.kind}`)
+    }
+  }
+
+  getInterface(name: string): InterfaceDef | undefined {
+    const def = this.map.get(name)
+    if (def) {
+      this.expectType(def, "interface")
+      return def
+    }
+  }
+  getTypeAlias(name: string): TypeAliasDef | undefined {
+    const def = this.map.get(name)
+    if (def) {
+      this.expectType(def, "type")
+      return def
+    }
+  }
+  getDeclaration(name: string): InterfaceDef | TypeAliasDef | undefined {
+    const def = this.map.get(name)
+    if (def) {
+      this.expectType(def, "interface", "type")
+      return def
+    }
+  }
+  getNamespace(name: string): NamespaceDef | undefined {
+    const def = this.map.get(name)
+    if (def) {
+      this.expectType(def, "namespace")
+      return def
+    }
+  }
+  get<T extends string>(name: string, ...expectedTypes: T[]): Extract<AnyDef, { kind: T }> | undefined {
+    const def = this.map.get(name)
+    if (def) {
+      this.expectType(def, ...expectedTypes)
+      return def
+    }
+  }
+}
+
+export function processManualDefinitions(file: ts.SourceFile): ManualDefinitions {
+  const result = new Map<string, RootDef>()
   for (const statement of file.statements) {
     const def = createDef(statement)
     if (def) {
       if (def.kind === "namespace" || def.kind === "interface" || def.kind === "type") {
-        if (result[def.name]) {
+        if (result.has(def.name)) {
           console.log("Warning: duplicate definition for " + def.name)
         }
-        result[def.name] = def
+        result.set(def.name, def)
       }
     }
   }
-  return result
+  return new ManualDefinitions(result)
 }
 
 function createDef(node: ts.Statement): AnyDef {
@@ -213,7 +259,7 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
 }
 
 export function preprocessManualDefinitions(context: GenerationContext): void {
-  for (const def of Object.values(context._manualDefinitions as Record<string, RootDef>)) {
+  for (const def of context.manualDefs.map.values()) {
     const addBefore = def.annotations.addBefore?.[0]
     const addAfter = def.annotations.addAfter?.[0]
     const addTo = def.annotations.addTo?.[0]
@@ -253,8 +299,7 @@ export function preprocessManualDefinitions(context: GenerationContext): void {
 
 export function checkManualDefinitions(context: GenerationContext): void {
   const typeNames = new Set(context.references.values())
-  for (const [name, d] of Object.entries(context._manualDefinitions)) {
-    const def = d!
+  for (const [name, def] of context.manualDefs.map.entries()) {
     const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
     const isExisting = typeNames.has(name) || context.references.has(name)
     if (!!hasAdd === isExisting) {

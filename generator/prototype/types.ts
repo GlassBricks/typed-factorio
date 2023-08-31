@@ -26,7 +26,7 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
     return generateBuiltinType(context, concept)
   }
 
-  const existing = context.getInterfaceDef(concept.name)
+  const existing = context.manualDefs.getDeclaration(concept.name)
   const properties = concept.properties?.sort(sortByOrder).flatMap((p) => mapProperty(context, p, concept.name))
 
   const heritageClauses = getHeritageClauses(context, concept)
@@ -45,7 +45,7 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
 function generateBuiltinType(context: PrototypeGenerationContext, concept: PrototypeConcept) {
   const name = concept.name
   if (name == "string" || name == "number" || name == "boolean") return
-  const existing = context.getInterfaceDef(name)
+  const existing = context.manualDefs.getDeclaration(name)
   if (!existing) {
     context.warning(`No existing definition for builtin ${name}`)
     return

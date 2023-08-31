@@ -22,7 +22,7 @@ export function createVariantParameterTypes(
 
   const baseName = "Base" + shortName
   context.references.set(baseName, name)
-  const existingBase = context.getInterfaceDef(baseName)
+  const existingBase = context.manualDefs.getDeclaration(baseName)
 
   value.variant_parameter_groups!.sort(sortByOrder)
 
@@ -70,7 +70,7 @@ export function createVariantParameterTypes(
 
     const variantName = variantToTypeName(group.name)
 
-    const existing = context.getInterfaceDef(variantName)
+    const existing = context.manualDefs.getDeclaration(variantName)
 
     let declarations: (ts.InterfaceDeclaration | ts.TypeAliasDeclaration)[]
     if (existing?.kind === "type") {

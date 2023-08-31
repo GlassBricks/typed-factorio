@@ -26,7 +26,7 @@ export function preprocessConcepts(context: RuntimeGenerationContext): void {
 
   for (const concept of concepts) {
     context.references.set(concept.name, concept.name)
-    const existing = context.getInterfaceDef(concept.name)
+    const existing = context.manualDefs.getDeclaration(concept.name)
     if (!existing?.annotations.omit) recordConceptDependencies(context, concept)
   }
   finalizeConceptUsageAnalysis(context)
@@ -37,7 +37,7 @@ export function preprocessConcepts(context: RuntimeGenerationContext): void {
       context.warning(`Unknown concept usage for ${concept.name}`)
     }
 
-    const existing = context.getInterfaceDef(concept.name)
+    const existing = context.manualDefs.getDeclaration(concept.name)
     if (existing?.annotations.replace) continue
     const tableOrArray = tryGetTableOrArrayConcept(context, concept)
     if (tableOrArray) {
@@ -112,7 +112,7 @@ function createVariantParameterConcept(
   }
 }
 function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
-  const existing = context.getInterfaceDef(concept.name)
+  const existing = context.manualDefs.getDeclaration(concept.name)
 
   if (existing?.annotations) {
     if (existing.annotations.replace) {

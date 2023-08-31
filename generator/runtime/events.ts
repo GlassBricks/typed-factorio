@@ -25,7 +25,7 @@ export function generateEvents(context: RuntimeGenerationContext): void {
     const heritageClause = createExtendsClause("EventData")
     for (const event of context.apiDocs.events.sort(sortByOrder)) {
       const name = getMappedEventName(event.name)
-      const existing = context.getInterfaceDef(name)
+      const existing = context.manualDefs.getDeclaration(name)
       const declaration = ts.factory.createInterfaceDeclaration(
         undefined,
         name,

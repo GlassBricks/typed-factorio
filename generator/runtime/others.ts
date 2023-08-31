@@ -12,7 +12,7 @@ export function preprocessBuiltins(context: RuntimeGenerationContext): void {
   for (const builtin of context.apiDocs.builtin_types) {
     if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
     context.references.set(builtin.name, builtin.name)
-    const existing = context.getInterfaceDef(builtin.name)
+    const existing = context.manualDefs.getDeclaration(builtin.name)
     if (existing?.kind === "type" && existing.node.type.kind === ts.SyntaxKind.NumberKeyword)
       context.numericTypes.add(builtin.name)
   }
@@ -36,7 +36,7 @@ export function generateBuiltins(context: RuntimeGenerationContext): void {
   context.addFile("builtin-types", DeclarationType.Types, () => {
     for (const builtin of context.apiDocs.builtin_types.sort(sortByOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
-      const existing = context.getInterfaceDef(builtin.name)
+      const existing = context.manualDefs.getDeclaration(builtin.name)
       if (!existing) {
         context.warning(`No existing definition for builtin ${builtin.name}`)
         continue

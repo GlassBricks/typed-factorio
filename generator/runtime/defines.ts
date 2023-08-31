@@ -34,7 +34,7 @@ export function generateDefines(context: RuntimeGenerationContext): void {
     context,
     createRootDefine(context),
     "",
-    context.getNamespaceDef("defines")
+    context.manualDefs.getNamespace("defines")
   )
   context.addFile("defines", DeclarationType.Types, () => context.currentFile.add(defines))
 }
