@@ -3,8 +3,8 @@ import { DeclarationType } from "../OutputFile.js"
 import { sortByOrder } from "../util.js"
 import { Prototype } from "../FactorioPrototypeApiJson.js"
 import ts from "typescript"
-import { addJsDoc } from "../documentation.js"
-import { Modifiers, Types } from "../genUtil.js"
+import { addJsDoc, createTag } from "../documentation.js"
+import { addFakeJSDoc, Modifiers, Types } from "../genUtil.js"
 import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
 
 export function preprocessPrototypes(context: PrototypeGenerationContext): void {
@@ -53,6 +53,19 @@ function getMembers(context: PrototypeGenerationContext, prototype: Prototype): 
     )
     properties.unshift(typeProperty)
   }
+
+  if (prototype.deprecated) {
+    // also add deprecated property to "type" property
+    const typeProperty = properties.find((p) => p.name && ts.isIdentifier(p.name) && p.name.text === "type")
+
+    if (typeProperty) {
+      addFakeJSDoc(
+        typeProperty,
+        ts.factory.createJSDocComment(undefined, [createTag("deprecated"), createTag("see", prototype.name)])
+      )
+    }
+  }
+
   return properties
 }
 

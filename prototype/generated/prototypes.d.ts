@@ -3179,9 +3179,14 @@ declare module "factorio:prototype" {
     }
     /**
      * Deprecated in 0.18. The type "particle" has been obsoleted and cannot be created. See {@link ParticlePrototype} for particles.
+     * @deprecated
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityParticlePrototype.html Online documentation}
      */
     export interface EntityParticlePrototype extends EntityPrototype {
+        /**
+         * @deprecated
+         * @see EntityParticlePrototype
+         */
         type: "particle";
         /**
          * **Default:** `no masks`
@@ -5897,9 +5902,14 @@ declare module "factorio:prototype" {
     }
     /**
      * Deprecated in 0.18. Particles that are exclusively meant for leaves of trees. The type "leaf-particle" has been obsoleted and cannot be created. See {@link ParticlePrototype} for particles.
+     * @deprecated
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LeafParticlePrototype.html Online documentation}
      */
     export interface LeafParticlePrototype extends Omit<EntityParticlePrototype, "type"> {
+        /**
+         * @deprecated
+         * @see LeafParticlePrototype
+         */
         type: "leaf-particle";
     }
     /**
@@ -6418,9 +6428,14 @@ declare module "factorio:prototype" {
     }
     /**
      * Exists only for migration, cannot be used by mods.
+     * @deprecated
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MiningToolPrototype.html Online documentation}
      */
     export interface MiningToolPrototype extends Omit<ToolPrototype, "type"> {
+        /**
+         * @deprecated
+         * @see MiningToolPrototype
+         */
         type: "mining-tool";
     }
     /**
@@ -9217,9 +9232,14 @@ declare module "factorio:prototype" {
     }
     /**
      * Deprecated in 0.16. The type "simple-smoke" has been obsoleted and cannot be created. Use {@link TrivialSmokePrototype} or {@link SmokeWithTriggerPrototype} instead.
+     * @deprecated
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SimpleSmokePrototype.html Online documentation}
      */
     export interface SimpleSmokePrototype extends SmokePrototype {
+        /**
+         * @deprecated
+         * @see SimpleSmokePrototype
+         */
         type: "smoke";
     }
     /**

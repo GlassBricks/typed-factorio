@@ -12,6 +12,7 @@ export interface Documentable extends WithNotes, PrototypeWithExamples {
   raises?: EventRaised[]
   instance_limit?: number
   default?: string | LiteralType
+  deprecated?: boolean
 }
 const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
 
@@ -143,12 +144,16 @@ function processExample(context: GenerationContext, example: string): string {
   return result.replaceAll("\n", "\n * ")
 }
 
+export function createTag(tag: string, comment?: string) {
+  return ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier(tag), comment)
+}
+
 export function addJsDoc<T extends ts.Node>(
   context: GenerationContext,
   node: T,
   element: Documentable,
   onlineReferenceName: string | undefined,
-  tags?: ts.JSDocTag[]
+  tags: ts.JSDocTag[] = []
 ): T {
   let comment = [
     getDefaultComment(element),
@@ -160,25 +165,17 @@ export function addJsDoc<T extends ts.Node>(
     .filter((x) => x)
     .join("\n\n")
 
-  tags = tags || []
-
+  if (element.deprecated) {
+    tags.push(createTag("deprecated"))
+  }
   if (element.examples) {
-    tags.push(
-      ...element.examples.map((e) =>
-        ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier("example"), processExample(context, e))
-      )
-    )
+    tags.push(...element.examples.map((e) => createTag("example", processExample(context, e))))
   }
   if (element.notes) {
-    tags.push(
-      ts.factory.createJSDocUnknownTag(
-        ts.factory.createIdentifier("remarks"),
-        processDescription(context, element.notes.join("<br>"))
-      )
-    )
+    tags.push(createTag("remarks", processDescription(context, element.notes.join("<br>"))))
   }
 
-  // TODO: lists, examples, images
+  // TODO: lists, images
 
   if (!comment && tags.length === 0) return node
 
