@@ -1,4 +1,4 @@
-import { FactorioPrototypeApiJson, Prototype, PrototypeConcept, Type } from "../FactorioPrototypeApiJson.js"
+import { FactorioPrototypeApiJson, Property, Prototype, PrototypeConcept, Type } from "../FactorioPrototypeApiJson.js"
 import { GenerationContext } from "../GenerationContext.js"
 import { generatePrototypes, preprocessPrototypes } from "./prototypes.js"
 import { generateTypes, preprocessTypes } from "./types.js"
@@ -8,6 +8,10 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
 
   prototypes = new Map<string, Prototype>(this.apiDocs.prototypes.map((e) => [e.name, e]))
   types = new Map<string, PrototypeConcept>(this.apiDocs.types.map((e) => [e.name, e]))
+
+  prototypeProperties = new Map<string, Map<string, Property>>(
+    this.apiDocs.prototypes.map((e) => [e.name, new Map(e.properties.map((p) => [p.name, p]))])
+  )
 
   tryGetTypeOfReference(reference: string): Type | undefined {
     return this.types.get(reference)?.type
