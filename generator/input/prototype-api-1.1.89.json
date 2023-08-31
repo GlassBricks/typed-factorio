@@ -699,7 +699,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["SpriteSizeType", "SpriteSizeType"]
+            "values": [
+              "SpriteSizeType",
+              "SpriteSizeType"
+            ]
           },
           "optional": true
         },
@@ -800,7 +803,10 @@
               "SpriteSizeType",
               {
                 "complex_type": "tuple",
-                "values": ["SpriteSizeType", "SpriteSizeType"]
+                "values": [
+                  "SpriteSizeType",
+                  "SpriteSizeType"
+                ]
               }
             ],
             "full_format": false
@@ -1310,7 +1316,9 @@
           "name": "collision_box",
           "order": 10,
           "description": "Must have a collision box size of zero.",
-          "examples": ["```\ncollision_box = {{0, 0}, {0, 0}}\n```"],
+          "examples": [
+            "```\ncollision_box = {{0, 0}, {0, 0}}\n```"
+          ],
           "override": true,
           "type": "BoundingBox",
           "optional": true,
@@ -1972,7 +1980,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["ElectricEnergySource", "VoidEnergySource"],
+            "options": [
+              "ElectricEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -2277,7 +2288,9 @@
           "name": "stack_size",
           "order": 1,
           "description": "Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `\"not-stackable\"` flag is set.",
-          "examples": ["```\nstack_size = 1\n```"],
+          "examples": [
+            "```\nstack_size = 1\n```"
+          ],
           "override": true,
           "type": {
             "complex_type": "literal",
@@ -2466,7 +2479,9 @@
           "name": "stack_size",
           "order": 0,
           "description": "Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `\"not-stackable\"` flag is set.",
-          "examples": ["```\nstack_size = 1\n```"],
+          "examples": [
+            "```\nstack_size = 1\n```"
+          ],
           "override": true,
           "type": {
             "complex_type": "literal",
@@ -2685,7 +2700,9 @@
           "name": "to_build",
           "order": 0,
           "description": "This will trigger the achievement, if this entity is placed.",
-          "examples": ["```\nto_build = \"locomotive\"\n```"],
+          "examples": [
+            "```\nto_build = \"locomotive\"\n```"
+          ],
           "override": false,
           "type": "EntityID",
           "optional": false
@@ -2694,7 +2711,9 @@
           "name": "until_second",
           "order": 3,
           "description": "This lets the game know how long into a game, before you can no longer complete the achievement. 0 means infinite time.",
-          "examples": ["```\nuntil_second = 60 * 60 * 8 --8 hours\n```"],
+          "examples": [
+            "```\nuntil_second = 60 * 60 * 8 --8 hours\n```"
+          ],
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -2881,7 +2900,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["BurnerEnergySource", "VoidEnergySource"],
+            "options": [
+              "BurnerEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -3235,7 +3257,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 3.0
+            "value": 3
           }
         },
         {
@@ -3371,7 +3393,9 @@
           "name": "mining_with_tool_particles_animation_positions",
           "order": 18,
           "description": "List of positions in the mining with tool animation when the mining sound and mining particles are created.",
-          "examples": ["```\nmining_with_tool_particles_animation_positions = {28}\n```"],
+          "examples": [
+            "```\nmining_with_tool_particles_animation_positions = {28}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -3430,7 +3454,9 @@
           "name": "running_sound_animation_positions",
           "order": 17,
           "description": "List of positions in the running animation when the walking sound is played.",
-          "examples": ["```\nrunning_sound_animation_positions = {14, 29}\n```"],
+          "examples": [
+            "```\nrunning_sound_animation_positions = {14, 29}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -3577,7 +3603,9 @@
           "name": "count",
           "order": 0,
           "description": "This will trigger the achievement, if player's current robot count is over this amount.",
-          "examples": ["```\ncount = 100\n```"],
+          "examples": [
+            "```\ncount = 100\n```"
+          ],
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -3742,7 +3770,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["Vector", "Vector", "Vector", "Vector"]
+            "values": [
+              "Vector",
+              "Vector",
+              "Vector",
+              "Vector"
+            ]
           },
           "optional": false
         },
@@ -3797,7 +3830,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["ElectricEnergySource", "VoidEnergySource"],
+            "options": [
+              "ElectricEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -3817,7 +3853,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": false
         },
@@ -3836,7 +3877,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": false
         },
@@ -3855,7 +3901,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["Vector", "Vector", "Vector", "Vector"]
+            "values": [
+              "Vector",
+              "Vector",
+              "Vector",
+              "Vector"
+            ]
           },
           "optional": false
         },
@@ -3893,7 +3944,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["Vector", "Vector", "Vector", "Vector"]
+            "values": [
+              "Vector",
+              "Vector",
+              "Vector",
+              "Vector"
+            ]
           },
           "optional": false
         },
@@ -3912,7 +3968,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": false
         },
@@ -3983,7 +4044,9 @@
           "name": "amount",
           "order": 1,
           "description": "This will trigger the achievement, if enough entities were placed using construction robots.",
-          "examples": ["```\namount = 100\n```"],
+          "examples": [
+            "```\namount = 100\n```"
+          ],
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -4027,7 +4090,9 @@
           "name": "collision_box",
           "order": 7,
           "description": "Must have a collision box size of zero.",
-          "examples": ["```\ncollision_box = {{0, 0}, {0, 0}}\n```"],
+          "examples": [
+            "```\ncollision_box = {{0, 0}, {0, 0}}\n```"
+          ],
           "override": true,
           "type": "BoundingBox",
           "optional": true,
@@ -4374,7 +4439,9 @@
           "name": "stack_size",
           "order": 1,
           "description": "Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `\"not-stackable\"` flag is set.",
-          "examples": ["```\nstack_size = 1\n```"],
+          "examples": [
+            "```\nstack_size = 1\n```"
+          ],
           "override": true,
           "type": {
             "complex_type": "literal",
@@ -4503,7 +4570,7 @@
         {
           "name": "dying_speed",
           "order": 0,
-          "description": "Multiplier for `time_before_shading_off` and `time_before_removed`. Must be positive.\n\nControls the speed of the animation: `1 \u00f7 dying_speed = duration of the animation`",
+          "description": "Multiplier for `time_before_shading_off` and `time_before_removed`. Must be positive.\n\nControls the speed of the animation: `1 ÷ dying_speed = duration of the animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -4659,7 +4726,7 @@
         {
           "name": "splash_speed",
           "order": 1,
-          "description": "Controls the speed of the splash animation: `1 \u00f7 splash_speed = duration of the splash animation`",
+          "description": "Controls the speed of the splash animation: `1 ÷ splash_speed = duration of the splash animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -4753,7 +4820,9 @@
           "name": "crafting_categories",
           "order": 2,
           "description": "A list of [recipe categories](prototype:RecipeCategory) this crafting machine can use.",
-          "examples": ["```\ncrafting_categories = {\"crafting\", \"smelting\"}\n```"],
+          "examples": [
+            "```\ncrafting_categories = {\"crafting\", \"smelting\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -4792,7 +4861,7 @@
         {
           "name": "energy_source",
           "order": 3,
-          "description": "Defines how the crafting machine is powered.\n\nWhen using an electric energy source and `drain` is not specified, it will be set to `energy_usage \u00f7 30` automatically.",
+          "description": "Defines how the crafting machine is powered.\n\nWhen using an electric energy source and `drain` is not specified, it will be set to `energy_usage ÷ 30` automatically.",
           "override": false,
           "type": "EnergySource",
           "optional": false
@@ -5141,7 +5210,9 @@
           "lists": [
             "List of internal names of game controls\n\n- action-bar-select-page-1\n- action-bar-select-page-10\n- action-bar-select-page-2\n- action-bar-select-page-3\n- action-bar-select-page-4\n- action-bar-select-page-5\n- action-bar-select-page-6\n- action-bar-select-page-7\n- action-bar-select-page-8\n- action-bar-select-page-9\n- activate-tooltip\n- add-station\n- add-temporary-station\n- alt-zoom-in\n- alt-zoom-out\n- build\n- build-ghost\n- build-with-obstacle-avoidance\n- cancel-craft\n- cancel-craft-5\n- cancel-craft-all\n- clear-cursor\n- confirm-gui\n- confirm-message\n- connect-train\n- controller-gui-crafting-tab\n- controller-gui-logistics-tab\n- copy\n- copy-entity-settings\n- craft\n- craft-5\n- craft-all\n- cursor-split\n- cut\n- cycle-blueprint-backwards\n- cycle-blueprint-forwards\n- cycle-clipboard-backwards\n- cycle-clipboard-forwards\n- debug-reset-zoom\n- debug-reset-zoom-2x\n- debug-toggle-atlas-gui\n- debug-toggle-basic\n- debug-toggle-debug-settings\n- decrease-ui-scale\n- disconnect-train\n- drag-map\n- drop-cursor\n- editor-clone-item\n- editor-delete-item\n- editor-next-variation\n- editor-previous-variation\n- editor-remove-scripting-object\n- editor-reset-speed\n- editor-set-clone-brush-destination\n- editor-set-clone-brush-source\n- editor-speed-down\n- editor-speed-up\n- editor-switch-to-surface\n- editor-tick-once\n- editor-toggle-pause\n- fast-entity-split\n- fast-entity-transfer\n- flip-blueprint-horizontal\n- flip-blueprint-vertical\n- focus-search\n- increase-ui-scale\n- inventory-split\n- inventory-transfer\n- larger-terrain-building-area\n- logistic-networks\n- mine\n- move-down\n- move-left\n- move-right\n- move-up\n- next-active-quick-bar\n- next-player-in-replay\n- next-weapon\n- open-character-gui\n- open-gui\n- open-item\n- open-prototype-explorer-gui\n- open-prototypes-gui\n- open-technology-gui\n- open-trains-gui\n- order-to-follow\n- paste\n- paste-entity-settings\n- pause-game\n- pick-item\n- pick-items\n- place-in-chat\n- place-ping\n- previous-active-quick-bar\n- previous-mod\n- previous-technology\n- production-statistics\n- quick-bar-button-1\n- quick-bar-button-1-secondary\n- quick-bar-button-10\n- quick-bar-button-10-secondary\n- quick-bar-button-2\n- quick-bar-button-2-secondary\n- quick-bar-button-3\n- quick-bar-button-3-secondary\n- quick-bar-button-4\n- quick-bar-button-4-secondary\n- quick-bar-button-5\n- quick-bar-button-5-secondary\n- quick-bar-button-6\n- quick-bar-button-6-secondary\n- quick-bar-button-7\n- quick-bar-button-7-secondary\n- quick-bar-button-8\n- quick-bar-button-8-secondary\n- quick-bar-button-9\n- quick-bar-button-9-secondary\n- remove-pole-cables\n- reset-ui-scale\n- reverse-rotate\n- reverse-select\n- rotate\n- rotate-active-quick-bars\n- select-for-blueprint\n- select-for-cancel-deconstruct\n- shoot-enemy\n- shoot-selected\n- show-info\n- smaller-terrain-building-area\n- smart-pipette\n- stack-split\n- stack-transfer\n- toggle-blueprint-library\n- toggle-console\n- toggle-driving\n- toggle-filter\n- toggle-gui-debug\n- toggle-gui-glows\n- toggle-gui-shadows\n- toggle-gui-style-view\n- toggle-map\n- toggle-menu\n- undo\n- zoom-in\n- zoom-out"
           ],
-          "examples": ["```\nkey_sequence = \"\",\nlinked_game_control = \"clear-cursor\"\n```"],
+          "examples": [
+            "```\nkey_sequence = \"\",\nlinked_game_control = \"clear-cursor\"\n```"
+          ],
           "override": false,
           "type": "string",
           "optional": true,
@@ -5256,7 +5327,9 @@
           "name": "amount",
           "order": 0,
           "description": "This will trigger the achievement, if enough entities were deconstructed using construction robots.",
-          "examples": ["```\namount = 100\n```"],
+          "examples": [
+            "```\namount = 100\n```"
+          ],
           "override": false,
           "type": "uint32",
           "optional": false
@@ -5462,7 +5535,9 @@
           "name": "stack_size",
           "order": 2,
           "description": "Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `\"not-stackable\"` flag is set.",
-          "examples": ["```\nstack_size = 1\n```"],
+          "examples": [
+            "```\nstack_size = 1\n```"
+          ],
           "override": true,
           "type": {
             "complex_type": "literal",
@@ -5641,7 +5716,9 @@
           "name": "amount",
           "order": 0,
           "description": "This will trigger the achievement, when the player receives enough items through logistic robots.",
-          "examples": ["```\namount = 10000\n```"],
+          "examples": [
+            "```\namount = 10000\n```"
+          ],
           "override": false,
           "type": "MaterialAmountType",
           "optional": false
@@ -5673,7 +5750,9 @@
           "name": "dont_build",
           "order": 0,
           "description": "This will disable the achievement, if this entity is placed. If you finish the game without building this entity, you receive the achievement.",
-          "examples": ["```\ndont_build = {\"stack-inserter\", \"fluid-wagon\"}\n```"],
+          "examples": [
+            "```\ndont_build = {\"stack-inserter\", \"fluid-wagon\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "union",
@@ -5703,7 +5782,9 @@
           "name": "amount",
           "order": 0,
           "description": "This will disable the achievement, if the player crafts more than this.",
-          "examples": ["```\namount = 111\n```"],
+          "examples": [
+            "```\namount = 111\n```"
+          ],
           "override": false,
           "type": "MaterialAmountType",
           "optional": false
@@ -5723,7 +5804,9 @@
           "name": "excluded",
           "order": 0,
           "description": "This will **not** disable the achievement, if this entity is placed, and you have received any amount of power from it.",
-          "examples": ["```\nexcluded = {\"steam-engine\", \"steam-turbine\"}\n```"],
+          "examples": [
+            "```\nexcluded = {\"steam-engine\", \"steam-turbine\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "union",
@@ -5742,7 +5825,9 @@
           "name": "included",
           "order": 1,
           "description": "This will disable the achievement, if this entity is placed, and you have received any amount of power from it. If you finish the game without receiving power from this entity, you receive the achievement.",
-          "examples": ["```\nincluded = \"solar-panel\"\n```"],
+          "examples": [
+            "```\nincluded = \"solar-panel\"\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "union",
@@ -6271,7 +6356,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["ElectricEnergySource", "VoidEnergySource"],
+            "options": [
+              "ElectricEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -6366,7 +6454,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -6402,7 +6490,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -6481,7 +6569,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["double", "double"]
+            "values": [
+              "double",
+              "double"
+            ]
           },
           "optional": false
         },
@@ -6604,7 +6695,9 @@
           "name": "additional_pastable_entities",
           "order": 41,
           "description": "Names of the entity prototypes this entity prototype can be pasted on to in addition to the standard supported types.\n\nThis is used to allow copying between types that aren't compatible on the C++ code side, by allowing mods to receive the [on_entity_settings_pasted](runtime:on_entity_settings_pasted) event for the given entity and do the setting pasting via script.",
-          "examples": ["```\nadditional_pastable_entities = {\"steel-chest\", \"iron-chest\"}\n```"],
+          "examples": [
+            "```\nadditional_pastable_entities = {\"steel-chest\", \"iron-chest\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -6693,7 +6786,9 @@
           "name": "collision_box",
           "order": 4,
           "description": "Specification of the entity collision boundaries. Empty collision box means no collision and is used for smoke, projectiles, particles, explosions etc.\n\nThe `{0,0}` coordinate in the collision box will match the entity position. It should be near the center of the collision box, to keep correct entity drawing order. The bounding box must include the `{0,0}` coordinate.\n\nNote, that for buildings, it is customary to leave 0.1 wide border between the edge of the tile and the edge of the building, this lets the player move between the building and electric poles/inserters etc.",
-          "examples": ["```\ncollision_box = {{-0.4, -0.4}, {0.4, 0.4}}\n```"],
+          "examples": [
+            "```\ncollision_box = {{-0.4, -0.4}, {0.4, 0.4}}\n```"
+          ],
           "override": false,
           "type": "BoundingBox",
           "optional": true,
@@ -6732,7 +6827,9 @@
           "name": "drawing_box",
           "order": 8,
           "description": "Specification of space needed to see the whole entity. This is used to calculate the correct zoom and positioning in the entity info gui.",
-          "examples": ["```\ndrawing_box = {{-0.5, -0.5}, {0.5, 0.5}}\n```"],
+          "examples": [
+            "```\ndrawing_box = {{-0.5, -0.5}, {0.5, 0.5}}\n```"
+          ],
           "override": false,
           "type": "BoundingBox",
           "optional": true,
@@ -6742,7 +6839,9 @@
           "name": "emissions_per_second",
           "order": 20,
           "description": "Amount of emissions created (positive number) or cleaned (negative number) every second by the entity. This is passive, and it is independent concept of the emissions of machines, these are created actively depending on the power consumption. Currently used just for trees.",
-          "examples": ["```\nemissions_per_second = -0.001 -- cleaning effect of big tree\n```"],
+          "examples": [
+            "```\nemissions_per_second = -0.001 -- cleaning effect of big tree\n```"
+          ],
           "override": false,
           "type": "double",
           "optional": true,
@@ -6803,7 +6902,9 @@
           "name": "icon",
           "order": 1,
           "description": "Path to the icon file.\n\nEither this or `icons` is mandatory for entities that have at least one of these flags active: `\"placeable-neutral\"`, `\"placeable-player`\", `\"placeable-enemy\"`.\n\nOnly loaded if `icons` is not defined.",
-          "examples": ["```\nicon = \"__base__/graphics/icons/wooden-chest.png\",\nicon_size = 64,\n```"],
+          "examples": [
+            "```\nicon = \"__base__/graphics/icons/wooden-chest.png\",\nicon_size = 64,\n```"
+          ],
           "override": false,
           "type": "FileName",
           "optional": true
@@ -7014,7 +7115,9 @@
           "name": "selection_box",
           "order": 7,
           "description": "Specification of the entity selection area. When empty the entity will have no selection area (and thus is not selectable).\n\nThe selection box is usually a little bit bigger than the collision box, for tileable entities (like buildings) it should match the tile size of the building.",
-          "examples": ["```\nselection_box = {{-0.5, -0.5}, {0.5, 0.5}}\n```"],
+          "examples": [
+            "```\nselection_box = {{-0.5, -0.5}, {0.5, 0.5}}\n```"
+          ],
           "override": false,
           "type": "BoundingBox",
           "optional": true,
@@ -7044,7 +7147,9 @@
           "name": "sticker_box",
           "order": 9,
           "description": "Used to set the area of the entity that can have stickers on it, currently only used for units to specify the area where the green slow down stickers can appear.",
-          "examples": ["```\nsticker_box = {{-0.5, -0.5}, {0.5, 0.5}}\n```"],
+          "examples": [
+            "```\nsticker_box = {{-0.5, -0.5}, {0.5, 0.5}}\n```"
+          ],
           "override": false,
           "type": "BoundingBox",
           "optional": true,
@@ -7214,7 +7319,9 @@
           "name": "healing_per_tick",
           "order": 1,
           "description": "The amount of health automatically regenerated per tick. The entity must be active for this to work.",
-          "examples": ["```\nhealing_per_tick = 0.01\n```"],
+          "examples": [
+            "```\nhealing_per_tick = 0.01\n```"
+          ],
           "override": false,
           "type": "float",
           "optional": true,
@@ -7273,7 +7380,9 @@
           "name": "max_health",
           "order": 0,
           "description": "The unit health can never go over the maximum. Default health of units on creation is set to max. Must be greater than 0.",
-          "examples": ["```\nmax_health = 50\n```"],
+          "examples": [
+            "```\nmax_health = 50\n```"
+          ],
           "override": false,
           "type": "float",
           "optional": true,
@@ -7608,7 +7717,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -7620,7 +7729,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -7644,7 +7753,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -7974,7 +8083,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -7986,7 +8095,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -8146,7 +8255,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -8506,7 +8615,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -8541,7 +8650,7 @@
         {
           "name": "heat_capacity",
           "order": 8,
-          "description": "Joule needed to heat 1 Unit by 1 \u00b0C.",
+          "description": "Joule needed to heat 1 Unit by 1 °C.",
           "override": false,
           "type": "Energy",
           "optional": true,
@@ -9729,7 +9838,7 @@
         {
           "name": "maximum_temperature",
           "order": 6,
-          "description": "The maximum temperature to which the efficiency can increase. At this temperature the generator will run at 100% efficiency. Note: Higher temperature fluid can still be consumed.\n\nUsed to calculate the `max_power_output` if it is not defined and `burns_fluid` is false. Then, the max power output is `(min(fluid_max_temp, maximum_temperature) - fluid_default_temp) \u00d7 fluid_usage_per_tick \u00d7 fluid_heat_capacity \u00d7 effectivity`, the fluid is the filter specified on the `fluid_box`.",
+          "description": "The maximum temperature to which the efficiency can increase. At this temperature the generator will run at 100% efficiency. Note: Higher temperature fluid can still be consumed.\n\nUsed to calculate the `max_power_output` if it is not defined and `burns_fluid` is false. Then, the max power output is `(min(fluid_max_temp, maximum_temperature) - fluid_default_temp) × fluid_usage_per_tick × fluid_heat_capacity × effectivity`, the fluid is the filter specified on the `fluid_box`.",
           "override": false,
           "type": "double",
           "optional": false
@@ -9896,7 +10005,9 @@
           "name": "amount",
           "order": 0,
           "description": "This will trigger the achievement, if the player receives this amount of attacks. **Note**: The default achievement \"it stinks and they don't like it\" uses the amount of 1. (As in getting attacked once.)",
-          "examples": ["```\namount = 10\n```"],
+          "examples": [
+            "```\namount = 10\n```"
+          ],
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -10320,7 +10431,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": true
         },
@@ -10590,7 +10706,9 @@
           "name": "collision_box",
           "order": 1,
           "description": "Item entity collision box has to have same width as height.\n\nSpecification of the entity collision boundaries. Empty collision box means no collision and is used for smoke, projectiles, particles, explosions etc.\n\nThe `{0,0}` coordinate in the collision box will match the entity position. It should be near the center of the collision box, to keep correct entity drawing order. The bounding box must include the `{0,0}` coordinate.\n\nNote, that for buildings, it is customary to leave 0.1 wide border between the edge of the tile and the edge of the building, this lets the player move between the building and electric poles/inserters etc.",
-          "examples": ["```\ncollision_box = {{-0.4, -0.4}, {0.4, 0.4}}\n```"],
+          "examples": [
+            "```\ncollision_box = {{-0.4, -0.4}, {0.4, 0.4}}\n```"
+          ],
           "override": true,
           "type": "BoundingBox",
           "optional": true,
@@ -10728,7 +10846,9 @@
           "name": "flags",
           "order": 14,
           "description": "Specifies some properties of the item.",
-          "examples": ["```\nflags = { \"hidden\" }\n```"],
+          "examples": [
+            "```\nflags = { \"hidden\" }\n```"
+          ],
           "override": false,
           "type": "ItemPrototypeFlags",
           "optional": true
@@ -10742,7 +10862,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -10766,7 +10886,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -10786,7 +10906,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -10868,7 +10988,9 @@
           "name": "place_result",
           "order": 7,
           "description": "Name of the [EntityPrototype](prototype:EntityPrototype) that can be built using this item. If this item should be the one that construction bots use to build the specified `place_result`, set the `\"primary-place-result\"` [item flag](prototype:ItemPrototypeFlags).\n\nThe localised name of the entity will be used as the in-game item name. This behavior can be overwritten by specifying `localised_name` on this item, it will be used instead.",
-          "examples": ["```\nplace_result = \"wooden-chest\"\n```"],
+          "examples": [
+            "```\nplace_result = \"wooden-chest\"\n```"
+          ],
           "override": false,
           "type": "EntityID",
           "optional": true,
@@ -10912,7 +11034,9 @@
           "name": "stack_size",
           "order": 0,
           "description": "Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `\"not-stackable\"` flag is set.",
-          "examples": ["```\nstack_size = 64\n```"],
+          "examples": [
+            "```\nstack_size = 64\n```"
+          ],
           "override": false,
           "type": "ItemCountType",
           "optional": false
@@ -11088,7 +11212,9 @@
           "name": "filter_mode",
           "order": 4,
           "description": "This determines how filters are applied. If no filters are defined this is automatically set to \"none\".",
-          "examples": ["```\nfilter_mode = \"blacklist\"\n```"],
+          "examples": [
+            "```\nfilter_mode = \"blacklist\"\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "union",
@@ -11114,7 +11240,9 @@
           "name": "insertion_priority_mode",
           "order": 7,
           "description": "The insertion priority mode for this item. This determines if items are first attempted to be put into this items inventory if the item extends the inventory it sits in when items are put into the parent inventory.",
-          "examples": ["```\ninsertion_priority_mode = \"never\"\n```"],
+          "examples": [
+            "```\ninsertion_priority_mode = \"never\"\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "union",
@@ -11160,7 +11288,9 @@
           "name": "item_filters",
           "order": 1,
           "description": "A list of explicit item names to be used as filters.",
-          "examples": ["```\nitem_filters = {\"iron-ore\", \"copper-ore\", \"coal\", \"stone\"}\n```"],
+          "examples": [
+            "```\nitem_filters = {\"iron-ore\", \"copper-ore\", \"coal\", \"stone\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -11172,7 +11302,9 @@
           "name": "item_group_filters",
           "order": 2,
           "description": "A list of explicit item group names to be used as filters.",
-          "examples": ["```\nitem_group_filters = {\"logistics\", \"fluids\"}\n```"],
+          "examples": [
+            "```\nitem_group_filters = {\"logistics\", \"fluids\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -11184,7 +11316,9 @@
           "name": "item_subgroup_filters",
           "order": 3,
           "description": "A list of explicit item subgroup names to be used as filters.",
-          "examples": ["```\nitem_subgroup_filters = {\"military-equipment\", \"tool\"}\n```"],
+          "examples": [
+            "```\nitem_subgroup_filters = {\"military-equipment\", \"tool\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -11196,7 +11330,9 @@
           "name": "stack_size",
           "order": 8,
           "description": "Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `\"not-stackable\"` flag is set.",
-          "examples": ["```\nstack_size = 1\n```"],
+          "examples": [
+            "```\nstack_size = 1\n```"
+          ],
           "override": true,
           "type": {
             "complex_type": "literal",
@@ -11261,7 +11397,9 @@
           "name": "amount",
           "order": 3,
           "description": "This is the amount of entity of the specified type the player needs to destroy to receive the achievement.",
-          "examples": ["```\namount = 100\n```"],
+          "examples": [
+            "```\namount = 100\n```"
+          ],
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -11274,7 +11412,9 @@
           "name": "damage_type",
           "order": 2,
           "description": "This defines how the player needs to destroy the specific entity.",
-          "examples": ["```\ndamage_type = \"impact\"\n```"],
+          "examples": [
+            "```\ndamage_type = \"impact\"\n```"
+          ],
           "override": false,
           "type": "DamageTypeID",
           "optional": true
@@ -11283,7 +11423,9 @@
           "name": "in_vehicle",
           "order": 4,
           "description": "This defines if the player needs to be in a vehicle.",
-          "examples": ["```\nin_vehicle = true\n```"],
+          "examples": [
+            "```\nin_vehicle = true\n```"
+          ],
           "override": false,
           "type": "bool",
           "optional": true,
@@ -11296,7 +11438,9 @@
           "name": "personally",
           "order": 5,
           "description": "This defines to make sure you are the one driving, for instance, in a tank rather than an automated train.",
-          "examples": ["```\npersonally = true\n```"],
+          "examples": [
+            "```\npersonally = true\n```"
+          ],
           "override": false,
           "type": "bool",
           "optional": true,
@@ -11317,7 +11461,9 @@
           "name": "type_to_kill",
           "order": 1,
           "description": "This defines what entity type needs to be destroyed in order to receive the achievement.",
-          "examples": ["```\ntype_to_kill = \"inserter\"\n```"],
+          "examples": [
+            "```\ntype_to_kill = \"inserter\"\n```"
+          ],
           "override": false,
           "type": "string",
           "optional": true
@@ -11546,7 +11692,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["ElectricEnergySource", "VoidEnergySource"],
+            "options": [
+              "ElectricEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -12119,7 +12268,12 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["ElectricEnergySource", "HeatEnergySource", "FluidEnergySource", "VoidEnergySource"],
+            "options": [
+              "ElectricEnergySource",
+              "HeatEnergySource",
+              "FluidEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": true
@@ -12183,7 +12337,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["BurnerEnergySource", "VoidEnergySource"],
+            "options": [
+              "BurnerEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -12221,7 +12378,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 3.0
+            "value": 3
           }
         },
         {
@@ -12378,7 +12535,9 @@
           "name": "collision_box",
           "order": 4,
           "description": "Must have a collision box size of zero.",
-          "examples": ["```\ncollision_box = {{0, 0}, {0, 0}}\n```"],
+          "examples": [
+            "```\ncollision_box = {{0, 0}, {0, 0}}\n```"
+          ],
           "override": true,
           "type": "BoundingBox",
           "optional": true,
@@ -12661,7 +12820,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": true
         },
@@ -13240,7 +13404,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": true
         },
@@ -13763,7 +13932,9 @@
           "name": "minimum_damage",
           "order": 0,
           "description": "This will trigger the achievement, if the amount of damage taken by the dealer, is more than this.",
-          "examples": ["```\nminimum_damage = 500\n```"],
+          "examples": [
+            "```\nminimum_damage = 500\n```"
+          ],
           "override": false,
           "type": "float",
           "optional": false
@@ -13772,7 +13943,9 @@
           "name": "should_survive",
           "order": 1,
           "description": "This sets the achievement to only trigger, if you survive the minimum amount of damage. If you don't need to survive, false.",
-          "examples": ["```\nshould_survive = true\n```"],
+          "examples": [
+            "```\nshould_survive = true\n```"
+          ],
           "override": false,
           "type": "bool",
           "optional": false
@@ -13781,7 +13954,9 @@
           "name": "type_of_dealer",
           "order": 2,
           "description": "This will trigger the achievement, if the player takes damage from this specific entity type.",
-          "examples": ["```\ntype_of_dealer = \"locomotive\"\n```"],
+          "examples": [
+            "```\ntype_of_dealer = \"locomotive\"\n```"
+          ],
           "override": false,
           "type": "string",
           "optional": true,
@@ -13964,7 +14139,9 @@
           "name": "amount",
           "order": 0,
           "description": "This will set the amount of items or fluids needed to craft, for the player to complete the achievement.",
-          "examples": ["```\namount = 100\n```"],
+          "examples": [
+            "```\namount = 100\n```"
+          ],
           "override": false,
           "type": "MaterialAmountType",
           "optional": false
@@ -13973,7 +14150,9 @@
           "name": "fluid_product",
           "order": 3,
           "description": "Mandatory if `item_product` is not defined.\n\nThis will tell the achievement what fluid the player needs to craft, to get the achievement.",
-          "examples": ["```\nfluid_product = \"heavy-oil\"\n```"],
+          "examples": [
+            "```\nfluid_product = \"heavy-oil\"\n```"
+          ],
           "override": false,
           "type": "FluidID",
           "optional": true
@@ -13982,7 +14161,9 @@
           "name": "item_product",
           "order": 2,
           "description": "Mandatory if `fluid_product` is not defined.\n\nThis will tell the achievement what item the player needs to craft, to get the achievement.",
-          "examples": ["```\nitem_product = \"pistol\"\n```"],
+          "examples": [
+            "```\nitem_product = \"pistol\"\n```"
+          ],
           "override": false,
           "type": "ItemID",
           "optional": true
@@ -14010,7 +14191,9 @@
           "name": "amount",
           "order": 0,
           "description": "This is how much the player has to craft in an hour, to receive the achievement.",
-          "examples": ["```\namount = 1000\n```"],
+          "examples": [
+            "```\namount = 1000\n```"
+          ],
           "override": false,
           "type": "MaterialAmountType",
           "optional": false
@@ -14019,7 +14202,9 @@
           "name": "fluid_product",
           "order": 2,
           "description": "Mandatory if `item_product` is not defined.\n\nThis will tell the achievement what fluid the player needs to craft, to get the achievement.",
-          "examples": ["```\nfluid_product = \"light-oil\"\n```"],
+          "examples": [
+            "```\nfluid_product = \"light-oil\"\n```"
+          ],
           "override": false,
           "type": "FluidID",
           "optional": true
@@ -14028,7 +14213,9 @@
           "name": "item_product",
           "order": 1,
           "description": "Mandatory if `fluid_product` is not defined.\n\nThis will tell the achievement what item the player needs to craft, to get the achievement.",
-          "examples": ["```\nitem_product = \"landfill\"\n```"],
+          "examples": [
+            "```\nitem_product = \"landfill\"\n```"
+          ],
           "override": false,
           "type": "ItemID",
           "optional": true
@@ -14115,7 +14302,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["ElectricEnergySource", "VoidEnergySource"],
+            "options": [
+              "ElectricEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -14464,7 +14654,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": true
         },
@@ -15439,7 +15634,9 @@
           "name": "icon",
           "order": 4,
           "description": "If given, this determines the recipe's icon. Otherwise, the icon of `main_product` or the singular product is used.\n\nMandatory if `icons` is not defined for a recipe with more than one product and no `main_product`, or no product.",
-          "examples": ["```\nicon = \"__base__/graphics/icons/fluid/heavy-oil.png\"\n```"],
+          "examples": [
+            "```\nicon = \"__base__/graphics/icons/fluid/heavy-oil.png\"\n```"
+          ],
           "override": false,
           "type": "FileName",
           "optional": true
@@ -15651,7 +15848,9 @@
           "name": "research_all",
           "order": 1,
           "description": "Mandatory if `technology` is not defined.\n\nThis will only trigger if the player has learned every research in the game.",
-          "examples": ["```\nresearch_all = true\n```"],
+          "examples": [
+            "```\nresearch_all = true\n```"
+          ],
           "override": false,
           "type": "bool",
           "optional": true,
@@ -15664,7 +15863,9 @@
           "name": "technology",
           "order": 0,
           "description": "Mandatory if `research_all` is not defined.\n\nResearching this technology will trigger the achievement.",
-          "examples": ["```\ntechnology = \"oil-processing\"\n```"],
+          "examples": [
+            "```\ntechnology = \"oil-processing\"\n```"
+          ],
           "override": false,
           "type": "TechnologyID",
           "optional": true
@@ -15724,7 +15925,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -15736,7 +15937,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -15748,7 +15949,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -15808,7 +16009,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -15820,7 +16021,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -15974,7 +16175,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -16025,7 +16226,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -16206,7 +16407,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -16257,7 +16458,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -16407,7 +16608,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["ElectricEnergySource", "VoidEnergySource"],
+            "options": [
+              "ElectricEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -16456,7 +16660,7 @@
         {
           "name": "recharge_minimum",
           "order": 2,
-          "description": "Minimum charge that the roboport has to have after a blackout (0 charge/buffered energy) to begin working again. Additionally, freshly placed roboports will have their energy buffer filled with `0.25 \u00d7 recharge_minimum` energy.\n\nMust be larger than or equal to `energy_usage` otherwise during low power the roboport will toggle on and off every tick.",
+          "description": "Minimum charge that the roboport has to have after a blackout (0 charge/buffered energy) to begin working again. Additionally, freshly placed roboports will have their energy buffer filled with `0.25 × recharge_minimum` energy.\n\nMust be larger than or equal to `energy_usage` otherwise during low power the roboport will toggle on and off every tick.",
           "override": false,
           "type": "Energy",
           "optional": false
@@ -17429,7 +17633,7 @@
         {
           "name": "max_speed",
           "order": 0,
-          "description": "Maximum speed of the rolling stock in tiles/tick.\n\nIn-game, the max speed of a train is `min(all_rolling_stock_max_speeds) \u00d7 average(all_fuel_modifiers_in_all_locomotives)`. This calculated train speed is then silently capped to 7386.3km/h.",
+          "description": "Maximum speed of the rolling stock in tiles/tick.\n\nIn-game, the max speed of a train is `min(all_rolling_stock_max_speeds) × average(all_fuel_modifiers_in_all_locomotives)`. This calculated train speed is then silently capped to 7386.3km/h.",
           "override": false,
           "type": "double",
           "optional": false
@@ -17459,7 +17663,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 10.0
+            "value": 10
           }
         },
         {
@@ -18459,7 +18663,9 @@
           "name": "collision_box",
           "order": 16,
           "description": "Must have a collision box size of zero.",
-          "examples": ["```\ncollision_box = {{0, 0}, {0, 0}}\n```"],
+          "examples": [
+            "```\ncollision_box = {{0, 0}, {0, 0}}\n```"
+          ],
           "override": true,
           "type": "BoundingBox",
           "optional": true,
@@ -18516,7 +18722,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -18617,7 +18823,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         }
       ]
@@ -18672,7 +18878,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -18832,7 +19038,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -18872,7 +19078,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -18884,7 +19090,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -18912,7 +19118,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -18946,7 +19152,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         }
       ]
@@ -19161,7 +19367,7 @@
         {
           "name": "chain_shooting_cooldown_modifier",
           "order": 8,
-          "description": "This is applied whenever the spider shoots (manual and automatic targeting), `automatic_weapon_cycling` is true and the next gun in line (which is then selected) has ammo. When all of the above is the case, the chain_shooting_cooldown_modifier is a multiplier on the remaining shooting cooldown: `cooldown = (remaining_cooldown \u00d7 chain_shooting_cooldown_modifier)`.\n\nchain_shooting_cooldown_modifier is intended to be in the range of 0 to 1. This means that setting chain_shooting_cooldown_modifier to 0 reduces the remaining shooting cooldown to 0 while a chain_shooting_cooldown_modifier of 1 does not affect the remaining shooting cooldown at all.",
+          "description": "This is applied whenever the spider shoots (manual and automatic targeting), `automatic_weapon_cycling` is true and the next gun in line (which is then selected) has ammo. When all of the above is the case, the chain_shooting_cooldown_modifier is a multiplier on the remaining shooting cooldown: `cooldown = (remaining_cooldown × chain_shooting_cooldown_modifier)`.\n\nchain_shooting_cooldown_modifier is intended to be in the range of 0 to 1. This means that setting chain_shooting_cooldown_modifier to 0 reduces the remaining shooting cooldown to 0 while a chain_shooting_cooldown_modifier of 1 does not affect the remaining shooting cooldown at all.",
           "override": false,
           "type": "float",
           "optional": false
@@ -19182,7 +19388,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["BurnerEnergySource", "VoidEnergySource"],
+            "options": [
+              "BurnerEnergySource",
+              "VoidEnergySource"
+            ],
             "full_format": false
           },
           "optional": false
@@ -19308,7 +19517,9 @@
           "name": "stack_size",
           "order": 2,
           "description": "Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `\"not-stackable\"` flag is set.",
-          "examples": ["```\nstack_size = 1\n```"],
+          "examples": [
+            "```\nstack_size = 1\n```"
+          ],
           "override": true,
           "type": {
             "complex_type": "literal",
@@ -19543,7 +19754,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["SpriteSizeType", "SpriteSizeType"]
+            "values": [
+              "SpriteSizeType",
+              "SpriteSizeType"
+            ]
           },
           "optional": true
         },
@@ -19603,7 +19817,10 @@
               "SpriteSizeType",
               {
                 "complex_type": "tuple",
-                "values": ["SpriteSizeType", "SpriteSizeType"]
+                "values": [
+                  "SpriteSizeType",
+                  "SpriteSizeType"
+                ]
               }
             ],
             "full_format": false
@@ -19949,7 +20166,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": true
         },
@@ -19992,7 +20214,7 @@
         {
           "name": "flow_length_in_ticks",
           "order": 3,
-          "description": "Must be positive.\n\nUsed for determining the x position inside the `flow_sprite` when drawing the storage tank. Does not affect gameplay.\n\nThe x position of the sprite will be `((game.tick % flow_length_in_ticks) \u00f7 flow_length_in_ticks) \u00d7 (flow_sprite.width - 32)`. This means, that over `flow_length_in_ticks` ticks, the part of the `flow_sprite` that is drawn in-game is incrementally moved from most-left to most-right inside the actual sprite, that part always has a width of 32px. After `flow_length_in_ticks`, the part of the `flow_sprite` that is drawn will start from the left again.",
+          "description": "Must be positive.\n\nUsed for determining the x position inside the `flow_sprite` when drawing the storage tank. Does not affect gameplay.\n\nThe x position of the sprite will be `((game.tick % flow_length_in_ticks) ÷ flow_length_in_ticks) × (flow_sprite.width - 32)`. This means, that over `flow_length_in_ticks` ticks, the part of the `flow_sprite` that is drawn in-game is incrementally moved from most-left to most-right inside the actual sprite, that part always has a width of 32px. After `flow_length_in_ticks`, the part of the `flow_sprite` that is drawn will start from the left again.",
           "override": false,
           "type": "uint32",
           "optional": false
@@ -20089,7 +20311,9 @@
           "name": "effects",
           "order": 15,
           "description": "List of effects of the technology (applied when the technology is researched).\n\nOnly loaded if neither `normal` nor `expensive` are defined.",
-          "examples": ["```\n{\n  {\n    type  = \"unlock-recipe\",\n    recipe = \"land-mine\"\n  }\n}\n```"],
+          "examples": [
+            "```\n{\n  {\n    type  = \"unlock-recipe\",\n    recipe = \"land-mine\"\n  }\n}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -20238,7 +20462,9 @@
           "name": "prerequisites",
           "order": 14,
           "description": "List of technologies needed to be researched before this one can be researched.\n\nOnly loaded if neither `normal` nor `expensive` are defined.",
-          "examples": ["```\nprerequisites = {\"explosives\", \"military-2\"}\n```"],
+          "examples": [
+            "```\nprerequisites = {\"explosives\", \"military-2\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -20303,7 +20529,10 @@
               "float",
               {
                 "complex_type": "tuple",
-                "values": ["float", "float"]
+                "values": [
+                  "float",
+                  "float"
+                ]
               }
             ],
             "full_format": false
@@ -20329,7 +20558,10 @@
               "float",
               {
                 "complex_type": "tuple",
-                "values": ["float", "float"]
+                "values": [
+                  "float",
+                  "float"
+                ]
               }
             ],
             "full_format": false
@@ -20381,7 +20613,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 2.0
+            "value": 2
           }
         },
         {
@@ -20395,7 +20627,10 @@
               "float",
               {
                 "complex_type": "tuple",
-                "values": ["float", "float"]
+                "values": [
+                  "float",
+                  "float"
+                ]
               }
             ],
             "full_format": false
@@ -20421,7 +20656,10 @@
               "float",
               {
                 "complex_type": "tuple",
-                "values": ["float", "float"]
+                "values": [
+                  "float",
+                  "float"
+                ]
               }
             ],
             "full_format": false
@@ -20517,7 +20755,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["Sound", "TileBuildSound"],
+            "options": [
+              "Sound",
+              "TileBuildSound"
+            ],
             "full_format": false
           },
           "optional": true
@@ -20563,7 +20804,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -20892,7 +21133,7 @@
         {
           "name": "indent",
           "order": 4,
-          "description": "The tips and tricks entry is indented by `indent`\u00d76 spaces.",
+          "description": "The tips and tricks entry is indented by `indent`×6 spaces.",
           "override": false,
           "type": "uint8",
           "optional": true,
@@ -21084,7 +21325,9 @@
           "name": "minimum_distance",
           "order": 0,
           "description": "The achievement will trigger if a train path is longer than this.",
-          "examples": ["```\namount = 1000\n```"],
+          "examples": [
+            "```\namount = 1000\n```"
+          ],
           "override": false,
           "type": "double",
           "optional": false
@@ -21166,7 +21409,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint", "WireConnectionPoint"]
+            "values": [
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint",
+              "WireConnectionPoint"
+            ]
           },
           "optional": true
         },
@@ -21328,7 +21576,9 @@
           "name": "collision_box",
           "order": 14,
           "description": "Transport belt connectable entities must have [collision_box](prototype:EntityPrototype::collision_box) of an appropriate minimal size, they should occupy more than half of every tile the entity covers.",
-          "examples": ["```\ncollision_box = {{-0.4, -0.4}, {0.4, 0.4}}\n```"],
+          "examples": [
+            "```\ncollision_box = {{-0.4, -0.4}, {0.4, 0.4}}\n```"
+          ],
           "override": true,
           "type": "BoundingBox",
           "optional": true,
@@ -21397,7 +21647,7 @@
         {
           "name": "speed",
           "order": 0,
-          "description": "The speed of the belt: `speed \u00d7 480 = x Items/second`.\n\nThe raw value is expressed as the number of tiles traveled by each item on the belt per tick, relative to the belt's maximum density - e.g. `x items/second \u00f7 (4 items/lane \u00d7 2 lanes/belt \u00d7 60 ticks/second) = <speed> belts/tick` where a \"belt\" is the size of one tile. See [Transport_belts/Physics](https://wiki.factorio.com/Transport_belts/Physics) for more details.\n\nMust be a positive non-infinite number. The number is a fixed point number with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625`. In the simple case of a non-curved belt, the rate is multiples of `1.875` items/s, even though the entity tooltip may show a different rate.",
+          "description": "The speed of the belt: `speed × 480 = x Items/second`.\n\nThe raw value is expressed as the number of tiles traveled by each item on the belt per tick, relative to the belt's maximum density - e.g. `x items/second ÷ (4 items/lane × 2 lanes/belt × 60 ticks/second) = <speed> belts/tick` where a \"belt\" is the size of one tile. See [Transport_belts/Physics](https://wiki.factorio.com/Transport_belts/Physics) for more details.\n\nMust be a positive non-infinite number. The number is a fixed point number with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625`. In the simple case of a non-curved belt, the rate is multiples of `1.875` items/s, even though the entity tooltip may show a different rate.",
           "override": false,
           "type": "double",
           "optional": false
@@ -21573,8 +21823,10 @@
         {
           "name": "healing_per_tick",
           "order": 5,
-          "description": "The amount of health automatically regenerated. Trees will regenerate every 60 ticks with `healing_per_tick \u00d7 60`.",
-          "examples": ["```\nhealing_per_tick = 0.01\n```"],
+          "description": "The amount of health automatically regenerated. Trees will regenerate every 60 ticks with `healing_per_tick × 60`.",
+          "examples": [
+            "```\nhealing_per_tick = 0.01\n```"
+          ],
           "override": true,
           "type": "float",
           "optional": true,
@@ -21713,7 +21965,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -21814,7 +22066,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         }
       ]
@@ -21892,7 +22144,7 @@
         {
           "name": "attacking_speed",
           "order": 44,
-          "description": "Controls the speed of the attacking_animation: `1 \u00f7 attacking_speed = duration of the attacking_animation`",
+          "description": "Controls the speed of the attacking_animation: `1 ÷ attacking_speed = duration of the attacking_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -21969,7 +22221,7 @@
         {
           "name": "ending_attack_speed",
           "order": 45,
-          "description": "Controls the speed of the ending_attack_animation: `1 \u00f7 ending_attack_speed = duration of the ending_attack_animation`",
+          "description": "Controls the speed of the ending_attack_animation: `1 ÷ ending_attack_speed = duration of the ending_attack_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22009,7 +22261,7 @@
         {
           "name": "folded_speed",
           "order": 36,
-          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the folded_animation: `1 \u00f7 folded_speed = duration of the folded_animation`",
+          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the folded_animation: `1 ÷ folded_speed = duration of the folded_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22021,7 +22273,7 @@
         {
           "name": "folded_speed_secondary",
           "order": 37,
-          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the folded_animation: `1 \u00f7 folded_speed_secondary = duration of the folded_animation`",
+          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the folded_animation: `1 ÷ folded_speed_secondary = duration of the folded_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22049,7 +22301,7 @@
         {
           "name": "folding_speed",
           "order": 46,
-          "description": "Controls the speed of the folding_animation: `1 \u00f7 folding_speed = duration of the folding_animation`",
+          "description": "Controls the speed of the folding_animation: `1 ÷ folding_speed = duration of the folding_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22163,7 +22415,7 @@
         {
           "name": "prepared_alternative_speed",
           "order": 40,
-          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the prepared_alternative_animation: `1 \u00f7 prepared_alternative_speed = duration of the prepared_alternative_animation`",
+          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the prepared_alternative_animation: `1 ÷ prepared_alternative_speed = duration of the prepared_alternative_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22175,7 +22427,7 @@
         {
           "name": "prepared_alternative_speed_secondary",
           "order": 41,
-          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the prepared_alternative_animation: `1 \u00f7 prepared_alternative_speed_secondary = duration of the prepared_alternative_animation`",
+          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the prepared_alternative_animation: `1 ÷ prepared_alternative_speed_secondary = duration of the prepared_alternative_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22203,7 +22455,7 @@
         {
           "name": "prepared_speed",
           "order": 38,
-          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the prepared_animation: `1 \u00f7 prepared_speed = duration of the prepared_animation`",
+          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the prepared_animation: `1 ÷ prepared_speed = duration of the prepared_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22215,7 +22467,7 @@
         {
           "name": "prepared_speed_secondary",
           "order": 39,
-          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the prepared_animation: `1 \u00f7 prepared_speed_secondary = duration of the prepared_animation`",
+          "description": "It's randomized whether a particular turret uses the primary or the secondary speed for its animations.\n\nControls the speed of the prepared_animation: `1 ÷ prepared_speed_secondary = duration of the prepared_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22243,7 +22495,7 @@
         {
           "name": "preparing_speed",
           "order": 35,
-          "description": "Controls the speed of the preparing_animation: `1 \u00f7 preparing_speed = duration of the preparing_animation`",
+          "description": "Controls the speed of the preparing_animation: `1 ÷ preparing_speed = duration of the preparing_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22349,7 +22601,7 @@
         {
           "name": "starting_attack_speed",
           "order": 43,
-          "description": "Controls the speed of the starting_attack_animation: `1 \u00f7 starting_attack_speed = duration of the starting_attack_animation`",
+          "description": "Controls the speed of the starting_attack_animation: `1 ÷ starting_attack_speed = duration of the starting_attack_animation`",
           "override": false,
           "type": "float",
           "optional": true,
@@ -22527,7 +22779,7 @@
         {
           "name": "distance_per_frame",
           "order": 3,
-          "description": "How fast the `run_animation` frames are advanced. The animations are advanced animation_speed frames per `distance_per_frame` that the unit moves.\n\n`frames_advanced = (distance_moved \u00f7 distance_per_frame) * animation_speed`",
+          "description": "How fast the `run_animation` frames are advanced. The animations are advanced animation_speed frames per `distance_per_frame` that the unit moves.\n\n`frames_advanced = (distance_moved ÷ distance_per_frame) * animation_speed`",
           "override": false,
           "type": "float",
           "optional": false
@@ -22899,7 +23151,9 @@
           "name": "stack_size",
           "order": 1,
           "description": "Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `\"not-stackable\"` flag is set.",
-          "examples": ["```\nstack_size = 1\n```"],
+          "examples": [
+            "```\nstack_size = 1\n```"
+          ],
           "override": true,
           "type": {
             "complex_type": "literal",
@@ -28574,7 +28828,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["Energy", "double"],
+            "options": [
+              "Energy",
+              "double"
+            ],
             "full_format": false
           },
           "optional": false
@@ -28655,7 +28912,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -28675,7 +28932,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -29169,7 +29426,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -29186,7 +29443,10 @@
       "name": "AmmoCategoryID",
       "order": 4,
       "description": "The name of an [AmmoCategory](prototype:AmmoCategory).",
-      "examples": ["```\n\"bullet\"\n```", "```\n\"melee\"\n```"],
+      "examples": [
+        "```\n\"bullet\"\n```",
+        "```\n\"melee\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -29717,7 +29977,7 @@
         {
           "name": "dice",
           "order": 9,
-          "description": "Number of slices this is sliced into when using the \"optimized atlas packing\" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4\u00d74 grid.",
+          "description": "Number of slices this is sliced into when using the \"optimized atlas packing\" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4×4 grid.",
           "override": false,
           "type": "uint8",
           "optional": true
@@ -29863,7 +30123,10 @@
               "SpriteSizeType",
               {
                 "complex_type": "tuple",
-                "values": ["SpriteSizeType", "SpriteSizeType"]
+                "values": [
+                  "SpriteSizeType",
+                  "SpriteSizeType"
+                ]
               }
             ],
             "full_format": false
@@ -30170,7 +30433,7 @@
         {
           "name": "direction_deviation",
           "order": 4,
-          "description": "Maximum deviation of the projectile from source orientation, in +/- (`x radians / 2`). Example: `3.14 radians -> +/- (180\u00b0 / 2)`, meaning up to 90\u00b0 deviation in either direction of rotation.",
+          "description": "Maximum deviation of the projectile from source orientation, in +/- (`x radians / 2`). Example: `3.14 radians -> +/- (180° / 2)`, meaning up to 90° deviation in either direction of rotation.",
           "override": false,
           "type": "float",
           "optional": true,
@@ -30324,7 +30587,10 @@
       "name": "AutoplaceControlID",
       "order": 23,
       "description": "The name of an [AutoplaceControl](prototype:AutoplaceControl).",
-      "examples": ["```\n\"copper-ore\"\n```", "```\n\"trees\"\n```"],
+      "examples": [
+        "```\n\"copper-ore\"\n```",
+        "```\n\"trees\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -30709,7 +30975,11 @@
             "complex_type": "dictionary",
             "key": {
               "complex_type": "union",
-              "options": ["EntityID", "TileID", "DecorativeID"],
+              "options": [
+                "EntityID",
+                "TileID",
+                "DecorativeID"
+              ],
               "full_format": false
             },
             "value": "FrequencySizeRichness"
@@ -31239,7 +31509,7 @@
         {
           "name": "turn_range",
           "order": 3,
-          "description": "If this is <= 0, it is set to 1. Arc from 0 to 1, so for example 0.25 is 90\u00b0. Used by the [flamethrower turret](https://wiki.factorio.com/Flamethrower_turret) in the base game. Arcs greater than 0.5 but less than 1 will be clamped to 0.5 as targeting in arcs larger than half circle is [not implemented](https://forums.factorio.com/94654).",
+          "description": "If this is <= 0, it is set to 1. Arc from 0 to 1, so for example 0.25 is 90°. Used by the [flamethrower turret](https://wiki.factorio.com/Flamethrower_turret) in the base game. Arcs greater than 0.5 but less than 1 will be clamped to 0.5 as targeting in arcs larger than half circle is [not implemented](https://forums.factorio.com/94654).",
           "override": false,
           "type": "float",
           "optional": true,
@@ -31522,7 +31792,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -31680,7 +31950,10 @@
               "uint32",
               {
                 "complex_type": "tuple",
-                "values": ["uint32", "uint32"]
+                "values": [
+                  "uint32",
+                  "uint32"
+                ]
               }
             ],
             "full_format": false
@@ -31758,7 +32031,10 @@
               "uint32",
               {
                 "complex_type": "tuple",
-                "values": ["uint32", "uint32"]
+                "values": [
+                  "uint32",
+                  "uint32"
+                ]
               }
             ],
             "full_format": false
@@ -32963,12 +33239,17 @@
       "name": "BoundingBox",
       "order": 48,
       "description": "BoundingBoxes are typically centered around the position of an entity.\n\nThe first position is leftTop, the second position is rightBottom. There is an unused third member, a [float](prototype:float) that represents the orientation.\n\nPositive x goes towards east, positive y goes towards south. This means that the upper-left point is the least dimension in x and y, and lower-right is the greatest.",
-      "examples": ["```\n{{-0.4, -0.4}, {0.4, 0.4}}\n```"],
+      "examples": [
+        "```\n{{-0.4, -0.4}, {0.4, 0.4}}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
         "complex_type": "tuple",
-        "values": ["MapPosition", "MapPosition"]
+        "values": [
+          "MapPosition",
+          "MapPosition"
+        ]
       }
     },
     {
@@ -34907,7 +35188,10 @@
         "complex_type": "array",
         "value": {
           "complex_type": "tuple",
-          "values": ["RealOrientation", "Vector"]
+          "values": [
+            "RealOrientation",
+            "Vector"
+          ]
         }
       }
     },
@@ -35175,11 +35459,20 @@
           },
           {
             "complex_type": "tuple",
-            "values": ["float", "float", "float"]
+            "values": [
+              "float",
+              "float",
+              "float"
+            ]
           },
           {
             "complex_type": "tuple",
-            "values": ["float", "float", "float", "float"]
+            "values": [
+              "float",
+              "float",
+              "float",
+              "float"
+            ]
           }
         ],
         "full_format": false
@@ -35570,7 +35863,10 @@
       "inline": false,
       "type": {
         "complex_type": "union",
-        "options": ["NoiseLiteralBoolean", "ConstantNoiseNumber"],
+        "options": [
+          "NoiseLiteralBoolean",
+          "ConstantNoiseNumber"
+        ],
         "full_format": false
       }
     },
@@ -35586,7 +35882,9 @@
       "name": "ConsumingType",
       "order": 89,
       "description": "Defines which other inputs a [CustomInputPrototype](prototype:CustomInputPrototype) consumes.",
-      "examples": ["```\nconsuming = \"none\"\n```"],
+      "examples": [
+        "```\nconsuming = \"none\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -37005,7 +37303,10 @@
       "name": "DamageTypeID",
       "order": 106,
       "description": "The name of a [DamageType](prototype:DamageType).",
-      "examples": ["```\n\"impact\"\n```", "```\n\"poison\"\n```"],
+      "examples": [
+        "```\n\"impact\"\n```",
+        "```\n\"poison\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -37013,7 +37314,7 @@
     {
       "name": "DaytimeColorLookupTable",
       "order": 107,
-      "description": "The first member of the tuple states at which time of the day the LUT should be used. If the current game time is between two values defined in the color lookup that have different LUTs, the color is interpolated to create a smooth transition. (Sharp transition can be achieved by having the two values differing only by a small fraction.)\n\nIf there is only one tuple, it means that the LUT will be used all the time, regardless of the value of the first member of the tuple.\n\nThe second member of the tuple is a lookup table (LUT) for the color which maps the original color to a position in the sprite where is the replacement color is found. The file pointed to by the filename must be a sprite of size 256\u00d716 or 16\u00d7256.",
+      "description": "The first member of the tuple states at which time of the day the LUT should be used. If the current game time is between two values defined in the color lookup that have different LUTs, the color is interpolated to create a smooth transition. (Sharp transition can be achieved by having the two values differing only by a small fraction.)\n\nIf there is only one tuple, it means that the LUT will be used all the time, regardless of the value of the first member of the tuple.\n\nThe second member of the tuple is a lookup table (LUT) for the color which maps the original color to a position in the sprite where is the replacement color is found. The file pointed to by the filename must be a sprite of size 256×16 or 16×256.",
       "examples": [
         "```\ncolor_lookup = {{1, \"identity\"}}\n```",
         "```\ncolor_lookup = {{0.5, \"__core__/graphics/color_luts/nightvision.png\"}}\n```",
@@ -37082,7 +37383,10 @@
       "name": "DecorativeID",
       "order": 109,
       "description": "The name of a [DecorativePrototype](prototype:DecorativePrototype).",
-      "examples": ["```\n\"dark-mud-decal\"\n```", "```\n\"red-pita\"\n```"],
+      "examples": [
+        "```\n\"dark-mud-decal\"\n```",
+        "```\n\"red-pita\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -37916,7 +38220,9 @@
       "name": "ElectricUsagePriority",
       "order": 126,
       "description": "Used to specify priority of energy usage in the [electric system](https://wiki.factorio.com/Electric_system).",
-      "examples": ["```\nusage_priority = \"primary-input\"\n```"],
+      "examples": [
+        "```\nusage_priority = \"primary-input\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -38188,7 +38494,10 @@
               "uint16",
               {
                 "complex_type": "tuple",
-                "values": ["uint16", "uint16"]
+                "values": [
+                  "uint16",
+                  "uint16"
+                ]
               }
             ],
             "full_format": false
@@ -38785,7 +39094,9 @@
       "name": "Energy",
       "order": 132,
       "description": "Specifies an amount of electric energy in joules, or electric energy per time in watts.\n\nInternally, the input in `Watt` or `Joule/second` is always converted into `Joule/tick` or `Joule/(1/60)second`, using the following formula: `Power in Joule/tick = Power in Watt / 60`. See [Power](https://wiki.factorio.com/Units#Power).\n\nSupported Multipliers:\n\n- `k/K`: 10^3, or 1'000\n\n- `M`: 10^6\n\n- `G`: 10^9\n\n- `T`: 10^12\n\n- `P`: 10^15\n\n- `E`: 10^18\n\n- `Z`: 10^21\n\n- `Y`: 10^24",
-      "examples": ["```\nbuffer_capacity = \"5MJ\"\ninput_flow_limit = \"300W\"\n```"],
+      "examples": [
+        "```\nbuffer_capacity = \"5MJ\"\ninput_flow_limit = \"300W\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -38832,7 +39143,10 @@
       "name": "EntityID",
       "order": 134,
       "description": "The name of an [EntityPrototype](prototype:EntityPrototype).",
-      "examples": ["```\n\"stone-furnace\"\n```", "```\n\"stack-inserter\"\n```"],
+      "examples": [
+        "```\n\"stone-furnace\"\n```",
+        "```\n\"stack-inserter\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -38841,7 +39155,9 @@
       "name": "EntityPrototypeFlags",
       "order": 135,
       "description": "An array containing the following values.",
-      "examples": ["```\nflags = {\"placeable-neutral\", \"player-creation\"}\n```"],
+      "examples": [
+        "```\nflags = {\"placeable-neutral\", \"player-creation\"}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -39089,7 +39405,9 @@
       "name": "EquipmentCategoryID",
       "order": 138,
       "description": "The name of an [EquipmentCategory](prototype:EquipmentCategory).",
-      "examples": ["```\n\"armor\"\n```"],
+      "examples": [
+        "```\n\"armor\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -39098,7 +39416,10 @@
       "name": "EquipmentGridID",
       "order": 139,
       "description": "The name of an [EquipmentGridPrototype](prototype:EquipmentGridPrototype).",
-      "examples": ["```\n\"small-equipment-grid\"\n```", "```\n\"spidertron-equipment-grid\"\n```"],
+      "examples": [
+        "```\n\"small-equipment-grid\"\n```",
+        "```\n\"spidertron-equipment-grid\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -39107,7 +39428,10 @@
       "name": "EquipmentID",
       "order": 140,
       "description": "The name of an [EquipmentPrototype](prototype:EquipmentPrototype).",
-      "examples": ["```\n\"fusion-reactor-equipment\"\n```", "```\n\"exoskeleton-equipment\"\n```"],
+      "examples": [
+        "```\n\"fusion-reactor-equipment\"\n```",
+        "```\n\"exoskeleton-equipment\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -39133,7 +39457,7 @@
         {
           "name": "points",
           "order": 3,
-          "description": "Only used when when `type` is `\"manual\"`. Each inner array is a \"position\" inside width\u00d7height of the equipment. Each positions that is defined is a filled squares of the equipment shape. `{0, 0}` is the upper left corner of the equipment.",
+          "description": "Only used when when `type` is `\"manual\"`. Each inner array is a \"position\" inside width×height of the equipment. Each positions that is defined is a filled squares of the equipment shape. `{0, 0}` is the upper left corner of the equipment.",
           "examples": [
             "```\n-- A set of points which fall within the width/height - can't be empty\npoints =\n{\n  {0, 0}, {1, 0}, {2, 0}, {3, 0},\n  {0, 1},                 {3, 1},\n  {0, 2},                 {3, 2},\n  {0, 3}, {1, 3}, {2, 3}, {3, 3}\n}\n```"
           ],
@@ -39579,7 +39903,9 @@
       "name": "FileName",
       "order": 148,
       "description": "A slash `\"/\"` is always used as the directory delimiter. A path always begins with the specification of a root, which can be one of three formats:\n\n- **core**: A path starting with `__core__` will access the resources in the data/core directory, these resources are always accessible regardless of mod specifications.\n\n- **base**: A path starting with __base__ will access the resources in the base mod in data/base directory. These resources are usually available, as long as the base mod isn't removed/deactivated.\n\n- **mod path**: The format `__<mod-name>__` is placeholder for root of any other mod (mods/<mod-name>), and is accessible as long as the mod is active.",
-      "examples": ["```\nfilename = \"__base__/graphics/entity/basic-transport-belt/basic-transport-belt.png\"\n```"],
+      "examples": [
+        "```\nfilename = \"__base__/graphics/entity/basic-transport-belt/basic-transport-belt.png\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -39742,7 +40068,7 @@
         {
           "name": "base_area",
           "order": 1,
-          "description": "Must be greater than `0`. The total fluid capacity of the fluid box is `base_area \u00d7 height \u00d7 100`.",
+          "description": "Must be greater than `0`. The total fluid capacity of the fluid box is `base_area × height × 100`.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -39774,7 +40100,7 @@
         {
           "name": "height",
           "order": 3,
-          "description": "Must be greater than `0`. The total fluid capacity of the fluid box is `base_area \u00d7 height \u00d7 100`.",
+          "description": "Must be greater than `0`. The total fluid capacity of the fluid box is `base_area × height × 100`.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -39799,7 +40125,9 @@
           "name": "maximum_temperature",
           "order": 10,
           "description": "The maximum temperature allowed into the fluidbox. Only applied if a `filter` is specified.",
-          "examples": ["```\nmaximum_temperature = 1000.0\n```"],
+          "examples": [
+            "```\nmaximum_temperature = 1000.0\n```"
+          ],
           "override": false,
           "type": "double",
           "optional": true
@@ -39808,7 +40136,9 @@
           "name": "minimum_temperature",
           "order": 9,
           "description": "The minimum temperature allowed into the fluidbox. Only applied if a `filter` is specified.",
-          "examples": ["```\nminimum_temperature = 100.0\n```"],
+          "examples": [
+            "```\nminimum_temperature = 100.0\n```"
+          ],
           "override": false,
           "type": "double",
           "optional": true
@@ -40073,7 +40403,10 @@
       "name": "FluidID",
       "order": 154,
       "description": "The name of a [FluidPrototype](prototype:FluidPrototype).",
-      "examples": ["```\n\"water\"\n```", "```\n\"lubricant\"\n```"],
+      "examples": [
+        "```\n\"water\"\n```",
+        "```\n\"lubricant\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -40082,7 +40415,9 @@
       "name": "FluidIngredientPrototype",
       "order": 155,
       "description": "A fluid ingredient definition.",
-      "examples": ["```\n{type=\"fluid\", name=\"water\", amount=50}\n```"],
+      "examples": [
+        "```\n{type=\"fluid\", name=\"water\", amount=50}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -40666,7 +41001,10 @@
       "name": "FuelCategoryID",
       "order": 165,
       "description": "The name of a [FuelCategory](prototype:FuelCategory).",
-      "examples": ["```\n\"chemical\"\n```", "```\n\"nuclear\"\n```"],
+      "examples": [
+        "```\n\"chemical\"\n```",
+        "```\n\"nuclear\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -41891,7 +42229,10 @@
       "name": "ItemGroupID",
       "order": 191,
       "description": "The name of an [ItemGroup](prototype:ItemGroup).",
-      "examples": ["```\n\"logistics\"\n```", "```\n\"production\"\n```"],
+      "examples": [
+        "```\n\"logistics\"\n```",
+        "```\n\"production\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -41900,7 +42241,10 @@
       "name": "ItemID",
       "order": 192,
       "description": "The name of an [ItemPrototype](prototype:ItemPrototype).",
-      "examples": ["```\n\"iron-plate\"\n```", "```\n\"blueprint-book\"\n```"],
+      "examples": [
+        "```\n\"iron-plate\"\n```",
+        "```\n\"blueprint-book\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -41909,7 +42253,10 @@
       "name": "ItemIngredientPrototype",
       "order": 193,
       "description": "An item ingredient definition. It can be specified as a table with named or numbered keys, but not a mix of both.",
-      "examples": ["```\n{type=\"item\", name=\"steel-plate\", amount=8}\n```", "```\n{\"iron-plate\", 12}\n```"],
+      "examples": [
+        "```\n{type=\"item\", name=\"steel-plate\", amount=8}\n```",
+        "```\n{\"iron-plate\", 12}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -41920,7 +42267,10 @@
           },
           {
             "complex_type": "tuple",
-            "values": ["ItemID", "uint16"]
+            "values": [
+              "ItemID",
+              "uint16"
+            ]
           }
         ],
         "full_format": false
@@ -41985,7 +42335,10 @@
           },
           {
             "complex_type": "tuple",
-            "values": ["ItemID", "uint16"]
+            "values": [
+              "ItemID",
+              "uint16"
+            ]
           }
         ],
         "full_format": false
@@ -42159,7 +42512,10 @@
       "name": "ItemSubGroupID",
       "order": 197,
       "description": "The name of an [ItemSubGroup](prototype:ItemSubGroup).",
-      "examples": ["```\n\"capsule\"\n```", "```\n\"military-equipment\"\n```"],
+      "examples": [
+        "```\n\"capsule\"\n```",
+        "```\n\"military-equipment\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -42953,7 +43309,7 @@
       "description": "Localised strings are a way to support translation of in-game text. They offer a language-independent code representation of the text that should be shown to players.\n\nIt is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.\n\nThe key identifies the string template. For example, `\"gui-alert-tooltip.attack\"` (for the template `\"__1__ objects are being damaged\"`; see the file `data/core/locale/en.cfg`). In the settings and prototype stages, this key cannot be longer than 200 characters.\n\nThe template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.\n\nThere are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`\"\"`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`\"?\"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.\n\nFurthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number or boolean, which will be converted to their textual representation.\n\nSee [Tutorial:Localisation](https://wiki.factorio.com/Tutorial:Localisation) for more information.",
       "examples": [
         "```\n-- In the English translation, this will print \"No ammo\"; in the Czech translation, it will print \"Bez munice\":\ngame.player.print({\"description.no-ammo\"})\n-- The \"description.no-ammo\" template contains no placeholders, so no further parameters are necessary.\n```",
-        "```\n-- In the English translation, this will print \"Durability: 5/9\"; in the Japanese one, it will print \"\u8010\u4e45\u5ea6: 5/9\":\ngame.player.print({\"description.durability\", 5, 9})\n```",
+        "```\n-- In the English translation, this will print \"Durability: 5/9\"; in the Japanese one, it will print \"耐久度: 5/9\":\ngame.player.print({\"description.durability\", 5, 9})\n```",
         "```\n-- This will print \"hello\" in all translations:\ngame.player.print({\"\", \"hello\"})\n```",
         "```\n-- This will print \"Iron plate: 60\" in the English translation and \"Eisenplatte: 60\" in the German translation.\ngame.print({\"\", {\"item-name.iron-plate\"}, \": \", 60})\n```",
         "```\n-- As an example of a localised string with fallback, consider this:\n{\"?\", {\"\", {\"entity-description.furnace\"}, \"\\n\"}, {\"item-description.furnace\"}, \"optional fallback\"}\n-- If \"entity-description.furnace\" exists, it is concatenated with \"\\n\" and returned. Otherwise, if\n-- \"item-description.furnace\" exists, it is returned as-is. Otherwise, \"optional fallback\" is returned. If this\n-- value wasn't specified, the translation result would be \"Unknown key: 'item-description.furnace'\".\n```"
@@ -43644,7 +44000,11 @@
             "key": "string",
             "value": {
               "complex_type": "union",
-              "options": ["string", "bool", "double"],
+              "options": [
+                "string",
+                "bool",
+                "double"
+              ],
               "full_format": false
             }
           },
@@ -43819,7 +44179,10 @@
           },
           {
             "complex_type": "tuple",
-            "values": ["double", "double"]
+            "values": [
+              "double",
+              "double"
+            ]
           }
         ],
         "full_format": false
@@ -44135,7 +44498,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["RenderLayer", "CircuitConnectorLayer"],
+            "options": [
+              "RenderLayer",
+              "CircuitConnectorLayer"
+            ],
             "full_format": false
           },
           "optional": true,
@@ -44151,7 +44517,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["int8", "CircuitConnectorSecondaryDrawOrder"],
+            "options": [
+              "int8",
+              "CircuitConnectorSecondaryDrawOrder"
+            ],
             "full_format": false
           },
           "optional": true,
@@ -44535,7 +44904,10 @@
       "name": "ModuleCategoryID",
       "order": 234,
       "description": "The name of a [ModuleCategory](prototype:ModuleCategory).",
-      "examples": ["```\n\"productivity\"\n```", "```\n\"effectivity\"\n```"],
+      "examples": [
+        "```\n\"productivity\"\n```",
+        "```\n\"effectivity\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -44672,7 +45044,9 @@
       "name": "MouseCursorID",
       "order": 237,
       "description": "The name of a [MouseCursor](prototype:MouseCursor).",
-      "examples": ["```\n\"selection-tool-cursor\"\n```"],
+      "examples": [
+        "```\n\"selection-tool-cursor\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -44830,7 +45204,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber"]
+            "values": [
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45103,7 +45479,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45148,7 +45527,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseLiteralObject"]
+            "values": [
+              "NoiseLiteralObject"
+            ]
           },
           "optional": false
         },
@@ -45193,7 +45574,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseLiteralObject"]
+            "values": [
+              "NoiseLiteralObject"
+            ]
           },
           "optional": false
         },
@@ -45283,7 +45666,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber"]
+            "values": [
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45418,7 +45803,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber"]
+            "values": [
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45463,7 +45850,11 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45556,7 +45947,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber"]
+            "values": [
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45646,7 +46039,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45691,7 +46087,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45739,7 +46138,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45910,7 +46312,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber"]
+            "values": [
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -45955,7 +46359,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -46000,7 +46407,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -46045,7 +46455,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber"]
+            "values": [
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -46090,7 +46502,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -46180,7 +46595,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseLiteralString"]
+            "values": [
+              "NoiseLiteralString"
+            ]
           },
           "optional": false
         },
@@ -46228,7 +46645,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseArrayConstruction", "NoiseArrayConstruction"]
+            "values": [
+              "NoiseArrayConstruction",
+              "NoiseArrayConstruction"
+            ]
           },
           "optional": false
         },
@@ -46318,7 +46738,11 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -46363,7 +46787,9 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber"]
+            "values": [
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -46450,7 +46876,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -46495,7 +46924,12 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["NoiseNumber", "ConstantNoiseNumber", "ConstantNoiseNumber", "NoiseNumber"]
+            "values": [
+              "NoiseNumber",
+              "ConstantNoiseNumber",
+              "ConstantNoiseNumber",
+              "NoiseNumber"
+            ]
           },
           "optional": false
         },
@@ -46561,7 +46995,10 @@
       "name": "NoiseLayerID",
       "order": 277,
       "description": "The name of a [NoiseLayer](prototype:NoiseLayer).",
-      "examples": ["```\n\"aux\"\n```", "```\n\"trees-3\"\n```"],
+      "examples": [
+        "```\n\"aux\"\n```",
+        "```\n\"trees-3\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -47053,7 +47490,7 @@
           {
             "complex_type": "literal",
             "value": "wlc_elevation_minimum",
-            "description": "When the result of `10 * log2(\"water\")` ([MapGenSettings::water](prototype:MapGenSettings::water)) is infinite, `wlc_elevation_minimum = -\u221e`, else `wlc_elevation_minimum = 4`."
+            "description": "When the result of `10 * log2(\"water\")` ([MapGenSettings::water](prototype:MapGenSettings::water)) is infinite, `wlc_elevation_minimum = -∞`, else `wlc_elevation_minimum = 4`."
           },
           {
             "complex_type": "literal",
@@ -47512,7 +47949,10 @@
       "name": "ParticleID",
       "order": 294,
       "description": "The name of a [ParticlePrototype](prototype:ParticlePrototype).",
-      "examples": ["```\n\"beacon-metal-particle-small\"\n```", "```\n\"wooden-particle\"\n```"],
+      "examples": [
+        "```\n\"beacon-metal-particle-small\"\n```",
+        "```\n\"wooden-particle\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -48854,7 +49294,7 @@
         {
           "name": "direction_deviation",
           "order": 4,
-          "description": "Maximum deviation of the projectile from source orientation, in +/- (`x radians / 2`). Example: `3.14 radians -> +/- (180\u00b0 / 2)`, meaning up to 90\u00b0 deviation in either direction of rotation.",
+          "description": "Maximum deviation of the projectile from source orientation, in +/- (`x radians / 2`). Example: `3.14 radians -> +/- (180° / 2)`, meaning up to 90° deviation in either direction of rotation.",
           "override": false,
           "type": "float",
           "optional": true,
@@ -48898,7 +49338,7 @@
         {
           "name": "range_deviation",
           "order": 5,
-          "description": "The maximum deviation of the projectile maximum range from `max_range` is `max_range \u00d7 range_deviation \u00f7 2`. This means a deviation of `0.5` will appear as a maximum of `0.25` (25%) deviation of an initial range goal. Post-deviation range may exceed `max_range` or be less than `min_range`.",
+          "description": "The maximum deviation of the projectile maximum range from `max_range` is `max_range × range_deviation ÷ 2`. This means a deviation of `0.5` will appear as a maximum of `0.25` (25%) deviation of an initial range goal. Post-deviation range may exceed `max_range` or be less than `min_range`.",
           "override": false,
           "type": "float",
           "optional": true,
@@ -49499,7 +49939,10 @@
       "name": "RecipeCategoryID",
       "order": 323,
       "description": "The name of a [RecipeCategory](prototype:RecipeCategory).",
-      "examples": ["```\n\"crafting\"\n```", "```\n\"smelting\"\n```"],
+      "examples": [
+        "```\n\"crafting\"\n```",
+        "```\n\"smelting\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -49772,7 +50215,10 @@
       "name": "RecipeID",
       "order": 325,
       "description": "The name of a [RecipePrototype](prototype:RecipePrototype).",
-      "examples": ["```\n\"electronic-circuit\"\n```", "```\n\"kovarex-enrichment-process\"\n```"],
+      "examples": [
+        "```\n\"electronic-circuit\"\n```",
+        "```\n\"kovarex-enrichment-process\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -50087,7 +50533,10 @@
       "name": "ResourceCategoryID",
       "order": 329,
       "description": "The name of a [ResourceCategory](prototype:ResourceCategory).",
-      "examples": ["```\n\"basic-solid\"\n```", "```\n\"basic-fluid\"\n```"],
+      "examples": [
+        "```\n\"basic-solid\"\n```",
+        "```\n\"basic-fluid\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -51297,7 +51746,11 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["VirtualSignalID", "ItemID", "FluidID"],
+            "options": [
+              "VirtualSignalID",
+              "ItemID",
+              "FluidID"
+            ],
             "full_format": false
           },
           "optional": false
@@ -51346,7 +51799,11 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["VirtualSignalID", "ItemID", "FluidID"],
+            "options": [
+              "VirtualSignalID",
+              "ItemID",
+              "FluidID"
+            ],
             "full_format": false
           },
           "optional": false
@@ -51823,7 +52280,9 @@
       "name": "Sound",
       "order": 353,
       "description": "",
-      "examples": ["```\n{\n  filename = \"__base__/sound/ambient/world-ambience-3.ogg\",\n  volume = 1.2\n}\n```"],
+      "examples": [
+        "```\n{\n  filename = \"__base__/sound/ambient/world-ambience-3.ogg\",\n  volume = 1.2\n}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -51869,7 +52328,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -51897,7 +52356,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -51909,7 +52368,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -51929,7 +52388,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -51952,7 +52411,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         }
       ]
@@ -51984,7 +52443,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -51996,7 +52455,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -52016,7 +52475,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -52028,7 +52487,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         }
       ]
@@ -52095,7 +52554,10 @@
           },
           {
             "complex_type": "tuple",
-            "values": ["double", "double"]
+            "values": [
+              "double",
+              "double"
+            ]
           }
         ],
         "full_format": false
@@ -52539,7 +53001,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 2.0
+            "value": 2
           }
         },
         {
@@ -53025,7 +53487,9 @@
       "name": "SpriteFlags",
       "order": 367,
       "description": "An array containing the following values.",
-      "examples": ["```\nflags = { \"linear-minification\", \"linear-magnification\" }\n```"],
+      "examples": [
+        "```\nflags = { \"linear-minification\", \"linear-magnification\" }\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -53381,7 +53845,10 @@
           "override": false,
           "type": {
             "complex_type": "tuple",
-            "values": ["SpriteSizeType", "SpriteSizeType"]
+            "values": [
+              "SpriteSizeType",
+              "SpriteSizeType"
+            ]
           },
           "optional": true
         },
@@ -53441,7 +53908,10 @@
               "SpriteSizeType",
               {
                 "complex_type": "tuple",
-                "values": ["SpriteSizeType", "SpriteSizeType"]
+                "values": [
+                  "SpriteSizeType",
+                  "SpriteSizeType"
+                ]
               }
             ],
             "full_format": false
@@ -53986,7 +54456,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -54009,7 +54479,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 0.0
+            "value": 0
           }
         },
         {
@@ -54019,7 +54489,10 @@
           "override": false,
           "type": {
             "complex_type": "union",
-            "options": ["Vector", "GunShift4Way"],
+            "options": [
+              "Vector",
+              "GunShift4Way"
+            ],
             "full_format": false
           },
           "optional": true
@@ -54064,7 +54537,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -55099,7 +55572,9 @@
           "name": "effects",
           "order": 8,
           "description": "List of effects of the technology (applied when the technology is researched).",
-          "examples": ["```\n{\n  {\n    type  = \"unlock-recipe\",\n    recipe = \"land-mine\"\n  }\n}\n```"],
+          "examples": [
+            "```\n{\n  {\n    type  = \"unlock-recipe\",\n    recipe = \"land-mine\"\n  }\n}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -55165,7 +55640,9 @@
           "name": "prerequisites",
           "order": 7,
           "description": "List of technologies needed to be researched before this one can be researched.",
-          "examples": ["```\nprerequisites = {\"explosives\", \"military-2\"}\n```"],
+          "examples": [
+            "```\nprerequisites = {\"explosives\", \"military-2\"}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "array",
@@ -55214,7 +55691,10 @@
       "name": "TechnologyID",
       "order": 392,
       "description": "The name of a [TechnologyPrototype](prototype:TechnologyPrototype).",
-      "examples": ["```\n\"automated-rail-transportation\"\n```", "```\n\"steel-axe\"\n```"],
+      "examples": [
+        "```\n\"automated-rail-transportation\"\n```",
+        "```\n\"steel-axe\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -55812,7 +56292,10 @@
       "name": "TileID",
       "order": 399,
       "description": "The name of a [TilePrototype](prototype:TilePrototype).",
-      "examples": ["```\n\"grass-2\"\n```", "```\n\"landfill\"\n```"],
+      "examples": [
+        "```\n\"grass-2\"\n```",
+        "```\n\"landfill\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -55829,7 +56312,10 @@
           "TileID",
           {
             "complex_type": "tuple",
-            "values": ["TileID", "TileID"]
+            "values": [
+              "TileID",
+              "TileID"
+            ]
           }
         ],
         "full_format": false
@@ -55977,7 +56463,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 1.0
+            "value": 1
           }
         },
         {
@@ -57854,7 +58340,8 @@
               }
             ],
             "full_format": true
-          }, {
+          },
+          {
             "complex_type": "array",
             "value": {
               "complex_type": "union",
@@ -58164,7 +58651,10 @@
       "name": "TrivialSmokeID",
       "order": 427,
       "description": "The name of a [TrivialSmokePrototype](prototype:TrivialSmokePrototype).",
-      "examples": ["```\n\"smoke-building\"\n```", "```\n\"nuclear-smoke\"\n```"],
+      "examples": [
+        "```\n\"smoke-building\"\n```",
+        "```\n\"nuclear-smoke\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -58826,12 +59316,18 @@
       "name": "Vector",
       "order": 439,
       "description": "A vector is a two-element array containing the x and y components. Unlike Positions, vectors don't use the x, y keys. Positive x goes east, positive y goes south. See also: [Runtime Vector](runtime:Vector).",
-      "examples": ["```\nvector = {0, 12}\n```", "```\nright = {1.0, 0.5}\n```"],
+      "examples": [
+        "```\nvector = {0, 12}\n```",
+        "```\nright = {1.0, 0.5}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
         "complex_type": "tuple",
-        "values": ["double", "double"]
+        "values": [
+          "double",
+          "double"
+        ]
       }
     },
     {
@@ -58848,7 +59344,11 @@
           },
           {
             "complex_type": "tuple",
-            "values": ["float", "float", "float"]
+            "values": [
+              "float",
+              "float",
+              "float"
+            ]
           }
         ],
         "full_format": false
@@ -58999,7 +59499,10 @@
       "name": "VirtualSignalID",
       "order": 445,
       "description": "The name of a [VirtualSignalPrototype](prototype:VirtualSignalPrototype).",
-      "examples": ["```\n\"signal-red\"\n```", "```\n\"signal-each\"\n```"],
+      "examples": [
+        "```\n\"signal-red\"\n```",
+        "```\n\"signal-each\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "string"
@@ -59008,7 +59511,9 @@
       "name": "VoidEnergySource",
       "order": 446,
       "description": "Void energy sources provide unlimited free energy.",
-      "examples": ["```\nenergy_source = {type = \"void\"}\n```"],
+      "examples": [
+        "```\nenergy_source = {type = \"void\"}\n```"
+      ],
       "parent": "BaseEnergySource",
       "abstract": false,
       "inline": false,
@@ -59534,7 +60039,9 @@
           "name": "probability",
           "order": 9,
           "description": "Modifies how often the sound is played.",
-          "examples": ["```\nprobability = 1 / (3 * 60) -- average pause between the sound is 3 seconds\n```"],
+          "examples": [
+            "```\nprobability = 1 / (3 * 60) -- average pause between the sound is 3 seconds\n```"
+          ],
           "override": false,
           "type": "double",
           "optional": true,
@@ -60098,7 +60605,9 @@
       "name": "double",
       "order": 463,
       "description": "Format uses a dot as its decimal delimiter. Doubles are stored in the [double precision](http://en.wikipedia.org/wiki/Double-precision_floating-point_format) floating point format.",
-      "examples": ["```\n7.5\n6\n```"],
+      "examples": [
+        "```\n7.5\n6\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "builtin"
@@ -60107,7 +60616,9 @@
       "name": "float",
       "order": 464,
       "description": "Format uses a dot as its decimal delimiter. Floats are stored in the [single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) floating point format.",
-      "examples": ["```\n7.5\n6\n```"],
+      "examples": [
+        "```\n7.5\n6\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "builtin"
@@ -60140,7 +60651,9 @@
       "name": "string",
       "order": 468,
       "description": "Strings are enclosed in double-quotes.",
-      "examples": ["```\n\"Hello, world!\"\n```"],
+      "examples": [
+        "```\n\"Hello, world!\"\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": "builtin"
