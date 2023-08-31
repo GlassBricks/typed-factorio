@@ -3,9 +3,16 @@ import { EventRaised, WithNotes } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { sortByOrder } from "./util.js"
-import { PrototypeWithExamples } from "./FactorioPrototypeApiJson.js"
+import { LiteralType, PrototypeWithExamples } from "./FactorioPrototypeApiJson.js"
 import { GenerationContext } from "./GenerationContext.js"
 
+export interface Documentable extends WithNotes, PrototypeWithExamples {
+  description: string
+  subclasses?: string[]
+  raises?: EventRaised[]
+  instance_limit?: number
+  default?: string | LiteralType
+}
 const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
 
 function mapLink(context: GenerationContext, origLink: string): string | undefined {
@@ -94,6 +101,13 @@ export function processDescription(
   return result
 }
 
+function getDefaultComment(element: Documentable): string | undefined {
+  const defaultValue = element.default
+  if (defaultValue === undefined) return
+  const defaultAsStr = typeof defaultValue === "string" ? defaultValue : JSON.stringify(defaultValue.value)
+  return `**Default:** \`${defaultAsStr}\``
+}
+
 function getRaisesComment(context: GenerationContext, raises: EventRaised[] | undefined): string | undefined {
   if (!raises || raises.length === 0) return
   let result = "## Raised events\n"
@@ -118,29 +132,30 @@ function getSubclassesComment(subclasses: string[] | undefined): string | undefi
   }_`
 }
 
+function getInstanceLimitComment(instanceLimit: number | undefined): string | undefined {
+  if (!instanceLimit) return
+  return `_Prototype limited to **${instanceLimit}** total instances_`
+}
+
 function processExample(context: GenerationContext, example: string): string {
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
   const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
   return result.replaceAll("\n", "\n * ")
 }
 
-export interface Describable extends WithNotes, PrototypeWithExamples {
-  description: string
-  subclasses?: string[]
-  raises?: EventRaised[]
-}
-
 export function addJsDoc<T extends ts.Node>(
   context: GenerationContext,
   node: T,
-  element: Describable,
+  element: Documentable,
   onlineReferenceName: string | undefined,
   tags?: ts.JSDocTag[]
 ): T {
   let comment = [
+    getDefaultComment(element),
     processDescription(context, element.description),
     getRaisesComment(context, element.raises),
     getSubclassesComment(element.subclasses),
+    getInstanceLimitComment(element.instance_limit),
   ]
     .filter((x) => x)
     .join("\n\n")
