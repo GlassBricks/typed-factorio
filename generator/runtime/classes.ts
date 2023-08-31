@@ -118,7 +118,7 @@ function generateClass(
           arrayType.type
         ),
         indexOperator,
-        clazz.name + ".operator%20[]",
+        clazz.name + ".index_operator",
         undefined
       )
       members.push({ original: indexOperator, member: indexSignature })
@@ -136,7 +136,7 @@ function generateClass(
         [Modifiers.export],
         shortName + "Indexer",
         existing.node.typeParameters,
-        addJsDoc(context, existingIndexOp, indexOperator, clazz.name + ".operator%20[]", undefined)
+        addJsDoc(context, existingIndexOp, indexOperator, clazz.name + ".index_operator", undefined)
       )
     }
     if (ts.isTypeLiteralNode(existingIndexOp)) {
@@ -144,7 +144,7 @@ function generateClass(
         context,
         existingIndexOp.members[0] as ts.IndexSignatureDeclaration,
         indexOperator,
-        clazz.name + ".operator%20[]",
+        clazz.name + ".index_operator",
         undefined
       )
       return ts.factory.createInterfaceDeclaration([Modifiers.export], shortName + "Indexer", undefined, undefined, [
@@ -169,7 +169,7 @@ function generateClass(
         context,
         {
           ...callOperator,
-          name: "operator%20()",
+          name: "call_operator",
         },
         clazz.name,
         existing
@@ -192,7 +192,7 @@ function generateClass(
           arrayType ? type : ts.factory.createTypeReferenceNode("LuaLengthMethod", [type])
         ),
         lengthOperator,
-        clazz.name + ".operator%20#",
+        clazz.name + ".length_operator",
         undefined
       )
       members.push({ original: lengthOperator, member: lengthProperty })

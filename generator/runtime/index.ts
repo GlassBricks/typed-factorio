@@ -48,27 +48,12 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     } else if (this.concepts.has(reference)) {
       relative_link = "concepts.html#" + reference
     } else if (this.globalObjects.has(reference)) {
-      relative_link = ""
+      relative_link = "index-runtime.html"
     } else if (this.globalFunctions.has(reference)) {
       relative_link = "auxiliary/libraries.html#new-functions"
     } else if (reference.includes(".")) {
       const className = reference.substring(0, reference.indexOf("."))
-      const memberName = reference.substring(reference.indexOf(".") + 1)
-      const operatorMatch = memberName.match(/^operator%20(.*)$/)?.[1]
-      let referenceLink: string
-      if (!operatorMatch) {
-        referenceLink = reference
-      } else if (operatorMatch === "#") {
-        referenceLink = className + ".length_operator"
-      } else if (operatorMatch === "[]") {
-        referenceLink = className + ".index_operator"
-      } else if (operatorMatch === "()") {
-        referenceLink = className + ".call_operator"
-      } else {
-        this.warning(`Unknown operator ${operatorMatch}`)
-        referenceLink = reference
-      }
-      return this.getOnlineDocUrl(className) + "#" + referenceLink
+      return this.getOnlineDocUrl(className) + "#" + reference
     } else {
       this.warning(`Could not get doc url for ${reference}`)
       relative_link = ""
