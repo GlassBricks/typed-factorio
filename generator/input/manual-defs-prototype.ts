@@ -16,3 +16,6 @@ export type OmitType<T> = Omit<T, "type"> & {
 
 /** @unionAdd */
 export type CollisionMaskLayer = `layer-${bigint}`
+
+/** @replace */
+export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]

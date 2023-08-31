@@ -6,6 +6,7 @@ import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
 import { mapProperty } from "./properties.js"
 import { sortByOrder } from "../util.js"
 import ts from "typescript"
+import { InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 
 export function preprocessTypes(context: PrototypeGenerationContext): void {
   for (const type of context.apiDocs.types) {
@@ -21,12 +22,11 @@ export function generateTypes(context: PrototypeGenerationContext): void {
   })
 }
 
-function generateType(context: PrototypeGenerationContext, concept: PrototypeConcept): void {
-  if (concept.type == "builtin") {
-    return generateBuiltinType(context, concept)
-  }
-
-  const existing = context.manualDefs.getDeclaration(concept.name)
+function generateTypeDeclaration(
+  concept: PrototypeConcept,
+  context: PrototypeGenerationContext,
+  existing: InterfaceDef | TypeAliasDef | undefined
+) {
   const properties = concept.properties?.sort(sortByOrder).flatMap((p) => mapProperty(context, p, concept.name))
 
   const heritageClauses = getHeritageClauses(context, concept)
@@ -37,6 +37,22 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
   if (description) {
     concept.description += `\n\n${description}`
   }
+  return declaration
+}
+function generateType(context: PrototypeGenerationContext, concept: PrototypeConcept): void {
+  if (concept.type == "builtin") {
+    return generateBuiltinType(context, concept)
+  }
+
+  const existing = context.manualDefs.getDeclaration(concept.name)
+
+  let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
+  if (existing?.annotations.replace) {
+    declaration = existing.node
+  } else {
+    declaration = generateTypeDeclaration(concept, context, existing)
+  }
+
   addJsDoc(context, declaration, concept, concept.name)
 
   context.currentFile.add(declaration)
