@@ -3,7 +3,7 @@ import { addJsDoc } from "../documentation.js"
 import { Define } from "../FactorioRuntimeApiJson.js"
 import { createConst, createNamespace, Types } from "../genUtil.js"
 import { AnyDef } from "../manualDefinitions.js"
-import { sortByOrder } from "../util.js"
+import { byOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
 import { DeclarationType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
@@ -41,7 +41,7 @@ export function generateDefines(context: RuntimeGenerationContext): void {
 
 function generateEventsDefine(context: RuntimeGenerationContext, define: Define) {
   // namespace events { const member: EventId<Id> }
-  const members = define.values!.sort(sortByOrder).map((m) => {
+  const members = define.values!.sort(byOrder).map((m) => {
     const eventType = getMappedEventName(m.name)
     const typeArguments = [ts.factory.createTypeReferenceNode(eventType)]
     const event = context.events.get(m.name)!
@@ -91,7 +91,7 @@ function generateDefinesDeclaration(
         throw new Error(`Manual definition for ${thisPath} should be a enum, got ${ts.SyntaxKind[existing.node.kind]}`)
       }
       const members = define.values
-        .sort(sortByOrder)
+        .sort(byOrder)
         .map((m, i) =>
           addJsDoc(
             context,
@@ -113,7 +113,7 @@ function generateDefinesDeclaration(
       )
     }
     const subkeys = define.subkeys
-      .sort(sortByOrder)
+      .sort(byOrder)
       .flatMap((d) => generateDefinesDeclaration(context, d, thisPath, existing?.members[d.name]))
     declarations = [createNamespace(undefined, define.name, subkeys)]
   } else if (!existing) {

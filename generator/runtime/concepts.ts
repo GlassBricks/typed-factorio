@@ -10,7 +10,7 @@ import {
   setReadWriteType,
 } from "../read-write-types.js"
 import { mapConceptType, mapRuntimeType, typeToDeclaration } from "../types.js"
-import { sortByOrder } from "../util.js"
+import { byOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { DeclarationType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
@@ -22,7 +22,7 @@ const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableTy
  */
 export function preprocessConcepts(context: RuntimeGenerationContext): void {
   const concepts = context.apiDocs.concepts
-  concepts.sort(sortByOrder)
+  concepts.sort(byOrder)
 
   for (const concept of concepts) {
     context.references.set(concept.name, concept.name)

@@ -2,7 +2,7 @@ import ts from "typescript"
 import { EventRaised, WithNotes } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
 import { addFakeJSDoc } from "./genUtil.js"
-import { sortByOrder } from "./util.js"
+import { byOrder } from "./util.js"
 import { LiteralType, PrototypeWithExamples } from "./FactorioPrototypeApiJson.js"
 import { GenerationContext } from "./GenerationContext.js"
 import assert from "assert"
@@ -113,7 +113,7 @@ function getDefaultComment(element: Documentable): string | undefined {
 function getRaisesComment(context: GenerationContext, raises: EventRaised[] | undefined): string | undefined {
   if (!raises || raises.length === 0) return
   let result = "## Raised events\n"
-  for (const event of raises.sort(sortByOrder)) {
+  for (const event of raises.sort(byOrder)) {
     const eventName = event.name
     const eventLink = getMappedEventName(eventName)
     const eventDescription = processDescription(context, event.description)

@@ -1,6 +1,6 @@
 import { PrototypeGenerationContext } from "./index.js"
 import { DeclarationType } from "../OutputFile.js"
-import { sortByOrder } from "../util.js"
+import { byOrder } from "../util.js"
 import { Prototype } from "../FactorioPrototypeApiJson.js"
 import ts from "typescript"
 import { addJsDoc, createTag } from "../documentation.js"
@@ -9,7 +9,7 @@ import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./prope
 import { maybeRecordInlineConceptReference } from "./concepts.js"
 
 export function preprocessPrototypes(context: PrototypeGenerationContext): void {
-  for (const prototype of context.apiDocs.prototypes.sort(sortByOrder)) {
+  for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
     context.references.set(prototype.name, prototype.name)
 
     for (const property of prototype.properties) {
@@ -20,7 +20,7 @@ export function preprocessPrototypes(context: PrototypeGenerationContext): void 
 
 export function generatePrototypes(context: PrototypeGenerationContext): void {
   context.addFile("prototypes", DeclarationType.Types, () => {
-    for (const prototype of context.apiDocs.prototypes.sort(sortByOrder)) {
+    for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
       generatePrototype(context, prototype)
     }
   })
@@ -47,7 +47,7 @@ function getMembers(context: PrototypeGenerationContext, prototype: Prototype): 
     context.warning("TODO: custom_properties")
   }
 
-  const properties = prototype.properties.sort(sortByOrder).flatMap((p) => mapProperty(context, p, prototype.name))
+  const properties = prototype.properties.sort(byOrder).flatMap((p) => mapProperty(context, p, prototype.name))
 
   if (prototype.typename && !prototype.properties.some((p) => p.name === "type")) {
     const typeProperty = ts.factory.createPropertySignature(

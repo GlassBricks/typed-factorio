@@ -5,7 +5,7 @@ import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from ".
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { analyzeMethod, mapAttribute, mapMethod } from "./members.js"
 import { mapRuntimeType } from "../types.js"
-import { assertNever, sortByOrder } from "../util.js"
+import { assertNever, byOrder } from "../util.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
 import { DeclarationType } from "../OutputFile.js"
@@ -37,7 +37,7 @@ function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribut
 
 export function generateClasses(context: RuntimeGenerationContext): void {
   context.addFile("classes", DeclarationType.Types, () => {
-    for (const clazz of context.apiDocs.classes.sort(sortByOrder)) {
+    for (const clazz of context.apiDocs.classes.sort(byOrder)) {
       const existing = context.manualDefs.getDeclaration(clazz.name)
       generateClass(context, clazz, existing)
     }
@@ -156,7 +156,7 @@ function generateClass(
 
   function fillMethodsAndOperators() {
     members.push(
-      ...clazz.methods.sort(sortByOrder).map((method) => ({
+      ...clazz.methods.sort(byOrder).map((method) => ({
         original: method,
         member: mapMethod(context, method, clazz.name, existing),
       }))
@@ -201,7 +201,7 @@ function generateClass(
 
   function fillAttributes() {
     members.push(
-      ...clazz.attributes.sort(sortByOrder).map((attr) => ({
+      ...clazz.attributes.sort(byOrder).map((attr) => ({
         original: attr,
         member: mapAttribute(context, attr, clazz.name, existing),
       }))

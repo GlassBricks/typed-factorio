@@ -1,4 +1,4 @@
-export function sortByOrder(a: { order: number }, b: { order: number }): number {
+export function byOrder(a: { order: number }, b: { order: number }): number {
   return a.order - b.order
 }
 

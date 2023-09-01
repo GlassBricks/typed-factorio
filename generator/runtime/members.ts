@@ -6,7 +6,7 @@ import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, T
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { analyzeType, getUsage, RWUsage } from "../read-write-types.js"
 import { makeNullable, mapMemberType, mapRuntimeType, RWType } from "../types.js"
-import { getFirst, sortByOrder } from "../util.js"
+import { byOrder, getFirst } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { RuntimeGenerationContext } from "./index.js"
 
@@ -282,7 +282,7 @@ function getParameters(context: RuntimeGenerationContext, method: Method, thisPa
   if (method.takes_table) {
     const type = ts.factory.createTypeLiteralNode(
       method.parameters
-        .sort(sortByOrder)
+        .sort(byOrder)
         .map((m) => mapParameterToProperty(context, m, thisPath, RWUsage.Write).mainProperty)
     )
     parameters = [
@@ -295,7 +295,7 @@ function getParameters(context: RuntimeGenerationContext, method: Method, thisPa
       ),
     ]
   } else {
-    parameters = method.parameters.sort(sortByOrder).map((m) => mapParameterToParameter(context, m, thisPath))
+    parameters = method.parameters.sort(byOrder).map((m) => mapParameterToParameter(context, m, thisPath))
   }
   if (method.variadic_type) {
     const type = mapRuntimeType(

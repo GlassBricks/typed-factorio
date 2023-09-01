@@ -5,7 +5,7 @@ import { LiteralType, Parameter, ParameterGroup, Type, WithVariantParameterGroup
 import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil.js"
 import { mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./read-write-types.js"
-import { sortByOrder } from "./util.js"
+import { byOrder } from "./util.js"
 import { RuntimeGenerationContext } from "./runtime/index.js"
 
 export function createVariantParameterTypes(
@@ -24,9 +24,9 @@ export function createVariantParameterTypes(
   context.references.set(baseName, name)
   const existingBase = context.manualDefs.getDeclaration(baseName)
 
-  value.variant_parameter_groups!.sort(sortByOrder)
+  value.variant_parameter_groups!.sort(byOrder)
 
-  const baseProperties = value.parameters.sort(sortByOrder).map((p) => ({
+  const baseProperties = value.parameters.sort(byOrder).map((p) => ({
     original: p,
     member: mapParameterToProperty(context, p, baseName, usage, existingBase),
   }))
@@ -89,7 +89,7 @@ export function createVariantParameterTypes(
       }
       declarations = []
       const properties = group.parameters
-        .sort(sortByOrder)
+        .sort(byOrder)
         .map((p) => mapParameterToProperty(context, p, variantName, usage, existing))
 
       const readMembers = properties.map((p) => p.mainProperty)

@@ -4,7 +4,7 @@ import { Property, PrototypeConcept, Type } from "../FactorioPrototypeApiJson.js
 import { addJsDoc, createTag } from "../documentation.js"
 import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
 import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
-import { assertNever, sortByOrder } from "../util.js"
+import { assertNever, byOrder } from "../util.js"
 import ts from "typescript"
 import { InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 
@@ -63,7 +63,7 @@ export function preprocessTypes(context: PrototypeGenerationContext): void {
 
 export function generateTypes(context: PrototypeGenerationContext): void {
   context.addFile("types", DeclarationType.Types, () => {
-    for (const type of context.apiDocs.types.sort(sortByOrder)) {
+    for (const type of context.apiDocs.types.sort(byOrder)) {
       generateType(context, type)
     }
   })
@@ -74,7 +74,7 @@ function generateTypeDeclaration(
   context: PrototypeGenerationContext,
   existing: InterfaceDef | TypeAliasDef | undefined
 ) {
-  const properties = concept.properties?.sort(sortByOrder).flatMap((p) => mapProperty(context, p, concept.name))
+  const properties = concept.properties?.sort(byOrder).flatMap((p) => mapProperty(context, p, concept.name))
 
   const heritageClauses = getConceptHeritageClauses(context, concept)
   const { type, description } = mapPrototypeConcept(context, concept.type, properties, existing)

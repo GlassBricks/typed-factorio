@@ -3,7 +3,7 @@ import { addJsDoc } from "../documentation.js"
 import { createExtendsClause, toPascalCase } from "../genUtil.js"
 import { mapParameterToProperty } from "./members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
-import { sortByOrder } from "../util.js"
+import { byOrder } from "../util.js"
 import { DeclarationType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
@@ -23,7 +23,7 @@ export function preprocessEvents(context: RuntimeGenerationContext): void {
 export function generateEvents(context: RuntimeGenerationContext): void {
   context.addFile("events", DeclarationType.Types, () => {
     const heritageClause = createExtendsClause("EventData")
-    for (const event of context.apiDocs.events.sort(sortByOrder)) {
+    for (const event of context.apiDocs.events.sort(byOrder)) {
       const name = getMappedEventName(event.name)
       const existing = context.manualDefs.getDeclaration(name)
       const declaration = ts.factory.createInterfaceDeclaration(
@@ -31,7 +31,7 @@ export function generateEvents(context: RuntimeGenerationContext): void {
         name,
         undefined,
         heritageClause,
-        event.data.sort(sortByOrder).map((p) => {
+        event.data.sort(byOrder).map((p) => {
           if (p.name === "name" && event.name !== "CustomInputEvent") {
             p.type = "typeof " + p.type + "." + event.name
           }

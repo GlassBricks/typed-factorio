@@ -9,7 +9,7 @@ import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from 
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./read-write-types.js"
-import { assertNever, sortByOrder } from "./util.js"
+import { assertNever, byOrder } from "./util.js"
 import { RuntimeGenerationContext } from "./runtime/index.js"
 import { GenerationContext } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype/index.js"
@@ -624,7 +624,7 @@ function mapLuaStructType(
   assertIsRuntimeGenerationContext(context)
   assert(typeContext && typeContext.contextName)
   const attributes = type.attributes
-    .sort(sortByOrder)
+    .sort(byOrder)
     .flatMap((a) => mapAttribute(context, a, typeContext.contextName!, typeContext.existingDef))
 
   const mainType = ts.factory.createTypeLiteralNode(attributes)
@@ -648,7 +648,7 @@ function mapTableType(
 
   const existingDef = typeContext.existingDef
   const parameters = type.parameters
-    .sort(sortByOrder)
+    .sort(byOrder)
     .map((p) => mapParameterToProperty(context, p, typeContext.contextName!, usage, existingDef))
 
   const parameterNames = new Set(type.parameters.map((p) => p.name))
@@ -702,7 +702,7 @@ function mapRuntimeTupleType(
   if (usage === RWUsage.ReadWrite) {
     context.warning("Tuple cannot be read-write")
   }
-  const parameters = type.parameters.sort(sortByOrder).map((p) => {
+  const parameters = type.parameters.sort(byOrder).map((p) => {
     const paramType = mapMemberType(context, p, typeContext.contextName!, p.type, usage).mainType
     return ts.factory.createNamedTupleMember(
       undefined,
