@@ -2,19 +2,13 @@ import { Class, Concept, Define, Event, FactorioRuntimeApiJson, Type } from "../
 import { RWUsage } from "../read-write-types.js"
 import ts from "typescript"
 import { GenerationContext } from "../GenerationContext.js"
-import {
-  generateBuiltins,
-  generateGlobalFunctions,
-  generateGlobalObjects,
-  preprocessBuiltins,
-  preprocessGlobalFunctions,
-  preprocessGlobalObjects,
-} from "./others.js"
+import { generateBuiltins, generateGlobalFunctions, preprocessBuiltins, preprocessGlobalFunctions } from "./others.js"
 import { generateDefines, preprocessDefines } from "./defines.js"
 import { generateEvents, preprocessEvents } from "./events.js"
 import { generateClasses, preprocessClasses } from "./classes.js"
 import { generateConcepts, preprocessConcepts } from "./concepts.js"
 import { generateIndexTypesFile, preprocessIndexTypes } from "./index-types.js"
+import { generateGlobalObjects, preprocessGlobalObjects } from "./global-objects.js"
 
 export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeApiJson> {
   stageName = "runtime"

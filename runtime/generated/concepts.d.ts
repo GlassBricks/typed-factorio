@@ -3741,12 +3741,7 @@ declare module "factorio:runtime" {
          */
         readonly count: uint;
     }
-    export interface ModSetting {
-        /**
-         * The value of the mod setting. The type depends on the kind of setting.
-         */
-        readonly value: int | double | boolean | string | Color;
-    }
+    export type ModSetting = import("factorio:common").ModSetting;
     /**
      * Any basic type (string, number, boolean) or table.
      * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#AnyBasic Online documentation}

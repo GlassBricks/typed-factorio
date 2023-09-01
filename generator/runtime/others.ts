@@ -1,9 +1,6 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { createConst } from "../genUtil.js"
 import { analyzeMethod, mapFunction } from "./members.js"
-import { analyzeType, RWUsage } from "../read-write-types.js"
-import { mapRuntimeType } from "../types.js"
 import { byOrder } from "../util.js"
 import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
@@ -15,13 +12,6 @@ export function preprocessBuiltins(context: RuntimeGenerationContext): void {
     const existing = context.manualDefs.getDeclaration(builtin.name)
     if (existing?.kind === "type" && existing.node.type.kind === ts.SyntaxKind.NumberKeyword)
       context.numericTypes.add(builtin.name)
-  }
-}
-
-export function preprocessGlobalObjects(context: RuntimeGenerationContext): void {
-  for (const globalObject of context.apiDocs.global_objects) {
-    context.references.set(globalObject.name, globalObject.name)
-    analyzeType(context, globalObject.type, RWUsage.Read)
   }
 }
 
@@ -42,19 +32,6 @@ export function generateBuiltins(context: RuntimeGenerationContext): void {
         continue
       }
       context.currentFile.add(addJsDoc(context, existing.node, builtin, builtin.name, undefined))
-    }
-  })
-}
-
-export function generateGlobalObjects(context: RuntimeGenerationContext): void {
-  context.addFile("global-objects", ModuleType.Global, () => {
-    for (const globalObject of context.apiDocs.global_objects.sort(byOrder)) {
-      const definition = createConst(
-        globalObject.name,
-        mapRuntimeType(context, globalObject.type, globalObject.name, RWUsage.Read).mainType
-      )
-      addJsDoc(context, definition, globalObject, globalObject.name, undefined)
-      context.currentFile.add(definition)
     }
   })
 }

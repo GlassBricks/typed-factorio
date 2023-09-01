@@ -1,16 +1,19 @@
 /** @noResolution */
 declare module "factorio:common" {
-  import { Color } from "factorio:runtime"
+  import { ColorArray } from "factorio:runtime"
   export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
 
-  export interface ModSetting {
-    /**
-     * The value of the mod setting. The type depends on the kind of setting.
-     */
-    readonly value: number | boolean | string | Color
+  export interface Color {
+    readonly r?: number
+    readonly g?: number
+    readonly b?: number
+    readonly a?: number
   }
 
-  export interface SettingsGlobal {
-    readonly startup: Record<string, ModSetting>
+  /**
+   * The value of the mod setting. The type depends on the kind of setting.
+   */
+  export interface ModSetting {
+    readonly value: number | boolean | string | Color | ColorArray
   }
 }

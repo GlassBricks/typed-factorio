@@ -493,6 +493,15 @@ export interface LuaGameScript {
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
 }
 
+/** @replace */
+export type ModSetting = import("factorio:common").ModSetting
+
+export interface LuaSettings {
+  readonly startup: {
+    readonly [name: string]: ModSetting
+  }
+}
+
 //  -- Concepts --
 
 /** @replace */

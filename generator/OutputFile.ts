@@ -1,14 +1,14 @@
 import ts from "typescript"
-import { createComment, createDeclareGlobal, createDeclareModule } from "./genUtil.js"
+import { createComment, createDeclareGlobal, createDeclareModule, createSimpleImports } from "./genUtil.js"
 import { GenerationContext } from "./GenerationContext.js"
 
 export interface OutputFileBuilder {
   fileName: string
   moduleType: ModuleType
 
-  add(statement: ts.Statement): void
-
   addImport(fromModule: string, importName: string): void
+  add(statement: ts.Statement): void
+  addOutsideModule(statement: ts.Statement): void
 }
 
 export interface OutputFile {
@@ -24,11 +24,22 @@ export enum ModuleType {
 
 export class OutputFileBuilderImpl implements OutputFileBuilder {
   private statements: ts.Statement[] = []
+  private endStatements: ts.Statement[] = []
   private imports = new Map<string, Set<string>>()
 
   constructor(private context: GenerationContext, public fileName: string, public moduleType: ModuleType) {}
 
-  add(statement: ts.Statement): this {
+  addImport(fromModule: string, importName: string): void {
+    if (fromModule === this.moduleType) return
+    let imports = this.imports.get(fromModule)
+    if (!imports) {
+      imports = new Set()
+      this.imports.set(fromModule, imports)
+    }
+    imports.add(importName)
+  }
+
+  add(statement: ts.Statement): void {
     const name = OutputFileBuilderImpl.getName(statement)
     if (name) {
       const addBefore = this.context.addBefore.get(name)
@@ -46,17 +57,10 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
         this.context.addAfter.delete(name)
       }
     }
-    return this
   }
 
-  addImport(fromModule: string, importName: string): void {
-    if (fromModule === this.moduleType) return
-    let imports = this.imports.get(fromModule)
-    if (!imports) {
-      imports = new Set()
-      this.imports.set(fromModule, imports)
-    }
-    imports.add(importName)
+  addOutsideModule(statement: ts.Statement): void {
+    this.endStatements.push(statement)
   }
 
   private static getName(statement: ts.Statement) {
@@ -84,21 +88,7 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
 
     // imports
     for (const [fromModule, importsSet] of this.imports) {
-      const imports = [...importsSet].sort()
-      const importClause = ts.factory.createImportClause(
-        true,
-        undefined,
-        ts.factory.createNamedImports(
-          imports.map((name) => ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier(name)))
-        )
-      )
-      result.push(
-        ts.factory.createImportDeclaration(
-          undefined,
-          importClause,
-          ts.factory.createStringLiteral("factorio:" + fromModule)
-        )
-      )
+      result.push(createSimpleImports([...importsSet].sort(), "factorio:" + fromModule))
     }
 
     const module =
@@ -106,6 +96,8 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
         ? createDeclareGlobal(this.statements)
         : createDeclareModule("factorio:" + this.moduleType, this.statements)
     result.push(module)
+
+    result.push(...this.endStatements)
 
     return {
       name: this.fileName,

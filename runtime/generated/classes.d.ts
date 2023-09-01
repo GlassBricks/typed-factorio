@@ -22838,7 +22838,9 @@ declare module "factorio:runtime" {
          * The startup mod settings, indexed by prototype name.
          * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaSettings.html#LuaSettings.startup Online documentation}
          */
-        readonly startup: LuaCustomTable<string, ModSetting>;
+        readonly startup: {
+            readonly [name: string]: ModSetting;
+        };
         /**
          * The current global mod settings, indexed by prototype name.
          *

@@ -33,11 +33,7 @@ declare global {
    * @see {@link https://lua-api.factorio.com/1.1.89/index-runtime.html Online documentation}
    */
   const commands: LuaCommandProcessor
-  /**
-   * Provides access to the current mod settings.
-   * @see {@link https://lua-api.factorio.com/1.1.89/index-runtime.html Online documentation}
-   */
-  const settings: LuaSettings
+  //The "settings" global is declared in common/settings-global.d.ts; its runtime type is handled below.
   /**
    * Allows printing messages to the calling RCON instance, if any.
    * @see {@link https://lua-api.factorio.com/1.1.89/index-runtime.html Online documentation}
@@ -48,4 +44,11 @@ declare global {
    * @see {@link https://lua-api.factorio.com/1.1.89/index-runtime.html Online documentation}
    */
   const rendering: LuaRendering
+}
+
+/**
+ * @noResolution
+ */
+declare module "factorio:common" {
+  export interface SettingsGlobal extends LuaSettings {}
 }

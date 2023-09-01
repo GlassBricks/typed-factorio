@@ -157,3 +157,14 @@ export function escapePropertyName(name: string): ts.PropertyName {
   }
   return ts.factory.createIdentifier(name)
 }
+
+export function createSimpleImports(imports: string[], fromModule: string): ts.ImportDeclaration {
+  const importClause = ts.factory.createImportClause(
+    true,
+    undefined,
+    ts.factory.createNamedImports(
+      imports.map((name) => ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier(name)))
+    )
+  )
+  return ts.factory.createImportDeclaration(undefined, importClause, ts.factory.createStringLiteral(fromModule))
+}
