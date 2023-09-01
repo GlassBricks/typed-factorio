@@ -19,6 +19,7 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
+    "eqeqeq": "error",
     // fixes
     "no-useless-constructor": "off",
     "@typescript-eslint/no-useless-constructor": "error",

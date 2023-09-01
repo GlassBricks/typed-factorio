@@ -17,7 +17,7 @@ export function maybeRecordInlineConceptReference(
   return visitType(property.type)
 
   function visitType(type: Type): boolean {
-    if (typeof type == "string") return maybeRecord(type)
+    if (typeof type === "string") return maybeRecord(type)
     switch (type.complex_type) {
       case "struct":
       case "literal":
@@ -84,7 +84,7 @@ function generateTypeDeclaration(
   return { declaration, description }
 }
 function generateType(context: PrototypeGenerationContext, concept: PrototypeConcept): void {
-  if (concept.type == "builtin") {
+  if (concept.type === "builtin") {
     return generateBuiltinType(context, concept)
   }
 
@@ -121,7 +121,7 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
 
 function generateBuiltinType(context: PrototypeGenerationContext, concept: PrototypeConcept) {
   const name = concept.name
-  if (name == "string" || name == "number" || name == "boolean") return
+  if (name === "string" || name === "number" || name === "boolean") return
   const existing = context.manualDefs.getDeclaration(name)
   if (!existing) {
     context.warning(`No existing definition for builtin ${name}`)
@@ -143,7 +143,7 @@ function getConceptHeritageClauses(
     return
   }
   const overridesType =
-    concept.properties?.some((x) => x.name == "type") && parentConcept.properties?.some((x) => x.name == "type")
+    concept.properties?.some((x) => x.name === "type") && parentConcept.properties?.some((x) => x.name === "type")
   if (overridesType) {
     overridenAttributes.push("type")
   }
