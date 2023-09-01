@@ -24,6 +24,7 @@ export const Types = {
   object: ts.factory.createKeywordTypeNode(ts.SyntaxKind.ObjectKeyword),
   number: ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
   symbol: ts.factory.createKeywordTypeNode(ts.SyntaxKind.SymbolKeyword),
+  string: ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
 
   stringLiteral(text: string): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(

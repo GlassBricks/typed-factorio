@@ -4871,13 +4871,7 @@ declare module "factorio:prototype" {
          */
         amount?: uint32;
     }
-    /**
-     * The available GUI styles.
-     *
-     * _Prototype limited to **1** total instances_
-     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GuiStyle.html Online documentation}
-     */
-    export interface GuiStyle extends PrototypeBase {
+    export interface GuiStyleMembers extends PrototypeBase {
         type: "gui-style";
         /**
          * **Default:** `""`
@@ -4895,6 +4889,33 @@ declare module "factorio:prototype" {
          */
         default_sprite_priority?: SpritePriority;
     }
+    export interface GuiStyleCustomProperties {
+        /**
+         * Styles are defined as uniquely named {@link StyleSpecification} properties of the prototype.
+         *
+         * Styles with certain names are mandatory, as they are used by the base game GUI. A list is found below.
+         *
+         * {@link https://lua-api.factorio.com/1.1.89/prototypes/GuiStyle.html#custom_properties > Mandatory styles:}
+         * @example
+         * -- Adding a custom frame_style-type style
+         * data.raw["gui-style"]["default"]["custom_style_for_a_frame"] =
+         * {
+         *   type = "frame_style",
+         *   parent = "frame",
+         *   use_header_filler = false,
+         *   drag_by_title = false
+         * }
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GuiStyle.html#custom_properties Online documentation}
+         */
+        [key: string]: StyleSpecification;
+    }
+    /**
+     * The available GUI styles.
+     *
+     * _Prototype limited to **1** total instances_
+     * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GuiStyle.html Online documentation}
+     */
+    export type GuiStyle = GuiStyleMembers & GuiStyleCustomProperties;
     /**
      * A gun. A weapon to deal damage to entities.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GunPrototype.html Online documentation}
@@ -6248,6 +6269,21 @@ declare module "factorio:prototype" {
          */
         collision_box?: BoundingBox;
     }
+    export interface MapGenPresetsMembers {
+        type: "map-gen-presets";
+        /**
+         * Name of the map gen presets. Base game uses "default".
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapGenPresets.html#name Online documentation}
+         */
+        name: string;
+    }
+    export interface MapGenPresetsCustomProperties {
+        /**
+         * Presets are defined as uniquely named {@link MapGenPreset} properties of the prototype. Zero or more named presets can be specified within the prototype.
+         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapGenPresets.html#custom_properties Online documentation}
+         */
+        [key: string]: MapGenPreset;
+    }
     /**
      * The available map gen presets.
      *
@@ -6289,14 +6325,7 @@ declare module "factorio:prototype" {
      * }
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapGenPresets.html Online documentation}
      */
-    export interface MapGenPresets {
-        type: "map-gen-presets";
-        /**
-         * Name of the map gen presets. Base game uses "default".
-         * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapGenPresets.html#name Online documentation}
-         */
-        name: string;
-    }
+    export type MapGenPresets = MapGenPresetsMembers & MapGenPresetsCustomProperties;
     /**
      * The default map settings.
      *

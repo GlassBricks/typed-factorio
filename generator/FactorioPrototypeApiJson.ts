@@ -28,7 +28,7 @@ export interface Prototype extends BasicMember, PrototypeWithExamples {
   instance_limit?: number
   deprecated: boolean
   properties: Property[]
-  custom_properties: CustomProperty[]
+  custom_properties: CustomProperty // online doc says that this is an array, but it's not
 }
 
 export interface PrototypeConcept extends BasicMember, PrototypeWithExamples {

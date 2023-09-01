@@ -7,6 +7,8 @@ import { addJsDoc, createTag } from "../documentation.js"
 import { addFakeJSDoc, Modifiers, Types } from "../genUtil.js"
 import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
 import { maybeRecordInlineConceptReference } from "./concepts.js"
+import { mapPrototypeType } from "../types.js"
+import assert from "assert"
 
 export function preprocessPrototypes(context: PrototypeGenerationContext): void {
   for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
@@ -30,23 +32,42 @@ function generatePrototype(context: PrototypeGenerationContext, prototype: Proto
   const members = getMembers(context, prototype)
   const heritageClauses = getPrototypeHeritageClauses(prototype, context)
 
-  const intf = ts.factory.createInterfaceDeclaration(
+  let mainDeclName = prototype.name
+
+  const customProperties = prototype.custom_properties
+  if (customProperties) {
+    // split into XMembers, XProperties; main type is type X = XMembers & XProperties
+    mainDeclName = prototype.name + "Members"
+  }
+
+  const membersDecl = ts.factory.createInterfaceDeclaration(
     [Modifiers.export],
-    prototype.name,
+    mainDeclName,
     undefined,
     heritageClauses,
     members
   )
 
-  addJsDoc(context, intf, prototype, prototype.name)
-  context.currentFile.add(intf)
+  let mainDecl: ts.DeclarationStatement = membersDecl
+
+  if (customProperties) {
+    const indexer = getCustomPropertiesType(context, prototype)
+
+    const intersectionType = ts.factory.createIntersectionTypeNode([
+      ts.factory.createTypeReferenceNode(mainDeclName),
+      ts.factory.createTypeReferenceNode(indexer.name),
+    ])
+
+    context.currentFile.add(membersDecl)
+    context.currentFile.add(indexer)
+    mainDecl = ts.factory.createTypeAliasDeclaration([Modifiers.export], prototype.name, undefined, intersectionType)
+  }
+
+  addJsDoc(context, mainDecl, prototype, prototype.name)
+  context.currentFile.add(mainDecl)
 }
 
 function getMembers(context: PrototypeGenerationContext, prototype: Prototype): ts.TypeElement[] {
-  if (prototype.custom_properties) {
-    context.warning("TODO: custom_properties")
-  }
-
   const properties = prototype.properties.sort(byOrder).flatMap((p) => mapProperty(context, p, prototype.name))
 
   if (prototype.typename && !prototype.properties.some((p) => p.name === "type")) {
@@ -77,6 +98,34 @@ function getMembers(context: PrototypeGenerationContext, prototype: Prototype): 
 function getPrototypeHeritageClauses(prototype: Prototype, context: PrototypeGenerationContext) {
   if (!prototype.parent) return undefined
   return getHeritageClauses(prototype.parent, getPrototypeOverridenAttributes(context, prototype))
+}
+
+function getCustomPropertiesType(context: PrototypeGenerationContext, prototype: Prototype): ts.InterfaceDeclaration {
+  const customProperty = prototype.custom_properties
+  assert(customProperty)
+  if (customProperty.key_type !== "string") {
+    context.warning("Can't handle non-string custom property keys", prototype.name)
+  }
+
+  const { type, description } = mapPrototypeType(context, customProperty.value_type)
+  if (description) {
+    context.warning("Can't handle custom property descriptions", prototype.name)
+  }
+
+  const typeElement = ts.factory.createIndexSignature(
+    undefined,
+    [ts.factory.createParameterDeclaration(undefined, undefined, "key", undefined, Types.string, undefined)],
+    type
+  )
+  addJsDoc(context, typeElement, customProperty, prototype.name + ".custom_properties")
+
+  return ts.factory.createInterfaceDeclaration(
+    [Modifiers.export],
+    prototype.name + "CustomProperties",
+    undefined,
+    undefined,
+    [typeElement]
+  )
 }
 
 function getPrototypeOverridenAttributes(
