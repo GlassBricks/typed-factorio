@@ -1,5 +1,5 @@
 import { PrototypeGenerationContext } from "./index.js"
-import { DeclarationType } from "../OutputFile.js"
+import { ModuleType } from "../OutputFile.js"
 import { byOrder } from "../util.js"
 import { Prototype } from "../FactorioPrototypeApiJson.js"
 import ts from "typescript"
@@ -21,7 +21,7 @@ export function preprocessPrototypes(context: PrototypeGenerationContext): void 
 }
 
 export function generatePrototypes(context: PrototypeGenerationContext): void {
-  context.addFile("prototypes", DeclarationType.Types, () => {
+  context.addFile("prototypes", ModuleType.Prototype, () => {
     for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
       generatePrototype(context, prototype)
     }

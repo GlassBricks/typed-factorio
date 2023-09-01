@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { decapitalize } from "../genUtil.js"
-import { DeclarationType } from "../OutputFile.js"
+import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export interface IndexType {
@@ -77,7 +77,7 @@ export function preprocessIndexTypes(context: RuntimeGenerationContext): void {
 }
 
 export function generateIndexTypesFile(context: RuntimeGenerationContext): void {
-  context.addFile("index-types", DeclarationType.Types, () => {
+  context.addFile("index-types", ModuleType.Runtime, () => {
     for (const indexType of IndexTypes) {
       // type ${name} = uint & { _${name}Brand: void }
       const typeNode = ts.factory.createIntersectionTypeNode([

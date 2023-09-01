@@ -1,30 +1,32 @@
 import ts from "typescript"
-import { createComment, createDeclareModule } from "./genUtil.js"
+import { createComment, createDeclareGlobal, createDeclareModule } from "./genUtil.js"
 import { GenerationContext } from "./GenerationContext.js"
 
 export interface OutputFileBuilder {
   fileName: string
-
-  declarationType: DeclarationType
+  moduleType: ModuleType
 
   add(statement: ts.Statement): void
-}
 
-export enum DeclarationType {
-  Types = "namespace",
-  Globals = "global",
+  addImport(fromModule: string, importName: string): void
 }
 
 export interface OutputFile {
   name: string
-  moduleType: DeclarationType
   statements: readonly ts.Statement[]
+}
+
+export enum ModuleType {
+  Runtime = "runtime",
+  Prototype = "prototype",
+  Global = "global",
 }
 
 export class OutputFileBuilderImpl implements OutputFileBuilder {
   private statements: ts.Statement[] = []
+  private imports = new Map<string, Set<string>>()
 
-  constructor(private context: GenerationContext, public fileName: string, public declarationType: DeclarationType) {}
+  constructor(private context: GenerationContext, public fileName: string, public moduleType: ModuleType) {}
 
   add(statement: ts.Statement): this {
     const name = OutputFileBuilderImpl.getName(statement)
@@ -45,6 +47,16 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
       }
     }
     return this
+  }
+
+  addImport(fromModule: string, importName: string): void {
+    if (fromModule === this.moduleType) return
+    let imports = this.imports.get(fromModule)
+    if (!imports) {
+      imports = new Set()
+      this.imports.set(fromModule, imports)
+    }
+    imports.add(importName)
   }
 
   private static getName(statement: ts.Statement) {
@@ -70,16 +82,33 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
     const result: ts.Statement[] = []
     result.push(createComment("* @noSelfInFile ", true))
 
-    if (this.declarationType === "namespace") {
-      // wrap everything in `declare namespace`...
-      result.push(createDeclareModule("factorio:" + this.context.stageName, this.statements))
-    } else {
-      result.push(...this.statements)
+    // imports
+    for (const [fromModule, importsSet] of this.imports) {
+      const imports = [...importsSet].sort()
+      const importClause = ts.factory.createImportClause(
+        true,
+        undefined,
+        ts.factory.createNamedImports(
+          imports.map((name) => ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier(name)))
+        )
+      )
+      result.push(
+        ts.factory.createImportDeclaration(
+          undefined,
+          importClause,
+          ts.factory.createStringLiteral("factorio:" + fromModule)
+        )
+      )
     }
+
+    const module =
+      this.moduleType === "global"
+        ? createDeclareGlobal(this.statements)
+        : createDeclareModule("factorio:" + this.moduleType, this.statements)
+    result.push(module)
 
     return {
       name: this.fileName,
-      moduleType: this.declarationType,
       statements: result,
     }
   }

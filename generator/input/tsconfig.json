@@ -3,7 +3,7 @@
     "strict": true,
     "noImplicitAny": false,
     "lib": ["esnext"],
-    "types": ["lua-types/5.2", "typescript-to-lua/language-extensions"]
+    "types": ["lua-types/5.2", "@typescript-to-lua/language-extensions"]
   },
   "include": ["**/*.ts"]
 }

@@ -1,6 +1,3 @@
-// "util" is declared only as a module, even though it also modifies global variables
-// This is both because of limitations in `declare module`, and that modules are much friendlier to tooling.
-
 /** @noSelfInFile */
 
 /** @noResolution */

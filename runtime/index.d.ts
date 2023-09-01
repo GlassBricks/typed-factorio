@@ -1,16 +1,12 @@
-// This file declares all globals for factorio runtime.
+// This file declares only types for the factorio runtime.
+// For globals, see ./globals.d.ts
 
-/// <reference path="../index.d.ts" />
-
-// globals
-/// <reference path="./generated/global-objects.d.ts" />
-/// <reference path="./generated/global-functions.d.ts" />
-
-declare const defines: typeof import("factorio:runtime").defines
-
-// other runtime
-/// <reference path="pairs.d.ts" />
-/// <reference path="libraries-and-functions.d.ts" />
+/// <reference path="../common/index.d.ts" />
+/// <reference path="generated/builtin-types.d.ts" />
+/// <reference path="generated/events.d.ts" />
+/// <reference path="generated/classes.d.ts" />
+/// <reference path="generated/concepts.d.ts" />
+/// <reference path="generated/index-types.d.ts" />
 
 // lualib
-/// <reference path="../lualib/mod-gui.d.ts" />
+/// <reference path="../lualib/util.d.ts" />

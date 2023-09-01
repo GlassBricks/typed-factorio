@@ -265,7 +265,7 @@ export function mapFunction(context: RuntimeGenerationContext, method: Method): 
   const parameters = getParameters(context, method, method.name)
   const returnType = getReturnType(context, method, "")
   const func = ts.factory.createFunctionDeclaration(
-    [Modifiers.declare],
+    undefined,
     undefined,
     method.name,
     undefined,

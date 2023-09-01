@@ -1,5 +1,5 @@
 import { PrototypeGenerationContext } from "./index.js"
-import { DeclarationType } from "../OutputFile.js"
+import { ModuleType } from "../OutputFile.js"
 import { Property, PrototypeConcept, Type } from "../FactorioPrototypeApiJson.js"
 import { addJsDoc, createTag } from "../documentation.js"
 import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
@@ -62,7 +62,7 @@ export function preprocessTypes(context: PrototypeGenerationContext): void {
 }
 
 export function generateTypes(context: PrototypeGenerationContext): void {
-  context.addFile("types", DeclarationType.Types, () => {
+  context.addFile("types", ModuleType.Prototype, () => {
     for (const type of context.apiDocs.types.sort(byOrder)) {
       generateType(context, type)
     }

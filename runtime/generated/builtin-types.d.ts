@@ -12,6 +12,8 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/builtin-types.html#float Online documentation}
      */
     export type float = number;
+    /// <reference path="../../common/index.d.ts" />
+    // noinspection JSUnusedGlobalSymbols
     /**
      * A double-precision floating-point number. This is the same data type as all Lua numbers use.
      * @see {@link https://lua-api.factorio.com/1.1.89/builtin-types.html#double Online documentation}

@@ -5525,10 +5525,7 @@ declare module "factorio:prototype" {
      * -- value wasn't specified, the translation result would be "Unknown key: 'item-description.furnace'".
      * @see {@link https://lua-api.factorio.com/1.1.89/types/LocalisedString.html Online documentation}
      */
-    export type LocalisedString = string | number | boolean | undefined | readonly [
-        string,
-        ...LocalisedString[]
-    ];
+    export type LocalisedString = import("factorio:common").LocalisedString;
     /**
      * The items generated when an {@link EntityWithHealthPrototype} is killed.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/LootItem.html Online documentation}
@@ -11502,6 +11499,7 @@ declare module "factorio:prototype" {
          */
         use_icon_overlay_constant?: bool;
     }
+    /// <reference path="../../common/index.d.ts" />
     /**
      * A variable type which can have one of two values: `true` or `false`. Wikipedia has a {@linkplain https://en.wikipedia.org/wiki/Boolean comprehensive article} on Booleans.
      *

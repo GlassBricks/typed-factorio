@@ -2,9 +2,7 @@
 
 /** @noResolution */
 declare module "mod-gui" {
-  import LuaPlayer = FactorioRuntime.LuaPlayer
-  import FrameGuiElement = FactorioRuntime.FrameGuiElement
-  import FlowGuiElement = FactorioRuntime.FlowGuiElement
+  import { FlowGuiElement, FrameGuiElement, LuaPlayer } from "factorio:runtime"
   const button_style: string
   const frame_style: string
 

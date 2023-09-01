@@ -1,11 +1,11 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { createConst, Modifiers } from "../genUtil.js"
+import { createConst } from "../genUtil.js"
 import { analyzeMethod, mapFunction } from "./members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { mapRuntimeType } from "../types.js"
 import { byOrder } from "../util.js"
-import { DeclarationType } from "../OutputFile.js"
+import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessBuiltins(context: RuntimeGenerationContext): void {
@@ -33,7 +33,7 @@ export function preprocessGlobalFunctions(context: RuntimeGenerationContext): vo
 }
 
 export function generateBuiltins(context: RuntimeGenerationContext): void {
-  context.addFile("builtin-types", DeclarationType.Types, () => {
+  context.addFile("builtin-types", ModuleType.Runtime, () => {
     for (const builtin of context.apiDocs.builtin_types.sort(byOrder)) {
       if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
       const existing = context.manualDefs.getDeclaration(builtin.name)
@@ -47,12 +47,11 @@ export function generateBuiltins(context: RuntimeGenerationContext): void {
 }
 
 export function generateGlobalObjects(context: RuntimeGenerationContext): void {
-  context.addFile("global-objects", DeclarationType.Globals, () => {
+  context.addFile("global-objects", ModuleType.Global, () => {
     for (const globalObject of context.apiDocs.global_objects.sort(byOrder)) {
       const definition = createConst(
         globalObject.name,
-        mapRuntimeType(context, globalObject.type, globalObject.name, RWUsage.Read).mainType,
-        [Modifiers.declare]
+        mapRuntimeType(context, globalObject.type, globalObject.name, RWUsage.Read).mainType
       )
       addJsDoc(context, definition, globalObject, globalObject.name, undefined)
       context.currentFile.add(definition)
@@ -61,7 +60,7 @@ export function generateGlobalObjects(context: RuntimeGenerationContext): void {
 }
 
 export function generateGlobalFunctions(context: RuntimeGenerationContext): void {
-  context.addFile("global-functions", DeclarationType.Globals, () => {
+  context.addFile("global-functions", ModuleType.Global, () => {
     for (const globalFunction of context.apiDocs.global_functions.sort(byOrder)) {
       const definition = mapFunction(context, globalFunction)
       context.currentFile.add(definition)

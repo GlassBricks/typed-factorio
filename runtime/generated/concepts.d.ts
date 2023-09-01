@@ -31,7 +31,7 @@ declare module "factorio:runtime" {
      * {"?", {"", {"entity-description.furnace"}, "\n"}, {"item-description.furnace"}, "optional fallback"}
      * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#LocalisedString Online documentation}
      */
-    export type LocalisedString = string | number | boolean | LuaObject | nil | readonly [string, ...LocalisedString[]];
+    export type LocalisedString = import("factorio:common").LocalisedString | LuaObject;
     export interface DisplayResolution {
         readonly width: uint;
         readonly height: uint;

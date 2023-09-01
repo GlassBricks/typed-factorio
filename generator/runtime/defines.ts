@@ -5,7 +5,7 @@ import { createConst, createNamespace, Types } from "../genUtil.js"
 import { AnyDef } from "../manualDefinitions.js"
 import { byOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
-import { DeclarationType } from "../OutputFile.js"
+import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessDefines(context: RuntimeGenerationContext): void {
@@ -36,7 +36,7 @@ export function generateDefines(context: RuntimeGenerationContext): void {
     "",
     context.manualDefs.getNamespace("defines")
   )
-  context.addFile("defines", DeclarationType.Types, () => context.currentFile.add(defines))
+  context.addFile("defines", ModuleType.Runtime, () => context.currentFile.add(defines))
 }
 
 function generateEventsDefine(context: RuntimeGenerationContext, define: Define) {

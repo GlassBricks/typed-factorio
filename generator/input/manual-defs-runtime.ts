@@ -1,3 +1,6 @@
+/// <reference path="../../common/index.d.ts" />
+// noinspection JSUnusedGlobalSymbols
+
 export type double = number
 export type float = number
 export type table = object
@@ -433,9 +436,9 @@ export interface EventData {
 
 export interface CustomInputEvent {}
 
-/** @addTo events */
+/** @addTo defines */
 /** An event id. */
-export type EventId<T extends table, F = unknown> = uint & {
+export type EventId<T extends object, F = unknown> = uint & {
   readonly _eventData: T
   readonly _filter: F
 }
@@ -492,8 +495,8 @@ export interface LuaGameScript {
 
 //  -- Concepts --
 
-/** @unionReplace array */
-export type LocalisedString = readonly [string, ...LocalisedString[]]
+/** @replace */
+export type LocalisedString = import("factorio:common").LocalisedString | LuaObject
 
 export interface RealOrientation {}
 

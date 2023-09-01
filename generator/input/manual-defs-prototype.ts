@@ -1,3 +1,4 @@
+/// <reference path="../../common/index.d.ts" />
 export type bool = boolean
 export type double = number
 export type float = number
@@ -13,4 +14,4 @@ export type uint64 = number
 export type CollisionMaskLayer = `layer-${bigint}`
 
 /** @replace */
-export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
+export type LocalisedString = import("factorio:common").LocalisedString

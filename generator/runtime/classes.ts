@@ -8,7 +8,7 @@ import { mapRuntimeType } from "../types.js"
 import { assertNever, byOrder } from "../util.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
-import { DeclarationType } from "../OutputFile.js"
+import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessClasses(context: RuntimeGenerationContext): void {
@@ -36,7 +36,7 @@ function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribut
 }
 
 export function generateClasses(context: RuntimeGenerationContext): void {
-  context.addFile("classes", DeclarationType.Types, () => {
+  context.addFile("classes", ModuleType.Runtime, () => {
     for (const clazz of context.apiDocs.classes.sort(byOrder)) {
       const existing = context.manualDefs.getDeclaration(clazz.name)
       generateClass(context, clazz, existing)

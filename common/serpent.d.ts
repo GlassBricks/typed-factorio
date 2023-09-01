@@ -3,10 +3,8 @@
 
 /** @noSelfInFile */
 
-export {}
-
 /** @noResolution */
-declare module "factorio:runtime" {
+declare module "factorio:common" {
   /** @noSelf */
   interface SerpentOptions {
     /** Indentation; triggers long multi-line output. */
@@ -72,7 +70,7 @@ declare module "factorio:runtime" {
   }
 
   /** @noSelf */
-  interface Serpent {
+  export interface Serpent {
     /** Full serialization; sets name, compact and sparse options; */
     dump(tbl: unknown, options?: Partial<SerpentOptions>): string
 
@@ -90,7 +88,7 @@ declare module "factorio:runtime" {
   }
 }
 
-import { Serpent } from "factorio:runtime"
+import type { Serpent } from "factorio:common"
 
 declare global {
   /**

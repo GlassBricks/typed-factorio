@@ -1,5 +1,9 @@
-// This file declares all globals for factorio runtime.
+// This file declares only types for the factorio runtime.
+// For globals, see ./globals.d.ts
 
-/// <reference path="../index.d.ts" />
+/// <reference path="../common/index.d.ts" />
+/// <reference path="generated/prototypes.d.ts" />
+/// <reference path="generated/types.d.ts" />
 
-// globals
+// lualib
+/// <reference path="../lualib/util.d.ts" />

@@ -6,3 +6,4 @@ test
 runtime/*.ts
 .yarn
 **/index-template.ts
+**/globals-template.ts

@@ -85,15 +85,24 @@ export function createDeclareModule(name: string, statements: ts.Statement[]): t
     ts.factory.createStringLiteral(name),
     ts.factory.createModuleBlock(statements),
     undefined
-    // ts.NodeFlags.GlobalAugmentation
   )
   addNoResolutionAnnotation(module)
   return module
 }
 
-export function createConst(name: string, type: ts.TypeNode, modifiers?: ts.Modifier[]): ts.VariableStatement {
+export function createDeclareGlobal(statements: ts.Statement[]): ts.ModuleDeclaration {
+  const module = ts.factory.createModuleDeclaration(
+    [Modifiers.declare],
+    ts.factory.createIdentifier("global"),
+    ts.factory.createModuleBlock(statements),
+    ts.NodeFlags.GlobalAugmentation
+  )
+  return module
+}
+
+export function createConst(name: string, type: ts.TypeNode): ts.VariableStatement {
   return ts.factory.createVariableStatement(
-    modifiers,
+    undefined,
     ts.factory.createVariableDeclarationList(
       [ts.factory.createVariableDeclaration(name, undefined, type)],
       ts.NodeFlags.Const

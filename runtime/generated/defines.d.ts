@@ -1942,5 +1942,10 @@ declare module "factorio:runtime" {
             copper
         }
     }
+    /** An event id. */
+    export type EventId<T extends object, F = unknown> = uint & {
+        readonly _eventData: T;
+        readonly _filter: F;
+    };
 }
 

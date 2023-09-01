@@ -12,7 +12,7 @@ import {
 import { mapConceptType, mapRuntimeType, typeToDeclaration } from "../types.js"
 import { byOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
-import { DeclarationType } from "../OutputFile.js"
+import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableType }>()
@@ -89,7 +89,7 @@ function tryGetTableOrArrayConcept(
 }
 
 export function generateConcepts(context: RuntimeGenerationContext): void {
-  context.addFile("concepts", DeclarationType.Types, () => {
+  context.addFile("concepts", ModuleType.Runtime, () => {
     for (const concept of context.apiDocs.concepts) {
       generateConcept(context, concept)
     }

@@ -4,7 +4,7 @@ import { createExtendsClause, toPascalCase } from "../genUtil.js"
 import { mapParameterToProperty } from "./members.js"
 import { analyzeType, RWUsage } from "../read-write-types.js"
 import { byOrder } from "../util.js"
-import { DeclarationType } from "../OutputFile.js"
+import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessEvents(context: RuntimeGenerationContext): void {
@@ -21,7 +21,7 @@ export function preprocessEvents(context: RuntimeGenerationContext): void {
 }
 
 export function generateEvents(context: RuntimeGenerationContext): void {
-  context.addFile("events", DeclarationType.Types, () => {
+  context.addFile("events", ModuleType.Runtime, () => {
     const heritageClause = createExtendsClause("EventData")
     for (const event of context.apiDocs.events.sort(byOrder)) {
       const name = getMappedEventName(event.name)
