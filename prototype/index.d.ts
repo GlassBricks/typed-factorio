@@ -4,7 +4,8 @@
 /// <reference path="../common/settings-global.d.ts" />
 /// <reference path="../common/data-global.d.ts" />
 
+/** @noResolution */
 declare module "factorio:common" {
-  import { PrototypeMap as PPrototypeMap } from "factorio:prototype"
-  export interface PrototypeMap extends PPrototypeMap {}
+  import { PrototypeMap } from "factorio:prototype"
+  export interface GlobalPrototypeMap extends PrototypeMap {}
 }

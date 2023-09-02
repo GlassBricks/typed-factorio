@@ -13,5 +13,5 @@
     "types": [],
     "noEmit": true
   },
-  "include": ["**/*.d.ts", "**/foo.ts"]
+  "include": ["**/index.d.ts"],
 }
