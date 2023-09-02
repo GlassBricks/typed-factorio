@@ -1,3 +1,10 @@
+/// <reference path="../../prototype/generated/prototypes.d.ts" />
+/// <reference path="../../prototype/generated/types.d.ts" />
+// noinspection JSUnusedGlobalSymbols
+
+import { ActiveMods } from "factorio:common"
+import { PrototypeMap } from "factorio:prototype"
+
 export interface LuaObject {
   readonly object_name: string
 }
@@ -12,9 +19,6 @@ export type uint8 = number
 export type uint16 = number
 export type uint64 = number
 export type nil = undefined
-
-/** @ignore */
-interface PrototypeMap {}
 
 declare namespace defines {
   const prototypes: {
@@ -475,6 +479,8 @@ export interface LuaBootstrap {
     event: E,
     data: Omit<E["_eventData"], keyof EventData>
   ): void
+
+  readonly active_mods: ActiveMods
 }
 
 export interface LuaSurface {}
@@ -489,10 +495,16 @@ export interface LuaGameScript {
 
   readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
+
+  readonly active_mods: ActiveMods
 }
 
-/** @replace */
-export type ModSetting = import("factorio:common").ModSetting
+export interface ModSetting {
+  /**
+   * The value of the mod setting. The type depends on the kind of setting.
+   */
+  readonly value: int | double | boolean | string | Color | ColorArray
+}
 
 export interface LuaSettings {
   readonly startup: {
@@ -503,15 +515,15 @@ export interface LuaSettings {
 //  -- Concepts --
 
 /** @replace */
-export type LocalisedString = import("factorio:common").LocalisedString | LuaObject
+export type LocalisedString = import("factorio:prototype").LocalisedString | LuaObject
 
 export interface RealOrientation {}
 
 export interface MapPosition {}
-
 export interface MapPositionArray {}
 
 export interface Color {}
+export interface ColorArray {}
 
 /** @replace */
 export type Vector = MapPositionArray

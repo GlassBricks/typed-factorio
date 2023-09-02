@@ -30,7 +30,7 @@ declare module "factorio:runtime" {
    * {"?", {"", {"entity-description.furnace"}, "\n"}, {"item-description.furnace"}, "optional fallback"}
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#LocalisedString Online documentation}
    */
-  export type LocalisedString = import("factorio:common").LocalisedString | LuaObject
+  export type LocalisedString = import("factorio:prototype").LocalisedString | LuaObject
   export interface DisplayResolution {
     readonly width: uint
     readonly height: uint
@@ -3932,7 +3932,15 @@ declare module "factorio:runtime" {
      */
     readonly count: uint
   }
-  export type ModSetting = import("factorio:common").ModSetting
+  export interface ModSetting {
+    /**
+     * The value of the mod setting. The type depends on the kind of setting.
+     */
+    /**
+     * The value of the mod setting. The type depends on the kind of setting.
+     */
+    readonly value: int | double | boolean | string | Color | ColorArray
+  }
   /**
    * Any basic type (string, number, boolean) or table.
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#AnyBasic Online documentation}

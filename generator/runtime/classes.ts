@@ -41,6 +41,8 @@ export function generateClasses(context: RuntimeGenerationContext): void {
       const existing = context.manualDefs.getDeclaration(clazz.name)
       generateClass(context, clazz, existing)
     }
+    // manually added imports for now
+    context.currentFile.addImport("common", "ActiveMods")
   })
 }
 

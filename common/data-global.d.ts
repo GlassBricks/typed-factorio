@@ -1,32 +1,15 @@
-declare module "factorio:common" {
-  /**
-   * A map of type name -> prototype type.
-   *
-   * The settings/prototype stage extends this interface.
-   */
-  export interface PrototypeMap {}
+/**
+ * Provides access to read/edit prototypes.
+ *
+ * This is only available in the settings or prototype stage.
+ * Only prototypes for the current stage can be accessed.
+ */
+declare const data: import("factorio:common").DataGlobal
 
-  // export type AnyPrototype = PrototypeMap[keyof PrototypeMap]
-  // Giant discriminated unions are slow, so we use the simpler interface below.
-  /** Represents any valid prototype. */
-  export interface AnyPrototype {
-    readonly type: keyof PrototypeMap
-    readonly name: string
-  }
-
-  export interface DataGlobal {
-    readonly raw: {
-      readonly [T in keyof PrototypeMap]: {
-        readonly [name: string]: PrototypeMap[T] | undefined
-      }
-    }
-
-    extend(prototypes: AnyPrototype[]): void
-  }
-}
-
-import { DataGlobal } from "factorio:common"
-
-declare global {
-  const data: DataGlobal
-}
+/**
+ * A table of (mod name -> mod version) for all currently active mods.
+ *
+ * This global is only available in the settings or prototype stage.
+ * In the runtime stage, use `script.active_mods`.
+ */
+declare const mods: import("factorio:common").ActiveMods

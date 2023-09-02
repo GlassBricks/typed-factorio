@@ -2,6 +2,8 @@
 
 /** @noSelfInFile */
 
+import type { ActiveMods } from "factorio:common"
+
 /**
  * @noResolution
  */
@@ -560,7 +562,7 @@ declare module "factorio:runtime" {
      * end
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaBootstrap.html#LuaBootstrap.active_mods Online documentation}
      */
-    readonly active_mods: Record<string, string>
+    readonly active_mods: ActiveMods
     /**
      * This object's name.
      */
@@ -12496,7 +12498,7 @@ declare module "factorio:runtime" {
      * end
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.active_mods Online documentation}
      */
-    readonly active_mods: Record<string, string>
+    readonly active_mods: ActiveMods
     /**
      * The players that are currently online.
      *

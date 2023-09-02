@@ -9,7 +9,6 @@ import type {
   LuaRCON,
   LuaRemote,
   LuaRendering,
-  LuaSettings,
 } from "factorio:runtime"
 
 declare global {
@@ -44,11 +43,4 @@ declare global {
    * @see {@link https://lua-api.factorio.com/1.1.89/index-runtime.html Online documentation}
    */
   const rendering: LuaRendering
-}
-
-/**
- * @noResolution
- */
-declare module "factorio:common" {
-  export interface SettingsGlobal extends LuaSettings {}
 }

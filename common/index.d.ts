@@ -1,19 +1,46 @@
 /** @noResolution */
 declare module "factorio:common" {
-  import { ColorArray } from "factorio:runtime"
-  export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
+  import { ModSetting } from "factorio:runtime"
+  /**
+   * A type map of type name -> prototype type.
+   *
+   * Including the settings/prototype stage in your tsconfig extends this interface.
+   */
+  export interface PrototypeMap {}
 
-  export interface Color {
-    readonly r?: number
-    readonly g?: number
-    readonly b?: number
-    readonly a?: number
+  /** Represents any valid prototype. */
+  export interface AnyPrototype {
+    readonly type: keyof PrototypeMap
+    readonly name: string
   }
 
-  /**
-   * The value of the mod setting. The type depends on the kind of setting.
-   */
-  export interface ModSetting {
-    readonly value: number | boolean | string | Color | ColorArray
+  export interface DataGlobal {
+    /**
+     * A table of the already added prototypes.
+     * Indexed by prototype type, then by prototype name.
+     */
+    readonly raw: {
+      readonly [T in keyof PrototypeMap]: {
+        readonly [name: string]: PrototypeMap[T] | undefined
+      }
+    }
+
+    /**
+     * Add additional prototypes.
+     */
+    extend(prototypes: readonly AnyPrototype[]): void
+  }
+
+  export interface SettingsGlobal {
+    readonly startup: {
+      readonly [name: string]: ModSetting
+    }
+  }
+
+  /** A version string, in the form "major.minor.patch". */
+  export type VersionString = `${bigint}.${bigint}.${bigint}`
+
+  export interface ActiveMods {
+    readonly [modName: string]: VersionString | undefined
   }
 }

@@ -13,4 +13,4 @@ export type uint64 = number
 export type CollisionMaskLayer = `layer-${bigint}`
 
 /** @replace */
-export type LocalisedString = import("factorio:common").LocalisedString
+export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]

@@ -5629,7 +5629,7 @@ declare module "factorio:prototype" {
    * -- value wasn't specified, the translation result would be "Unknown key: 'item-description.furnace'".
    * @see {@link https://lua-api.factorio.com/1.1.89/types/LocalisedString.html Online documentation}
    */
-  export type LocalisedString = import("factorio:common").LocalisedString
+  export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
   /**
    * The items generated when an {@link EntityWithHealthPrototype} is killed.
    * @see {@link https://lua-api.factorio.com/1.1.89/types/LootItem.html Online documentation}

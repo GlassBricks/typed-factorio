@@ -2,7 +2,7 @@
 
 /** @noResolution */
 declare module "util" {
-  import { Color, ColorArray, defines, LuaEntity, MapPosition, MapPositionArray, nil, table } from "factorio:runtime"
+  import { Color, ColorArray, LuaEntity, MapPosition, MapPositionArray, nil, table } from "factorio:runtime"
   namespace table {
     function deepcopy<T>(table: T): T
 
