@@ -25,6 +25,7 @@ export function generatePrototypes(context: PrototypeGenerationContext): void {
     for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
       generatePrototype(context, prototype)
     }
+    addPrototypeMap(context)
   })
 }
 
@@ -139,4 +140,25 @@ function getPrototypeOverridenAttributes(
     attributes.push("type")
   }
   return attributes
+}
+
+function addPrototypeMap(context: PrototypeGenerationContext) {
+  const members = context.apiDocs.prototypes
+    .filter((p) => p.typename)
+    .map((p) => {
+      const member = ts.factory.createPropertySignature(
+        undefined,
+        ts.factory.createStringLiteral(p.typename!),
+        undefined,
+        ts.factory.createTypeReferenceNode(p.name)
+      )
+      if (p.deprecated) {
+        addFakeJSDoc(member, ts.factory.createJSDocComment(undefined, [createTag("deprecated")]))
+      }
+      return member
+    })
+
+  const intf = ts.factory.createInterfaceDeclaration([Modifiers.export], "PrototypeMap", undefined, undefined, members)
+
+  context.currentFile.add(intf)
 }
