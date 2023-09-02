@@ -1,4 +1,4 @@
-// This file declares all globals for factorio runtime.
+// This file declares all globals for the factorio runtime stage.
 
 /// <reference path="./index.d.ts" />
 
