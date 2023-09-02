@@ -71,14 +71,19 @@ function generatePrototype(context: PrototypeGenerationContext, prototype: Proto
 function getMembers(context: PrototypeGenerationContext, prototype: Prototype): ts.TypeElement[] {
   const properties = prototype.properties.sort(byOrder).flatMap((p) => mapProperty(context, p, prototype.name))
 
-  if (prototype.typename && !prototype.properties.some((p) => p.name === "type")) {
-    const typeProperty = ts.factory.createPropertySignature(
-      undefined,
-      "type",
-      undefined,
-      Types.stringLiteral(prototype.typename)
+  if (prototype.typename) {
+    const existingTypeProperty = properties.findIndex(
+      (p) => p.name && ts.isIdentifier(p.name) && p.name.text === "type"
     )
-    properties.unshift(typeProperty)
+    if (existingTypeProperty === -1) {
+      const typeProperty = ts.factory.createPropertySignature(
+        [Modifiers.readonly],
+        "type",
+        undefined,
+        Types.stringLiteral(prototype.typename)
+      )
+      properties.unshift(typeProperty)
+    }
   }
 
   if (prototype.deprecated) {

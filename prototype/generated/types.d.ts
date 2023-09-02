@@ -7,7 +7,7 @@
  */
 declare module "factorio:prototype" {
   export interface ActivateEquipmentCapsuleAction {
-    type: "equipment-remote"
+    readonly type: "equipment-remote"
     /**
      * Activation is only implemented for {@link ActiveDefenseEquipmentPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ActivateEquipmentCapsuleAction.html#equipment Online documentation}
@@ -15,7 +15,7 @@ declare module "factorio:prototype" {
     equipment: EquipmentID
   }
   export interface ActivityBarStyleSpecification extends BaseStyleSpecification {
-    type: "activity_bar_style"
+    readonly type: "activity_bar_style"
     speed?: float
     bar_width?: uint32
     color?: Color
@@ -61,7 +61,7 @@ declare module "factorio:prototype" {
    */
   export type AmmoCategoryID = string
   export interface AmmoDamageModifier extends BaseModifier {
-    type: "ammo-damage"
+    readonly type: "ammo-damage"
     /**
      * **Default:** `true`
      *
@@ -164,7 +164,7 @@ declare module "factorio:prototype" {
     source_type?: AmmoSourceType
   }
   export interface AndTipTrigger {
-    type: "and"
+    readonly type: "and"
     /**
      * If all of the triggers are fulfilled, this trigger is considered fulfilled.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/AndTipTrigger.html#triggers Online documentation}
@@ -450,7 +450,7 @@ declare module "factorio:prototype" {
     | Animation
     | readonly Animation[]
   export interface AreaTriggerItem extends TriggerItem {
-    type: "area"
+    readonly type: "area"
     radius: double
     /**
      * **Default:** `false`
@@ -474,7 +474,7 @@ declare module "factorio:prototype" {
     collision_mode?: "distance-from-collision-box" | "distance-from-center"
   }
   export interface ArtilleryRangeModifier extends SimpleModifier {
-    type: "artillery-range"
+    readonly type: "artillery-range"
     /**
      * **Default:** `false`
      *
@@ -491,7 +491,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface ArtilleryRemoteCapsuleAction {
-    type: "artillery-remote"
+    readonly type: "artillery-remote"
     /**
      * Name of an {@link ArtilleryFlarePrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ArtilleryRemoteCapsuleAction.html#flare Online documentation}
@@ -504,7 +504,7 @@ declare module "factorio:prototype" {
     play_sound_on_failure?: bool
   }
   export interface ArtilleryTriggerDelivery extends TriggerDeliveryItem {
-    type: "artillery"
+    readonly type: "artillery"
     /**
      * Name of a {@link ArtilleryProjectilePrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ArtilleryTriggerDelivery.html#projectile Online documentation}
@@ -1629,7 +1629,7 @@ declare module "factorio:prototype" {
     body?: AnimationVariations
   }
   export interface BeamAttackParameters extends BaseAttackParameters {
-    type: "beam"
+    readonly type: "beam"
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/BeamAttackParameters.html#source_direction_count Online documentation}
@@ -1638,7 +1638,7 @@ declare module "factorio:prototype" {
     source_offset?: Vector
   }
   export interface BeamTriggerDelivery extends TriggerDeliveryItem {
-    type: "beam"
+    readonly type: "beam"
     /**
      * Name of a {@link BeamPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/BeamTriggerDelivery.html#beam Online documentation}
@@ -1662,7 +1662,7 @@ declare module "factorio:prototype" {
     source_offset?: Vector
   }
   export interface BeltTraverseTipTrigger {
-    type: "belt-traverse"
+    readonly type: "belt-traverse"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/BeltTraverseTipTrigger.html#count Online documentation}
@@ -1823,7 +1823,7 @@ declare module "factorio:prototype" {
     max_side_length: double
   }
   export interface BuildEntityTipTrigger {
-    type: "build-entity"
+    readonly type: "build-entity"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/BuildEntityTipTrigger.html#count Online documentation}
@@ -1855,7 +1855,7 @@ declare module "factorio:prototype" {
     build_in_line?: bool
   }
   export interface BurnerEnergySource extends BaseEnergySource {
-    type: "burner"
+    readonly type: "burner"
     fuel_inventory_size: ItemStackIndex
     /**
      * **Default:** `0`
@@ -1887,7 +1887,7 @@ declare module "factorio:prototype" {
     fuel_categories?: readonly FuelCategoryID[]
   }
   export interface ButtonStyleSpecification extends StyleWithClickableGraphicalSetSpecification {
-    type: "button_style"
+    readonly type: "button_style"
     /**
      * Name of a {@link FontPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ButtonStyleSpecification.html#font Online documentation}
@@ -1908,7 +1908,7 @@ declare module "factorio:prototype" {
     icon_horizontal_align?: HorizontalAlign
   }
   export interface CameraEffectTriggerEffectItem extends TriggerEffectItem {
-    type: "camera-effect"
+    readonly type: "camera-effect"
     /**
      * Required, read by the game and then immediately discarded. In short: Does nothing.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/CameraEffectTriggerEffectItem.html#effect Online documentation}
@@ -1947,7 +1947,7 @@ declare module "factorio:prototype" {
     strength?: float
   }
   export interface CameraStyleSpecification extends Omit<EmptyWidgetStyleSpecification, "type"> {
-    type: "camera_style"
+    readonly type: "camera_style"
   }
   /**
    * Loaded as one of the capsule actions, based on the value of the `type` key.
@@ -1992,7 +1992,7 @@ declare module "factorio:prototype" {
     armors?: readonly ItemID[]
   }
   export interface CharacterBuildDistanceModifier extends SimpleModifier {
-    type: "character-build-distance"
+    readonly type: "character-build-distance"
     /**
      * **Default:** `true`
      *
@@ -2002,7 +2002,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterCraftingSpeedModifier extends SimpleModifier {
-    type: "character-crafting-speed"
+    readonly type: "character-crafting-speed"
     /**
      * **Default:** `true`
      *
@@ -2012,7 +2012,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterHealthBonusModifier extends SimpleModifier {
-    type: "character-health-bonus"
+    readonly type: "character-health-bonus"
     /**
      * **Default:** `true`
      *
@@ -2022,7 +2022,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterInventorySlotsBonusModifier extends SimpleModifier {
-    type: "character-inventory-slots-bonus"
+    readonly type: "character-inventory-slots-bonus"
     /**
      * **Default:** `true`
      *
@@ -2032,7 +2032,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterItemDropDistanceModifier extends SimpleModifier {
-    type: "character-item-drop-distance"
+    readonly type: "character-item-drop-distance"
     /**
      * **Default:** `true`
      *
@@ -2042,7 +2042,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterItemPickupDistanceModifier extends SimpleModifier {
-    type: "character-item-pickup-distance"
+    readonly type: "character-item-pickup-distance"
     /**
      * **Default:** `true`
      *
@@ -2052,7 +2052,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterLogisticRequestsModifier extends BoolModifier {
-    type: "character-logistic-requests"
+    readonly type: "character-logistic-requests"
     /**
      * **Default:** `false`
      *
@@ -2062,7 +2062,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterLogisticTrashSlotsModifier extends SimpleModifier {
-    type: "character-logistic-trash-slots"
+    readonly type: "character-logistic-trash-slots"
     /**
      * **Default:** `true`
      *
@@ -2072,7 +2072,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterLootPickupDistanceModifier extends SimpleModifier {
-    type: "character-loot-pickup-distance"
+    readonly type: "character-loot-pickup-distance"
     /**
      * **Default:** `true`
      *
@@ -2082,7 +2082,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterMiningSpeedModifier extends SimpleModifier {
-    type: "character-mining-speed"
+    readonly type: "character-mining-speed"
     /**
      * **Default:** `true`
      *
@@ -2092,7 +2092,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterReachDistanceModifier extends SimpleModifier {
-    type: "character-reach-distance"
+    readonly type: "character-reach-distance"
     /**
      * **Default:** `true`
      *
@@ -2102,7 +2102,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterResourceReachDistanceModifier extends SimpleModifier {
-    type: "character-resource-reach-distance"
+    readonly type: "character-resource-reach-distance"
     /**
      * **Default:** `true`
      *
@@ -2112,7 +2112,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface CharacterRunningSpeedModifier extends SimpleModifier {
-    type: "character-running-speed"
+    readonly type: "character-running-speed"
     /**
      * **Default:** `true`
      *
@@ -2184,7 +2184,7 @@ declare module "factorio:prototype" {
     custom_tag_selected_overlay_tint: Color
   }
   export interface CheckBoxStyleSpecification extends StyleWithClickableGraphicalSetSpecification {
-    type: "checkbox_style"
+    readonly type: "checkbox_style"
     /**
      * Name of a {@link FontPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/CheckBoxStyleSpecification.html#font Online documentation}
@@ -2348,7 +2348,7 @@ declare module "factorio:prototype" {
   }
   export type CircularProjectileCreationSpecification = readonly (readonly [RealOrientation, Vector])[]
   export interface ClearCursorTipTrigger {
-    type: "clear-cursor"
+    readonly type: "clear-cursor"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ClearCursorTipTrigger.html#count Online documentation}
@@ -2380,7 +2380,7 @@ declare module "factorio:prototype" {
     richness?: MapGenSize
   }
   export interface ClusterTriggerItem extends TriggerItem {
-    type: "cluster"
+    readonly type: "cluster"
     /**
      * Must be at least `2`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ClusterTriggerItem.html#cluster_count Online documentation}
@@ -2615,7 +2615,7 @@ declare module "factorio:prototype" {
    */
   export type ConsumingType = "none" | "game-only"
   export interface CraftItemTipTrigger {
-    type: "craft-item"
+    readonly type: "craft-item"
     item?: ItemID
     /**
      * ## Union members
@@ -2666,7 +2666,7 @@ declare module "factorio:prototype" {
     quaternary?: Color
   }
   export interface CreateDecorativesTriggerEffectItem extends TriggerEffectItem {
-    type: "create-decorative"
+    readonly type: "create-decorative"
     decorative: DecorativeID
     spawn_max: uint16
     spawn_min_radius: float
@@ -2697,7 +2697,7 @@ declare module "factorio:prototype" {
     spread_evenly?: bool
   }
   export interface CreateEntityTriggerEffectItem extends TriggerEffectItem {
-    type: "create-entity"
+    readonly type: "create-entity"
     /**
      * The name of the entity that should be created.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/CreateEntityTriggerEffectItem.html#entity_name Online documentation}
@@ -2733,7 +2733,7 @@ declare module "factorio:prototype" {
     offsets?: readonly Vector[]
   }
   export interface CreateExplosionTriggerEffectItem extends Omit<CreateEntityTriggerEffectItem, "type"> {
-    type: "create-explosion"
+    readonly type: "create-explosion"
     /**
      * **Default:** `-1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/CreateExplosionTriggerEffectItem.html#max_movement_distance Online documentation}
@@ -2756,7 +2756,7 @@ declare module "factorio:prototype" {
     cycle_while_moving?: bool
   }
   export interface CreateFireTriggerEffectItem extends Omit<CreateEntityTriggerEffectItem, "type"> {
-    type: "create-fire"
+    readonly type: "create-fire"
     /**
      * **Default:** `MAX_UINT8`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/CreateFireTriggerEffectItem.html#initial_ground_flame_count Online documentation}
@@ -2764,7 +2764,7 @@ declare module "factorio:prototype" {
     initial_ground_flame_count?: uint8
   }
   export interface CreateParticleTriggerEffectItem extends TriggerEffectItem {
-    type: "create-particle"
+    readonly type: "create-particle"
     particle_name: ParticleID
     initial_height: float
     offset_deviation?: BoundingBox
@@ -2836,7 +2836,7 @@ declare module "factorio:prototype" {
     rotate_offsets?: bool
   }
   export interface CreateSmokeTriggerEffectItem extends Omit<CreateEntityTriggerEffectItem, "type"> {
-    type: "create-smoke"
+    readonly type: "create-smoke"
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/CreateSmokeTriggerEffectItem.html#initial_height Online documentation}
@@ -2885,7 +2885,7 @@ declare module "factorio:prototype" {
     speed_from_center_deviation?: float
   }
   export interface CreateStickerTriggerEffectItem extends TriggerEffectItem {
-    type: "create-sticker"
+    readonly type: "create-sticker"
     /**
      * Name of a {@link StickerPrototype} that should be created.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/CreateStickerTriggerEffectItem.html#sticker Online documentation}
@@ -2905,7 +2905,7 @@ declare module "factorio:prototype" {
     trigger_created_entity?: bool
   }
   export interface CreateTrivialSmokeEffectItem extends TriggerEffectItem {
-    type: "create-trivial-smoke"
+    readonly type: "create-trivial-smoke"
     smoke_name: TrivialSmokeID
     offset_deviation?: BoundingBox
     offsets?: readonly Vector[]
@@ -3029,10 +3029,10 @@ declare module "factorio:prototype" {
      * The type of damage. See {@linkplain https://wiki.factorio.com/Data.raw#damage-type here} for a list of built-in types, and {@link DamageType} for creating custom types.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/DamagePrototype.html#type Online documentation}
      */
-    type: DamageTypeID
+    readonly type: DamageTypeID
   }
   export interface DamageTriggerEffectItem extends TriggerEffectItem {
-    type: "damage"
+    readonly type: "damage"
     damage: DamagePrototype
     /**
      * **Default:** `true`
@@ -3134,7 +3134,7 @@ declare module "factorio:prototype" {
    */
   export type DaytimeColorLookupTable = readonly (readonly [double, FileName | "identity"])[]
   export interface DeconstructionTimeToLiveModifier extends SimpleModifier {
-    type: "deconstruction-time-to-live"
+    readonly type: "deconstruction-time-to-live"
     /**
      * **Default:** `true`
      *
@@ -3179,10 +3179,10 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/DependenciesMetTipTrigger.html Online documentation}
    */
   export interface DependenciesMetTipTrigger {
-    type: "dependencies-met"
+    readonly type: "dependencies-met"
   }
   export interface DestroyCliffsCapsuleAction {
-    type: "destroy-cliffs"
+    readonly type: "destroy-cliffs"
     attack_parameters: AttackParameters
     radius: float
     /**
@@ -3204,12 +3204,12 @@ declare module "factorio:prototype" {
     uses_stack?: bool
   }
   export interface DestroyCliffsTriggerEffectItem extends TriggerEffectItem {
-    type: "destroy-cliffs"
+    readonly type: "destroy-cliffs"
     radius: float
     explosion?: EntityID
   }
   export interface DestroyDecorativesTriggerEffectItem extends TriggerEffectItem {
-    type: "destroy-decoratives"
+    readonly type: "destroy-decoratives"
     radius: float
     /**
      * **Default:** `first layer`
@@ -3271,7 +3271,7 @@ declare module "factorio:prototype" {
     research_queue_setting?: "always" | "after-victory" | "never"
   }
   export interface DirectTriggerItem extends TriggerItem {
-    type: "direct"
+    readonly type: "direct"
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/DirectTriggerItem.html#filter_enabled Online documentation}
@@ -3316,10 +3316,10 @@ declare module "factorio:prototype" {
     maximum_distance?: ConstantNoiseNumber
   }
   export interface DoubleSliderStyleSpecification extends Omit<SliderStyleSpecification, "type"> {
-    type: "double_slider_style"
+    readonly type: "double_slider_style"
   }
   export interface DropDownStyleSpecification extends BaseStyleSpecification {
-    type: "dropdown_style"
+    readonly type: "dropdown_style"
     button_style?: ButtonStyleSpecification
     icon?: Sprite
     list_box_style?: ListBoxStyleSpecification
@@ -3381,7 +3381,7 @@ declare module "factorio:prototype" {
     bonus?: double
   }
   export interface ElectricEnergySource extends BaseEnergySource {
-    type: "electric"
+    readonly type: "electric"
     /**
      * How much energy this entity can hold.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ElectricEnergySource.html#buffer_capacity Online documentation}
@@ -3463,7 +3463,7 @@ declare module "factorio:prototype" {
          * **Default:** ``"none"` if this has no other properties, otherwise `"composition"``
          * @see {@link https://lua-api.factorio.com/1.1.89/types/ElementImageSetLayer.html#type Online documentation}
          */
-        type?: "none" | "composition"
+        readonly type?: "none" | "composition"
         /**
          * **Default:** ``{r=1, g=1, b=1, a=1}``
          *
@@ -3735,7 +3735,7 @@ declare module "factorio:prototype" {
       }
     | Sprite
   export interface EmptyWidgetStyleSpecification extends BaseStyleSpecification {
-    type: "empty_widget_style"
+    readonly type: "empty_widget_style"
     graphical_set?: ElementImageSet
   }
   export interface EnemyEvolutionSettings {
@@ -3931,7 +3931,7 @@ declare module "factorio:prototype" {
     bottom: uint8
   }
   export interface EntityTransferTipTrigger {
-    type: "entity-transfer"
+    readonly type: "entity-transfer"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/EntityTransferTipTrigger.html#count Online documentation}
@@ -3979,7 +3979,7 @@ declare module "factorio:prototype" {
      * The shape. When using "manual", `points` must be defined.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/EquipmentShape.html#type Online documentation}
      */
-    type: "full" | "manual"
+    readonly type: "full" | "manual"
     /**
      * Only used when when `type` is `"manual"`. Each inner array is a "position" inside width×height of the equipment. Each positions that is defined is a filled squares of the equipment shape. `{0, 0}` is the upper left corner of the equipment.
      * @example
@@ -4112,7 +4112,7 @@ declare module "factorio:prototype" {
     octave_seed0_shift?: ConstantNoiseNumber
   }
   export interface FastBeltBendTipTrigger {
-    type: "fast-belt-bend"
+    readonly type: "fast-belt-bend"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/FastBeltBendTipTrigger.html#count Online documentation}
@@ -4120,7 +4120,7 @@ declare module "factorio:prototype" {
     count?: uint32
   }
   export interface FastReplaceTipTrigger {
-    type: "fast-replace"
+    readonly type: "fast-replace"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/FastReplaceTipTrigger.html#count Online documentation}
@@ -4148,7 +4148,7 @@ declare module "factorio:prototype" {
    */
   export type FileName = string
   export interface FlameThrowerExplosionTriggerDelivery extends TriggerDeliveryItem {
-    type: "flame-thrower"
+    readonly type: "flame-thrower"
     /**
      * Name of a {@link FlameThrowerExplosionPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/FlameThrowerExplosionTriggerDelivery.html#explosion Online documentation}
@@ -4177,7 +4177,7 @@ declare module "factorio:prototype" {
     projectile_starting_speed?: float
   }
   export interface FlowStyleSpecification extends BaseStyleSpecification {
-    type: "flow_style"
+    readonly type: "flow_style"
     max_on_row?: int32
     horizontal_spacing?: int32
     vertical_spacing?: int32
@@ -4333,7 +4333,7 @@ declare module "factorio:prototype" {
     west?: int8
   }
   export interface FluidEnergySource extends BaseEnergySource {
-    type: "fluid"
+    readonly type: "fluid"
     /**
      * All standard fluid box configurations are acceptable, but the type must be `"input"` or `"input-output"` to function correctly. `scale_fluid_usage`, `fluid_usage_per_tick`, or a filter on the fluidbox must be set to be able to calculate the fluid usage of the energy source.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/FluidEnergySource.html#fluid_box Online documentation}
@@ -4402,7 +4402,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/FluidIngredientPrototype.html Online documentation}
    */
   export interface FluidIngredientPrototype {
-    type: "fluid"
+    readonly type: "fluid"
     /**
      * The name of a {@link FluidPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/FluidIngredientPrototype.html#name Online documentation}
@@ -4450,7 +4450,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/FluidProductPrototype.html Online documentation}
    */
   export interface FluidProductPrototype {
-    type: "fluid"
+    readonly type: "fluid"
     /**
      * The name of a {@link FluidPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/FluidProductPrototype.html#name Online documentation}
@@ -4520,7 +4520,7 @@ declare module "factorio:prototype" {
     unload_animations: PumpConnectorGraphics
   }
   export interface FollowerRobotLifetimeModifier extends SimpleModifier {
-    type: "follower-robot-lifetime"
+    readonly type: "follower-robot-lifetime"
     /**
      * **Default:** `true`
      *
@@ -4644,7 +4644,7 @@ declare module "factorio:prototype" {
    */
   export type ForceCondition = "all" | "enemy" | "ally" | "friend" | "not-friend" | "same" | "not-same"
   export interface FrameStyleSpecification extends BaseStyleSpecification {
-    type: "frame_style"
+    readonly type: "frame_style"
     graphical_set?: ElementImageSet
     flow_style?: FlowStyleSpecification
     horizontal_flow_style?: HorizontalFlowStyleSpecification
@@ -4701,7 +4701,7 @@ declare module "factorio:prototype" {
     play_for?: PlayFor
   }
   export interface GateOverRailBuildTipTrigger {
-    type: "gate-over-rail-build"
+    readonly type: "gate-over-rail-build"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/GateOverRailBuildTipTrigger.html#count Online documentation}
@@ -4709,7 +4709,7 @@ declare module "factorio:prototype" {
     count?: uint32
   }
   export interface GhostTimeToLiveModifier extends SimpleModifier {
-    type: "ghost-time-to-live"
+    readonly type: "ghost-time-to-live"
     /**
      * **Default:** `true`
      *
@@ -4719,7 +4719,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface GiveItemModifier extends BaseModifier {
-    type: "give-item"
+    readonly type: "give-item"
     /**
      * **Default:** `false`
      *
@@ -4737,11 +4737,11 @@ declare module "factorio:prototype" {
     count?: ItemCountType
   }
   export interface GlowStyleSpecification extends BaseStyleSpecification {
-    type: "glow_style"
+    readonly type: "glow_style"
     image_set?: ElementImageSet
   }
   export interface GraphStyleSpecification extends BaseStyleSpecification {
-    type: "graph_style"
+    readonly type: "graph_style"
     background_color?: Color
     line_colors?: readonly Color[]
     horizontal_label_style?: LabelStyleSpecification
@@ -4758,7 +4758,7 @@ declare module "factorio:prototype" {
     guide_lines_color?: Color
   }
   export interface GroupAttackTipTrigger {
-    type: "group-attack"
+    readonly type: "group-attack"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/GroupAttackTipTrigger.html#count Online documentation}
@@ -4776,7 +4776,7 @@ declare module "factorio:prototype" {
     west?: Vector
   }
   export interface GunSpeedModifier extends BaseModifier {
-    type: "gun-speed"
+    readonly type: "gun-speed"
     /**
      * **Default:** `true`
      *
@@ -4863,7 +4863,7 @@ declare module "factorio:prototype" {
     direction: Direction
   }
   export interface HeatEnergySource extends BaseEnergySource {
-    type: "heat"
+    readonly type: "heat"
     /**
      * Must be >= `default_temperature`.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/HeatEnergySource.html#max_temperature Online documentation}
@@ -4912,11 +4912,11 @@ declare module "factorio:prototype" {
    */
   export type HorizontalAlign = "left" | "center" | "right"
   export interface HorizontalFlowStyleSpecification extends BaseStyleSpecification {
-    type: "horizontal_flow_style"
+    readonly type: "horizontal_flow_style"
     horizontal_spacing?: int32
   }
   export interface HorizontalScrollBarStyleSpecification extends ScrollBarStyleSpecification {
-    type: "horizontal_scrollbar_style"
+    readonly type: "horizontal_scrollbar_style"
   }
   /**
    * Icon layering follows the following rules:
@@ -5040,7 +5040,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/ImageStyleSpecification.html Online documentation}
    */
   export interface ImageStyleSpecification extends BaseStyleSpecification {
-    type: "image_style"
+    readonly type: "image_style"
     graphical_set?: ElementImageSet
     stretch_image_to_widget_size?: bool
   }
@@ -5058,7 +5058,7 @@ declare module "factorio:prototype" {
    */
   export type IngredientPrototype = ItemIngredientPrototype | FluidIngredientPrototype
   export interface InsertItemTriggerEffectItem extends TriggerEffectItem {
-    type: "insert-item"
+    readonly type: "insert-item"
     /**
      * Name of the {@link ItemPrototype} that should be created.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/InsertItemTriggerEffectItem.html#item Online documentation}
@@ -5071,7 +5071,7 @@ declare module "factorio:prototype" {
     count?: uint32
   }
   export interface InserterStackSizeBonusModifier extends SimpleModifier {
-    type: "inserter-stack-size-bonus"
+    readonly type: "inserter-stack-size-bonus"
     /**
      * **Default:** `false`
      *
@@ -5088,7 +5088,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface InstantTriggerDelivery extends TriggerDeliveryItem {
-    type: "instant"
+    readonly type: "instant"
   }
   export interface InterruptibleSound {
     sound: Sound
@@ -5099,7 +5099,7 @@ declare module "factorio:prototype" {
     fade_ticks?: uint32
   }
   export interface InvokeTileEffectTriggerEffectItem extends TriggerEffectItem {
-    type: "invoke-tile-trigger"
+    readonly type: "invoke-tile-trigger"
     tile_collision_mask?: CollisionMask
   }
   export type ItemCountType = uint32
@@ -5135,7 +5135,7 @@ declare module "factorio:prototype" {
          * **Default:** `"item"`
          * @see {@link https://lua-api.factorio.com/1.1.89/types/ItemIngredientPrototype.html#type Online documentation}
          */
-        type?: "item"
+        readonly type?: "item"
         name: ItemID
         amount: uint16
         /**
@@ -5159,7 +5159,7 @@ declare module "factorio:prototype" {
          * **Default:** `"item"`
          * @see {@link https://lua-api.factorio.com/1.1.89/types/ItemProductPrototype.html#type Online documentation}
          */
-        type?: "item"
+        readonly type?: "item"
         /**
          * The name of an {@link ItemPrototype}.
          * @see {@link https://lua-api.factorio.com/1.1.89/types/ItemProductPrototype.html#name Online documentation}
@@ -5264,7 +5264,7 @@ declare module "factorio:prototype" {
     count: uint32
   }
   export interface LabelStyleSpecification extends BaseStyleSpecification {
-    type: "label_style"
+    readonly type: "label_style"
     /**
      * Name of a {@link FontPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/LabelStyleSpecification.html#font Online documentation}
@@ -5283,7 +5283,7 @@ declare module "factorio:prototype" {
     rich_text_highlight_ok_color?: Color
   }
   export interface LaboratoryProductivityModifier extends SimpleModifier {
-    type: "laboratory-productivity"
+    readonly type: "laboratory-productivity"
     /**
      * **Default:** `true`
      *
@@ -5300,7 +5300,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface LaboratorySpeedModifier extends SimpleModifier {
-    type: "laboratory-speed"
+    readonly type: "laboratory-speed"
     /**
      * **Default:** `true`
      *
@@ -5373,7 +5373,7 @@ declare module "factorio:prototype" {
          * **Default:** `"basic"`
          * @see {@link https://lua-api.factorio.com/1.1.89/types/LightDefinition.html#type Online documentation}
          */
-        type?: "basic" | "oriented"
+        readonly type?: "basic" | "oriented"
         /**
          * Only loaded if `type` is `"oriented"`.
          * @see {@link https://lua-api.factorio.com/1.1.89/types/LightDefinition.html#picture Online documentation}
@@ -5425,7 +5425,7 @@ declare module "factorio:prototype" {
          * **Default:** `"basic"`
          * @see {@link https://lua-api.factorio.com/1.1.89/types/LightDefinition.html#type Online documentation}
          */
-        type?: "basic" | "oriented"
+        readonly type?: "basic" | "oriented"
         /**
          * Only loaded if `type` is `"oriented"`.
          * @see {@link https://lua-api.factorio.com/1.1.89/types/LightDefinition.html#picture Online documentation}
@@ -5527,7 +5527,7 @@ declare module "factorio:prototype" {
     color?: Color
   }
   export interface LimitChestTipTrigger {
-    type: "limit-chest"
+    readonly type: "limit-chest"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/LimitChestTipTrigger.html#count Online documentation}
@@ -5535,7 +5535,7 @@ declare module "factorio:prototype" {
     count?: uint32
   }
   export interface LineStyleSpecification extends BaseStyleSpecification {
-    type: "line_style"
+    readonly type: "line_style"
     border?: BorderImageSet
   }
   /**
@@ -5565,7 +5565,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/LineTriggerItem.html Online documentation}
    */
   export interface LineTriggerItem extends TriggerItem {
-    type: "line"
+    readonly type: "line"
     range: double
     width: double
     range_effects?: TriggerEffect
@@ -5583,7 +5583,7 @@ declare module "factorio:prototype" {
     direction_out_side_loading?: Sprite4Way
   }
   export interface ListBoxStyleSpecification extends BaseStyleSpecification {
-    type: "list_box_style"
+    readonly type: "list_box_style"
     item_style?: ButtonStyleSpecification
     scroll_pane_style?: ScrollPaneStyleSpecification
   }
@@ -5661,7 +5661,7 @@ declare module "factorio:prototype" {
     count_max?: double
   }
   export interface LowPowerTipTrigger {
-    type: "low-power"
+    readonly type: "low-power"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/LowPowerTipTrigger.html#count Online documentation}
@@ -5669,7 +5669,7 @@ declare module "factorio:prototype" {
     count?: uint32
   }
   export interface ManualTransferTipTrigger {
-    type: "manual-transfer"
+    readonly type: "manual-transfer"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ManualTransferTipTrigger.html#count Online documentation}
@@ -5677,7 +5677,7 @@ declare module "factorio:prototype" {
     count?: uint32
   }
   export interface ManualWireDragTipTrigger {
-    type: "manual-wire-drag"
+    readonly type: "manual-wire-drag"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ManualWireDragTipTrigger.html#count Online documentation}
@@ -5935,7 +5935,7 @@ declare module "factorio:prototype" {
     | readonly [double, double]
   export type MaterialAmountType = double
   export interface MaxFailedAttemptsPerTickPerConstructionQueueModifier extends SimpleModifier {
-    type: "max-failed-attempts-per-tick-per-construction-queue"
+    readonly type: "max-failed-attempts-per-tick-per-construction-queue"
     /**
      * **Default:** `true`
      *
@@ -5945,7 +5945,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface MaxSuccessfulAttemptsPerTickPerConstructionQueueModifier extends SimpleModifier {
-    type: "max-successful-attempts-per-tick-per-construction-queue"
+    readonly type: "max-successful-attempts-per-tick-per-construction-queue"
     /**
      * **Default:** `true`
      *
@@ -5955,7 +5955,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface MaximumFollowingRobotsCountModifier extends SimpleModifier {
-    type: "maximum-following-robots-count"
+    readonly type: "maximum-following-robots-count"
     /**
      * **Default:** `false`
      *
@@ -6036,7 +6036,7 @@ declare module "factorio:prototype" {
     mining_trigger: Trigger
   }
   export interface MinimapStyleSpecification extends Omit<EmptyWidgetStyleSpecification, "type"> {
-    type: "minimap_style"
+    readonly type: "minimap_style"
   }
   /**
    * Used by {@link MiningDrillPrototype}.
@@ -6118,7 +6118,7 @@ declare module "factorio:prototype" {
     circuit_connector_secondary_draw_order?: int8 | CircuitConnectorSecondaryDrawOrder
   }
   export interface MiningDrillProductivityBonusModifier extends SimpleModifier {
-    type: "mining-drill-productivity-bonus"
+    readonly type: "mining-drill-productivity-bonus"
     /**
      * **Default:** `false`
      *
@@ -6302,7 +6302,7 @@ declare module "factorio:prototype" {
    */
   export type MouseCursorID = string
   export interface NestedTriggerEffectItem extends TriggerEffectItem {
-    type: "nested-result"
+    readonly type: "nested-result"
     action: Trigger
   }
   /**
@@ -6332,7 +6332,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseArrayConstruction.html Online documentation}
    */
   export interface NoiseArrayConstruction {
-    type: "array-construction"
+    readonly type: "array-construction"
     value_expressions: readonly NoiseExpression[]
   }
   /**
@@ -6405,7 +6405,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionAbsoluteValue.html Online documentation}
    */
   export interface NoiseFunctionAbsoluteValue {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "absolute-value"
     arguments: readonly [NoiseNumber]
   }
@@ -6414,7 +6414,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionAdd.html Online documentation}
    */
   export interface NoiseFunctionAdd {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "add"
     arguments: readonly NoiseNumber[]
   }
@@ -6502,7 +6502,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionAtan2.html Online documentation}
    */
   export interface NoiseFunctionAtan2 {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "atan2"
     /**
      * The first argument is y and the second is x.
@@ -6511,12 +6511,12 @@ declare module "factorio:prototype" {
     arguments: readonly [NoiseNumber, NoiseNumber]
   }
   export interface NoiseFunctionAutoplaceProbability {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "autoplace-probability"
     arguments: readonly [NoiseLiteralObject]
   }
   export interface NoiseFunctionAutoplaceRichness {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "autoplace-richness"
     arguments: readonly [NoiseLiteralObject]
   }
@@ -6525,7 +6525,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionBitwiseAnd.html Online documentation}
    */
   export interface NoiseFunctionBitwiseAnd {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "bitwise-and"
     arguments: readonly NoiseNumber[]
   }
@@ -6534,7 +6534,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionBitwiseNot.html Online documentation}
    */
   export interface NoiseFunctionBitwiseNot {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "bitwise-not"
     arguments: readonly [NoiseNumber]
   }
@@ -6543,7 +6543,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionBitwiseOr.html Online documentation}
    */
   export interface NoiseFunctionBitwiseOr {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "bitwise-or"
     arguments: readonly NoiseNumber[]
   }
@@ -6552,7 +6552,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionBitwiseXor.html Online documentation}
    */
   export interface NoiseFunctionBitwiseXor {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "bitwise-xor"
     arguments: readonly NoiseNumber[]
   }
@@ -6561,7 +6561,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionCeil.html Online documentation}
    */
   export interface NoiseFunctionCeil {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "ceil"
     arguments: readonly [NoiseNumber]
   }
@@ -6570,7 +6570,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionClamp.html Online documentation}
    */
   export interface NoiseFunctionClamp {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "clamp"
     arguments: readonly [NoiseNumber, NoiseNumber, NoiseNumber]
   }
@@ -6594,7 +6594,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionCompileTimeLog.html Online documentation}
    */
   export interface NoiseFunctionCompileTimeLog {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "compile-time-log"
     arguments: readonly NoiseExpression[]
   }
@@ -6603,7 +6603,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionCos.html Online documentation}
    */
   export interface NoiseFunctionCos {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "cos"
     arguments: readonly [NoiseNumber]
   }
@@ -6626,7 +6626,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionDistanceFromNearestPoint.html Online documentation}
    */
   export interface NoiseFunctionDistanceFromNearestPoint {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "distance-from-nearest-point"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionDistanceFromNearestPoint.html#arguments Online documentation}
@@ -6638,7 +6638,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionDivide.html Online documentation}
    */
   export interface NoiseFunctionDivide {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "divide"
     arguments: readonly [NoiseNumber, NoiseNumber]
   }
@@ -6647,7 +6647,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionEquals.html Online documentation}
    */
   export interface NoiseFunctionEquals {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "equals"
     arguments: readonly [NoiseNumber, NoiseNumber]
   }
@@ -6677,7 +6677,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionExponentiate.html Online documentation}
    */
   export interface NoiseFunctionExponentiate {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "exponentiate"
     arguments: readonly [NoiseNumber, NoiseNumber]
   }
@@ -6686,7 +6686,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioBasisNoise.html Online documentation}
    */
   export interface NoiseFunctionFactorioBasisNoise {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "factorio-basis-noise"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioBasisNoise.html#arguments Online documentation}
@@ -6694,7 +6694,7 @@ declare module "factorio:prototype" {
     arguments: FactorioBasisNoiseArguments
   }
   export interface NoiseFunctionFactorioMultioctaveNoise {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "factorio-multioctave-noise"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioMultioctaveNoise.html#arguments Online documentation}
@@ -6702,7 +6702,7 @@ declare module "factorio:prototype" {
     arguments: FactorioMultioctaveNoiseArguments
   }
   export interface NoiseFunctionFactorioQuickMultioctaveNoise {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "factorio-quick-multioctave-noise"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFactorioQuickMultioctaveNoise.html#arguments Online documentation}
@@ -6714,7 +6714,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionFloor.html Online documentation}
    */
   export interface NoiseFunctionFloor {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "floor"
     arguments: readonly [NoiseNumber]
   }
@@ -6723,7 +6723,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionLessOrEqual.html Online documentation}
    */
   export interface NoiseFunctionLessOrEqual {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "less-or-equal"
     arguments: readonly [NoiseNumber, NoiseNumber]
   }
@@ -6732,12 +6732,12 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionLessThan.html Online documentation}
    */
   export interface NoiseFunctionLessThan {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "less-than"
     arguments: readonly [NoiseNumber, NoiseNumber]
   }
   export interface NoiseFunctionLog2 {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "log2"
     arguments: readonly [NoiseNumber]
   }
@@ -6746,7 +6746,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionModulo.html Online documentation}
    */
   export interface NoiseFunctionModulo {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "modulo"
     arguments: readonly [NoiseNumber, NoiseNumber]
   }
@@ -6755,12 +6755,12 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionMultiply.html Online documentation}
    */
   export interface NoiseFunctionMultiply {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "multiply"
     arguments: readonly NoiseNumber[]
   }
   export interface NoiseFunctionNoiseLayerNameToID {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "noise-layer-name-to-id"
     arguments: readonly [NoiseLiteralString]
   }
@@ -6782,7 +6782,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionOffsetPoints.html Online documentation}
    */
   export interface NoiseFunctionOffsetPoints {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "offset-points"
     arguments: readonly [NoiseArrayConstruction, NoiseArrayConstruction]
   }
@@ -6791,7 +6791,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionRandomPenalty.html Online documentation}
    */
   export interface NoiseFunctionRandomPenalty {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "random-penalty"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionRandomPenalty.html#arguments Online documentation}
@@ -6807,7 +6807,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionRidge.html Online documentation}
    */
   export interface NoiseFunctionRidge {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "ridge"
     /**
      * The first argument is the  number to be ridged, the second is the lower limit and the third is the upper limit.
@@ -6820,7 +6820,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionSin.html Online documentation}
    */
   export interface NoiseFunctionSin {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "sin"
     arguments: readonly [NoiseNumber]
   }
@@ -6835,7 +6835,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionSpotNoise.html Online documentation}
    */
   export interface NoiseFunctionSpotNoise {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "spot-noise"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionSpotNoise.html#arguments Online documentation}
@@ -6847,7 +6847,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionSubtract.html Online documentation}
    */
   export interface NoiseFunctionSubtract {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "subtract"
     arguments: readonly [NoiseNumber, NoiseNumber]
   }
@@ -6856,7 +6856,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseFunctionTerrace.html Online documentation}
    */
   export interface NoiseFunctionTerrace {
-    type: "function-application"
+    readonly type: "function-application"
     function_name: "terrace"
     arguments: readonly [NoiseNumber, ConstantNoiseNumber, ConstantNoiseNumber, NoiseNumber]
   }
@@ -6879,7 +6879,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseIfElseChain.html Online documentation}
    */
   export interface NoiseIfElseChain {
-    type: "if-else-chain"
+    readonly type: "if-else-chain"
     arguments: readonly NoiseExpression[]
   }
   /**
@@ -6896,7 +6896,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseLiteralBoolean.html Online documentation}
    */
   export interface NoiseLiteralBoolean {
-    type: "literal-boolean"
+    readonly type: "literal-boolean"
     literal_value: bool
   }
   /**
@@ -6904,7 +6904,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseLiteralExpression.html Online documentation}
    */
   export interface NoiseLiteralExpression {
-    type: "literal-expression"
+    readonly type: "literal-expression"
     literal_value: NoiseExpression
   }
   /**
@@ -6922,7 +6922,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseLiteralNumber.html Online documentation}
    */
   export interface NoiseLiteralNumber {
-    type: "literal-number"
+    readonly type: "literal-number"
     literal_value: float
   }
   /**
@@ -6942,7 +6942,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseLiteralObject.html Online documentation}
    */
   export interface NoiseLiteralObject {
-    type: "literal-object"
+    readonly type: "literal-object"
     literal_value: AutoplaceSpecification
   }
   /**
@@ -6950,7 +6950,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseLiteralString.html Online documentation}
    */
   export interface NoiseLiteralString {
-    type: "literal-string"
+    readonly type: "literal-string"
     literal_value: string
   }
   /**
@@ -7045,7 +7045,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseProcedureDelimiter.html Online documentation}
    */
   export interface NoiseProcedureDelimiter {
-    type: "procedure-delimiter"
+    readonly type: "procedure-delimiter"
     expression: NoiseExpression
   }
   /**
@@ -7076,7 +7076,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/NoiseVariable.html Online documentation}
    */
   export interface NoiseVariable {
-    type: "variable"
+    readonly type: "variable"
     /**
      * A string referring to a pre-defined variable, constant, or {@link NamedNoiseExpression}.
      *
@@ -7182,7 +7182,7 @@ declare module "factorio:prototype" {
     underwater_pictures?: Sprite4Way
   }
   export interface OrTipTrigger {
-    type: "or"
+    readonly type: "or"
     /**
      * If at least one of the triggers is fulfilled, this trigger is considered fulfilled.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/OrTipTrigger.html#triggers Online documentation}
@@ -7278,7 +7278,7 @@ declare module "factorio:prototype" {
    */
   export type ParticleID = string
   export interface PasteEntitySettingsTipTrigger {
-    type: "paste-entity-settings"
+    readonly type: "paste-entity-settings"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/PasteEntitySettingsTipTrigger.html#count Online documentation}
@@ -7465,7 +7465,7 @@ declare module "factorio:prototype" {
      * - `"output"`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/PipeConnectionDefinition.html#type Online documentation}
      */
-    type?: "input" | "input-output" | "output"
+    readonly type?: "input" | "input-output" | "output"
   }
   /**
    * @see PipePrototype.pictures
@@ -7518,7 +7518,7 @@ declare module "factorio:prototype" {
     condition_size: int32
   }
   export interface PlaceEquipmentTipTrigger {
-    type: "place-equipment"
+    readonly type: "place-equipment"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/PlaceEquipmentTipTrigger.html#count Online documentation}
@@ -7537,7 +7537,7 @@ declare module "factorio:prototype" {
    */
   export type PlayFor = "character_actions" | "everything"
   export interface PlaySoundTriggerEffectItem extends TriggerEffectItem {
-    type: "play-sound"
+    readonly type: "play-sound"
     sound: Sound
     /**
      * **Default:** `0`
@@ -7661,7 +7661,7 @@ declare module "factorio:prototype" {
     sound: Sound
   }
   export interface ProgressBarStyleSpecification extends BaseStyleSpecification {
-    type: "progressbar_style"
+    readonly type: "progressbar_style"
     bar_width?: uint32
     color?: Color
     /**
@@ -7680,7 +7680,7 @@ declare module "factorio:prototype" {
     embed_text_in_bar?: bool
   }
   export interface ProjectileAttackParameters extends BaseAttackParameters {
-    type: "projectile"
+    readonly type: "projectile"
     /**
      * **Default:** ``{0, 0}``
      *
@@ -7714,7 +7714,7 @@ declare module "factorio:prototype" {
     projectile_orientation_offset?: float
   }
   export interface ProjectileTriggerDelivery extends TriggerDeliveryItem {
-    type: "projectile"
+    readonly type: "projectile"
     /**
      * Name of a {@link ProjectilePrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ProjectileTriggerDelivery.html#projectile Online documentation}
@@ -7849,11 +7849,11 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/PushBackTriggerEffectItem.html Online documentation}
    */
   export interface PushBackTriggerEffectItem extends TriggerEffectItem {
-    type: "push-back"
+    readonly type: "push-back"
     distance: float
   }
   export interface RadioButtonStyleSpecification extends StyleWithClickableGraphicalSetSpecification {
-    type: "radiobutton_style"
+    readonly type: "radiobutton_style"
     /**
      * Name of a {@link FontPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/RadioButtonStyleSpecification.html#font Online documentation}
@@ -8276,7 +8276,7 @@ declare module "factorio:prototype" {
     | "arrow"
     | "cursor"
   export interface ResearchTechnologyTipTrigger {
-    type: "research"
+    readonly type: "research"
     technology: TechnologyID
   }
   /**
@@ -8308,7 +8308,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/Resistances.html Online documentation}
    */
   export interface Resistances {
-    type: DamageTypeID
+    readonly type: DamageTypeID
     /**
      * **Default:** `0`
      *
@@ -8653,7 +8653,7 @@ declare module "factorio:prototype" {
     allow_low_quality_rotation?: bool
   }
   export interface ScriptTriggerEffectItem extends TriggerEffectItem {
-    type: "script"
+    readonly type: "script"
     /**
      * The effect ID that will be provided in {@link import("factorio:runtime").on_script_trigger_effect on_script_trigger_effect}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ScriptTriggerEffectItem.html#effect_id Online documentation}
@@ -8665,7 +8665,7 @@ declare module "factorio:prototype" {
     thumb_button_style?: ButtonStyleSpecification
   }
   export interface ScrollPaneStyleSpecification extends BaseStyleSpecification {
-    type: "scroll_pane_style"
+    readonly type: "scroll_pane_style"
     vertical_flow_style?: VerticalFlowStyleSpecification
     horizontal_scrollbar_style?: HorizontalScrollBarStyleSpecification
     vertical_scrollbar_style?: VerticalScrollBarStyleSpecification
@@ -8748,7 +8748,7 @@ declare module "factorio:prototype" {
     | "tile-ghost"
   )[]
   export interface SequenceTipTrigger {
-    type: "sequence"
+    readonly type: "sequence"
     /**
      * List of triggers to fulfill.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/SequenceTipTrigger.html#triggers Online documentation}
@@ -8756,7 +8756,7 @@ declare module "factorio:prototype" {
     triggers: readonly TipTrigger[]
   }
   export interface SetFilterTipTrigger {
-    type: "set-filter"
+    readonly type: "set-filter"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/SetFilterTipTrigger.html#count Online documentation}
@@ -8775,7 +8775,7 @@ declare module "factorio:prototype" {
     consecutive?: bool
   }
   export interface SetLogisticRequestTipTrigger {
-    type: "set-logistic-request"
+    readonly type: "set-logistic-request"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/SetLogisticRequestTipTrigger.html#count Online documentation}
@@ -8788,7 +8788,7 @@ declare module "factorio:prototype" {
     logistic_chest_only?: bool
   }
   export interface SetRecipeTipTrigger {
-    type: "set-recipe"
+    readonly type: "set-recipe"
     recipe?: RecipeID
     machine?: EntityID
     /**
@@ -8803,7 +8803,7 @@ declare module "factorio:prototype" {
     uses_fluid?: bool
   }
   export interface SetTileTriggerEffectItem extends TriggerEffectItem {
-    type: "set-tile"
+    readonly type: "set-tile"
     tile_name: TileID
     radius: float
     /**
@@ -8820,7 +8820,7 @@ declare module "factorio:prototype" {
     west: readonly Vector[]
   }
   export interface ShiftBuildTipTrigger {
-    type: "shift-build"
+    readonly type: "shift-build"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/ShiftBuildTipTrigger.html#count Online documentation}
@@ -8828,7 +8828,7 @@ declare module "factorio:prototype" {
     count?: uint32
   }
   export interface ShowExplosionOnChartTriggerEffectItem extends TriggerEffectItem {
-    type: "show-explosion-on-chart"
+    readonly type: "show-explosion-on-chart"
     scale: float
   }
   /**
@@ -8836,7 +8836,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LampPrototype.html#signal_to_color_mapping Online documentation}
    */
   export interface SignalColorMapping {
-    type: "virtual" | "item" | "fluid"
+    readonly type: "virtual" | "item" | "fluid"
     /**
      * Name of the signal that shows this color.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/SignalColorMapping.html#name Online documentation}
@@ -8845,7 +8845,7 @@ declare module "factorio:prototype" {
     color: Color
   }
   export interface SignalIDConnector {
-    type: "virtual" | "item" | "fluid"
+    readonly type: "virtual" | "item" | "fluid"
     /**
      * Name of the signal that shows this color.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/SignalIDConnector.html#name Online documentation}
@@ -8961,7 +8961,7 @@ declare module "factorio:prototype" {
     override_volume?: bool
   }
   export interface SliderStyleSpecification extends BaseStyleSpecification {
-    type: "slider_style"
+    readonly type: "slider_style"
     full_bar?: ElementImageSet
     full_bar_disabled?: ElementImageSet
     empty_bar?: ElementImageSet
@@ -9188,7 +9188,7 @@ declare module "factorio:prototype" {
       }
     | readonly [double, double]
   export interface SpeechBubbleStyleSpecification extends BaseStyleSpecification {
-    type: "speech_bubble_style"
+    readonly type: "speech_bubble_style"
     frame_style?: FrameStyleSpecification
     label_style?: LabelStyleSpecification
     arrow_graphical_set?: ElementImageSet
@@ -9882,7 +9882,7 @@ declare module "factorio:prototype" {
     | SpriteSheet
     | readonly Sprite[]
   export interface StackInserterCapacityBonusModifier extends SimpleModifier {
-    type: "stack-inserter-capacity-bonus"
+    readonly type: "stack-inserter-capacity-bonus"
     /**
      * **Default:** `false`
      *
@@ -9899,7 +9899,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface StackTransferTipTrigger {
-    type: "stack-transfer"
+    readonly type: "stack-transfer"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/StackTransferTipTrigger.html#count Online documentation}
@@ -9992,7 +9992,7 @@ declare module "factorio:prototype" {
     gas_flow: Animation
   }
   export interface StreamAttackParameters extends BaseAttackParameters {
-    type: "stream"
+    readonly type: "stream"
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/StreamAttackParameters.html#fluid_consumption Online documentation}
@@ -10019,7 +10019,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/StreamAttackParameters.html#fluids Online documentation}
    */
   export interface StreamFluidProperties {
-    type: FluidID
+    readonly type: FluidID
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/StreamFluidProperties.html#damage_modifier Online documentation}
@@ -10027,7 +10027,7 @@ declare module "factorio:prototype" {
     damage_modifier?: double
   }
   export interface StreamTriggerDelivery extends TriggerDeliveryItem {
-    type: "stream"
+    readonly type: "stream"
     /**
      * Name of a {@link FluidStreamPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/StreamTriggerDelivery.html#stream Online documentation}
@@ -10151,7 +10151,7 @@ declare module "factorio:prototype" {
     left_click_sound?: Sound
   }
   export interface SwitchStyleSpecification extends BaseStyleSpecification {
-    type: "switch_style"
+    readonly type: "switch_style"
     left_button_position?: uint32
     middle_button_position?: uint32
     right_button_position?: uint32
@@ -10163,7 +10163,7 @@ declare module "factorio:prototype" {
     inactive_label?: LabelStyleSpecification
   }
   export interface TabStyleSpecification extends BaseStyleSpecification {
-    type: "tab_style"
+    readonly type: "tab_style"
     /**
      * Name of a {@link FontPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/TabStyleSpecification.html#font Online documentation}
@@ -10199,13 +10199,13 @@ declare module "factorio:prototype" {
     left_click_sound?: Sound
   }
   export interface TabbedPaneStyleSpecification extends BaseStyleSpecification {
-    type: "tabbed_pane_style"
+    readonly type: "tabbed_pane_style"
     vertical_spacing?: uint32
     tab_content_frame?: FrameStyleSpecification
     tab_container?: HorizontalFlowStyleSpecification
   }
   export interface TableStyleSpecification extends BaseStyleSpecification {
-    type: "table_style"
+    readonly type: "table_style"
     horizontal_spacing?: int32
     vertical_spacing?: int32
     /**
@@ -10327,7 +10327,7 @@ declare module "factorio:prototype" {
    */
   export type TechnologyID = string
   export interface TechnologySlotStyleSpecification extends Omit<ButtonStyleSpecification, "type"> {
-    type: "technology_slot_style"
+    readonly type: "technology_slot_style"
     highlighted_graphical_set?: ElementImageSet
     default_background_shadow?: ElementImageSet
     level_band?: ElementImageSet
@@ -10438,7 +10438,7 @@ declare module "factorio:prototype" {
     ingredients: readonly IngredientPrototype[]
   }
   export interface TextBoxStyleSpecification extends BaseStyleSpecification {
-    type: "textbox_style"
+    readonly type: "textbox_style"
     /**
      * Name of a {@link FontPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/types/TextBoxStyleSpecification.html#font Online documentation}
@@ -10460,7 +10460,7 @@ declare module "factorio:prototype" {
     selected_rich_text_highlight_ok_color?: Color
   }
   export interface ThrowCapsuleAction {
-    type: "throw"
+    readonly type: "throw"
     attack_parameters: AttackParameters
     /**
      * **Default:** `true`
@@ -10729,7 +10729,7 @@ declare module "factorio:prototype" {
     material_background?: TileSprite
   }
   export interface TimeElapsedTipTrigger {
-    type: "time-elapsed"
+    readonly type: "time-elapsed"
     ticks: uint32
   }
   /**
@@ -10821,7 +10821,7 @@ declare module "factorio:prototype" {
     | GateOverRailBuildTipTrigger
     | ManualWireDragTipTrigger
   export interface TrainBrakingForceBonusModifier extends SimpleModifier {
-    type: "train-braking-force-bonus"
+    readonly type: "train-braking-force-bonus"
     /**
      * **Default:** `true`
      *
@@ -11263,7 +11263,7 @@ declare module "factorio:prototype" {
    */
   export type TrivialSmokeID = string
   export interface TurretAttackModifier extends BaseModifier {
-    type: "turret-attack"
+    readonly type: "turret-attack"
     /**
      * **Default:** `true`
      *
@@ -11450,7 +11450,7 @@ declare module "factorio:prototype" {
       }
     | readonly [EntityID, readonly SpawnPoint[]]
   export interface UnlockRecipeModifier extends BaseModifier {
-    type: "unlock-recipe"
+    readonly type: "unlock-recipe"
     /**
      * **Default:** `false`
      *
@@ -11465,11 +11465,11 @@ declare module "factorio:prototype" {
     recipe: RecipeID
   }
   export interface UnlockRecipeTipTrigger {
-    type: "unlock-recipe"
+    readonly type: "unlock-recipe"
     recipe: RecipeID
   }
   export interface UseConfirmTipTrigger {
-    type: "use-confirm"
+    readonly type: "use-confirm"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/UseConfirmTipTrigger.html#count Online documentation}
@@ -11477,7 +11477,7 @@ declare module "factorio:prototype" {
     count?: uint32
   }
   export interface UseOnSelfCapsuleAction {
-    type: "use-on-self"
+    readonly type: "use-on-self"
     attack_parameters: AttackParameters
     /**
      * **Default:** `true`
@@ -11488,7 +11488,7 @@ declare module "factorio:prototype" {
     uses_stack?: bool
   }
   export interface UsePipetteTipTrigger {
-    type: "use-pipette"
+    readonly type: "use-pipette"
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/1.1.89/types/UsePipetteTipTrigger.html#count Online documentation}
@@ -11532,11 +11532,11 @@ declare module "factorio:prototype" {
    */
   export type VerticalAlign = "top" | "center" | "bottom"
   export interface VerticalFlowStyleSpecification extends BaseStyleSpecification {
-    type: "vertical_flow_style"
+    readonly type: "vertical_flow_style"
     vertical_spacing?: int32
   }
   export interface VerticalScrollBarStyleSpecification extends ScrollBarStyleSpecification {
-    type: "vertical_scrollbar_style"
+    readonly type: "vertical_scrollbar_style"
   }
   /**
    * The name of a {@link VirtualSignalPrototype}.
@@ -11554,7 +11554,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/types/VoidEnergySource.html Online documentation}
    */
   export interface VoidEnergySource extends BaseEnergySource {
-    type: "void"
+    readonly type: "void"
   }
   /**
    * @see WallPrototype.pictures
@@ -11608,7 +11608,7 @@ declare module "factorio:prototype" {
     green?: Vector
   }
   export interface WorkerRobotBatteryModifier extends SimpleModifier {
-    type: "worker-robot-battery"
+    readonly type: "worker-robot-battery"
     /**
      * **Default:** `true`
      *
@@ -11625,7 +11625,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface WorkerRobotSpeedModifier extends SimpleModifier {
-    type: "worker-robot-speed"
+    readonly type: "worker-robot-speed"
     /**
      * **Default:** `true`
      *
@@ -11642,7 +11642,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface WorkerRobotStorageModifier extends SimpleModifier {
-    type: "worker-robot-storage"
+    readonly type: "worker-robot-storage"
     /**
      * **Default:** `true`
      *
@@ -11862,7 +11862,7 @@ declare module "factorio:prototype" {
     east_position?: Vector
   }
   export interface ZoomToWorldBlueprintEnabledModifier extends BoolModifier {
-    type: "zoom-to-world-blueprint-enabled"
+    readonly type: "zoom-to-world-blueprint-enabled"
     /**
      * **Default:** `true`
      *
@@ -11872,7 +11872,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface ZoomToWorldDeconstructionPlannerEnabledModifier extends BoolModifier {
-    type: "zoom-to-world-deconstruction-planner-enabled"
+    readonly type: "zoom-to-world-deconstruction-planner-enabled"
     /**
      * **Default:** `true`
      *
@@ -11882,7 +11882,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface ZoomToWorldEnabledModifier extends BoolModifier {
-    type: "zoom-to-world-enabled"
+    readonly type: "zoom-to-world-enabled"
     /**
      * **Default:** `true`
      *
@@ -11892,7 +11892,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface ZoomToWorldGhostBuildingEnabledModifier extends BoolModifier {
-    type: "zoom-to-world-ghost-building-enabled"
+    readonly type: "zoom-to-world-ghost-building-enabled"
     /**
      * **Default:** `true`
      *
@@ -11902,7 +11902,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface ZoomToWorldSelectionToolEnabledModifier extends BoolModifier {
-    type: "zoom-to-world-selection-tool-enabled"
+    readonly type: "zoom-to-world-selection-tool-enabled"
     /**
      * **Default:** `true`
      *
@@ -11912,7 +11912,7 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   export interface ZoomToWorldUpgradePlannerEnabledModifier extends BoolModifier {
-    type: "zoom-to-world-upgrade-planner-enabled"
+    readonly type: "zoom-to-world-upgrade-planner-enabled"
     /**
      * **Default:** `true`
      *

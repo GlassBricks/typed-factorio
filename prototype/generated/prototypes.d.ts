@@ -62,7 +62,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AccumulatorPrototype.html Online documentation}
    */
   export interface AccumulatorPrototype extends EntityWithOwnerPrototype {
-    type: "accumulator"
+    readonly type: "accumulator"
     /**
      * The capacity of the energy source buffer specifies the capacity of the accumulator.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AccumulatorPrototype.html#energy_source Online documentation}
@@ -137,7 +137,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AchievementPrototype.html Online documentation}
    */
   export interface AchievementPrototype extends PrototypeBase {
-    type: "achievement"
+    readonly type: "achievement"
     /**
      * Can't be an empty array.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AchievementPrototype.html#icons Online documentation}
@@ -189,7 +189,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ActiveDefenseEquipmentPrototype.html Online documentation}
    */
   export interface ActiveDefenseEquipmentPrototype extends EquipmentPrototype {
-    type: "active-defense-equipment"
+    readonly type: "active-defense-equipment"
     automatic: bool
     attack_parameters: AttackParameters
   }
@@ -213,7 +213,7 @@ declare module "factorio:prototype" {
      * Specification of the type of the prototype.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AmbientSound.html#type Online documentation}
      */
-    type: "ambient-sound"
+    readonly type: "ambient-sound"
     /**
      * Unique textual identification of the prototype.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AmbientSound.html#name Online documentation}
@@ -249,7 +249,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AmmoCategory.html Online documentation}
    */
   export interface AmmoCategory extends PrototypeBase {
-    type: "ammo-category"
+    readonly type: "ammo-category"
     /**
      * **Default:** `""`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AmmoCategory.html#bonus_gui_order Online documentation}
@@ -261,7 +261,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AmmoItemPrototype.html Online documentation}
    */
   export interface AmmoItemPrototype extends Omit<ItemPrototype, "type"> {
-    type: "ammo"
+    readonly type: "ammo"
     /**
      * When using a plain {@link AmmoType} (no array), the ammo type applies to everything (`"default"`).
      *
@@ -289,7 +289,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AmmoTurretPrototype.html Online documentation}
    */
   export interface AmmoTurretPrototype extends Omit<TurretPrototype, "type"> {
-    type: "ammo-turret"
+    readonly type: "ammo-turret"
     inventory_size: ItemStackIndex
     automated_ammo_count: ItemCountType
     /**
@@ -303,7 +303,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AnimationPrototype.html Online documentation}
    */
   export interface AnimationPrototype {
-    type: "animation"
+    readonly type: "animation"
     /**
      * Name of the animation. Can be used with {@link import("factorio:runtime").LuaRendering#draw_animation LuaRendering::draw_animation} at runtime.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AnimationPrototype.html#name Online documentation}
@@ -581,7 +581,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArithmeticCombinatorPrototype.html Online documentation}
    */
   export interface ArithmeticCombinatorPrototype extends CombinatorPrototype {
-    type: "arithmetic-combinator"
+    readonly type: "arithmetic-combinator"
     plus_symbol_sprites: Sprite4Way
     minus_symbol_sprites: Sprite4Way
     multiply_symbol_sprites: Sprite4Way
@@ -599,7 +599,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArmorPrototype.html Online documentation}
    */
   export interface ArmorPrototype extends Omit<ToolPrototype, "type"> {
-    type: "armor"
+    readonly type: "armor"
     /**
      * Name of the {@link EquipmentGridPrototype} that this armor has.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArmorPrototype.html#equipment_grid Online documentation}
@@ -642,7 +642,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArrowPrototype.html Online documentation}
    */
   export interface ArrowPrototype extends EntityPrototype {
-    type: "arrow"
+    readonly type: "arrow"
     arrow_picture: Sprite
     circle_picture?: Sprite
     /**
@@ -663,7 +663,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArtilleryFlarePrototype.html Online documentation}
    */
   export interface ArtilleryFlarePrototype extends EntityPrototype {
-    type: "artillery-flare"
+    readonly type: "artillery-flare"
     /**
      * Picture variation count and individual frame count must be equal to shadow variation count.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArtilleryFlarePrototype.html#pictures Online documentation}
@@ -755,7 +755,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArtilleryProjectilePrototype.html Online documentation}
    */
   export interface ArtilleryProjectilePrototype extends EntityPrototype {
-    type: "artillery-projectile"
+    readonly type: "artillery-projectile"
     reveal_map: bool
     picture?: Sprite
     shadow?: Sprite
@@ -797,7 +797,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArtilleryTurretPrototype.html Online documentation}
    */
   export interface ArtilleryTurretPrototype extends EntityWithOwnerPrototype {
-    type: "artillery-turret"
+    readonly type: "artillery-turret"
     /**
      * Name of a {@link GunPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArtilleryTurretPrototype.html#gun Online documentation}
@@ -885,7 +885,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArtilleryWagonPrototype.html Online documentation}
    */
   export interface ArtilleryWagonPrototype extends RollingStockPrototype {
-    type: "artillery-wagon"
+    readonly type: "artillery-wagon"
     /**
      * Name of a {@link GunPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ArtilleryWagonPrototype.html#gun Online documentation}
@@ -953,7 +953,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AssemblingMachinePrototype.html Online documentation}
    */
   export interface AssemblingMachinePrototype extends CraftingMachinePrototype {
-    type: "assembling-machine"
+    readonly type: "assembling-machine"
     /**
      * **Default:** `""`
      *
@@ -992,7 +992,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AutoplaceControl.html Online documentation}
    */
   export interface AutoplaceControl extends PrototypeBase {
-    type: "autoplace-control"
+    readonly type: "autoplace-control"
     /**
      * Controls in what tab the autoplace is shown in the map generator GUI.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/AutoplaceControl.html#category Online documentation}
@@ -1020,14 +1020,14 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BatteryEquipmentPrototype.html Online documentation}
    */
   export interface BatteryEquipmentPrototype extends EquipmentPrototype {
-    type: "battery-equipment"
+    readonly type: "battery-equipment"
   }
   /**
    * Entity with the ability to transfer module's effects to its neighboring entities.
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BeaconPrototype.html Online documentation}
    */
   export interface BeaconPrototype extends EntityWithOwnerPrototype {
-    type: "beacon"
+    readonly type: "beacon"
     energy_usage: Energy
     energy_source: ElectricEnergySource | VoidEnergySource
     /**
@@ -1078,7 +1078,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BeamPrototype.html Online documentation}
    */
   export interface BeamPrototype extends EntityPrototype {
-    type: "beam"
+    readonly type: "beam"
     width: double
     /**
      * Damage interval can't be 0. A value of 1 will cause the attack to be applied each tick.
@@ -1166,7 +1166,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BeltImmunityEquipmentPrototype.html Online documentation}
    */
   export interface BeltImmunityEquipmentPrototype extends EquipmentPrototype {
-    type: "belt-immunity-equipment"
+    readonly type: "belt-immunity-equipment"
     /**
      * The continuous power consumption of the belt immunity equipment.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BeltImmunityEquipmentPrototype.html#energy_consumption Online documentation}
@@ -1178,7 +1178,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BlueprintBookPrototype.html Online documentation}
    */
   export interface BlueprintBookPrototype extends Omit<ItemWithInventoryPrototype, "inventory_size" | "type"> {
-    type: "blueprint-book"
+    readonly type: "blueprint-book"
     /**
      * The inventory size of the item.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BlueprintBookPrototype.html#inventory_size Online documentation}
@@ -1205,7 +1205,7 @@ declare module "factorio:prototype" {
    */
   export interface BlueprintItemPrototype
     extends Omit<SelectionToolPrototype, "selection_mode" | "alt_selection_mode" | "type"> {
-    type: "blueprint"
+    readonly type: "blueprint"
     /**
      * Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
      * @example
@@ -1297,7 +1297,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BoilerPrototype.html Online documentation}
    */
   export interface BoilerPrototype extends EntityWithOwnerPrototype {
-    type: "boiler"
+    readonly type: "boiler"
     energy_source: EnergySource
     /**
      * The input fluid box.
@@ -1382,7 +1382,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BuildEntityAchievementPrototype.html Online documentation}
    */
   export interface BuildEntityAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "build-entity-achievement"
+    readonly type: "build-entity-achievement"
     /**
      * This will trigger the achievement, if this entity is placed.
      * @example
@@ -1419,7 +1419,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BurnerGeneratorPrototype.html Online documentation}
    */
   export interface BurnerGeneratorPrototype extends EntityWithOwnerPrototype {
-    type: "burner-generator"
+    readonly type: "burner-generator"
     /**
      * The output energy source of the generator. Any emissions specified on this energy source are ignored, they must be specified on `burner`.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/BurnerGeneratorPrototype.html#energy_source Online documentation}
@@ -1470,7 +1470,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CapsulePrototype.html Online documentation}
    */
   export interface CapsulePrototype extends Omit<ItemPrototype, "type"> {
-    type: "capsule"
+    readonly type: "capsule"
     capsule_action: CapsuleAction
     /**
      * Color of the range radius that is shown around the player when they hold the capsule.
@@ -1483,7 +1483,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CarPrototype.html Online documentation}
    */
   export interface CarPrototype extends VehiclePrototype {
-    type: "car"
+    readonly type: "car"
     /**
      * Animation speed 1 means 1 frame per tile.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CarPrototype.html#animation Online documentation}
@@ -1595,7 +1595,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CargoWagonPrototype.html Online documentation}
    */
   export interface CargoWagonPrototype extends RollingStockPrototype {
-    type: "cargo-wagon"
+    readonly type: "cargo-wagon"
     /**
      * Size of the inventory of the wagon. The inventory can be limited using the red bar and filtered. This functionality cannot be turned off.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CargoWagonPrototype.html#inventory_size Online documentation}
@@ -1607,7 +1607,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CharacterCorpsePrototype.html Online documentation}
    */
   export interface CharacterCorpsePrototype extends EntityPrototype {
-    type: "character-corpse"
+    readonly type: "character-corpse"
     time_to_live: uint32
     /**
      * **Default:** `"object"`
@@ -1642,7 +1642,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CharacterPrototype.html Online documentation}
    */
   export interface CharacterPrototype extends EntityWithOwnerPrototype {
-    type: "character"
+    readonly type: "character"
     mining_speed: double
     running_speed: double
     distance_per_frame: double
@@ -1785,7 +1785,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CliffPrototype.html Online documentation}
    */
   export interface CliffPrototype extends EntityPrototype {
-    type: "cliff"
+    readonly type: "cliff"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CliffPrototype.html#orientations Online documentation}
      */
@@ -1815,7 +1815,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CombatRobotCountAchievementPrototype.html Online documentation}
    */
   export interface CombatRobotCountAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "combat-robot-count"
+    readonly type: "combat-robot-count"
     /**
      * **Default:** `1`
      *
@@ -1831,7 +1831,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CombatRobotPrototype.html Online documentation}
    */
   export interface CombatRobotPrototype extends FlyingRobotPrototype {
-    type: "combat-robot"
+    readonly type: "combat-robot"
     time_to_live: uint32
     attack_parameters: AttackParameters
     idle: RotatedAnimation
@@ -1915,7 +1915,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ConstantCombinatorPrototype.html Online documentation}
    */
   export interface ConstantCombinatorPrototype extends EntityWithOwnerPrototype {
-    type: "constant-combinator"
+    readonly type: "constant-combinator"
     item_slot_count: uint32
     sprites: Sprite4Way
     activity_led_sprites: Sprite4Way
@@ -1950,7 +1950,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ConstructWithRobotsAchievementPrototype.html Online documentation}
    */
   export interface ConstructWithRobotsAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "construct-with-robots-achievement"
+    readonly type: "construct-with-robots-achievement"
     /**
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ConstructWithRobotsAchievementPrototype.html#limited_to_one_game Online documentation}
@@ -1976,7 +1976,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ConstructionRobotPrototype.html Online documentation}
    */
   export interface ConstructionRobotPrototype extends RobotWithLogisticInterfacePrototype {
-    type: "construction-robot"
+    readonly type: "construction-robot"
     construction_vector: Vector
     working?: RotatedAnimation
     shadow_working?: RotatedAnimation
@@ -1999,7 +1999,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ContainerPrototype.html Online documentation}
    */
   export interface ContainerPrototype extends EntityWithOwnerPrototype {
-    type: "container"
+    readonly type: "container"
     /**
      * The number of slots in this container.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ContainerPrototype.html#inventory_size Online documentation}
@@ -2064,7 +2064,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CopyPasteToolPrototype.html Online documentation}
    */
   export interface CopyPasteToolPrototype extends Omit<SelectionToolPrototype, "type"> {
-    type: "copy-paste-tool"
+    readonly type: "copy-paste-tool"
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CopyPasteToolPrototype.html#cuts Online documentation}
@@ -2140,7 +2140,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CorpsePrototype.html Online documentation}
    */
   export interface CorpsePrototype extends EntityPrototype {
-    type: "corpse"
+    readonly type: "corpse"
     /**
      * **Default:** `1`
      *
@@ -2473,7 +2473,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CurvedRailPrototype.html Online documentation}
    */
   export interface CurvedRailPrototype extends RailPrototype {
-    type: "curved-rail"
+    readonly type: "curved-rail"
     /**
      * **Default:** `"turn"`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CurvedRailPrototype.html#bending_type Online documentation}
@@ -2485,7 +2485,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/CustomInputPrototype.html Online documentation}
    */
   export interface CustomInputPrototype extends PrototypeBase {
-    type: "custom-input"
+    readonly type: "custom-input"
     /**
      * Unique textual identification of the prototype. May not contain a dot, nor exceed a length of 200 characters.
      *
@@ -2595,7 +2595,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DamageType.html Online documentation}
    */
   export interface DamageType extends PrototypeBase {
-    type: "damage-type"
+    readonly type: "damage-type"
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DamageType.html#hidden Online documentation}
@@ -2607,7 +2607,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DeciderCombinatorPrototype.html Online documentation}
    */
   export interface DeciderCombinatorPrototype extends CombinatorPrototype {
-    type: "decider-combinator"
+    readonly type: "decider-combinator"
     equal_symbol_sprites: Sprite4Way
     greater_symbol_sprites: Sprite4Way
     less_symbol_sprites: Sprite4Way
@@ -2620,7 +2620,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DeconstructWithRobotsAchievementPrototype.html Online documentation}
    */
   export interface DeconstructWithRobotsAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "deconstruct-with-robots-achievement"
+    readonly type: "deconstruct-with-robots-achievement"
     /**
      * This will trigger the achievement, if enough entities were deconstructed using construction robots.
      * @example
@@ -2634,7 +2634,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DeconstructibleTileProxyPrototype.html Online documentation}
    */
   export interface DeconstructibleTileProxyPrototype extends EntityPrototype {
-    type: "deconstructible-tile-proxy"
+    readonly type: "deconstructible-tile-proxy"
     /**
      * **Default:** ``{"ground-tile"}``
      *
@@ -2649,7 +2649,7 @@ declare module "factorio:prototype" {
    */
   export interface DeconstructionItemPrototype
     extends Omit<SelectionToolPrototype, "selection_mode" | "alt_selection_mode" | "type"> {
-    type: "deconstruction-item"
+    readonly type: "deconstruction-item"
     /**
      * **Default:** `0`
      *
@@ -2750,7 +2750,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DecorativePrototype.html Online documentation}
    */
   export interface DecorativePrototype extends PrototypeBase {
-    type: "optimized-decorative"
+    readonly type: "optimized-decorative"
     /**
      * Must contain at least 1 picture.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DecorativePrototype.html#pictures Online documentation}
@@ -2803,7 +2803,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DeliverByRobotsAchievementPrototype.html Online documentation}
    */
   export interface DeliverByRobotsAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "deliver-by-robots-achievement"
+    readonly type: "deliver-by-robots-achievement"
     /**
      * This will trigger the achievement, when the player receives enough items through logistic robots.
      * @example
@@ -2817,7 +2817,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DontBuildEntityAchievementPrototype.html Online documentation}
    */
   export interface DontBuildEntityAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "dont-build-entity-achievement"
+    readonly type: "dont-build-entity-achievement"
     /**
      * This will disable the achievement, if this entity is placed. If you finish the game without building this entity, you receive the achievement.
      * @example
@@ -2836,7 +2836,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DontCraftManuallyAchievementPrototype.html Online documentation}
    */
   export interface DontCraftManuallyAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "dont-craft-manually-achievement"
+    readonly type: "dont-craft-manually-achievement"
     /**
      * This will disable the achievement, if the player crafts more than this.
      * @example
@@ -2850,7 +2850,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/DontUseEntityInEnergyProductionAchievementPrototype.html Online documentation}
    */
   export interface DontUseEntityInEnergyProductionAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "dont-use-entity-in-energy-production-achievement"
+    readonly type: "dont-use-entity-in-energy-production-achievement"
     /**
      * This will **not** disable the achievement, if this entity is placed, and you have received any amount of power from it.
      * @example
@@ -2883,7 +2883,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EditorControllerPrototype.html Online documentation}
    */
   export interface EditorControllerPrototype {
-    type: "editor-controller"
+    readonly type: "editor-controller"
     /**
      * Name of the editor controller. Base game uses "default".
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EditorControllerPrototype.html#name Online documentation}
@@ -2922,7 +2922,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ElectricEnergyInterfacePrototype.html Online documentation}
    */
   export interface ElectricEnergyInterfacePrototype extends EntityWithOwnerPrototype {
-    type: "electric-energy-interface"
+    readonly type: "electric-energy-interface"
     energy_source: ElectricEnergySource
     /**
      * **Default:** `0`
@@ -2983,7 +2983,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ElectricPolePrototype.html Online documentation}
    */
   export interface ElectricPolePrototype extends EntityWithOwnerPrototype {
-    type: "electric-pole"
+    readonly type: "electric-pole"
     pictures: RotatedSprite
     /**
      * The "radius" of this pole's supply area. Corresponds to *half* of the "supply area" in the item tooltip. If this is 3.5, the pole will have a 7x7 supply area.
@@ -3034,7 +3034,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ElectricTurretPrototype.html Online documentation}
    */
   export interface ElectricTurretPrototype extends Omit<TurretPrototype, "type"> {
-    type: "electric-turret"
+    readonly type: "electric-turret"
     energy_source: ElectricEnergySource | VoidEnergySource
   }
   /**
@@ -3042,7 +3042,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EnemySpawnerPrototype.html Online documentation}
    */
   export interface EnemySpawnerPrototype extends EntityWithOwnerPrototype {
-    type: "unit-spawner"
+    readonly type: "unit-spawner"
     animations: AnimationVariations
     /**
      * Count of enemies this spawner can sustain.
@@ -3136,7 +3136,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EnergyShieldEquipmentPrototype.html Online documentation}
    */
   export interface EnergyShieldEquipmentPrototype extends EquipmentPrototype {
-    type: "energy-shield-equipment"
+    readonly type: "energy-shield-equipment"
     max_shield_value: float
     energy_per_shield: Energy
   }
@@ -3158,7 +3158,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EntityGhostPrototype.html Online documentation}
    */
   export interface EntityGhostPrototype extends EntityPrototype {
-    type: "entity-ghost"
+    readonly type: "entity-ghost"
     medium_build_sound?: Sound
     large_build_sound?: Sound
     /**
@@ -3179,7 +3179,7 @@ declare module "factorio:prototype" {
      * @deprecated
      * @see EntityParticlePrototype
      */
-    type: "particle"
+    readonly type: "particle"
     /**
      * **Default:** `no masks`
      *
@@ -3669,7 +3669,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EquipmentCategory.html Online documentation}
    */
   export interface EquipmentCategory extends PrototypeBase {
-    type: "equipment-category"
+    readonly type: "equipment-category"
   }
   /**
    * The prototype of an equipment grid, for example the one used in a {@linkplain https://wiki.factorio.com/Power_armor power armor}.
@@ -3678,7 +3678,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EquipmentGridPrototype.html Online documentation}
    */
   export interface EquipmentGridPrototype extends PrototypeBase {
-    type: "equipment-grid"
+    readonly type: "equipment-grid"
     /**
      * Only {@link EquipmentPrototype equipment} with at least one of these {@link EquipmentCategory categories} can be inserted into the grid.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/EquipmentGridPrototype.html#equipment_categories Online documentation}
@@ -3749,7 +3749,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ExplosionPrototype.html Online documentation}
    */
   export interface ExplosionPrototype extends EntityPrototype {
-    type: "explosion"
+    readonly type: "explosion"
     animations: AnimationVariations
     sound?: Sound
     /**
@@ -3909,7 +3909,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FinishTheGameAchievementPrototype.html Online documentation}
    */
   export interface FinishTheGameAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "finish-the-game-achievement"
+    readonly type: "finish-the-game-achievement"
     /**
      * **Default:** `0`
      *
@@ -3923,7 +3923,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FireFlamePrototype.html Online documentation}
    */
   export interface FireFlamePrototype extends EntityPrototype {
-    type: "fire"
+    readonly type: "fire"
     damage_per_tick: DamagePrototype
     spread_delay: uint32
     spread_delay_deviation: uint32
@@ -4151,7 +4151,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FishPrototype.html Online documentation}
    */
   export interface FishPrototype extends EntityWithHealthPrototype {
-    type: "fish"
+    readonly type: "fish"
     pictures: SpriteVariations
     /**
      * **Default:** ``{"ground-tile", "colliding-with-tiles-only"}``
@@ -4166,7 +4166,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FlameThrowerExplosionPrototype.html Online documentation}
    */
   export interface FlameThrowerExplosionPrototype extends Omit<ExplosionPrototype, "type"> {
-    type: "flame-thrower-explosion"
+    readonly type: "flame-thrower-explosion"
     damage: DamagePrototype
     slow_down_factor: double
     /**
@@ -4194,7 +4194,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FluidPrototype.html Online documentation}
    */
   export interface FluidPrototype extends PrototypeBase {
-    type: "fluid"
+    readonly type: "fluid"
     /**
      * Can't be an empty array.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FluidPrototype.html#icons Online documentation}
@@ -4296,7 +4296,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FluidStreamPrototype.html Online documentation}
    */
   export interface FluidStreamPrototype extends EntityPrototype {
-    type: "stream"
+    readonly type: "stream"
     /**
      * The stream will spawn one particle every `particle_spawn_interval` ticks until the `particle_spawn_timeout` is reached. The first particle will trigger an `initial_action` upon landing. Each particle triggers an `action` upon landing. Particles spawned within a single `particle_spawn_timeout` interval will be connected by a stretched `spine_animation`.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FluidStreamPrototype.html#particle_spawn_interval Online documentation}
@@ -4435,7 +4435,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FluidTurretPrototype.html Online documentation}
    */
   export interface FluidTurretPrototype extends Omit<TurretPrototype, "type"> {
-    type: "fluid-turret"
+    readonly type: "fluid-turret"
     fluid_buffer_size: float
     fluid_buffer_input_flow: float
     /**
@@ -4470,7 +4470,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FluidWagonPrototype.html Online documentation}
    */
   export interface FluidWagonPrototype extends RollingStockPrototype {
-    type: "fluid-wagon"
+    readonly type: "fluid-wagon"
     capacity: double
     /**
      * **Default:** `3`
@@ -4553,7 +4553,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FlyingTextPrototype.html Online documentation}
    */
   export interface FlyingTextPrototype extends EntityPrototype {
-    type: "flying-text"
+    readonly type: "flying-text"
     /**
      * How fast the text flies up. Seems to be tiles/tick.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FlyingTextPrototype.html#speed Online documentation}
@@ -4589,7 +4589,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FontPrototype.html Online documentation}
    */
   export interface FontPrototype {
-    type: "font"
+    readonly type: "font"
     /**
      * Name of the font.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FontPrototype.html#name Online documentation}
@@ -4635,14 +4635,14 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FuelCategory.html Online documentation}
    */
   export interface FuelCategory extends PrototypeBase {
-    type: "fuel-category"
+    readonly type: "fuel-category"
   }
   /**
    * A furnace. Normal furnaces only process "smelting" category recipes, but you can make furnaces that process other {@link RecipeCategory recipe categories}. The difference to assembling machines is that furnaces automatically choose their recipe based on input.
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FurnacePrototype.html Online documentation}
    */
   export interface FurnacePrototype extends CraftingMachinePrototype {
-    type: "furnace"
+    readonly type: "furnace"
     /**
      * The number of output slots.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/FurnacePrototype.html#result_inventory_size Online documentation}
@@ -4673,7 +4673,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GatePrototype.html Online documentation}
    */
   export interface GatePrototype extends EntityWithOwnerPrototype {
-    type: "gate"
+    readonly type: "gate"
     vertical_animation: Animation
     horizontal_animation: Animation
     vertical_rail_animation_left: Animation
@@ -4711,7 +4711,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GeneratorEquipmentPrototype.html Online documentation}
    */
   export interface GeneratorEquipmentPrototype extends EquipmentPrototype {
-    type: "generator-equipment"
+    readonly type: "generator-equipment"
     /**
      * The power output of this equipment.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GeneratorEquipmentPrototype.html#power Online documentation}
@@ -4728,7 +4728,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GeneratorPrototype.html Online documentation}
    */
   export interface GeneratorPrototype extends EntityWithOwnerPrototype {
-    type: "generator"
+    readonly type: "generator"
     energy_source: ElectricEnergySource
     /**
      * This must have a filter if `max_power_output` is not defined.
@@ -4811,7 +4811,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GodControllerPrototype.html Online documentation}
    */
   export interface GodControllerPrototype {
-    type: "god-controller"
+    readonly type: "god-controller"
     /**
      * Name of the god-controller. Base game uses "default".
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GodControllerPrototype.html#name Online documentation}
@@ -4842,7 +4842,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GroupAttackAchievementPrototype.html Online documentation}
    */
   export interface GroupAttackAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "group-attack-achievement"
+    readonly type: "group-attack-achievement"
     /**
      * **Default:** `1`
      *
@@ -4854,7 +4854,7 @@ declare module "factorio:prototype" {
     amount?: uint32
   }
   export interface GuiStyleMembers extends PrototypeBase {
-    type: "gui-style"
+    readonly type: "gui-style"
     /**
      * **Default:** `""`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GuiStyle.html#default_tileset Online documentation}
@@ -4903,7 +4903,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GunPrototype.html Online documentation}
    */
   export interface GunPrototype extends Omit<ItemPrototype, "type"> {
-    type: "gun"
+    readonly type: "gun"
     /**
      * The information the item needs to know in order to know what ammo it requires, the sounds, and range.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/GunPrototype.html#attack_parameters Online documentation}
@@ -4915,7 +4915,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/HeatInterfacePrototype.html Online documentation}
    */
   export interface HeatInterfacePrototype extends EntityWithOwnerPrototype {
-    type: "heat-interface"
+    readonly type: "heat-interface"
     heat_buffer: HeatBuffer
     picture?: Sprite
     /**
@@ -4929,7 +4929,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/HeatPipePrototype.html Online documentation}
    */
   export interface HeatPipePrototype extends EntityWithOwnerPrototype {
-    type: "heat-pipe"
+    readonly type: "heat-pipe"
     connection_sprites: ConnectableEntityGraphics
     heat_glow_sprites: ConnectableEntityGraphics
     heat_buffer: HeatBuffer
@@ -4948,7 +4948,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/HighlightBoxEntityPrototype.html Online documentation}
    */
   export interface HighlightBoxEntityPrototype extends EntityPrototype {
-    type: "highlight-box"
+    readonly type: "highlight-box"
     /**
      * **Default:** `no masks`
      *
@@ -4962,7 +4962,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/InfinityContainerPrototype.html Online documentation}
    */
   export interface InfinityContainerPrototype extends Omit<LogisticContainerPrototype, "logistic_mode" | "type"> {
-    type: "infinity-container"
+    readonly type: "infinity-container"
     erase_contents_when_mined: bool
     /**
      * **Default:** `"all"`
@@ -4996,7 +4996,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/InfinityPipePrototype.html Online documentation}
    */
   export interface InfinityPipePrototype extends Omit<PipePrototype, "type"> {
-    type: "infinity-pipe"
+    readonly type: "infinity-pipe"
     /**
      * **Default:** `"all"`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/InfinityPipePrototype.html#gui_mode Online documentation}
@@ -5008,7 +5008,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/InserterPrototype.html Online documentation}
    */
   export interface InserterPrototype extends EntityWithOwnerPrototype {
-    type: "inserter"
+    readonly type: "inserter"
     extension_speed: double
     rotation_speed: double
     insert_position: Vector
@@ -5150,7 +5150,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemEntityPrototype.html Online documentation}
    */
   export interface ItemEntityPrototype extends EntityPrototype {
-    type: "item-entity"
+    readonly type: "item-entity"
     /**
      * **Default:** ``{"item-layer"}``
      *
@@ -5183,7 +5183,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemGroup.html Online documentation}
    */
   export interface ItemGroup extends PrototypeBase {
-    type: "item-group"
+    readonly type: "item-group"
     /**
      * The icon that is shown to represent this item group. Can't be an empty array.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemGroup.html#icons Online documentation}
@@ -5223,7 +5223,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemPrototype.html Online documentation}
    */
   export interface ItemPrototype extends PrototypeBase {
-    type: "item"
+    readonly type: "item"
     /**
      * Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
      * @example
@@ -5383,7 +5383,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemRequestProxyPrototype.html Online documentation}
    */
   export interface ItemRequestProxyPrototype extends EntityPrototype {
-    type: "item-request-proxy"
+    readonly type: "item-request-proxy"
     picture: Sprite
     /**
      * **Default:** `true`
@@ -5403,7 +5403,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemSubGroup.html Online documentation}
    */
   export interface ItemSubGroup extends PrototypeBase {
-    type: "item-subgroup"
+    readonly type: "item-subgroup"
     /**
      * The item group this subgroup is located in.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemSubGroup.html#group Online documentation}
@@ -5415,7 +5415,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemWithEntityDataPrototype.html Online documentation}
    */
   export interface ItemWithEntityDataPrototype extends Omit<ItemPrototype, "type"> {
-    type: "item-with-entity-data"
+    readonly type: "item-with-entity-data"
     /**
      * Inside IconData, the property for the file path is `icon_tintable_mask` instead of `icon`. Can't be an empty array.
      *
@@ -5458,7 +5458,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemWithInventoryPrototype.html Online documentation}
    */
   export interface ItemWithInventoryPrototype extends Omit<ItemWithLabelPrototype, "type"> {
-    type: "item-with-inventory"
+    readonly type: "item-with-inventory"
     /**
      * The inventory size of the item.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemWithInventoryPrototype.html#inventory_size Online documentation}
@@ -5536,7 +5536,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemWithLabelPrototype.html Online documentation}
    */
   export interface ItemWithLabelPrototype extends Omit<ItemPrototype, "type"> {
-    type: "item-with-label"
+    readonly type: "item-with-label"
     /**
      * **Default:** `Default item text color`
      *
@@ -5557,14 +5557,14 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ItemWithTagsPrototype.html Online documentation}
    */
   export interface ItemWithTagsPrototype extends Omit<ItemWithLabelPrototype, "type"> {
-    type: "item-with-tags"
+    readonly type: "item-with-tags"
   }
   /**
    * This prototype is used for receiving an achievement when the player destroys a certain amount of an entity, with a specific damage type.
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/KillAchievementPrototype.html Online documentation}
    */
   export interface KillAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "kill-achievement"
+    readonly type: "kill-achievement"
     /**
      * This defines which entity needs to be destroyed in order to receive the achievement.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/KillAchievementPrototype.html#to_kill Online documentation}
@@ -5617,7 +5617,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LabPrototype.html Online documentation}
    */
   export interface LabPrototype extends EntityWithOwnerPrototype {
-    type: "lab"
+    readonly type: "lab"
     /**
      * The amount of energy this lab uses.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LabPrototype.html#energy_usage Online documentation}
@@ -5764,7 +5764,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LampPrototype.html Online documentation}
    */
   export interface LampPrototype extends EntityWithOwnerPrototype {
-    type: "lamp"
+    readonly type: "lamp"
     /**
      * The lamps graphics when it's on.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LampPrototype.html#picture_on Online documentation}
@@ -5868,7 +5868,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LandMinePrototype.html Online documentation}
    */
   export interface LandMinePrototype extends EntityWithOwnerPrototype {
-    type: "land-mine"
+    readonly type: "land-mine"
     /**
      * The sprite of the landmine before it is armed (just after placing).
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LandMinePrototype.html#picture_safe Online documentation}
@@ -5938,7 +5938,7 @@ declare module "factorio:prototype" {
      * @deprecated
      * @see LeafParticlePrototype
      */
-    type: "leaf-particle"
+    readonly type: "leaf-particle"
   }
   /**
    * A belt that can be connected to a belt anywhere else, including on a different surface. The linked belts have to be {@linkplain https://wiki.factorio.com/Console#Connect_linked_belts connected with console commands} or runtime scripting in mods or scenarios. {@link import("factorio:runtime").LuaEntity#connect_linked_belts LuaEntity::connect_linked_belts} and other runtime functions.
@@ -5947,7 +5947,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedBeltPrototype.html Online documentation}
    */
   export interface LinkedBeltPrototype extends TransportBeltConnectablePrototype {
-    type: "linked-belt"
+    readonly type: "linked-belt"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedBeltPrototype.html#structure Online documentation}
      */
@@ -5985,7 +5985,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedContainerPrototype.html Online documentation}
    */
   export interface LinkedContainerPrototype extends EntityWithOwnerPrototype {
-    type: "linked-container"
+    readonly type: "linked-container"
     /**
      * Must be > 0.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LinkedContainerPrototype.html#inventory_size Online documentation}
@@ -6048,7 +6048,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/Loader1x1Prototype.html Online documentation}
    */
   export interface Loader1x1Prototype extends LoaderPrototype {
-    type: "loader-1x1"
+    readonly type: "loader-1x1"
   }
   /**
    * Continuously loads and unloads machines, as an alternative to inserters.
@@ -6059,7 +6059,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/Loader1x2Prototype.html Online documentation}
    */
   export interface Loader1x2Prototype extends LoaderPrototype {
-    type: "loader"
+    readonly type: "loader"
   }
   /**
    * Continuously loads and unloads machines, as an alternative to inserters.
@@ -6126,7 +6126,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LocomotivePrototype.html Online documentation}
    */
   export interface LocomotivePrototype extends RollingStockPrototype {
-    type: "locomotive"
+    readonly type: "locomotive"
     max_power: Energy
     reversing_power_modifier: double
     /**
@@ -6155,7 +6155,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LogisticContainerPrototype.html Online documentation}
    */
   export interface LogisticContainerPrototype extends Omit<ContainerPrototype, "picture" | "type"> {
-    type: "logistic-container"
+    readonly type: "logistic-container"
     /**
      * The way this chest interacts with the logistic network.
      *
@@ -6220,7 +6220,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LogisticRobotPrototype.html Online documentation}
    */
   export interface LogisticRobotPrototype extends RobotWithLogisticInterfacePrototype {
-    type: "logistic-robot"
+    readonly type: "logistic-robot"
     /**
      * Only the first frame of the animation is drawn. This means that the graphics for the idle state cannot be animated.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/LogisticRobotPrototype.html#idle_with_cargo Online documentation}
@@ -6252,7 +6252,7 @@ declare module "factorio:prototype" {
     collision_box?: BoundingBox
   }
   export interface MapGenPresetsMembers {
-    type: "map-gen-presets"
+    readonly type: "map-gen-presets"
     /**
      * Name of the map gen presets. Base game uses "default".
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapGenPresets.html#name Online documentation}
@@ -6315,7 +6315,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapSettings.html Online documentation}
    */
   export interface MapSettings {
-    type: "map-settings"
+    readonly type: "map-settings"
     /**
      * Name of the map-settings. Base game uses "map-settings".
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MapSettings.html#name Online documentation}
@@ -6342,7 +6342,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MarketPrototype.html Online documentation}
    */
   export interface MarketPrototype {
-    type: "market"
+    readonly type: "market"
     picture: Sprite
     /**
      * **Default:** `true`
@@ -6357,7 +6357,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MiningDrillPrototype.html Online documentation}
    */
   export interface MiningDrillPrototype extends EntityWithOwnerPrototype {
-    type: "mining-drill"
+    readonly type: "mining-drill"
     /**
      * The position where any item results are placed, when the mining drill is facing north (default direction). If the drill does not produce any solid items but uses a fluidbox output instead (e.g. pumpjacks), a vector of `{0,0}` disables the yellow arrow alt-mode indicator for the placed item location.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MiningDrillPrototype.html#vector_to_place_result Online documentation}
@@ -6482,7 +6482,7 @@ declare module "factorio:prototype" {
      * @deprecated
      * @see MiningToolPrototype
      */
-    type: "mining-tool"
+    readonly type: "mining-tool"
   }
   /**
    * A module category. The built-in categories can be found {@linkplain https://wiki.factorio.com/Data.raw#module-category here}. See {@link ModulePrototype#category ModulePrototype::category}.
@@ -6491,14 +6491,14 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ModuleCategory.html Online documentation}
    */
   export interface ModuleCategory extends PrototypeBase {
-    type: "module-category"
+    readonly type: "module-category"
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Module module}.
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ModulePrototype.html Online documentation}
    */
   export interface ModulePrototype extends Omit<ItemPrototype, "type"> {
-    type: "module"
+    readonly type: "module"
     /**
      * Used when upgrading modules: Ctrl + click modules into an entity and it will replace lower tier modules of the same category with higher tier modules.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ModulePrototype.html#category Online documentation}
@@ -6561,7 +6561,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MouseCursor.html Online documentation}
    */
   export interface MouseCursor {
-    type: "mouse-cursor"
+    readonly type: "mouse-cursor"
     /**
      * Name of the prototype.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MouseCursor.html#name Online documentation}
@@ -6593,7 +6593,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/MovementBonusEquipmentPrototype.html Online documentation}
    */
   export interface MovementBonusEquipmentPrototype extends EquipmentPrototype {
-    type: "movement-bonus-equipment"
+    readonly type: "movement-bonus-equipment"
     energy_consumption: Energy
     /**
      * Multiplier of the character speed/vehicle acceleration.
@@ -6612,7 +6612,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/NamedNoiseExpression.html Online documentation}
    */
   export interface NamedNoiseExpression extends PrototypeBase {
-    type: "noise-expression"
+    readonly type: "noise-expression"
     /**
      * The noise expression itself. This is where most of the noise magic happens.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/NamedNoiseExpression.html#expression Online documentation}
@@ -6688,7 +6688,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/NightVisionEquipmentPrototype.html Online documentation}
    */
   export interface NightVisionEquipmentPrototype extends EquipmentPrototype {
-    type: "night-vision-equipment"
+    readonly type: "night-vision-equipment"
     energy_input: Energy
     color_lookup: DaytimeColorLookupTable
     /**
@@ -6706,14 +6706,14 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/NoiseLayer.html Online documentation}
    */
   export interface NoiseLayer extends PrototypeBase {
-    type: "noise-layer"
+    readonly type: "noise-layer"
   }
   /**
    * An {@linkplain https://wiki.factorio.com/Offshore_pump offshore pump}.
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/OffshorePumpPrototype.html Online documentation}
    */
   export interface OffshorePumpPrototype extends EntityWithOwnerPrototype {
-    type: "offshore-pump"
+    readonly type: "offshore-pump"
     fluid_box: FluidBox
     /**
      * How many units of fluid are produced per tick. Must be > 0.
@@ -6837,7 +6837,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ParticlePrototype.html Online documentation}
    */
   export interface ParticlePrototype extends PrototypeBase {
-    type: "optimized-particle"
+    readonly type: "optimized-particle"
     /**
      * Picture variation count and individual frame count must be equal to shadow variation count.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ParticlePrototype.html#pictures Online documentation}
@@ -6911,7 +6911,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ParticleSourcePrototype.html Online documentation}
    */
   export interface ParticleSourcePrototype extends EntityPrototype {
-    type: "particle-source"
+    readonly type: "particle-source"
     time_to_live: float
     time_before_start: float
     height: float
@@ -6965,7 +6965,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PipePrototype.html Online documentation}
    */
   export interface PipePrototype extends EntityWithOwnerPrototype {
-    type: "pipe"
+    readonly type: "pipe"
     /**
      * The area of the entity where fluid/gas inputs, and outputs.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PipePrototype.html#fluid_box Online documentation}
@@ -6983,7 +6983,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PipeToGroundPrototype.html Online documentation}
    */
   export interface PipeToGroundPrototype extends EntityWithOwnerPrototype {
-    type: "pipe-to-ground"
+    readonly type: "pipe-to-ground"
     fluid_box: FluidBox
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PipeToGroundPrototype.html#pictures Online documentation}
@@ -7002,7 +7002,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PlayerDamagedAchievementPrototype.html Online documentation}
    */
   export interface PlayerDamagedAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "player-damaged-achievement"
+    readonly type: "player-damaged-achievement"
     /**
      * This will trigger the achievement, if the amount of damage taken by the dealer, is more than this.
      * @example
@@ -7032,7 +7032,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PlayerPortPrototype.html Online documentation}
    */
   export interface PlayerPortPrototype extends EntityWithOwnerPrototype {
-    type: "player-port"
+    readonly type: "player-port"
     animation: Animation
     /**
      * **Default:** `true`
@@ -7054,7 +7054,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PowerSwitchPrototype.html Online documentation}
    */
   export interface PowerSwitchPrototype extends EntityWithOwnerPrototype {
-    type: "power-switch"
+    readonly type: "power-switch"
     power_on_animation: Animation
     overlay_start: Animation
     overlay_loop: Animation
@@ -7085,7 +7085,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ProduceAchievementPrototype.html Online documentation}
    */
   export interface ProduceAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "produce-achievement"
+    readonly type: "produce-achievement"
     /**
      * This will set the amount of items or fluids needed to craft, for the player to complete the achievement.
      * @example
@@ -7122,7 +7122,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ProducePerHourAchievementPrototype.html Online documentation}
    */
   export interface ProducePerHourAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "produce-per-hour-achievement"
+    readonly type: "produce-per-hour-achievement"
     /**
      * This is how much the player has to craft in an hour, to receive the achievement.
      * @example
@@ -7154,7 +7154,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ProgrammableSpeakerPrototype.html Online documentation}
    */
   export interface ProgrammableSpeakerPrototype extends EntityWithOwnerPrototype {
-    type: "programmable-speaker"
+    readonly type: "programmable-speaker"
     energy_source: ElectricEnergySource | VoidEnergySource
     energy_usage_per_tick: Energy
     sprite: Sprite
@@ -7191,7 +7191,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ProjectilePrototype.html Online documentation}
    */
   export interface ProjectilePrototype extends EntityPrototype {
-    type: "projectile"
+    readonly type: "projectile"
     /**
      * Must be != 0 if `turning_speed_increases_exponentially_with_projectile_speed` is true.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ProjectilePrototype.html#acceleration Online documentation}
@@ -7302,7 +7302,7 @@ declare module "factorio:prototype" {
      * For a list of all types used in vanilla, see {@linkplain https://wiki.factorio.com/Data.raw data.raw}.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PrototypeBase.html#type Online documentation}
      */
-    type: string
+    readonly type: string
     /**
      * Unique textual identification of the prototype. May not contain a dot, nor exceed a length of 200 characters.
      *
@@ -7333,7 +7333,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PumpPrototype.html Online documentation}
    */
   export interface PumpPrototype extends EntityWithOwnerPrototype {
-    type: "pump"
+    readonly type: "pump"
     /**
      * The area of the entity where fluid inputs and outputs.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PumpPrototype.html#fluid_box Online documentation}
@@ -7421,7 +7421,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RadarPrototype.html Online documentation}
    */
   export interface RadarPrototype extends EntityWithOwnerPrototype {
-    type: "radar"
+    readonly type: "radar"
     /**
      * The amount of energy this radar uses.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RadarPrototype.html#energy_usage Online documentation}
@@ -7474,7 +7474,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RailChainSignalPrototype.html Online documentation}
    */
   export interface RailChainSignalPrototype extends RailSignalBasePrototype {
-    type: "rail-chain-signal"
+    readonly type: "rail-chain-signal"
     /**
      * Array of 8 vectors.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RailChainSignalPrototype.html#selection_box_offsets Online documentation}
@@ -7488,7 +7488,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RailPlannerPrototype.html Online documentation}
    */
   export interface RailPlannerPrototype extends Omit<ItemPrototype, "type"> {
-    type: "rail-planner"
+    readonly type: "rail-planner"
     /**
      * The name of an entity of the type "straight-rail". The first item to place of the rail must be this rail planner.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RailPlannerPrototype.html#straight_rail Online documentation}
@@ -7543,7 +7543,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RailRemnantsPrototype.html Online documentation}
    */
   export interface RailRemnantsPrototype extends Omit<CorpsePrototype, "type"> {
-    type: "rail-remnants"
+    readonly type: "rail-remnants"
     bending_type: "straight" | "turn"
     pictures: RailPictureSet
     /**
@@ -7633,14 +7633,14 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RailSignalPrototype.html Online documentation}
    */
   export interface RailSignalPrototype extends RailSignalBasePrototype {
-    type: "rail-signal"
+    readonly type: "rail-signal"
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Reactor reactor}.
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ReactorPrototype.html Online documentation}
    */
   export interface ReactorPrototype extends EntityWithOwnerPrototype {
-    type: "reactor"
+    readonly type: "reactor"
     working_light_picture: Sprite
     /**
      * The energy output as heat.
@@ -7722,7 +7722,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RecipeCategory.html Online documentation}
    */
   export interface RecipeCategory extends PrototypeBase {
-    type: "recipe-category"
+    readonly type: "recipe-category"
   }
   /**
    * A recipe. It can be a crafting recipe, a smelting recipe, or a custom type of recipe, see {@link RecipeCategory}.
@@ -7802,7 +7802,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RecipePrototype.html Online documentation}
    */
   export interface RecipePrototype extends PrototypeBase {
-    type: "recipe"
+    readonly type: "recipe"
     /**
      * **Default:** `"crafting"`
      *
@@ -8089,7 +8089,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RepairToolPrototype.html Online documentation}
    */
   export interface RepairToolPrototype extends Omit<ToolPrototype, "type"> {
-    type: "repair-tool"
+    readonly type: "repair-tool"
     speed: float
     /**
      * This does nothing, it is never triggered.
@@ -8102,7 +8102,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ResearchAchievementPrototype.html Online documentation}
    */
   export interface ResearchAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "research-achievement"
+    readonly type: "research-achievement"
     /**
      * Mandatory if `research_all` is not defined.
      *
@@ -8131,7 +8131,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ResourceCategory.html Online documentation}
    */
   export interface ResourceCategory extends PrototypeBase {
-    type: "resource-category"
+    readonly type: "resource-category"
   }
   /**
    * A mineable/gatherable entity. Its {@link EntityPrototype#collision_mask collision_mask} must contain "resource-layer" if it should be minable with a {@link MiningDrillPrototype}.
@@ -8200,7 +8200,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ResourceEntityPrototype.html Online documentation}
    */
   export interface ResourceEntityPrototype extends EntityPrototype {
-    type: "resource"
+    readonly type: "resource"
     /**
      * Entity's graphics, using a graphic sheet, with variation and depletion. At least one stage must be defined.
      *
@@ -8353,7 +8353,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RoboportEquipmentPrototype.html Online documentation}
    */
   export interface RoboportEquipmentPrototype extends EquipmentPrototype {
-    type: "roboport-equipment"
+    readonly type: "roboport-equipment"
     /**
      * The animation played at each charging point when a robot is charging there.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RoboportEquipmentPrototype.html#recharging_animation Online documentation}
@@ -8469,7 +8469,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RoboportPrototype.html Online documentation}
    */
   export interface RoboportPrototype extends EntityWithOwnerPrototype {
-    type: "roboport"
+    readonly type: "roboport"
     /**
      * The roboport's energy source.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RoboportPrototype.html#energy_source Online documentation}
@@ -8680,7 +8680,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RocketSiloPrototype.html Online documentation}
    */
   export interface RocketSiloPrototype extends Omit<AssemblingMachinePrototype, "type"> {
-    type: "rocket-silo"
+    readonly type: "rocket-silo"
     active_energy_usage: Energy
     /**
      * Unused.
@@ -8761,7 +8761,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RocketSiloRocketPrototype.html Online documentation}
    */
   export interface RocketSiloRocketPrototype extends EntityPrototype {
-    type: "rocket-silo-rocket"
+    readonly type: "rocket-silo-rocket"
     rocket_sprite: Sprite
     rocket_shadow_sprite: Sprite
     rocket_glare_overlay_sprite: Sprite
@@ -8819,7 +8819,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/RocketSiloRocketShadowPrototype.html Online documentation}
    */
   export interface RocketSiloRocketShadowPrototype extends EntityPrototype {
-    type: "rocket-silo-rocket-shadow"
+    readonly type: "rocket-silo-rocket-shadow"
   }
   /**
    * The abstract base of all rolling stock.
@@ -8891,7 +8891,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SelectionToolPrototype.html Online documentation}
    */
   export interface SelectionToolPrototype extends Omit<ItemWithLabelPrototype, "type"> {
-    type: "selection-tool"
+    readonly type: "selection-tool"
     /**
      * A list of selection mode flags that define how the selection tool selects things in-game.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SelectionToolPrototype.html#selection_mode Online documentation}
@@ -9108,7 +9108,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ShortcutPrototype.html Online documentation}
    */
   export interface ShortcutPrototype extends PrototypeBase {
-    type: "shortcut"
+    readonly type: "shortcut"
     /**
      * If this is `"lua"`, {@link import("factorio:runtime").on_lua_shortcut on_lua_shortcut} is raised when the shortcut is clicked.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ShortcutPrototype.html#action Online documentation}
@@ -9193,7 +9193,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SimpleEntityPrototype.html Online documentation}
    */
   export interface SimpleEntityPrototype extends EntityWithHealthPrototype {
-    type: "simple-entity"
+    readonly type: "simple-entity"
     /**
      * **Default:** `false`
      *
@@ -9246,7 +9246,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SimpleEntityWithForcePrototype.html Online documentation}
    */
   export interface SimpleEntityWithForcePrototype extends Omit<SimpleEntityWithOwnerPrototype, "type"> {
-    type: "simple-entity-with-force"
+    readonly type: "simple-entity-with-force"
     /**
      * **Default:** `true`
      *
@@ -9260,7 +9260,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SimpleEntityWithOwnerPrototype.html Online documentation}
    */
   export interface SimpleEntityWithOwnerPrototype extends EntityWithOwnerPrototype {
-    type: "simple-entity-with-owner"
+    readonly type: "simple-entity-with-owner"
     /**
      * **Default:** `"object"`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SimpleEntityWithOwnerPrototype.html#render_layer Online documentation}
@@ -9318,7 +9318,7 @@ declare module "factorio:prototype" {
      * @deprecated
      * @see SimpleSmokePrototype
      */
-    type: "smoke"
+    readonly type: "smoke"
   }
   /**
    * Abstract entity that has an animation.
@@ -9424,7 +9424,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SmokeWithTriggerPrototype.html Online documentation}
    */
   export interface SmokeWithTriggerPrototype extends SmokePrototype {
-    type: "smoke-with-trigger"
+    readonly type: "smoke-with-trigger"
     action?: Trigger
     /**
      * **Default:** `0`
@@ -9463,7 +9463,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SolarPanelEquipmentPrototype.html Online documentation}
    */
   export interface SolarPanelEquipmentPrototype extends EquipmentPrototype {
-    type: "solar-panel-equipment"
+    readonly type: "solar-panel-equipment"
     /**
      * How much power should be provided.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SolarPanelEquipmentPrototype.html#power Online documentation}
@@ -9475,7 +9475,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SolarPanelPrototype.html Online documentation}
    */
   export interface SolarPanelPrototype extends EntityWithOwnerPrototype {
-    type: "solar-panel"
+    readonly type: "solar-panel"
     /**
      * Sets how this solar panel connects to the energy network. The most relevant property seems to be the output_priority.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SolarPanelPrototype.html#energy_source Online documentation}
@@ -9502,7 +9502,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SoundPrototype.html Online documentation}
    */
   export interface SoundPrototype {
-    type: "sound"
+    readonly type: "sound"
     /**
      * Name of the sound. Can be used as a {@link import("factorio:runtime").SoundPath SoundPath} at runtime.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SoundPrototype.html#name Online documentation}
@@ -9582,7 +9582,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpectatorControllerPrototype.html Online documentation}
    */
   export interface SpectatorControllerPrototype {
-    type: "spectator-controller"
+    readonly type: "spectator-controller"
     /**
      * Name of the spectator controller. Base game uses "default".
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpectatorControllerPrototype.html#name Online documentation}
@@ -9599,7 +9599,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpeechBubblePrototype.html Online documentation}
    */
   export interface SpeechBubblePrototype extends EntityPrototype {
-    type: "speech-bubble"
+    readonly type: "speech-bubble"
     /**
      * Needs a style of the type "speech_bubble_style", defined inside the gui styles.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpeechBubblePrototype.html#style Online documentation}
@@ -9635,7 +9635,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpiderLegPrototype.html Online documentation}
    */
   export interface SpiderLegPrototype extends EntityWithHealthPrototype {
-    type: "spider-leg"
+    readonly type: "spider-leg"
     /**
      * Must be larger than 0.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpiderLegPrototype.html#part_length Online documentation}
@@ -9668,7 +9668,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpiderVehiclePrototype.html Online documentation}
    */
   export interface SpiderVehiclePrototype extends VehiclePrototype {
-    type: "spider-vehicle"
+    readonly type: "spider-vehicle"
     /**
      * Must be a burner energy source when using "burner", otherwise it can also be a void energy source.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpiderVehiclePrototype.html#energy_source Online documentation}
@@ -9725,7 +9725,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpidertronRemotePrototype.html Online documentation}
    */
   export interface SpidertronRemotePrototype extends Omit<ItemPrototype, "type"> {
-    type: "spidertron-remote"
+    readonly type: "spidertron-remote"
     /**
      * Inside IconData, the property for the file path is `icon_color_indicator_mask` instead of `icon`. Can't be an empty array.
      *
@@ -9755,7 +9755,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SplitterPrototype.html Online documentation}
    */
   export interface SplitterPrototype extends TransportBeltConnectablePrototype {
-    type: "splitter"
+    readonly type: "splitter"
     structure: Animation4Way
     /**
      * Drawn 1 tile north of `structure` when the splitter is facing east or west.
@@ -9795,7 +9795,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpritePrototype.html Online documentation}
    */
   export interface SpritePrototype {
-    type: "sprite"
+    readonly type: "sprite"
     /**
      * Name of the sprite. Can be used as a {@link import("factorio:runtime").SpritePath SpritePath} at runtime.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/SpritePrototype.html#name Online documentation}
@@ -10014,7 +10014,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StickerPrototype.html Online documentation}
    */
   export interface StickerPrototype extends EntityPrototype {
-    type: "sticker"
+    readonly type: "sticker"
     /**
      * Must be > 0.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StickerPrototype.html#duration_in_ticks Online documentation}
@@ -10144,7 +10144,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StorageTankPrototype.html Online documentation}
    */
   export interface StorageTankPrototype extends EntityWithOwnerPrototype {
-    type: "storage-tank"
+    readonly type: "storage-tank"
     fluid_box: FluidBox
     /**
      * The location of the window showing the contents. Note that for `window_background` the width and height are determined by the sprite and window_bounding_box only determines the drawing location. For `fluid_background` the width is determined by the sprite and the height and drawing location are determined by window_bounding_box.
@@ -10217,7 +10217,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StraightRailPrototype.html Online documentation}
    */
   export interface StraightRailPrototype extends RailPrototype {
-    type: "straight-rail"
+    readonly type: "straight-rail"
     /**
      * **Default:** `"straight"`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/StraightRailPrototype.html#bending_type Online documentation}
@@ -10257,7 +10257,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TechnologyPrototype.html Online documentation}
    */
   export interface TechnologyPrototype extends PrototypeBase {
-    type: "technology"
+    readonly type: "technology"
     /**
      * If this name ends with `-<number>`, that number is ignored for localization purposes. E.g. if the name is `technology-3`, the game looks for the `technology-name.technology` localization. The technology tree will also show the number on the technology icon.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TechnologyPrototype.html#name Online documentation}
@@ -10400,7 +10400,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TileEffectDefinition.html Online documentation}
    */
   export interface TileEffectDefinition {
-    type: "tile-effect"
+    readonly type: "tile-effect"
     /**
      * Name of the tile-effect. Base game uses "water".
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TileEffectDefinition.html#name Online documentation}
@@ -10445,7 +10445,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TileGhostPrototype.html Online documentation}
    */
   export interface TileGhostPrototype extends EntityPrototype {
-    type: "tile-ghost"
+    readonly type: "tile-ghost"
     /**
      * **Default:** ``{"ghost-layer"}``
      *
@@ -10461,7 +10461,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TilePrototype.html Online documentation}
    */
   export interface TilePrototype extends PrototypeBase {
-    type: "tile"
+    readonly type: "tile"
     collision_mask: CollisionMask
     /**
      * Specifies transition drawing priority.
@@ -10623,7 +10623,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TipsAndTricksItem.html Online documentation}
    */
   export interface TipsAndTricksItem extends PrototypeBase {
-    type: "tips-and-tricks-item"
+    readonly type: "tips-and-tricks-item"
     /**
      * **Default:** `""`
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TipsAndTricksItem.html#image Online documentation}
@@ -10698,7 +10698,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TipsAndTricksItemCategory.html Online documentation}
    */
   export interface TipsAndTricksItemCategory {
-    type: "tips-and-tricks-item-category"
+    readonly type: "tips-and-tricks-item-category"
     name: string
     /**
      * Tips and trick categories are sorted by `order`, and then the tips and tips entries are sorted by their own order within those categories.
@@ -10711,7 +10711,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ToolPrototype.html Online documentation}
    */
   export interface ToolPrototype extends Omit<ItemPrototype, "type"> {
-    type: "tool"
+    readonly type: "tool"
     /**
      * The durability of this tool. Must be positive. Mandatory if <code>infinite</code> is false. Ignored if <code>infinite</code> is true.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/ToolPrototype.html#durability Online documentation}
@@ -10756,7 +10756,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TrainPathAchievementPrototype.html Online documentation}
    */
   export interface TrainPathAchievementPrototype extends Omit<AchievementPrototype, "type"> {
-    type: "train-path-achievement"
+    readonly type: "train-path-achievement"
     /**
      * The achievement will trigger if a train path is longer than this.
      * @example
@@ -10770,7 +10770,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TrainStopPrototype.html Online documentation}
    */
   export interface TrainStopPrototype extends EntityWithOwnerPrototype {
-    type: "train-stop"
+    readonly type: "train-stop"
     animation_ticks_per_frame: uint32
     rail_overlay_animations?: Animation4Way
     animations?: Animation4Way
@@ -10932,7 +10932,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TransportBeltPrototype.html Online documentation}
    */
   export interface TransportBeltPrototype extends TransportBeltConnectablePrototype {
-    type: "transport-belt"
+    readonly type: "transport-belt"
     connector_frame_sprites: TransportBeltConnectorFrame
     /**
      * **Default:** `0`
@@ -10991,7 +10991,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TreePrototype.html Online documentation}
    */
   export interface TreePrototype extends EntityWithHealthPrototype {
-    type: "tree"
+    readonly type: "tree"
     variation_weights?: readonly float[]
     /**
      * **Default:** `0.5`
@@ -11030,7 +11030,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TriggerTargetType.html Online documentation}
    */
   export interface TriggerTargetType {
-    type: "trigger-target-type"
+    readonly type: "trigger-target-type"
     name: string
   }
   /**
@@ -11040,7 +11040,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TrivialSmokePrototype.html Online documentation}
    */
   export interface TrivialSmokePrototype extends PrototypeBase {
-    type: "trivial-smoke"
+    readonly type: "trivial-smoke"
     animation: Animation
     /**
      * Can't be 0 - the smoke will never render.
@@ -11122,7 +11122,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TurretPrototype.html Online documentation}
    */
   export interface TurretPrototype extends EntityWithOwnerPrototype {
-    type: "turret"
+    readonly type: "turret"
     /**
      * Requires ammo_type in attack_parameters unless this is a {@link AmmoTurretPrototype}.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TurretPrototype.html#attack_parameters Online documentation}
@@ -11365,7 +11365,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TutorialDefinition.html Online documentation}
    */
   export interface TutorialDefinition extends PrototypeBase {
-    type: "tutorial"
+    readonly type: "tutorial"
     /**
      * Name of the folder for this tutorial in the tutorials folder.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/TutorialDefinition.html#scenario Online documentation}
@@ -11377,7 +11377,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UndergroundBeltPrototype.html Online documentation}
    */
   export interface UndergroundBeltPrototype extends TransportBeltConnectablePrototype {
-    type: "underground-belt"
+    readonly type: "underground-belt"
     max_distance: uint8
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UndergroundBeltPrototype.html#structure Online documentation}
@@ -11398,7 +11398,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UnitPrototype.html Online documentation}
    */
   export interface UnitPrototype extends EntityWithOwnerPrototype {
-    type: "unit"
+    readonly type: "unit"
     run_animation: RotatedAnimation
     /**
      * Requires animation in attack_parameters. Requires ammo_type in attack_parameters.
@@ -11526,7 +11526,7 @@ declare module "factorio:prototype" {
    */
   export interface UpgradeItemPrototype
     extends Omit<SelectionToolPrototype, "selection_mode" | "alt_selection_mode" | "type"> {
-    type: "upgrade-item"
+    readonly type: "upgrade-item"
     /**
      * **Default:** `0`
      *
@@ -11620,7 +11620,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilityConstants.html Online documentation}
    */
   export interface UtilityConstants extends PrototypeBase {
-    type: "utility-constants"
+    readonly type: "utility-constants"
     entity_button_background_color: Color
     building_buildable_too_far_tint: Color
     building_buildable_tint: Color
@@ -11793,7 +11793,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilitySounds.html Online documentation}
    */
   export interface UtilitySounds extends PrototypeBase {
-    type: "utility-sounds"
+    readonly type: "utility-sounds"
     gui_click: Sound
     list_box_click: Sound
     build_small: Sound
@@ -11863,7 +11863,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilitySprites.html Online documentation}
    */
   export interface UtilitySprites extends PrototypeBase {
-    type: "utility-sprites"
+    readonly type: "utility-sprites"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/UtilitySprites.html#cursor_box Online documentation}
      */
@@ -12494,7 +12494,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/VirtualSignalPrototype.html Online documentation}
    */
   export interface VirtualSignalPrototype extends PrototypeBase {
-    type: "virtual-signal"
+    readonly type: "virtual-signal"
     /**
      * The icon that is used to represent this virtual signal. Can't be an empty array.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/VirtualSignalPrototype.html#icons Online documentation}
@@ -12534,7 +12534,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/WallPrototype.html Online documentation}
    */
   export interface WallPrototype extends EntityWithOwnerPrototype {
-    type: "wall"
+    readonly type: "wall"
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/WallPrototype.html#pictures Online documentation}
      */
@@ -12597,7 +12597,7 @@ declare module "factorio:prototype" {
      * Specification of the type of the prototype.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/WindSound.html#type Online documentation}
      */
-    type: "wind-sound"
+    readonly type: "wind-sound"
     /**
      * Unique textual identification of the prototype.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/WindSound.html#name Online documentation}

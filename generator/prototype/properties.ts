@@ -2,7 +2,7 @@ import { PrototypeGenerationContext } from "./index.js"
 import { Property, Prototype, PrototypeConcept } from "../FactorioPrototypeApiJson.js"
 import ts from "typescript"
 import { mapPrototypeType } from "../types.js"
-import { Tokens, Types } from "../genUtil.js"
+import { Modifiers, Tokens, Types } from "../genUtil.js"
 import { addJsDoc } from "../documentation.js"
 import { maybeRecordInlineConceptReference } from "./concepts.js"
 
@@ -16,7 +16,7 @@ export function mapProperty(
   const isInline = maybeRecordInlineConceptReference(context, parentName, property, false)
 
   const mainProperty = ts.factory.createPropertySignature(
-    undefined,
+    property.name === "type" ? [Modifiers.readonly] : undefined,
     property.name,
     property.optional ? Tokens.question : undefined,
     type
