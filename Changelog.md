@@ -2,19 +2,21 @@
 
 ## New features
 
-- Added complete types for the prototype stage! See README for more details.
+- Added complete types for the prototype stage! See the README for more details.
 
 ## Breaking changes
 
-- With the addition of prototype stage types, types are no longer global, but moved into the "virtual" modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`.
-- The placeholder types for the data and settings stage have been removed; see the README for how to add them back.
+- With the addition of prototype stage types, types are no longer global. Instead, types are divided into the "virtual" modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`.
+  - The `defines` and `serpent` namespaces are still global.
+- The placeholder types for the data and settings stage have been removed; see the README for how to add the full types.
 - The "strict index types" option is now always applied (no longer an opt-in feature).
 - The deprecated `Read` types have been removed.
 
 ## Other changes
 
-- Use the specific factorio version instead of "latest" in online documentation links.
+- In online documentation links, the specific factorio version instead of "latest".
 - Documentation comments updated to be more similar to the online documentation.
+- Updated to factorio version 1.1.89
 
 # v1.17.0
 
