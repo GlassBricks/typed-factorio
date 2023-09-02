@@ -5593,7 +5593,6 @@ declare module "factorio:prototype" {
     back_patch?: Sprite4Way
     front_patch?: Sprite4Way
   }
-  /** @replace */
   /**
    * Localised strings are a way to support translation of in-game text. They offer a language-independent code representation of the text that should be shown to players.
    *

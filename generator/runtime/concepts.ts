@@ -14,6 +14,7 @@ import { byOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
+import { copyExistingDeclaration } from "../manualDefinitions.js"
 
 const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableType }>()
 /**
@@ -115,10 +116,9 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
 
   if (existing?.annotations) {
     if (existing.annotations.replace) {
-      const node = existing.node
-      context.currentFile.add(node)
-      ts.setEmitFlags(node, ts.EmitFlags.NoComments)
+      const node = copyExistingDeclaration(existing.node)
       addJsDoc(context, node, concept, concept.name)
+      context.currentFile.add(node)
       return
     }
   }

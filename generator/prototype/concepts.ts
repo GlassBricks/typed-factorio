@@ -6,7 +6,7 @@ import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
 import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
 import { assertNever, byOrder } from "../util.js"
 import ts from "typescript"
-import { InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
+import { copyExistingDeclaration, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 
 export function maybeRecordInlineConceptReference(
   context: PrototypeGenerationContext,
@@ -93,7 +93,7 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
   let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
   let description: string | undefined
   if (existing?.annotations.replace) {
-    declaration = existing.node
+    declaration = copyExistingDeclaration(existing.node)
   } else {
     ;({ declaration, description } = generateTypeDeclaration(concept, context, existing))
   }

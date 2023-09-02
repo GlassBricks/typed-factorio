@@ -5,7 +5,7 @@
 
 /** @noResolution */
 declare module "factorio:settings" {
-  import { LocalisedString } from "factorio:common"
+  import { LocalisedString } from "factorio:prototype"
   export type SettingType = "bool-setting" | "int-setting" | "double-setting" | "string-setting"
 
   export interface BaseSettingDefinition {

@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { addFakeJSDoc } from "./genUtil.js"
+import { addFakeJSDoc, Modifiers } from "./genUtil.js"
 import { GenerationContext } from "./GenerationContext.js" // preprocessed TS AST easier to use
 
 // preprocessed TS AST easier to use
@@ -325,5 +325,19 @@ export function checkManualDefinitions(context: GenerationContext): void {
 
   for (const name of context.manualDefs.addTo.keys()) {
     context.warning("Could not find existing file", name, "to add to")
+  }
+}
+
+export function copyExistingDeclaration<T extends ts.TypeAliasDeclaration | ts.InterfaceDeclaration>(node: T): T {
+  if (ts.isTypeAliasDeclaration(node)) {
+    return ts.factory.createTypeAliasDeclaration([Modifiers.export], node.name, node.typeParameters, node.type) as T
+  } else {
+    return ts.factory.createInterfaceDeclaration(
+      [Modifiers.export],
+      node.name,
+      node.typeParameters,
+      node.heritageClauses,
+      node.members
+    ) as T
   }
 }

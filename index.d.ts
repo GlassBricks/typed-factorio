@@ -1,6 +1,6 @@
 /*
 This file includes _only_ types for all factorio stages; it declares the factorio:common, factorio:prototype,
-and factorio:runtime modules, containing only types.
+and factorio:runtime modules.
 */
 /// <reference types="lua-types/5.2" />
 
