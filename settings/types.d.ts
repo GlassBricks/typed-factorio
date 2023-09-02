@@ -1,6 +1,3 @@
-// This file declares only types for the factorio settings stage.
-// For globals, see ./globals.d.ts
-
 // Based off of https://wiki.factorio.com/Tutorial:Mod_settings
 
 /** @noResolution */
