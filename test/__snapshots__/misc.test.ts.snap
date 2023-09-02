@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`array-like 1`] = `
-"myInventory = game.create_inventory(4)
-slot1 = myInventory[1]
-slot2 = myInventory[2]
-len = #myInventory
-"
-`;

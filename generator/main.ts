@@ -84,10 +84,10 @@ async function writeFiles(fileResults: Map<string, string>) {
     let printContent = content
     if (!noFormat) {
       console.log(`  formatting ${name}`)
-      printContent = prettier.format(content, {
+      printContent = await prettier.format(content, {
         parser: "typescript",
-        printWidth: 120,
         semi: false,
+        printWidth: 120,
       })
     }
     const fileName = path.join(outDir, name)
