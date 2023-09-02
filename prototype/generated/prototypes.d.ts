@@ -1877,13 +1877,13 @@ declare module "factorio:prototype" {
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     output_connection_points: readonly [
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     activity_led_light?: LightDefinition
     screen_light?: LightDefinition
@@ -1924,7 +1924,7 @@ declare module "factorio:prototype" {
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     activity_led_light?: LightDefinition
     /**
@@ -5127,13 +5127,13 @@ declare module "factorio:prototype" {
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     circuit_connector_sprites?: readonly [
       CircuitConnectorSprites,
       CircuitConnectorSprites,
       CircuitConnectorSprites,
-      CircuitConnectorSprites
+      CircuitConnectorSprites,
     ]
   }
   /**
@@ -6458,7 +6458,7 @@ declare module "factorio:prototype" {
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     /**
      * Mandatory if circuit_wire_max_distance  > 0.
@@ -6468,7 +6468,7 @@ declare module "factorio:prototype" {
       CircuitConnectorSprites,
       CircuitConnectorSprites,
       CircuitConnectorSprites,
-      CircuitConnectorSprites
+      CircuitConnectorSprites,
     ]
     module_specification?: ModuleSpecification
   }
@@ -6819,7 +6819,7 @@ declare module "factorio:prototype" {
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     /**
      * Mandatory if circuit_wire_max_distance > 0.
@@ -6829,7 +6829,7 @@ declare module "factorio:prototype" {
       CircuitConnectorSprites,
       CircuitConnectorSprites,
       CircuitConnectorSprites,
-      CircuitConnectorSprites
+      CircuitConnectorSprites,
     ]
   }
   /**
@@ -7399,7 +7399,7 @@ declare module "factorio:prototype" {
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     /**
      * Mandatory if circuit_wire_max_distance  > 0.
@@ -7409,7 +7409,7 @@ declare module "factorio:prototype" {
       CircuitConnectorSprites,
       CircuitConnectorSprites,
       CircuitConnectorSprites,
-      CircuitConnectorSprites
+      CircuitConnectorSprites,
     ]
     /**
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PumpPrototype.html#fluid_wagon_connector_graphics Online documentation}
@@ -10192,7 +10192,7 @@ declare module "factorio:prototype" {
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     /**
      * Mandatory if circuit_wire_max_distance  > 0.
@@ -10202,7 +10202,7 @@ declare module "factorio:prototype" {
       CircuitConnectorSprites,
       CircuitConnectorSprites,
       CircuitConnectorSprites,
-      CircuitConnectorSprites
+      CircuitConnectorSprites,
     ]
     /**
      * **Default:** `true`
@@ -10813,7 +10813,7 @@ declare module "factorio:prototype" {
       WireConnectionPoint,
       WireConnectionPoint,
       WireConnectionPoint,
-      WireConnectionPoint
+      WireConnectionPoint,
     ]
     /**
      * Mandatory if circuit_wire_max_distance > 0.
@@ -10823,7 +10823,7 @@ declare module "factorio:prototype" {
       CircuitConnectorSprites,
       CircuitConnectorSprites,
       CircuitConnectorSprites,
-      CircuitConnectorSprites
+      CircuitConnectorSprites,
     ]
     /**
      * **Default:** `2`

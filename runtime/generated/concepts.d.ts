@@ -249,7 +249,7 @@ declare module "factorio:runtime" {
   export type BoundingBoxArray = readonly [
     left_top: MapPosition | MapPositionArray,
     right_bottom: MapPosition | MapPositionArray,
-    orientation?: RealOrientation
+    orientation?: RealOrientation,
   ]
   /**
    * An area defined using the map editor.

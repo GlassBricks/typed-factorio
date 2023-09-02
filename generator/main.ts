@@ -101,25 +101,23 @@ async function doGeneration<C extends AnyApiJson>(
   manualDefsFile: string,
   cls: new (apiDocs: C, manualDefinitionsSource: ts.SourceFile, typeChecker: ts.TypeChecker) => GenerationContext<C>
 ) {
-  console.log("Generating for", stage)
-
-  console.log("Reading files")
+  console.log(`${stage}: reading files`)
   const apiJson = await getApiJson<C>(stage)
   const { typeChecker, manualDefines } = getManualDefsFile(manualDefsFile)
 
-  console.log("Generating files")
+  console.log(`${stage}: generating files`)
   const genContext = new cls(apiJson, manualDefines, typeChecker)
   const files = generateFiles(genContext)
 
-  console.log("Writing files")
+  console.log(`${stage}: writing files`)
   await writeFiles(files)
   return genContext.hasWarnings
 }
 
-const runtimePromise = await doGeneration("runtime", "manual-defs-runtime.ts", RuntimeGenerationContext)
-const prototypesHasWarnings = await doGeneration("prototype", "manual-defs-prototype.ts", PrototypeGenerationContext)
+const runtimeHasWarnings = doGeneration("runtime", "manual-defs-runtime.ts", RuntimeGenerationContext)
+const prototypesHasWarnings = doGeneration("prototype", "manual-defs-prototype.ts", PrototypeGenerationContext)
 
-const hasWarnings = runtimePromise || prototypesHasWarnings
+const hasWarnings = (await runtimeHasWarnings) || (await prototypesHasWarnings)
 if (hasWarnings) {
   process.exit(1)
 }
