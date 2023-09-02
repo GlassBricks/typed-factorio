@@ -1,6 +1,6 @@
 import ts from "typescript"
 import { createComment, createDeclareGlobal, createDeclareModule, createSimpleImports } from "./genUtil.js"
-import { GenerationContext } from "./GenerationContext.js"
+import { ManualDefinitions } from "./manualDefinitions.js"
 
 export interface OutputFileBuilder {
   fileName: string
@@ -27,7 +27,7 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
   private endStatements: ts.Statement[] = []
   private imports = new Map<string, Set<string>>()
 
-  constructor(private context: GenerationContext, public fileName: string, public moduleType: ModuleType) {}
+  constructor(private manualDefs: ManualDefinitions, public fileName: string, public moduleType: ModuleType) {}
 
   addImport(fromModule: string, importName: string): void {
     if (fromModule === this.moduleType) return
@@ -42,19 +42,19 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
   add(statement: ts.Statement): void {
     const name = OutputFileBuilderImpl.getName(statement)
     if (name) {
-      const addBefore = this.context.addBefore.get(name)
+      const addBefore = this.manualDefs.addBefore.get(name)
       if (addBefore) {
         this.statements.push(...addBefore)
-        this.context.addBefore.delete(name)
+        this.manualDefs.addBefore.delete(name)
       }
     }
     this.statements.push(statement)
 
     if (name) {
-      const addAfter = this.context.addAfter.get(name)
+      const addAfter = this.manualDefs.addAfter.get(name)
       if (addAfter) {
         this.statements.push(...addAfter)
-        this.context.addAfter.delete(name)
+        this.manualDefs.addAfter.delete(name)
       }
     }
   }
@@ -78,10 +78,10 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
   }
 
   build(): OutputFile {
-    const addTo = this.context.addTo.get(this.fileName)
+    const addTo = this.manualDefs.addTo.get(this.fileName)
     if (addTo) {
       this.statements.push(...addTo)
-      this.context.addTo.delete(this.fileName)
+      this.manualDefs.addTo.delete(this.fileName)
     }
     const result: ts.Statement[] = []
     result.push(createComment("* @noSelfInFile ", true))

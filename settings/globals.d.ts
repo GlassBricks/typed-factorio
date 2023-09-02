@@ -4,7 +4,6 @@
 
 /// <reference path="../common/serpent.d.ts" />
 /// <reference path="../common/mods-global.d.ts" />
-/// <reference path="../common/settings-global.d.ts" />
 
 /// <reference path="../runtime/defines-global.d.ts" />
 /// <reference path="../runtime/generated/global-functions.d.ts" />

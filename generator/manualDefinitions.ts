@@ -16,6 +16,7 @@ export enum AnnotationKind {
   AddBefore = "addBefore",
   AddAfter = "addAfter",
   Omit = "omit",
+  Ignore = "ignore",
 
   NumericEnum = "numericEnum",
 
@@ -81,7 +82,49 @@ export type NamespaceDefMember = NamespaceDef | ConstDef | EnumDef
 export type AnyDef = InterfaceDef | TypeAliasDef | NamespaceDef | ConstDef | EnumDef
 
 export class ManualDefinitions {
-  constructor(readonly map: Map<string, RootDef>) {}
+  addBefore = new Map<string, ts.Statement[]>()
+  addAfter = new Map<string, ts.Statement[]>()
+  addTo = new Map<string, ts.Statement[]>()
+
+  constructor(readonly map: Map<string, RootDef>, manualDefsSource: ts.SourceFile) {
+    for (const def of this.map.values()) {
+      const addBefore = def.annotations.addBefore?.[0]
+      const addAfter = def.annotations.addAfter?.[0]
+      const addTo = def.annotations.addTo?.[0]
+      const node = def.node
+      if (addBefore) {
+        if (addTo || addAfter)
+          throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
+
+        if (!this.addBefore.has(addBefore)) {
+          this.addBefore.set(addBefore, [])
+        }
+        this.addBefore.get(addBefore)!.push(node)
+      }
+      if (addAfter) {
+        if (addTo || addBefore)
+          throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
+
+        if (!this.addAfter.has(addAfter)) {
+          this.addAfter.set(addAfter, [])
+        }
+        this.addAfter.get(addAfter)!.push(node)
+      }
+      if (addTo) {
+        if (!this.addTo.has(addTo)) {
+          this.addTo.set(addTo, [])
+        }
+        this.addTo.get(addTo)!.push(node)
+      }
+      if (addBefore || addTo || addAfter) {
+        ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
+        const docs = node.jsDoc!
+        if (docs.length > 1) {
+          addFakeJSDoc(node, docs[docs.length - 1], manualDefsSource)
+        }
+      }
+    }
+  }
 
   private expectType<T extends string>(def: AnyDef, ...kinds: T[]): asserts def is Extract<AnyDef, { kind: T }> {
     if (!kinds.includes(def.kind as T)) {
@@ -130,19 +173,17 @@ export function processManualDefinitions(file: ts.SourceFile): ManualDefinitions
   const result = new Map<string, RootDef>()
   for (const statement of file.statements) {
     const def = createDef(statement)
-    if (def) {
-      if (def.kind === "namespace" || def.kind === "interface" || def.kind === "type") {
-        if (result.has(def.name)) {
-          console.log("Warning: duplicate definition for " + def.name)
-        }
-        result.set(def.name, def)
+    if (def && (def.kind === "namespace" || def.kind === "interface" || def.kind === "type")) {
+      if (result.has(def.name)) {
+        console.log("Warning: duplicate definition for " + def.name)
       }
+      result.set(def.name, def)
     }
   }
-  return new ManualDefinitions(result)
+  return new ManualDefinitions(result, file)
 }
 
-function createDef(node: ts.Statement): AnyDef {
+function createDef(node: ts.Statement): AnyDef | undefined {
   if (ts.isInterfaceDeclaration(node)) {
     return {
       kind: "interface",
@@ -195,6 +236,8 @@ function createDef(node: ts.Statement): AnyDef {
       name: node.name.text,
       annotations: getAnnotations(node),
     }
+  } else if (ts.isImportDeclaration(node)) {
+    // ignore this node
   } else {
     throw new Error("Unknown node given to manual defines, type " + ts.SyntaxKind[node.kind])
   }
@@ -258,50 +301,11 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
   return result
 }
 
-export function preprocessManualDefinitions(context: GenerationContext): void {
-  for (const def of context.manualDefs.map.values()) {
-    const addBefore = def.annotations.addBefore?.[0]
-    const addAfter = def.annotations.addAfter?.[0]
-    const addTo = def.annotations.addTo?.[0]
-    const node = def.node
-    if (addBefore) {
-      if (addTo || addAfter) throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
-
-      if (!context.addBefore.has(addBefore)) {
-        context.addBefore.set(addBefore, [])
-      }
-      context.addBefore.get(addBefore)!.push(node)
-    }
-    if (addAfter) {
-      if (addTo || addBefore)
-        throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
-
-      if (!context.addAfter.has(addAfter)) {
-        context.addAfter.set(addAfter, [])
-      }
-      context.addAfter.get(addAfter)!.push(node)
-    }
-    if (addTo) {
-      if (!context.addTo.has(addTo)) {
-        context.addTo.set(addTo, [])
-      }
-      context.addTo.get(addTo)!.push(node)
-    }
-    if (addBefore || addTo || addAfter) {
-      ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
-      const docs = node.jsDoc!
-      if (docs.length > 1) {
-        addFakeJSDoc(node, docs[docs.length - 1], context.manualDefinitionsSource)
-      }
-    }
-  }
-}
-
 export function checkManualDefinitions(context: GenerationContext): void {
   const typeNames = new Set(context.references.values())
   for (const [name, def] of context.manualDefs.map.entries()) {
     const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
-    const isExisting = typeNames.has(name) || context.references.has(name)
+    const isExisting = typeNames.has(name) || context.references.has(name) || "ignore" in def.annotations
     if (!!hasAdd === isExisting) {
       context.warning(
         `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${
@@ -311,15 +315,15 @@ export function checkManualDefinitions(context: GenerationContext): void {
       )
     }
   }
-  for (const name of context.addBefore.keys()) {
+  for (const name of context.manualDefs.addBefore.keys()) {
     context.warning("Could not find existing statement", name, "to add before")
   }
 
-  for (const name of context.addAfter.keys()) {
+  for (const name of context.manualDefs.addAfter.keys()) {
     context.warning("Could not find existing statement", name, "to add after")
   }
 
-  for (const name of context.addTo.keys()) {
+  for (const name of context.manualDefs.addTo.keys()) {
     context.warning("Could not find existing file", name, "to add to")
   }
 }

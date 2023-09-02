@@ -12,13 +12,15 @@ export type uint8 = number
 export type uint16 = number
 export type uint64 = number
 export type nil = undefined
+
+/** @ignore */
+interface PrototypeMap {}
+
 declare namespace defines {
   const prototypes: {
-    readonly [type: string]:
-      | {
-          readonly [name: string]: (0 & { _notFalsyBrand: void }) | nil
-        }
-      | nil
+    [type in keyof PrototypeMap]: {
+      readonly [subtype in string]?: 0
+    }
   }
 
   namespace difficulty_settings {
@@ -432,7 +434,7 @@ export interface EventData {
 
 export interface CustomInputEvent {}
 
-/** @addTo defines */
+/** @addTo concepts */
 /** An event id. */
 export type EventId<T extends object, F = unknown> = uint & {
   readonly _eventData: T

@@ -30,24 +30,30 @@ export function preprocessDefines(context: RuntimeGenerationContext): void {
 }
 
 export function generateDefines(context: RuntimeGenerationContext): void {
-  const [defines] = generateDefinesDeclaration(
-    context,
-    createRootDefine(context),
-    "",
-    context.manualDefs.getNamespace("defines")
-  )
-  context.addFile("defines", ModuleType.Runtime, () => context.currentFile.add(defines))
+  context.addFile("defines", ModuleType.Global, () => {
+    const [defines] = generateDefinesDeclaration(
+      context,
+      createRootDefine(context),
+      "",
+      context.manualDefs.getNamespace("defines")
+    )
+    context.currentFile.add(defines)
+
+    // manually added imports for now
+    context.currentFile.addImport("runtime", "EventId")
+    context.currentFile.addImport("prototype", "PrototypeMap")
+  })
 }
 
 function generateEventsDefine(context: RuntimeGenerationContext, define: Define) {
   // namespace events { const member: EventId<Id> }
   const members = define.values!.sort(byOrder).map((m) => {
     const eventType = getMappedEventName(m.name)
-    const typeArguments = [ts.factory.createTypeReferenceNode(eventType)]
+    const typeArguments = [eventType]
     const event = context.events.get(m.name)!
     const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
     if (eventFilterName) {
-      typeArguments.push(ts.factory.createTypeReferenceNode(eventFilterName))
+      typeArguments.push(eventFilterName)
     }
 
     let description = `Event type: {@link ${eventType}}`
@@ -55,7 +61,17 @@ function generateEventsDefine(context: RuntimeGenerationContext, define: Define)
       description += `\nEvent filter: {@link ${eventFilterName}}`
     }
 
-    const statement = createConst(m.name, ts.factory.createTypeReferenceNode("EventId", typeArguments))
+    for (const typeArg of typeArguments) {
+      context.currentFile.addImport("runtime", typeArg)
+    }
+
+    const statement = createConst(
+      m.name,
+      ts.factory.createTypeReferenceNode(
+        "EventId",
+        typeArguments.map((t) => ts.factory.createTypeReferenceNode(t))
+      )
+    )
     return addJsDoc(context, statement, { description }, undefined, undefined)
   })
   const namespace = createNamespace(undefined, define.name, members)

@@ -2,4 +2,4 @@
 
 /// <reference path="./index.d.ts" />
 
-declare const defines: typeof import("factorio:runtime").defines
+export * as defines from "factorio:runtime"

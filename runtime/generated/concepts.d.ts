@@ -8539,4 +8539,9 @@ declare module "factorio:runtime" {
     | typeof defines.events.script_raised_revive
     | typeof defines.events.script_raised_teleported
     | typeof defines.events.script_raised_set_tiles
+  /** An event id. */
+  export type EventId<T extends object, F = unknown> = uint & {
+    readonly _eventData: T
+    readonly _filter: F
+  }
 }

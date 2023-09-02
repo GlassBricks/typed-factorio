@@ -1,7 +1,7 @@
 import chalk from "chalk"
 import ts from "typescript"
 import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
-import { checkManualDefinitions, preprocessManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
+import { checkManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
 import * as runtime from "./FactorioRuntimeApiJson.js"
 import * as prototype from "./FactorioPrototypeApiJson.js"
 
@@ -16,14 +16,9 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   // This is also a record of which types exist
   references = new Map<string, string>()
 
-  addBefore = new Map<string, ts.Statement[]>()
-  addAfter = new Map<string, ts.Statement[]>()
-  addTo = new Map<string, ts.Statement[]>()
-
   hasWarnings = false
 
   public readonly manualDefs = processManualDefinitions(this.manualDefinitionsSource)
-
   constructor(
     public readonly apiDocs: A,
     public readonly manualDefinitionsSource: ts.SourceFile,
@@ -47,7 +42,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
 
   addFile(fileName: string, moduleType: ModuleType, fn: () => void): void {
     if (this._currentFile) throw new Error("Nested addFile")
-    const builder = new OutputFileBuilderImpl(this, fileName, moduleType)
+    const builder = new OutputFileBuilderImpl(this.manualDefs, fileName, moduleType)
     this._currentFile = builder
     fn()
     this._currentFile = undefined
@@ -84,10 +79,8 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   generate(): OutputFile[] {
     this.checkApiDocs()
     this.preprocessAll()
-    preprocessManualDefinitions(this)
     this.generateAll()
     checkManualDefinitions(this)
     return this.allFiles
-    // return getGenerationResult(this)
   }
 }
