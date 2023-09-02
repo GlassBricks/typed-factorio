@@ -7,8 +7,8 @@
 ## Breaking changes
 
 - With the addition of prototype stage types, types are no longer global, but moved into the "virtual" modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`.
-- The "strict index types" option is now always on.
 - The placeholder types for the data and settings stage have been removed; see the README for how to add them back.
+- The "strict index types" option is now always applied (no longer an opt-in feature).
 - The deprecated `Read` types have been removed.
 
 ## Other changes
