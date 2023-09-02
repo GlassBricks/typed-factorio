@@ -1,4 +1,4 @@
-// This file declares all globals the factorio prototype stage.
+// This file declares all globals the factorio settings stage.
 
 /// <reference path="./index.d.ts" />
 
@@ -12,6 +12,6 @@
 // the data global
 /// <reference path="../common/data-global.d.ts" />
 declare module "factorio:common" {
-  import { PrototypeMap as PPrototypeMap } from "factorio:prototype"
-  export interface PrototypeMap extends PPrototypeMap {}
+  import { PrototypeMap as SPrototypeMap } from "factorio:settings"
+  export interface PrototypeMap extends SPrototypeMap {}
 }

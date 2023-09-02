@@ -1,13 +1,15 @@
+// This file declares only types for the factorio settings stage.
+// For globals, see ./globals.d.ts
+
 // Based off of https://wiki.factorio.com/Tutorial:Mod_settings
 
-export {}
 /** @noResolution */
 declare module "factorio:settings" {
-  export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
+  import { LocalisedString } from "factorio:common"
   export type SettingType = "bool-setting" | "int-setting" | "double-setting" | "string-setting"
 
   export interface BaseSettingDefinition {
-    type: SettingType
+    readonly type: SettingType
     /**
      * The name of the settings prototype should be unique to avoid mod conflicts since the mod settings are global across
      * all mods. Because of that it is recommended to prefix mod settings with your mod name,
@@ -47,7 +49,7 @@ declare module "factorio:settings" {
   }
   /** A true/false checkbox */
   export interface BoolSettingDefinition extends BaseSettingDefinition {
-    type: "bool-setting"
+    readonly type: "bool-setting"
     /** Defines the default value of the setting, in this case whether the checkbox is checked or not. */
     default_value: boolean
     /**
@@ -58,7 +60,7 @@ declare module "factorio:settings" {
   }
   /** A signed 64 bit integer textfield (or selection dropdown) */
   export interface IntSettingDefinition extends BaseSettingDefinition {
-    type: "int-setting"
+    readonly type: "int-setting"
     /** Defines the default value of the setting. */
     default_value: number
     /** Defines the lowest possible number. */
@@ -73,7 +75,7 @@ declare module "factorio:settings" {
   }
   /** A double precision floating point textfield (or selection dropdown) */
   export interface DoubleSettingDefinition extends BaseSettingDefinition {
-    type: "double-setting"
+    readonly type: "double-setting"
     /** Defines the default value of the setting. */
     default_value: number
     /** Defines the lowest possible number. */
@@ -88,7 +90,7 @@ declare module "factorio:settings" {
   }
   /** A string textfield (or selection dropdown) */
   export interface StringSettingDefinition extends BaseSettingDefinition {
-    type: "string-setting"
+    readonly type: "string-setting"
     /** Defines the default value of the setting. */
     default_value: string
     /** Defines whether it's possible for the user to set the textfield to empty and apply the setting. */
@@ -102,29 +104,11 @@ declare module "factorio:settings" {
      */
     allowed_values?: string[]
   }
-  /** Setting definitions. See {@link https://wiki.factorio.com/Tutorial:Mod_settings} for more info. */
-  export type SettingDefinition =
-    | BoolSettingDefinition
-    | IntSettingDefinition
-    | DoubleSettingDefinition
-    | StringSettingDefinition
 
-  export interface SettingsDataRaw {
-    readonly "bool-setting": Record<string, BoolSettingDefinition>
-    readonly "int-setting": Record<string, IntSettingDefinition>
-    readonly "double-setting": Record<string, DoubleSettingDefinition>
-    readonly "string-setting": Record<string, StringSettingDefinition>
+  export interface PrototypeMap {
+    "bool-setting": BoolSettingDefinition
+    "int-setting": IntSettingDefinition
+    "double-setting": DoubleSettingDefinition
+    "string-setting": StringSettingDefinition
   }
-
-  export interface SettingsData {
-    readonly raw: SettingsDataRaw
-    /**
-     * The `data` table expects a specific format for each item in the table. Missing properties will either fall back to
-     * default values or give an error indicating what's missing. Extra properties that the game isn't looking for are
-     * simply ignored.
-     */
-    extend(prototypes: SettingDefinition[]): void
-  }
-  /** A mapping of mod names to mod version for all enabled mods. */
-  export type Mods = Record<string, string>
 }
