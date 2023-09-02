@@ -41,11 +41,6 @@ function handleSettingsGlobal(context: RuntimeGenerationContext, globalObject: G
   context.currentFile.add(statement)
 
   context.currentFile.addImport("runtime", "LuaSettings")
-  /*
-  declare module "factorio:common" {
-    export interface SettingsGlobal extends LuaSettings {}
-  }
-   */
 
   const heritageClause = ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, [
     ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier("LuaSettings"), undefined),

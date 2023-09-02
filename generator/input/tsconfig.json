@@ -5,5 +5,5 @@
     "lib": ["esnext"],
     "types": ["lua-types/5.2", "@typescript-to-lua/language-extensions"]
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../../common/index.d.ts"]
 }

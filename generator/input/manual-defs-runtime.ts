@@ -1,5 +1,6 @@
-/// <reference path="../../common/index.d.ts" />
-// noinspection JSUnusedGlobalSymbols
+export interface LuaObject {
+  readonly object_name: string
+}
 
 export type double = number
 export type float = number
@@ -11,11 +12,6 @@ export type uint8 = number
 export type uint16 = number
 export type uint64 = number
 export type nil = undefined
-
-export interface LuaObject {
-  readonly object_name: string
-}
-
 declare namespace defines {
   const prototypes: {
     readonly [type: string]:

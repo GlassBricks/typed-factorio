@@ -1,4 +1,3 @@
-/// <reference path="../../common/index.d.ts" />
 export type bool = boolean
 export type double = number
 export type float = number
