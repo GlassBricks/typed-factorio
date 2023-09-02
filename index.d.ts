@@ -4,7 +4,7 @@ and factorio:runtime modules.
 */
 /// <reference types="lua-types/5.2" />
 
-/// <reference path="common/index.d.ts" />
+/// <reference path="common/types.d.ts" />
 
 /// <reference path="settings/types.d.ts" />
 
