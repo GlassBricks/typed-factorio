@@ -14,7 +14,7 @@ declare module "util" {
   import { Color as PrototypeColor, SpriteParameters } from "factorio:prototype"
   import { PrototypeData } from "factorio:common"
 
-  type ColorArray = [r: float, g: float, b: float, a?: float]
+  type ColorArray = PrototypeColor & float[]
   interface ColorTable {
     r: float
     g: float
