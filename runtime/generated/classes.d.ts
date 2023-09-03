@@ -259,7 +259,7 @@ declare module "factorio:runtime" {
     on_event<E extends EventId<any, table>>(
       event: E,
       handler: ((data: E["_eventData"]) => void) | nil,
-      filters?: E["_filter"][]
+      filters?: E["_filter"][],
     ): void
     on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | nil): void
     on_event(event: string, f: ((data: CustomInputEvent) => void) | nil): void
@@ -359,7 +359,7 @@ declare module "factorio:runtime" {
      */
     raise_event<E extends RaiseableEvents | CustomEventId<any>>(
       event: E,
-      data: Omit<E["_eventData"], keyof EventData>
+      data: Omit<E["_eventData"], keyof EventData>,
     ): void
     /**
      * ## Raised events
@@ -1054,7 +1054,7 @@ declare module "factorio:runtime" {
     teleport(
       position: MapPosition | MapPositionArray,
       surface?: SurfaceIdentification,
-      raise_teleported?: boolean
+      raise_teleported?: boolean,
     ): boolean
     teleport(x: number, y?: number): boolean
     /**
@@ -1303,7 +1303,7 @@ declare module "factorio:runtime" {
         | LuaInventory
         | LuaTechnology
         | defines.gui_type
-        | nil
+        | nil,
     )
     get opened():
       | LuaEntity
@@ -1604,7 +1604,7 @@ declare module "factorio:runtime" {
      */
     get_circuit_network(
       wire: defines.wire_type,
-      circuit_connector?: defines.circuit_connector_id
+      circuit_connector?: defines.circuit_connector_id,
     ): LuaCircuitNetwork | nil
     /**
      * The concrete type of this control behavior.
@@ -2536,7 +2536,7 @@ declare module "factorio:runtime" {
      */
     get_circuit_network(
       wire: defines.wire_type,
-      circuit_connector?: defines.circuit_connector_id
+      circuit_connector?: defines.circuit_connector_id,
     ): LuaCircuitNetwork | nil
     /**
      * Read a single signal from the combined circuit networks.
@@ -2912,7 +2912,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.get_connected_rolling_stock Online documentation}
      */
     get_connected_rolling_stock(
-      direction: defines.rail_direction
+      direction: defines.rail_direction,
     ): LuaMultiReturn<[LuaEntity | nil, defines.rail_direction | nil]>
     /**
      * Is this entity or tile ghost or item request proxy registered for construction? If false, it means a construction robot has been dispatched to build the entity, or it is not an entity that can be constructed.
@@ -4392,7 +4392,7 @@ declare module "factorio:runtime" {
      */
     get_circuit_network(
       wire: defines.wire_type,
-      circuit_connector?: defines.circuit_connector_id
+      circuit_connector?: defines.circuit_connector_id,
     ): LuaCircuitNetwork | nil
     /**
      * Read a single signal from the combined circuit networks.
@@ -4644,7 +4644,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaEntity.html#LuaEntity.get_connected_rolling_stock Online documentation}
      */
     get_connected_rolling_stock(
-      direction: defines.rail_direction
+      direction: defines.rail_direction,
     ): LuaMultiReturn<[LuaEntity | nil, defines.rail_direction | nil]>
     /**
      * Is this entity or tile ghost or item request proxy registered for construction? If false, it means a construction robot has been dispatched to build the entity, or it is not an entity that can be constructed.
@@ -11189,7 +11189,7 @@ declare module "factorio:runtime" {
      */
     find_logistic_network_by_position(
       position: MapPosition | MapPositionArray,
-      surface: SurfaceIdentification
+      surface: SurfaceIdentification,
     ): LuaLogisticNetwork | nil
     /**
      * @param position The new position on the given surface.
@@ -12136,7 +12136,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_entity_prototypes Online documentation}
      */
     get_filtered_entity_prototypes(
-      filters: readonly EntityPrototypeFilterWrite[]
+      filters: readonly EntityPrototypeFilterWrite[],
     ): LuaCustomTable<string, LuaEntityPrototype>
     /**
      * Returns a dictionary of all LuaItemPrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12152,7 +12152,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_equipment_prototypes Online documentation}
      */
     get_filtered_equipment_prototypes(
-      filters: readonly EquipmentPrototypeFilter[]
+      filters: readonly EquipmentPrototypeFilter[],
     ): LuaCustomTable<string, LuaEquipmentPrototype>
     /**
      * Returns a dictionary of all LuaModSettingPrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12161,7 +12161,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_mod_setting_prototypes Online documentation}
      */
     get_filtered_mod_setting_prototypes(
-      filters: readonly ModSettingPrototypeFilter[]
+      filters: readonly ModSettingPrototypeFilter[],
     ): LuaCustomTable<string, LuaModSettingPrototype>
     /**
      * Returns a dictionary of all LuaAchievementPrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12170,7 +12170,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_achievement_prototypes Online documentation}
      */
     get_filtered_achievement_prototypes(
-      filters: readonly AchievementPrototypeFilter[]
+      filters: readonly AchievementPrototypeFilter[],
     ): LuaCustomTable<string, LuaAchievementPrototype>
     /**
      * Returns a dictionary of all LuaTilePrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12186,7 +12186,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_decorative_prototypes Online documentation}
      */
     get_filtered_decorative_prototypes(
-      filters: readonly DecorativePrototypeFilter[]
+      filters: readonly DecorativePrototypeFilter[],
     ): LuaCustomTable<string, LuaDecorativePrototype>
     /**
      * Returns a dictionary of all LuaFluidPrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12195,7 +12195,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_fluid_prototypes Online documentation}
      */
     get_filtered_fluid_prototypes(
-      filters: readonly FluidPrototypeFilterWrite[]
+      filters: readonly FluidPrototypeFilterWrite[],
     ): LuaCustomTable<string, LuaFluidPrototype>
     /**
      * Returns a dictionary of all LuaRecipePrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12204,7 +12204,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_recipe_prototypes Online documentation}
      */
     get_filtered_recipe_prototypes(
-      filters: readonly RecipePrototypeFilterWrite[]
+      filters: readonly RecipePrototypeFilterWrite[],
     ): LuaCustomTable<string, LuaRecipePrototype>
     /**
      * Returns a dictionary of all LuaTechnologyPrototypes that fit the given filters. The prototypes are indexed by `name`.
@@ -12213,7 +12213,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaGameScript.html#LuaGameScript.get_filtered_technology_prototypes Online documentation}
      */
     get_filtered_technology_prototypes(
-      filters: readonly TechnologyPrototypeFilterWrite[]
+      filters: readonly TechnologyPrototypeFilterWrite[],
     ): LuaCustomTable<string, LuaTechnologyPrototype>
     /**
      * Creates an inventory that is not owned by any game object. It can be resized later with {@link LuaInventory#resize LuaInventory::resize}.
@@ -13308,7 +13308,7 @@ declare module "factorio:runtime" {
     add<Type extends GuiElementType>(
       element: GuiSpec & {
         type: Type
-      }
+      },
     ): Extract<
       LuaGuiElement,
       {
@@ -17817,7 +17817,7 @@ declare module "factorio:runtime" {
      */
     remove_item(
       item: ItemStackIdentification,
-      members?: "storage" | "passive-provider" | "buffer" | "active-provider"
+      members?: "storage" | "passive-provider" | "buffer" | "active-provider",
     ): uint
     /**
      * Insert items into the logistic network. This will actually insert the items into some logistic chests.
@@ -17828,7 +17828,7 @@ declare module "factorio:runtime" {
      */
     insert(
       item: ItemStackIdentification,
-      members?: "storage" | "storage-empty" | "storage-empty-slot" | "requester"
+      members?: "storage" | "storage-empty" | "storage-empty-slot" | "requester",
     ): uint
     /**
      * Find logistic cell closest to a given position.
@@ -20379,7 +20379,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRendering.html#LuaRendering.get_type Online documentation}
      */
     get_type(
-      id: uint64
+      id: uint64,
     ): "text" | "line" | "circle" | "rectangle" | "arc" | "polygon" | "sprite" | "light" | "animation"
     /**
      * Reorder this object so that it is drawn in front of the already existing objects.
@@ -20768,7 +20768,7 @@ declare module "factorio:runtime" {
     set_right_bottom(
       id: uint64,
       right_bottom: (MapPosition | MapPositionArray) | LuaEntity,
-      right_bottom_offset?: Vector
+      right_bottom_offset?: Vector,
     ): void
     /**
      * Set the corners of the rectangle with this id. Does nothing if this object is not a rectangle.
@@ -20781,7 +20781,7 @@ declare module "factorio:runtime" {
       left_top: (MapPosition | MapPositionArray) | LuaEntity,
       left_top_offset: Vector,
       right_bottom: (MapPosition | MapPositionArray) | LuaEntity,
-      right_bottom_offset: Vector
+      right_bottom_offset: Vector,
     ): void
     /**
      * Get the radius of the outer edge of the arc with this id.
@@ -20939,7 +20939,7 @@ declare module "factorio:runtime" {
     set_orientation_target(
       id: uint64,
       orientation_target: (MapPosition | MapPositionArray) | LuaEntity,
-      orientation_target_offset?: Vector
+      orientation_target_offset?: Vector,
     ): void
     /**
      * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Get the oriented_offset of the sprite or animation with this id.
@@ -21650,7 +21650,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.89/classes/LuaRendering.html#LuaRendering.get_type Online documentation}
      */
     get_type(
-      id: uint64
+      id: uint64,
     ): "text" | "line" | "circle" | "rectangle" | "arc" | "polygon" | "sprite" | "light" | "animation"
     /**
      * Reorder this object so that it is drawn in front of the already existing objects.
@@ -22212,7 +22212,7 @@ declare module "factorio:runtime" {
     set_right_bottom(
       id: uint64,
       right_bottom: (MapPosition | MapPositionArray) | LuaEntity,
-      right_bottom_offset?: Vector
+      right_bottom_offset?: Vector,
     ): void
     /**
      * Set the corners of the rectangle with this id. Does nothing if this object is not a rectangle.
@@ -22225,7 +22225,7 @@ declare module "factorio:runtime" {
       left_top: (MapPosition | MapPositionArray) | LuaEntity,
       left_top_offset: Vector,
       right_bottom: (MapPosition | MapPositionArray) | LuaEntity,
-      right_bottom_offset: Vector
+      right_bottom_offset: Vector,
     ): void
   }
   /**
@@ -22442,7 +22442,7 @@ declare module "factorio:runtime" {
     set_orientation_target(
       id: uint64,
       orientation_target: (MapPosition | MapPositionArray) | LuaEntity,
-      orientation_target_offset?: Vector
+      orientation_target_offset?: Vector,
     ): void
   }
   /**
@@ -22577,7 +22577,7 @@ declare module "factorio:runtime" {
     set_orientation_target(
       id: uint64,
       orientation_target: (MapPosition | MapPositionArray) | LuaEntity,
-      orientation_target_offset?: Vector
+      orientation_target_offset?: Vector,
     ): void
     /**
      * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Get the oriented_offset of the sprite or animation with this id.
@@ -22841,7 +22841,7 @@ declare module "factorio:runtime" {
     set_orientation_target(
       id: uint64,
       orientation_target: (MapPosition | MapPositionArray) | LuaEntity,
-      orientation_target_offset?: Vector
+      orientation_target_offset?: Vector,
     ): void
     /**
      * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Get the oriented_offset of the sprite or animation with this id.
@@ -24470,7 +24470,7 @@ declare module "factorio:runtime" {
       center: MapPosition | MapPositionArray,
       radius: double,
       precision: double,
-      force_to_tile_center?: boolean
+      force_to_tile_center?: boolean,
     ): MapPosition | nil
     /**
      * Find a non-colliding position within a given rectangle.
@@ -24485,7 +24485,7 @@ declare module "factorio:runtime" {
       name: string,
       search_space: BoundingBoxWrite | BoundingBoxArray,
       precision: double,
-      force_to_tile_center?: boolean
+      force_to_tile_center?: boolean,
     ): MapPosition | nil
     /**
      * Spill items on the ground centered at a given location.
@@ -24502,7 +24502,7 @@ declare module "factorio:runtime" {
       items: ItemStackIdentification,
       enable_looted?: boolean,
       force?: LuaForce | string,
-      allow_belts?: boolean
+      allow_belts?: boolean,
     ): LuaEntity[]
     /**
      * Find enemy units (entities with type "unit") of a given force within an area.
@@ -24734,7 +24734,7 @@ declare module "factorio:runtime" {
       correct_tiles?: boolean,
       remove_colliding_entities?: boolean | string,
       remove_colliding_decoratives?: boolean,
-      raise_event?: boolean
+      raise_event?: boolean,
     ): void
     /**
      * Spawn pollution at the given position.
@@ -24774,7 +24774,7 @@ declare module "factorio:runtime" {
      */
     set_chunk_generated_status(
       position: ChunkPosition | ChunkPositionArray,
-      status: defines.chunk_generated_status
+      status: defines.chunk_generated_status,
     ): void
     /**
      * Find the logistic network that covers a given position.
@@ -24784,7 +24784,7 @@ declare module "factorio:runtime" {
      */
     find_logistic_network_by_position(
       position: MapPosition | MapPositionArray,
-      force: ForceIdentification
+      force: ForceIdentification,
     ): LuaLogisticNetwork | nil
     /**
      * Find the logistic network with a cell closest to a given position.
@@ -24794,7 +24794,7 @@ declare module "factorio:runtime" {
      */
     find_closest_logistic_network_by_position(
       position: MapPosition | MapPositionArray,
-      force: ForceIdentification
+      force: ForceIdentification,
     ): LuaLogisticNetwork | nil
     /**
      * Finds all of the logistics networks whose construction area intersects with the given position.
@@ -24803,7 +24803,7 @@ declare module "factorio:runtime" {
      */
     find_logistic_networks_by_construction_area(
       position: MapPosition | MapPositionArray,
-      force: ForceIdentification
+      force: ForceIdentification,
     ): LuaLogisticNetwork[]
     /**
      * Place a deconstruction request.
@@ -24949,7 +24949,7 @@ declare module "factorio:runtime" {
       position: TilePosition | TilePositionArray,
       tiles: readonly string[],
       include_diagonal?: boolean,
-      area?: BoundingBoxWrite | BoundingBoxArray
+      area?: BoundingBoxWrite | BoundingBoxArray,
     ): TilePosition[]
     /**
      * ## Raised events
@@ -24968,7 +24968,7 @@ declare module "factorio:runtime" {
      */
     regenerate_entity(
       entities?: string | readonly string[],
-      chunks?: readonly (ChunkPosition | ChunkPositionArray)[]
+      chunks?: readonly (ChunkPosition | ChunkPositionArray)[],
     ): void
     /**
      * Regenerate autoplacement of some decoratives on this surface. This can be used to autoplace newly-added decoratives.
@@ -24979,7 +24979,7 @@ declare module "factorio:runtime" {
      */
     regenerate_decorative(
       decoratives?: string | readonly string[],
-      chunks?: readonly (ChunkPosition | ChunkPositionArray)[]
+      chunks?: readonly (ChunkPosition | ChunkPositionArray)[],
     ): void
     /**
      * Print text to the chat console of all players on this surface.
@@ -25360,7 +25360,7 @@ declare module "factorio:runtime" {
       prototype: EntityPrototypeIdentification,
       position: MapPosition | MapPositionArray,
       use_map_generation_bounding_box: boolean,
-      direction?: defines.direction
+      direction?: defines.direction,
     ): boolean
     /**
      * Whether the given decorative prototype collides at the given position and direction.
@@ -25377,7 +25377,7 @@ declare module "factorio:runtime" {
      */
     calculate_tile_properties(
       property_names: readonly string[],
-      positions: readonly (MapPosition | MapPositionArray)[]
+      positions: readonly (MapPosition | MapPositionArray)[],
     ): Record<string, double[]>
     /**
      * Returns all the military targets (entities with force) on this chunk for the given force.
