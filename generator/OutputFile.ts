@@ -27,9 +27,13 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
   private endStatements: ts.Statement[] = []
   private imports = new Map<string, Set<string>>()
 
-  constructor(private manualDefs: ManualDefinitions, public fileName: string, public moduleType: ModuleType) {}
+  constructor(
+    private manualDefs: ManualDefinitions,
+    public fileName: string,
+    public moduleType: ModuleType
+  ) {}
 
-  addImport(fromModule: string, importName: string): void {
+  addImport(fromModule: ModuleType, importName: string): void {
     if (fromModule === this.moduleType) return
     let imports = this.imports.get(fromModule)
     if (!imports) {
@@ -92,7 +96,7 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
     }
 
     const module =
-      this.moduleType === "global"
+      this.moduleType === ModuleType.Global
         ? createDeclareGlobal(this.statements)
         : createDeclareModule("factorio:" + this.moduleType, this.statements)
     result.push(module)

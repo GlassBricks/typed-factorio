@@ -33,7 +33,7 @@ export function generateEvents(context: RuntimeGenerationContext): void {
         heritageClause,
         event.data.sort(byOrder).map((p) => {
           if (p.name === "name" && event.name !== "CustomInputEvent") {
-            p.type = "typeof " + p.type + "." + event.name
+            p.type = `typeof ${p.type as string}.${event.name}`
           }
           return mapParameterToProperty(context, p, name, RWUsage.Read, existing).mainProperty
         })

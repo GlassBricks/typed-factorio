@@ -86,7 +86,10 @@ export class ManualDefinitions {
   addAfter = new Map<string, ts.Statement[]>()
   addTo = new Map<string, ts.Statement[]>()
 
-  constructor(readonly map: Map<string, RootDef>, manualDefsSource: ts.SourceFile) {
+  constructor(
+    readonly map: Map<string, RootDef>,
+    manualDefsSource: ts.SourceFile
+  ) {
     for (const def of this.map.values()) {
       const addBefore = def.annotations.addBefore?.[0]
       const addAfter = def.annotations.addAfter?.[0]
