@@ -23,14 +23,14 @@ declare module "factorio:common" {
      */
     readonly raw: {
       readonly [T in keyof M]: {
-        readonly [name: string]: M[T] | undefined
+        readonly [name in string]?: M[T]
       }
     }
 
     /**
      * Add additional prototypes.
      */
-    extend(prototypes: readonly AnyPrototype<M>[]): void
+    extend<P extends AnyPrototype<M>>(prototypes: readonly P[]): void
   }
 
   export interface SettingsGlobal {

@@ -43,7 +43,7 @@ export function maybeRecordInlineConceptReference(
 
     if (context.inlineConceptReferences.has(name)) {
       context.warning(
-        `${property.type} inline concept referenced by ${sourceType}.${
+        `${concept.name} inline concept referenced by ${sourceType}.${
           property.name
         } and ${context.inlineConceptReferences.get(name)}`
       )
@@ -74,7 +74,7 @@ function generateTypeDeclaration(
   context: PrototypeGenerationContext,
   existing: InterfaceDef | TypeAliasDef | undefined
 ) {
-  const properties = concept.properties?.sort(byOrder).flatMap((p) => mapProperty(context, p, concept.name))
+  const properties = concept.properties?.sort(byOrder).flatMap((p) => mapProperty(context, p, concept.name, existing))
 
   const heritageClauses = getConceptHeritageClauses(context, concept)
   const { type, description } = mapPrototypeConcept(context, concept.type, properties, existing)

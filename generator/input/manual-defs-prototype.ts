@@ -14,3 +14,9 @@ export type CollisionMaskLayer = `layer-${bigint}`
 
 /** @replace */
 export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
+
+interface PrototypeMap {}
+
+interface PrototypeBase {
+  readonly type: keyof PrototypeMap
+}

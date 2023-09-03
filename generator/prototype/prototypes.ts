@@ -9,6 +9,7 @@ import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./prope
 import { maybeRecordInlineConceptReference } from "./concepts.js"
 import { mapPrototypeType } from "../types.js"
 import assert from "assert"
+import { InterfaceDef } from "../manualDefinitions.js"
 
 export function preprocessPrototypes(context: PrototypeGenerationContext): void {
   for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
@@ -18,6 +19,7 @@ export function preprocessPrototypes(context: PrototypeGenerationContext): void 
       maybeRecordInlineConceptReference(context, prototype.name, property)
     }
   }
+  context.references.set("PrototypeMap", "PrototypeMap")
 }
 
 export function generatePrototypes(context: PrototypeGenerationContext): void {
@@ -30,7 +32,8 @@ export function generatePrototypes(context: PrototypeGenerationContext): void {
 }
 
 function generatePrototype(context: PrototypeGenerationContext, prototype: Prototype): void {
-  const members = getMembers(context, prototype)
+  const existing = context.manualDefs.getInterface(prototype.name)
+  const members = getMembers(context, prototype, existing)
   const heritageClauses = getPrototypeHeritageClauses(prototype, context)
 
   let mainDeclName = prototype.name
@@ -68,8 +71,14 @@ function generatePrototype(context: PrototypeGenerationContext, prototype: Proto
   context.currentFile.add(mainDecl)
 }
 
-function getMembers(context: PrototypeGenerationContext, prototype: Prototype): ts.TypeElement[] {
-  const properties = prototype.properties.sort(byOrder).flatMap((p) => mapProperty(context, p, prototype.name))
+function getMembers(
+  context: PrototypeGenerationContext,
+  prototype: Prototype,
+  existing: InterfaceDef | undefined
+): ts.TypeElement[] {
+  const properties = prototype.properties
+    .sort(byOrder)
+    .flatMap((p) => mapProperty(context, p, prototype.name, existing))
 
   if (prototype.typename) {
     const existingTypeProperty = properties.findIndex(

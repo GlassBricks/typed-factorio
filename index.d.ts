@@ -18,7 +18,7 @@ and factorio:runtime modules.
 /// <reference path="runtime/generated/index-types.d.ts" />
 /// <reference path="runtime/pairs.d.ts" />
 
-// <reference path="lualib/index.d.ts" />
+/// <reference path="lualib/index.d.ts" />
 
 // common globals
 /// <reference path="common/serpent.d.ts" />

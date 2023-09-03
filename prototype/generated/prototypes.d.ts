@@ -7302,7 +7302,7 @@ declare module "factorio:prototype" {
      * For a list of all types used in vanilla, see {@linkplain https://wiki.factorio.com/Data.raw data.raw}.
      * @see {@link https://lua-api.factorio.com/1.1.89/prototypes/PrototypeBase.html#type Online documentation}
      */
-    readonly type: string
+    readonly type: keyof PrototypeMap
     /**
      * Unique textual identification of the prototype. May not contain a dot, nor exceed a length of 200 characters.
      *

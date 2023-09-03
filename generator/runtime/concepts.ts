@@ -94,6 +94,8 @@ export function generateConcepts(context: RuntimeGenerationContext): void {
     for (const concept of context.apiDocs.concepts) {
       generateConcept(context, concept)
     }
+    // manually added imports for now
+    context.currentFile.addImport("common", "VersionString")
   })
 }
 

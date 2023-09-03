@@ -5,22 +5,41 @@ import { mapPrototypeType } from "../types.js"
 import { Modifiers, Tokens, Types } from "../genUtil.js"
 import { addJsDoc } from "../documentation.js"
 import { maybeRecordInlineConceptReference } from "./concepts.js"
+import { InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
+import assert from "assert"
 
 export function mapProperty(
   context: PrototypeGenerationContext,
   property: Property,
-  parentName: string
+  parentName: string,
+  existingContainer: InterfaceDef | TypeAliasDef | undefined
 ): ts.TypeElement[] {
   const { type, description } = mapPrototypeType(context, property.type)
 
-  const isInline = maybeRecordInlineConceptReference(context, parentName, property, false)
+  let mainProperty: ts.PropertySignature
 
-  const mainProperty = ts.factory.createPropertySignature(
-    property.name === "type" ? [Modifiers.readonly] : undefined,
-    property.name,
-    property.optional ? Tokens.question : undefined,
-    type
-  )
+  const existingMembers = existingContainer?.members[property.name]
+  let existing: ts.PropertySignature | undefined
+  if (existingMembers) {
+    assert.ok(existingMembers.length === 1 && ts.isPropertySignature(existingMembers[0]))
+    existing = existingMembers[0]
+    mainProperty = ts.factory.createPropertySignature(
+      existing.modifiers,
+      existing.name,
+      existing.questionToken,
+      existing.type ?? type
+    )
+    ts.setEmitFlags(mainProperty, ts.EmitFlags.NoNestedComments)
+  } else {
+    mainProperty = ts.factory.createPropertySignature(
+      property.name === "type" ? [Modifiers.readonly] : undefined,
+      property.name,
+      property.optional ? Tokens.question : undefined,
+      type
+    )
+  }
+
+  const isInline = maybeRecordInlineConceptReference(context, parentName, property, false)
   addJsDoc(context, mainProperty, property, parentName + "." + property.name, {
     post: description,
     allowEmpty: isInline,

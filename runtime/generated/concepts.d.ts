@@ -2,6 +2,8 @@
 
 /** @noSelfInFile */
 
+import type { VersionString } from "factorio:common"
+
 /**
  * @noResolution
  */
@@ -30,7 +32,7 @@ declare module "factorio:runtime" {
    * {"?", {"", {"entity-description.furnace"}, "\n"}, {"item-description.furnace"}, "optional fallback"}
    * @see {@link https://lua-api.factorio.com/1.1.89/concepts.html#LocalisedString Online documentation}
    */
-  export type LocalisedString = import("factorio:prototype").LocalisedString | LuaObject
+  export type LocalisedString = string | number | boolean | LuaObject | nil | [string, ...LocalisedString[]]
   export interface DisplayResolution {
     readonly width: uint
     readonly height: uint
@@ -4032,21 +4034,21 @@ declare module "factorio:runtime" {
     /**
      * Old version of the mod. May be `nil` if the mod wasn't previously present (i.e. it was just added).
      */
-    readonly old_version: string | nil
+    readonly old_version: VersionString | nil
     /**
      * New version of the mod. May be `nil` if the mod is no longer present (i.e. it was just removed).
      */
-    readonly new_version: string | nil
+    readonly new_version: VersionString | nil
   }
   export interface ConfigurationChangedData {
     /**
      * Old version of the map. Present only when loading map version other than the current version.
      */
-    readonly old_version?: string
+    readonly old_version?: VersionString
     /**
      * New version of the map. Present only when loading map version other than the current version.
      */
-    readonly new_version?: string
+    readonly new_version?: VersionString
     /**
      * Dictionary of mod changes. It is indexed by mod name.
      */

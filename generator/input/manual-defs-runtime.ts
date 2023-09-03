@@ -2,7 +2,7 @@
 /// <reference path="../../prototype/generated/types.d.ts" />
 // noinspection JSUnusedGlobalSymbols
 
-import { ActiveMods } from "factorio:common"
+import { ActiveMods, VersionString } from "factorio:common"
 import { PrototypeMap } from "factorio:prototype"
 
 export interface LuaObject {
@@ -438,6 +438,15 @@ export interface EventData {
 
 export interface CustomInputEvent {}
 
+export interface ModChangeData {
+  readonly old_version: VersionString | nil
+  readonly new_version: VersionString | nil
+}
+export interface ConfigurationChangedData {
+  readonly old_version?: VersionString
+  readonly new_version?: VersionString
+}
+
 /** @addTo concepts */
 /** An event id. */
 export type EventId<T extends object, F = unknown> = uint & {
@@ -514,8 +523,8 @@ export interface LuaSettings {
 
 //  -- Concepts --
 
-/** @replace */
-export type LocalisedString = import("factorio:prototype").LocalisedString | LuaObject
+/** @unionReplace array */
+export type LocalisedString = [string, ...LocalisedString[]]
 
 export interface RealOrientation {}
 
