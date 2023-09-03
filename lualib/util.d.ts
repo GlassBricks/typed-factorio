@@ -2,7 +2,26 @@
 
 /** @noResolution */
 declare module "util" {
-  import { Color, ColorArray, LuaEntity, MapPosition, MapPositionArray, nil, table } from "factorio:runtime"
+  import {
+    ColorArray as RColorArray,
+    float,
+    LuaEntity,
+    MapPosition,
+    MapPositionArray,
+    nil,
+    table,
+  } from "factorio:runtime"
+  import { Color as PrototypeColor, SpriteParameters } from "factorio:prototype"
+  import { PrototypeData } from "factorio:common"
+
+  type ColorArray = [r: float, g: float, b: float, a?: float]
+  interface ColorTable {
+    r: float
+    g: float
+    b: float
+    a?: float
+  }
+  type AnyColor = PrototypeColor | RColorArray
   namespace table {
     function deepcopy<T>(table: T): T
 
@@ -18,24 +37,23 @@ declare module "util" {
   function formattime(ticks: number): string
 
   /** Supports 'rrggbb', 'rgb', 'rrggbbaa', 'rgba', 'ww', 'w' */
-  function color(hex: string): Color
+  function color(hex: string): ColorTable
 
-  function premul_color(color: Color): Color
+  function premul_color(color: AnyColor): ColorTable
 
-  function mix_color(c1: Color, c2: Color): ColorArray
+  function mix_color(c1: AnyColor, c2: AnyColor): ColorArray
 
-  function multiply_color(c1: Color, n: number): ColorArray
+  function multiply_color(c1: AnyColor, n: number): ColorArray
+
+  function get_color_with_alpha(color: AnyColor, alpha: number, normalized_alpha?: boolean): ColorTable
+
+  const direction_vectors: Record<defines.direction, MapPositionArray>
 
   function moveposition(
     position: MapPositionArray,
-    direction: defines.direction.north | defines.direction.east | defines.direction.south | defines.direction.west,
+    direction: defines.direction.north,
     distance: number
   ): MapPositionArray
-  function moveposition(
-    position: MapPositionArray,
-    direction: defines.direction,
-    distance: number
-  ): MapPositionArray | nil
 
   function oppositedirection(direction: defines.direction): defines.direction
 
@@ -48,22 +66,30 @@ declare module "util" {
   /** Gets tile position by pixel, hr */
   function by_pixel_hr(x: number, y: number): MapPositionArray
 
-  // omitted: foreach_sprite_definition
+  type SpriteWithHrVersion<T = unknown> = T & SpriteParameters & { hr_version?: SpriteParameters & T }
+
+  function foreach_sprite_definition<T extends SpriteWithHrVersion>(
+    sprite: T,
+    fun: (sprite: T & T["hr_version"]) => void
+  ): void
 
   function add_shift(a: MapPositionArray | nil, b: MapPositionArray): MapPositionArray
   function add_shift(a: MapPositionArray, b: MapPositionArray | nil): MapPositionArray
   function add_shift(a: MapPositionArray | nil, b: MapPositionArray | nil): MapPositionArray | nil
 
-  // omitted: add_shift_offset
+  function add_shift_offset<T extends SpriteWithHrVersion<{ shift?: MapPositionArray }>>(
+    offset: MapPositionArray | nil,
+    sprite: T
+  ): T
 
   function mul_shift(shift: MapPositionArray, scale: number | nil): MapPositionArray
   function mul_shift(shift: MapPositionArray | nil, scale: number | nil): MapPositionArray | nil
 
   function format_number(amount: number, append_suffix?: boolean): string
 
-  function increment(t: number[], index: number, v?: number): void
+  function increment(t: number[], luaIndex: number, v?: number): void
 
-  // omitted: conditional_return
+  // Omitted: conditional_return; it's literally just `a and b`
 
   /**
    * Recursively merges and/or deep-copies tables. Entries in later tables override entries in earlier ones, unless both
@@ -78,37 +104,44 @@ declare module "util" {
 
   function split_whitespace(string: string): string[]
 
-  // omitted: split, string_starts_with. already TS functions for that
+  // Omitted: split, string_starts_with. Use the builtin tstl functions for that.
 
-  // omitted: online_players. use game.connected_players
+  // Omitted: online_players. Use game.connected_players
+  // The lua code actually logs "But why?" if you do this...
 
   function clamp(x: number, lower: number, upper: number): number
 
   function get_walkable_tile(): string
 
-  // omitted: combine_icons
+  /**
+   * This function takes 2 icons tables, and adds the second to the first, but applies scale, shift and tint to the entire second set.
+   * This allows you to manipulate the entire second icons table in the same way as you would manipulate a single icon when adding to the icons table.
+   */
+  function combine_icons<T extends SpriteParameters>(
+    icons1: readonly T[],
+    icons2: readonly T[],
+    inputs: {
+      scale?: number
+      shift?: MapPositionArray
+      tint?: AnyColor
+    }
+  ): T[]
+
   // omitted: technology_icons. Create an issue if you really want to see these
 
   function parse_energy(energy: string): number
 
-  function product_amount(
-    product: {
-      probability: number
-    } & (
-      | {
-          amount: number
-        }
-      | {
-          amount_min: number
-          amount_max: number
-        }
-    )
-  ): number
+  function product_amount(product: {
+    probability: number
+    amount?: number
+    amount_min?: number
+    amount_max?: number
+  }): number
 
-  function empty_sprite(): object
+  function empty_sprite(): SpriteParameters
 
-  // omitted: draw_as_glow
-  // omitted: remove_tile_references
+  function draw_as_glow<T extends SpriteWithHrVersion>(sprite: T): T
+  function remove_tile_references(data: PrototypeData, array_of_tiles_to_remove: readonly string[]): void
 
   function remove_from_list<T>(list: T[], value: T): boolean
 
