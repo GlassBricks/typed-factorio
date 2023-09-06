@@ -20,3 +20,17 @@ interface PrototypeMap {}
 interface PrototypeBase {
   readonly type: keyof PrototypeMap
 }
+
+interface FluidBox {}
+
+interface CraftingMachinePrototype {
+  fluid_boxes?: FluidBox[] & {
+    /**
+     * TSTL tip: You can use `Object.assign()` to add properties to an array:
+     * ```
+     * fluid_boxes: Object.assign([a,b,c], {off_when_no_fluid_recipe: true})
+     * ```
+     */
+    off_when_no_fluid_recipe?: boolean
+  }
+}

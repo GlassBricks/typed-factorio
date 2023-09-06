@@ -92,7 +92,9 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
 
     // imports
     for (const [fromModule, importsSet] of this.imports) {
-      result.push(createSimpleImports([...importsSet].sort(), "factorio:" + fromModule))
+      const compareIgnoreCase = (a: string, b: string) => a.localeCompare(b, undefined, { sensitivity: "base" })
+      const imports = [...importsSet].sort(compareIgnoreCase)
+      result.push(createSimpleImports(imports, "factorio:" + fromModule))
     }
 
     const module =
