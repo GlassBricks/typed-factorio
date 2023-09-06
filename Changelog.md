@@ -1,3 +1,7 @@
+# v2.0.1
+
+- Added manual type definition for CraftingMachinePrototype.fluid_boxes. Thanks @Bilka2!
+
 # v2.0.0
 
 ## New features
@@ -7,7 +11,7 @@
 ## Breaking changes
 
 - With the addition of prototype stage types, types are no longer global. Instead, types are divided into the "virtual" modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`.
-  - The `defines` and `serpent` namespaces are still global.
+    - The `defines` and `serpent` namespaces are still global.
 - The placeholder types for the data and settings stage have been removed; see the README for how to add the full types.
 - The "strict index types" option is now always applied (no longer an opt-in feature).
 - The deprecated `Read` types have been removed.
