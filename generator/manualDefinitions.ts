@@ -88,7 +88,7 @@ export class ManualDefinitions {
 
   constructor(
     readonly map: Map<string, RootDef>,
-    manualDefsSource: ts.SourceFile
+    manualDefsSource: ts.SourceFile,
   ) {
     for (const def of this.map.values()) {
       const addBefore = def.annotations.addBefore?.[0]
@@ -259,7 +259,7 @@ function createDef(node: ts.Statement): AnyDef | undefined {
           throw new Error(
             `Element without property name in manual define for ${(node as ts.DeclarationStatement).name?.text}, type ${
               ts.SyntaxKind[node.kind]
-            }`
+            }`,
           )
         name =
           ts.isStringLiteral(propertyName) || ts.isNumericLiteral(propertyName)
@@ -314,7 +314,7 @@ export function checkManualDefinitions(context: GenerationContext): void {
         `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${
           hasAdd ? "has" : "does not have"
         } add annotation:`,
-        name
+        name,
       )
     }
   }
@@ -340,7 +340,7 @@ export function copyExistingDeclaration<T extends ts.TypeAliasDeclaration | ts.I
       node.name,
       node.typeParameters,
       node.heritageClauses,
-      node.members
+      node.members,
     ) as T
   }
 }

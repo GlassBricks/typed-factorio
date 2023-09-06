@@ -30,7 +30,7 @@ export class OutputFileBuilderImpl implements OutputFileBuilder {
   constructor(
     private manualDefs: ManualDefinitions,
     public fileName: string,
-    public moduleType: ModuleType
+    public moduleType: ModuleType,
   ) {}
 
   addImport(fromModule: ModuleType, importName: string): void {

@@ -3,20 +3,14 @@
     "strict": true,
     "target": "es2020",
     "module": "ESNext",
-    "lib": [
-      "esnext"
-    ],
+    "lib": ["esnext"],
     "skipLibCheck": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": [
-    "./**/*.ts"
-  ],
-  "exclude": [
-    "input"
-  ],
+  "include": ["./**/*.ts"],
+  "exclude": ["input"],
   "ts-node": {
     "files": true
   }
