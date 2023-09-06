@@ -87,7 +87,7 @@ export function generateIndexTypesFile(context: RuntimeGenerationContext): void 
             undefined,
             ts.factory.createIdentifier(`_${decapitalize(indexType.name)}Brand`),
             undefined,
-            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword)
+            ts.factory.createKeywordTypeNode(ts.SyntaxKind.VoidKeyword),
           ),
         ]),
       ])

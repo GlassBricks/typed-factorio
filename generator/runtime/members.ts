@@ -31,7 +31,7 @@ export function mapAttribute(
   context: RuntimeGenerationContext,
   attribute: Attribute,
   parent: string,
-  existingContainer: InterfaceDef | TypeAliasDef | undefined
+  existingContainer: InterfaceDef | TypeAliasDef | undefined,
 ): ts.TypeElement | ts.TypeElement[] {
   let member: ts.TypeElement | ts.TypeElement[]
   const type = mapMemberType(context, attribute, parent, attribute.type, getUsage(attribute))
@@ -49,10 +49,10 @@ export function mapAttribute(
           "value",
           undefined,
           attribute.optional ? makeNullable(type.mainType) : type.mainType,
-          undefined
+          undefined,
         ),
       ],
-      undefined
+      undefined,
     )
   } else if (type.altWriteType) {
     assert(attribute.read && attribute.write)
@@ -64,7 +64,7 @@ export function mapAttribute(
         undefined,
         attribute.name,
         [ts.factory.createParameterDeclaration(undefined, undefined, "value", undefined, altWriteType, undefined)],
-        undefined
+        undefined,
       ),
     ]
   } else {
@@ -72,7 +72,7 @@ export function mapAttribute(
       attribute.write ? undefined : [Modifiers.readonly],
       attribute.name,
       attribute.optional ? Tokens.question : undefined,
-      type.mainType
+      type.mainType,
     )
   }
   const first = Array.isArray(member) ? member[0] : member
@@ -85,7 +85,7 @@ function mergeAttributeWithExisting(
   parent: string,
   attribute: Attribute,
   type: RWType,
-  existing: ts.TypeElement[] | (ts.GetAccessorDeclaration | ts.SetAccessorDeclaration)[]
+  existing: ts.TypeElement[] | (ts.GetAccessorDeclaration | ts.SetAccessorDeclaration)[],
 ): ts.TypeElement | ts.TypeElement[] {
   let result: ts.TypeElement | ts.TypeElement[]
   const firstDecl = existing[0]
@@ -98,7 +98,7 @@ function mergeAttributeWithExisting(
         firstDecl.modifiers,
         firstDecl.name,
         firstDecl.questionToken,
-        firstDecl.type ?? type.mainType
+        firstDecl.type ?? type.mainType,
       )
       ts.setEmitFlags(result, ts.EmitFlags.NoNestedComments)
     }
@@ -112,7 +112,7 @@ function mergeAttributeWithExisting(
           element.name,
           element.parameters,
           element.type ?? type.mainType,
-          undefined
+          undefined,
         )
         ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
         result.push(newMember)
@@ -122,7 +122,7 @@ function mergeAttributeWithExisting(
           element.modifiers,
           element.name,
           element.parameters,
-          undefined
+          undefined,
         )
         ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
         result.push(newMember)
@@ -132,7 +132,7 @@ function mergeAttributeWithExisting(
     throw new Error(
       `Unknown type for manual define for ${parent}.${attribute.name}, got kinds ${existing
         .map((x) => ts.SyntaxKind[x.kind])
-        .join()} instead`
+        .join()} instead`,
     )
   }
   return result
@@ -140,7 +140,7 @@ function mergeAttributeWithExisting(
   function mergePropertyWithReadWriteType(property: ts.PropertySignature) {
     if (property.type) {
       context.warning(
-        `Attribute ${parent}.${attribute.name} has different read/write type, but manually defined as one type.`
+        `Attribute ${parent}.${attribute.name} has different read/write type, but manually defined as one type.`,
       )
     }
     return [
@@ -149,7 +149,7 @@ function mergeAttributeWithExisting(
         undefined,
         attribute.name,
         [ts.factory.createParameterDeclaration(undefined, undefined, "value", undefined, type.altWriteType)],
-        undefined
+        undefined,
       ),
     ]
   }
@@ -160,7 +160,7 @@ export function mapParameterToProperty(
   parameter: Parameter,
   parent: string,
   usage: RWUsage,
-  existingContainer?: InterfaceDef | TypeAliasDef
+  existingContainer?: InterfaceDef | TypeAliasDef,
 ): { mainProperty: ts.PropertySignature; altWriteProperty?: ts.PropertySignature } {
   const existingProperty = existingContainer?.members[parameter.name]?.[0]
   if (existingProperty) {
@@ -168,7 +168,7 @@ export function mapParameterToProperty(
       throw new Error(
         `Manual define for ${parent}.${parameter.name} should be a property signature, got ${
           ts.SyntaxKind[existingProperty.kind]
-        } instead`
+        } instead`,
       )
     }
     addJsDoc(context, existingProperty, parameter, undefined)
@@ -181,7 +181,7 @@ export function mapParameterToProperty(
         [Modifiers.readonly],
         escapePropertyName(parameter.name),
         parameter.optional ? Tokens.question : undefined,
-        typeNode
+        typeNode,
       )
       addJsDoc(context, result, parameter, undefined)
       return result
@@ -198,7 +198,7 @@ export function mapMethod(
   context: RuntimeGenerationContext,
   method: Method,
   parent: string,
-  existingContainer: InterfaceDef | TypeAliasDef | undefined
+  existingContainer: InterfaceDef | TypeAliasDef | undefined,
 ): ts.MethodSignature[] {
   const existingMethods = existingContainer?.members[method.name]
   const firstExistingMethod = existingMethods?.[0]
@@ -220,7 +220,7 @@ export function mapMethod(
         undefined,
         "params",
         method.table_is_optional ? Tokens.question : undefined,
-        type
+        type,
       ),
     ]
   } else {
@@ -236,7 +236,7 @@ export function mapMethod(
   const signatures: ts.MethodSignature[] = []
   if (!existingMethods || existingMethods?.some((m) => getAnnotations(m).overload)) {
     signatures.push(
-      ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType)
+      ts.factory.createMethodSignature(undefined, method.name, undefined, undefined, parameters, returnType),
     )
   }
   if (existingMethods) {
@@ -249,11 +249,11 @@ export function mapMethod(
           m.questionToken,
           m.typeParameters,
           existingHasParameters ? m.parameters : parameters,
-          m.type ?? returnType
+          m.type ?? returnType,
         )
         ts.setEmitFlags(member.name, ts.EmitFlags.NoComments)
         return member
-      })
+      }),
     )
   }
   const firstSignature = getFirst(signatures)
@@ -271,7 +271,7 @@ export function mapFunction(context: RuntimeGenerationContext, method: Method): 
     undefined,
     parameters,
     returnType,
-    undefined
+    undefined,
   )
   addMethodJSDoc(context, func, method, method.name)
   return func
@@ -283,7 +283,7 @@ function getParameters(context: RuntimeGenerationContext, method: Method, thisPa
     const type = ts.factory.createTypeLiteralNode(
       method.parameters
         .sort(byOrder)
-        .map((m) => mapParameterToProperty(context, m, thisPath, RWUsage.Write).mainProperty)
+        .map((m) => mapParameterToProperty(context, m, thisPath, RWUsage.Write).mainProperty),
     )
     parameters = [
       ts.factory.createParameterDeclaration(
@@ -291,7 +291,7 @@ function getParameters(context: RuntimeGenerationContext, method: Method, thisPa
         undefined,
         "params",
         method.table_is_optional ? Tokens.question : undefined,
-        type
+        type,
       ),
     ]
   } else {
@@ -305,7 +305,7 @@ function getParameters(context: RuntimeGenerationContext, method: Method, thisPa
         value: method.variadic_type,
       },
       thisPath,
-      RWUsage.Write
+      RWUsage.Write,
     ).mainType
     parameters.push(ts.factory.createParameterDeclaration(undefined, Tokens.dotDotDot, "args", undefined, type))
   }
@@ -323,7 +323,7 @@ function getReturnType(context: RuntimeGenerationContext, method: Method, parent
       },
       parent,
       type.type,
-      RWUsage.Read
+      RWUsage.Read,
     ).mainType
     return type.optional ? makeNullable(result) : result
   }
@@ -343,7 +343,7 @@ function addMethodJSDoc(
   node: ts.Node,
   method: Method,
   thisPath: string,
-  additionalDescription?: string
+  additionalDescription?: string,
 ): void {
   const tags = []
   if (!method.takes_table) {
@@ -358,9 +358,9 @@ function addMethodJSDoc(
             false,
             undefined,
             undefined,
-            processDescription(context, p.description)
-          )
-        )
+            processDescription(context, p.description),
+          ),
+        ),
     )
   }
 
@@ -370,14 +370,14 @@ function addMethodJSDoc(
         ts.factory.createJSDocReturnTag(
           undefined,
           undefined,
-          processDescription(context, method.return_values[0].description)
-        )
+          processDescription(context, method.return_values[0].description),
+        ),
       )
   } else if (method.return_values.length > 1) {
     tags.push(
       ...method.return_values.map((r) =>
-        ts.factory.createJSDocReturnTag(undefined, undefined, processDescription(context, r.description))
-      )
+        ts.factory.createJSDocReturnTag(undefined, undefined, processDescription(context, r.description)),
+      ),
     )
   }
   addJsDoc(context, node, method, thisPath, { tags, post: additionalDescription })
@@ -386,7 +386,7 @@ function addMethodJSDoc(
 function mapParameterToParameter(
   context: RuntimeGenerationContext,
   parameter: Parameter,
-  parent: string
+  parent: string,
 ): ts.ParameterDeclaration {
   const type = mapMemberType(context, parameter, parent, parameter.type, RWUsage.Write).mainType
   return ts.factory.createParameterDeclaration(
@@ -394,7 +394,7 @@ function mapParameterToParameter(
     undefined,
     escapeParameterName(parameter.name),
     parameter.optional ? Tokens.question : undefined,
-    type
+    type,
   )
 }
 

@@ -10,10 +10,10 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
   types = new Map<string, PrototypeConcept>(this.apiDocs.types.map((e) => [e.name, e]))
 
   prototypeProperties = new Map<string, Map<string, Property>>(
-    this.apiDocs.prototypes.map((e) => [e.name, new Map(e.properties.map((p) => [p.name, p]))])
+    this.apiDocs.prototypes.map((e) => [e.name, new Map(e.properties.map((p) => [p.name, p]))]),
   )
   conceptProperties = new Map<string, Map<string, Property>>(
-    this.apiDocs.types.map((e) => [e.name, new Map(e.properties?.map((p) => [p.name, p]))])
+    this.apiDocs.types.map((e) => [e.name, new Map(e.properties?.map((p) => [p.name, p]))]),
   )
 
   inlineConceptReferences = new Map<string, string>()

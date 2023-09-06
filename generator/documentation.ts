@@ -71,7 +71,7 @@ function mapLink(context: GenerationContext, origLink: string): string | undefin
 export function processDescription(
   context: GenerationContext,
   description: string | undefined,
-  normalizeNewlines = true
+  normalizeNewlines = true,
 ): string | undefined {
   if (!description) return undefined
   let result = ""
@@ -182,7 +182,7 @@ export function addJsDoc<T extends ts.Node>(
     post?: string
     tags?: ts.JSDocTag[]
     allowEmpty?: boolean
-  } = {}
+  } = {},
 ): T {
   const onlineDocUrl = onlineReferenceName && context.getOnlineDocUrl(onlineReferenceName)
 

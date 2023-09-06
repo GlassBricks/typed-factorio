@@ -12,7 +12,7 @@ export function maybeRecordInlineConceptReference(
   context: PrototypeGenerationContext,
   sourceType: string,
   property: Property,
-  record = true
+  record = true,
 ): boolean {
   return visitType(property.type)
 
@@ -45,7 +45,7 @@ export function maybeRecordInlineConceptReference(
       context.warning(
         `${concept.name} inline concept referenced by ${sourceType}.${
           property.name
-        } and ${context.inlineConceptReferences.get(name)}`
+        } and ${context.inlineConceptReferences.get(name)}`,
       )
     }
     context.inlineConceptReferences.set(name, `${sourceType}.${property.name}`)
@@ -72,7 +72,7 @@ export function generateTypes(context: PrototypeGenerationContext): void {
 function generateTypeDeclaration(
   concept: PrototypeConcept,
   context: PrototypeGenerationContext,
-  existing: InterfaceDef | TypeAliasDef | undefined
+  existing: InterfaceDef | TypeAliasDef | undefined,
 ) {
   const properties = concept.properties?.sort(byOrder).flatMap((p) => mapProperty(context, p, concept.name, existing))
 
@@ -132,7 +132,7 @@ function generateBuiltinType(context: PrototypeGenerationContext, concept: Proto
 
 function getConceptHeritageClauses(
   context: PrototypeGenerationContext,
-  concept: PrototypeConcept
+  concept: PrototypeConcept,
 ): ts.HeritageClause[] | undefined {
   if (!concept.parent) return
   const overridenAttributes = getOverridenAttributes(context, concept, context.types, context.conceptProperties)

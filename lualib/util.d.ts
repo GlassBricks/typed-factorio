@@ -52,7 +52,7 @@ declare module "util" {
   function moveposition(
     position: MapPositionArray,
     direction: defines.direction.north,
-    distance: number
+    distance: number,
   ): MapPositionArray
 
   function oppositedirection(direction: defines.direction): defines.direction
@@ -70,7 +70,7 @@ declare module "util" {
 
   function foreach_sprite_definition<T extends SpriteWithHrVersion>(
     sprite: T,
-    fun: (sprite: T & T["hr_version"]) => void
+    fun: (sprite: T & T["hr_version"]) => void,
   ): void
 
   function add_shift(a: MapPositionArray | nil, b: MapPositionArray): MapPositionArray
@@ -79,7 +79,7 @@ declare module "util" {
 
   function add_shift_offset<T extends SpriteWithHrVersion<{ shift?: MapPositionArray }>>(
     offset: MapPositionArray | nil,
-    sprite: T
+    sprite: T,
   ): T
 
   function mul_shift(shift: MapPositionArray, scale: number | nil): MapPositionArray
@@ -124,7 +124,7 @@ declare module "util" {
       scale?: number
       shift?: MapPositionArray
       tint?: AnyColor
-    }
+    },
   ): T[]
 
   // omitted: technology_icons. Create an issue if you really want to see these

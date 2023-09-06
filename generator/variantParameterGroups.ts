@@ -12,7 +12,7 @@ export function createVariantParameterTypes(
   context: RuntimeGenerationContext,
   name: string,
   value: WithVariantParameterGroups,
-  usage: RWUsage
+  usage: RWUsage,
 ): {
   declarations: [mainType: ts.TypeAliasDeclaration, altWriteType?: ts.TypeAliasDeclaration]
   description: string
@@ -41,7 +41,7 @@ export function createVariantParameterTypes(
       baseName,
       undefined,
       undefined,
-      baseProperties.map((g) => g.member.mainProperty)
+      baseProperties.map((g) => g.member.mainProperty),
     )
     if (baseHasAttributes) {
       addJsDoc(
@@ -50,7 +50,7 @@ export function createVariantParameterTypes(
         {
           description: `Common attributes to all variants of {@link ${name}}.`,
         },
-        undefined
+        undefined,
       )
     }
     context.currentFile.add(baseDeclaration)
@@ -84,7 +84,7 @@ export function createVariantParameterTypes(
           undefined,
           isOtherTypes
             ? ts.factory.createUnionTypeNode(Array.from(variants!).map(variantToTypeNode))
-            : variantToTypeNode(group.name)
+            : variantToTypeNode(group.name),
         )
       }
       declarations = []
@@ -100,8 +100,8 @@ export function createVariantParameterTypes(
           variantName,
           undefined,
           createExtendsClause(baseName),
-          readMembers
-        )
+          readMembers,
+        ),
       )
 
       if (properties.some((p) => p.altWriteProperty)) {
@@ -114,8 +114,8 @@ export function createVariantParameterTypes(
             variantName + "Write",
             undefined,
             createExtendsClause(baseName),
-            writeMembers
-          )
+            writeMembers,
+          ),
         )
         writeTypeNames.push(variantName + "Write")
       } else {
@@ -139,8 +139,8 @@ export function createVariantParameterTypes(
     ts.factory.createUnionTypeNode(
       value
         .variant_parameter_groups!.map((x) => variantToTypeName(x.name))
-        .map((x) => ts.factory.createTypeReferenceNode(x))
-    )
+        .map((x) => ts.factory.createTypeReferenceNode(x)),
+    ),
   )
   resultDeclarations.push(unionDeclaration)
 
@@ -150,7 +150,7 @@ export function createVariantParameterTypes(
       [Modifiers.export],
       name + "Write",
       undefined,
-      ts.factory.createUnionTypeNode(writeTypeNames.map((x) => ts.factory.createTypeReferenceNode(x)))
+      ts.factory.createUnionTypeNode(writeTypeNames.map((x) => ts.factory.createTypeReferenceNode(x))),
     )
     resultDeclarations.push(writeUnionDeclaration)
   }
@@ -206,7 +206,7 @@ function getAllVariants(
     original: Parameter
     member: { mainProperty: ts.PropertySignature }
   }[],
-  name: string
+  name: string,
 ): {
   discriminantProperty?: string
   variants?: Set<string>
@@ -249,7 +249,7 @@ function getAllVariants(
 export function tryGetStringEnumType(
   context: RuntimeGenerationContext,
   apiType: Type,
-  tsType: ts.TypeNode
+  tsType: ts.TypeNode,
 ): string[] | undefined {
   if (typeof apiType === "string") {
     const result = tryGetStringUnionValuesFromConcept(context, apiType)
@@ -266,7 +266,7 @@ export function tryGetStringEnumType(
 
 function tryGetStringUnionValuesFromConcept(
   context: RuntimeGenerationContext,
-  conceptName: string
+  conceptName: string,
 ): string[] | undefined {
   const concept = context.concepts.get(conceptName)
   if (!concept) return undefined
@@ -285,7 +285,7 @@ function tryGetStringUnionValuesFromConcept(
 }
 function tryGetStringUnionValuesFromTsType(
   context: RuntimeGenerationContext,
-  typeNode: ts.TypeNode
+  typeNode: ts.TypeNode,
 ): string[] | undefined {
   if (ts.isUnionTypeNode(typeNode)) {
     if (typeNode.types.some((t) => !ts.isLiteralTypeNode(t) || !ts.isStringLiteral(t.literal))) return undefined
@@ -307,7 +307,7 @@ function tryGetStringUnionValuesFromTsType(
 function addOtherVariant(
   context: RuntimeGenerationContext,
   variants: WithVariantParameterGroups,
-  allVariants: Set<string> | undefined
+  allVariants: Set<string> | undefined,
 ): void {
   const otherTypes = variants.variant_parameter_groups!.find((x) => x.name === "Other types")
   if (otherTypes) {

@@ -54,7 +54,7 @@ interface MemberAndOriginal {
 function generateClass(
   context: RuntimeGenerationContext,
   clazz: Class,
-  existing: InterfaceDef | TypeAliasDef | undefined
+  existing: InterfaceDef | TypeAliasDef | undefined,
 ) {
   const superTypes = getSupertypes()
   const arrayType = getArrayType()
@@ -74,8 +74,8 @@ function generateClass(
     if (clazz.base_classes) {
       supertypes.push(
         ...clazz.base_classes.map((b) =>
-          ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(b), undefined)
-        )
+          ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(b), undefined),
+        ),
       )
     }
     if (existing) {
@@ -86,8 +86,8 @@ function generateClass(
           ...existing.supertypes.map((t) =>
             ts.isTypeReferenceNode(t)
               ? ts.factory.createExpressionWithTypeArguments(t.typeName as ts.Identifier, t.typeArguments)
-              : t
-          )
+              : t,
+          ),
         )
       } else {
         assertNever(existing)
@@ -99,7 +99,7 @@ function generateClass(
   function getArrayType() {
     if (existing?.kind !== "interface") return
     const arrayExtend = existing.supertypes.find(
-      (t) => ts.isIdentifier(t.expression) && (t.expression.text === "Array" || t.expression.text === "ReadonlyArray")
+      (t) => ts.isIdentifier(t.expression) && (t.expression.text === "Array" || t.expression.text === "ReadonlyArray"),
     )
     if (!arrayExtend) return
     const type = arrayExtend.typeArguments?.[0]
@@ -117,11 +117,11 @@ function generateClass(
         ts.factory.createIndexSignature(
           arrayType.readonly ? [Modifiers.readonly] : undefined,
           [ts.factory.createParameterDeclaration(undefined, undefined, "index", undefined, Types.number, undefined)],
-          arrayType.type
+          arrayType.type,
         ),
         indexOperator,
         clazz.name + ".index_operator",
-        undefined
+        undefined,
       )
       members.push({ original: indexOperator, member: indexSignature })
       return
@@ -138,7 +138,7 @@ function generateClass(
         [Modifiers.export],
         shortName + "Indexer",
         existing.node.typeParameters,
-        addJsDoc(context, existingIndexOp, indexOperator, clazz.name + ".index_operator", undefined)
+        addJsDoc(context, existingIndexOp, indexOperator, clazz.name + ".index_operator", undefined),
       )
     }
     if (ts.isTypeLiteralNode(existingIndexOp)) {
@@ -147,7 +147,7 @@ function generateClass(
         existingIndexOp.members[0] as ts.IndexSignatureDeclaration,
         indexOperator,
         clazz.name + ".index_operator",
-        undefined
+        undefined,
       )
       return ts.factory.createInterfaceDeclaration([Modifiers.export], shortName + "Indexer", undefined, undefined, [
         indexSignature,
@@ -161,7 +161,7 @@ function generateClass(
       ...clazz.methods.sort(byOrder).map((method) => ({
         original: method,
         member: mapMethod(context, method, clazz.name, existing),
-      }))
+      })),
     )
 
     const callOperator = clazz.operators.find((x) => x.name === "call") as CallOperator | undefined
@@ -174,7 +174,7 @@ function generateClass(
           name: "call_operator",
         },
         clazz.name,
-        existing
+        existing,
       )
       const callSignature = ts.factory.createCallSignature(undefined, asMethod.parameters, asMethod.type)
       ts.setSyntheticLeadingComments(callSignature, ts.getSyntheticLeadingComments(asMethod))
@@ -191,11 +191,11 @@ function generateClass(
           [Modifiers.readonly],
           "length",
           undefined,
-          arrayType ? type : ts.factory.createTypeReferenceNode("LuaLengthMethod", [type])
+          arrayType ? type : ts.factory.createTypeReferenceNode("LuaLengthMethod", [type]),
         ),
         lengthOperator,
         clazz.name + ".length_operator",
-        undefined
+        undefined,
       )
       members.push({ original: lengthOperator, member: lengthProperty })
     }
@@ -206,7 +206,7 @@ function generateClass(
       ...clazz.attributes.sort(byOrder).map((attr) => ({
         original: attr,
         member: mapAttribute(context, attr, clazz.name, existing),
-      }))
+      })),
     )
   }
   function checkManuallyDefined() {
@@ -259,7 +259,7 @@ function generateClass(
           member.modifiers,
           member.name,
           member.questionToken,
-          Types.stringLiteral(clazz.name)
+          Types.stringLiteral(clazz.name),
         )
       }
       members.push(standardMembers.object_name)
@@ -309,7 +309,7 @@ function generateClass(
               memberNode.modifiers,
               memberNode.name,
               memberNode.questionToken,
-              Types.stringLiteral(type)
+              Types.stringLiteral(type),
             ),
             original: property.original,
           },
@@ -368,7 +368,7 @@ function generateClass(
           throw new Error(
             `Subclass restriction ${subclass} (${mapName}) for ${clazz.name}.${
               original.name
-            } does not fit subclass types: ${Array.from(mapMembersBySubclass.keys())}`
+            } does not fit subclass types: ${Array.from(mapMembersBySubclass.keys())}`,
           )
         }
         subclassMembers.push(memberAndOriginal)
@@ -376,7 +376,7 @@ function generateClass(
     }
 
     membersBySubclass = new Map(
-      Array.from(mapMembersBySubclass.entries()).map(([mapName, v]) => [useNames.get(mapName)!, v])
+      Array.from(mapMembersBySubclass.entries()).map(([mapName, v]) => [useNames.get(mapName)!, v]),
     )
 
     function getSubclasses(member: Method | Attribute): string[] | undefined {
@@ -393,7 +393,7 @@ function generateClass(
     thisSupertypes: ts.ExpressionWithTypeArguments[],
     thisMembers: MemberAndOriginal[],
     indexTypeName: string | undefined,
-    classForDocs: Class | undefined
+    classForDocs: Class | undefined,
   ) {
     const baseSupertypes: ts.ExpressionWithTypeArguments[] = thisSupertypes.filter((x) => !x.typeArguments)
     const declarationSupertypes: ts.ExpressionWithTypeArguments[] = thisSupertypes.filter((x) => x.typeArguments)
@@ -406,7 +406,7 @@ function generateClass(
       baseSupertypes.length !== 0
         ? [ts.factory.createHeritageClause(ts.SyntaxKind.ExtendsKeyword, baseSupertypes)]
         : undefined,
-      thisMembers.flatMap((m) => m.member)
+      thisMembers.flatMap((m) => m.member),
     )
     context.currentFile.add(baseDeclaration)
     if (!context.references.has(name)) context.references.set(name, name)
@@ -430,7 +430,7 @@ function generateClass(
           ts.factory.createTypeReferenceNode(name + "Members"),
           ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName), typeArguments),
           ...declarationSupertypes,
-        ])
+        ]),
       )
       if (classForDocs) {
         addJsDoc(context, declaration, classForDocs, classForDocs.name, undefined)
@@ -469,7 +469,7 @@ function generateClass(
         undefined,
         indexTypeName ? shortName + "Members" : clazz.name,
         undefined,
-        ts.factory.createUnionTypeNode(allSubclassTypes.map((x) => ts.factory.createTypeReferenceNode(x)))
+        ts.factory.createUnionTypeNode(allSubclassTypes.map((x) => ts.factory.createTypeReferenceNode(x))),
       )
       if (!indexTypeName) addJsDoc(context, unionDeclaration, clazz, clazz.name, undefined)
       context.currentFile.add(unionDeclaration)
@@ -500,7 +500,7 @@ function generateClass(
         ts.factory.createIntersectionTypeNode([
           ts.factory.createTypeReferenceNode(shortName + "Members"),
           ts.factory.createTypeReferenceNode(ts.factory.createIdentifier(indexTypeName)),
-        ])
+        ]),
       )
       addJsDoc(context, declaration, clazz, clazz.name, undefined)
       context.currentFile.add(declaration)

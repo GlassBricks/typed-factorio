@@ -375,7 +375,7 @@ export interface LuaControl {
       | LuaInventory
       | LuaTechnology
       | defines.gui_type
-      | nil
+      | nil,
   )
 
   get opened():
@@ -467,7 +467,7 @@ export interface LuaBootstrap {
   on_event<E extends EventId<any, table>>(
     event: E,
     handler: ((data: E["_eventData"]) => void) | nil,
-    filters?: E["_filter"][]
+    filters?: E["_filter"][],
   ): void
 
   on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | nil): void
@@ -486,7 +486,7 @@ export interface LuaBootstrap {
 
   raise_event<E extends RaiseableEvents | CustomEventId<any>>(
     event: E,
-    data: Omit<E["_eventData"], keyof EventData>
+    data: Omit<E["_eventData"], keyof EventData>,
   ): void
 
   readonly active_mods: ActiveMods

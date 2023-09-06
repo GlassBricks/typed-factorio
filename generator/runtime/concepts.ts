@@ -71,7 +71,7 @@ function stringsToType(types: string[] | undefined) {
 
 function tryGetTableOrArrayConcept(
   context: RuntimeGenerationContext,
-  concept: Concept
+  concept: Concept,
 ):
   | {
       table: TableType
@@ -102,7 +102,7 @@ export function generateConcepts(context: RuntimeGenerationContext): void {
 function createVariantParameterConcept(
   context: RuntimeGenerationContext,
   concept: Concept,
-  conceptUsage: RWUsage
+  conceptUsage: RWUsage,
 ): void {
   const {
     description,
@@ -148,7 +148,7 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
       contextName: concept.name,
       existingDef: existing,
     },
-    conceptUsage
+    conceptUsage,
   )
 
   const mainResult = typeToDeclaration(mainType, concept.name)
@@ -169,7 +169,7 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
       {
         description: getWriteDescription(concept),
       },
-      concept.name
+      concept.name,
     )
 
     context.currentFile.add(writeResult)
@@ -183,7 +183,7 @@ function getWriteDescription(concept: Concept): string {
 function createTableOrArrayConcept(
   context: RuntimeGenerationContext,
   concept: Concept,
-  tableOrArray: { table: TableType; array: TableType }
+  tableOrArray: { table: TableType; array: TableType },
 ): void {
   // /** description */
   // interface Concept { ...table read }
@@ -204,7 +204,7 @@ function createTableOrArrayConcept(
     name,
     undefined,
     undefined,
-    tableForm.mainType.members
+    tableForm.mainType.members,
   )
   addJsDoc(context, conceptInterface, concept, concept.name, { tags: [createSeeTag(arrayName)] })
   context.currentFile.add(conceptInterface)

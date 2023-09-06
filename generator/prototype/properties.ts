@@ -12,7 +12,7 @@ export function mapProperty(
   context: PrototypeGenerationContext,
   property: Property,
   parentName: string,
-  existingContainer: InterfaceDef | TypeAliasDef | undefined
+  existingContainer: InterfaceDef | TypeAliasDef | undefined,
 ): ts.TypeElement[] {
   const { type, description } = mapPrototypeType(context, property.type)
 
@@ -27,7 +27,7 @@ export function mapProperty(
       existing.modifiers,
       existing.name,
       existing.questionToken,
-      existing.type ?? type
+      existing.type ?? type,
     )
     ts.setEmitFlags(mainProperty, ts.EmitFlags.NoNestedComments)
   } else {
@@ -35,7 +35,7 @@ export function mapProperty(
       property.name === "type" ? [Modifiers.readonly] : undefined,
       property.name,
       property.optional ? Tokens.question : undefined,
-      type
+      type,
     )
   }
 
@@ -53,8 +53,8 @@ export function mapProperty(
         undefined,
         property.alt_name,
         property.optional ? Tokens.question : undefined,
-        type
-      )
+        type,
+      ),
     )
   }
 
@@ -83,7 +83,7 @@ function findParentProperty(
   member: Prototype | PrototypeConcept,
   property: Property,
   memberMap: ReadonlyMap<string, Prototype | PrototypeConcept>,
-  propertyMap: Map<string, Map<string, Property>>
+  propertyMap: Map<string, Map<string, Property>>,
 ) {
   let currentMember: string | undefined = member.parent
   while (currentMember) {
@@ -98,7 +98,7 @@ export function getOverridenAttributes(
   context: PrototypeGenerationContext,
   member: Prototype | PrototypeConcept,
   memberMap: ReadonlyMap<string, Prototype | PrototypeConcept>,
-  propertyMap: Map<string, Map<string, Property>>
+  propertyMap: Map<string, Map<string, Property>>,
 ): string[] {
   if (!member.parent || !member.properties) return []
   if (!propertyMap.has(member.parent)) {
@@ -124,7 +124,7 @@ export function getOverridenAttributes(
 
 export function getConceptOverridenAttributes(
   context: PrototypeGenerationContext,
-  concept: PrototypeConcept
+  concept: PrototypeConcept,
 ): string[] | undefined {
   return getOverridenAttributes(context, concept, context.types, context.conceptProperties)
 }

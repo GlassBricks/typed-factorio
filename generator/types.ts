@@ -35,7 +35,7 @@ export function mapMemberType(
   },
   parent: string,
   type: runtime.Type,
-  usage: RWUsage
+  usage: RWUsage,
 ): RWType {
   const result =
     tryUseIndexType(context, member, parent, type) ??
@@ -56,7 +56,7 @@ export function mapRuntimeType(
   context: RuntimeGenerationContext,
   type: runtime.Type,
   name: string | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): RWType {
   const result = mapTypeInternal(context, type, name !== undefined ? { contextName: name } : undefined, usage)
   if (result.description) {
@@ -69,7 +69,7 @@ export function mapConceptType(
   context: RuntimeGenerationContext,
   type: runtime.Type,
   typeContext: TypeContext,
-  usage: RWUsage
+  usage: RWUsage,
 ): {
   mainType: ts.TypeNode
   altWriteType?: ts.TypeNode
@@ -80,7 +80,7 @@ export function mapConceptType(
 
 export function mapPrototypeType(
   context: PrototypeGenerationContext,
-  type: prototype.Type
+  type: prototype.Type,
 ): {
   type: ts.TypeNode
   description?: string
@@ -96,7 +96,7 @@ export function mapPrototypeConcept(
   context: PrototypeGenerationContext,
   type: prototype.Type,
   prototypeProperties: ts.TypeElement[] | undefined,
-  existingDef: InterfaceDef | TypeAliasDef | undefined
+  existingDef: InterfaceDef | TypeAliasDef | undefined,
 ): {
   type: ts.TypeNode
   description?: string
@@ -108,7 +108,7 @@ export function mapPrototypeConcept(
       existingDef,
       prototypeConceptProperties: prototypeProperties,
     },
-    RWUsage.Write
+    RWUsage.Write,
   )
   return {
     type: iType.mainType,
@@ -131,7 +131,7 @@ function mapTypeInternal(
   context: GenerationContext,
   type: runtime.Type | prototype.Type,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   // assert(usage !== RWUsage.None)
   if (typeof type === "string") return mapBasicType(context, type, typeContext, usage)
@@ -171,7 +171,7 @@ function mapConceptRwType(
     read: string | ts.TypeNode
     write: string | ts.TypeNode
   },
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   assert(usage)
 
@@ -219,7 +219,7 @@ function mapBasicType(
   context: GenerationContext,
   type: string,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   if (context instanceof RuntimeGenerationContext) {
     // hard-coded ish for now
@@ -242,7 +242,7 @@ function mapBasicType(
 function tryUseIndexTypeFromBasicType(
   context: RuntimeGenerationContext,
   type: string,
-  typeContext: TypeContext | undefined
+  typeContext: TypeContext | undefined,
 ): IntermediateType | undefined {
   if (!typeContext || !type.startsWith("uint")) return undefined
   for (const indexType of IndexTypes) {
@@ -262,7 +262,7 @@ function mapTypeType(
   context: GenerationContext,
   type: runtime.TypeType | prototype.TypeType,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   const result = mapTypeInternal(context, type.value, typeContext, usage)
   if (type.description) {
@@ -283,14 +283,14 @@ function mapUnionType(
   context: GenerationContext,
   type: runtime.UnionType | prototype.UnionType,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   const annotations = typeContext?.existingDef?.annotations
   let removedIndex: number | undefined
   if (annotations?.unionReplace) {
     const toReplace = annotations.unionReplace[0]
     const removed = type.options.findIndex(
-      (o) => (typeof o !== "string" && o.complex_type === toReplace) || o === toReplace
+      (o) => (typeof o !== "string" && o.complex_type === toReplace) || o === toReplace,
     )
     if (removed !== -1) {
       removedIndex = removed
@@ -363,7 +363,7 @@ function makeUnion(types: ts.TypeNode[]): ts.TypeNode {
     }
   }
   const typesArray = Array.from(dedupedTypes, (t) =>
-    typeof t === "string" ? ts.factory.createTypeReferenceNode(t) : t
+    typeof t === "string" ? ts.factory.createTypeReferenceNode(t) : t,
   )
   if (typesArray.length === 1) return typesArray[0]
   return ts.factory.createUnionTypeNode(typesArray)
@@ -373,7 +373,7 @@ function mapArrayType(
   context: GenerationContext,
   type: runtime.ArrayType | prototype.ArrayType,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   const elementType = mapTypeInternal(context, type.value, typeContext, usage)
   let mainType: ts.TypeNode = ts.factory.createArrayTypeNode(elementType.mainType)
@@ -385,7 +385,7 @@ function mapArrayType(
   if (elementType.altWriteType) {
     altWriteType = ts.factory.createTypeOperatorNode(
       ts.SyntaxKind.ReadonlyKeyword,
-      ts.factory.createArrayTypeNode(elementType.altWriteType)
+      ts.factory.createArrayTypeNode(elementType.altWriteType),
     )
   }
 
@@ -434,7 +434,7 @@ function mapDictionaryType(
   context: GenerationContext,
   type: runtime.DictionaryType | prototype.DictionaryType,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   let recordType = "Record"
   const indexType = getIndexableType(context, type.key)
@@ -482,7 +482,7 @@ function makeFlagsType(
   context: RuntimeGenerationContext,
   typeContext: TypeContext,
   keyType: runtime.Type,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   const isUnion = typeof keyType !== "string" && keyType.complex_type === "union"
   const options = isUnion ? keyType.options : [keyType]
@@ -493,7 +493,7 @@ function makeFlagsType(
         [Modifiers.readonly],
         escapePropertyName(o.value),
         Tokens.question,
-        Types.booleanLiteral(true)
+        Types.booleanLiteral(true),
       )
       if (o.description) addJsDoc(context, property, { description: o.description }, undefined)
       return property
@@ -505,7 +505,7 @@ function makeFlagsType(
         undefined,
         Tokens.question,
         Types.booleanLiteral(true),
-        undefined
+        undefined,
       )
       if (rwType.description) addJsDoc(context, node, { description: rwType.description }, undefined)
       return node
@@ -544,7 +544,7 @@ function makeFlagsType(
 function mapLuaCustomTableType(
   context: GenerationContext,
   type: runtime.DictionaryType,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   assertIsRuntimeGenerationContext(context)
   const keyType = mapTypeInternal(context, type.key, undefined, usage)
@@ -571,7 +571,7 @@ function mapFunctionType(context: GenerationContext, type: runtime.FunctionType)
       undefined,
       ts.factory.createIdentifier(`arg${index + 1}`),
       undefined,
-      paramType.mainType
+      paramType.mainType,
     )
   })
   const funcType = ts.factory.createFunctionTypeNode(undefined, parameters, Types.void)
@@ -595,7 +595,7 @@ function mapLiteralType(context: GenerationContext, type: runtime.LiteralType): 
 function mapLuaLazyLoadedValueType(
   context: GenerationContext,
   type: runtime.LuaLazyLoadedValueType,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   assertIsRuntimeGenerationContext(context)
   if (usage !== RWUsage.Read) {
@@ -613,7 +613,7 @@ function mapLuaLazyLoadedValueType(
 function mapLuaStructType(
   context: GenerationContext,
   type: runtime.LuaStructType,
-  typeContext: TypeContext | undefined
+  typeContext: TypeContext | undefined,
 ): IntermediateType {
   assertIsRuntimeGenerationContext(context)
   assert(typeContext && typeContext.contextName)
@@ -632,7 +632,7 @@ function mapTableType(
   context: GenerationContext,
   type: runtime.TableType,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   assertIsRuntimeGenerationContext(context)
   assert(typeContext && typeContext.contextName)
@@ -672,7 +672,7 @@ function mapTupleType(
   context: GenerationContext,
   type: runtime.TableType | prototype.TupleType,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   if (context instanceof RuntimeGenerationContext) {
     return mapRuntimeTupleType(context, type as runtime.TableType, typeContext, usage)
@@ -687,7 +687,7 @@ function mapRuntimeTupleType(
   context: RuntimeGenerationContext,
   type: runtime.TableType,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   assert(typeContext && typeContext.contextName)
   if (type.variant_parameter_groups) {
@@ -702,13 +702,13 @@ function mapRuntimeTupleType(
       undefined,
       ts.factory.createIdentifier(p.name),
       p.optional ? Tokens.question : undefined,
-      paramType
+      paramType,
     )
   })
   return {
     mainType: ts.factory.createTypeOperatorNode(
       ts.SyntaxKind.ReadonlyKeyword,
-      ts.factory.createTupleTypeNode(parameters)
+      ts.factory.createTupleTypeNode(parameters),
     ),
     asString: undefined,
   }
@@ -717,7 +717,7 @@ function mapPrototypeTupleType(
   context: PrototypeGenerationContext,
   type: prototype.TupleType,
   typeContext: TypeContext | undefined,
-  usage: RWUsage
+  usage: RWUsage,
 ): IntermediateType {
   const values = type.values.map((v) => {
     const type = mapTypeInternal(context, v, typeContext, usage)
@@ -729,7 +729,7 @@ function mapPrototypeTupleType(
 
   const result = ts.factory.createTypeOperatorNode(
     ts.SyntaxKind.ReadonlyKeyword,
-    ts.factory.createTupleTypeNode(values)
+    ts.factory.createTupleTypeNode(values),
   )
   return {
     mainType: result,
@@ -754,7 +754,7 @@ function tryUseIndexType(
     name?: string
   },
   parent: string,
-  type: runtime.Type
+  type: runtime.Type,
 ): RWType | undefined {
   if (!(typeof type === "string" && type.startsWith("uint"))) return
   for (const indexType of IndexTypes) {
@@ -775,7 +775,7 @@ function tryUseStringEnum(
     description: string
     name?: string
   },
-  type: runtime.Type
+  type: runtime.Type,
 ): RWType | undefined {
   if (type === "string") {
     const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
@@ -807,7 +807,7 @@ function tryUseFlagValue(
     description: string
     name?: string
   },
-  type: runtime.Type
+  type: runtime.Type,
 ): RWType | undefined {
   if (member.name !== "flag" || type !== "string") return undefined
   const match = member.description.match(/\[([A-Z][a-zA-Z]+Flags)]/)
@@ -817,7 +817,7 @@ function tryUseFlagValue(
   return {
     mainType: ts.factory.createTypeOperatorNode(
       ts.SyntaxKind.KeyOfKeyword,
-      ts.factory.createTypeReferenceNode(flagName)
+      ts.factory.createTypeReferenceNode(flagName),
     ),
   }
 }
@@ -828,7 +828,7 @@ function isNullableFromDescription(
     description: string
     name?: string
   },
-  parent: string
+  parent: string,
 ): boolean {
   const nullableRegex =
     /(passing|returns?|or|be|possibly|otherwise|else|writing|set(ting)?( this)?( to)?) [`']?nil[`']?|`?nil`? (if|when|otherwise|erases)/i
@@ -837,7 +837,7 @@ function isNullableFromDescription(
     if (!member.description.match(/[`' ]nil/i)) {
       context.warning(
         `Inconsistency in nullability in description: ${parent}.${member.name}\n`,
-        indent(member.description)
+        indent(member.description),
       )
     }
     const exceptionsRegex = /`name` will be `nil`/i
@@ -868,7 +868,7 @@ export function makeNullable(typeNode: ts.TypeNode): ts.TypeNode {
 export function typeToDeclaration(
   type: ts.TypeNode,
   name: string,
-  heritageClauses?: ts.HeritageClause[]
+  heritageClauses?: ts.HeritageClause[],
 ): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
   if (ts.isTypeLiteralNode(type)) {
     return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, heritageClauses, type.members)

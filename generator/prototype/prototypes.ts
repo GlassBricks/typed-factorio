@@ -49,7 +49,7 @@ function generatePrototype(context: PrototypeGenerationContext, prototype: Proto
     mainDeclName,
     undefined,
     heritageClauses,
-    members
+    members,
   )
 
   let mainDecl: ts.DeclarationStatement = membersDecl
@@ -74,7 +74,7 @@ function generatePrototype(context: PrototypeGenerationContext, prototype: Proto
 function getMembers(
   context: PrototypeGenerationContext,
   prototype: Prototype,
-  existing: InterfaceDef | undefined
+  existing: InterfaceDef | undefined,
 ): ts.TypeElement[] {
   const properties = prototype.properties
     .sort(byOrder)
@@ -82,14 +82,14 @@ function getMembers(
 
   if (prototype.typename) {
     const existingTypeProperty = properties.findIndex(
-      (p) => p.name && ts.isIdentifier(p.name) && p.name.text === "type"
+      (p) => p.name && ts.isIdentifier(p.name) && p.name.text === "type",
     )
     if (existingTypeProperty === -1) {
       const typeProperty = ts.factory.createPropertySignature(
         [Modifiers.readonly],
         "type",
         undefined,
-        Types.stringLiteral(prototype.typename)
+        Types.stringLiteral(prototype.typename),
       )
       properties.unshift(typeProperty)
     }
@@ -102,7 +102,7 @@ function getMembers(
     if (typeProperty) {
       addFakeJSDoc(
         typeProperty,
-        ts.factory.createJSDocComment(undefined, [createTag("deprecated"), createTag("see", prototype.name)])
+        ts.factory.createJSDocComment(undefined, [createTag("deprecated"), createTag("see", prototype.name)]),
       )
     }
   }
@@ -130,7 +130,7 @@ function getCustomPropertiesType(context: PrototypeGenerationContext, prototype:
   const typeElement = ts.factory.createIndexSignature(
     undefined,
     [ts.factory.createParameterDeclaration(undefined, undefined, "key", undefined, Types.string, undefined)],
-    type
+    type,
   )
   addJsDoc(context, typeElement, customProperty, prototype.name + ".custom_properties")
 
@@ -139,13 +139,13 @@ function getCustomPropertiesType(context: PrototypeGenerationContext, prototype:
     prototype.name + "CustomProperties",
     undefined,
     undefined,
-    [typeElement]
+    [typeElement],
   )
 }
 
 function getPrototypeOverridenAttributes(
   context: PrototypeGenerationContext,
-  prototype: Prototype
+  prototype: Prototype,
 ): string[] | undefined {
   if (!prototype.parent) return undefined
   const attributes = getOverridenAttributes(context, prototype, context.prototypes, context.prototypeProperties)
@@ -164,7 +164,7 @@ function addPrototypeMap(context: PrototypeGenerationContext) {
         undefined,
         ts.factory.createStringLiteral(p.typename!),
         undefined,
-        ts.factory.createTypeReferenceNode(p.name)
+        ts.factory.createTypeReferenceNode(p.name),
       )
       if (p.deprecated) {
         addFakeJSDoc(member, ts.factory.createJSDocComment(undefined, [createTag("deprecated")]))

@@ -33,7 +33,7 @@ async function downloadApi(stage: string) {
   console.log(`downloaded ${stage} api for version ${version}`)
   // delete all previous versions
   for (const file of (await fs.readdir(destinationFolder)).filter((file) =>
-    new RegExp(`${stage}-api-d+.d+.d+.json$`).test(file)
+    new RegExp(`${stage}-api-d+.d+.d+.json$`).test(file),
   )) {
     await fs.unlink(path.join(destinationFolder, file))
   }

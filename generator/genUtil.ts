@@ -28,7 +28,7 @@ export const Types = {
 
   stringLiteral(text: string): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(
-      ts.setEmitFlags(ts.factory.createStringLiteral(text), ts.EmitFlags.NoAsciiEscaping)
+      ts.setEmitFlags(ts.factory.createStringLiteral(text), ts.EmitFlags.NoAsciiEscaping),
     )
   },
   numberLiteral(value: number): ts.LiteralTypeNode {
@@ -64,13 +64,13 @@ export function toPascalCase(str: string): string {
 export function createNamespace(
   modifiers: ts.Modifier[] | undefined,
   name: string,
-  statements: ts.Statement[]
+  statements: ts.Statement[],
 ): ts.ModuleDeclaration {
   return ts.factory.createModuleDeclaration(
     modifiers,
     ts.factory.createIdentifier(name),
     ts.factory.createModuleBlock(statements),
-    ts.NodeFlags.Namespace
+    ts.NodeFlags.Namespace,
   )
 }
 
@@ -84,7 +84,7 @@ export function createDeclareModule(name: string, statements: ts.Statement[]): t
     [Modifiers.declare],
     ts.factory.createStringLiteral(name),
     ts.factory.createModuleBlock(statements),
-    undefined
+    undefined,
   )
   addNoResolutionAnnotation(module)
   return module
@@ -95,7 +95,7 @@ export function createDeclareGlobal(statements: ts.Statement[]): ts.ModuleDeclar
     [Modifiers.declare],
     ts.factory.createIdentifier("global"),
     ts.factory.createModuleBlock(statements),
-    ts.NodeFlags.GlobalAugmentation
+    ts.NodeFlags.GlobalAugmentation,
   )
   return module
 }
@@ -105,8 +105,8 @@ export function createConst(name: string, type: ts.TypeNode): ts.VariableStateme
     undefined,
     ts.factory.createVariableDeclarationList(
       [ts.factory.createVariableDeclaration(name, undefined, type)],
-      ts.NodeFlags.Const
-    )
+      ts.NodeFlags.Const,
+    ),
   )
 }
 
@@ -115,8 +115,8 @@ export function createExtendsClause(...superTypes: string[]): [ts.HeritageClause
     ts.factory.createHeritageClause(
       ts.SyntaxKind.ExtendsKeyword,
       superTypes.map((name) =>
-        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(name), undefined)
-      )
+        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(name), undefined),
+      ),
     ),
   ]
 }
@@ -138,7 +138,7 @@ export function addFakeJSDoc(node: ts.Node, jsDoc: ts.JSDoc, sourceFile?: ts.Sou
     node,
     ts.SyntaxKind.MultiLineCommentTrivia,
     text.trim().replace(/^\/\*|\*\/$/g, ""),
-    true
+    true,
   )
   return node
 }
@@ -148,7 +148,7 @@ export function createComment(text: string, multiline?: boolean): ts.EmptyStatem
     ts.factory.createEmptyStatement(),
     multiline ? ts.SyntaxKind.MultiLineCommentTrivia : ts.SyntaxKind.SingleLineCommentTrivia,
     text,
-    true
+    true,
   )
 }
 export function escapePropertyName(name: string): ts.PropertyName {
@@ -163,8 +163,8 @@ export function createSimpleImports(imports: string[], fromModule: string): ts.I
     true,
     undefined,
     ts.factory.createNamedImports(
-      imports.map((name) => ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier(name)))
-    )
+      imports.map((name) => ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier(name))),
+    ),
   )
   return ts.factory.createImportDeclaration(undefined, importClause, ts.factory.createStringLiteral(fromModule))
 }

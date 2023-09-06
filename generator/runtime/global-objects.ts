@@ -23,7 +23,7 @@ export function generateGlobalObjects(context: RuntimeGenerationContext): void {
       }
       const definition = createConst(
         globalObject.name,
-        mapRuntimeType(context, globalObject.type, globalObject.name, RWUsage.Read).mainType
+        mapRuntimeType(context, globalObject.type, globalObject.name, RWUsage.Read).mainType,
       )
       addJsDoc(context, definition, globalObject, globalObject.name, undefined)
       context.currentFile.add(definition)
@@ -35,7 +35,7 @@ function handleSettingsGlobal(context: RuntimeGenerationContext, globalObject: G
   assert(globalObject.name === "settings")
   assert(globalObject.type === "LuaSettings")
   const statement = createComment(
-    'The "settings" global is declared in common/settings-global.d.ts; its runtime type is handled below.'
+    'The "settings" global is declared in common/settings-global.d.ts; its runtime type is handled below.',
   )
   context.currentFile.add(statement)
 }

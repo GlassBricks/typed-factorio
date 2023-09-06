@@ -35,7 +35,7 @@ export function generateDefines(context: RuntimeGenerationContext): void {
       context,
       createRootDefine(context),
       "",
-      context.manualDefs.getNamespace("defines")
+      context.manualDefs.getNamespace("defines"),
     )
     context.currentFile.add(defines)
 
@@ -69,8 +69,8 @@ function generateEventsDefine(context: RuntimeGenerationContext, define: Define)
       m.name,
       ts.factory.createTypeReferenceNode(
         "EventId",
-        typeArguments.map((t) => ts.factory.createTypeReferenceNode(t))
-      )
+        typeArguments.map((t) => ts.factory.createTypeReferenceNode(t)),
+      ),
     )
     return addJsDoc(context, statement, { description }, undefined, undefined)
   })
@@ -79,14 +79,14 @@ function generateEventsDefine(context: RuntimeGenerationContext, define: Define)
   // type events = typeof events[keyof typeof events]
   const typeofExp = ts.factory.createExpressionWithTypeArguments(
     ts.factory.createTypeOfExpression(ts.factory.createIdentifier(define.name)),
-    undefined
+    undefined,
   )
   const keyofTypeof = ts.factory.createTypeOperatorNode(ts.SyntaxKind.KeyOfKeyword, typeofExp)
   const type = ts.factory.createTypeAliasDeclaration(
     undefined,
     "events",
     undefined,
-    ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof)
+    ts.factory.createIndexedAccessTypeNode(typeofExp, keyofTypeof),
   )
   return [namespace, type]
 }
@@ -95,7 +95,7 @@ function generateDefinesDeclaration(
   context: RuntimeGenerationContext,
   define: Define,
   parent: string,
-  existing: AnyDef | undefined
+  existing: AnyDef | undefined,
 ): ts.Statement[] {
   let declarations: ts.Statement[]
   const thisPath = parent + (parent ? "." : "") + define.name
@@ -113,19 +113,19 @@ function generateDefinesDeclaration(
             context,
             ts.factory.createEnumMember(
               m.name,
-              existing?.annotations.numericEnum ? ts.factory.createNumericLiteral(i) : undefined
+              existing?.annotations.numericEnum ? ts.factory.createNumericLiteral(i) : undefined,
             ),
             m,
             thisPath + "." + m.name,
-            undefined
-          )
+            undefined,
+          ),
         )
       declarations = [ts.factory.createEnumDeclaration(undefined, define.name, members)]
     }
   } else if (define.subkeys) {
     if (existing && existing.kind !== "namespace") {
       throw new Error(
-        `Manual definition for ${thisPath} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`
+        `Manual definition for ${thisPath} should be a namespace, got ${ts.SyntaxKind[existing.node.kind]}`,
       )
     }
     const subkeys = define.subkeys

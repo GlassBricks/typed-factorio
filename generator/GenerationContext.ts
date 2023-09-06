@@ -22,7 +22,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   constructor(
     public readonly apiDocs: A,
     public readonly manualDefinitionsSource: ts.SourceFile,
-    public readonly checker: ts.TypeChecker
+    public readonly checker: ts.TypeChecker,
   ) {}
 
   abstract get stageName(): string

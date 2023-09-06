@@ -36,7 +36,7 @@ export function generateEvents(context: RuntimeGenerationContext): void {
             p.type = `typeof ${p.type as string}.${event.name}`
           }
           return mapParameterToProperty(context, p, name, RWUsage.Read, existing).mainProperty
-        })
+        }),
       )
       addJsDoc(context, declaration, event, event.name, undefined)
       context.currentFile.add(declaration)

@@ -99,7 +99,7 @@ async function writeFiles(fileResults: Map<string, string>) {
 async function doGeneration<C extends AnyApiJson>(
   stage: C["stage"],
   manualDefsFile: string,
-  cls: new (apiDocs: C, manualDefinitionsSource: ts.SourceFile, typeChecker: ts.TypeChecker) => GenerationContext<C>
+  cls: new (apiDocs: C, manualDefinitionsSource: ts.SourceFile, typeChecker: ts.TypeChecker) => GenerationContext<C>,
 ) {
   console.log(`${stage}: reading files`)
   const apiJson = await getApiJson<C>(stage)

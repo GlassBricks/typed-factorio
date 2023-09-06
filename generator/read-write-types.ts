@@ -117,12 +117,12 @@ export function recordConceptDependencies(context: RuntimeGenerationContext, con
 export function setReadWriteType(
   context: RuntimeGenerationContext,
   concept: Concept,
-  type: { read: string | ts.TypeNode; write: string | ts.TypeNode }
+  type: { read: string | ts.TypeNode; write: string | ts.TypeNode },
 ): void {
   const { conceptReferencedBy, conceptUsages, conceptReadWriteTypes } = context.conceptUsageAnalysis
   if (conceptUsages.get(concept) !== RWUsage.ReadWrite) {
     context.warning(
-      `Concept ${concept.name} is not read-write, but is being marked as having separate read and write types`
+      `Concept ${concept.name} is not read-write, but is being marked as having separate read and write types`,
     )
   }
   const existingType = conceptReadWriteTypes.get(concept)
@@ -133,7 +133,7 @@ export function setReadWriteType(
   function setReadWriteTypeWorker(curConcept: Concept) {
     if (conceptUsages.get(curConcept) !== RWUsage.ReadWrite) {
       context.warning(
-        `Concept ${curConcept.name} is not read-write, but is being marked as having separate read and write types`
+        `Concept ${curConcept.name} is not read-write, but is being marked as having separate read and write types`,
       )
     }
 
