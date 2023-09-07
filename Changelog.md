@@ -1,3 +1,7 @@
+# v2.1.0
+
+- Updated to factorio version 1.1.90
+
 # v2.0.1
 
 - Added manual type definition for CraftingMachinePrototype.fluid_boxes. Thanks @Bilka2!

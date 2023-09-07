@@ -20,13 +20,13 @@
   "scripts": {
     "generate": "ts-node --esm -P generator/tsconfig.json generator/main.ts",
     "generate-no-format": "ts-node --swc -T --esm -P generator/tsconfig.json generator/main.ts --no-format",
-    "clean": "rimraf runtime/generated",
+    "clean": "rimraf runtime/generated prototype/generated",
     "lint": "eslint .",
     "check": "npm run lint",
     "prepublishOnly": "npm run generate && npm run check",
     "download-latest-json-apis": "ts-node --esm ./scripts/download-latest.ts",
     "new-version-changelog": "ts-node --esm ./scripts/new-version-changelog.ts",
-    "next-factorio-version": "npm run download-latest-runtime-api && npm run clean && npm run generate && npm run check && npm run new-version-changelog && npm version minor"
+    "next-factorio-version": "npm run download-latest-json-apis && npm run clean && npm run generate && npm run check && npm run new-version-changelog && npm version minor"
   },
   "peerDependencies": {
     "lua-types": "^2.13.1",
