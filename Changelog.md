@@ -172,7 +172,7 @@
 
 # v1.0.0
 
-- This project now has all the features that was originally planned, and can now guarantee reasonable backwards compatibility for future releases.
+- This project now has all features that were originally planned, and can now guarantee reasonable backwards compatibility for future releases.
 - Updated to factorio version 1.1.57
 
 # v0.20.0
