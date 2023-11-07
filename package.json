@@ -26,7 +26,8 @@
     "prepublishOnly": "npm run generate && npm run check",
     "download-latest-json-apis": "ts-node --esm ./scripts/download-latest.ts",
     "new-version-changelog": "ts-node --esm ./scripts/new-version-changelog.ts",
-    "next-factorio-version": "npm run download-latest-json-apis && npm run clean && npm run generate && npm run check && npm run new-version-changelog && npm version minor"
+    "next-factorio-version": "npm run download-latest-json-apis && npm run clean && npm run generate && npm run check && npm run new-version-changelog && npm version minor",
+    "check-next-factorio-version": "ts-node --esm ./scripts/new-version-diff.ts"
   },
   "peerDependencies": {
     "lua-types": "^2.13.1",
