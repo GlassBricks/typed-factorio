@@ -4,7 +4,7 @@ import * as path from "path"
 import * as prettier from "prettier"
 import ts from "typescript"
 import { fileURLToPath } from "url"
-import { AnyApiJson, GenerationContext } from "./GenerationContext.js"
+import { AnyApiJson, GenerationContext, Options } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype/index.js"
 import { RuntimeGenerationContext } from "./runtime/index.js"
 import { printer } from "./genUtil.js"
@@ -14,6 +14,7 @@ const __dirname = path.dirname(__filename)
 const srcDir = path.resolve(__dirname, "./input")
 
 const noFormat = process.argv.includes("--no-format")
+const noLink = process.argv.includes("--no-link")
 
 const srcFiles = await fs.readdir(srcDir)
 function getApiJsonFileName(stage: string) {
@@ -96,17 +97,25 @@ async function writeFiles(fileResults: Map<string, string>) {
     await fs.writeFile(fileName, printContent)
   }
 }
+const options: Options = {
+  noLink,
+}
 async function doGeneration<C extends AnyApiJson>(
   stage: C["stage"],
   manualDefsFile: string,
-  cls: new (apiDocs: C, manualDefinitionsSource: ts.SourceFile, typeChecker: ts.TypeChecker) => GenerationContext<C>,
+  cls: new (
+    apiDocs: C,
+    manualDefinitionsSource: ts.SourceFile,
+    typeChecker: ts.TypeChecker,
+    option: Options,
+  ) => GenerationContext<C>,
 ) {
   console.log(`${stage}: reading files`)
   const apiJson = await getApiJson<C>(stage)
   const { typeChecker, manualDefines } = getManualDefsFile(manualDefsFile)
 
   console.log(`${stage}: generating files`)
-  const genContext = new cls(apiJson, manualDefines, typeChecker)
+  const genContext = new cls(apiJson, manualDefines, typeChecker, options)
   const files = generateFiles(genContext)
 
   console.log(`${stage}: writing files`)

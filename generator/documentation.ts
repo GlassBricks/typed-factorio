@@ -215,7 +215,7 @@ export function addJsDoc<T extends ts.Node>(
     return node
   }
 
-  if (onlineDocUrl) {
+  if (onlineDocUrl && !context.options.noLink) {
     tags.push(createSeeTag(`{@link ${onlineDocUrl} Online documentation}`))
   }
   // move @noSelf annotation to the end

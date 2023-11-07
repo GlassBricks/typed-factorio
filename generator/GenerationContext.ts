@@ -12,6 +12,10 @@ export interface AnyApiJson {
   application_version: string
 }
 
+export interface Options {
+  readonly noLink: boolean
+}
+
 export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   // This is also a record of which types exist
   references = new Map<string, string>()
@@ -23,6 +27,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
     public readonly apiDocs: A,
     public readonly manualDefinitionsSource: ts.SourceFile,
     public readonly checker: ts.TypeChecker,
+    public readonly options: Options,
   ) {}
 
   abstract get stageName(): string
@@ -47,10 +52,6 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
     fn()
     this._currentFile = undefined
     this.allFiles.push(builder.build())
-  }
-
-  getAllFiles(): OutputFile[] {
-    return this.allFiles
   }
 
   abstract tryGetTypeOfReference(reference: string): runtime.Type | prototype.Type | undefined
