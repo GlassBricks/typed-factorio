@@ -1,8 +1,14 @@
 import child_process from "child_process"
 import { getCurrentFactorioVersion } from "./util.js"
+import { fileURLToPath } from "url"
+import path from "path"
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const projDir = path.resolve(__dirname, "..")
 
 function run(cmd: string) {
-  return child_process.execSync(cmd, { stdio: "inherit", cwd: ".." })
+  return child_process.execSync(cmd, { stdio: "inherit", cwd: projDir })
 }
 
 // get current branch
