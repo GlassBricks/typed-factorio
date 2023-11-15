@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.95",
+  "application_version": "1.1.97",
   "api_version": 4,
   "stage": "prototype",
   "prototypes": [
@@ -4743,7 +4743,7 @@
           "order": 3,
           "description": "Time in ticks this corpse lasts. May not be 0.",
           "override": false,
-          "type": "int32",
+          "type": "uint32",
           "optional": true,
           "default": "60 * 120 (120 seconds)"
         },
@@ -4752,7 +4752,7 @@
           "order": 2,
           "description": "Controls how long the corpse takes to fade, as in how long it takes to get from no transparency to full transparency/removed. This time is ''not'' added to `time_before_removed`, it is instead subtracted from it. So by default, the corpse starts fading about 15 seconds before it gets removed.",
           "override": false,
-          "type": "int32",
+          "type": "uint32",
           "optional": true,
           "default": "60 * 15 (15 seconds)"
         },
