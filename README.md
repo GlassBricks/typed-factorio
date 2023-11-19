@@ -47,7 +47,7 @@ In the settings and prototype stages, the `data` global variable is available.
 For [performance reasons](https://github.com/microsoft/TypeScript/wiki/Performance#preferring-base-types-over-unions), `data.extend()` is by default loosely typed.
 To get full type checking, you can use specific types in one of the following ways:
 ```ts
-// Use `satisfies` on types to check types
+// Use `satisfies` to check types:
 data.extend([
    {
      type: "ammo-category",
