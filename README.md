@@ -41,15 +41,13 @@ import { ItemPrototype } from "factorio:prototype"
 import { LuaEntity } from "factorio:runtime"
 ```
 
-### Data.extend
+### `data.extend()`
 In the settings and prototype stages, the `data` global variable is available. 
 
-For [performance reasons](https://github.com/microsoft/TypeScript/wiki/Performance#preferring-base-types-over-unions), `data.extend()` is only loosely typed.
-To get full type checking, use specific types when adding prototypes:
+For [performance reasons](https://github.com/microsoft/TypeScript/wiki/Performance#preferring-base-types-over-unions), `data.extend()` is by default loosely typed.
+To get full type checking, you can use specific types in one of the following ways:
 ```ts
-// example: adding an ammo category and item prototype
-import { AmmoCategory, ItemPrototype } from "factorio:prototype"
-
+// Use `satisfies` on types to check types
 data.extend([
    {
      type: "ammo-category",
@@ -58,10 +56,27 @@ data.extend([
    { 
      type: "item",
      name: "bar",
-     // other fields...
+     // ...other fields
    } satisfies ItemPrototype,
 ])
 
+// List types as a type argument to `extend`:
+data.extend<AmmoCategory | ItemPrototype>([
+   {
+      type: "ammo-category",
+      name: "foo"
+   },
+   {
+      type: "item",
+      name: "bar",
+      // ...other fields
+   } 
+])
+
+// Use types on separate variables:
+const fooCategory: AmmoCategory = {/* ... */}
+const barItem: ItemPrototype = {/* ... */}
+data.extend([fooCategory, barItem])
 ```
 
 ### Factorio lualib modules
