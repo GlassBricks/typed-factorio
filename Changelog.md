@@ -1,5 +1,8 @@
 # v2.6.0
 
+- Added feature `CustomInputNames`. By extending this interface, this allows optionally type-checking custom input names.
+  For more details, see the README, or the documentation on `CustomInputNames` (in the `factorio:common` module).
+- Removed `readonly` property from prototype `type` fields. This may be useful when copying another prototype for a sub-prototype.
 - Updated to factorio version 1.1.101
 
 # v2.5.0
