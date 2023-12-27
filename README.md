@@ -1,8 +1,8 @@
 # Typed Factorio
 
-Complete and featureful typescript definitions for the Factorio modding lua api. This is intended to be used with [TypescriptToLua](https://typescripttolua.github.io/).
+Complete and featureful typescript definitions for the Factorio modding lua API, for use with [TypescriptToLua](https://typescripttolua.github.io/).
 
-This project aims to provide type definitions for the Factorio lua API that are as complete as possible.
+This project aims to provide type definitions are as complete as possible.
 The generator uses both the Factorio api docs JSON and manually defined additions.
 
 ## Installation
@@ -10,14 +10,15 @@ The generator uses both the Factorio api docs JSON and manually defined addition
 To use in your [TypescriptToLua](https://typescripttolua.github.io/) project:
 
 1. Install this package: `npm install typed-factorio`
-    - Note: When types are updated for a new factorio version, you will need to the npm package to get the latest types.
+    - Note: When types are updated for a new factorio version, you will need to update this package.
 
-2. Add the types for the [stages](https://lua-api.factorio.com/1.1.89/index.html) used to `tsconfig.json > compilerOptions > types`.
+2. Add types for the [stages](https://lua-api.factorio.com/1.1.89/index.html) used to `tsconfig.json > compilerOptions > types`.
    The available stages are `"typed-factorio/settings"`, `"typed-factorio/prototype"`, and `"typed-factorio/runtime"`.
 
 Example:
 
 ```diff
+// in tsconfig.json
 {
   "compilerOptions": {
 +    "types": [ "typed-factorio/runtime" ]
@@ -25,14 +26,14 @@ Example:
 }
 ```
 
-The stages selected will control the global variables defined.
-It is possible to include multiple stages, but there are some caveats. See [Using multiple stages in the same project](#using-multiple-stages-in-the-same-project) for more info.
+The stages used will select the global variables defined.
+You can include multiple stages, but there are some caveats. See [Using multiple stages in the same project](#using-multiple-stages-in-the-same-project) for more info.
 
-## Usage
+## Usage notes
 
-Global variables will be defined for the stage(s) selected.
+Here are some notes on using the types:
 
-### Types
+### Types for other stages
 
 No matter which stage(s) are selected, _type_ definitions for all stages are available in the modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`: 
 ```ts
@@ -41,7 +42,9 @@ import { ItemPrototype } from "factorio:prototype"
 import { LuaEntity } from "factorio:runtime"
 ```
 
-### `data.extend()`
+You can also include just `"typed-factorio"` in your `types` field. This will include only global variables available to _all_ stages.
+
+### `data.extend()` types
 In the settings and prototype stages, the `data` global variable is available. 
 
 For [performance reasons](https://github.com/microsoft/TypeScript/wiki/Performance#preferring-base-types-over-unions), `data.extend()` is by default loosely typed.
@@ -98,37 +101,33 @@ If you wish to see types for more lualib modules, feel free to open an issue or 
 
 ### The `global` table
 
-The `global` table (in the runtime stage) can have any shape, so it is not defined here. Instead, you can:
+The `global` table (in the runtime stage) can have any shape, so it is not defined here. Instead, you can define it yourself:
 
-- add `declare const global: <Your type>` in a `.d.ts` file included in your project, to apply it project-wide, or
-- add `declare const global: {...}` to each file where needed. This way, you can define only properties that each file specifically uses.
+- Add `declare const global: <Your type>` in a `.d.ts` file included in your project, to apply it project-wide.
+- Add `declare const global: {...}` to each file where needed. This way, you can define only properties that each file specifically uses.
 
 ## Using multiple stages in the same project
 
 Every Factorio loading stage declares different global variables.
-To add types for multiple Factorio stages, you have a few options, with different pros and cons:
+To add types for multiple Factorio stages, you have a few options:
 
 1. Add multiple stages to the "types" field, e.g. `"types": ["typed-factorio/prototype", "typed-factorio/runtime"]`. This will define global variables for _all_ stages selected. With this option, take care that you only use global variables available in the stages the code is run.
-2. Add _only_ the runtime stage to your types, then manually declare other global variables in other stages, only in files that use them. There are types in `"factorio:common"` to allow this:
+2. Add _only_ the runtime stage, then manually declare other global variables in files that use them. There are types in `"factorio:common"` to allow this:
    ```ts
    // -- For the prototype stage --
    import { PrototypeData, ActiveMods } from "factorio:common"
-   declare const data: PrtotopyeData
+   declare const data: PrototypeData
    declare const mods: ActiveMods
    // The `settings` global variable is already declared in the runtime stage.
-   // However, in the prototype stage _only_ startup settings are available.
+   // However, in the prototype stage _only_ `settings.startup` are available.
    ```
    ```ts
    // -- For the settings stage --
    import { SettingsData, ActiveMods } from "factorio:common"
-   declare const settings: SettingsData
+   declare const data: SettingsData
    declare const mods: ActiveMods
    ```
-3. Use a separate `tsconfig.json` for each stage. In each `tsconfig.json`, include only files in that stage in the `"include"` field, e.g. `include: ["src/control.ts"]` for the runtime stage. However, this means you need to run `tstl` separately for each stage, and files shared by multiple stages will be compiled multiple times.
-
-### Additional notes
-
-You can also include just `"typed-factorio"` in your `types` field. This will include only global variables available to _all_ stages.
+3. Use a separate `tsconfig.json` for each stage. In each `tsconfig.json`, add only files in that stage to the `"include"` field, e.g. `include: ["src/control.ts"]` for the runtime stage. However, this means you need to run `tstl` separately for each stage, and files shared by multiple stages will be compiled multiple times.
 
 ## Type features
 
@@ -148,6 +147,22 @@ Parameter tables with variants (having "additional attributes can be specified d
 Event IDs (`defines.events`) hold type info for their corresponding event type and filters, which is used by various methods in `script`.
 
 You can pass an event data type parameter to `script.generate_event_name<T>()`, and it will return a `CustomEventId` that includes type info.
+
+### Optional custominput name checking
+You can optionally enable type-checking for custom input names (for `script.on_event` and `CustomInputPrototype`).
+To do so, specify names by extending the CustomInputNames interface like so:
+
+```ts
+declare module "factorio:common" {
+  export interface CustomInputNames {
+    "my-custom-input": any
+  }
+}
+
+script.on_event("my-custom-input", ()=>{}) // type-checked
+```
+
+If not specified, `CustomInputName` defaults to just `string`.
 
 ### Array-like classes
 
