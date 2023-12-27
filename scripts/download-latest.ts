@@ -13,7 +13,7 @@ async function downloadApi(stage: string) {
   const url = `https://lua-api.factorio.com/latest/${stage}-api.json`
   console.log("downloading", url)
   const result = (await download(url, {
-    timeout: 10000
+    timeout: 5000
   })).toString("utf8")
   const contents = JSON.parse(result) as {
     application: string
