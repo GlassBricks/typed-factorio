@@ -28,6 +28,8 @@ export function generatePrototypes(context: PrototypeGenerationContext): void {
       generatePrototype(context, prototype)
     }
     addPrototypeMap(context)
+    // manually added imports for now
+    context.currentFile.addImport("common", "CustomInputName")
   })
 }
 

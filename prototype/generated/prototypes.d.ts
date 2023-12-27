@@ -2,6 +2,8 @@
 
 /** @noSelfInFile */
 
+import type { CustomInputName } from "factorio:common"
+
 /**
  * @noResolution
  */
@@ -2498,7 +2500,7 @@ declare module "factorio:prototype" {
      * It is also the name for the event that is raised when they key (combination) is pressed and action is `"lua"`, see {@linkplain https://wiki.factorio.com/Tutorial:Script_interfaces#Custom_input Tutorial:Script interfaces}.
      * @see {@link https://lua-api.factorio.com/1.1.101/prototypes/CustomInputPrototype.html#name Online documentation}
      */
-    name: string
+    name: CustomInputName
     /**
      * The default key sequence for this custom input. Use "" (empty string) for unassigned.
      *

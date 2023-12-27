@@ -43,6 +43,7 @@ export function generateClasses(context: RuntimeGenerationContext): void {
     }
     // manually added imports for now
     context.currentFile.addImport("common", "ActiveMods")
+    context.currentFile.addImport("common", "CustomInputName")
   })
 }
 

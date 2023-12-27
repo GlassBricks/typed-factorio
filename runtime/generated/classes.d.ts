@@ -2,7 +2,7 @@
 
 /** @noSelfInFile */
 
-import type { ActiveMods } from "factorio:common"
+import type { ActiveMods, CustomInputName } from "factorio:common"
 
 /**
  * @noResolution
@@ -262,7 +262,7 @@ declare module "factorio:runtime" {
       filters?: E["_filter"][],
     ): void
     on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | nil): void
-    on_event(event: string, f: ((data: CustomInputEvent) => void) | nil): void
+    on_event(event: CustomInputName, f: ((data: CustomInputEvent) => void) | nil): void
     /**
      * Register a handler to run every nth-tick(s). When the game is on tick 0 it will trigger all registered handlers.
      * @param tick The nth-tick(s) to invoke the handler on. Passing `nil` as the only parameter will unregister all nth-tick handlers.
@@ -306,7 +306,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.101/classes/LuaBootstrap.html#LuaBootstrap.get_event_handler Online documentation}
      */
     get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | nil
-    get_event_handler(event: string): (data: CustomInputEvent) => void | nil
+    get_event_handler(event: CustomInputName): (data: CustomInputEvent) => void | nil
     /**
      * Gets the mod event order as a string.
      * @see {@link https://lua-api.factorio.com/1.1.101/classes/LuaBootstrap.html#LuaBootstrap.get_event_order Online documentation}

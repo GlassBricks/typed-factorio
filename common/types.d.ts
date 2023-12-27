@@ -71,4 +71,32 @@ declare module "factorio:common" {
    * ```
    */
   export type SettingsData = DataGlobal<SettingsPrototypeMap>
+
+  /**
+   * You can optionally extend this interface to provide type checking and autocompletion for custom input names, like so:
+   * ```ts
+   * declare module "factorio:common" {
+   *    export interface CustomInputNames {
+   *        "my-custom-event": true
+   *    }
+   * }
+   *
+   * // this enables type checking for the following:
+   * script.on_event("my-custom-event", ...)
+   *
+   * data.extend<CustomInputPrototype>([{
+   *   type: "custom-input",
+   *   name: "my-custom-event", // type checked
+   * }])
+   * ```
+   * @see CustomInputName
+   */
+  export interface CustomInputNames {}
+
+  /**
+   * All custom event names. See {@link CustomInputNames}.
+   *
+   * If none are specified, this is just `string`.
+   */
+  export type CustomInputName = [keyof CustomInputNames] extends [never] ? string : keyof CustomInputNames
 }

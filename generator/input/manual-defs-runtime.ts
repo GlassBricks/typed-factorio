@@ -2,7 +2,7 @@
 /// <reference path="../../prototype/generated/types.d.ts" />
 // noinspection JSUnusedGlobalSymbols
 
-import { ActiveMods, VersionString } from "factorio:common"
+import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
 import { PrototypeMap } from "factorio:prototype"
 
 export interface LuaObject {
@@ -472,13 +472,13 @@ export interface LuaBootstrap {
 
   on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | nil): void
 
-  on_event(event: string, f: ((data: CustomInputEvent) => void) | nil): void
+  on_event(event: CustomInputName, f: ((data: CustomInputEvent) => void) | nil): void
 
   generate_event_name<T extends table>(): CustomEventId<T>
 
   get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | nil
 
-  get_event_handler(event: string): (data: CustomInputEvent) => void | nil
+  get_event_handler(event: CustomInputName): (data: CustomInputEvent) => void | nil
 
   get_event_filter<E extends EventId<any, table>>(event: E): E["_filter"][] | nil
 

@@ -1,3 +1,5 @@
+import { CustomInputName } from "factorio:common"
+
 export type bool = boolean
 export type double = number
 export type float = number
@@ -33,4 +35,8 @@ interface CraftingMachinePrototype {
      */
     off_when_no_fluid_recipe?: boolean
   }
+}
+
+interface CustomInputPrototype {
+  name: CustomInputName
 }
