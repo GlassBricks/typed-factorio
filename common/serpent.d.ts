@@ -1,15 +1,16 @@
 // from https://lua-api.factorio.com/latest/Libraries.html
-// last updated for 1.1.35, 1.1.36, 1.1.37
 
 /** @noSelfInFile */
 
 /**
- * Factorio provides the {@link https://github.com/pkulchenko/serpent serpent library} as a global variable `serpent` for
- * all mods to use. It allows for easy debugging of tables, because serpent makes it trivial to print them, for example
- * by using `serpent.block()`. However, serpent cannot pretty-print LuaObjects such as LuaEntity. The serpent library
- * was modified to improve determinism, e.g. comments are turned off by default to avoid returning table addresses.
- * Furthermore, two options were added: `refcomment` (true/false/maxlevel) and `tablecomment` (true/false/maxlevel),
- * which allow to separately control the self-reference and table value output of the `comment` option.
+ * Factorio provides the {@link https://github.com/pkulchenko/serpent serpent library} as a global variable named
+ * `serpent` for all mods to use. Its purpose is to allow for easy printing of Lua tables (using `serpent.block()` for
+ * example), which can be useful when debugging. It can't pretty-print LuaObjects such as {@link LuaEntity} however.
+ *
+ * The serpent library was modified for determinism, e.g. comments are turned off by default to avoid returning table
+ * addresses. Furthermore, two options were added: `refcomment` (true/false/maxlevel) and `tablecomment`
+ * (true/false/maxlevel), which allow to separately control the self-reference and table value output of the comment
+ * option.
  */
 declare namespace serpent {
   /** @noSelf */
