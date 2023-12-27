@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.97",
+  "application_version": "1.1.101",
   "api_version": 4,
   "stage": "runtime",
   "classes": [
@@ -6251,8 +6251,8 @@
             {
               "name": "flag",
               "order": 0,
-              "description": "The flag to test. See [EntityPrototypeFlags](runtime:EntityPrototypeFlags) for a list of flags.",
-              "type": "string",
+              "description": "The flag to test.",
+              "type": "EntityPrototypeFlag",
               "optional": false
             }
           ],
@@ -6295,8 +6295,8 @@
             {
               "name": "flag",
               "order": 0,
-              "description": "The flag to test. See [EntityPrototypeFlags](runtime:EntityPrototypeFlags) for a list of flags.",
-              "type": "string",
+              "description": "The flag to test.",
+              "type": "EntityPrototypeFlag",
               "optional": false
             }
           ],
@@ -7749,17 +7749,66 @@
         {
           "name": "belt_neighbours",
           "order": 44,
-          "description": "The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of this entity. Does not contain the other end of an underground belt, see [LuaEntity::neighbours](runtime:LuaEntity::neighbours) for that. This is a dictionary with `\"inputs\"`, `\"outputs\"` entries that are arrays of transport belt connectable entities, or empty tables if no entities.",
+          "description": "The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of this entity. Does not contain the other end of an underground belt, see [LuaEntity::neighbours](runtime:LuaEntity::neighbours) for that.",
           "subclasses": [
             "TransportBeltConnectable"
           ],
           "type": {
-            "complex_type": "dictionary",
-            "key": "string",
-            "value": {
-              "complex_type": "array",
-              "value": "LuaEntity"
-            }
+            "complex_type": "table",
+            "parameters": [
+              {
+                "name": "inputs",
+                "order": 0,
+                "description": "Array of transport belt connectable entities.",
+                "type": {
+                  "complex_type": "array",
+                  "value": "LuaEntity"
+                },
+                "optional": false
+              },
+              {
+                "name": "outputs",
+                "order": 1,
+                "description": "Array of transport belt connectable entities.",
+                "type": {
+                  "complex_type": "array",
+                  "value": "LuaEntity"
+                },
+                "optional": false
+              }
+            ]
+          },
+          "optional": false,
+          "read": true,
+          "write": false
+        },
+        {
+          "name": "belt_shape",
+          "order": 182,
+          "description": "Gives what is the current shape of a transport-belt.",
+          "notes": [
+            "Can also be used on entity ghost if it contains transport-belt"
+          ],
+          "subclasses": [
+            "TransportBelt"
+          ],
+          "type": {
+            "complex_type": "union",
+            "options": [
+              {
+                "complex_type": "literal",
+                "value": "straight"
+              },
+              {
+                "complex_type": "literal",
+                "value": "left"
+              },
+              {
+                "complex_type": "literal",
+                "value": "right"
+              }
+            ],
+            "full_format": false
           },
           "optional": false,
           "read": true,
@@ -8459,6 +8508,15 @@
           "write": false
         },
         {
+          "name": "gps_tag",
+          "order": 183,
+          "description": "Returns a [rich text](https://wiki.factorio.com/Rich_text) string containing this entity's position and surface name as a gps tag. Printing it will ping the location of the entity.",
+          "type": "string",
+          "optional": false,
+          "read": true,
+          "write": false
+        },
+        {
           "name": "graphics_variation",
           "order": 95,
           "description": "The graphics variation for this entity. `nil` if this entity doesn't use graphics variations.",
@@ -8907,7 +8965,7 @@
         },
         {
           "name": "object_name",
-          "order": 183,
+          "order": 185,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "type": "string",
           "optional": false,
@@ -9746,7 +9804,7 @@
         },
         {
           "name": "valid",
-          "order": 182,
+          "order": 184,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "type": "boolean",
           "optional": false,
@@ -9808,8 +9866,8 @@
             {
               "name": "flag",
               "order": 0,
-              "description": "The flag to test. See [EntityPrototypeFlags](runtime:EntityPrototypeFlags) for a list of flags.",
-              "type": "string",
+              "description": "The flag to test.",
+              "type": "EntityPrototypeFlag",
               "optional": false
             }
           ],
@@ -9842,7 +9900,7 @@
       "attributes": [
         {
           "name": "active_energy_usage",
-          "order": 212,
+          "order": 213,
           "description": "The active energy usage of this rocket silo or combinator prototype.",
           "subclasses": [
             "RocketSilo",
@@ -9867,7 +9925,7 @@
         },
         {
           "name": "adjacent_tile_collision_box",
-          "order": 190,
+          "order": 191,
           "description": "The bounding box that specifies which tiles adjacent to the offshore pump should be checked.",
           "subclasses": [
             "OffshorePump"
@@ -9879,7 +9937,7 @@
         },
         {
           "name": "adjacent_tile_collision_mask",
-          "order": 191,
+          "order": 192,
           "description": "Tiles adjacent to the offshore pump must not collide with this collision mask.",
           "subclasses": [
             "OffshorePump"
@@ -9891,7 +9949,7 @@
         },
         {
           "name": "adjacent_tile_collision_test",
-          "order": 192,
+          "order": 193,
           "description": "If this mask is not empty, tiles adjacent to the offshore pump must not collide with this collision mask.",
           "subclasses": [
             "OffshorePump"
@@ -9903,7 +9961,7 @@
         },
         {
           "name": "affected_by_tiles",
-          "order": 175,
+          "order": 176,
           "description": "Whether this unit prototype is affected by tile walking speed modifiers.",
           "subclasses": [
             "Unit"
@@ -9927,7 +9985,7 @@
         },
         {
           "name": "alert_icon_scale",
-          "order": 179,
+          "order": 180,
           "description": "The alert icon scale of this entity prototype.",
           "type": "float",
           "optional": false,
@@ -9936,7 +9994,7 @@
         },
         {
           "name": "alert_icon_shift",
-          "order": 178,
+          "order": 179,
           "description": "The alert icon shift of this entity prototype.",
           "type": "Vector",
           "optional": false,
@@ -9945,7 +10003,7 @@
         },
         {
           "name": "alert_when_attacking",
-          "order": 123,
+          "order": 124,
           "description": "Whether this turret raises an alert when attacking",
           "subclasses": [
             "Turret"
@@ -9957,7 +10015,7 @@
         },
         {
           "name": "alert_when_damaged",
-          "order": 122,
+          "order": 123,
           "description": "Whether this entity raises an alert when damaged.",
           "subclasses": [
             "EntityWithHealth"
@@ -9969,7 +10027,7 @@
         },
         {
           "name": "allow_access_to_all_forces",
-          "order": 184,
+          "order": 185,
           "description": "Whether this market allows access to all forces or just friendly ones.",
           "subclasses": [
             "Market"
@@ -9981,7 +10039,7 @@
         },
         {
           "name": "allow_burner_leech",
-          "order": 109,
+          "order": 110,
           "description": "Whether this inserter allows burner leeching.",
           "subclasses": [
             "Inserter"
@@ -10002,7 +10060,7 @@
         },
         {
           "name": "allow_custom_vectors",
-          "order": 108,
+          "order": 109,
           "description": "Whether this inserter allows custom pickup and drop vectors.",
           "subclasses": [
             "Inserter"
@@ -10014,7 +10072,7 @@
         },
         {
           "name": "allow_passengers",
-          "order": 187,
+          "order": 188,
           "description": "Whether this vehicle allows passengers.",
           "subclasses": [
             "Vehicle"
@@ -10026,7 +10084,7 @@
         },
         {
           "name": "allow_run_time_change_of_is_military_target",
-          "order": 201,
+          "order": 202,
           "description": "True if this entity-with-owner's is_military_target can be changed run-time (on the entity, not on the prototype itself)",
           "subclasses": [
             "EntityWithOwner"
@@ -10038,7 +10096,7 @@
         },
         {
           "name": "allowed_effects",
-          "order": 128,
+          "order": 129,
           "description": "The allowed module effects for this entity, if any.",
           "type": {
             "complex_type": "dictionary",
@@ -10051,7 +10109,7 @@
         },
         {
           "name": "always_on",
-          "order": 156,
+          "order": 157,
           "description": "Whether the lamp is always on (except when out of power or turned off by the circuit network).",
           "subclasses": [
             "Lamp"
@@ -10063,7 +10121,7 @@
         },
         {
           "name": "ammo_category",
-          "order": 143,
+          "order": 144,
           "description": "Name of the ammo category of this land mine.",
           "subclasses": [
             "LandMine"
@@ -10075,7 +10133,7 @@
         },
         {
           "name": "animation_speed_coefficient",
-          "order": 209,
+          "order": 210,
           "description": "The animation speed coefficient of this belt connectable prototype.",
           "subclasses": [
             "BeltConnectable"
@@ -10108,7 +10166,7 @@
         },
         {
           "name": "automated_ammo_count",
-          "order": 152,
+          "order": 153,
           "description": "The amount of ammo that inserters automatically insert into this ammo-turret or artillery-turret.",
           "subclasses": [
             "ArtilleryTurret",
@@ -10121,7 +10179,7 @@
         },
         {
           "name": "automatic_weapon_cycling",
-          "order": 206,
+          "order": 207,
           "description": "Whether this spider vehicle prototype automatically cycles weapons.",
           "subclasses": [
             "SpiderVehicle"
@@ -10142,7 +10200,7 @@
         },
         {
           "name": "base_productivity",
-          "order": 183,
+          "order": 184,
           "description": "The base productivity of this crafting machine, lab, or mining drill.",
           "subclasses": [
             "CraftingMachine",
@@ -10156,7 +10214,7 @@
         },
         {
           "name": "belt_distance",
-          "order": 149,
+          "order": 150,
           "description": "",
           "subclasses": [
             "Loader"
@@ -10168,7 +10226,7 @@
         },
         {
           "name": "belt_length",
-          "order": 150,
+          "order": 151,
           "description": "",
           "subclasses": [
             "Loader"
@@ -10186,6 +10244,31 @@
             "TransportBeltConnectable"
           ],
           "type": "double",
+          "optional": true,
+          "read": true,
+          "write": false
+        },
+        {
+          "name": "boiler_mode",
+          "order": 104,
+          "description": "The boiler operation mode of this boiler prototype.",
+          "subclasses": [
+            "Boiler"
+          ],
+          "type": {
+            "complex_type": "union",
+            "options": [
+              {
+                "complex_type": "literal",
+                "value": "heat-water-inside"
+              },
+              {
+                "complex_type": "literal",
+                "value": "output-to-separate-pipe"
+              }
+            ],
+            "full_format": false
+          },
           "optional": true,
           "read": true,
           "write": false
@@ -10213,7 +10296,7 @@
         },
         {
           "name": "build_distance",
-          "order": 225,
+          "order": 226,
           "description": "",
           "subclasses": [
             "Character"
@@ -10255,7 +10338,7 @@
         },
         {
           "name": "call_for_help_radius",
-          "order": 159,
+          "order": 160,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -10267,7 +10350,7 @@
         },
         {
           "name": "can_open_gates",
-          "order": 174,
+          "order": 175,
           "description": "Whether this unit prototype can open gates.",
           "subclasses": [
             "Unit"
@@ -10279,7 +10362,7 @@
         },
         {
           "name": "center_collision_mask",
-          "order": 193,
+          "order": 194,
           "description": "The collision mask used only for collision test with tile directly at offshore pump position.",
           "subclasses": [
             "OffshorePump"
@@ -10291,7 +10374,7 @@
         },
         {
           "name": "chain_shooting_cooldown_modifier",
-          "order": 207,
+          "order": 208,
           "description": "The chain shooting cooldown modifier of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -10303,7 +10386,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 237,
+          "order": 238,
           "description": "",
           "subclasses": [
             "Character"
@@ -10315,7 +10398,7 @@
         },
         {
           "name": "chunk_exploration_radius",
-          "order": 208,
+          "order": 209,
           "description": "The chunk exploration radius of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -10327,7 +10410,7 @@
         },
         {
           "name": "cliff_explosive_prototype",
-          "order": 165,
+          "order": 166,
           "description": "The item prototype name used to destroy this cliff.",
           "subclasses": [
             "Cliff"
@@ -10357,7 +10440,7 @@
         },
         {
           "name": "collision_mask_collides_with_self",
-          "order": 125,
+          "order": 126,
           "description": "Does this prototype collision mask collide with itself?",
           "type": "boolean",
           "optional": false,
@@ -10366,7 +10449,7 @@
         },
         {
           "name": "collision_mask_collides_with_tiles_only",
-          "order": 126,
+          "order": 127,
           "description": "Does this prototype collision mask collide with tiles only?",
           "type": "boolean",
           "optional": false,
@@ -10375,7 +10458,7 @@
         },
         {
           "name": "collision_mask_considers_tile_transitions",
-          "order": 127,
+          "order": 128,
           "description": "Does this prototype collision mask consider tile transitions?",
           "type": "boolean",
           "optional": false,
@@ -10393,7 +10476,7 @@
         },
         {
           "name": "color",
-          "order": 124,
+          "order": 125,
           "description": "The color of the prototype, if any.",
           "type": "Color",
           "optional": true,
@@ -10402,7 +10485,7 @@
         },
         {
           "name": "connection_distance",
-          "order": 220,
+          "order": 221,
           "description": "",
           "subclasses": [
             "RollingStock"
@@ -10414,7 +10497,7 @@
         },
         {
           "name": "construction_radius",
-          "order": 139,
+          "order": 140,
           "description": "The construction radius for this roboport prototype.",
           "subclasses": [
             "Roboport"
@@ -10438,7 +10521,7 @@
         },
         {
           "name": "container_distance",
-          "order": 148,
+          "order": 149,
           "description": "",
           "subclasses": [
             "Loader"
@@ -10466,7 +10549,7 @@
         },
         {
           "name": "count_as_rock_for_filtered_deconstruction",
-          "order": 115,
+          "order": 116,
           "description": "If this simple-entity is counted as a rock for the deconstruction planner \"trees and rocks only\" filter.",
           "subclasses": [
             "SimpleEntity"
@@ -10509,7 +10592,7 @@
         },
         {
           "name": "create_ghost_on_death",
-          "order": 142,
+          "order": 143,
           "description": "If this prototype will attempt to create a ghost of itself on death.",
           "notes": [
             "If this is false then a ghost will never be made, if it's true a ghost may be made."
@@ -10647,7 +10730,7 @@
         },
         {
           "name": "damage_hit_tint",
-          "order": 236,
+          "order": 237,
           "description": "",
           "subclasses": [
             "Character"
@@ -10659,7 +10742,7 @@
         },
         {
           "name": "darkness_for_all_lamps_off",
-          "order": 155,
+          "order": 156,
           "description": "Value between 0 and 1 darkness where all lamps of this lamp prototype are off.",
           "subclasses": [
             "Lamp"
@@ -10671,7 +10754,7 @@
         },
         {
           "name": "darkness_for_all_lamps_on",
-          "order": 154,
+          "order": 155,
           "description": "Value between 0 and 1 darkness where all lamps of this lamp prototype are on.",
           "subclasses": [
             "Lamp"
@@ -10704,7 +10787,7 @@
         },
         {
           "name": "distraction_cooldown",
-          "order": 176,
+          "order": 177,
           "description": "The distraction cooldown of this unit prototype.",
           "subclasses": [
             "Unit"
@@ -10716,7 +10799,7 @@
         },
         {
           "name": "distribution_effectivity",
-          "order": 118,
+          "order": 119,
           "description": "The distribution effectivity for this beacon prototype.",
           "subclasses": [
             "Beacon"
@@ -10728,7 +10811,7 @@
         },
         {
           "name": "door_opening_speed",
-          "order": 133,
+          "order": 134,
           "description": "The door opening speed for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -10761,7 +10844,7 @@
         },
         {
           "name": "drop_item_distance",
-          "order": 226,
+          "order": 227,
           "description": "",
           "subclasses": [
             "Character"
@@ -10773,7 +10856,7 @@
         },
         {
           "name": "dying_speed",
-          "order": 211,
+          "order": 212,
           "description": "The dying time of this corpse prototype.",
           "subclasses": [
             "Corpse"
@@ -10825,7 +10908,7 @@
         },
         {
           "name": "energy_per_hit_point",
-          "order": 141,
+          "order": 142,
           "description": "The energy used per hitpoint taken for this vehicle during collisions.",
           "subclasses": [
             "Vehicle"
@@ -10870,7 +10953,7 @@
         },
         {
           "name": "engine_starting_speed",
-          "order": 135,
+          "order": 136,
           "description": "The engine starting speed for this rocket silo rocket prototype.",
           "subclasses": [
             "RocketSiloRocket"
@@ -10882,7 +10965,7 @@
         },
         {
           "name": "enter_vehicle_distance",
-          "order": 231,
+          "order": 232,
           "description": "",
           "subclasses": [
             "Character"
@@ -10894,7 +10977,7 @@
         },
         {
           "name": "explosion_beam",
-          "order": 119,
+          "order": 120,
           "description": "Whether this explosion has a beam.",
           "subclasses": [
             "Explosion"
@@ -10906,7 +10989,7 @@
         },
         {
           "name": "explosion_rotate",
-          "order": 120,
+          "order": 121,
           "description": "Whether this explosion rotates.",
           "subclasses": [
             "Explosion"
@@ -10927,7 +11010,7 @@
         },
         {
           "name": "filter_count",
-          "order": 116,
+          "order": 117,
           "description": "The filter count of this inserter, loader, or logistic chest. For logistic containers, `nil` means no limit.",
           "subclasses": [
             "Inserter",
@@ -10956,7 +11039,7 @@
         },
         {
           "name": "fixed_recipe",
-          "order": 138,
+          "order": 139,
           "description": "The fixed recipe name for this assembling machine prototype, if any.",
           "subclasses": [
             "AssemblingMachine"
@@ -10977,7 +11060,7 @@
         },
         {
           "name": "fluid",
-          "order": 104,
+          "order": 105,
           "description": "The fluid this offshore pump produces.",
           "subclasses": [
             "OffshorePump"
@@ -10989,7 +11072,7 @@
         },
         {
           "name": "fluid_capacity",
-          "order": 105,
+          "order": 106,
           "description": "The fluid capacity of this entity or 0 if this entity doesn't support fluids.",
           "notes": [
             "Crafting machines will report 0 due to their fluid capacity being whatever a given recipe needs."
@@ -11022,7 +11105,7 @@
         },
         {
           "name": "fluidbox_prototypes",
-          "order": 146,
+          "order": 147,
           "description": "The fluidbox prototypes for this entity.",
           "type": {
             "complex_type": "array",
@@ -11034,7 +11117,7 @@
         },
         {
           "name": "flying_acceleration",
-          "order": 137,
+          "order": 138,
           "description": "The flying acceleration for this rocket silo rocket prototype.",
           "subclasses": [
             "RocketSiloRocket"
@@ -11046,7 +11129,7 @@
         },
         {
           "name": "flying_speed",
-          "order": 136,
+          "order": 137,
           "description": "The flying speed for this rocket silo rocket prototype.",
           "subclasses": [
             "RocketSiloRocket"
@@ -11079,7 +11162,7 @@
         },
         {
           "name": "grid_prototype",
-          "order": 194,
+          "order": 195,
           "description": "The equipment grid prototype for this entity, if any.",
           "type": "LuaEquipmentGridPrototype",
           "optional": true,
@@ -11110,7 +11193,7 @@
         },
         {
           "name": "has_belt_immunity",
-          "order": 167,
+          "order": 168,
           "description": "Whether this unit, car, or character prototype has belt immunity.",
           "subclasses": [
             "Unit",
@@ -11151,7 +11234,7 @@
         },
         {
           "name": "height",
-          "order": 203,
+          "order": 204,
           "description": "The height of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -11217,7 +11300,7 @@
         },
         {
           "name": "inserter_chases_belt_items",
-          "order": 114,
+          "order": 115,
           "description": "True if this inserter chases items on belts for pickup.",
           "subclasses": [
             "Inserter"
@@ -11229,7 +11312,7 @@
         },
         {
           "name": "inserter_drop_position",
-          "order": 113,
+          "order": 114,
           "description": "The drop position for this inserter.",
           "subclasses": [
             "Inserter"
@@ -11241,7 +11324,7 @@
         },
         {
           "name": "inserter_extension_speed",
-          "order": 110,
+          "order": 111,
           "description": "The extension speed of this inserter.",
           "subclasses": [
             "Inserter"
@@ -11253,7 +11336,7 @@
         },
         {
           "name": "inserter_pickup_position",
-          "order": 112,
+          "order": 113,
           "description": "The pickup position for this inserter.",
           "subclasses": [
             "Inserter"
@@ -11265,7 +11348,7 @@
         },
         {
           "name": "inserter_rotation_speed",
-          "order": 111,
+          "order": 112,
           "description": "The rotation speed of this inserter.",
           "subclasses": [
             "Inserter"
@@ -11277,7 +11360,7 @@
         },
         {
           "name": "inserter_stack_size_bonus",
-          "order": 197,
+          "order": 198,
           "description": "The built-in stack size bonus of this inserter prototype.",
           "subclasses": [
             "Inserter"
@@ -11304,7 +11387,7 @@
         },
         {
           "name": "is_building",
-          "order": 151,
+          "order": 152,
           "description": "Everything in the following list is considered a building.\n\n- AccumulatorPrototype\n- ArtilleryTurretPrototype\n- BeaconPrototype\n- BoilerPrototype\n- BurnerGeneratorPrototype\n- CombinatorPrototype → ArithmeticCombinator, DeciderCombinator\n- ConstantCombinatorPrototype\n- ContainerPrototype → LogisticContainer, InfinityContainer\n- CraftingMachinePrototype → AssemblingMachine, RocketSilo, Furnace\n- ElectricEnergyInterfacePrototype\n- ElectricPolePrototype\n- EnemySpawnerPrototype\n- GatePrototype\n- GeneratorPrototype\n- HeatInterfacePrototype\n- HeatPipePrototype\n- InserterPrototype\n- LabPrototype\n- LampPrototype\n- LinkedContainerPrototype\n- MarketPrototype\n- MiningDrillPrototype\n- OffshorePumpPrototype\n- PipePrototype → InfinityPipe\n- PipeToGroundPrototype\n- PlayerPortPrototype\n- PowerSwitchPrototype\n- ProgrammableSpeakerPrototype\n- PumpPrototype\n- RadarPrototype\n- RailPrototype → CurvedRail, StraightRail\n- RailSignalBasePrototype → RailChainSignal, RailSignal\n- ReactorPrototype\n- RoboportPrototype\n- SimpleEntityPrototype\n- SimpleEntityWithOwnerPrototype → SimpleEntityWithForce\n- SolarPanelPrototype\n- StorageTankPrototype\n- TrainStopPrototype\n- TransportBeltConnectablePrototype → LinkedBelt, Loader1x1, Loader1x2, Splitter, TransportBelt, UndergroundBelt\n- TurretPrototype → AmmoTurret, ElectricTurret, FluidTurret\n- WallPrototype",
           "type": "boolean",
           "optional": false,
@@ -11313,7 +11396,7 @@
         },
         {
           "name": "is_entity_with_owner",
-          "order": 199,
+          "order": 200,
           "description": "True if this is entity-with-owner",
           "type": "boolean",
           "optional": false,
@@ -11322,7 +11405,7 @@
         },
         {
           "name": "is_military_target",
-          "order": 200,
+          "order": 201,
           "description": "True if this entity-with-owner is military target",
           "subclasses": [
             "EntityWithOwner"
@@ -11334,7 +11417,7 @@
         },
         {
           "name": "item_pickup_distance",
-          "order": 229,
+          "order": 230,
           "description": "",
           "subclasses": [
             "Character"
@@ -11346,7 +11429,7 @@
         },
         {
           "name": "item_slot_count",
-          "order": 182,
+          "order": 183,
           "description": "The item slot count of this constant combinator prototype.",
           "subclasses": [
             "ConstantCombinator"
@@ -11370,7 +11453,7 @@
         },
         {
           "name": "joint_distance",
-          "order": 221,
+          "order": 222,
           "description": "",
           "subclasses": [
             "RollingStock"
@@ -11382,7 +11465,7 @@
         },
         {
           "name": "lab_inputs",
-          "order": 180,
+          "order": 181,
           "description": "The item prototype names that are the inputs of this lab prototype.",
           "subclasses": [
             "Lab"
@@ -11397,7 +11480,7 @@
         },
         {
           "name": "lamp_energy_usage",
-          "order": 213,
+          "order": 214,
           "description": "The lamp energy usage of this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -11409,7 +11492,7 @@
         },
         {
           "name": "launch_wait_time",
-          "order": 131,
+          "order": 132,
           "description": "The rocket launch delay for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -11421,7 +11504,7 @@
         },
         {
           "name": "light_blinking_speed",
-          "order": 132,
+          "order": 133,
           "description": "The light blinking speed for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -11463,7 +11546,7 @@
         },
         {
           "name": "logistic_parameters",
-          "order": 202,
+          "order": 203,
           "description": "The logistic parameters for this roboport.",
           "notes": [
             "Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array."
@@ -11587,7 +11670,7 @@
         },
         {
           "name": "logistic_radius",
-          "order": 140,
+          "order": 141,
           "description": "The logistic radius for this roboport prototype.",
           "subclasses": [
             "Roboport"
@@ -11614,7 +11697,7 @@
         },
         {
           "name": "loot_pickup_distance",
-          "order": 230,
+          "order": 231,
           "description": "",
           "subclasses": [
             "Character"
@@ -11626,7 +11709,7 @@
         },
         {
           "name": "manual_range_modifier",
-          "order": 210,
+          "order": 211,
           "description": "The manual range modifier for this artillery turret or wagon prototype.\n\nsubclass(ArtilleryWagon, ArtilleryTurret)",
           "type": "double",
           "optional": true,
@@ -11662,7 +11745,7 @@
         },
         {
           "name": "max_count_of_owned_units",
-          "order": 160,
+          "order": 161,
           "description": "Count of enemies this spawner can sustain.",
           "subclasses": [
             "Spawner"
@@ -11674,7 +11757,7 @@
         },
         {
           "name": "max_darkness_to_spawn",
-          "order": 158,
+          "order": 159,
           "description": "The maximum darkness at which this unit spawner can spawn entities.",
           "subclasses": [
             "Spawner"
@@ -11686,7 +11769,7 @@
         },
         {
           "name": "max_distance_of_nearby_sector_revealed",
-          "order": 189,
+          "order": 190,
           "description": "The radius of the area constantly revealed by this radar, in chunks.",
           "subclasses": [
             "Radar"
@@ -11698,7 +11781,7 @@
         },
         {
           "name": "max_distance_of_sector_revealed",
-          "order": 188,
+          "order": 189,
           "description": "The radius of the area this radar can chart, in chunks.",
           "subclasses": [
             "Radar"
@@ -11740,7 +11823,7 @@
         },
         {
           "name": "max_friends_around_to_spawn",
-          "order": 161,
+          "order": 162,
           "description": "How many friendly units are required within the spawning_radius of this spawner for it to stop producing more units.",
           "subclasses": [
             "Spawner"
@@ -11798,7 +11881,7 @@
         },
         {
           "name": "max_pursue_distance",
-          "order": 171,
+          "order": 172,
           "description": "The maximum pursue distance of this unit prototype.",
           "subclasses": [
             "Unit"
@@ -11810,7 +11893,7 @@
         },
         {
           "name": "max_speed",
-          "order": 153,
+          "order": 154,
           "description": "The max speed of this projectile or flying robot prototype.",
           "subclasses": [
             "Projectile",
@@ -11857,7 +11940,7 @@
         },
         {
           "name": "maximum_corner_sliding_distance",
-          "order": 224,
+          "order": 225,
           "description": "",
           "subclasses": [
             "Character"
@@ -11881,7 +11964,7 @@
         },
         {
           "name": "min_darkness_to_spawn",
-          "order": 157,
+          "order": 158,
           "description": "The minimum darkness at which this unit spawner can spawn entities.",
           "subclasses": [
             "Spawner"
@@ -11893,7 +11976,7 @@
         },
         {
           "name": "min_pursue_time",
-          "order": 170,
+          "order": 171,
           "description": "The minimum pursue time of this unit prototype.",
           "subclasses": [
             "Unit"
@@ -12031,7 +12114,7 @@
         },
         {
           "name": "move_while_shooting",
-          "order": 173,
+          "order": 174,
           "description": "Whether this unit prototype can move while shooting.",
           "subclasses": [
             "Unit"
@@ -12052,7 +12135,7 @@
         },
         {
           "name": "neighbour_bonus",
-          "order": 147,
+          "order": 148,
           "description": "",
           "subclasses": [
             "Reactor"
@@ -12085,7 +12168,7 @@
         },
         {
           "name": "object_name",
-          "order": 239,
+          "order": 240,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "type": "string",
           "optional": false,
@@ -12103,7 +12186,7 @@
         },
         {
           "name": "pollution_to_join_attack",
-          "order": 169,
+          "order": 170,
           "description": "The amount of pollution that has to be absorbed by the unit's spawner before the unit will leave the spawner and attack the source of the pollution.",
           "subclasses": [
             "Unit"
@@ -12115,7 +12198,7 @@
         },
         {
           "name": "protected_from_tile_building",
-          "order": 198,
+          "order": 199,
           "description": "True if this entity prototype should be included during tile collision checks with [LuaTilePrototype::check_collision_with_entities](runtime:LuaTilePrototype::check_collision_with_entities) enabled.",
           "type": "boolean",
           "optional": false,
@@ -12124,7 +12207,7 @@
         },
         {
           "name": "pumping_speed",
-          "order": 106,
+          "order": 107,
           "description": "The pumping speed of this offshore or normal pump.",
           "subclasses": [
             "OffshorePump",
@@ -12137,7 +12220,7 @@
         },
         {
           "name": "radar_range",
-          "order": 172,
+          "order": 173,
           "description": "The radar range of this unit prototype.",
           "subclasses": [
             "Unit"
@@ -12149,7 +12232,7 @@
         },
         {
           "name": "radius",
-          "order": 164,
+          "order": 165,
           "description": "The radius of this entity prototype.",
           "type": "double",
           "optional": false,
@@ -12158,7 +12241,7 @@
         },
         {
           "name": "radius_visualisation_specification",
-          "order": 222,
+          "order": 223,
           "description": "",
           "type": "RadiusVisualisationSpecification",
           "optional": true,
@@ -12167,7 +12250,7 @@
         },
         {
           "name": "reach_distance",
-          "order": 227,
+          "order": 228,
           "description": "",
           "subclasses": [
             "Character"
@@ -12179,7 +12262,7 @@
         },
         {
           "name": "reach_resource_distance",
-          "order": 228,
+          "order": 229,
           "description": "",
           "subclasses": [
             "Character"
@@ -12191,7 +12274,7 @@
         },
         {
           "name": "related_underground_belt",
-          "order": 196,
+          "order": 197,
           "description": "",
           "subclasses": [
             "TransportBelt"
@@ -12215,7 +12298,7 @@
         },
         {
           "name": "remove_decoratives",
-          "order": 195,
+          "order": 196,
           "description": "",
           "type": "string",
           "optional": false,
@@ -12236,7 +12319,7 @@
         },
         {
           "name": "researching_speed",
-          "order": 181,
+          "order": 182,
           "description": "The base researching speed of this lab prototype.",
           "subclasses": [
             "Lab"
@@ -12299,7 +12382,7 @@
         },
         {
           "name": "respawn_time",
-          "order": 235,
+          "order": 236,
           "description": "",
           "subclasses": [
             "Character"
@@ -12326,7 +12409,7 @@
         },
         {
           "name": "rising_speed",
-          "order": 134,
+          "order": 135,
           "description": "The rising speed for this rocket silo rocket prototype.",
           "subclasses": [
             "RocketSiloRocket"
@@ -12338,7 +12421,7 @@
         },
         {
           "name": "rocket_entity_prototype",
-          "order": 166,
+          "order": 167,
           "description": "The rocket entity prototype associated with this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -12350,7 +12433,7 @@
         },
         {
           "name": "rocket_parts_required",
-          "order": 129,
+          "order": 130,
           "description": "The rocket parts required for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -12362,7 +12445,7 @@
         },
         {
           "name": "rocket_rising_delay",
-          "order": 130,
+          "order": 131,
           "description": "The rocket rising delay for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -12386,7 +12469,7 @@
         },
         {
           "name": "running_speed",
-          "order": 223,
+          "order": 224,
           "description": "The current movement speed of this character, including effects from exoskeletons, tiles, stickers and shooting.",
           "subclasses": [
             "Character"
@@ -12485,7 +12568,7 @@
         },
         {
           "name": "spawn_decoration",
-          "order": 218,
+          "order": 219,
           "description": "",
           "subclasses": [
             "Spawner",
@@ -12501,7 +12584,7 @@
         },
         {
           "name": "spawn_decorations_on_expansion",
-          "order": 219,
+          "order": 220,
           "description": "",
           "subclasses": [
             "Spawner",
@@ -12514,7 +12597,7 @@
         },
         {
           "name": "spawning_radius",
-          "order": 162,
+          "order": 163,
           "description": "How far from the spawner can the units be spawned.",
           "subclasses": [
             "Spawner"
@@ -12526,7 +12609,7 @@
         },
         {
           "name": "spawning_spacing",
-          "order": 163,
+          "order": 164,
           "description": "What spaces should be between the spawned units.",
           "subclasses": [
             "Spawner"
@@ -12538,7 +12621,7 @@
         },
         {
           "name": "spawning_time_modifier",
-          "order": 177,
+          "order": 178,
           "description": "The spawning time modifier of this unit prototype.",
           "subclasses": [
             "Unit"
@@ -12576,7 +12659,7 @@
         },
         {
           "name": "stack",
-          "order": 107,
+          "order": 108,
           "description": "Whether this inserter is a stack-type.",
           "subclasses": [
             "Inserter"
@@ -12619,7 +12702,7 @@
         },
         {
           "name": "supports_direction",
-          "order": 185,
+          "order": 186,
           "description": "Whether this entity prototype could possibly ever be rotated.",
           "type": "boolean",
           "optional": false,
@@ -12652,7 +12735,7 @@
         },
         {
           "name": "terrain_friction_modifier",
-          "order": 186,
+          "order": 187,
           "description": "The terrain friction modifier for this vehicle.",
           "subclasses": [
             "Vehicle"
@@ -12664,30 +12747,6 @@
         },
         {
           "name": "ticks_to_keep_aiming_direction",
-          "order": 233,
-          "description": "",
-          "subclasses": [
-            "Character"
-          ],
-          "type": "uint",
-          "optional": true,
-          "read": true,
-          "write": false
-        },
-        {
-          "name": "ticks_to_keep_gun",
-          "order": 232,
-          "description": "",
-          "subclasses": [
-            "Character"
-          ],
-          "type": "uint",
-          "optional": true,
-          "read": true,
-          "write": false
-        },
-        {
-          "name": "ticks_to_stay_in_combat",
           "order": 234,
           "description": "",
           "subclasses": [
@@ -12699,8 +12758,32 @@
           "write": false
         },
         {
+          "name": "ticks_to_keep_gun",
+          "order": 233,
+          "description": "",
+          "subclasses": [
+            "Character"
+          ],
+          "type": "uint",
+          "optional": true,
+          "read": true,
+          "write": false
+        },
+        {
+          "name": "ticks_to_stay_in_combat",
+          "order": 235,
+          "description": "",
+          "subclasses": [
+            "Character"
+          ],
+          "type": "uint",
+          "optional": true,
+          "read": true,
+          "write": false
+        },
+        {
           "name": "tile_height",
-          "order": 216,
+          "order": 217,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)",
           "type": "uint",
           "optional": false,
@@ -12709,7 +12792,7 @@
         },
         {
           "name": "tile_width",
-          "order": 215,
+          "order": 216,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)",
           "type": "uint",
           "optional": false,
@@ -12718,7 +12801,7 @@
         },
         {
           "name": "time_to_live",
-          "order": 117,
+          "order": 118,
           "description": "The time to live for this prototype or `0` if prototype doesn't have time_to_live or time_before_removed.",
           "type": "uint",
           "optional": false,
@@ -12727,7 +12810,7 @@
         },
         {
           "name": "timeout",
-          "order": 144,
+          "order": 145,
           "description": "The time it takes this land mine to arm.",
           "subclasses": [
             "LandMine"
@@ -12739,7 +12822,7 @@
         },
         {
           "name": "torso_bob_speed",
-          "order": 205,
+          "order": 206,
           "description": "The torso bob speed of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -12751,7 +12834,7 @@
         },
         {
           "name": "torso_rotation_speed",
-          "order": 204,
+          "order": 205,
           "description": "The torso rotation speed of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -12763,7 +12846,7 @@
         },
         {
           "name": "tree_color_count",
-          "order": 121,
+          "order": 122,
           "description": "If it is a tree, return the number of colors it supports.",
           "subclasses": [
             "Tree"
@@ -12775,7 +12858,7 @@
         },
         {
           "name": "trigger_collision_mask",
-          "order": 145,
+          "order": 146,
           "description": "The collision mask entities must collide with to make this landmine blow up.",
           "subclasses": [
             "LandMine"
@@ -12820,7 +12903,7 @@
         },
         {
           "name": "use_exact_mode",
-          "order": 214,
+          "order": 215,
           "description": "Whether this logistic container prototype uses exact mode",
           "subclasses": [
             "LogisticContainer"
@@ -12832,7 +12915,7 @@
         },
         {
           "name": "valid",
-          "order": 238,
+          "order": 239,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "type": "boolean",
           "optional": false,
@@ -12841,7 +12924,7 @@
         },
         {
           "name": "vertical_selection_shift",
-          "order": 217,
+          "order": 218,
           "description": "Vertical selection shift used by rolling stocks. It affects selection box vertical position but is also used to shift rolling stock graphics along the rails to fine tune train's look.",
           "subclasses": [
             "RollingStock"
@@ -12853,7 +12936,7 @@
         },
         {
           "name": "vision_distance",
-          "order": 168,
+          "order": 169,
           "description": "The vision distance of this unit prototype.",
           "subclasses": [
             "Unit"
@@ -18689,6 +18772,37 @@
           "return_values": []
         },
         {
+          "name": "request_train_path",
+          "order": 66,
+          "description": "Direct access to Trains Pathfinder. Allows to search rail paths or querying which stops are accessible",
+          "parameters": [
+            {
+              "name": "request",
+              "order": 0,
+              "description": "",
+              "type": "TrainPathFinderRequest",
+              "optional": false
+            }
+          ],
+          "takes_table": false,
+          "return_values": [
+            {
+              "order": 0,
+              "description": "",
+              "type": {
+                "complex_type": "union",
+                "options": [
+                  "TrainPathFinderPathResult",
+                  "TrainPathAnyGoalResult",
+                  "TrainPathAllGoalsResult"
+                ],
+                "full_format": false
+              },
+              "optional": false
+            }
+          ]
+        },
+        {
           "name": "reset_game_state",
           "order": 1,
           "description": "Reset scenario state (game_finished, player_won, etc.).",
@@ -20271,7 +20385,7 @@
           "parameters": [
             {
               "name": "anchor",
-              "order": 10,
+              "order": 11,
               "description": "Where to position the child element when in the `relative` element.",
               "type": "GuiAnchor",
               "optional": true
@@ -20284,29 +20398,36 @@
               "optional": true
             },
             {
-              "name": "enabled",
+              "name": "elem_tooltip",
               "order": 4,
+              "description": "Elem tooltip of the child element. Will be displayed above `tooltip`.",
+              "type": "ElemID",
+              "optional": true
+            },
+            {
+              "name": "enabled",
+              "order": 5,
               "description": "Whether the child element is enabled. Defaults to `true`.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "game_controller_interaction",
-              "order": 11,
+              "order": 12,
               "description": "How the element should interact with game controllers. Defaults to [defines.game_controller_interaction.normal](runtime:defines.game_controller_interaction.normal).",
               "type": "defines.game_controller_interaction",
               "optional": true
             },
             {
               "name": "ignored_by_interaction",
-              "order": 6,
+              "order": 7,
               "description": "Whether the child element is ignored by interaction. Defaults to `false`.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "index",
-              "order": 9,
+              "order": 10,
               "description": "Location in its parent that the child element should slot into. By default, the child will be appended onto the end.",
               "type": "uint",
               "optional": true
@@ -20320,21 +20441,21 @@
             },
             {
               "name": "raise_hover_events",
-              "order": 12,
+              "order": 13,
               "description": "Whether this element will raise [on_gui_hover](runtime:on_gui_hover) and [on_gui_leave](runtime:on_gui_leave). Defaults to `false`.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "style",
-              "order": 7,
+              "order": 8,
               "description": "The name of the style prototype to apply to the new element.",
               "type": "string",
               "optional": true
             },
             {
               "name": "tags",
-              "order": 8,
+              "order": 9,
               "description": "[Tags](runtime:Tags) associated with the child element.",
               "type": "Tags",
               "optional": true
@@ -20355,7 +20476,7 @@
             },
             {
               "name": "visible",
-              "order": 5,
+              "order": 6,
               "description": "Whether the child element is visible. Defaults to `true`.",
               "type": "boolean",
               "optional": true
@@ -21465,14 +21586,14 @@
           ],
           "parameters": [
             {
-              "name": "end",
+              "name": "end_index",
               "order": 1,
               "description": "The index of the last character to select",
               "type": "int",
               "optional": false
             },
             {
-              "name": "start",
+              "name": "start_index",
               "order": 0,
               "description": "The index of the first character to select",
               "type": "int",
@@ -21625,7 +21746,7 @@
       "attributes": [
         {
           "name": "allow_decimal",
-          "order": 54,
+          "order": 55,
           "description": "Whether this textfield (when in numeric mode) allows decimal numbers.",
           "subclasses": [
             "textfield"
@@ -21637,7 +21758,7 @@
         },
         {
           "name": "allow_negative",
-          "order": 55,
+          "order": 56,
           "description": "Whether this textfield (when in numeric mode) allows negative numbers.",
           "subclasses": [
             "textfield"
@@ -21649,7 +21770,7 @@
         },
         {
           "name": "allow_none_state",
-          "order": 67,
+          "order": 68,
           "description": "Whether the `\"none\"` state is allowed for this switch.",
           "notes": [
             "This can't be set to false if the current switch_state is 'none'."
@@ -21664,7 +21785,7 @@
         },
         {
           "name": "anchor",
-          "order": 63,
+          "order": 64,
           "description": "The anchor for this relative widget, if any. Setting `nil` clears the anchor.",
           "type": "GuiAnchor",
           "optional": true,
@@ -21673,7 +21794,7 @@
         },
         {
           "name": "auto_center",
-          "order": 27,
+          "order": 28,
           "description": "Whether this frame auto-centers on window resize when stored in [LuaGui::screen](runtime:LuaGui::screen).",
           "subclasses": [
             "frame"
@@ -21685,7 +21806,7 @@
         },
         {
           "name": "auto_toggle",
-          "order": 29,
+          "order": 30,
           "description": "Whether this button will automatically toggle when clicked.",
           "subclasses": [
             "button",
@@ -21698,7 +21819,7 @@
         },
         {
           "name": "badge_text",
-          "order": 28,
+          "order": 29,
           "description": "The text to display after the normal tab text (designed to work with numbers)",
           "subclasses": [
             "tab"
@@ -21722,7 +21843,7 @@
         },
         {
           "name": "children",
-          "order": 21,
+          "order": 22,
           "description": "The child-elements of this GUI element.",
           "type": {
             "complex_type": "array",
@@ -21746,7 +21867,7 @@
         },
         {
           "name": "clear_and_focus_on_right_click",
-          "order": 58,
+          "order": 59,
           "description": "Makes it so right-clicking on this textfield clears and focuses it.",
           "subclasses": [
             "textfield",
@@ -21771,7 +21892,7 @@
         },
         {
           "name": "column_count",
-          "order": 49,
+          "order": 50,
           "description": "The number of columns in this table.",
           "subclasses": [
             "table"
@@ -21797,7 +21918,7 @@
         },
         {
           "name": "drag_target",
-          "order": 59,
+          "order": 60,
           "description": "The `frame` that is being moved when dragging this GUI element, if any. This element needs to be a child of the `drag_target` at some level.",
           "notes": [
             "Only top-level elements in [LuaGui::screen](runtime:LuaGui::screen) can be `drag_target`s."
@@ -21819,7 +21940,7 @@
         },
         {
           "name": "draw_horizontal_line_after_headers",
-          "order": 48,
+          "order": 49,
           "description": "Whether this table should draw a horizontal grid line below the first table row.",
           "subclasses": [
             "table"
@@ -21831,7 +21952,7 @@
         },
         {
           "name": "draw_horizontal_lines",
-          "order": 47,
+          "order": 48,
           "description": "Whether this table should draw horizontal grid lines.",
           "subclasses": [
             "table"
@@ -21843,7 +21964,7 @@
         },
         {
           "name": "draw_vertical_lines",
-          "order": 46,
+          "order": 47,
           "description": "Whether this table should draw vertical grid lines.",
           "subclasses": [
             "table"
@@ -21855,7 +21976,7 @@
         },
         {
           "name": "elem_filters",
-          "order": 39,
+          "order": 40,
           "description": "The elem filters of this choose-elem-button, if any. The compatible type of filter is determined by `elem_type`.",
           "notes": [
             "Writing to this field does not change or clear the currently selected element."
@@ -21874,8 +21995,17 @@
           "write": true
         },
         {
+          "name": "elem_tooltip",
+          "order": 18,
+          "description": "The element tooltip to display when hovering over this element, or `nil`.",
+          "type": "ElemID",
+          "optional": true,
+          "read": true,
+          "write": true
+        },
+        {
           "name": "elem_type",
-          "order": 37,
+          "order": 38,
           "description": "The elem type of this choose-elem-button.",
           "subclasses": [
             "choose-elem-button"
@@ -21887,7 +22017,7 @@
         },
         {
           "name": "elem_value",
-          "order": 38,
+          "order": 39,
           "description": "The elem value of this choose-elem-button, if any.",
           "notes": [
             "The `\"signal\"` type operates with [SignalID](runtime:SignalID), while all other types use strings."
@@ -21909,7 +22039,7 @@
         },
         {
           "name": "enabled",
-          "order": 43,
+          "order": 44,
           "description": "Whether this GUI element is enabled. Disabled GUI elements don't trigger events when clicked.",
           "type": "boolean",
           "optional": false,
@@ -21918,7 +22048,7 @@
         },
         {
           "name": "entity",
-          "order": 62,
+          "order": 63,
           "description": "The entity associated with this entity-preview, camera, minimap, if any.",
           "subclasses": [
             "entity-preview",
@@ -21932,7 +22062,7 @@
         },
         {
           "name": "force",
-          "order": 36,
+          "order": 37,
           "description": "The force this minimap is using, if any.",
           "subclasses": [
             "minimap"
@@ -21944,7 +22074,7 @@
         },
         {
           "name": "game_controller_interaction",
-          "order": 31,
+          "order": 32,
           "description": "How this element should interact with game controllers.",
           "type": "defines.game_controller_interaction",
           "optional": false,
@@ -21962,7 +22092,7 @@
         },
         {
           "name": "horizontal_scroll_policy",
-          "order": 18,
+          "order": 19,
           "description": "Policy of the horizontal scroll bar. Possible values are `\"auto\"`, `\"never\"`, `\"always\"`, `\"auto-and-reserve-space\"`, `\"dont-show-but-allow-scrolling\"`.",
           "subclasses": [
             "scroll-pane"
@@ -21986,7 +22116,7 @@
         },
         {
           "name": "ignored_by_interaction",
-          "order": 44,
+          "order": 45,
           "description": "Whether this GUI element is ignored by interaction. This makes clicks on this element 'go through' to the GUI element or even the game surface below it.",
           "type": "boolean",
           "optional": false,
@@ -22004,7 +22134,7 @@
         },
         {
           "name": "is_password",
-          "order": 56,
+          "order": 57,
           "description": "Whether this textfield displays as a password field, which renders all characters as `*`.",
           "subclasses": [
             "textfield"
@@ -22016,7 +22146,7 @@
         },
         {
           "name": "items",
-          "order": 22,
+          "order": 23,
           "description": "The items in this dropdown or listbox.",
           "subclasses": [
             "drop-down",
@@ -22032,7 +22162,7 @@
         },
         {
           "name": "left_label_caption",
-          "order": 68,
+          "order": 69,
           "description": "The text shown for the left switch label.",
           "subclasses": [
             "switch"
@@ -22044,7 +22174,7 @@
         },
         {
           "name": "left_label_tooltip",
-          "order": 69,
+          "order": 70,
           "description": "The tooltip shown on the left switch label.",
           "subclasses": [
             "switch"
@@ -22056,7 +22186,7 @@
         },
         {
           "name": "location",
-          "order": 26,
+          "order": 27,
           "description": "The location of this widget when stored in [LuaGui::screen](runtime:LuaGui::screen). `nil` if not set or not in [LuaGui::screen](runtime:LuaGui::screen).",
           "type": "GuiLocation",
           "optional": true,
@@ -22065,7 +22195,7 @@
         },
         {
           "name": "locked",
-          "order": 45,
+          "order": 46,
           "description": "Whether this choose-elem-button can be changed by the player.",
           "subclasses": [
             "choose-elem-button"
@@ -22077,7 +22207,7 @@
         },
         {
           "name": "lose_focus_on_confirm",
-          "order": 57,
+          "order": 58,
           "description": "Whether this textfield loses focus after [defines.events.on_gui_confirmed](runtime:defines.events.on_gui_confirmed) is fired.",
           "subclasses": [
             "textfield"
@@ -22089,7 +22219,7 @@
         },
         {
           "name": "minimap_player_index",
-          "order": 35,
+          "order": 36,
           "description": "The player index this minimap is using.",
           "subclasses": [
             "minimap"
@@ -22101,7 +22231,7 @@
         },
         {
           "name": "mouse_button_filter",
-          "order": 52,
+          "order": 53,
           "description": "The mouse button filters for this button or sprite-button.",
           "subclasses": [
             "button",
@@ -22126,7 +22256,7 @@
         },
         {
           "name": "number",
-          "order": 24,
+          "order": 25,
           "description": "The number to be shown in the bottom right corner of this sprite-button. Set this to `nil` to show nothing.",
           "subclasses": [
             "sprite-button"
@@ -22138,7 +22268,7 @@
         },
         {
           "name": "numeric",
-          "order": 53,
+          "order": 54,
           "description": "Whether this textfield is limited to only numberic characters.",
           "subclasses": [
             "textfield"
@@ -22150,7 +22280,7 @@
         },
         {
           "name": "object_name",
-          "order": 73,
+          "order": 74,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "type": "string",
           "optional": false,
@@ -22177,7 +22307,7 @@
         },
         {
           "name": "position",
-          "order": 32,
+          "order": 33,
           "description": "The position this camera or minimap is focused on, if any.",
           "subclasses": [
             "camera",
@@ -22190,7 +22320,7 @@
         },
         {
           "name": "raise_hover_events",
-          "order": 65,
+          "order": 66,
           "description": "Whether this element will raise [on_gui_hover](runtime:on_gui_hover) and [on_gui_leave](runtime:on_gui_leave).",
           "type": "boolean",
           "optional": false,
@@ -22199,7 +22329,7 @@
         },
         {
           "name": "read_only",
-          "order": 42,
+          "order": 43,
           "description": "Whether this text-box is read-only. Defaults to `false`.",
           "subclasses": [
             "text-box"
@@ -22223,7 +22353,7 @@
         },
         {
           "name": "right_label_caption",
-          "order": 70,
+          "order": 71,
           "description": "The text shown for the right switch label.",
           "subclasses": [
             "switch"
@@ -22235,7 +22365,7 @@
         },
         {
           "name": "right_label_tooltip",
-          "order": 71,
+          "order": 72,
           "description": "The tooltip shown on the right switch label.",
           "subclasses": [
             "switch"
@@ -22247,7 +22377,7 @@
         },
         {
           "name": "selectable",
-          "order": 40,
+          "order": 41,
           "description": "Whether the contents of this text-box are selectable. Defaults to `true`.",
           "subclasses": [
             "text-box"
@@ -22259,7 +22389,7 @@
         },
         {
           "name": "selected_index",
-          "order": 23,
+          "order": 24,
           "description": "The selected index for this dropdown or listbox. Returns `0` if none is selected.",
           "subclasses": [
             "drop-down",
@@ -22272,7 +22402,7 @@
         },
         {
           "name": "selected_tab_index",
-          "order": 60,
+          "order": 61,
           "description": "The selected tab index for this tabbed pane, if any.",
           "subclasses": [
             "tabbed-pane"
@@ -22284,7 +22414,7 @@
         },
         {
           "name": "show_percent_for_small_numbers",
-          "order": 25,
+          "order": 26,
           "description": "Related to the number to be shown in the bottom right corner of this sprite-button. When set to `true`, numbers that are non-zero and smaller than one are shown as a percentage rather than the value. For example, `0.5` will be shown as `50%` instead.",
           "subclasses": [
             "sprite-button"
@@ -22296,7 +22426,7 @@
         },
         {
           "name": "slider_value",
-          "order": 51,
+          "order": 52,
           "description": "The value of this slider element.",
           "subclasses": [
             "slider"
@@ -22350,7 +22480,7 @@
         },
         {
           "name": "surface_index",
-          "order": 33,
+          "order": 34,
           "description": "The surface index this camera or minimap is using.",
           "subclasses": [
             "camera",
@@ -22363,7 +22493,7 @@
         },
         {
           "name": "switch_state",
-          "order": 66,
+          "order": 67,
           "description": "The switch state (left, none, right) for this switch.",
           "notes": [
             "If [LuaGuiElement::allow_none_state](runtime:LuaGuiElement::allow_none_state) is false this can't be set to `\"none\"`."
@@ -22378,7 +22508,7 @@
         },
         {
           "name": "tabs",
-          "order": 61,
+          "order": 62,
           "description": "The tabs and contents being shown in this tabbed-pane.",
           "subclasses": [
             "tabbed-pane"
@@ -22393,7 +22523,7 @@
         },
         {
           "name": "tags",
-          "order": 64,
+          "order": 65,
           "description": "The tags associated with this LuaGuiElement.",
           "type": "Tags",
           "optional": false,
@@ -22415,7 +22545,7 @@
         },
         {
           "name": "toggled",
-          "order": 30,
+          "order": 31,
           "description": "Whether this button is currently toggled. When a button is toggled, it will use the `selected_graphical_set` and `selected_font_color` defined in its style.",
           "subclasses": [
             "button",
@@ -22437,7 +22567,7 @@
         },
         {
           "name": "type",
-          "order": 20,
+          "order": 21,
           "description": "The type of this GUI element.",
           "type": "string",
           "optional": false,
@@ -22446,7 +22576,7 @@
         },
         {
           "name": "valid",
-          "order": 72,
+          "order": 73,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "type": "boolean",
           "optional": false,
@@ -22467,7 +22597,7 @@
         },
         {
           "name": "vertical_centering",
-          "order": 50,
+          "order": 51,
           "description": "Whether the content of this table should be vertically centered. Overrides [LuaStyle::column_alignments](runtime:LuaStyle::column_alignments). Defaults to `true`.",
           "subclasses": [
             "table"
@@ -22479,7 +22609,7 @@
         },
         {
           "name": "vertical_scroll_policy",
-          "order": 19,
+          "order": 20,
           "description": "Policy of the vertical scroll bar. Possible values are `\"auto\"`, `\"never\"`, `\"always\"`, `\"auto-and-reserve-space\"`, `\"dont-show-but-allow-scrolling\"`.",
           "subclasses": [
             "scroll-pane"
@@ -22500,7 +22630,7 @@
         },
         {
           "name": "word_wrap",
-          "order": 41,
+          "order": 42,
           "description": "Whether this text-box will word-wrap automatically. Defaults to `false`.",
           "subclasses": [
             "text-box"
@@ -22512,7 +22642,7 @@
         },
         {
           "name": "zoom",
-          "order": 34,
+          "order": 35,
           "description": "The zoom this camera or minimap is using. This value must be positive.",
           "subclasses": [
             "camera",
@@ -23550,8 +23680,8 @@
             {
               "name": "flag",
               "order": 0,
-              "description": "The flag to check. Can be one of [ItemPrototypeFlags](runtime:ItemPrototypeFlags). Any other value will cause an error.",
-              "type": "string",
+              "description": "The flag to check.",
+              "type": "ItemPrototypeFlag",
               "optional": false
             }
           ],
@@ -26911,12 +27041,8 @@
           "return_values": [
             {
               "order": 0,
-              "description": "A mapping of member types (\"storage\", \"passive-provider\", \"buffer\", \"active-provider\") to the number available in the members.",
-              "type": {
-                "complex_type": "dictionary",
-                "key": "string",
-                "value": "uint"
-              },
+              "description": "",
+              "type": "LogisticsNetworkSupplyCounts",
               "optional": false
             }
           ]
@@ -26938,15 +27064,8 @@
           "return_values": [
             {
               "order": 0,
-              "description": "A mapping of member types (\"storage\", \"passive-provider\", \"buffer\", \"active-provider\") to an array of LuaLogisticPoint.",
-              "type": {
-                "complex_type": "dictionary",
-                "key": "string",
-                "value": {
-                  "complex_type": "array",
-                  "value": "LuaLogisticPoint"
-                }
-              },
+              "description": "",
+              "type": "LogisticsNetworkSupplyPoints",
               "optional": false
             }
           ]
@@ -39675,7 +39794,7 @@
         {
           "name": "find_entity",
           "order": 3,
-          "description": "Find an entity of the given type at the given position. This checks both the exact position and the bounding box of the entity.",
+          "description": "Find an entity of the given name at the given position. This checks both the exact position and the bounding box of the entity.",
           "examples": [
             "```\ngame.player.selected.surface.find_entity('filter-inserter', {0,0})\n```"
           ],
@@ -39683,7 +39802,7 @@
             {
               "name": "entity",
               "order": 0,
-              "description": "Entity to look for.",
+              "description": "Name of the entity to look for.",
               "type": "string",
               "optional": false
             },
@@ -42860,14 +42979,34 @@
         {
           "name": "locomotives",
           "order": 6,
-          "description": "Arrays of locomotives. The result is two arrays, indexed by `\"front_movers\"` and `\"back_movers\"` containing the locomotives. E.g. `{front_movers={loco1, loco2}, back_movers={loco3}}`.",
+          "description": "Locomotives of the train.",
+          "examples": [
+            "```\n-- called on a LuaTrain with 3 locomotives, it returns 3 LuaEntities:\ntrain.locomotives -- => {front_movers = {loco1, loco2}, back_movers = {loco3}}\n```"
+          ],
           "type": {
-            "complex_type": "dictionary",
-            "key": "string",
-            "value": {
-              "complex_type": "array",
-              "value": "LuaEntity"
-            }
+            "complex_type": "table",
+            "parameters": [
+              {
+                "name": "back_movers",
+                "order": 1,
+                "description": "Array of locomotives.",
+                "type": {
+                  "complex_type": "array",
+                  "value": "LuaEntity"
+                },
+                "optional": false
+              },
+              {
+                "name": "front_movers",
+                "order": 0,
+                "description": "Array of locomotives.",
+                "type": {
+                  "complex_type": "array",
+                  "value": "LuaEntity"
+                },
+                "optional": false
+              }
+            ]
           },
           "optional": false,
           "read": true,
@@ -56332,7 +56471,7 @@
   "concepts": [
     {
       "name": "AchievementPrototypeFilter",
-      "order": 163,
+      "order": 175,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -56390,7 +56529,7 @@
     },
     {
       "name": "AdvancedMapGenSettings",
-      "order": 67,
+      "order": 74,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -56428,7 +56567,7 @@
     },
     {
       "name": "Alert",
-      "order": 26,
+      "order": 33,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -56480,7 +56619,7 @@
     },
     {
       "name": "Alignment",
-      "order": 141,
+      "order": 153,
       "description": "A [string](runtime:string) that specifies where a GUI element should be.",
       "type": {
         "complex_type": "union",
@@ -56546,7 +56685,7 @@
     },
     {
       "name": "AmmoType",
-      "order": 111,
+      "order": 118,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -56615,7 +56754,7 @@
     },
     {
       "name": "Any",
-      "order": 136,
+      "order": 148,
       "description": "Any basic type (string, number, boolean), table, or LuaObject.",
       "type": {
         "complex_type": "union",
@@ -56631,7 +56770,7 @@
     },
     {
       "name": "AnyBasic",
-      "order": 135,
+      "order": 147,
       "description": "Any basic type (string, number, boolean) or table.",
       "type": {
         "complex_type": "union",
@@ -56646,7 +56785,7 @@
     },
     {
       "name": "ArithmeticCombinatorParameters",
-      "order": 80,
+      "order": 87,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -56698,7 +56837,7 @@
     },
     {
       "name": "AttackParameterFluid",
-      "order": 129,
+      "order": 138,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -56722,7 +56861,7 @@
     },
     {
       "name": "AttackParameters",
-      "order": 130,
+      "order": 139,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -56927,11 +57066,7 @@
                 "name": "gun_center_shift",
                 "order": 1,
                 "description": "",
-                "type": {
-                  "complex_type": "dictionary",
-                  "key": "string",
-                  "value": "Vector"
-                },
+                "type": "GunShift4Way",
                 "optional": false
               },
               {
@@ -56952,7 +57087,7 @@
     },
     {
       "name": "AutoplaceControl",
-      "order": 63,
+      "order": 70,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -56983,7 +57118,7 @@
     },
     {
       "name": "AutoplaceSettings",
-      "order": 64,
+      "order": 71,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57011,7 +57146,7 @@
     },
     {
       "name": "AutoplaceSpecification",
-      "order": 57,
+      "order": 64,
       "description": "Specifies how probability and richness are calculated when placing something on the map. Can be specified either using `probability_expression` and `richness_expression` or by using all the other fields.",
       "type": {
         "complex_type": "table",
@@ -57146,7 +57281,7 @@
     },
     {
       "name": "AutoplaceSpecificationPeak",
-      "order": 59,
+      "order": 66,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57401,7 +57536,7 @@
     },
     {
       "name": "AutoplaceSpecificationRestriction",
-      "order": 60,
+      "order": 67,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57425,7 +57560,7 @@
     },
     {
       "name": "BeamTarget",
-      "order": 112,
+      "order": 119,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57449,7 +57584,7 @@
     },
     {
       "name": "BlueprintEntity",
-      "order": 49,
+      "order": 56,
       "description": "The representation of an entity inside of a blueprint. It has at least these fields, but can contain additional ones depending on the kind of entity.",
       "type": {
         "complex_type": "table",
@@ -57529,7 +57664,7 @@
     },
     {
       "name": "BlueprintSignalIcon",
-      "order": 48,
+      "order": 55,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57553,7 +57688,7 @@
     },
     {
       "name": "BoundingBox",
-      "order": 20,
+      "order": 27,
       "description": "Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with [MapPosition](runtime:MapPosition), the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero.",
       "examples": [
         "Explicit definition: \n```\n{left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}\n```",
@@ -57620,7 +57755,7 @@
     },
     {
       "name": "CapsuleAction",
-      "order": 131,
+      "order": 141,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57726,7 +57861,7 @@
     },
     {
       "name": "ChartTagSpec",
-      "order": 33,
+      "order": 40,
       "description": "",
       "notes": [
         "Either `icon`, `text`, or both must be provided."
@@ -57767,7 +57902,7 @@
     },
     {
       "name": "ChunkPosition",
-      "order": 8,
+      "order": 15,
       "description": "Coordinates of a chunk in a [LuaSurface](runtime:LuaSurface) where each integer `x`/`y` represents a different chunk. This uses the same format as [MapPosition](runtime:MapPosition), meaning it can be specified either with or without explicit keys. A [MapPosition](runtime:MapPosition) can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.",
       "type": {
         "complex_type": "union",
@@ -57816,7 +57951,7 @@
     },
     {
       "name": "ChunkPositionAndArea",
-      "order": 12,
+      "order": 19,
       "description": "A [ChunkPosition](runtime:ChunkPosition) with an added bounding box for the area of the chunk.",
       "type": {
         "complex_type": "table",
@@ -57847,7 +57982,7 @@
     },
     {
       "name": "CircuitCondition",
-      "order": 85,
+      "order": 92,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57885,7 +58020,7 @@
     },
     {
       "name": "CircuitConditionDefinition",
-      "order": 86,
+      "order": 93,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57909,7 +58044,7 @@
     },
     {
       "name": "CircuitConnectionDefinition",
-      "order": 87,
+      "order": 94,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57947,7 +58082,7 @@
     },
     {
       "name": "CircularParticleCreationSpecification",
-      "order": 127,
+      "order": 136,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58062,7 +58197,7 @@
     },
     {
       "name": "CircularProjectileCreationSpecification",
-      "order": 128,
+      "order": 137,
       "description": "",
       "type": {
         "complex_type": "tuple",
@@ -58086,7 +58221,7 @@
     },
     {
       "name": "CliffOrientation",
-      "order": 2,
+      "order": 9,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -58197,7 +58332,7 @@
     },
     {
       "name": "CliffPlacementSettings",
-      "order": 65,
+      "order": 72,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58235,7 +58370,7 @@
     },
     {
       "name": "CollisionMask",
-      "order": 121,
+      "order": 130,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.",
       "type": {
         "complex_type": "dictionary",
@@ -58248,7 +58383,7 @@
     },
     {
       "name": "CollisionMaskLayer",
-      "order": 120,
+      "order": 129,
       "description": "A [string](runtime:string) specifying a collision mask layer.\n\nIn addition to the listed layers, there is `\"layer-13\"` through `\"layer-55\"`. These layers are currently unused by the game but may change. If a mod is going to use one of the unused layers it's recommended to start at the higher layers because the base game will take from the lower ones.",
       "type": {
         "complex_type": "union",
@@ -58324,7 +58459,7 @@
     },
     {
       "name": "CollisionMaskWithFlags",
-      "order": 122,
+      "order": 131,
       "description": "A [CollisionMask](runtime:CollisionMask) which also includes any flags this mask has.",
       "type": {
         "complex_type": "dictionary",
@@ -58362,7 +58497,7 @@
     },
     {
       "name": "Color",
-      "order": 23,
+      "order": 30,
       "description": "Red, green, blue and alpha values, all in range [0, 1] or all in range [0, 255] if any value is > 1. All values here are optional. Color channels default to `0`, the alpha channel defaults to `1`.\n\nSimilar to [MapPosition](runtime:MapPosition), Color allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).",
       "examples": [
         "```\nred1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red\nred2 = {r = 0.5, a = 0.5}                -- Same color as red1\nblack = {}                               -- All channels omitted: black\nred1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation\n```"
@@ -58442,7 +58577,7 @@
     },
     {
       "name": "ColorModifier",
-      "order": 24,
+      "order": 31,
       "description": "Same as [Color](runtime:Color), but red, green, blue and alpha values can be any floating point number, without any special handling of the range [1, 255].",
       "type": {
         "complex_type": "union",
@@ -58519,7 +58654,7 @@
     },
     {
       "name": "Command",
-      "order": 93,
+      "order": 100,
       "description": "Commands can be given to enemies and unit groups.",
       "type": {
         "complex_type": "table",
@@ -58778,7 +58913,7 @@
     },
     {
       "name": "ComparatorString",
-      "order": 82,
+      "order": 89,
       "description": "A string that specifies how the inputs should be compared",
       "notes": [
         "While the API accepts both versions for `\"less/greater than or equal to\"` and `\"not equal\"`, it'll always return `\"≥\"`, `\"≤\"` or `\"≠\"` respectively when reading them back."
@@ -58837,7 +58972,7 @@
     },
     {
       "name": "ConfigurationChangedData",
-      "order": 145,
+      "order": 157,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58886,7 +59021,7 @@
     },
     {
       "name": "ConstantCombinatorParameters",
-      "order": 81,
+      "order": 88,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58917,7 +59052,7 @@
     },
     {
       "name": "CopperConnectionDefinition",
-      "order": 88,
+      "order": 95,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58948,7 +59083,7 @@
     },
     {
       "name": "CraftingQueueItem",
-      "order": 25,
+      "order": 32,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58986,7 +59121,7 @@
     },
     {
       "name": "CursorBoxRenderType",
-      "order": 150,
+      "order": 162,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -59037,7 +59172,7 @@
     },
     {
       "name": "CustomCommandData",
-      "order": 146,
+      "order": 158,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59075,7 +59210,7 @@
     },
     {
       "name": "CutsceneWaypoint",
-      "order": 29,
+      "order": 36,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59127,7 +59262,7 @@
     },
     {
       "name": "DeciderCombinatorParameters",
-      "order": 83,
+      "order": 90,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59179,7 +59314,7 @@
     },
     {
       "name": "Decorative",
-      "order": 30,
+      "order": 37,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59210,7 +59345,7 @@
     },
     {
       "name": "DecorativePrototypeFilter",
-      "order": 162,
+      "order": 174,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -59272,7 +59407,7 @@
     },
     {
       "name": "DecorativeResult",
-      "order": 31,
+      "order": 38,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59303,7 +59438,7 @@
     },
     {
       "name": "DifficultySettings",
-      "order": 44,
+      "order": 51,
       "description": "Technology and recipe difficulty settings. Updating any of the attributes will immediately take effect in the game engine.",
       "type": {
         "complex_type": "LuaStruct",
@@ -59349,7 +59484,7 @@
     },
     {
       "name": "DisplayResolution",
-      "order": 4,
+      "order": 11,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59373,7 +59508,7 @@
     },
     {
       "name": "DragTarget",
-      "order": 90,
+      "order": 97,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59403,8 +59538,32 @@
       }
     },
     {
+      "name": "ElemID",
+      "order": 7,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "name",
+            "order": 1,
+            "description": "Name of a prototype as defined by `type`.",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "One of `\"achievement\"`, `\"decorative\"`, `\"entity\"`, `\"equipment\"`, `\"fluid\"`, `\"item\"`, `\"item-group\"`, `\"recipe\"`, `\"signal\"`, or `\"technology\"`.",
+            "type": "string",
+            "optional": false
+          }
+        ]
+      }
+    },
+    {
       "name": "EnemyEvolutionMapSettings",
-      "order": 37,
+      "order": 44,
       "description": "These values represent a percentual increase in evolution. This means a value of `0.1` would increase evolution by 10%.",
       "type": {
         "complex_type": "table",
@@ -59442,7 +59601,7 @@
     },
     {
       "name": "EnemyExpansionMapSettings",
-      "order": 38,
+      "order": 45,
       "description": "Candidate chunks are given scores to determine which one of them should be expanded into. This score takes into account various settings noted below. The iteration is over a square region centered around the chunk for which the calculation is done, and includes the central chunk as well. Distances are calculated as [Manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry).\n\nThe pseudocode algorithm to determine a chunk's score is as follows:\n\n```\nplayer = 0\nfor neighbour in all chunks within enemy_building_influence_radius from chunk:\n  player += number of player buildings on neighbour\n          * building_coefficient\n          * neighbouring_chunk_coefficient^distance(chunk, neighbour)\n\nbase = 0\nfor neighbour in all chunk within friendly_base_influence_radius from chunk:\n  base += num of enemy bases on neighbour\n          * other_base_coefficient\n          * neighbouring_base_chunk_coefficient^distance(chunk, neighbour)\n\nscore(chunk) = 1 / (1 + player + base)\n```",
       "type": {
         "complex_type": "table",
@@ -59543,7 +59702,7 @@
     },
     {
       "name": "EntityPrototypeFilter",
-      "order": 168,
+      "order": 180,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -59743,147 +59902,153 @@
       }
     },
     {
+      "name": "EntityPrototypeFlag",
+      "order": 126,
+      "description": "A [string](runtime:string) specifying an entity prototype flag.",
+      "type": {
+        "complex_type": "union",
+        "options": [
+          {
+            "complex_type": "literal",
+            "value": "not-rotatable",
+            "description": "Prevents the entity from being rotated before or after placement."
+          },
+          {
+            "complex_type": "literal",
+            "value": "placeable-neutral",
+            "description": "Determines the default force when placing entities in the map editor and using the \"AUTO\" option for the force."
+          },
+          {
+            "complex_type": "literal",
+            "value": "placeable-player",
+            "description": "Determines the default force when placing entities in the map editor and using the \"AUTO\" option for the force."
+          },
+          {
+            "complex_type": "literal",
+            "value": "placeable-enemy",
+            "description": "Determines the default force when placing entities in the map editor and using the \"AUTO\" option for the force."
+          },
+          {
+            "complex_type": "literal",
+            "value": "placeable-off-grid",
+            "description": "Determines whether the entity needs to be aligned with the invisible grid within the world. Most entities are confined in this way, with a few exceptions such as trees and land mines."
+          },
+          {
+            "complex_type": "literal",
+            "value": "player-creation",
+            "description": "Makes it possible to blueprint, deconstruct, and repair the entity (which can be turned off again using the specific flags). Makes it possible for the biter AI to target the entity as a distraction. Enables dust to automatically be created when building the entity. If the entity does not have a `map_color` set, this flag makes the entity appear on the map with the default color specified by the UtilityConstants."
+          },
+          {
+            "complex_type": "literal",
+            "value": "building-direction-8-way",
+            "description": "Uses 45 degree angle increments when selecting direction."
+          },
+          {
+            "complex_type": "literal",
+            "value": "filter-directions",
+            "description": "Used to automatically detect the proper direction of the entity if possible. Used by the pump, train stop, and train signal by default."
+          },
+          {
+            "complex_type": "literal",
+            "value": "fast-replaceable-no-build-while-moving",
+            "description": "Fast replace will not apply when building while moving."
+          },
+          {
+            "complex_type": "literal",
+            "value": "breaths-air",
+            "description": "Used to specify that the entity breathes air, and is thus affected by poison."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-repairable",
+            "description": "Used to specify that the entity can not be 'healed' by repair packs."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-on-map",
+            "description": "Prevents the entity from being drawn on the map."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-deconstructable",
+            "description": "Prevents the entity from being deconstructed."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-blueprintable",
+            "description": "Prevents the entity from being part of a blueprint."
+          },
+          {
+            "complex_type": "literal",
+            "value": "hidden",
+            "description": "Hides the entity from the bonus GUI and from the \"made in\"-property of recipe tooltips."
+          },
+          {
+            "complex_type": "literal",
+            "value": "hide-alt-info",
+            "description": "Hides the alt-info of this entity when in alt-mode."
+          },
+          {
+            "complex_type": "literal",
+            "value": "fast-replaceable-no-cross-type-while-moving",
+            "description": "Does not fast replace this entity over other entity types when building while moving."
+          },
+          {
+            "complex_type": "literal",
+            "value": "no-gap-fill-while-building",
+            "description": ""
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-flammable",
+            "description": "Does not apply fire stickers to the entity."
+          },
+          {
+            "complex_type": "literal",
+            "value": "no-automated-item-removal",
+            "description": "Prevents inserters and loaders from taking items from this entity."
+          },
+          {
+            "complex_type": "literal",
+            "value": "no-automated-item-insertion",
+            "description": "Prevents inserters and loaders from inserting items into this entity."
+          },
+          {
+            "complex_type": "literal",
+            "value": "no-copy-paste",
+            "description": "Prevents the entity from being copy-pasted."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-selectable-in-game",
+            "description": "Disallows selection of the entity even when a selection box is specified for other reasons. For example, selection boxes are used to determine the size of outlines to be shown when highlighting entities inside electric pole ranges."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-upgradable",
+            "description": "Prevents the entity from being selected by the upgrade planner."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-in-kill-statistics",
+            "description": "Prevents the entity from being shown in the kill statistics."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-in-made-in",
+            "description": "Prevents the entity from being shown in the \"made in\" list in recipe tooltips."
+          }
+        ],
+        "full_format": true
+      }
+    },
+    {
       "name": "EntityPrototypeFlags",
-      "order": 118,
+      "order": 125,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.\n\nBy default, none of these flags are set.",
       "type": {
         "complex_type": "dictionary",
-        "key": {
-          "complex_type": "union",
-          "options": [
-            {
-              "complex_type": "literal",
-              "value": "not-rotatable",
-              "description": "Prevents the entity from being rotated before or after placement."
-            },
-            {
-              "complex_type": "literal",
-              "value": "placeable-neutral",
-              "description": "Determines the default force when placing entities in the map editor and using the \"AUTO\" option for the force."
-            },
-            {
-              "complex_type": "literal",
-              "value": "placeable-player",
-              "description": "Determines the default force when placing entities in the map editor and using the \"AUTO\" option for the force."
-            },
-            {
-              "complex_type": "literal",
-              "value": "placeable-enemy",
-              "description": "Determines the default force when placing entities in the map editor and using the \"AUTO\" option for the force."
-            },
-            {
-              "complex_type": "literal",
-              "value": "placeable-off-grid",
-              "description": "Determines whether the entity needs to be aligned with the invisible grid within the world. Most entities are confined in this way, with a few exceptions such as trees and land mines."
-            },
-            {
-              "complex_type": "literal",
-              "value": "player-creation",
-              "description": "Makes it possible to blueprint, deconstruct, and repair the entity (which can be turned off again using the specific flags). Makes it possible for the biter AI to target the entity as a distraction. Enables dust to automatically be created when building the entity. If the entity does not have a `map_color` set, this flag makes the entity appear on the map with the default color specified by the UtilityConstants."
-            },
-            {
-              "complex_type": "literal",
-              "value": "building-direction-8-way",
-              "description": "Uses 45 degree angle increments when selecting direction."
-            },
-            {
-              "complex_type": "literal",
-              "value": "filter-directions",
-              "description": "Used to automatically detect the proper direction of the entity if possible. Used by the pump, train stop, and train signal by default."
-            },
-            {
-              "complex_type": "literal",
-              "value": "fast-replaceable-no-build-while-moving",
-              "description": "Fast replace will not apply when building while moving."
-            },
-            {
-              "complex_type": "literal",
-              "value": "breaths-air",
-              "description": "Used to specify that the entity breathes air, and is thus affected by poison."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-repairable",
-              "description": "Used to specify that the entity can not be 'healed' by repair packs."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-on-map",
-              "description": "Prevents the entity from being drawn on the map."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-deconstructable",
-              "description": "Prevents the entity from being deconstructed."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-blueprintable",
-              "description": "Prevents the entity from being part of a blueprint."
-            },
-            {
-              "complex_type": "literal",
-              "value": "hidden",
-              "description": "Hides the entity from the bonus GUI and from the \"made in\"-property of recipe tooltips."
-            },
-            {
-              "complex_type": "literal",
-              "value": "hide-alt-info",
-              "description": "Hides the alt-info of this entity when in alt-mode."
-            },
-            {
-              "complex_type": "literal",
-              "value": "fast-replaceable-no-cross-type-while-moving",
-              "description": "Does not fast replace this entity over other entity types when building while moving."
-            },
-            {
-              "complex_type": "literal",
-              "value": "no-gap-fill-while-building",
-              "description": ""
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-flammable",
-              "description": "Does not apply fire stickers to the entity."
-            },
-            {
-              "complex_type": "literal",
-              "value": "no-automated-item-removal",
-              "description": "Prevents inserters and loaders from taking items from this entity."
-            },
-            {
-              "complex_type": "literal",
-              "value": "no-automated-item-insertion",
-              "description": "Prevents inserters and loaders from inserting items into this entity."
-            },
-            {
-              "complex_type": "literal",
-              "value": "no-copy-paste",
-              "description": "Prevents the entity from being copy-pasted."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-selectable-in-game",
-              "description": "Disallows selection of the entity even when a selection box is specified for other reasons. For example, selection boxes are used to determine the size of outlines to be shown when highlighting entities inside electric pole ranges."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-upgradable",
-              "description": "Prevents the entity from being selected by the upgrade planner."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-in-kill-statistics",
-              "description": "Prevents the entity from being shown in the kill statistics."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-in-made-in",
-              "description": "Prevents the entity from being shown in the \"made in\" list in recipe tooltips."
-            }
-          ],
-          "full_format": true
-        },
+        "key": "EntityPrototypeFlag",
         "value": {
           "complex_type": "literal",
           "value": true
@@ -59892,7 +60057,7 @@
     },
     {
       "name": "EntityPrototypeIdentification",
-      "order": 105,
+      "order": 112,
       "description": "An entity prototype may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -59918,7 +60083,7 @@
     },
     {
       "name": "EquipmentPoint",
-      "order": 13,
+      "order": 20,
       "description": "A table used to define a manual shape for a piece of equipment.",
       "type": {
         "complex_type": "table",
@@ -59942,7 +60107,7 @@
     },
     {
       "name": "EquipmentPosition",
-      "order": 10,
+      "order": 17,
       "description": "Position inside an equipment grid. This uses the same format as [MapPosition](runtime:MapPosition), meaning it can be specified either with or without explicit keys.",
       "examples": [
         "Explicit definition: \n```\n{x = 5, y = 2}\n{y = 2, x = 5}\n```",
@@ -59995,7 +60160,7 @@
     },
     {
       "name": "EquipmentPrototypeFilter",
-      "order": 165,
+      "order": 177,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -60053,7 +60218,7 @@
     },
     {
       "name": "EventData",
-      "order": 142,
+      "order": 154,
       "description": "Information about the event that has been raised. The table can also contain other fields depending on the type of event. See [the list of Factorio events](runtime:events) for more information on these.",
       "type": {
         "complex_type": "table",
@@ -60084,7 +60249,7 @@
     },
     {
       "name": "EventFilter",
-      "order": 169,
+      "order": 181,
       "description": "Used to filter out irrelevant event callbacks in a performant way.",
       "notes": [
         "Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed."
@@ -60206,7 +60371,7 @@
     },
     {
       "name": "Fluid",
-      "order": 51,
+      "order": 58,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60237,7 +60402,7 @@
     },
     {
       "name": "FluidBoxConnection",
-      "order": 78,
+      "order": 85,
       "description": "A definition of a fluidbox connection point.",
       "type": {
         "complex_type": "table",
@@ -60271,7 +60436,7 @@
     },
     {
       "name": "FluidBoxFilter",
-      "order": 74,
+      "order": 81,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60302,7 +60467,7 @@
     },
     {
       "name": "FluidBoxFilterSpec",
-      "order": 75,
+      "order": 82,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60340,7 +60505,7 @@
     },
     {
       "name": "FluidIdentification",
-      "order": 99,
+      "order": 106,
       "description": "A fluid may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -60366,7 +60531,7 @@
     },
     {
       "name": "FluidPrototypeFilter",
-      "order": 164,
+      "order": 176,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -60564,7 +60729,7 @@
     },
     {
       "name": "ForceCondition",
-      "order": 151,
+      "order": 163,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -60610,7 +60775,7 @@
     },
     {
       "name": "ForceIdentification",
-      "order": 100,
+      "order": 107,
       "description": "A force may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -60636,7 +60801,7 @@
     },
     {
       "name": "GameViewSettings",
-      "order": 34,
+      "order": 41,
       "description": "Parameters that affect the look and control of the game. Updating any of the member attributes here will immediately take effect in the game engine.",
       "type": {
         "complex_type": "LuaStruct",
@@ -60781,7 +60946,7 @@
     },
     {
       "name": "GuiAnchor",
-      "order": 14,
+      "order": 21,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60829,7 +60994,7 @@
     },
     {
       "name": "GuiArrowSpecification",
-      "order": 110,
+      "order": 117,
       "description": "Used for specifying where a GUI arrow should point to.",
       "type": {
         "complex_type": "table",
@@ -60915,7 +61080,7 @@
     },
     {
       "name": "GuiArrowType",
-      "order": 157,
+      "order": 169,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -60966,7 +61131,7 @@
     },
     {
       "name": "GuiElementType",
-      "order": 156,
+      "order": 168,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -61102,7 +61267,7 @@
     },
     {
       "name": "GuiLocation",
-      "order": 11,
+      "order": 18,
       "description": "Screen coordinates of a GUI element in a [LuaGui](runtime:LuaGui). This uses the same format as [TilePosition](runtime:TilePosition), meaning it can be specified either with or without explicit keys.",
       "type": {
         "complex_type": "union",
@@ -61150,8 +61315,46 @@
       }
     },
     {
+      "name": "GunShift4Way",
+      "order": 140,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "east",
+            "order": 1,
+            "description": "",
+            "type": "Vector",
+            "optional": false
+          },
+          {
+            "name": "north",
+            "order": 0,
+            "description": "",
+            "type": "Vector",
+            "optional": false
+          },
+          {
+            "name": "south",
+            "order": 2,
+            "description": "",
+            "type": "Vector",
+            "optional": false
+          },
+          {
+            "name": "west",
+            "order": 3,
+            "description": "",
+            "type": "Vector",
+            "optional": false
+          }
+        ]
+      }
+    },
+    {
       "name": "HeatConnection",
-      "order": 77,
+      "order": 84,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61175,7 +61378,7 @@
     },
     {
       "name": "HeatSetting",
-      "order": 76,
+      "order": 83,
       "description": "The settings used by a heat-interface type entity.",
       "type": {
         "complex_type": "table",
@@ -61199,7 +61402,7 @@
     },
     {
       "name": "InfinityInventoryFilter",
-      "order": 72,
+      "order": 79,
       "description": "A single filter used by an infinity-filters instance.",
       "type": {
         "complex_type": "table",
@@ -61237,7 +61440,7 @@
     },
     {
       "name": "InfinityPipeFilter",
-      "order": 73,
+      "order": 80,
       "description": "A single filter used by an infinity-pipe type entity.",
       "type": {
         "complex_type": "table",
@@ -61275,7 +61478,7 @@
     },
     {
       "name": "Ingredient",
-      "order": 52,
+      "order": 59,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61343,7 +61546,7 @@
     },
     {
       "name": "InserterCircuitConditions",
-      "order": 84,
+      "order": 91,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61367,7 +61570,7 @@
     },
     {
       "name": "InventoryFilter",
-      "order": 91,
+      "order": 98,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61391,7 +61594,7 @@
     },
     {
       "name": "ItemPrototypeFilter",
-      "order": 159,
+      "order": 171,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -61729,72 +61932,78 @@
       }
     },
     {
+      "name": "ItemPrototypeFlag",
+      "order": 128,
+      "description": "A [string](runtime:string) specifying an item prototype flag.",
+      "type": {
+        "complex_type": "union",
+        "options": [
+          {
+            "complex_type": "literal",
+            "value": "draw-logistic-overlay",
+            "description": "Determines whether the logistics areas of roboports should be drawn when holding this item. Used by the deconstruction planner by default."
+          },
+          {
+            "complex_type": "literal",
+            "value": "hidden",
+            "description": "Hides the item in the logistic requests and filters GUIs (among others)."
+          },
+          {
+            "complex_type": "literal",
+            "value": "always-show",
+            "description": "Always shows the item in the logistic requests and filters GUIs (among others) even when the recipe for that item is locked."
+          },
+          {
+            "complex_type": "literal",
+            "value": "hide-from-bonus-gui",
+            "description": "Hides the item from the bonus GUI."
+          },
+          {
+            "complex_type": "literal",
+            "value": "hide-from-fuel-tooltip",
+            "description": "Hides the item from the tooltip that's shown when hovering over a burner inventory."
+          },
+          {
+            "complex_type": "literal",
+            "value": "not-stackable",
+            "description": "Prevents the item from being stacked. It also prevents the item from stacking in assembling machine input slots, which can otherwise exceed the item stack size if required by the recipe. Additionally, the item does not show an item count when in the cursor."
+          },
+          {
+            "complex_type": "literal",
+            "value": "can-extend-inventory",
+            "description": "Makes the item act as an extension to the inventory that it is placed in. Only has an effect for items with inventory."
+          },
+          {
+            "complex_type": "literal",
+            "value": "primary-place-result",
+            "description": "Makes construction bots prefer this item when building the entity specified by its `place_result`."
+          },
+          {
+            "complex_type": "literal",
+            "value": "mod-openable",
+            "description": "Allows the item to be opened by the player, firing the `on_mod_item_opened` event. Only has an effect for selection tool items."
+          },
+          {
+            "complex_type": "literal",
+            "value": "only-in-cursor",
+            "description": "Makes it so the item is deleted when clearing the cursor, instead of being put into the player's inventory. The copy-paste tools use this by default, for example."
+          },
+          {
+            "complex_type": "literal",
+            "value": "spawnable",
+            "description": "Allows the item to be spawned by a quickbar shortcut or custom input."
+          }
+        ],
+        "full_format": true
+      }
+    },
+    {
       "name": "ItemPrototypeFlags",
-      "order": 119,
+      "order": 127,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.\n\nBy default, none of these flags are set.",
       "type": {
         "complex_type": "dictionary",
-        "key": {
-          "complex_type": "union",
-          "options": [
-            {
-              "complex_type": "literal",
-              "value": "draw-logistic-overlay",
-              "description": "Determines whether the logistics areas of roboports should be drawn when holding this item. Used by the deconstruction planner by default."
-            },
-            {
-              "complex_type": "literal",
-              "value": "hidden",
-              "description": "Hides the item in the logistic requests and filters GUIs (among others)."
-            },
-            {
-              "complex_type": "literal",
-              "value": "always-show",
-              "description": "Always shows the item in the logistic requests and filters GUIs (among others) even when the recipe for that item is locked."
-            },
-            {
-              "complex_type": "literal",
-              "value": "hide-from-bonus-gui",
-              "description": "Hides the item from the bonus GUI."
-            },
-            {
-              "complex_type": "literal",
-              "value": "hide-from-fuel-tooltip",
-              "description": "Hides the item from the tooltip that's shown when hovering over a burner inventory."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-stackable",
-              "description": "Prevents the item from being stacked. It also prevents the item from stacking in assembling machine input slots, which can otherwise exceed the item stack size if required by the recipe. Additionally, the item does not show an item count when in the cursor."
-            },
-            {
-              "complex_type": "literal",
-              "value": "can-extend-inventory",
-              "description": "Makes the item act as an extension to the inventory that it is placed in. Only has an effect for items with inventory."
-            },
-            {
-              "complex_type": "literal",
-              "value": "primary-place-result",
-              "description": "Makes construction bots prefer this item when building the entity specified by its `place_result`."
-            },
-            {
-              "complex_type": "literal",
-              "value": "mod-openable",
-              "description": "Allows the item to be opened by the player, firing the `on_mod_item_opened` event. Only has an effect for selection tool items."
-            },
-            {
-              "complex_type": "literal",
-              "value": "only-in-cursor",
-              "description": "Makes it so the item is deleted when clearing the cursor, instead of being put into the player's inventory. The copy-paste tools use this by default, for example."
-            },
-            {
-              "complex_type": "literal",
-              "value": "spawnable",
-              "description": "Allows the item to be spawned by a quickbar shortcut or custom input."
-            }
-          ],
-          "full_format": true
-        },
+        "key": "ItemPrototypeFlag",
         "value": {
           "complex_type": "literal",
           "value": true
@@ -61803,7 +62012,7 @@
     },
     {
       "name": "ItemPrototypeIdentification",
-      "order": 106,
+      "order": 113,
       "description": "An item prototype may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -61829,7 +62038,7 @@
     },
     {
       "name": "ItemStackDefinition",
-      "order": 97,
+      "order": 104,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61884,7 +62093,7 @@
     },
     {
       "name": "ItemStackIdentification",
-      "order": 104,
+      "order": 111,
       "description": "An item may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -61905,7 +62114,7 @@
     },
     {
       "name": "ItemStackLocation",
-      "order": 153,
+      "order": 165,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61929,7 +62138,7 @@
     },
     {
       "name": "LocalisedString",
-      "order": 3,
+      "order": 10,
       "description": "Localised strings are a way to support translation of in-game text. It is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.\n\nThe key identifies the string template. For example, `\"gui-alert-tooltip.attack\"` (for the template `\"__1__\n    objects are being damaged\"`; see the file `data/core/locale/en.cfg`).\n\nThe template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.\n\nThere are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`\"\"`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`\"?\"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.\n\nFurthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number, boolean or `nil`, which will be converted to their textual representation.",
       "examples": [
         "In the English translation, this will print `\"No ammo\"`; in the Czech translation, it will print `\"Bez munice\"`: \n```\ngame.player.print({\"description.no-ammo\"})\n```\n The `description.no-ammo` template contains no placeholders, so no further parameters are necessary.",
@@ -61956,7 +62165,7 @@
     },
     {
       "name": "LogisticFilter",
-      "order": 133,
+      "order": 143,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61987,7 +62196,7 @@
     },
     {
       "name": "LogisticParameters",
-      "order": 5,
+      "order": 12,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -62017,8 +62226,96 @@
       }
     },
     {
+      "name": "LogisticsNetworkSupplyCounts",
+      "order": 144,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "active-provider",
+            "order": 3,
+            "description": "Number of available items in the active provider members.",
+            "type": "uint",
+            "optional": false
+          },
+          {
+            "name": "buffer",
+            "order": 2,
+            "description": "Number of available items in the buffer members.",
+            "type": "uint",
+            "optional": false
+          },
+          {
+            "name": "passive-provider",
+            "order": 1,
+            "description": "Number of available items in the passive provider members.",
+            "type": "uint",
+            "optional": false
+          },
+          {
+            "name": "storage",
+            "order": 0,
+            "description": "Number of available items in the storage members.",
+            "type": "uint",
+            "optional": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "LogisticsNetworkSupplyPoints",
+      "order": 145,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "active-provider",
+            "order": 3,
+            "description": "",
+            "type": {
+              "complex_type": "array",
+              "value": "LuaLogisticPoint"
+            },
+            "optional": false
+          },
+          {
+            "name": "buffer",
+            "order": 2,
+            "description": "",
+            "type": {
+              "complex_type": "array",
+              "value": "LuaLogisticPoint"
+            },
+            "optional": false
+          },
+          {
+            "name": "passive-provider",
+            "order": 1,
+            "description": "",
+            "type": {
+              "complex_type": "array",
+              "value": "LuaLogisticPoint"
+            },
+            "optional": false
+          },
+          {
+            "name": "storage",
+            "order": 0,
+            "description": "",
+            "type": {
+              "complex_type": "array",
+              "value": "LuaLogisticPoint"
+            },
+            "optional": false
+          }
+        ]
+      }
+    },
+    {
       "name": "Loot",
-      "order": 54,
+      "order": 61,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -62056,7 +62353,7 @@
     },
     {
       "name": "LuaEntityClonedEventFilter",
-      "order": 182,
+      "order": 194,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62146,7 +62443,7 @@
     },
     {
       "name": "LuaEntityDamagedEventFilter",
-      "order": 191,
+      "order": 203,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62313,7 +62610,7 @@
     },
     {
       "name": "LuaEntityDeconstructionCancelledEventFilter",
-      "order": 188,
+      "order": 200,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62403,7 +62700,7 @@
     },
     {
       "name": "LuaEntityDiedEventFilter",
-      "order": 172,
+      "order": 184,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62493,7 +62790,7 @@
     },
     {
       "name": "LuaEntityMarkedForDeconstructionEventFilter",
-      "order": 173,
+      "order": 185,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62583,7 +62880,7 @@
     },
     {
       "name": "LuaEntityMarkedForUpgradeEventFilter",
-      "order": 179,
+      "order": 191,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62673,7 +62970,7 @@
     },
     {
       "name": "LuaPlayerBuiltEntityEventFilter",
-      "order": 189,
+      "order": 201,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62777,7 +63074,7 @@
     },
     {
       "name": "LuaPlayerMinedEntityEventFilter",
-      "order": 190,
+      "order": 202,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62867,7 +63164,7 @@
     },
     {
       "name": "LuaPlayerRepairedEntityEventFilter",
-      "order": 177,
+      "order": 189,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -62957,7 +63254,7 @@
     },
     {
       "name": "LuaPostEntityDiedEventFilter",
-      "order": 180,
+      "order": 192,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63005,7 +63302,7 @@
     },
     {
       "name": "LuaPreGhostDeconstructedEventFilter",
-      "order": 174,
+      "order": 186,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63095,7 +63392,7 @@
     },
     {
       "name": "LuaPreGhostUpgradedEventFilter",
-      "order": 187,
+      "order": 199,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63185,7 +63482,7 @@
     },
     {
       "name": "LuaPrePlayerMinedEntityEventFilter",
-      "order": 185,
+      "order": 197,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63275,7 +63572,7 @@
     },
     {
       "name": "LuaPreRobotMinedEntityEventFilter",
-      "order": 181,
+      "order": 193,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63365,7 +63662,7 @@
     },
     {
       "name": "LuaRobotBuiltEntityEventFilter",
-      "order": 186,
+      "order": 198,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63469,7 +63766,7 @@
     },
     {
       "name": "LuaRobotMinedEntityEventFilter",
-      "order": 184,
+      "order": 196,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63559,7 +63856,7 @@
     },
     {
       "name": "LuaScriptRaisedBuiltEventFilter",
-      "order": 183,
+      "order": 195,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63649,7 +63946,7 @@
     },
     {
       "name": "LuaScriptRaisedDestroyEventFilter",
-      "order": 175,
+      "order": 187,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63739,7 +64036,7 @@
     },
     {
       "name": "LuaScriptRaisedReviveEventFilter",
-      "order": 171,
+      "order": 183,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63829,7 +64126,7 @@
     },
     {
       "name": "LuaScriptRaisedTeleportedEventFilter",
-      "order": 178,
+      "order": 190,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -63919,7 +64216,7 @@
     },
     {
       "name": "LuaSectorScannedEventFilter",
-      "order": 192,
+      "order": 204,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -64009,7 +64306,7 @@
     },
     {
       "name": "LuaUpgradeCancelledEventFilter",
-      "order": 176,
+      "order": 188,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -64099,7 +64396,7 @@
     },
     {
       "name": "MapAndDifficultySettings",
-      "order": 45,
+      "order": 52,
       "description": "A standard table containing all [MapSettings](runtime:MapSettings) attributes plus an additional table that contains all [DifficultySettings](runtime:DifficultySettings) properties.",
       "type": {
         "complex_type": "table",
@@ -64165,7 +64462,7 @@
     },
     {
       "name": "MapDifficultySettings",
-      "order": 46,
+      "order": 53,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64203,7 +64500,7 @@
     },
     {
       "name": "MapExchangeStringData",
-      "order": 47,
+      "order": 54,
       "description": "The data that can be extracted from a map exchange string, as a plain table.",
       "type": {
         "complex_type": "table",
@@ -64227,7 +64524,7 @@
     },
     {
       "name": "MapGenPreset",
-      "order": 68,
+      "order": 75,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64265,7 +64562,7 @@
     },
     {
       "name": "MapGenSettings",
-      "order": 66,
+      "order": 73,
       "description": "The 'map type' dropdown in the map generation GUI is actually a selector for elevation generator. The base game sets `property_expression_names.elevation` to `\"0_16-elevation\"` to reproduce terrain from 0.16 or to `\"0_17-island\"` for the island preset. If generators are available for other properties, the 'map type' dropdown in the GUI will be renamed to 'elevation' and shown along with selectors for the other selectable properties.",
       "examples": [
         "Assuming a NamedNoiseExpression with the name \"my-alternate-grass1-probability\" is defined \n```\nlocal surface = game.player.surface\nlocal mgs = surface.map_gen_settings\nmgs.property_expression_names[\"tile:grass1:probability\"] = \"my-alternate-grass1-probability\"\nsurface.map_gen_settings = mgs\n```\n would override the probability of grass1 being placed at any given point on the current surface.",
@@ -64385,7 +64682,7 @@
     },
     {
       "name": "MapGenSize",
-      "order": 62,
+      "order": 69,
       "description": "A floating point number specifying an amount.\n\nFor backwards compatibility, MapGenSizes can also be specified as one of the following strings, which will be converted to a number (when queried, a number will always be returned):",
       "notes": [
         "The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected."
@@ -64484,7 +64781,7 @@
     },
     {
       "name": "MapPosition",
-      "order": 7,
+      "order": 14,
       "description": "Coordinates on a surface, for example of an entity. MapPositions may be specified either as a dictionary with `x`, `y` as keys, or simply as an array with two elements.\n\nThe coordinates are saved as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.",
       "examples": [
         "Explicit definition: \n```\n{x = 5.5, y = 2}\n{y = 2.25, x = 5.125}\n```",
@@ -64537,7 +64834,7 @@
     },
     {
       "name": "MapSettings",
-      "order": 43,
+      "order": 50,
       "description": "Various game-related settings. Updating any of the attributes will immediately take effect in the game engine.",
       "examples": [
         "Increase the number of short paths the pathfinder can cache. \n```\ngame.map_settings.path_finder.short_cache_size = 15\n```"
@@ -64613,7 +64910,7 @@
     },
     {
       "name": "MapViewSettings",
-      "order": 35,
+      "order": 42,
       "description": "What is shown in the map view. If a field is not given, that setting will not be changed.",
       "type": {
         "complex_type": "table",
@@ -64679,7 +64976,7 @@
     },
     {
       "name": "ModChangeData",
-      "order": 144,
+      "order": 156,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64703,7 +65000,7 @@
     },
     {
       "name": "ModSetting",
-      "order": 134,
+      "order": 146,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64730,7 +65027,7 @@
     },
     {
       "name": "ModSettingPrototypeFilter",
-      "order": 160,
+      "order": 172,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -64816,7 +65113,7 @@
     },
     {
       "name": "ModuleEffectValue",
-      "order": 116,
+      "order": 123,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64833,7 +65130,7 @@
     },
     {
       "name": "ModuleEffects",
-      "order": 117,
+      "order": 124,
       "description": "",
       "examples": [
         "These are the effects of the vanilla Productivity Module 3 (up to floating point imprecisions): \n```\n{consumption={bonus=0.6},\n speed={bonus=-0.15},\n productivity={bonus=0.06},\n pollution={bonus=0.075}}\n```"
@@ -64874,7 +65171,7 @@
     },
     {
       "name": "MouseButtonFlags",
-      "order": 149,
+      "order": 161,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.\n\nTo write to this, use an array[[string](runtime:string)] of the mouse buttons that should be possible to use with on button. The flag `\"left-and-right\"` can also be set, which will set `\"left\"` and `\"right\"` to `true`.",
       "type": {
         "complex_type": "dictionary",
@@ -64937,7 +65234,7 @@
     },
     {
       "name": "NoiseExpression",
-      "order": 58,
+      "order": 65,
       "description": "A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the [prototype docs](prototype:NamedNoiseExpression).",
       "type": {
         "complex_type": "table",
@@ -64954,7 +65251,7 @@
     },
     {
       "name": "NthTickEventData",
-      "order": 143,
+      "order": 155,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64978,7 +65275,7 @@
     },
     {
       "name": "Offer",
-      "order": 56,
+      "order": 63,
       "description": "A single offer on a market entity.",
       "type": {
         "complex_type": "table",
@@ -65005,7 +65302,7 @@
     },
     {
       "name": "OldTileAndPosition",
-      "order": 16,
+      "order": 23,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65029,7 +65326,7 @@
     },
     {
       "name": "PathFinderMapSettings",
-      "order": 42,
+      "order": 49,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65276,7 +65573,7 @@
     },
     {
       "name": "PathfinderFlags",
-      "order": 94,
+      "order": 101,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65328,7 +65625,7 @@
     },
     {
       "name": "PathfinderWaypoint",
-      "order": 28,
+      "order": 35,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65352,7 +65649,7 @@
     },
     {
       "name": "PipeConnection",
-      "order": 79,
+      "order": 86,
       "description": "A single pipe connection for a given fluidbox.",
       "type": {
         "complex_type": "table",
@@ -65411,7 +65708,7 @@
     },
     {
       "name": "PlaceAsTileResult",
-      "order": 92,
+      "order": 99,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65442,7 +65739,7 @@
     },
     {
       "name": "PlayerIdentification",
-      "order": 103,
+      "order": 110,
       "description": "A player may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -65468,7 +65765,7 @@
     },
     {
       "name": "PollutionMapSettings",
-      "order": 36,
+      "order": 43,
       "description": "These values are for the time frame of one second (60 ticks).",
       "type": {
         "complex_type": "table",
@@ -65614,7 +65911,7 @@
     },
     {
       "name": "Product",
-      "order": 53,
+      "order": 60,
       "description": "",
       "examples": [
         "Products of the \"steel-chest\" recipe (an array of Product): \n```\n{{type=\"item\", name=\"steel-chest\", amount=1}}\n```",
@@ -65715,7 +66012,7 @@
     },
     {
       "name": "ProgrammableSpeakerAlertParameters",
-      "order": 138,
+      "order": 150,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65753,7 +66050,7 @@
     },
     {
       "name": "ProgrammableSpeakerCircuitParameters",
-      "order": 139,
+      "order": 151,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65784,7 +66081,7 @@
     },
     {
       "name": "ProgrammableSpeakerInstrument",
-      "order": 140,
+      "order": 152,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65811,7 +66108,7 @@
     },
     {
       "name": "ProgrammableSpeakerParameters",
-      "order": 137,
+      "order": 149,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65842,7 +66139,7 @@
     },
     {
       "name": "PrototypeFilter",
-      "order": 158,
+      "order": 170,
       "description": "Types `\"signal\"` and `\"item-group\"` do not support filters.",
       "notes": [
         "Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed."
@@ -65904,7 +66201,7 @@
     },
     {
       "name": "PrototypeHistory",
-      "order": 32,
+      "order": 39,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65931,7 +66228,7 @@
     },
     {
       "name": "RadiusVisualisationSpecification",
-      "order": 1,
+      "order": 8,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65968,14 +66265,38 @@
       }
     },
     {
+      "name": "RailEnd",
+      "order": 1,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "direction",
+            "order": 1,
+            "description": "",
+            "type": "defines.rail_direction",
+            "optional": false
+          },
+          {
+            "name": "rail",
+            "order": 0,
+            "description": "",
+            "type": "LuaEntity",
+            "optional": false
+          }
+        ]
+      }
+    },
+    {
       "name": "RealOrientation",
-      "order": 6,
+      "order": 13,
       "description": "The smooth orientation. It is a [float](runtime:float) in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise. This means a value of `0` indicates \"north\", a value of `0.5` indicates \"south\".\n\nFor example then, a value of `0.625` would indicate \"south-west\", and a value of `0.875` would indicate \"north-west\".",
       "type": "float"
     },
     {
       "name": "RecipePrototypeFilter",
-      "order": 167,
+      "order": 179,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -66189,7 +66510,7 @@
     },
     {
       "name": "RenderLayer",
-      "order": 152,
+      "order": 164,
       "description": "A number between 0 and 255 inclusive, represented by one of the following named strings or the string version of the number. For example `\"27\"` and `\"decals\"` are both valid. Higher values are rendered above lower values.",
       "type": {
         "complex_type": "union",
@@ -66420,7 +66741,7 @@
     },
     {
       "name": "Resistance",
-      "order": 61,
+      "order": 68,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66444,7 +66765,7 @@
     },
     {
       "name": "RidingState",
-      "order": 113,
+      "order": 120,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66468,7 +66789,7 @@
     },
     {
       "name": "RollingStockDrawData",
-      "order": 170,
+      "order": 182,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66492,7 +66813,7 @@
     },
     {
       "name": "ScriptArea",
-      "order": 21,
+      "order": 28,
       "description": "An area defined using the map editor.",
       "type": {
         "complex_type": "table",
@@ -66530,7 +66851,7 @@
     },
     {
       "name": "ScriptPosition",
-      "order": 22,
+      "order": 29,
       "description": "A position defined using the map editor.",
       "type": {
         "complex_type": "table",
@@ -66568,7 +66889,7 @@
     },
     {
       "name": "ScriptRenderTarget",
-      "order": 148,
+      "order": 160,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66599,7 +66920,7 @@
     },
     {
       "name": "ScriptRenderVertexTarget",
-      "order": 27,
+      "order": 34,
       "description": "One vertex of a ScriptRenderPolygon.",
       "type": {
         "complex_type": "table",
@@ -66630,7 +66951,7 @@
     },
     {
       "name": "SelectedPrototypeData",
-      "order": 147,
+      "order": 159,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66661,7 +66982,7 @@
     },
     {
       "name": "SelectionModeFlags",
-      "order": 132,
+      "order": 142,
       "description": "A set of flags on a selection tool that define how entities and tiles are selected. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.",
       "type": {
         "complex_type": "dictionary",
@@ -66799,7 +67120,7 @@
     },
     {
       "name": "Signal",
-      "order": 70,
+      "order": 77,
       "description": "An actual signal transmitted by the network.",
       "type": {
         "complex_type": "table",
@@ -66823,7 +67144,7 @@
     },
     {
       "name": "SignalID",
-      "order": 69,
+      "order": 76,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66847,7 +67168,7 @@
     },
     {
       "name": "SimpleItemStack",
-      "order": 98,
+      "order": 105,
       "description": "An item stack may be specified in one of two ways.",
       "examples": [
         "Both of these lines specify an item stack of one iron plate: \n```\n{name=\"iron-plate\"}\n```\n \n```\n{name=\"iron-plate\", count=1}\n```",
@@ -66873,7 +67194,7 @@
     },
     {
       "name": "SmokeSource",
-      "order": 18,
+      "order": 25,
       "description": "",
       "notes": [
         "The vectors for all 5 position attributes are a table with `x` and `y` keys instead of an array."
@@ -67019,13 +67340,13 @@
     },
     {
       "name": "SoundPath",
-      "order": 115,
+      "order": 122,
       "description": "It can be either the name of a [SoundPrototype](prototype:SoundPrototype) defined in the data stage, or a path in the form `\"type/name\"`. The latter option can be sorted into three categories.\n\nThe validity of a SoundPath can be verified at runtime using [LuaGameScript::is_valid_sound_path](runtime:LuaGameScript::is_valid_sound_path).\n\nThe utility and ambient types each contain general use sound prototypes defined by the game itself.\n- `\"utility\"` - Uses [UtilitySounds](prototype:UtilitySounds). Example: `\"utility/wire_connect_pole\"`\n- `\"ambient\"` - Uses [AmbientSound](prototype:AmbientSound). Example: `\"ambient/resource-deficiency\"`\n\nThe following types can be combined with any tile name as long as its prototype defines the\n    corresponding sound.\n- `\"tile-walking\"` - Uses [TilePrototype::walking_sound](prototype:TilePrototype::walking_sound). Example: `\"tile-walking/concrete\"`\n- `\"tile-mined\"` - Uses [TilePrototype::mined_sound](prototype:TilePrototype::mined_sound)\n- `\"tile-build-small\"` - Uses [TilePrototype::build_sound](prototype:TilePrototype::build_sound). Example: `\"tile-build-small/concrete\"`\n- `\"tile-build-medium\"` - Uses [TilePrototype::build_sound](prototype:TilePrototype::build_sound)\n- `\"tile-build-large\"` - Uses [TilePrototype::build_sound](prototype:TilePrototype::build_sound)\n\nThe following types can be combined with any entity name as long as its prototype defines the\n    corresponding sound.\n- `\"entity-build\"` - Uses [Entity::build_sound](prototype:EntityPrototype::build_sound). Example: `\"entity-build/wooden-chest\"`\n- `\"entity-mined\"` - Uses [Entity::mined_sound](prototype:EntityPrototype::mined_sound)\n- `\"entity-mining\"` - Uses [Entity::mining_sound](prototype:EntityPrototype::mining_sound)\n- `\"entity-vehicle_impact\"` - Uses [EntityPrototype::vehicle_impact_sound](prototype:EntityPrototype::vehicle_impact_sound)\n- `\"entity-rotated\"` - Uses [EntityPrototype::rotated_sound](prototype:EntityPrototype::rotated_sound)\n- `\"entity-open\"` - Uses [Entity::open_sound](prototype:EntityPrototype::open_sound)\n- `\"entity-close\"` - Uses [Entity::close_sound](prototype:EntityPrototype::close_sound)",
       "type": "string"
     },
     {
       "name": "SoundType",
-      "order": 155,
+      "order": 167,
       "description": "Defines which slider in the game's sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.",
       "type": {
         "complex_type": "union",
@@ -67071,7 +67392,7 @@
     },
     {
       "name": "SpawnPointDefinition",
-      "order": 96,
+      "order": 103,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67095,13 +67416,13 @@
     },
     {
       "name": "SpritePath",
-      "order": 114,
+      "order": 121,
       "description": "It can be either the name of a [SpritePrototype](prototype:SpritePrototype) defined in the data stage, or a path in form \"type/name\".\n\nThe validity of a SpritePath can be verified at runtime using [LuaGameScript::is_valid_sprite_path](runtime:LuaGameScript::is_valid_sprite_path).\n\nThe supported types are:\n- `\"item\"` - for example \"item/iron-plate\" is the icon sprite of iron plate\n- `\"entity\"` - for example \"entity/small-biter\" is the icon sprite of the small biter\n- `\"technology\"`\n- `\"recipe\"`\n- `\"item-group\"`\n- `\"fluid\"`\n- `\"tile\"`\n- `\"virtual-signal\"`\n- `\"achievement\"`\n- `\"equipment\"`\n- `\"file\"` - path to an image file located inside the current scenario. This file is not preloaded so it will be slower; for frequently used sprites, it is better to define sprite prototype and use it instead.\n- `\"utility\"` - sprite defined in the utility-sprites object, these are the pictures used by the game internally for the UI.",
       "type": "string"
     },
     {
       "name": "SteeringMapSetting",
-      "order": 40,
+      "order": 47,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67139,7 +67460,7 @@
     },
     {
       "name": "SteeringMapSettings",
-      "order": 41,
+      "order": 48,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67163,7 +67484,7 @@
     },
     {
       "name": "SurfaceIdentification",
-      "order": 102,
+      "order": 109,
       "description": "A surface may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -67189,7 +67510,7 @@
     },
     {
       "name": "TabAndContent",
-      "order": 15,
+      "order": 22,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67213,7 +67534,7 @@
     },
     {
       "name": "Tags",
-      "order": 17,
+      "order": 24,
       "description": "A dictionary of string to the four basic Lua types: `string`, `boolean`, `number`, `table`.\n\nNote that the API returns tags as a simple table, meaning any modifications to it will not propagate back to the game. Thus, to modify a set of tags, the whole table needs to be written back to the respective property.",
       "examples": [
         "```\n{a = 1, b = true, c = \"three\", d = {e = \"f\"}}\n```"
@@ -67226,7 +67547,7 @@
     },
     {
       "name": "TechnologyIdentification",
-      "order": 101,
+      "order": 108,
       "description": "A technology may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -67252,7 +67573,7 @@
     },
     {
       "name": "TechnologyModifier",
-      "order": 55,
+      "order": 62,
       "description": "The effect that is applied when a technology is researched. It is a table that contains at least the field `type`.",
       "type": {
         "complex_type": "table",
@@ -67391,7 +67712,7 @@
     },
     {
       "name": "TechnologyPrototypeFilter",
-      "order": 161,
+      "order": 173,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -67516,7 +67837,7 @@
     },
     {
       "name": "Tile",
-      "order": 50,
+      "order": 57,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67540,7 +67861,7 @@
     },
     {
       "name": "TilePosition",
-      "order": 9,
+      "order": 16,
       "description": "Coordinates of a tile on a [LuaSurface](runtime:LuaSurface) where each integer `x`/`y` represents a different tile. This uses the same format as [MapPosition](runtime:MapPosition), except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.",
       "type": {
         "complex_type": "union",
@@ -67589,7 +67910,7 @@
     },
     {
       "name": "TilePrototypeFilter",
-      "order": 166,
+      "order": 178,
       "description": "Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:",
       "type": {
         "complex_type": "table",
@@ -67734,8 +68055,249 @@
       }
     },
     {
+      "name": "TrainPathAllGoalsResult",
+      "order": 6,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "accessible",
+            "order": 1,
+            "description": "Table of the same length as requested goals: each field will tell if related goal is accessible for the train",
+            "type": {
+              "complex_type": "array",
+              "value": "boolean"
+            },
+            "optional": false
+          },
+          {
+            "name": "amount_accessible",
+            "order": 0,
+            "description": "Amount of goals that are accessible",
+            "type": "uint",
+            "optional": false
+          },
+          {
+            "name": "penalties",
+            "order": 2,
+            "description": "Table of the same length as requested goals. Only present if request type was \"all-goals-penalties\"",
+            "type": {
+              "complex_type": "array",
+              "value": "double"
+            },
+            "optional": true
+          },
+          {
+            "name": "steps_count",
+            "order": 3,
+            "description": "Amount of steps pathfinder performed. This is a measure of how expensive this search was.",
+            "type": "uint",
+            "optional": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "TrainPathAnyGoalResult",
+      "order": 5,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "found_path",
+            "order": 0,
+            "description": "True if any goal was accessible",
+            "type": "boolean",
+            "optional": false
+          },
+          {
+            "name": "goal_index",
+            "order": 1,
+            "description": "If any goal was accessible, this gives index of the particular goal that was found",
+            "type": "uint",
+            "optional": true
+          },
+          {
+            "name": "penalty",
+            "order": 2,
+            "description": "Penalty of the path to goal if a goal was accessible",
+            "type": "double",
+            "optional": true
+          },
+          {
+            "name": "steps_count",
+            "order": 3,
+            "description": "Amount of steps pathfinder performed. This is a measure of how expensive this search was.",
+            "type": "uint",
+            "optional": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "TrainPathFinderPathResult",
+      "order": 4,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "found_path",
+            "order": 0,
+            "description": "True if found path.",
+            "type": "boolean",
+            "optional": false
+          },
+          {
+            "name": "goal_index",
+            "order": 2,
+            "description": "If path was found, provides index of the specific goal to which the path goes to",
+            "type": "uint",
+            "optional": true
+          },
+          {
+            "name": "is_front",
+            "order": 5,
+            "description": "If path was found, tells if the path was reached from the from_front or train's front end.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "path",
+            "order": 1,
+            "description": "Only returned if return_path was set to true and path was found. Contains all rails in order that are part of the found path",
+            "type": {
+              "complex_type": "array",
+              "value": "LuaEntity"
+            },
+            "optional": true
+          },
+          {
+            "name": "penalty",
+            "order": 3,
+            "description": "Penalty of the path to goal if path was found",
+            "type": "double",
+            "optional": true
+          },
+          {
+            "name": "steps_count",
+            "order": 6,
+            "description": "Amount of steps pathfinder performed. This is a measure of how expensive this search was.",
+            "type": "uint",
+            "optional": false
+          },
+          {
+            "name": "total_length",
+            "order": 4,
+            "description": "If path was found, provides total length of all rails of the path",
+            "type": "double",
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "TrainPathFinderRequest",
+      "order": 2,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "allow_path_within_segment_back",
+            "order": 8,
+            "description": "Only relevant if from_back is given. Defaults to true. Providing false will cause the pathfinder to reject a path that starts on back and ends within the same segment as the path would be too short to provide correct alignment with a goal.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "allow_path_within_segment_front",
+            "order": 6,
+            "description": "Only relevant if from_front is given. Defaults to true. Providing false will cause the pathfinder to reject a path that starts on front and ends within the same segment as the path would be too short to provide correct alignment with a goal.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "from_back",
+            "order": 7,
+            "description": "Manually provided starting back of the train.",
+            "type": "RailEnd",
+            "optional": true
+          },
+          {
+            "name": "from_front",
+            "order": 5,
+            "description": "Manually provided starting front of the train.",
+            "type": "RailEnd",
+            "optional": true
+          },
+          {
+            "name": "goals",
+            "order": 0,
+            "description": "",
+            "type": {
+              "complex_type": "array",
+              "value": {
+                "complex_type": "union",
+                "options": [
+                  "TrainStopGoal",
+                  "RailEnd"
+                ],
+                "full_format": false
+              }
+            },
+            "optional": false
+          },
+          {
+            "name": "in_chain_signal_section",
+            "order": 1,
+            "description": "Defaults to false. If set to true, pathfinder will not return a path that cannot have its beginning immediately reserved causing train to stop inside of intersection.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "return_path",
+            "order": 4,
+            "description": "Only relevant if request type is \"path\". Returning a full path is expensive due to multiple LuaEntity created. In order for path to be returned, true must be provided here. Defaults to false in which case a path will not be provided.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "search_direction",
+            "order": 9,
+            "description": "Only relevant if none of from_front/from_back was provied in which case from_front and from_back are deduced from the train. Selects which train ends should be considered as starts. Possible values: \"respect-movement-direction\", \"any-direction-with-locomotives\". Defaults to \"any-direction-with-locomotives\"",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "steps_limit",
+            "order": 10,
+            "description": "Maximum amount of steps pathfinder is allowed to perform",
+            "type": "uint",
+            "optional": true
+          },
+          {
+            "name": "train",
+            "order": 2,
+            "description": "Mandatory if from_front and from_back are not provided, optional otherwise. Selects a context for the pathfinder to decide which train to exclude from penalties and which signals are considered possible to reacquire. If from_front and from_back are not provided, then it is also used to collect front and back ends for the search",
+            "type": "LuaTrain",
+            "optional": true
+          },
+          {
+            "name": "type",
+            "order": 3,
+            "description": "Request type. \"path\", \"any-goal-accessible\", \"all-goals-accessible\" or \"all-goals-penalties\". Defaults to \"path\"",
+            "type": "string",
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
       "name": "TrainSchedule",
-      "order": 109,
+      "order": 116,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67762,7 +68324,7 @@
     },
     {
       "name": "TrainScheduleRecord",
-      "order": 108,
+      "order": 115,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67809,8 +68371,25 @@
       }
     },
     {
+      "name": "TrainStopGoal",
+      "order": 3,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "train_stop",
+            "order": 0,
+            "description": "Train stop target. Must be connected to rail (LuaEntity::connected_rail returns valid LuaEntity)",
+            "type": "LuaEntity",
+            "optional": false
+          }
+        ]
+      }
+    },
+    {
       "name": "TriggerDelivery",
-      "order": 125,
+      "order": 134,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67847,7 +68426,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 124,
+      "order": 133,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67885,7 +68464,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 126,
+      "order": 135,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67954,7 +68533,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 123,
+      "order": 132,
       "description": "A set of trigger target masks.",
       "type": {
         "complex_type": "dictionary",
@@ -67964,7 +68543,7 @@
     },
     {
       "name": "UnitGroupMapSettings",
-      "order": 39,
+      "order": 46,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68065,7 +68644,7 @@
     },
     {
       "name": "UnitSpawnDefinition",
-      "order": 95,
+      "order": 102,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68092,7 +68671,7 @@
     },
     {
       "name": "UpgradeFilter",
-      "order": 71,
+      "order": 78,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68116,7 +68695,7 @@
     },
     {
       "name": "Vector",
-      "order": 19,
+      "order": 26,
       "description": "A vector is a two-element array containing the `x` and `y` components. In some specific cases, the vector is a table with `x` and `y` keys instead, which the documentation will point out.",
       "examples": [
         "```\nright = {1.0, 0.0}\n```"
@@ -68168,7 +68747,7 @@
     },
     {
       "name": "VehicleAutomaticTargetingParameters",
-      "order": 154,
+      "order": 166,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68192,7 +68771,7 @@
     },
     {
       "name": "WaitCondition",
-      "order": 107,
+      "order": 114,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68230,7 +68809,7 @@
     },
     {
       "name": "WireConnectionDefinition",
-      "order": 89,
+      "order": 96,
       "description": "",
       "type": {
         "complex_type": "table",

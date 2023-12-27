@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.97",
+  "application_version": "1.1.101",
   "api_version": 4,
   "stage": "prototype",
   "prototypes": [
@@ -428,7 +428,7 @@
     {
       "name": "AmmoTurretPrototype",
       "order": 6,
-      "description": "A turret that consumes ammo items.",
+      "description": "A turret that consumes [ammo items](prototype:AmmoItemPrototype).",
       "parent": "TurretPrototype",
       "abstract": false,
       "typename": "ammo-turret",
@@ -6346,7 +6346,7 @@
     {
       "name": "ElectricTurretPrototype",
       "order": 57,
-      "description": "A turret that consumes electricity as ammo.",
+      "description": "A turret that uses electricity as ammunition.",
       "parent": "TurretPrototype",
       "abstract": false,
       "typename": "electric-turret",
@@ -6568,7 +6568,7 @@
         {
           "name": "spawning_cooldown",
           "order": 3,
-          "description": "Ticks for cooldown after unit is spawned",
+          "description": "Ticks for cooldown after unit is spawned. The first member of the tuple is min, the second member of the tuple is max.",
           "override": false,
           "type": {
             "complex_type": "tuple",
@@ -7120,7 +7120,7 @@
         {
           "name": "selection_box",
           "order": 7,
-          "description": "Specification of the entity selection area. When empty the entity will have no selection area (and thus is not selectable).\n\nThe selection box is usually a little bit bigger than the collision box, for tileable entities (like buildings) it should match the tile size of the building.",
+          "description": "Specification of the entity selection area. When empty the entity will have no selection area (and thus is not selectable).\n\nThe selection box is usually a little bit bigger than the collision box. For tileable entities (like buildings) it should match the tile size of the building.",
           "examples": [
             "```\nselection_box = {{-0.5, -0.5}, {0.5, 0.5}}\n```"
           ],
@@ -9068,7 +9068,7 @@
     {
       "name": "FluidTurretPrototype",
       "order": 75,
-      "description": "A turret that consumes fluid as ammo.",
+      "description": "A turret that uses [fluid](prototype:FluidPrototype) as ammunition.",
       "parent": "TurretPrototype",
       "abstract": false,
       "typename": "fluid-turret",
@@ -9077,7 +9077,7 @@
         {
           "name": "activation_buffer_ratio",
           "order": 2,
-          "description": "Before an turret that was out of ammo is able to fire again, the `fluid_buffer_size` must fill to this proportion.",
+          "description": "Before an turret that was out of fluid ammunition is able to fire again, the `fluid_buffer_size` must fill to this proportion.",
           "override": false,
           "type": "float",
           "optional": false
@@ -9197,7 +9197,7 @@
         {
           "name": "out_of_ammo_alert_icon",
           "order": 17,
-          "description": "",
+          "description": "The sprite will be drawn on top of fluid turrets that are out of fluid ammunition. If the `out_of_ammo_alert_icon` is not set, [UtilitySprites::fluid_icon](prototype:UtilitySprites::fluid_icon) will be used instead.",
           "override": false,
           "type": "Sprite",
           "optional": true
@@ -11007,7 +11007,7 @@
         {
           "name": "pictures",
           "order": 13,
-          "description": "Used to give the item multiple different icons so that they look less uniform on belts etc. For inventory icons and similar, `icon/icons` will be used. Maximum number of variations is 16.",
+          "description": "Used to give the item multiple different icons so that they look less uniform on belts. For inventory icons and similar, `icon/icons` will be used. Maximum number of variations is 16.\n\nWhen using sprites of size `64` (same as base game icons), the `scale` should be set to 0.25.",
           "override": false,
           "type": "SpriteVariations",
           "optional": true
@@ -21698,7 +21698,7 @@
         {
           "name": "flags",
           "order": 15,
-          "description": "Transport belt connectable entities cannot have the \"placeable-off-grid\" flag specified.",
+          "description": "Transport belt connectable entities cannot have any of the following flags: \"placeable-off-grid\", \"building-direction-8-way\".",
           "override": true,
           "type": "EntityPrototypeFlags",
           "optional": true
@@ -26812,7 +26812,7 @@
         {
           "name": "fluid_icon",
           "order": 73,
-          "description": "",
+          "description": "The sprite will be drawn on top of [fluid turrets](prototype:FluidTurretPrototype) that are out of fluid ammunition and don't have [FluidTurretPrototype::out_of_ammo_alert_icon](prototype:FluidTurretPrototype::out_of_ammo_alert_icon) set.",
           "override": false,
           "type": "Sprite",
           "optional": false
@@ -30258,6 +30258,10 @@
       "name": "AnimationVariations",
       "order": 16,
       "description": "",
+      "examples": [
+        "```\n-- array of animations\nanimations =\n{\n  {\n    filename = \"__base__/graphics/entity/explosion-gunshot/explosion-gunshot.png\",\n    draw_as_glow = true,\n    priority = \"extra-high\",\n    width = 34,\n    height = 38,\n    frame_count = 2,\n    animation_speed = 1.5,\n    shift = {0, 0}\n  },\n  {\n    filename = \"__base__/graphics/entity/explosion-gunshot/explosion-gunshot.png\",\n    draw_as_glow = true,\n    priority = \"extra-high\",\n    width = 34,\n    height = 38,\n    x = 34 * 2,\n    frame_count = 2,\n    animation_speed = 1.5,\n    shift = {0, 0}\n  },\n  -- [...]\n}\n```",
+        "```\n-- animation sheet using \"sheet\"\npictures =\n{\n  sheet =\n  {\n    filename = \"__base__/graphics/entity/character/footprints.png\",\n    line_length = 2,\n    frame_count = 2,\n    width = 15,\n    height = 11,\n    shift = util.by_pixel(0.5, 0.5),\n    variation_count = 8,\n    hr_version =\n    {\n      filename = \"__base__/graphics/entity/character/hr-footprints.png\",\n      line_length = 2,\n      frame_count = 2,\n      width = 30,\n      height = 22,\n      shift = util.by_pixel(0.25, 0.25),\n      scale = 0.5,\n      variation_count = 8\n    }\n  }\n}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -33556,7 +33560,7 @@
         {
           "name": "type",
           "order": 0,
-          "description": "This is mandatory if the energy source can be loaded as multiple energy source types.",
+          "description": "This is only loaded, and mandatory if the energy source can be loaded as multiple energy source types.",
           "override": false,
           "type": {
             "complex_type": "literal",
@@ -35514,7 +35518,7 @@
     {
       "name": "Color",
       "order": 82,
-      "description": "Table of red, green, blue, and alpha float values between 0 and 1. Alternatively, values can be from 0-255, they are interpreted as such if at least one value is `> 1`.\n\nColor allows the short-hand notation of passing an array of exactly 3 or 4 numbers.\n\nThe game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).",
+      "description": "Table of red, green, blue, and alpha float values between 0 and 1. Alternatively, values can be from 0-255, they are interpreted as such if at least one value is `> 1`.\n\nColor allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The array items are r, g, b and optionally a, in that order.\n\nThe game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).",
       "examples": [
         "```\ncolor = {r=1, g=0, b=0, a=1} -- red, full opacity\ncolor = {r=1} -- the same red, omitting default values\ncolor = {1, 0, 0, 1} -- also the same red\ncolor = {0, 0, 1} -- blue\ncolor = {r=0, g=0.5, b=0, a=0.5} -- half transparency green\ncolor = {} -- full opacity black\n```"
       ],
@@ -38288,7 +38292,7 @@
         {
           "name": "type",
           "order": 0,
-          "description": "This is mandatory if the energy source can be loaded as multiple energy source types.",
+          "description": "This is only loaded, and mandatory if the energy source can be loaded as multiple energy source types.",
           "override": false,
           "type": {
             "complex_type": "literal",
@@ -39244,7 +39248,7 @@
     {
       "name": "EntityPrototypeFlags",
       "order": 135,
-      "description": "An array containing the following values.",
+      "description": "An array containing the following values.\n\nIf an entity is a [building](runtime:LuaEntityPrototype::is_building) and has the `\"player-creation\"` flag set, it is considered for multiple enemy/unit behaviors:\n\n- Autonomous enemy attacks (usually triggered by pollution) can only attack within chunks that contain at least one entity that is both a building and a player-creation.\n\n- Enemy expansion considers entities that are both buildings and player-creations as \"enemy\" entities that may block expansion.",
       "examples": [
         "```\nflags = {\"placeable-neutral\", \"player-creation\"}\n```"
       ],
@@ -39283,7 +39287,7 @@
             {
               "complex_type": "literal",
               "value": "player-creation",
-              "description": "Makes it possible for the biter AI to target the entity as a distraction in distraction mode [by_anything](runtime:defines.distraction.by_anything). Makes it possible to blueprint, deconstruct, and repair the entity (can be turned off again using the specific flags). Enables smoke to be created automatically when building the entity. If the entity does not have [EntityPrototype::map_color](prototype:EntityPrototype::map_color) set, this flag makes the entity appear on the map/minimap with the default color specified in the [UtilityConstants](prototype:UtilityConstants). Entities that are [buildings](runtime:LuaEntityPrototype::is_building) and have this flag set are considered for multiple enemy/unit behaviors: [1] Autonomous enemy attacks (usually triggered by pollution) can only attack within chunks that contain at least one entity that is both a building and a player-creation. [2] Enemy expansion considers entities that are both buildings and player-creations as \"enemy\" entities that may block expansion."
+              "description": "Makes it possible for the biter AI to target the entity as a distraction in distraction mode [by_anything](runtime:defines.distraction.by_anything). Makes it possible to blueprint, deconstruct, and repair the entity (can be turned off again using the specific flags). Enables smoke to be created automatically when building the entity. If the entity does not have [EntityPrototype::map_color](prototype:EntityPrototype::map_color) set, this flag makes the entity appear on the map/minimap with the default color specified in the [UtilityConstants](prototype:UtilityConstants)."
             },
             {
               "complex_type": "literal",
@@ -40517,7 +40521,7 @@
         {
           "name": "amount",
           "order": 2,
-          "description": "Can not be `< 0`.",
+          "description": "Can not be `<= 0`.",
           "override": false,
           "type": "double",
           "optional": false
@@ -42334,7 +42338,7 @@
     {
       "name": "ItemIngredientPrototype",
       "order": 193,
-      "description": "An item ingredient definition. It can be specified as a table with named or numbered keys, but not a mix of both.",
+      "description": "An item ingredient definition. It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the item name and the second is the amount.",
       "examples": [
         "```\n{type=\"item\", name=\"steel-plate\", amount=8}\n```",
         "```\n{\"iron-plate\", 12}\n```"
@@ -42406,7 +42410,7 @@
     {
       "name": "ItemProductPrototype",
       "order": 194,
-      "description": "An item product definition. It can be specified as a table with named or numbered keys, but not a mix of both.",
+      "description": "An item product definition. It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the item name and the second is the amount.",
       "abstract": false,
       "inline": false,
       "type": {
@@ -44145,6 +44149,7 @@
         "complex_type": "union",
         "options": [
           "string",
+          "double",
           "bool",
           {
             "complex_type": "array",
@@ -48547,7 +48552,7 @@
         {
           "name": "fill_volume",
           "order": 2,
-          "description": "",
+          "description": "Unused.",
           "override": false,
           "type": "uint32",
           "optional": false
@@ -53376,7 +53381,7 @@
     {
       "name": "SpawnPoint",
       "order": 357,
-      "description": "The definition of a evolution and probability weights for a [spawnable unit](prototype:UnitSpawnDefinition) for a [EnemySpawnerPrototype](prototype:EnemySpawnerPrototype).\n\nIt can be specified as a table with named or numbered keys, but not a mix of both.",
+      "description": "The definition of a evolution and probability weights for a [spawnable unit](prototype:UnitSpawnDefinition) for a [EnemySpawnerPrototype](prototype:EnemySpawnerPrototype).\n\nIt can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the evolution factor and the second is the spawn weight.",
       "abstract": false,
       "inline": false,
       "type": {
@@ -54100,7 +54105,10 @@
       "order": 365,
       "description": "Specifies one picture that can be used in the game.\n\nWhen there is more than one sprite or [Animation](prototype:Animation) frame with the same source file and dimensions/position in the game, they all share the same memory.",
       "examples": [
-        "```\npicture_set_enemy =\n{\n  filename = \"__base__/graphics/entity/land-mine/land-mine-set-enemy.png\",\n  priority = \"medium\",\n  width = 32,\n  height = 32\n}\n```"
+        "```\n-- simple sprite\npicture_set_enemy =\n{\n  filename = \"__base__/graphics/entity/land-mine/land-mine-set-enemy.png\",\n  priority = \"medium\",\n  width = 32,\n  height = 32\n}\n```",
+        "```\n-- sprite with hr version\npicture =\n{\n  filename = \"__base__/graphics/entity/wooden-chest/wooden-chest.png\",\n  priority = \"extra-high\",\n  width = 32,\n  height = 36,\n  shift = util.by_pixel(0.5, -2),\n  hr_version =\n  {\n    filename = \"__base__/graphics/entity/wooden-chest/hr-wooden-chest.png\",\n    priority = \"extra-high\",\n    width = 62,\n    height = 72,\n    shift = util.by_pixel(0.5, -2),\n    scale = 0.5\n  }\n}\n```",
+        "```\n-- sprite with layers\npicture =\n{\n  layers =\n  {\n    {\n      filename = \"__base__/graphics/entity/wooden-chest/wooden-chest.png\",\n      priority = \"extra-high\",\n      width = 32,\n      height = 36,\n      shift = util.by_pixel(0.5, -2)\n    },\n    {\n      filename = \"__base__/graphics/entity/wooden-chest/wooden-chest-shadow.png\",\n      priority = \"extra-high\",\n      width = 52,\n      height = 20,\n      shift = util.by_pixel(10, 6.5),\n      draw_as_shadow = true\n    }\n  }\n}\n```",
+        "```\n-- sprite with layers and hr version\npicture =\n{\n  layers =\n  {\n    {\n      filename = \"__base__/graphics/entity/wooden-chest/wooden-chest.png\",\n      priority = \"extra-high\",\n      width = 32,\n      height = 36,\n      shift = util.by_pixel(0.5, -2),\n      hr_version =\n      {\n        filename = \"__base__/graphics/entity/wooden-chest/hr-wooden-chest.png\",\n        priority = \"extra-high\",\n        width = 62,\n        height = 72,\n        shift = util.by_pixel(0.5, -2),\n        scale = 0.5\n      }\n    },\n    {\n      filename = \"__base__/graphics/entity/wooden-chest/wooden-chest-shadow.png\",\n      priority = \"extra-high\",\n      width = 52,\n      height = 20,\n      shift = util.by_pixel(10, 6.5),\n      draw_as_shadow = true,\n      hr_version =\n      {\n        filename = \"__base__/graphics/entity/wooden-chest/hr-wooden-chest-shadow.png\",\n        priority = \"extra-high\",\n        width = 104,\n        height = 40,\n        shift = util.by_pixel(10, 6.5),\n        draw_as_shadow = true,\n        scale = 0.5\n      }\n    }\n  }\n}\n```"
       ],
       "parent": "SpriteParameters",
       "abstract": false,
@@ -54934,7 +54942,8 @@
       "order": 374,
       "description": "",
       "examples": [
-        "```\npictures =\n{\n  {\n    filename = \"__base__/graphics/entity/decorative/green-carpet-grass/green-carpet-grass-01.png\",\n    width = 105,\n    height = 73\n  },\n  {\n    filename = \"__base__/graphics/entity/decorative/green-carpet-grass/green-carpet-grass-02.png\",\n    width = 185,\n    height = 164\n  },\n  [...]\n}\n```"
+        "```\n-- array of sprites\npictures =\n{\n  { size = 64, filename = \"__base__/graphics/icons/coal.png\",   scale = 0.25, mipmap_count = 4 },\n  { size = 64, filename = \"__base__/graphics/icons/coal-1.png\", scale = 0.25, mipmap_count = 4 },\n  { size = 64, filename = \"__base__/graphics/icons/coal-2.png\", scale = 0.25, mipmap_count = 4 },\n  { size = 64, filename = \"__base__/graphics/icons/coal-3.png\", scale = 0.25, mipmap_count = 4 }\n}\n```",
+        "```\n-- sprite sheet using \"sheet\"\nconnection_patches_connected =\n{\n  sheet =\n  {\n    filename = \"__base__/graphics/entity/nuclear-reactor/reactor-connect-patches.png\",\n    width = 32,\n    height = 32,\n    variation_count = 12,\n    hr_version =\n    {\n      filename = \"__base__/graphics/entity/nuclear-reactor/hr-reactor-connect-patches.png\",\n      width = 64,\n      height = 64,\n      variation_count = 12,\n      scale = 0.5\n    }\n  }\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -59935,7 +59944,7 @@
     {
       "name": "UnitSpawnDefinition",
       "order": 434,
-      "description": "It can be specified as a table with named or numbered keys, but not a mix of both.",
+      "description": "It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the unit and the second is the spawn points.",
       "abstract": false,
       "inline": false,
       "type": {
@@ -60216,7 +60225,7 @@
     {
       "name": "Vector3D",
       "order": 441,
-      "description": "",
+      "description": "If this is specified as a three-element array then the array items are x, y and z, in that order.",
       "abstract": false,
       "inline": false,
       "type": {
