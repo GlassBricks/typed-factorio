@@ -88,7 +88,7 @@ function getMembers(
     )
     if (existingTypeProperty === -1) {
       const typeProperty = ts.factory.createPropertySignature(
-        [Modifiers.readonly],
+        undefined,
         "type",
         undefined,
         Types.stringLiteral(prototype.typename),
