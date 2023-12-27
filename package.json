@@ -9,6 +9,7 @@
     "tstl"
   ],
   "repository": "https://github.com/GlassBricks/typed-factorio",
+  "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "license": "MIT",
   "files": [
     "**/*.d.ts",
@@ -16,7 +17,7 @@
     "!generator/**/*"
   ],
   "type": "module",
-  "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
+  "packageManager": "npm@9.5.0",
   "scripts": {
     "generate": "ts-node --esm -P generator/tsconfig.json generator/main.ts",
     "generate-no-format": "ts-node --swc -T --esm -P generator/tsconfig.json generator/main.ts --no-format",
