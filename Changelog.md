@@ -1,3 +1,8 @@
+# v2.7.1
+
+- Updated to factorio version 1.1.103
+- Fixed type definition for ColorArray and ColorModifierArray
+
 # v2.6.0
 
 - Added feature `CustomInputNames`. By extending this interface, this allows optionally type-checking custom input names.
