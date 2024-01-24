@@ -16,19 +16,24 @@ export function mapProperty(
 ): ts.TypeElement[] {
   const { type, description } = mapPrototypeType(context, property.type)
 
-  let mainProperty: ts.PropertySignature
+  let mainProperty: ts.TypeElement
 
   const existingMembers = existingContainer?.members[property.name]
   let existing: ts.PropertySignature | undefined
   if (existingMembers) {
-    assert.ok(existingMembers.length === 1 && ts.isPropertySignature(existingMembers[0]))
-    existing = existingMembers[0]
-    mainProperty = ts.factory.createPropertySignature(
-      existing.modifiers,
-      existing.name,
-      existing.questionToken,
-      existing.type ?? type,
-    )
+    assert(existingMembers.length === 1)
+    if (ts.isMethodSignature(existingMembers[0])) {
+      mainProperty = existingMembers[0]
+    } else {
+      assert(ts.isPropertySignature(existingMembers[0]))
+      existing = existingMembers[0]
+      mainProperty = ts.factory.createPropertySignature(
+        existing.modifiers,
+        existing.name,
+        existing.questionToken,
+        existing.type ?? type,
+      )
+    }
     ts.setEmitFlags(mainProperty, ts.EmitFlags.NoNestedComments)
   } else {
     mainProperty = ts.factory.createPropertySignature(
@@ -120,11 +125,4 @@ export function getOverridenAttributes(
   }
 
   return overridenNames
-}
-
-export function getConceptOverridenAttributes(
-  context: PrototypeGenerationContext,
-  concept: PrototypeConcept,
-): string[] | undefined {
-  return getOverridenAttributes(context, concept, context.types, context.conceptProperties)
 }

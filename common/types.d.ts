@@ -1,7 +1,7 @@
 /** @noResolution */
 declare module "factorio:common" {
   import { ModSetting } from "factorio:runtime"
-  import { PrototypeMap as PrototypePrototypeMap } from "factorio:prototype"
+  import { Data } from "factorio:prototype"
   import { PrototypeMap as SettingsPrototypeMap } from "factorio:settings"
   /**
    * A type map of type name -> prototype type.
@@ -16,21 +16,23 @@ declare module "factorio:common" {
     readonly name: string
   }
 
+  /**
+   * See {@link Data} for documentation.
+   */
   export interface DataGlobal<M = GlobalPrototypeMap> {
     /**
      * A table of the already added prototypes.
      * Indexed by prototype type, then by prototype name.
      */
     readonly raw: {
-      readonly [T in keyof M]: {
-        readonly [name in string]?: M[T]
+      readonly [type in keyof M]: {
+        readonly [name in string]?: M[type]
       }
     }
 
-    /**
-     * Add additional prototypes.
-     */
     extend<P extends AnyPrototype<M>>(prototypes: readonly P[]): void
+
+    is_demo: boolean
   }
 
   export interface SettingsGlobal {
@@ -57,7 +59,7 @@ declare module "factorio:common" {
    * data.extend(...)
    * ```
    */
-  export type PrototypeData = DataGlobal<PrototypePrototypeMap>
+  export type PrototypeData = Data
 
   /**
    * Represents a `data` global variable for the settings stage.

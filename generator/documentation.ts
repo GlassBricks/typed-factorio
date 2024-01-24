@@ -15,7 +15,16 @@ export interface Documentable extends WithNotes, PrototypeWithExamples {
   default?: string | LiteralType
   deprecated?: boolean
 }
-const pageLinks = new Set(["global", "data-lifecycle", "migrations", "classes", "concepts", "events", "defines"])
+const pageLinks = new Set([
+  "global",
+  "data-lifecycle",
+  "migrations",
+  "classes",
+  "concepts",
+  "events",
+  "defines",
+  "prototypes",
+])
 
 function mapLink(context: GenerationContext, origLink: string): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {

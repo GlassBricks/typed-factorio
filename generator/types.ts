@@ -698,9 +698,13 @@ function mapRuntimeTupleType(
   }
   const parameters = type.parameters.sort(byOrder).map((p) => {
     const paramType = mapMemberType(context, p, typeContext.contextName!, p.type, usage).mainType
+    let name = p.name
+    if (name.startsWith("[") && name.endsWith("]")) {
+      name = "_" + name.slice(1, -1)
+    }
     return ts.factory.createNamedTupleMember(
       undefined,
-      ts.factory.createIdentifier(p.name),
+      ts.factory.createIdentifier(name),
       p.optional ? Tokens.question : undefined,
       paramType,
     )

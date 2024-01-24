@@ -1,4 +1,4 @@
-import { CustomInputName } from "factorio:common"
+import { AnyPrototype, CustomInputName } from "factorio:common"
 
 export type bool = boolean
 export type double = number
@@ -10,6 +10,22 @@ export type uint8 = number
 export type uint16 = number
 export type uint32 = number
 export type uint64 = number
+
+/** @omit */
+export type DataExtendMethod = unknown
+
+export interface Data {
+  raw: {
+    readonly [type in keyof PrototypeMap]: {
+      readonly [name in string]?: PrototypeMap[type]
+    }
+  }
+
+  /**
+   * Add additional prototypes.
+   */
+  extend<P extends AnyPrototype>(prototypes: readonly P[]): void
+}
 
 /** @unionAdd */
 export type CollisionMaskLayer = `layer-${bigint}`

@@ -127,6 +127,7 @@ function generateBuiltinType(context: PrototypeGenerationContext, concept: Proto
     context.warning(`No existing definition for builtin ${name}`)
     return
   }
+  if (existing.annotations.omit) return
   context.currentFile.add(addJsDoc(context, existing.node, concept, name, undefined))
 }
 

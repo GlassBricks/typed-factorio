@@ -114,6 +114,9 @@ function createVariantParameterConcept(
   }
 }
 function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
+  if (concept.name.startsWith("CircularProjectile")) {
+    console.log("foo")
+  }
   const existing = context.manualDefs.getDeclaration(concept.name)
 
   if (existing?.annotations) {
