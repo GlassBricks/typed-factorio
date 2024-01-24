@@ -862,7 +862,7 @@ declare module "factorio:runtime" {
    * @see ColorModifier
    * @see {@link https://lua-api.factorio.com/1.1.103/concepts.html#ColorModifier Online documentation}
    */
-  export type ColorModifierArray = readonly [r?: float, g?: float, b?: float, a?: float]
+  export type ColorModifierArray = [r: double, g: double, b: double, a?: double]
   export interface CraftingQueueItem {
     /**
      * The index of the item in the crafting queue.
