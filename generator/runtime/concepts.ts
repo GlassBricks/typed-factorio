@@ -114,9 +114,6 @@ function createVariantParameterConcept(
   }
 }
 function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
-  if (concept.name.startsWith("CircularProjectile")) {
-    console.log("foo")
-  }
   const existing = context.manualDefs.getDeclaration(concept.name)
 
   if (existing?.annotations) {
@@ -194,13 +191,19 @@ function createTableOrArrayConcept(
   // /** Array form of @{link Concept}. */
   // type ConceptArray = Array write
 
-  const tableForm = mapRuntimeType(context, tableOrArray.table, concept.name, RWUsage.ReadWrite)
-  const arrayForm = mapRuntimeType(context, tableOrArray.array, concept.name, RWUsage.Write).mainType
-  assert(ts.isTypeLiteralNode(tableForm.mainType))
-  assert(tableOrArray.array.complex_type === "tuple")
-
   const name = concept.name
   const arrayName = `${concept.name}Array`
+
+  // slightly hardcoded for now
+  const existingArrayForm = context.manualDefs.getDeclaration(arrayName)
+
+  const tableForm = mapRuntimeType(context, tableOrArray.table, concept.name, RWUsage.ReadWrite)
+  const arrayForm =
+    existingArrayForm && ts.isTypeAliasDeclaration(existingArrayForm.node)
+      ? existingArrayForm.node.type
+      : mapRuntimeType(context, tableOrArray.array, concept.name, RWUsage.Write).mainType
+  assert(ts.isTypeLiteralNode(tableForm.mainType))
+  assert(tableOrArray.array.complex_type === "tuple")
 
   const conceptInterface = ts.factory.createInterfaceDeclaration(
     [Modifiers.export],

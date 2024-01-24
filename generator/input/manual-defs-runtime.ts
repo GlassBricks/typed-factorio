@@ -532,7 +532,8 @@ export interface MapPosition {}
 export interface MapPositionArray {}
 
 export interface Color {}
-export interface ColorArray {}
+export type ColorArray = [r: double, g: double, b: double, a?: double]
+export type ColorModifierArray = [r: double, g: double, b: double, a?: double]
 
 /** @replace */
 export type Vector = MapPositionArray
