@@ -262,7 +262,9 @@ function createDef(node: ts.Statement): AnyDef | undefined {
             }`,
           )
         name =
-          ts.isStringLiteral(propertyName) || ts.isNumericLiteral(propertyName)
+          ts.isStringLiteral(propertyName) ||
+          ts.isNumericLiteral(propertyName) ||
+          ts.isNoSubstitutionTemplateLiteral(propertyName)
             ? propertyName.text
             : ts.idText(propertyName)
       }
@@ -298,8 +300,8 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
     result[annotationName as AnnotationKind] = !tag.comment
       ? []
       : typeof tag.comment === "string"
-      ? tag.comment.split(" ")
-      : tag.comment.map((part) => part.text)
+        ? tag.comment.split(" ")
+        : tag.comment.map((part) => part.text)
   })
   return result
 }
