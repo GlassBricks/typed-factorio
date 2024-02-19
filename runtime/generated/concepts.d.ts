@@ -845,7 +845,7 @@ declare module "factorio:runtime" {
    * @see Color
    * @see {@link https://lua-api.factorio.com/1.1.103/concepts.html#Color Online documentation}
    */
-  export type ColorArray = [r: double, g: double, b: double, a?: double]
+  export type ColorArray = readonly [r: double, g: double, b: double, a?: double]
   /**
    * Same as {@link Color}, but red, green, blue and alpha values can be any floating point number, without any special handling of the range [1, 255].
    * @see ColorModifierArray
@@ -862,7 +862,7 @@ declare module "factorio:runtime" {
    * @see ColorModifier
    * @see {@link https://lua-api.factorio.com/1.1.103/concepts.html#ColorModifier Online documentation}
    */
-  export type ColorModifierArray = [r: double, g: double, b: double, a?: double]
+  export type ColorModifierArray = readonly [r: double, g: double, b: double, a?: double]
   export interface CraftingQueueItem {
     /**
      * The index of the item in the crafting queue.
