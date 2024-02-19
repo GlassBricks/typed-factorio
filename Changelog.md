@@ -1,3 +1,7 @@
+# v2.7.2
+
+- The type definition for ColorArray and ColorModifierArray are now readonly, consistent with other array types.
+
 # v2.7.1
 
 - Updated to factorio version 1.1.103
