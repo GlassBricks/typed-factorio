@@ -8,7 +8,10 @@
     "typescript-to-lua",
     "tstl"
   ],
-  "repository": "https://github.com/GlassBricks/typed-factorio",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GlassBricks/typed-factorio.git"
+  },
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "license": "MIT",
   "files": [
