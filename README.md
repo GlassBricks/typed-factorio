@@ -200,3 +200,12 @@ function isCraftingMachineEntity(entity: BaseEntity): entity is CraftingMachineE
 Similarly, `GuiSpec` (the table passed to `LuaGuiElement.add`), is also a discriminated union. The type for a specific GuiSpec is `<Type>GuiSpec`, e.g. `ListBoxGuiSpec`. `LuaGuiElement.add` will return the appropriate gui element type corresponding to the GuiSpec type passed in.
 
 This is done both to provide more accurate types, and for possible integration with [JSX](https://typescripttolua.github.io/docs/jsx/).
+
+
+## Support
+
+If you find this project useful, consider tipping me on Kofi!
+
+<a href='https://ko-fi.com/Z8Z1VI6P8' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
+
