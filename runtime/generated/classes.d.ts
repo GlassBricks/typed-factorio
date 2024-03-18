@@ -2,7 +2,7 @@
 
 /** @noSelfInFile */
 
-import type { PrototypeSubclassMap } from "factorio:prototype"
+import type { EntityType, EquipmentType, ItemType, PrototypeMap } from "factorio:prototype"
 
 import type { ActiveMods, CustomInputName } from "factorio:common"
 
@@ -340,7 +340,7 @@ declare module "factorio:runtime" {
      * Gets the prototype history for the given type and name.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaBootstrap.html#LuaBootstrap.get_prototype_history Online documentation}
      */
-    get_prototype_history(type: string, name: string): PrototypeHistory
+    get_prototype_history(type: keyof PrototypeMap, name: string): PrototypeHistory
     /**
      * Raise an event. Only events generated with {@link LuaBootstrap#generate_event_name LuaBootstrap::generate_event_name} and the following can be raised:
      *
@@ -3043,14 +3043,14 @@ declare module "factorio:runtime" {
      * The entity prototype type of this entity.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEntity.html#LuaEntity.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["entity"]
+    readonly type: EntityType
     /**
      * The prototype type of the entity or tile contained in this ghost.
      *
      * _Can only be used if this is Ghost_
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEntity.html#LuaEntity.ghost_type Online documentation}
      */
-    readonly ghost_type: string
+    readonly ghost_type: EntityType
     /**
      * Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).
      * @remarks Entities that are not active naturally can't be set to be active (setting it to be active will do nothing)<br>Ghosts, simple smoke, and corpses can't be modified at this time.<br>It is even possible to set the character to not be active, so he can't move and perform most of the tasks.
@@ -4761,7 +4761,7 @@ declare module "factorio:runtime" {
      * The entity prototype type of this entity.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEntity.html#LuaEntity.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["entity"]
+    readonly type: EntityType
     /**
      * Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).
      * @remarks Entities that are not active naturally can't be set to be active (setting it to be active will do nothing)<br>Ghosts, simple smoke, and corpses can't be modified at this time.<br>It is even possible to set the character to not be active, so he can't move and perform most of the tasks.
@@ -6253,7 +6253,7 @@ declare module "factorio:runtime" {
      * _Can only be used if this is Ghost_
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEntity.html#LuaEntity.ghost_type Online documentation}
      */
-    readonly ghost_type: string
+    readonly ghost_type: EntityType
     /**
      * The prototype of the entity or tile contained in this ghost.
      *
@@ -6695,7 +6695,7 @@ declare module "factorio:runtime" {
      * Type of this prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEntityPrototype.html#LuaEntityPrototype.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["entity"]
+    readonly type: EntityType
     /**
      * Name of this prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEntityPrototype.html#LuaEntityPrototype.name Online documentation}
@@ -8298,7 +8298,7 @@ declare module "factorio:runtime" {
      * Type of this prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEntityPrototype.html#LuaEntityPrototype.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["entity"]
+    readonly type: EntityType
     /**
      * Name of this prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEntityPrototype.html#LuaEntityPrototype.name Online documentation}
@@ -10168,7 +10168,7 @@ declare module "factorio:runtime" {
      * Type of this equipment.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEquipment.html#LuaEquipment.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["equipment"]
+    readonly type: EquipmentType
     /**
      * Position of this equipment in the equipment grid.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEquipment.html#LuaEquipment.position Online documentation}
@@ -10511,7 +10511,7 @@ declare module "factorio:runtime" {
      * Type of this equipment prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEquipmentPrototype.html#LuaEquipmentPrototype.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["equipment"]
+    readonly type: EquipmentType
     /**
      * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEquipmentPrototype.html#LuaEquipmentPrototype.order Online documentation}
@@ -10645,7 +10645,7 @@ declare module "factorio:runtime" {
      * Type of this equipment prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEquipmentPrototype.html#LuaEquipmentPrototype.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["equipment"]
+    readonly type: EquipmentType
     /**
      * The string used to alphabetically sort these prototypes. It is a simple string that has no additional semantic meaning.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaEquipmentPrototype.html#LuaEquipmentPrototype.order Online documentation}
@@ -15273,7 +15273,7 @@ declare module "factorio:runtime" {
      * Type of this prototype. E.g. `"gun"` or `"mining-tool"`.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaItemPrototype.html#LuaItemPrototype.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["item"]
+    readonly type: ItemType
     /**
      * Name of this prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaItemPrototype.html#LuaItemPrototype.name Online documentation}
@@ -15849,7 +15849,7 @@ declare module "factorio:runtime" {
      * Type of this prototype. E.g. `"gun"` or `"mining-tool"`.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaItemPrototype.html#LuaItemPrototype.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["item"]
+    readonly type: ItemType
     /**
      * Name of this prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaItemPrototype.html#LuaItemPrototype.name Online documentation}
@@ -16873,7 +16873,7 @@ declare module "factorio:runtime" {
      * Type of the item prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaItemStack.html#LuaItemStack.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["item"]
+    readonly type: ItemType
     /**
      * Number of items in this stack.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaItemStack.html#LuaItemStack.count Online documentation}
@@ -17396,7 +17396,7 @@ declare module "factorio:runtime" {
      * Type of the item prototype.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaItemStack.html#LuaItemStack.type Online documentation}
      */
-    readonly type: keyof PrototypeSubclassMap["item"]
+    readonly type: ItemType
     /**
      * Number of items in this stack.
      * @see {@link https://lua-api.factorio.com/1.1.103/classes/LuaItemStack.html#LuaItemStack.count Online documentation}

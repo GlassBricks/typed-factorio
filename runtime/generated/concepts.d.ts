@@ -2,6 +2,8 @@
 
 /** @noSelfInFile */
 
+import type { EntityType } from "factorio:prototype"
+
 import type { VersionString } from "factorio:common"
 
 /**
@@ -6385,7 +6387,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaScriptRaisedReviveEventFilter}.
@@ -6405,7 +6407,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaScriptRaisedReviveEventFilter}.
@@ -6492,7 +6494,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaEntityDiedEventFilter}.
@@ -6512,7 +6514,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaEntityDiedEventFilter}.
@@ -6599,7 +6601,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
@@ -6620,7 +6622,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
@@ -6708,7 +6710,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
@@ -6728,7 +6730,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
@@ -6815,7 +6817,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaScriptRaisedDestroyEventFilter}.
@@ -6835,7 +6837,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaScriptRaisedDestroyEventFilter}.
@@ -6922,7 +6924,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaUpgradeCancelledEventFilter}.
@@ -6942,7 +6944,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaUpgradeCancelledEventFilter}.
@@ -7029,7 +7031,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
@@ -7049,7 +7051,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
@@ -7136,7 +7138,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
@@ -7156,7 +7158,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
@@ -7243,7 +7245,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
@@ -7263,7 +7265,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
@@ -7335,7 +7337,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
@@ -7387,7 +7389,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
@@ -7407,7 +7409,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
@@ -7494,7 +7496,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaEntityClonedEventFilter}.
@@ -7514,7 +7516,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaEntityClonedEventFilter}.
@@ -7601,7 +7603,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaScriptRaisedBuiltEventFilter}.
@@ -7621,7 +7623,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaScriptRaisedBuiltEventFilter}.
@@ -7708,7 +7710,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaRobotMinedEntityEventFilter}.
@@ -7728,7 +7730,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaRobotMinedEntityEventFilter}.
@@ -7815,7 +7817,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
@@ -7835,7 +7837,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
@@ -7923,7 +7925,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaRobotBuiltEntityEventFilter}.
@@ -7943,7 +7945,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaRobotBuiltEntityEventFilter}.
@@ -8042,7 +8044,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaPreGhostUpgradedEventFilter}.
@@ -8062,7 +8064,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaPreGhostUpgradedEventFilter}.
@@ -8149,7 +8151,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
@@ -8170,7 +8172,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
@@ -8259,7 +8261,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaPlayerBuiltEntityEventFilter}.
@@ -8279,7 +8281,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaPlayerBuiltEntityEventFilter}.
@@ -8378,7 +8380,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaPlayerMinedEntityEventFilter}.
@@ -8398,7 +8400,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaPlayerMinedEntityEventFilter}.
@@ -8489,7 +8491,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaEntityDamagedEventFilter}.
@@ -8509,7 +8511,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaEntityDamagedEventFilter}.
@@ -8567,7 +8569,7 @@ declare module "factorio:runtime" {
     /**
      * A {@link LuaDamagePrototype} name
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"final-health"` variant of {@link LuaEntityDamagedEventFilter}.
@@ -8685,7 +8687,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"name"` variant of {@link LuaSectorScannedEventFilter}.
@@ -8705,7 +8707,7 @@ declare module "factorio:runtime" {
     /**
      * The ghost prototype type
      */
-    readonly type: string
+    readonly type: EntityType
   }
   /**
    * `"ghost_name"` variant of {@link LuaSectorScannedEventFilter}.

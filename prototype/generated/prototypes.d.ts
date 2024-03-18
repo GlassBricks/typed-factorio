@@ -13662,4 +13662,20 @@ declare module "factorio:prototype" {
       "wind-sound": WindSound
     }
   }
+  /**
+   * All achievement prototype subclass types.
+   */
+  export type AchievementType = keyof PrototypeSubclassMap["achievement"]
+  /**
+   * All entity prototype subclass types.
+   */
+  export type EntityType = keyof PrototypeSubclassMap["entity"]
+  /**
+   * All equipment prototype subclass types.
+   */
+  export type EquipmentType = keyof PrototypeSubclassMap["equipment"]
+  /**
+   * All item prototype subclass types.
+   */
+  export type ItemType = keyof PrototypeSubclassMap["item"]
 }

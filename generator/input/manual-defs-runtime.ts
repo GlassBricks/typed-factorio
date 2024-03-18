@@ -4,7 +4,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
-import { PrototypeSubclassMap } from "factorio:prototype"
+import { PrototypeMap, PrototypeSubclassMap } from "factorio:prototype"
 import { SettingsPrototypeMap } from "factorio:settings"
 
 export interface LuaObject {
@@ -500,6 +500,8 @@ export interface LuaBootstrap {
   ): void
 
   readonly active_mods: ActiveMods
+
+  get_prototype_history(type: keyof PrototypeMap, name: string)
 }
 
 export interface LuaSurface {}

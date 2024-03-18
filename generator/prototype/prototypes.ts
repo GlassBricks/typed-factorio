@@ -4,12 +4,13 @@ import { byOrder } from "../util.js"
 import { Prototype } from "../FactorioPrototypeApiJson.js"
 import ts from "typescript"
 import { addJsDoc, createTag } from "../documentation.js"
-import { addFakeJSDoc, Modifiers, Types } from "../genUtil.js"
+import { addFakeJSDoc, capitalize, Modifiers, Types } from "../genUtil.js"
 import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
 import { maybeRecordInlineConceptReference } from "./concepts.js"
 import { mapPrototypeType } from "../types.js"
 import assert from "assert"
 import { InterfaceDef } from "../manualDefinitions.js"
+import { nameToToPrototypeType } from "../prototypeSubclassTypes.js"
 
 export function preprocessPrototypes(context: PrototypeGenerationContext): void {
   for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
@@ -260,4 +261,35 @@ function addPrototypeMap(
     rootMembers,
   )
   context.currentFile.add(rootIntf)
+
+  // type <entity>Type = keyof PrototypeMap["entity"]
+  for (const prototype of rootPrototypes) {
+    const subTypes = subclassMap.get(prototype)
+    if (!subTypes || subTypes.length <= 1) continue
+    const typeName = classNameToTypeName(prototype)
+    if (!Object.values<string>(nameToToPrototypeType).includes(typeName)) {
+      context.warning(`Root prototype ${prototype} is not in prototypeBaseClasses`)
+    }
+    const typeAlias = ts.factory.createTypeAliasDeclaration(
+      [Modifiers.export],
+      capitalize(typeName) + "Type",
+      undefined,
+      ts.factory.createTypeOperatorNode(
+        ts.SyntaxKind.KeyOfKeyword,
+        ts.factory.createIndexedAccessTypeNode(
+          ts.factory.createTypeReferenceNode("PrototypeSubclassMap"),
+          Types.stringLiteral(typeName),
+        ),
+      ),
+    )
+    addJsDoc(
+      context,
+      typeAlias,
+      {
+        description: `All ${typeName} prototype subclass types.`,
+      },
+      undefined,
+    )
+    context.currentFile.add(typeAlias)
+  }
 }

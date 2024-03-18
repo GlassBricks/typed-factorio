@@ -44,6 +44,7 @@ export function generateClasses(context: RuntimeGenerationContext): void {
     // manually added imports for now
     context.currentFile.addImport("common", "ActiveMods")
     context.currentFile.addImport("common", "CustomInputName")
+    context.currentFile.addImport("prototype", "PrototypeMap")
     context.currentFile.addImport("settings", "SettingsPrototypeMap")
   })
 }
