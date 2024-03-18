@@ -3,7 +3,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
-import { PrototypeMap } from "factorio:prototype"
+import { PrototypeSubclassMap } from "factorio:prototype"
 
 export interface LuaObject {
   readonly object_name: string
@@ -22,8 +22,8 @@ export type nil = undefined
 
 declare namespace defines {
   const prototypes: {
-    [type in keyof PrototypeMap]: {
-      readonly [subtype in string]?: 0
+    [Type in keyof PrototypeSubclassMap]: {
+      [Subtype in keyof PrototypeSubclassMap[Type]]: 0
     }
   }
 

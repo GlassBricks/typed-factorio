@@ -41,7 +41,7 @@ export function generateDefines(context: RuntimeGenerationContext): void {
 
     // manually added imports for now
     context.currentFile.addImport("runtime", "EventId")
-    context.currentFile.addImport("prototype", "PrototypeMap")
+    context.currentFile.addImport("prototype", "PrototypeSubclassMap")
   })
 }
 

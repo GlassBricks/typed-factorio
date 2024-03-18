@@ -212,7 +212,7 @@ import type {
   ScriptRaisedTeleportedEvent,
 } from "factorio:runtime"
 
-import type { PrototypeMap } from "factorio:prototype"
+import type { PrototypeSubclassMap } from "factorio:prototype"
 
 declare global {
   namespace defines {
@@ -1944,8 +1944,8 @@ declare global {
      * @see {@link https://lua-api.factorio.com/1.1.103/defines.html#defines.prototypes Online documentation}
      */
     const prototypes: {
-      [type in keyof PrototypeMap]: {
-        readonly [subtype in string]?: 0
+      [Type in keyof PrototypeSubclassMap]: {
+        [Subtype in keyof PrototypeSubclassMap[Type]]: 0
       }
     }
     enum rail_connection_direction {

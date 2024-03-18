@@ -1892,12 +1892,8 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.103/prototypes/CombinatorPrototype.html Online documentation}
    */
   export interface CombinatorPrototype extends EntityWithOwnerPrototype {
-    /**
-     * @deprecated this type is abstract. You may want to use the subclass types instead.
-     */
     type: "arithmetic-combinator" | "decider-combinator"
     energy_source: ElectricEnergySource | VoidEnergySource
-    readonly _abstract: any
     /**
      * @example
      * active_energy_usage = "1KW"
@@ -3887,7 +3883,6 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/1.1.103/prototypes/EntityWithOwnerPrototype.html Online documentation}
    */
   export interface EntityWithOwnerPrototype extends EntityWithHealthPrototype {
-    _abstract?: boolean
     type:
       | "accumulator"
       | "ammo-turret"
@@ -13373,5 +13368,298 @@ declare module "factorio:prototype" {
     "virtual-signal": VirtualSignalPrototype
     wall: WallPrototype
     "wind-sound": WindSound
+  }
+  export interface PrototypeSubclassMap {
+    achievement: {
+      achievement: AchievementPrototype
+      "build-entity-achievement": BuildEntityAchievementPrototype
+      "combat-robot-count": CombatRobotCountAchievementPrototype
+      "construct-with-robots-achievement": ConstructWithRobotsAchievementPrototype
+      "deconstruct-with-robots-achievement": DeconstructWithRobotsAchievementPrototype
+      "deliver-by-robots-achievement": DeliverByRobotsAchievementPrototype
+      "dont-build-entity-achievement": DontBuildEntityAchievementPrototype
+      "dont-craft-manually-achievement": DontCraftManuallyAchievementPrototype
+      "dont-use-entity-in-energy-production-achievement": DontUseEntityInEnergyProductionAchievementPrototype
+      "finish-the-game-achievement": FinishTheGameAchievementPrototype
+      "group-attack-achievement": GroupAttackAchievementPrototype
+      "kill-achievement": KillAchievementPrototype
+      "player-damaged-achievement": PlayerDamagedAchievementPrototype
+      "produce-achievement": ProduceAchievementPrototype
+      "produce-per-hour-achievement": ProducePerHourAchievementPrototype
+      "research-achievement": ResearchAchievementPrototype
+      "train-path-achievement": TrainPathAchievementPrototype
+    }
+    "ambient-sound": {
+      "ambient-sound": AmbientSound
+    }
+    "ammo-category": {
+      "ammo-category": AmmoCategory
+    }
+    animation: {
+      animation: AnimationPrototype
+    }
+    "autoplace-control": {
+      "autoplace-control": AutoplaceControl
+    }
+    "custom-input": {
+      "custom-input": CustomInputPrototype
+    }
+    "damage-type": {
+      "damage-type": DamageType
+    }
+    decorative: {
+      "optimized-decorative": DecorativePrototype
+    }
+    "editor-controller": {
+      "editor-controller": EditorControllerPrototype
+    }
+    entity: {
+      accumulator: AccumulatorPrototype
+      "ammo-turret": AmmoTurretPrototype
+      "arithmetic-combinator": ArithmeticCombinatorPrototype
+      arrow: ArrowPrototype
+      "artillery-flare": ArtilleryFlarePrototype
+      "artillery-projectile": ArtilleryProjectilePrototype
+      "artillery-turret": ArtilleryTurretPrototype
+      "artillery-wagon": ArtilleryWagonPrototype
+      "assembling-machine": AssemblingMachinePrototype
+      beacon: BeaconPrototype
+      beam: BeamPrototype
+      boiler: BoilerPrototype
+      "burner-generator": BurnerGeneratorPrototype
+      car: CarPrototype
+      "cargo-wagon": CargoWagonPrototype
+      "character-corpse": CharacterCorpsePrototype
+      character: CharacterPrototype
+      cliff: CliffPrototype
+      "combat-robot": CombatRobotPrototype
+      "constant-combinator": ConstantCombinatorPrototype
+      "construction-robot": ConstructionRobotPrototype
+      container: ContainerPrototype
+      corpse: CorpsePrototype
+      "curved-rail": CurvedRailPrototype
+      "decider-combinator": DeciderCombinatorPrototype
+      "deconstructible-tile-proxy": DeconstructibleTileProxyPrototype
+      "electric-energy-interface": ElectricEnergyInterfacePrototype
+      "electric-pole": ElectricPolePrototype
+      "electric-turret": ElectricTurretPrototype
+      "unit-spawner": EnemySpawnerPrototype
+      "entity-ghost": EntityGhostPrototype
+      particle: EntityParticlePrototype
+      explosion: ExplosionPrototype
+      fire: FireFlamePrototype
+      fish: FishPrototype
+      "flame-thrower-explosion": FlameThrowerExplosionPrototype
+      stream: FluidStreamPrototype
+      "fluid-turret": FluidTurretPrototype
+      "fluid-wagon": FluidWagonPrototype
+      "flying-text": FlyingTextPrototype
+      furnace: FurnacePrototype
+      gate: GatePrototype
+      generator: GeneratorPrototype
+      "heat-interface": HeatInterfacePrototype
+      "heat-pipe": HeatPipePrototype
+      "highlight-box": HighlightBoxEntityPrototype
+      "infinity-container": InfinityContainerPrototype
+      "infinity-pipe": InfinityPipePrototype
+      inserter: InserterPrototype
+      "item-entity": ItemEntityPrototype
+      "item-request-proxy": ItemRequestProxyPrototype
+      lab: LabPrototype
+      lamp: LampPrototype
+      "land-mine": LandMinePrototype
+      "leaf-particle": LeafParticlePrototype
+      "linked-belt": LinkedBeltPrototype
+      "linked-container": LinkedContainerPrototype
+      "loader-1x1": Loader1x1Prototype
+      loader: Loader1x2Prototype
+      locomotive: LocomotivePrototype
+      "logistic-container": LogisticContainerPrototype
+      "logistic-robot": LogisticRobotPrototype
+      market: MarketPrototype
+      "mining-drill": MiningDrillPrototype
+      "offshore-pump": OffshorePumpPrototype
+      "particle-source": ParticleSourcePrototype
+      pipe: PipePrototype
+      "pipe-to-ground": PipeToGroundPrototype
+      "player-port": PlayerPortPrototype
+      "power-switch": PowerSwitchPrototype
+      "programmable-speaker": ProgrammableSpeakerPrototype
+      projectile: ProjectilePrototype
+      pump: PumpPrototype
+      radar: RadarPrototype
+      "rail-chain-signal": RailChainSignalPrototype
+      "rail-remnants": RailRemnantsPrototype
+      "rail-signal": RailSignalPrototype
+      reactor: ReactorPrototype
+      resource: ResourceEntityPrototype
+      roboport: RoboportPrototype
+      "rocket-silo": RocketSiloPrototype
+      "rocket-silo-rocket": RocketSiloRocketPrototype
+      "rocket-silo-rocket-shadow": RocketSiloRocketShadowPrototype
+      "simple-entity": SimpleEntityPrototype
+      "simple-entity-with-force": SimpleEntityWithForcePrototype
+      "simple-entity-with-owner": SimpleEntityWithOwnerPrototype
+      smoke: SimpleSmokePrototype
+      "smoke-with-trigger": SmokeWithTriggerPrototype
+      "solar-panel": SolarPanelPrototype
+      "speech-bubble": SpeechBubblePrototype
+      "spider-leg": SpiderLegPrototype
+      "spider-vehicle": SpiderVehiclePrototype
+      splitter: SplitterPrototype
+      sticker: StickerPrototype
+      "storage-tank": StorageTankPrototype
+      "straight-rail": StraightRailPrototype
+      "tile-ghost": TileGhostPrototype
+      "train-stop": TrainStopPrototype
+      "transport-belt": TransportBeltPrototype
+      tree: TreePrototype
+      turret: TurretPrototype
+      "underground-belt": UndergroundBeltPrototype
+      unit: UnitPrototype
+      wall: WallPrototype
+    }
+    "equipment-category": {
+      "equipment-category": EquipmentCategory
+    }
+    "equipment-grid": {
+      "equipment-grid": EquipmentGridPrototype
+    }
+    equipment: {
+      "active-defense-equipment": ActiveDefenseEquipmentPrototype
+      "battery-equipment": BatteryEquipmentPrototype
+      "belt-immunity-equipment": BeltImmunityEquipmentPrototype
+      "energy-shield-equipment": EnergyShieldEquipmentPrototype
+      "generator-equipment": GeneratorEquipmentPrototype
+      "movement-bonus-equipment": MovementBonusEquipmentPrototype
+      "night-vision-equipment": NightVisionEquipmentPrototype
+      "roboport-equipment": RoboportEquipmentPrototype
+      "solar-panel-equipment": SolarPanelEquipmentPrototype
+    }
+    fluid: {
+      fluid: FluidPrototype
+    }
+    font: {
+      font: FontPrototype
+    }
+    "fuel-category": {
+      "fuel-category": FuelCategory
+    }
+    "god-controller": {
+      "god-controller": GodControllerPrototype
+    }
+    "gui-style": {
+      "gui-style": GuiStyle
+    }
+    "item-group": {
+      "item-group": ItemGroup
+    }
+    item: {
+      ammo: AmmoItemPrototype
+      armor: ArmorPrototype
+      "blueprint-book": BlueprintBookPrototype
+      blueprint: BlueprintItemPrototype
+      capsule: CapsulePrototype
+      "copy-paste-tool": CopyPasteToolPrototype
+      "deconstruction-item": DeconstructionItemPrototype
+      gun: GunPrototype
+      item: ItemPrototype
+      "item-with-entity-data": ItemWithEntityDataPrototype
+      "item-with-inventory": ItemWithInventoryPrototype
+      "item-with-label": ItemWithLabelPrototype
+      "item-with-tags": ItemWithTagsPrototype
+      "mining-tool": MiningToolPrototype
+      module: ModulePrototype
+      "rail-planner": RailPlannerPrototype
+      "repair-tool": RepairToolPrototype
+      "selection-tool": SelectionToolPrototype
+      "spidertron-remote": SpidertronRemotePrototype
+      tool: ToolPrototype
+      "upgrade-item": UpgradeItemPrototype
+    }
+    "item-sub-group": {
+      "item-subgroup": ItemSubGroup
+    }
+    "map-gen-presets": {
+      "map-gen-presets": MapGenPresets
+    }
+    "map-settings": {
+      "map-settings": MapSettings
+    }
+    "module-category": {
+      "module-category": ModuleCategory
+    }
+    "mouse-cursor": {
+      "mouse-cursor": MouseCursor
+    }
+    "named-noise-expression": {
+      "noise-expression": NamedNoiseExpression
+    }
+    "noise-layer": {
+      "noise-layer": NoiseLayer
+    }
+    particle: {
+      "optimized-particle": ParticlePrototype
+    }
+    "recipe-category": {
+      "recipe-category": RecipeCategory
+    }
+    recipe: {
+      recipe: RecipePrototype
+    }
+    "resource-category": {
+      "resource-category": ResourceCategory
+    }
+    shortcut: {
+      shortcut: ShortcutPrototype
+    }
+    sound: {
+      sound: SoundPrototype
+    }
+    "spectator-controller": {
+      "spectator-controller": SpectatorControllerPrototype
+    }
+    sprite: {
+      sprite: SpritePrototype
+    }
+    technology: {
+      technology: TechnologyPrototype
+    }
+    "tile-effect-definition": {
+      "tile-effect": TileEffectDefinition
+    }
+    tile: {
+      tile: TilePrototype
+    }
+    "tips-and-tricks-item": {
+      "tips-and-tricks-item": TipsAndTricksItem
+    }
+    "tips-and-tricks-item-category": {
+      "tips-and-tricks-item-category": TipsAndTricksItemCategory
+    }
+    "trigger-target-type": {
+      "trigger-target-type": TriggerTargetType
+    }
+    "trivial-smoke": {
+      "trivial-smoke": TrivialSmokePrototype
+    }
+    "tutorial-definition": {
+      tutorial: TutorialDefinition
+    }
+    "utility-constants": {
+      "utility-constants": UtilityConstants
+    }
+    "utility-sounds": {
+      "utility-sounds": UtilitySounds
+    }
+    "utility-sprites": {
+      "utility-sprites": UtilitySprites
+    }
+    "virtual-signal": {
+      "virtual-signal": VirtualSignalPrototype
+    }
+    "wind-sound": {
+      "wind-sound": WindSound
+    }
   }
 }

@@ -26,9 +26,9 @@ export function generatePrototypes(context: PrototypeGenerationContext): void {
   context.addFile("prototypes", ModuleType.Prototype, () => {
     const { subclassMap, rootPrototypes } = getSubclassMap(context)
     for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
-      generatePrototype(context, prototype, subclassMap, rootPrototypes)
+      generatePrototype(context, prototype, subclassMap)
     }
-    addPrototypeMap(context)
+    addPrototypeMap(context, subclassMap, rootPrototypes)
     // manually added imports for now
     context.currentFile.addImport("common", "CustomInputName")
   })
@@ -44,7 +44,10 @@ function getSubclassMap(context: PrototypeGenerationContext): {
     subclassMap.set(prototype.name, [])
   }
   for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
-    if (!prototype.parent) {
+    if (
+      prototype.name !== "PrototypeBase" &&
+      (prototype.parent === undefined || prototype.parent === "PrototypeBase")
+    ) {
       rootPrototypes.push(prototype.name)
     }
     const thisType = prototype.typename
@@ -62,7 +65,6 @@ function generatePrototype(
   context: PrototypeGenerationContext,
   prototype: Prototype,
   subclassMap: Map<string, string[]>,
-  rootPrototypes: string[],
 ): void {
   const existing = context.manualDefs.getInterface(prototype.name)
   const members = getMembers(context, prototype, existing, subclassMap)
@@ -187,7 +189,23 @@ function getPrototypeOverridenAttributes(
   return getOverridenAttributes(context, prototype, context.prototypes, context.prototypeProperties)
 }
 
-function addPrototypeMap(context: PrototypeGenerationContext) {
+function classNameToTypeName(name: string): string {
+  if (name.endsWith("Prototype")) {
+    name = name.slice(0, -"Prototype".length)
+  }
+  // PascalCase to kebab-case
+  return name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()
+}
+
+function addPrototypeMap(
+  context: PrototypeGenerationContext,
+  subclassMap: Map<string, string[]>,
+  rootPrototypes: string[],
+) {
+  // interface PrototypeMap {
+  //  "type": Interface
+  // }
+
   const members = context.apiDocs.prototypes
     .filter((p) => p.typename)
     .map((p) => {
@@ -206,4 +224,40 @@ function addPrototypeMap(context: PrototypeGenerationContext) {
   const intf = ts.factory.createInterfaceDeclaration([Modifiers.export], "PrototypeMap", undefined, undefined, members)
 
   context.currentFile.add(intf)
+
+  // interface PrototypeSubclassMap {
+  //   "rootType": {
+  //     "subType": Interface
+  //   }
+  // }
+
+  const rootMembers = rootPrototypes.map((p) => {
+    const typeName = classNameToTypeName(p)
+    const subTypes = new Set(subclassMap.get(p))
+    const subPrototypes = Array.from(context.prototypes)
+      .filter(([, prototype]) => prototype.typename && subTypes.has(prototype.typename))
+      .map(([name, prototype]) => {
+        return ts.factory.createPropertySignature(
+          undefined,
+          ts.factory.createStringLiteral(prototype.typename!),
+          undefined,
+          ts.factory.createTypeReferenceNode(name),
+        )
+      })
+    return ts.factory.createPropertySignature(
+      undefined,
+      ts.factory.createStringLiteral(typeName),
+      undefined,
+      ts.factory.createTypeLiteralNode(subPrototypes),
+    )
+  })
+
+  const rootIntf = ts.factory.createInterfaceDeclaration(
+    [Modifiers.export],
+    "PrototypeSubclassMap",
+    undefined,
+    undefined,
+    rootMembers,
+  )
+  context.currentFile.add(rootIntf)
 }
