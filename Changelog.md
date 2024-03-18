@@ -1,3 +1,10 @@
+# 2.8.0
+- The `type` attribute of prototype classes now includes all subclasses of that prototype. For instance, `EntityPrototype.type` includes `"accumulator"`, `"assembling-machine"`, etc. 
+- Added `AchievmentType`, `EntityType`, `EquipmentType`, and `ItemType` types, which lists all typenames for the specific prototype type.
+- In runtime types, the values for `type` and `ghost_type` attributes are specified to be specific prototype typenames when possible. For instance, `LuaEntity.type` now has type `EntityType` instead of `string`.
+
+- Updated to factorio version 1.1.104
+
 # v2.7.2
 
 - The type definition for ColorArray and ColorModifierArray are now readonly, consistent with other array types.
