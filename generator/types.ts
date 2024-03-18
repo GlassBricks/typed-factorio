@@ -5,7 +5,7 @@ import { addJsDoc } from "./documentation.js"
 import type * as prototype from "./FactorioPrototypeApiJson.js"
 import type * as runtime from "./FactorioRuntimeApiJson.js"
 import { IndexTypes } from "./runtime/index-types.js"
-import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
+import { capitalize, escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
 import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./read-write-types.js"
@@ -36,11 +36,13 @@ export function mapMemberType(
   parent: string,
   type: runtime.Type,
   usage: RWUsage,
+  hasExistingType?: boolean,
 ): RWType {
   const result =
     tryUseIndexType(context, member, parent, type) ??
     tryUseStringUnion(member, type) ??
     tryUseFlagValue(context, member, type) ??
+    tryUsePrototypeType(context, member, type, parent, usage, hasExistingType) ??
     mapRuntimeType(context, type, parent + (member.name ? "." + member.name : ""), usage)
 
   const isNullable = !member.optional && isNullableFromDescription(context, member, parent)
@@ -824,6 +826,48 @@ function tryUseFlagValue(
       ts.factory.createTypeReferenceNode(flagName),
     ),
   }
+}
+
+const rootPrototypeNames = [
+  // hardcoded for now; could instead get from prototypes.json
+  "achievement",
+  "entity",
+  "equipment",
+  "item",
+]
+
+function tryUsePrototypeType(
+  context: RuntimeGenerationContext,
+  member: {
+    description: string
+    name?: string
+  },
+  type: runtime.Type,
+  parent: string,
+  usage: RWUsage,
+  hasExistingType?: boolean,
+): RWType | undefined {
+  if (hasExistingType || member.name !== "type" || type !== "string" || !parent || !context.classes.has(parent)) return
+  if (usage !== RWUsage.Read) {
+    context.warning("type member should be read-only")
+    return
+  }
+  context.currentFile.addImport("prototype", "PrototypeSubclassMap")
+  for (const rootPrototypeName of rootPrototypeNames) {
+    if (parent.includes(capitalize(rootPrototypeName))) {
+      // keyof PrototypeSubclassMap["rootType"]
+      return {
+        mainType: ts.factory.createTypeOperatorNode(
+          ts.SyntaxKind.KeyOfKeyword,
+          ts.factory.createIndexedAccessTypeNode(
+            createTypeNode(context, "PrototypeSubclassMap"),
+            Types.stringLiteral(rootPrototypeName),
+          ),
+        ),
+      }
+    }
+  }
+  context.warning("Could not determine prototype type in " + parent)
 }
 
 function isNullableFromDescription(

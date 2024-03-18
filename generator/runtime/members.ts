@@ -34,8 +34,16 @@ export function mapAttribute(
   existingContainer: InterfaceDef | TypeAliasDef | undefined,
 ): ts.TypeElement | ts.TypeElement[] {
   let member: ts.TypeElement | ts.TypeElement[]
-  const type = mapMemberType(context, attribute, parent, attribute.type, getUsage(attribute))
   const existing = existingContainer?.members[attribute.name]
+  const type = mapMemberType(
+    context,
+    attribute,
+    parent,
+    attribute.type,
+    getUsage(attribute),
+    existing?.some((v) => ts.isPropertySignature(v) && v.type),
+  )
+
   if (existing) {
     member = mergeAttributeWithExisting(context, parent, attribute, type, existing)
   } else if (!attribute.read) {

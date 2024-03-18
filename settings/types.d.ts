@@ -108,4 +108,6 @@ declare module "factorio:settings" {
     "double-setting": DoubleSettingDefinition
     "string-setting": StringSettingDefinition
   }
+
+  export type SettingsPrototypeMap = PrototypeMap
 }

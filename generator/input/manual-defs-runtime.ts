@@ -1,9 +1,11 @@
 /// <reference path="../../prototype/generated/prototypes.d.ts" />
 /// <reference path="../../prototype/generated/types.d.ts" />
+/// <reference path="../../settings/types.d.ts" />
 // noinspection JSUnusedGlobalSymbols
 
 import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
 import { PrototypeSubclassMap } from "factorio:prototype"
+import { SettingsPrototypeMap } from "factorio:settings"
 
 export interface LuaObject {
   readonly object_name: string
@@ -397,6 +399,14 @@ export interface LuaLogisticPoint {}
 export interface LuaEntity {
   get_logistic_point(index: defines.logistic_member_index): LuaLogisticPoint | nil
   get_logistic_point(): Record<defines.logistic_member_index, LuaLogisticPoint> | nil
+}
+
+export interface LuaGroup {
+  readonly type: "item-group" | "item-subgroup"
+}
+
+export interface LuaModSettingPrototype {
+  readonly type: keyof SettingsPrototypeMap
 }
 
 export interface LuaItemStack {}

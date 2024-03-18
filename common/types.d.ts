@@ -2,7 +2,7 @@
 declare module "factorio:common" {
   import { ModSetting } from "factorio:runtime"
   import { Data } from "factorio:prototype"
-  import { PrototypeMap as SettingsPrototypeMap } from "factorio:settings"
+  import { SettingsPrototypeMap } from "factorio:settings"
   /**
    * A type map of type name -> prototype type.
    *
@@ -49,7 +49,7 @@ declare module "factorio:common" {
   }
 
   /**
-   * Represents a `data` global variable for the prototype stage.
+   * Represents the `data` global variable for the prototype stage.
    *
    * If you did _not_ add `"typed-factorio/prototype"` to your tsconfig, you can manually declare this global like so:
    * ```ts
@@ -62,7 +62,7 @@ declare module "factorio:common" {
   export type PrototypeData = Data
 
   /**
-   * Represents a `data` global variable for the settings stage.
+   * Represents the `data` global variable for the settings stage.
    *
    * If you did _not_ add `"typed-factorio/settings"` to your tsconfig, you can manually declare this global like so:
    * ```ts
