@@ -24,8 +24,9 @@ export function preprocessPrototypes(context: PrototypeGenerationContext): void 
 
 export function generatePrototypes(context: PrototypeGenerationContext): void {
   context.addFile("prototypes", ModuleType.Prototype, () => {
+    const { subclassMap, rootPrototypes } = getSubclassMap(context)
     for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
-      generatePrototype(context, prototype)
+      generatePrototype(context, prototype, subclassMap, rootPrototypes)
     }
     addPrototypeMap(context)
     // manually added imports for now
@@ -33,9 +34,38 @@ export function generatePrototypes(context: PrototypeGenerationContext): void {
   })
 }
 
-function generatePrototype(context: PrototypeGenerationContext, prototype: Prototype): void {
+function getSubclassMap(context: PrototypeGenerationContext): {
+  subclassMap: Map<string, string[]>
+  rootPrototypes: string[]
+} {
+  const subclassMap = new Map<string, string[]>()
+  const rootPrototypes: string[] = []
+  for (const prototype of context.apiDocs.prototypes) {
+    subclassMap.set(prototype.name, [])
+  }
+  for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
+    if (!prototype.parent) {
+      rootPrototypes.push(prototype.name)
+    }
+    const thisType = prototype.typename
+    if (!thisType) continue
+    let current: string | undefined = prototype.name
+    while (current) {
+      subclassMap.get(current)!.push(thisType)
+      current = context.prototypes.get(current)?.parent
+    }
+  }
+  return { subclassMap, rootPrototypes }
+}
+
+function generatePrototype(
+  context: PrototypeGenerationContext,
+  prototype: Prototype,
+  subclassMap: Map<string, string[]>,
+  rootPrototypes: string[],
+): void {
   const existing = context.manualDefs.getInterface(prototype.name)
-  const members = getMembers(context, prototype, existing)
+  const members = getMembers(context, prototype, existing, subclassMap)
   const heritageClauses = getPrototypeHeritageClauses(prototype, context)
 
   let mainDeclName = prototype.name
@@ -77,12 +107,14 @@ function getMembers(
   context: PrototypeGenerationContext,
   prototype: Prototype,
   existing: InterfaceDef | undefined,
+  subclassMap: Map<string, string[]>,
 ): ts.TypeElement[] {
   const properties = prototype.properties
     .sort(byOrder)
     .flatMap((p) => mapProperty(context, p, prototype.name, existing))
 
-  if (prototype.typename) {
+  const typeNames = subclassMap.get(prototype.name)
+  if (typeNames && typeNames.length > 0) {
     const existingTypeProperty = properties.findIndex(
       (p) => p.name && ts.isIdentifier(p.name) && p.name.text === "type",
     )
@@ -91,9 +123,11 @@ function getMembers(
         undefined,
         "type",
         undefined,
-        Types.stringLiteral(prototype.typename),
+        Types.stringUnion(typeNames),
       )
       properties.unshift(typeProperty)
+    } else if (prototype.name !== "PrototypeBase" && (typeNames.length !== 1 || typeNames[0] !== prototype.typename)) {
+      context.warning("existing type property does not match type names", prototype.name)
     }
   }
 
@@ -150,12 +184,7 @@ function getPrototypeOverridenAttributes(
   prototype: Prototype,
 ): string[] | undefined {
   if (!prototype.parent) return undefined
-  const attributes = getOverridenAttributes(context, prototype, context.prototypes, context.prototypeProperties)
-  const parent = context.prototypes.get(prototype.parent)
-  if (prototype.typename && parent?.typename) {
-    attributes.push("type")
-  }
-  return attributes
+  return getOverridenAttributes(context, prototype, context.prototypes, context.prototypeProperties)
 }
 
 function addPrototypeMap(context: PrototypeGenerationContext) {

@@ -39,7 +39,7 @@ export function mapMemberType(
 ): RWType {
   const result =
     tryUseIndexType(context, member, parent, type) ??
-    tryUseStringEnum(member, type) ??
+    tryUseStringUnion(member, type) ??
     tryUseFlagValue(context, member, type) ??
     mapRuntimeType(context, type, parent + (member.name ? "." + member.name : ""), usage)
 
@@ -774,7 +774,7 @@ function tryUseIndexType(
   }
 }
 
-function tryUseStringEnum(
+function tryUseStringUnion(
   member: {
     description: string
     name?: string

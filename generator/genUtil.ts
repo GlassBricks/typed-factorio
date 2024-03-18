@@ -25,6 +25,7 @@ export const Types = {
   number: ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
   symbol: ts.factory.createKeywordTypeNode(ts.SyntaxKind.SymbolKeyword),
   string: ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
+  never: ts.factory.createKeywordTypeNode(ts.SyntaxKind.NeverKeyword),
 
   stringLiteral(text: string): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(
@@ -36,6 +37,15 @@ export const Types = {
   },
   booleanLiteral(value: boolean): ts.LiteralTypeNode {
     return ts.factory.createLiteralTypeNode(value ? ts.factory.createTrue() : ts.factory.createFalse())
+  },
+  stringUnion(values: string[]): ts.TypeNode {
+    if (values.length === 0) {
+      return Types.never
+    }
+    if (values.length === 1) {
+      return Types.stringLiteral(values[0])
+    }
+    return ts.factory.createUnionTypeNode(values.map(Types.stringLiteral))
   },
 }
 

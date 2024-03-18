@@ -16,8 +16,8 @@ export type DataExtendMethod = unknown
 
 export interface Data {
   raw: {
-    readonly [type in keyof PrototypeMap]: {
-      readonly [name in string]?: PrototypeMap[type]
+    readonly [Type in keyof PrototypeMap]: {
+      readonly [Name in string]?: PrototypeMap[Type]
     }
   }
 
@@ -36,7 +36,7 @@ export type LocalisedString = string | number | boolean | undefined | readonly [
 interface PrototypeMap {}
 
 interface PrototypeBase {
-  readonly type: keyof PrototypeMap
+  type: keyof PrototypeMap
 }
 
 interface FluidBox {}

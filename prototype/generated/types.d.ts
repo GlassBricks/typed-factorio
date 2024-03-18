@@ -3284,8 +3284,8 @@ declare module "factorio:prototype" {
      * @see {@link https://lua-api.factorio.com/1.1.103/types/Data.html#raw Online documentation}
      */
     raw: {
-      readonly [type in keyof PrototypeMap]: {
-        readonly [name in string]?: PrototypeMap[type]
+      readonly [Type in keyof PrototypeMap]: {
+        readonly [Name in string]?: PrototypeMap[Type]
       }
     }
     /**
