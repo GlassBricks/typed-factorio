@@ -3453,12 +3453,12 @@ declare module "factorio:prototype" {
   }
   export interface DifficultySettings {
     /**
-     * A {@link import("factorio:runtime").defines.difficulty_settings.recipe_difficulty defines.difficulty_settings.recipe_difficulty}.
+     * A {@link defines.difficulty_settings.recipe_difficulty}.
      * @see {@link https://lua-api.factorio.com/1.1.105/types/DifficultySettings.html#recipe_difficulty Online documentation}
      */
     recipe_difficulty: uint8
     /**
-     * A {@link import("factorio:runtime").defines.difficulty_settings.technology_difficulty defines.difficulty_settings.technology_difficulty}.
+     * A {@link defines.difficulty_settings.technology_difficulty}.
      * @see {@link https://lua-api.factorio.com/1.1.105/types/DifficultySettings.html#technology_difficulty Online documentation}
      */
     technology_difficulty: uint8
@@ -3484,7 +3484,7 @@ declare module "factorio:prototype" {
     filter_enabled?: bool
   }
   /**
-   * Usually specified by using {@link import("factorio:runtime").defines.direction defines.direction}.
+   * Usually specified by using {@link defines.direction}.
    *
    * ## Union members
    * - `0`: North
@@ -4118,7 +4118,7 @@ declare module "factorio:prototype" {
    * - `"placeable-player"`: Determines the default force when placing entities in the map editor and using the *AUTO* option for the force.
    * - `"placeable-enemy"`: Determines the default force when placing entities in the map editor and using the *AUTO* option for the force.
    * - `"placeable-off-grid"`: Refers to the fact that most entities are placed on an invisible 'grid' within the world, entities with this flag do not have to line up with this grid (like trees and land-mines).
-   * - `"player-creation"`: Makes it possible for the biter AI to target the entity as a distraction in distraction mode {@link import("factorio:runtime").defines.distraction.by_anything by_anything}. Makes it possible to blueprint, deconstruct, and repair the entity (can be turned off again using the specific flags). Enables smoke to be created automatically when building the entity. If the entity does not have {@link EntityPrototype#map_color EntityPrototype::map_color} set, this flag makes the entity appear on the map/minimap with the default color specified in the {@link UtilityConstants}.
+   * - `"player-creation"`: Makes it possible for the biter AI to target the entity as a distraction in distraction mode {@link defines.distraction.by_anything by_anything}. Makes it possible to blueprint, deconstruct, and repair the entity (can be turned off again using the specific flags). Enables smoke to be created automatically when building the entity. If the entity does not have {@link EntityPrototype#map_color EntityPrototype::map_color} set, this flag makes the entity appear on the map/minimap with the default color specified in the {@link UtilityConstants}.
    * - `"building-direction-8-way"`: Uses 45 degree angle increments when selecting direction.
    * - `"filter-directions"`: Used to automatically detect the proper direction, if possible. Used by base with the pump, train stop, and train signal.
    * - `"fast-replaceable-no-build-while-moving"`: Fast replace will not apply when building while moving.
@@ -6301,12 +6301,12 @@ declare module "factorio:prototype" {
   }
   export interface MapGenPresetDifficultySettings {
     /**
-     * A {@link import("factorio:runtime").defines.difficulty_settings.recipe_difficulty defines.difficulty_settings.recipe_difficulty}.
+     * A {@link defines.difficulty_settings.recipe_difficulty}.
      * @see {@link https://lua-api.factorio.com/1.1.105/types/MapGenPresetDifficultySettings.html#recipe_difficulty Online documentation}
      */
     recipe_difficulty?: uint8
     /**
-     * A {@link import("factorio:runtime").defines.difficulty_settings.technology_difficulty defines.difficulty_settings.technology_difficulty}.
+     * A {@link defines.difficulty_settings.technology_difficulty}.
      * @see {@link https://lua-api.factorio.com/1.1.105/types/MapGenPresetDifficultySettings.html#technology_difficulty Online documentation}
      */
     technology_difficulty?: uint8

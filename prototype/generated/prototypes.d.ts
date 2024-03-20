@@ -9160,7 +9160,7 @@ declare module "factorio:prototype" {
   export interface RocketSiloPrototype extends AssemblingMachinePrototype {
     type: "rocket-silo"
     /**
-     * Additional energy used during the following parts of the {@link import("factorio:runtime").defines.rocket_silo_status launch sequence}: doors_opening, rocket_rising, arms_advance, engine_starting, arms_retract, doors_closing.
+     * Additional energy used during the following parts of the {@link defines.rocket_silo_status launch sequence}: doors_opening, rocket_rising, arms_advance, engine_starting, arms_retract, doors_closing.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#active_energy_usage Online documentation}
      */
     active_energy_usage: Energy
@@ -9189,12 +9189,12 @@ declare module "factorio:prototype" {
     base_day_sprite: Sprite
     base_front_sprite: Sprite
     /**
-     * Drawn from the start of the {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_open lights_blinking_open} state until the end of the {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_close lights_blinking_close} state.
+     * Drawn from the start of the {@link defines.rocket_silo_status.lights_blinking_open lights_blinking_open} state until the end of the {@link defines.rocket_silo_status.lights_blinking_close lights_blinking_close} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#red_lights_back_sprites Online documentation}
      */
     red_lights_back_sprites: Sprite
     /**
-     * Drawn from the start of the {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_open lights_blinking_open} state until the end of the {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_close lights_blinking_close} state.
+     * Drawn from the start of the {@link defines.rocket_silo_status.lights_blinking_open lights_blinking_open} state until the end of the {@link defines.rocket_silo_status.lights_blinking_close lights_blinking_close} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#red_lights_front_sprites Online documentation}
      */
     red_lights_front_sprites: Sprite
@@ -9204,21 +9204,21 @@ declare module "factorio:prototype" {
     silo_fade_out_start_distance: double
     silo_fade_out_end_distance: double
     /**
-     * How many times the `red_lights_back_sprites` and `red_lights_front_sprites` should blink during {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_open lights_blinking_open} and {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_close lights_blinking_close}.
+     * How many times the `red_lights_back_sprites` and `red_lights_front_sprites` should blink during {@link defines.rocket_silo_status.lights_blinking_open lights_blinking_open} and {@link defines.rocket_silo_status.lights_blinking_close lights_blinking_close}.
      *
      * Does not affect the duration of the launch sequence.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#times_to_blink Online documentation}
      */
     times_to_blink: uint8
     /**
-     * The inverse of the duration in ticks of {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_open lights_blinking_open} and {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_close lights_blinking_close}.
+     * The inverse of the duration in ticks of {@link defines.rocket_silo_status.lights_blinking_open lights_blinking_open} and {@link defines.rocket_silo_status.lights_blinking_close lights_blinking_close}.
      * @example
      * light_blinking_speed = 1 / (2 * 60) -- lights blinking takes 120 ticks
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#light_blinking_speed Online documentation}
      */
     light_blinking_speed: double
     /**
-     * The inverse of the duration in ticks of {@link import("factorio:runtime").defines.rocket_silo_status.doors_opening doors_opening} and {@link import("factorio:runtime").defines.rocket_silo_status.doors_closing closing}.
+     * The inverse of the duration in ticks of {@link defines.rocket_silo_status.doors_opening doors_opening} and {@link defines.rocket_silo_status.doors_closing closing}.
      * @example
      * door_opening_speed = 1 / (4 * 60) -- doors opening and closing takes 4 seconds
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#door_opening_speed Online documentation}
@@ -9241,69 +9241,69 @@ declare module "factorio:prototype" {
     /**
      * **Default:** `30`
      *
-     * The time to wait in the {@link import("factorio:runtime").defines.rocket_silo_status.doors_opened doors_opened} state before switching to {@link import("factorio:runtime").defines.rocket_silo_status.rocket_rising rocket_rising}.
+     * The time to wait in the {@link defines.rocket_silo_status.doors_opened doors_opened} state before switching to {@link defines.rocket_silo_status.rocket_rising rocket_rising}.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#rocket_rising_delay Online documentation}
      */
     rocket_rising_delay?: uint8
     /**
      * **Default:** `120`
      *
-     * The time to wait in the {@link import("factorio:runtime").defines.rocket_silo_status.launch_started launch_started} state before switching to {@link import("factorio:runtime").defines.rocket_silo_status.engine_starting engine_starting}.
+     * The time to wait in the {@link defines.rocket_silo_status.launch_started launch_started} state before switching to {@link defines.rocket_silo_status.engine_starting engine_starting}.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#launch_wait_time Online documentation}
      */
     launch_wait_time?: uint8
     /**
-     * Applied when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_open lights_blinking_open} state.
+     * Applied when switching into the {@link defines.rocket_silo_status.lights_blinking_open lights_blinking_open} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#alarm_trigger Online documentation}
      */
     alarm_trigger?: TriggerEffect
     /**
-     * Applied when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.arms_advance arms_advance} state.
+     * Applied when switching into the {@link defines.rocket_silo_status.arms_advance arms_advance} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#clamps_on_trigger Online documentation}
      */
     clamps_on_trigger?: TriggerEffect
     /**
-     * Applied when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.arms_retract arms_retract} state.
+     * Applied when switching into the {@link defines.rocket_silo_status.arms_retract arms_retract} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#clamps_off_trigger Online documentation}
      */
     clamps_off_trigger?: TriggerEffect
     /**
-     * Applied when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.doors_opening doors_opening} and {@link import("factorio:runtime").defines.rocket_silo_status.doors_closing doors_closing} states.
+     * Applied when switching into the {@link defines.rocket_silo_status.doors_opening doors_opening} and {@link defines.rocket_silo_status.doors_closing doors_closing} states.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#doors_trigger Online documentation}
      */
     doors_trigger?: TriggerEffect
     /**
-     * Applied when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.rocket_rising rocket_rising} state.
+     * Applied when switching into the {@link defines.rocket_silo_status.rocket_rising rocket_rising} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#raise_rocket_trigger Online documentation}
      */
     raise_rocket_trigger?: TriggerEffect
     /**
-     * Played when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.lights_blinking_open lights_blinking_open} state.
+     * Played when switching into the {@link defines.rocket_silo_status.lights_blinking_open lights_blinking_open} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#alarm_sound Online documentation}
      */
     alarm_sound?: Sound
     /**
-     * Played when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.arms_advance arms_advance} state.
+     * Played when switching into the {@link defines.rocket_silo_status.arms_advance arms_advance} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#clamps_on_sound Online documentation}
      */
     clamps_on_sound?: Sound
     /**
-     * Played when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.arms_retract arms_retract} state.
+     * Played when switching into the {@link defines.rocket_silo_status.arms_retract arms_retract} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#clamps_off_sound Online documentation}
      */
     clamps_off_sound?: Sound
     /**
-     * Played when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.doors_opening doors_opening} and {@link import("factorio:runtime").defines.rocket_silo_status.doors_closing doors_closing} states.
+     * Played when switching into the {@link defines.rocket_silo_status.doors_opening doors_opening} and {@link defines.rocket_silo_status.doors_closing doors_closing} states.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#doors_sound Online documentation}
      */
     doors_sound?: Sound
     /**
-     * Played when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.rocket_rising rocket_rising} state.
+     * Played when switching into the {@link defines.rocket_silo_status.rocket_rising rocket_rising} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#raise_rocket_sound Online documentation}
      */
     raise_rocket_sound?: Sound
     /**
-     * Played when switching into the {@link import("factorio:runtime").defines.rocket_silo_status.engine_starting engine_starting} state.
+     * Played when switching into the {@link defines.rocket_silo_status.engine_starting engine_starting} state.
      * @see {@link https://lua-api.factorio.com/1.1.105/prototypes/RocketSiloPrototype.html#flying_sound Online documentation}
      */
     flying_sound?: Sound
