@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.104",
+  "application_version": "1.1.105",
   "api_version": 4,
   "stage": "runtime",
   "classes": [
@@ -4671,6 +4671,9 @@
           "name": "can_shoot",
           "order": 98,
           "description": "Whether this character can shoot the given entity or position.",
+          "subclasses": [
+            "Character"
+          ],
           "parameters": [
             {
               "name": "position",
@@ -4939,6 +4942,9 @@
           "name": "connect_rolling_stock",
           "order": 70,
           "description": "Connects the rolling stock in the given direction.",
+          "subclasses": [
+            "RollingStock"
+          ],
           "parameters": [
             {
               "name": "direction",
@@ -5210,6 +5216,9 @@
           "name": "disconnect_rolling_stock",
           "order": 71,
           "description": "Tries to disconnect this rolling stock in the given direction.",
+          "subclasses": [
+            "RollingStock"
+          ],
           "parameters": [
             {
               "name": "direction",
@@ -5442,6 +5451,9 @@
           "name": "get_connected_rolling_stock",
           "order": 107,
           "description": "Gets rolling stock connected to the given end of this stock.",
+          "subclasses": [
+            "RollingStock"
+          ],
           "parameters": [
             {
               "name": "direction",
@@ -6985,6 +6997,9 @@
               "optional": true
             }
           ],
+          "subclasses": [
+            "Ghost"
+          ],
           "parameters": [
             {
               "name": "raise_revive",
@@ -7468,6 +7483,9 @@
               "optional": true
             }
           ],
+          "subclasses": [
+            "Ghost"
+          ],
           "parameters": [
             {
               "name": "raise_revive",
@@ -7523,6 +7541,9 @@
           "name": "start_fading_out",
           "order": 99,
           "description": "Only works if the entity is a speech-bubble, with an \"effect\" defined in its wrapper_flow_style. Starts animating the opacity of the speech bubble towards zero, and destroys the entity when it hits zero.",
+          "subclasses": [
+            "SpeechBubble"
+          ],
           "parameters": [],
           "takes_table": false,
           "return_values": []
@@ -7854,7 +7875,7 @@
           "order": 61,
           "description": "Whether this underground belt goes into or out of the ground.",
           "subclasses": [
-            "TransportBeltToGround"
+            "UndergroundBelt"
           ],
           "type": {
             "complex_type": "union",
@@ -8013,6 +8034,9 @@
           "name": "cliff_orientation",
           "order": 17,
           "description": "The orientation of this cliff.",
+          "subclasses": [
+            "Cliff"
+          ],
           "type": "CliffOrientation",
           "optional": false,
           "read": true,
@@ -8034,6 +8058,9 @@
           "name": "combat_robot_owner",
           "order": 170,
           "description": "The owner of this combat robot, if any.",
+          "subclasses": [
+            "CombatRobot"
+          ],
           "type": "LuaEntity",
           "optional": true,
           "read": true,
@@ -8115,8 +8142,8 @@
           "name": "corpse_expires",
           "order": 156,
           "description": "Whether this corpse will ever fade away.",
-          "notes": [
-            "Useable only on corpses."
+          "subclasses": [
+            "Corpse"
           ],
           "type": "boolean",
           "optional": false,
@@ -8126,9 +8153,9 @@
         {
           "name": "corpse_immune_to_entity_placement",
           "order": 157,
-          "description": "If true, corpse won't be destroyed when entities are placed over it. If false, whether corpse will be removed or not depends on value of CorpsePrototype::remove_on_entity_placement.",
-          "notes": [
-            "Useable only on corpses."
+          "description": "If true, corpse won't be destroyed when entities are placed over it. If false, whether corpse will be removed or not depends on value of [CorpsePrototype::remove_on_entity_placement](prototype:CorpsePrototype::remove_on_entity_placement).",
+          "subclasses": [
+            "Corpse"
           ],
           "type": "boolean",
           "optional": false,
@@ -8694,6 +8721,9 @@
           "notes": [
             "Set to 0 to reset."
           ],
+          "subclasses": [
+            "Inserter"
+          ],
           "type": "uint",
           "optional": false,
           "read": true,
@@ -8705,6 +8735,9 @@
           "description": "Returns the current target pickup count of the inserter.",
           "notes": [
             "This considers the circuit network, manual override and the inserter stack size limit based on technology."
+          ],
+          "subclasses": [
+            "Inserter"
           ],
           "type": "uint",
           "optional": false,
@@ -8809,6 +8842,9 @@
           "name": "link_id",
           "order": 171,
           "description": "The link ID this linked container is using.",
+          "subclasses": [
+            "LinkedContainer"
+          ],
           "type": "uint",
           "optional": false,
           "read": true,
@@ -9132,6 +9168,9 @@
           "name": "power_switch_state",
           "order": 119,
           "description": "The state of this power switch.",
+          "subclasses": [
+            "PowerSwitch"
+          ],
           "type": "boolean",
           "optional": false,
           "read": true,
@@ -9198,6 +9237,9 @@
           "name": "proxy_target",
           "order": 104,
           "description": "The target entity for this item-request-proxy, if any.",
+          "subclasses": [
+            "ItemRequestProxy"
+          ],
           "type": "LuaEntity",
           "optional": true,
           "read": true,
@@ -9331,6 +9373,9 @@
           "name": "rocket_silo_status",
           "order": 177,
           "description": "The status of this rocket silo entity.",
+          "subclasses": [
+            "RocketSilo"
+          ],
           "type": "defines.rocket_silo_status",
           "optional": false,
           "read": true,
@@ -9393,6 +9438,9 @@
           "name": "shooting_target",
           "order": 103,
           "description": "The shooting target for this turret, if any. Can't be set to `nil` via script.",
+          "subclasses": [
+            "Turret"
+          ],
           "type": "LuaEntity",
           "optional": true,
           "read": true,
@@ -9427,6 +9475,9 @@
           "name": "spawner",
           "order": 114,
           "description": "The spawner associated with this unit entity, if any.",
+          "subclasses": [
+            "Unit"
+          ],
           "type": "LuaEntity",
           "optional": true,
           "read": true,
@@ -9560,6 +9611,9 @@
           "name": "sticked_to",
           "order": 106,
           "description": "The entity this sticker is sticked to.",
+          "subclasses": [
+            "Sticker"
+          ],
           "type": "LuaEntity",
           "optional": false,
           "read": true,
@@ -9697,7 +9751,14 @@
         {
           "name": "time_to_live",
           "order": 48,
-          "description": "The ticks left before a ghost, combat robot, highlight box or smoke with trigger is destroyed.\n\n- for ghosts set to uint32 max (4 294 967 295) to never expire.\n- for ghosts can not be set higher than [LuaForce::ghost_time_to_live](runtime:LuaForce::ghost_time_to_live) of the entity's force.",
+          "description": "The ticks left before a ghost, combat robot, highlight box, smoke with trigger or sticker is destroyed.\n\n- for ghosts set to uint32 max (4 294 967 295) to never expire.\n- for ghosts can not be set higher than [LuaForce::ghost_time_to_live](runtime:LuaForce::ghost_time_to_live) of the entity's force.",
+          "subclasses": [
+            "Ghost",
+            "CombatRobot",
+            "HighlightBox",
+            "SmokeWithTrigger",
+            "Sticker"
+          ],
           "type": "uint",
           "optional": false,
           "read": true,
@@ -9807,6 +9868,9 @@
           "name": "tree_color_index",
           "order": 96,
           "description": "Index of the tree color.",
+          "subclasses": [
+            "Tree"
+          ],
           "type": "uint8",
           "optional": false,
           "read": true,
@@ -9816,6 +9880,9 @@
           "name": "tree_color_index_max",
           "order": 97,
           "description": "Maximum index of the tree colors.",
+          "subclasses": [
+            "Tree"
+          ],
           "type": "uint8",
           "optional": false,
           "read": true,
@@ -9825,6 +9892,9 @@
           "name": "tree_gray_stage_index",
           "order": 100,
           "description": "Index of the tree gray stage",
+          "subclasses": [
+            "Tree"
+          ],
           "type": "uint8",
           "optional": false,
           "read": true,
@@ -9834,6 +9904,9 @@
           "name": "tree_gray_stage_index_max",
           "order": 101,
           "description": "Maximum index of the tree gray stages.",
+          "subclasses": [
+            "Tree"
+          ],
           "type": "uint8",
           "optional": false,
           "read": true,
@@ -9843,6 +9916,9 @@
           "name": "tree_stage_index",
           "order": 98,
           "description": "Index of the tree stage.",
+          "subclasses": [
+            "Tree"
+          ],
           "type": "uint8",
           "optional": false,
           "read": true,
@@ -9852,6 +9928,9 @@
           "name": "tree_stage_index_max",
           "order": 99,
           "description": "Maximum index of the tree stages.",
+          "subclasses": [
+            "Tree"
+          ],
           "type": "uint8",
           "optional": false,
           "read": true,
@@ -11840,7 +11919,11 @@
         {
           "name": "manual_range_modifier",
           "order": 211,
-          "description": "The manual range modifier for this artillery turret or wagon prototype.\n\nsubclass(ArtilleryWagon, ArtilleryTurret)",
+          "description": "The manual range modifier for this artillery turret or wagon prototype.",
+          "subclasses": [
+            "ArtilleryWagon",
+            "ArtilleryTurret"
+          ],
           "type": "double",
           "optional": true,
           "read": true,
@@ -19280,7 +19363,7 @@
             {
               "name": "resolution",
               "order": 4,
-              "description": "The maximum allowed resolution is 16384x16384 (8192x8192 when `anti_alias` is `true`), but the maximum recommended resolution is 4096x4096 (resp. 2048x2048).",
+              "description": "The maximum allowed resolution is 16384x16384 (8192x8192 when `anti_alias` is `true`), but the maximum recommended resolution is 4096x4096 (resp. 2048x2048). The `x` value of the position is used as the width, the `y` value as the height.",
               "type": "TilePosition",
               "optional": true
             },
@@ -22841,7 +22924,7 @@
           "name": "type",
           "order": 21,
           "description": "The type of this GUI element.",
-          "type": "string",
+          "type": "GuiElementType",
           "optional": false,
           "read": true,
           "write": false
@@ -26207,7 +26290,7 @@
           "return_values": [
             {
               "order": 0,
-              "description": "Whether the new filter was successfully set (meaning was valid).",
+              "description": "Whether the new filter was successfully set (meaning it was valid).",
               "type": "boolean",
               "optional": false
             }
@@ -26545,8 +26628,17 @@
           "write": true
         },
         {
+          "name": "is_ammo",
+          "order": 38,
+          "description": "If this is an ammo item.",
+          "type": "boolean",
+          "optional": false,
+          "read": true,
+          "write": false
+        },
+        {
           "name": "is_armor",
-          "order": 40,
+          "order": 41,
           "description": "If this is an armor item.",
           "type": "boolean",
           "optional": false,
@@ -26573,7 +26665,7 @@
         },
         {
           "name": "is_deconstruction_item",
-          "order": 47,
+          "order": 48,
           "description": "If this is a deconstruction tool item.",
           "type": "boolean",
           "optional": false,
@@ -26582,7 +26674,7 @@
         },
         {
           "name": "is_item_with_entity_data",
-          "order": 44,
+          "order": 45,
           "description": "If this is an item with entity data item.",
           "type": "boolean",
           "optional": false,
@@ -26591,7 +26683,7 @@
         },
         {
           "name": "is_item_with_inventory",
-          "order": 43,
+          "order": 44,
           "description": "If this is an item with inventory item.",
           "type": "boolean",
           "optional": false,
@@ -26600,7 +26692,7 @@
         },
         {
           "name": "is_item_with_label",
-          "order": 42,
+          "order": 43,
           "description": "If this is an item with label item.",
           "type": "boolean",
           "optional": false,
@@ -26609,7 +26701,7 @@
         },
         {
           "name": "is_item_with_tags",
-          "order": 46,
+          "order": 47,
           "description": "If this is an item with tags item.",
           "type": "boolean",
           "optional": false,
@@ -26618,7 +26710,7 @@
         },
         {
           "name": "is_mining_tool",
-          "order": 39,
+          "order": 40,
           "description": "If this is a mining tool item.",
           "type": "boolean",
           "optional": false,
@@ -26636,7 +26728,7 @@
         },
         {
           "name": "is_repair_tool",
-          "order": 41,
+          "order": 42,
           "description": "If this is a repair tool item.",
           "type": "boolean",
           "optional": false,
@@ -26645,7 +26737,7 @@
         },
         {
           "name": "is_selection_tool",
-          "order": 45,
+          "order": 46,
           "description": "If this is a selection tool item.",
           "type": "boolean",
           "optional": false,
@@ -26654,7 +26746,7 @@
         },
         {
           "name": "is_tool",
-          "order": 38,
+          "order": 39,
           "description": "If this is a tool item.",
           "type": "boolean",
           "optional": false,
@@ -26663,7 +26755,7 @@
         },
         {
           "name": "is_upgrade_item",
-          "order": 48,
+          "order": 49,
           "description": "If this is a upgrade item.",
           "type": "boolean",
           "optional": false,
@@ -26714,7 +26806,7 @@
         },
         {
           "name": "object_name",
-          "order": 50,
+          "order": 51,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "type": "string",
           "optional": false,
@@ -26846,7 +26938,7 @@
         },
         {
           "name": "valid",
-          "order": 49,
+          "order": 50,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "type": "boolean",
           "optional": false,
@@ -30617,8 +30709,25 @@
             {
               "name": "selection_mode",
               "order": 1,
-              "description": "The type of selection to start. Can be `select`, `alternative-select`, `reverse-select`.",
-              "type": "string",
+              "description": "The type of selection to start.",
+              "type": {
+                "complex_type": "union",
+                "options": [
+                  {
+                    "complex_type": "literal",
+                    "value": "select"
+                  },
+                  {
+                    "complex_type": "literal",
+                    "value": "alternative-select"
+                  },
+                  {
+                    "complex_type": "literal",
+                    "value": "reverse-select"
+                  }
+                ],
+                "full_format": false
+              },
               "optional": false
             }
           ],
@@ -32455,7 +32564,7 @@
         {
           "name": "destroy",
           "order": 9,
-          "description": "Destroy the object with the given id.",
+          "description": "Destroy the object with the given id. Does not error when the object is invalid.",
           "parameters": [
             {
               "name": "id",
@@ -33796,7 +33905,7 @@
         },
         {
           "name": "get_alignment",
-          "order": 54,
+          "order": 55,
           "description": "Get the alignment of the text with this id.",
           "subclasses": [
             "Text"
@@ -33848,7 +33957,7 @@
         },
         {
           "name": "get_angle",
-          "order": 77,
+          "order": 78,
           "description": "Get the angle of the arc with this id.",
           "subclasses": [
             "Arc"
@@ -33874,7 +33983,7 @@
         },
         {
           "name": "get_animation",
-          "order": 99,
+          "order": 100,
           "description": "Get the animation prototype name of the animation with this id.",
           "subclasses": [
             "Animation"
@@ -33900,7 +34009,7 @@
         },
         {
           "name": "get_animation_offset",
-          "order": 103,
+          "order": 104,
           "description": "Get the animation offset of the animation with this id.",
           "subclasses": [
             "Animation"
@@ -33926,7 +34035,7 @@
         },
         {
           "name": "get_animation_speed",
-          "order": 101,
+          "order": 102,
           "description": "Get the animation speed of the animation with this id.",
           "subclasses": [
             "Animation"
@@ -33952,7 +34061,7 @@
         },
         {
           "name": "get_color",
-          "order": 31,
+          "order": 32,
           "description": "Get the color or tint of the object with this id.",
           "subclasses": [
             "Text",
@@ -33986,7 +34095,7 @@
         },
         {
           "name": "get_dash_length",
-          "order": 39,
+          "order": 40,
           "description": "Get the dash length of the line with this id.",
           "subclasses": [
             "Line"
@@ -34012,7 +34121,7 @@
         },
         {
           "name": "get_draw_on_ground",
-          "order": 25,
+          "order": 26,
           "description": "Get whether this is being drawn on the ground, under most entities and sprites.",
           "subclasses": [
             "Text",
@@ -34043,7 +34152,7 @@
         },
         {
           "name": "get_filled",
-          "order": 62,
+          "order": 63,
           "description": "Get if the circle or rectangle with this id is filled.",
           "subclasses": [
             "Circle",
@@ -34070,7 +34179,7 @@
         },
         {
           "name": "get_font",
-          "order": 52,
+          "order": 53,
           "description": "Get the font of the text with this id.",
           "subclasses": [
             "Text"
@@ -34096,7 +34205,7 @@
         },
         {
           "name": "get_forces",
-          "order": 19,
+          "order": 20,
           "description": "Get the forces that the object with this id is rendered to or `nil` if visible to all forces.",
           "parameters": [
             {
@@ -34122,7 +34231,7 @@
         },
         {
           "name": "get_from",
-          "order": 35,
+          "order": 36,
           "description": "Get from where the line with this id is drawn.",
           "subclasses": [
             "Line"
@@ -34148,7 +34257,7 @@
         },
         {
           "name": "get_gap_length",
-          "order": 41,
+          "order": 42,
           "description": "Get the length of the gaps in the line with this id.",
           "subclasses": [
             "Line"
@@ -34174,7 +34283,7 @@
         },
         {
           "name": "get_intensity",
-          "order": 93,
+          "order": 94,
           "description": "Get the intensity of the light with this id.",
           "subclasses": [
             "Light"
@@ -34200,7 +34309,7 @@
         },
         {
           "name": "get_left_top",
-          "order": 66,
+          "order": 67,
           "description": "Get where top left corner of the rectangle with this id is drawn.",
           "subclasses": [
             "Rectangle"
@@ -34226,7 +34335,7 @@
         },
         {
           "name": "get_max_radius",
-          "order": 71,
+          "order": 72,
           "description": "Get the radius of the outer edge of the arc with this id.",
           "subclasses": [
             "Arc"
@@ -34252,7 +34361,7 @@
         },
         {
           "name": "get_min_radius",
-          "order": 73,
+          "order": 74,
           "description": "Get the radius of the inner edge of the arc with this id.",
           "subclasses": [
             "Arc"
@@ -34278,7 +34387,7 @@
         },
         {
           "name": "get_minimum_darkness",
-          "order": 95,
+          "order": 96,
           "description": "Get the minimum darkness at which the light with this id is rendered.",
           "subclasses": [
             "Light"
@@ -34304,7 +34413,7 @@
         },
         {
           "name": "get_only_in_alt_mode",
-          "order": 27,
+          "order": 28,
           "description": "Get whether this is only rendered in alt-mode.",
           "parameters": [
             {
@@ -34327,7 +34436,7 @@
         },
         {
           "name": "get_orientation",
-          "order": 46,
+          "order": 47,
           "description": "Get the orientation of the object with this id.",
           "notes": [
             "Polygon vertices that are set to an entity will ignore this."
@@ -34360,7 +34469,7 @@
         },
         {
           "name": "get_orientation_target",
-          "order": 89,
+          "order": 90,
           "description": "The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Get the orientation_target of the object with this id.",
           "notes": [
             "Polygon vertices that are set to an entity will ignore this."
@@ -34391,7 +34500,7 @@
         },
         {
           "name": "get_oriented",
-          "order": 97,
+          "order": 98,
           "description": "Get if the light with this id is rendered has the same orientation as the target entity. Note that `orientation` is still applied to the sprite.",
           "subclasses": [
             "Light"
@@ -34417,7 +34526,7 @@
         },
         {
           "name": "get_oriented_offset",
-          "order": 91,
+          "order": 92,
           "description": "Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Get the oriented_offset of the sprite or animation with this id.",
           "subclasses": [
             "Sprite",
@@ -34444,7 +34553,7 @@
         },
         {
           "name": "get_players",
-          "order": 21,
+          "order": 22,
           "description": "Get the players that the object with this id is rendered to or `nil` if visible to all players.",
           "parameters": [
             {
@@ -34470,7 +34579,7 @@
         },
         {
           "name": "get_radius",
-          "order": 64,
+          "order": 65,
           "description": "Get the radius of the circle with this id.",
           "subclasses": [
             "Circle"
@@ -34496,7 +34605,7 @@
         },
         {
           "name": "get_render_layer",
-          "order": 87,
+          "order": 88,
           "description": "Get the render layer of the sprite or animation with this id.",
           "subclasses": [
             "Sprite",
@@ -34523,7 +34632,7 @@
         },
         {
           "name": "get_right_bottom",
-          "order": 68,
+          "order": 69,
           "description": "Get where bottom right corner of the rectangle with this id is drawn.",
           "subclasses": [
             "Rectangle"
@@ -34549,7 +34658,7 @@
         },
         {
           "name": "get_scale",
-          "order": 48,
+          "order": 49,
           "description": "Get the scale of the text or light with this id.",
           "subclasses": [
             "Text",
@@ -34576,7 +34685,7 @@
         },
         {
           "name": "get_scale_with_zoom",
-          "order": 58,
+          "order": 59,
           "description": "Get if the text with this id scales with player zoom.",
           "subclasses": [
             "Text"
@@ -34602,7 +34711,7 @@
         },
         {
           "name": "get_sprite",
-          "order": 81,
+          "order": 82,
           "description": "Get the sprite of the sprite or light with this id.",
           "subclasses": [
             "Sprite",
@@ -34629,7 +34738,7 @@
         },
         {
           "name": "get_start_angle",
-          "order": 75,
+          "order": 76,
           "description": "Get where the arc with this id starts.",
           "subclasses": [
             "Arc"
@@ -34655,7 +34764,7 @@
         },
         {
           "name": "get_surface",
-          "order": 16,
+          "order": 17,
           "description": "The surface the object with this id is rendered on.",
           "parameters": [
             {
@@ -34678,7 +34787,7 @@
         },
         {
           "name": "get_target",
-          "order": 44,
+          "order": 45,
           "description": "Get where the object with this id is drawn.",
           "notes": [
             "Polygon vertices that are set to an entity will ignore this."
@@ -34713,7 +34822,7 @@
         },
         {
           "name": "get_text",
-          "order": 50,
+          "order": 51,
           "description": "Get the text that is displayed by the text with this id.",
           "subclasses": [
             "Text"
@@ -34739,7 +34848,7 @@
         },
         {
           "name": "get_time_to_live",
-          "order": 17,
+          "order": 18,
           "description": "Get the time to live of the object with this id. This will be 0 if the object does not expire.",
           "parameters": [
             {
@@ -34762,7 +34871,7 @@
         },
         {
           "name": "get_to",
-          "order": 37,
+          "order": 38,
           "description": "Get where the line with this id is drawn to.",
           "subclasses": [
             "Line"
@@ -34852,7 +34961,7 @@
         },
         {
           "name": "get_use_rich_text",
-          "order": 60,
+          "order": 61,
           "description": "Get if the text with this id parses rich text tags.",
           "subclasses": [
             "Text"
@@ -34878,7 +34987,7 @@
         },
         {
           "name": "get_use_target_orientation",
-          "order": 29,
+          "order": 30,
           "description": "Get whether this uses the target orientation.",
           "parameters": [
             {
@@ -34901,7 +35010,7 @@
         },
         {
           "name": "get_vertical_alignment",
-          "order": 56,
+          "order": 57,
           "description": "Get the vertical alignment of the text with this id.",
           "subclasses": [
             "Text"
@@ -34927,7 +35036,7 @@
         },
         {
           "name": "get_vertices",
-          "order": 79,
+          "order": 80,
           "description": "Get the vertices of the polygon with this id.",
           "subclasses": [
             "Polygon"
@@ -34956,7 +35065,7 @@
         },
         {
           "name": "get_visible",
-          "order": 23,
+          "order": 24,
           "description": "Get whether this is rendered to anyone at all.",
           "parameters": [
             {
@@ -34979,7 +35088,7 @@
         },
         {
           "name": "get_width",
-          "order": 33,
+          "order": 34,
           "description": "Get the width of the object with this id. Value is in pixels (32 per tile).",
           "subclasses": [
             "Line",
@@ -35007,7 +35116,7 @@
         },
         {
           "name": "get_x_scale",
-          "order": 83,
+          "order": 84,
           "description": "Get the horizontal scale of the sprite or animation with this id.",
           "subclasses": [
             "Sprite",
@@ -35034,7 +35143,7 @@
         },
         {
           "name": "get_y_scale",
-          "order": 85,
+          "order": 86,
           "description": "Get the vertical scale of the sprite or animation with this id.",
           "subclasses": [
             "Sprite",
@@ -35106,8 +35215,24 @@
           ]
         },
         {
+          "name": "move_to_back",
+          "order": 16,
+          "description": "Reorder this object so that it is drawn in the back of the already existing objects.",
+          "parameters": [
+            {
+              "name": "id",
+              "order": 0,
+              "description": "",
+              "type": "uint64",
+              "optional": false
+            }
+          ],
+          "takes_table": false,
+          "return_values": []
+        },
+        {
           "name": "set_alignment",
-          "order": 55,
+          "order": 56,
           "description": "Set the alignment of the text with this id. Does nothing if this object is not a text.",
           "subclasses": [
             "Text"
@@ -35133,7 +35258,7 @@
         },
         {
           "name": "set_angle",
-          "order": 78,
+          "order": 79,
           "description": "Set the angle of the arc with this id. Does nothing if this object is not a arc.",
           "subclasses": [
             "Arc"
@@ -35159,7 +35284,7 @@
         },
         {
           "name": "set_animation",
-          "order": 100,
+          "order": 101,
           "description": "Set the animation prototype name of the animation with this id. Does nothing if this object is not an animation.",
           "subclasses": [
             "Animation"
@@ -35185,7 +35310,7 @@
         },
         {
           "name": "set_animation_offset",
-          "order": 104,
+          "order": 105,
           "description": "Set the animation offset of the animation with this id. Does nothing if this object is not an animation.",
           "subclasses": [
             "Animation"
@@ -35211,7 +35336,7 @@
         },
         {
           "name": "set_animation_speed",
-          "order": 102,
+          "order": 103,
           "description": "Set the animation speed of the animation with this id. Does nothing if this object is not an animation.",
           "subclasses": [
             "Animation"
@@ -35237,7 +35362,7 @@
         },
         {
           "name": "set_color",
-          "order": 32,
+          "order": 33,
           "description": "Set the color or tint of the object with this id. Does nothing if this object does not support color.",
           "subclasses": [
             "Text",
@@ -35271,7 +35396,7 @@
         },
         {
           "name": "set_corners",
-          "order": 70,
+          "order": 71,
           "description": "Set the corners of the rectangle with this id. Does nothing if this object is not a rectangle.",
           "subclasses": [
             "Rectangle"
@@ -35332,7 +35457,7 @@
         },
         {
           "name": "set_dash_length",
-          "order": 40,
+          "order": 41,
           "description": "Set the dash length of the line with this id. Does nothing if this object is not a line.",
           "subclasses": [
             "Line"
@@ -35358,7 +35483,7 @@
         },
         {
           "name": "set_dashes",
-          "order": 43,
+          "order": 44,
           "description": "Set the length of the dashes and the length of the gaps in the line with this id. Does nothing if this object is not a line.",
           "subclasses": [
             "Line"
@@ -35391,7 +35516,7 @@
         },
         {
           "name": "set_draw_on_ground",
-          "order": 26,
+          "order": 27,
           "description": "Set whether this is being drawn on the ground, under most entities and sprites.",
           "subclasses": [
             "Text",
@@ -35422,7 +35547,7 @@
         },
         {
           "name": "set_filled",
-          "order": 63,
+          "order": 64,
           "description": "Set if the circle or rectangle with this id is filled. Does nothing if this object is not a circle or rectangle.",
           "subclasses": [
             "Circle",
@@ -35449,7 +35574,7 @@
         },
         {
           "name": "set_font",
-          "order": 53,
+          "order": 54,
           "description": "Set the font of the text with this id. Does nothing if this object is not a text.",
           "subclasses": [
             "Text"
@@ -35475,7 +35600,7 @@
         },
         {
           "name": "set_forces",
-          "order": 20,
+          "order": 21,
           "description": "Set the forces that the object with this id is rendered to.",
           "parameters": [
             {
@@ -35501,7 +35626,7 @@
         },
         {
           "name": "set_from",
-          "order": 36,
+          "order": 37,
           "description": "Set from where the line with this id is drawn. Does nothing if the object is not a line.",
           "subclasses": [
             "Line"
@@ -35541,7 +35666,7 @@
         },
         {
           "name": "set_gap_length",
-          "order": 42,
+          "order": 43,
           "description": "Set the length of the gaps in the line with this id. Does nothing if this object is not a line.",
           "subclasses": [
             "Line"
@@ -35567,7 +35692,7 @@
         },
         {
           "name": "set_intensity",
-          "order": 94,
+          "order": 95,
           "description": "Set the intensity of the light with this id. Does nothing if this object is not a light.",
           "subclasses": [
             "Light"
@@ -35593,7 +35718,7 @@
         },
         {
           "name": "set_left_top",
-          "order": 67,
+          "order": 68,
           "description": "Set where top left corner of the rectangle with this id is drawn. Does nothing if this object is not a rectangle.",
           "subclasses": [
             "Rectangle"
@@ -35633,7 +35758,7 @@
         },
         {
           "name": "set_max_radius",
-          "order": 72,
+          "order": 73,
           "description": "Set the radius of the outer edge of the arc with this id. Does nothing if this object is not a arc.",
           "subclasses": [
             "Arc"
@@ -35659,7 +35784,7 @@
         },
         {
           "name": "set_min_radius",
-          "order": 74,
+          "order": 75,
           "description": "Set the radius of the inner edge of the arc with this id. Does nothing if this object is not a arc.",
           "subclasses": [
             "Arc"
@@ -35685,7 +35810,7 @@
         },
         {
           "name": "set_minimum_darkness",
-          "order": 96,
+          "order": 97,
           "description": "Set the minimum darkness at which the light with this id is rendered. Does nothing if this object is not a light.",
           "subclasses": [
             "Light"
@@ -35711,7 +35836,7 @@
         },
         {
           "name": "set_only_in_alt_mode",
-          "order": 28,
+          "order": 29,
           "description": "Set whether this is only rendered in alt-mode.",
           "parameters": [
             {
@@ -35734,7 +35859,7 @@
         },
         {
           "name": "set_orientation",
-          "order": 47,
+          "order": 48,
           "description": "Set the orientation of the object with this id. Does nothing if this object is not a text, polygon, sprite, light or animation.",
           "notes": [
             "Polygon vertices that are set to an entity will ignore this."
@@ -35767,7 +35892,7 @@
         },
         {
           "name": "set_orientation_target",
-          "order": 90,
+          "order": 91,
           "description": "The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. Set to `nil` if the object should not have an orientation_target.",
           "notes": [
             "Polygon vertices that are set to an entity will ignore this."
@@ -35812,7 +35937,7 @@
         },
         {
           "name": "set_oriented",
-          "order": 98,
+          "order": 99,
           "description": "Set if the light with this id is rendered has the same orientation as the target entity. Does nothing if this object is not a light. Note that `orientation` is still applied to the sprite.",
           "subclasses": [
             "Light"
@@ -35838,7 +35963,7 @@
         },
         {
           "name": "set_oriented_offset",
-          "order": 92,
+          "order": 93,
           "description": "Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Set the oriented_offset of the sprite or animation with this id. Does nothing if this object is not a sprite or animation.",
           "subclasses": [
             "Sprite",
@@ -35865,7 +35990,7 @@
         },
         {
           "name": "set_players",
-          "order": 22,
+          "order": 23,
           "description": "Set the players that the object with this id is rendered to.",
           "parameters": [
             {
@@ -35891,7 +36016,7 @@
         },
         {
           "name": "set_radius",
-          "order": 65,
+          "order": 66,
           "description": "Set the radius of the circle with this id. Does nothing if this object is not a circle.",
           "subclasses": [
             "Circle"
@@ -35917,7 +36042,7 @@
         },
         {
           "name": "set_render_layer",
-          "order": 88,
+          "order": 89,
           "description": "Set the render layer of the sprite or animation with this id. Does nothing if this object is not a sprite or animation.",
           "subclasses": [
             "Sprite",
@@ -35944,7 +36069,7 @@
         },
         {
           "name": "set_right_bottom",
-          "order": 69,
+          "order": 70,
           "description": "Set where top bottom right of the rectangle with this id is drawn. Does nothing if this object is not a rectangle.",
           "subclasses": [
             "Rectangle"
@@ -35984,7 +36109,7 @@
         },
         {
           "name": "set_scale",
-          "order": 49,
+          "order": 50,
           "description": "Set the scale of the text or light with this id. Does nothing if this object is not a text or light.",
           "subclasses": [
             "Text",
@@ -36011,7 +36136,7 @@
         },
         {
           "name": "set_scale_with_zoom",
-          "order": 59,
+          "order": 60,
           "description": "Set if the text with this id scales with player zoom, resulting in it always being the same size on screen, and the size compared to the game world changes. Does nothing if this object is not a text.",
           "subclasses": [
             "Text"
@@ -36037,7 +36162,7 @@
         },
         {
           "name": "set_sprite",
-          "order": 82,
+          "order": 83,
           "description": "Set the sprite of the sprite or light with this id. Does nothing if this object is not a sprite or light.",
           "subclasses": [
             "Sprite",
@@ -36064,7 +36189,7 @@
         },
         {
           "name": "set_start_angle",
-          "order": 76,
+          "order": 77,
           "description": "Set where the arc with this id starts. Does nothing if this object is not a arc.",
           "subclasses": [
             "Arc"
@@ -36090,7 +36215,7 @@
         },
         {
           "name": "set_target",
-          "order": 45,
+          "order": 46,
           "description": "Set where the object with this id is drawn. Does nothing if this object does not support target.",
           "notes": [
             "Polygon vertices that are set to an entity will ignore this."
@@ -36139,7 +36264,7 @@
         },
         {
           "name": "set_text",
-          "order": 51,
+          "order": 52,
           "description": "Set the text that is displayed by the text with this id. Does nothing if this object is not a text.",
           "subclasses": [
             "Text"
@@ -36165,7 +36290,7 @@
         },
         {
           "name": "set_time_to_live",
-          "order": 18,
+          "order": 19,
           "description": "Set the time to live of the object with this id. Set to 0 if the object should not expire.",
           "parameters": [
             {
@@ -36188,7 +36313,7 @@
         },
         {
           "name": "set_to",
-          "order": 38,
+          "order": 39,
           "description": "Set where the line with this id is drawn to. Does nothing if this object is not a line.",
           "subclasses": [
             "Line"
@@ -36228,7 +36353,7 @@
         },
         {
           "name": "set_use_rich_text",
-          "order": 61,
+          "order": 62,
           "description": "Set if the text with this id parses rich text tags.",
           "subclasses": [
             "Text"
@@ -36254,7 +36379,7 @@
         },
         {
           "name": "set_use_target_orientation",
-          "order": 30,
+          "order": 31,
           "description": "Set whether this uses the target orientation.",
           "parameters": [
             {
@@ -36277,7 +36402,7 @@
         },
         {
           "name": "set_vertical_alignment",
-          "order": 57,
+          "order": 58,
           "description": "Set the vertical alignment of the text with this id. Does nothing if this object is not a text.",
           "subclasses": [
             "Text"
@@ -36303,7 +36428,7 @@
         },
         {
           "name": "set_vertices",
-          "order": 80,
+          "order": 81,
           "description": "Set the vertices of the polygon with this id. Does nothing if this object is not a polygon.",
           "subclasses": [
             "Polygon"
@@ -36332,7 +36457,7 @@
         },
         {
           "name": "set_visible",
-          "order": 24,
+          "order": 25,
           "description": "Set whether this is rendered to anyone at all.",
           "parameters": [
             {
@@ -36355,7 +36480,7 @@
         },
         {
           "name": "set_width",
-          "order": 34,
+          "order": 35,
           "description": "Set the width of the object with this id. Does nothing if this object does not support width. Value is in pixels (32 per tile).",
           "subclasses": [
             "Line",
@@ -36383,7 +36508,7 @@
         },
         {
           "name": "set_x_scale",
-          "order": 84,
+          "order": 85,
           "description": "Set the horizontal scale of the sprite or animation with this id. Does nothing if this object is not a sprite or animation.",
           "subclasses": [
             "Sprite",
@@ -36410,7 +36535,7 @@
         },
         {
           "name": "set_y_scale",
-          "order": 86,
+          "order": 87,
           "description": "Set the vertical scale of the sprite or animation with this id. Does nothing if this object is not a sprite or animation.",
           "subclasses": [
             "Sprite",
@@ -38141,7 +38266,7 @@
             {
               "name": "ignore_characters",
               "order": 0,
-              "description": "Whether characters on this surface that are connected to or associated with players should be ignored (not destroyed).",
+              "description": "Whether characters on this surface that are connected to or associated with players should be ignored (not destroyed). Defaults to `false`.",
               "type": "boolean",
               "optional": true
             }
@@ -54578,12 +54703,12 @@
         {
           "name": "never",
           "order": 1,
-          "description": "Hover according to the element type and implementation."
+          "description": "Never hover this element with a game controller."
         },
         {
           "name": "normal",
           "order": 2,
-          "description": "Never hover this element with a game controller."
+          "description": "Hover according to the element type and implementation."
         }
       ]
     },
@@ -57134,7 +57259,7 @@
     },
     {
       "name": "Alert",
-      "order": 46,
+      "order": 47,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58334,7 +58459,7 @@
     },
     {
       "name": "BoundingBox",
-      "order": 40,
+      "order": 41,
       "description": "Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with [MapPosition](runtime:MapPosition), the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero.",
       "examples": [
         "Explicit definition: \n```\n{left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}\n```",
@@ -58532,7 +58657,7 @@
     },
     {
       "name": "ChartTagSpec",
-      "order": 53,
+      "order": 54,
       "description": "",
       "notes": [
         "Either `icon`, `text`, or both must be provided."
@@ -58573,7 +58698,7 @@
     },
     {
       "name": "ChunkPosition",
-      "order": 28,
+      "order": 29,
       "description": "Coordinates of a chunk in a [LuaSurface](runtime:LuaSurface) where each integer `x`/`y` represents a different chunk. This uses the same format as [MapPosition](runtime:MapPosition), meaning it can be specified either with or without explicit keys. A [MapPosition](runtime:MapPosition) can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.",
       "type": {
         "complex_type": "union",
@@ -58622,7 +58747,7 @@
     },
     {
       "name": "ChunkPositionAndArea",
-      "order": 32,
+      "order": 33,
       "description": "A [ChunkPosition](runtime:ChunkPosition) with an added bounding box for the area of the chunk.",
       "type": {
         "complex_type": "table",
@@ -58892,7 +59017,7 @@
     },
     {
       "name": "CliffOrientation",
-      "order": 21,
+      "order": 22,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -59168,7 +59293,7 @@
     },
     {
       "name": "Color",
-      "order": 43,
+      "order": 44,
       "description": "Red, green, blue and alpha values, all in range [0, 1] or all in range [0, 255] if any value is > 1. All values here are optional. Color channels default to `0`, the alpha channel defaults to `1`.\n\nSimilar to [MapPosition](runtime:MapPosition), Color allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).",
       "examples": [
         "```\nred1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red\nred2 = {r = 0.5, a = 0.5}                -- Same color as red1\nblack = {}                               -- All channels omitted: black\nred1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation\n```"
@@ -59248,7 +59373,7 @@
     },
     {
       "name": "ColorModifier",
-      "order": 44,
+      "order": 45,
       "description": "Same as [Color](runtime:Color), but red, green, blue and alpha values can be any floating point number, without any special handling of the range [1, 255].",
       "type": {
         "complex_type": "union",
@@ -59754,7 +59879,7 @@
     },
     {
       "name": "CraftingQueueItem",
-      "order": 45,
+      "order": 46,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59881,7 +60006,7 @@
     },
     {
       "name": "CutsceneWaypoint",
-      "order": 49,
+      "order": 50,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60016,7 +60141,7 @@
     },
     {
       "name": "Decorative",
-      "order": 50,
+      "order": 51,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60122,7 +60247,7 @@
     },
     {
       "name": "DecorativeResult",
-      "order": 51,
+      "order": 52,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60216,7 +60341,7 @@
     },
     {
       "name": "DisplayResolution",
-      "order": 24,
+      "order": 25,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60915,7 +61040,7 @@
     },
     {
       "name": "EquipmentPoint",
-      "order": 33,
+      "order": 34,
       "description": "A table used to define a manual shape for a piece of equipment.",
       "type": {
         "complex_type": "table",
@@ -60939,7 +61064,7 @@
     },
     {
       "name": "EquipmentPosition",
-      "order": 30,
+      "order": 31,
       "description": "Position inside an equipment grid. This uses the same format as [MapPosition](runtime:MapPosition), meaning it can be specified either with or without explicit keys.",
       "examples": [
         "Explicit definition: \n```\n{x = 5, y = 2}\n{y = 2, x = 5}\n```",
@@ -61676,7 +61801,7 @@
     },
     {
       "name": "GameViewSettings",
-      "order": 54,
+      "order": 55,
       "description": "Parameters that affect the look and control of the game. Updating any of the member attributes here will immediately take effect in the game engine.",
       "type": {
         "complex_type": "LuaStruct",
@@ -61821,7 +61946,7 @@
     },
     {
       "name": "GuiAnchor",
-      "order": 34,
+      "order": 35,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -62191,7 +62316,7 @@
     },
     {
       "name": "GuiLocation",
-      "order": 31,
+      "order": 32,
       "description": "Screen coordinates of a GUI element in a [LuaGui](runtime:LuaGui). This uses the same format as [TilePosition](runtime:TilePosition), meaning it can be specified either with or without explicit keys.",
       "type": {
         "complex_type": "union",
@@ -62453,7 +62578,7 @@
           {
             "name": "percentage",
             "order": 1,
-            "description": "The fill percentage the pipe (`0.5` for 50%). Can't be negative.",
+            "description": "The fill percentage the pipe (for example `0.5` for 50%). Can't be negative.",
             "type": "double",
             "optional": true
           },
@@ -63155,7 +63280,7 @@
     },
     {
       "name": "LocalisedString",
-      "order": 23,
+      "order": 24,
       "description": "Localised strings are a way to support translation of in-game text. It is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.\n\nThe key identifies the string template. For example, `\"gui-alert-tooltip.attack\"` (for the template `\"__1__\n    objects are being damaged\"`; see the file `data/core/locale/en.cfg`).\n\nThe template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.\n\nThere are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`\"\"`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`\"?\"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.\n\nFurthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number, boolean or `nil`, which will be converted to their textual representation.",
       "examples": [
         "In the English translation, this will print `\"No ammo\"`; in the Czech translation, it will print `\"Bez munice\"`: \n```\ngame.player.print({\"description.no-ammo\"})\n```\n The `description.no-ammo` template contains no placeholders, so no further parameters are necessary.",
@@ -63213,7 +63338,7 @@
     },
     {
       "name": "LogisticParameters",
-      "order": 25,
+      "order": 26,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66118,7 +66243,7 @@
     },
     {
       "name": "MapPosition",
-      "order": 27,
+      "order": 28,
       "description": "Coordinates on a surface, for example of an entity. MapPositions may be specified either as a dictionary with `x`, `y` as keys, or simply as an array with two elements.\n\nThe coordinates are saved as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.",
       "examples": [
         "Explicit definition: \n```\n{x = 5.5, y = 2}\n{y = 2.25, x = 5.125}\n```",
@@ -66247,7 +66372,7 @@
     },
     {
       "name": "MapViewSettings",
-      "order": 55,
+      "order": 20,
       "description": "What is shown in the map view. If a field is not given, that setting will not be changed.",
       "type": {
         "complex_type": "table",
@@ -66268,21 +66393,21 @@
           },
           {
             "name": "show-networkless-logistic-members",
-            "order": 6,
+            "order": 4,
             "description": "",
             "type": "boolean",
             "optional": true
           },
           {
             "name": "show-non-standard-map-info",
-            "order": 7,
+            "order": 11,
             "description": "",
             "type": "boolean",
             "optional": true
           },
           {
             "name": "show-player-names",
-            "order": 5,
+            "order": 6,
             "description": "",
             "type": "boolean",
             "optional": true
@@ -66295,8 +66420,29 @@
             "optional": true
           },
           {
+            "name": "show-rail-signal-states",
+            "order": 9,
+            "description": "",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "show-recipe-icons",
+            "order": 10,
+            "description": "",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "show-tags",
+            "order": 7,
+            "description": "",
+            "type": "boolean",
+            "optional": true
+          },
+          {
             "name": "show-train-station-names",
-            "order": 4,
+            "order": 5,
             "description": "",
             "type": "boolean",
             "optional": true
@@ -66304,6 +66450,13 @@
           {
             "name": "show-turret-range",
             "order": 2,
+            "description": "",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "show-worker-robots",
+            "order": 8,
             "description": "",
             "type": "boolean",
             "optional": true
@@ -66463,7 +66616,7 @@
     },
     {
       "name": "ModifierType",
-      "order": 22,
+      "order": 23,
       "description": "Used by [TechnologyModifier](runtime:TechnologyModifier).",
       "type": {
         "complex_type": "union",
@@ -66868,7 +67021,7 @@
     },
     {
       "name": "OldTileAndPosition",
-      "order": 36,
+      "order": 37,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67191,7 +67344,7 @@
     },
     {
       "name": "PathfinderWaypoint",
-      "order": 48,
+      "order": 49,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67369,7 +67522,7 @@
           {
             "name": "ageing",
             "order": 3,
-            "description": "The amount of pollution eaten by a chunk's tiles as a percentage of 1. Defaults to `1`.",
+            "description": "The amount of pollution eaten by a chunk's tiles as a percentage of 1. Also known as absorption modifier. Defaults to `1`.",
             "type": "double",
             "optional": false
           },
@@ -67836,7 +67989,7 @@
     },
     {
       "name": "PrototypeHistory",
-      "order": 52,
+      "order": 53,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67863,7 +68016,7 @@
     },
     {
       "name": "RadiusVisualisationSpecification",
-      "order": 20,
+      "order": 21,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67925,7 +68078,7 @@
     },
     {
       "name": "RealOrientation",
-      "order": 26,
+      "order": 27,
       "description": "The smooth orientation. It is a [float](runtime:float) in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise. This means a value of `0` indicates \"north\", a value of `0.5` indicates \"south\".\n\nFor example then, a value of `0.625` would indicate \"south-west\", and a value of `0.875` would indicate \"north-west\".",
       "type": "float"
     },
@@ -68461,7 +68614,7 @@
     },
     {
       "name": "ScriptArea",
-      "order": 41,
+      "order": 42,
       "description": "An area defined using the map editor.",
       "type": {
         "complex_type": "table",
@@ -68499,7 +68652,7 @@
     },
     {
       "name": "ScriptPosition",
-      "order": 42,
+      "order": 43,
       "description": "A position defined using the map editor.",
       "type": {
         "complex_type": "table",
@@ -68568,7 +68721,7 @@
     },
     {
       "name": "ScriptRenderVertexTarget",
-      "order": 47,
+      "order": 48,
       "description": "One vertex of a ScriptRenderPolygon.",
       "type": {
         "complex_type": "table",
@@ -68895,7 +69048,7 @@
     },
     {
       "name": "SmokeSource",
-      "order": 38,
+      "order": 39,
       "description": "",
       "notes": [
         "The vectors for all 5 position attributes are a table with `x` and `y` keys instead of an array."
@@ -69237,7 +69390,7 @@
     },
     {
       "name": "TabAndContent",
-      "order": 35,
+      "order": 36,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69261,7 +69414,7 @@
     },
     {
       "name": "Tags",
-      "order": 37,
+      "order": 38,
       "description": "A dictionary of string to the four basic Lua types: `string`, `boolean`, `number`, `table`.\n\nNote that the API returns tags as a simple table, meaning any modifications to it will not propagate back to the game. Thus, to modify a set of tags, the whole table needs to be written back to the respective property.",
       "examples": [
         "```\n{a = 1, b = true, c = \"three\", d = {e = \"f\"}}\n```"
@@ -69653,7 +69806,7 @@
     },
     {
       "name": "TilePosition",
-      "order": 29,
+      "order": 30,
       "description": "Coordinates of a tile on a [LuaSurface](runtime:LuaSurface) where each integer `x`/`y` represents a different tile. This uses the same format as [MapPosition](runtime:MapPosition), except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.",
       "type": {
         "complex_type": "union",
@@ -70636,7 +70789,7 @@
     },
     {
       "name": "Vector",
-      "order": 39,
+      "order": 40,
       "description": "A vector is a two-element array containing the `x` and `y` components. In some specific cases, the vector is a table with `x` and `y` keys instead, which the documentation will point out.",
       "examples": [
         "```\nright = {1.0, 0.0}\n```"

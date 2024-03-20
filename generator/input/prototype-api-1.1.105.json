@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.104",
+  "application_version": "1.1.105",
   "api_version": 4,
   "stage": "prototype",
   "prototypes": [
@@ -1937,7 +1937,7 @@
     {
       "name": "BeaconPrototype",
       "order": 18,
-      "description": "Entity with the ability to transfer module's effects to its neighboring entities.",
+      "description": "Entity with the ability to transfer [module](prototype:ModulePrototype) effects to its neighboring entities.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
       "typename": "beacon",
@@ -1946,7 +1946,7 @@
         {
           "name": "allowed_effects",
           "order": 9,
-          "description": "The types of modules that a player can place inside of the beacon.",
+          "description": "The types of [modules](prototype:ModulePrototype) that a player can place inside of the beacon.",
           "override": false,
           "type": "EffectTypeLimitation",
           "optional": true,
@@ -4787,7 +4787,7 @@
         {
           "name": "allowed_effects",
           "order": 5,
-          "description": "Sets the module effects that are allowed to be used on this machine.\n\nNote: If the time to complete a recipe is shorter than one tick, only one craft can be completed per tick, but productivity bonus is applied to the non-limited ''completable'' work. For a simple example, if a recipe were to take half a tick, only one recipe would be completed, but twice the productivity bonus would occur. The surplus production from productivity is **not** limited to one craft per tick.",
+          "description": "Sets the [modules](prototype:ModulePrototype) and [beacon](prototype:BeaconPrototype) effects that are allowed to be used on this machine.\n\nNote: If the time to complete a recipe is shorter than one tick, only one craft can be completed per tick, but productivity bonus is applied to the non-limited ''completable'' work. For a simple example, if a recipe were to take half a tick, only one recipe would be completed, but twice the productivity bonus would occur. The surplus production from productivity is **not** limited to one craft per tick.",
           "override": false,
           "type": "EffectTypeLimitation",
           "optional": true,
@@ -6921,7 +6921,7 @@
           "order": 1,
           "description": "Path to the icon file.\n\nEither this or `icons` is mandatory for entities that have at least one of these flags active: `\"placeable-neutral\"`, `\"placeable-player`\", `\"placeable-enemy\"`.\n\nOnly loaded if `icons` is not defined.",
           "examples": [
-            "```\nicon = \"__base__/graphics/icons/wooden-chest.png\",\nicon_size = 64,\n```"
+            "```\nicon = \"__base__/graphics/icons/wooden-chest.png\"\n```"
           ],
           "override": false,
           "type": "FileName",
@@ -6943,6 +6943,9 @@
           "name": "icon_size",
           "order": 2,
           "description": "The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon.\n\nOnly loaded if `icons` is not defined, or if `icon_size` is not specified for all instances of `icons`.",
+          "examples": [
+            "```\nicon_size = 64\n```"
+          ],
           "override": false,
           "type": "SpriteSizeType",
           "optional": true
@@ -7007,6 +7010,9 @@
           "name": "next_upgrade",
           "order": 37,
           "description": "Name of the entity that will be automatically selected as the upgrade of this entity when using the [upgrade planner](https://wiki.factorio.com/Upgrade_planner) without configuration.\n\nThis entity may not have \"not-upgradable\" flag set and must be minable. This entity mining result must not contain item product with \"hidden\" flag set. Mining results with no item products are allowed. This entity may not be a [RollingStockPrototype](prototype:RollingStockPrototype).\n\nThe upgrade target entity needs to have the same bounding box, collision mask, and fast replaceable group as this entity. The upgrade target entity must have least 1 item that builds it that isn't hidden.",
+          "examples": [
+            "```\nnext_upgrade = \"fast-inserter\"\n```"
+          ],
           "override": false,
           "type": "EntityID",
           "optional": true
@@ -7031,6 +7037,9 @@
           "name": "placeable_by",
           "order": 39,
           "description": "Item that when placed creates this entity. Determines which item is picked when \"Q\" (smart pipette) is used on the entity, determines which item is needed in a blueprint of this entity.\n\nThe item count specified here can't be larger than the stack size of that item.",
+          "examples": [
+            "```\nplaceable_by = {item = \"rail\", count = 4}\n```"
+          ],
           "override": false,
           "type": {
             "complex_type": "union",
@@ -8759,7 +8768,7 @@
         {
           "name": "subgroup",
           "order": 11,
-          "description": "The value of this property may not be an empty string. It either has to be nil, or a non-empty string.",
+          "description": "The name of the [subgroup](prototype:ItemSubGroup) of this fluid. The value of this property may not be an empty string. It either has to be `nil`, or a non-empty string.",
           "override": false,
           "type": "ItemSubGroupID",
           "optional": true,
@@ -11124,7 +11133,7 @@
         {
           "name": "subgroup",
           "order": 9,
-          "description": "Empty text of subgroup is not allowed. (You can omit the definition to get the default \"other\").",
+          "description": "The name of the [subgroup](prototype:ItemSubGroup) this item should be sorted into in item selection GUIs like logistic requests.\n\nEmpty text of subgroup is not allowed. (You can omit the definition to get the default \"other\").",
           "override": false,
           "type": "ItemSubGroupID",
           "optional": true,
@@ -11398,7 +11407,7 @@
         {
           "name": "item_subgroup_filters",
           "order": 3,
-          "description": "A list of explicit item subgroup names to be used as filters.",
+          "description": "A list of explicit [item subgroup](prototype:ItemSubGroup) names to be used as filters.",
           "examples": [
             "```\nitem_subgroup_filters = {\"military-equipment\", \"tool\"}\n```"
           ],
@@ -11556,7 +11565,7 @@
     {
       "name": "LabPrototype",
       "order": 105,
-      "description": "A [lab](https://wiki.factorio.com/Lab).",
+      "description": "A [lab](https://wiki.factorio.com/Lab). It consumes [science packs](prototype:ToolPrototype) to research [technologies](prototype:TechnologyPrototype).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
       "typename": "lab",
@@ -11565,7 +11574,7 @@
         {
           "name": "allowed_effects",
           "order": 6,
-          "description": "Sets the module effects that are allowed to be used on this lab.",
+          "description": "Sets the [modules](prototype:ModulePrototype) and [beacon](prototype:BeaconPrototype) effects that are allowed to be used on this lab.",
           "override": false,
           "type": "EffectTypeLimitation",
           "optional": true,
@@ -12833,7 +12842,7 @@
         {
           "name": "allowed_effects",
           "order": 12,
-          "description": "",
+          "description": "Sets the [modules](prototype:ModulePrototype) and [beacon](prototype:BeaconPrototype) effects that are allowed to be used on this mining drill.",
           "override": false,
           "type": "EffectTypeLimitation",
           "optional": true,
@@ -13083,7 +13092,7 @@
     {
       "name": "ModulePrototype",
       "order": 123,
-      "description": "A [module](https://wiki.factorio.com/Module).",
+      "description": "A [module](https://wiki.factorio.com/Module). They are used to affect the capabilities of existing machines, for example by increasing the crafting speed of a [crafting machine](prototype:CraftingMachinePrototype).",
       "parent": "ItemPrototype",
       "abstract": false,
       "typename": "module",
@@ -13092,7 +13101,7 @@
         {
           "name": "art_style",
           "order": 7,
-          "description": "Chooses with what art style the module is shown inside beacons. See [BeaconModuleVisualizations::art_style](prototype:BeaconModuleVisualizations::art_style). Vanilla uses \"vanilla\" here.",
+          "description": "Chooses with what art style the module is shown inside [beacons](prototype:BeaconPrototype). See [BeaconModuleVisualizations::art_style](prototype:BeaconModuleVisualizations::art_style). Vanilla uses `\"vanilla\"` here.",
           "override": false,
           "type": "string",
           "optional": true
@@ -13116,7 +13125,7 @@
         {
           "name": "effect",
           "order": 2,
-          "description": "",
+          "description": "The effect of the module on the machine it's inserted in, such as increased pollution.",
           "override": false,
           "type": "Effect",
           "optional": false
@@ -13124,7 +13133,7 @@
         {
           "name": "limitation",
           "order": 4,
-          "description": "Array of recipe names this module can be used on. If empty, the module can be used on all recipes.",
+          "description": "Array of [recipe names](prototype:RecipePrototype) this module can be used on. If empty, the module can be used on all recipes.",
           "override": false,
           "type": {
             "complex_type": "array",
@@ -13135,7 +13144,7 @@
         {
           "name": "limitation_blacklist",
           "order": 5,
-          "description": "Array of recipe names this module can **not** be used on, implicitly allowing its use on all other recipes. This property has no effect if set to an empty table.\n\nNote that the game converts this into a normal list of limitations internally, so reading [LuaItemPrototype::limitations](runtime:LuaItemPrototype::limitations) at runtime will be the product of both ways of defining limitations.",
+          "description": "Array of [recipe names](prototype:RecipePrototype) this module can **not** be used on, implicitly allowing its use on all other recipes. This property has no effect if set to an empty table.\n\nNote that the game converts this into a normal list of limitations internally, so reading [LuaItemPrototype::limitations](runtime:LuaItemPrototype::limitations) at runtime will be the product of both ways of defining limitations.",
           "override": false,
           "type": {
             "complex_type": "array",
@@ -13950,7 +13959,7 @@
         {
           "name": "pictures",
           "order": 3,
-          "description": "",
+          "description": "All graphics for this pipe.",
           "override": false,
           "type": "PipePictures",
           "optional": false
@@ -15620,7 +15629,10 @@
         {
           "name": "category",
           "order": 0,
-          "description": "Controls which category of machines can craft this recipe.\n\nThe built-in categories can be found [here](https://wiki.factorio.com/Data.raw#recipe-category). The base `\"crafting\"` category can not contain recipes with fluid ingredients or products.",
+          "description": "The [category](prototype:RecipeCategory) of this recipe. Controls which machines can craft this recipe.\n\nThe built-in categories can be found [here](https://wiki.factorio.com/Data.raw#recipe-category). The base `\"crafting\"` category can not contain recipes with fluid ingredients or products.",
+          "examples": [
+            "```\ncategory = \"smelting\"\n```"
+          ],
           "override": false,
           "type": "RecipeCategoryID",
           "optional": true,
@@ -15886,7 +15898,7 @@
         {
           "name": "subgroup",
           "order": 1,
-          "description": "The subgroup of this recipe. If not specified, it defaults to the subgroup of the product if there is only one, or of the `main_product` if multiple products exist.\n\nMandatory if multiple products exist and no `main_product` is specified, or if there is no product.",
+          "description": "The name of the [subgroup](prototype:ItemSubGroup) of this recipe. If not specified, it defaults to the subgroup of the product if there is only one, or of the `main_product` if multiple products exist.\n\nMandatory if multiple products exist and no `main_product` is specified, or if there is no product.",
           "override": false,
           "type": "ItemSubGroupID",
           "optional": true
@@ -21770,7 +21782,7 @@
         {
           "name": "flags",
           "order": 15,
-          "description": "Transport belt connectable entities cannot have any of the following flags: \"placeable-off-grid\", \"building-direction-8-way\".",
+          "description": "Transport belt connectable entities cannot have the `\"building-direction-8-way\"` flag.",
           "override": true,
           "type": "EntityPrototypeFlags",
           "optional": true
@@ -29139,7 +29151,7 @@
         {
           "name": "subgroup",
           "order": 4,
-          "description": "The name of a [ItemSubGroup](prototype:ItemSubGroup).",
+          "description": "The name of an [ItemSubGroup](prototype:ItemSubGroup).",
           "override": false,
           "type": "ItemSubGroupID",
           "optional": true,
@@ -38103,7 +38115,7 @@
     {
       "name": "Direction",
       "order": 120,
-      "description": "",
+      "description": "Usually specified by using [defines.direction](runtime:defines.direction).",
       "abstract": false,
       "inline": false,
       "type": {
@@ -38333,7 +38345,7 @@
     {
       "name": "Effect",
       "order": 125,
-      "description": "When applied to modules, the resulting effect is a sum of all module affects, multiplied through calculations: `(1 + sum module effects)` or, for productivity `(0 + sum)`.",
+      "description": "When applied to [modules](prototype:ModulePrototype), the resulting effect is a sum of all module effects, multiplied through calculations: `(1 + sum module effects)` or, for productivity `(0 + sum)`.",
       "examples": [
         "```\neffect =\n{\n  productivity = {bonus = 0.04},\n  consumption = {bonus = 0.4},\n  pollution = {bonus = 0.05},\n  speed = {bonus = -0.05}\n}\n```"
       ],
@@ -38380,7 +38392,7 @@
     {
       "name": "EffectTypeLimitation",
       "order": 126,
-      "description": "A list of module effects, or just a single effect. Modules with other effects cannot be used on the machine. This means that both effects from modules and from surrounding beacons are restricted to the listed effects. If `allowed_effects` is set to `nil`, the machine cannot be affected by modules or beacons.",
+      "description": "A list of [module](prototype:ModulePrototype) effects, or just a single effect. Modules with other effects cannot be used on the machine. This means that both effects from modules and from surrounding beacons are restricted to the listed effects. If `allowed_effects` is an empty array, the machine cannot be affected by modules or beacons.",
       "examples": [
         "```\n-- Allow all module types\nallowed_effects = {\"speed\", \"productivity\", \"consumption\", \"pollution\"}\n```",
         "```\n-- Allow only modules that affect speed\nallowed_effects = \"speed\"\n```"
@@ -38462,7 +38474,7 @@
         {
           "name": "bonus",
           "order": 0,
-          "description": "Precision is ignored beyond two decimals - `0.567` results in `0.56` etc.",
+          "description": "Precision is ignored beyond two decimals - `0.567` results in `0.56` and means 56% etc.",
           "examples": [
             "```\nbonus = 0.07 -- 7% bonus\n```"
           ],
@@ -42352,10 +42364,11 @@
     {
       "name": "IngredientPrototype",
       "order": 187,
-      "description": "Defaults to loading ingredients as items.",
+      "description": "Defaults to loading ingredients as items. This allows [ItemIngredientPrototype](prototype:ItemIngredientPrototype) to load in a shorthand array format.",
       "examples": [
-        "```\n{type=\"item\", name=\"steel-plate\", amount=8}\n```",
-        "```\n{type=\"fluid\", name=\"water\", amount=50}\n```"
+        "```\n{\"electronic-circuit\", 5} -- short format used for item ingredients\n```",
+        "```\n{type=\"item\", name=\"steel-plate\", amount=8} -- long format used for item ingredients\n```",
+        "```\n{type=\"fluid\", name=\"water\", amount=50} -- fluid ingredients must use the long format\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -42863,6 +42876,9 @@
       "name": "ItemToPlace",
       "order": 201,
       "description": "Item that when placed creates this entity/tile.",
+      "examples": [
+        "```\n{item = \"iron-chest\", count = 1}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -42872,7 +42888,7 @@
         {
           "name": "count",
           "order": 1,
-          "description": "How many items are used to place one of this entity. Can't be larger than the stack size of the item.",
+          "description": "How many items are used to place one of this entity/tile. Can't be larger than the stack size of the item.",
           "override": false,
           "type": "uint32",
           "optional": false
@@ -42880,7 +42896,7 @@
         {
           "name": "item",
           "order": 0,
-          "description": "The item used to place this entity.",
+          "description": "The item used to place this entity/tile.",
           "override": false,
           "type": "ItemID",
           "optional": false
@@ -44939,7 +44955,7 @@
         {
           "name": "ageing",
           "order": 2,
-          "description": "Must be >= 0.1. Also known as dissipation rate.",
+          "description": "Must be >= 0.1. Also known as absorption modifier and previously dissipation rate.",
           "override": false,
           "type": "double",
           "optional": true
@@ -48688,15 +48704,26 @@
       "properties": [
         {
           "name": "effect_description",
-          "order": 1,
+          "order": 2,
           "description": "",
           "override": false,
           "type": "LocalisedString",
           "optional": true
         },
         {
-          "name": "use_icon_overlay_constant",
+          "name": "type",
           "order": 0,
+          "description": "",
+          "override": false,
+          "type": {
+            "complex_type": "literal",
+            "value": "nothing"
+          },
+          "optional": false
+        },
+        {
+          "name": "use_icon_overlay_constant",
+          "order": 1,
           "description": "If `false`, do not draw the small \"constant\" icon over the technology effect icon.",
           "override": false,
           "type": "bool",
@@ -49503,7 +49530,7 @@
       "order": 304,
       "description": "",
       "abstract": false,
-      "inline": true,
+      "inline": false,
       "type": {
         "complex_type": "struct"
       },
@@ -50022,7 +50049,7 @@
         {
           "name": "ageing",
           "order": 3,
-          "description": "Constant modifier a percentage of 1; the pollution eaten by a chunks tiles.",
+          "description": "Constant modifier a percentage of 1; the pollution eaten by a chunks tiles. Also known as absorption modifier.",
           "override": false,
           "type": "double",
           "optional": false
@@ -52338,133 +52365,265 @@
       "abstract": false,
       "inline": false,
       "type": {
-        "complex_type": "array",
-        "value": {
-          "complex_type": "union",
-          "options": [
-            {
-              "complex_type": "literal",
-              "value": "blueprint",
-              "description": "Selects entities and tiles as if selecting them for a blueprint."
-            },
-            {
-              "complex_type": "literal",
-              "value": "deconstruct",
-              "description": "Selects entities and tiles as if selecting them for deconstruction."
-            },
-            {
-              "complex_type": "literal",
-              "value": "cancel-deconstruct",
-              "description": "Selects entities and tiles as if selecting them for deconstruction cancellation."
-            },
-            {
-              "complex_type": "literal",
-              "value": "items",
-              "description": "Selects items on the ground."
-            },
-            {
-              "complex_type": "literal",
-              "value": "trees",
-              "description": "Selects trees."
-            },
-            {
-              "complex_type": "literal",
-              "value": "buildable-type",
-              "description": "Selects entities which are considered [a building](runtime:LuaEntityPrototype::is_building), plus landmines."
-            },
-            {
-              "complex_type": "literal",
-              "value": "nothing",
-              "description": "Selects no entities or tiles, but is useful to select an area."
-            },
-            {
-              "complex_type": "literal",
-              "value": "items-to-place",
-              "description": "Selects entities and tiles that can be built by an item."
-            },
-            {
-              "complex_type": "literal",
-              "value": "any-entity",
-              "description": "Selects all entities."
-            },
-            {
-              "complex_type": "literal",
-              "value": "any-tile",
-              "description": "Selects all tiles."
-            },
-            {
-              "complex_type": "literal",
-              "value": "same-force",
-              "description": "Selects entities with the same force as the selecting player."
-            },
-            {
-              "complex_type": "literal",
-              "value": "not-same-force",
-              "description": "Selects entities with a different force as the selecting player."
-            },
-            {
-              "complex_type": "literal",
-              "value": "friend",
-              "description": "Selects entities from a friendly force."
-            },
-            {
-              "complex_type": "literal",
-              "value": "enemy",
-              "description": "Selects entities from an enemy force."
-            },
-            {
-              "complex_type": "literal",
-              "value": "upgrade",
-              "description": "Selects entities as if selecting them for upgrading."
-            },
-            {
-              "complex_type": "literal",
-              "value": "cancel-upgrade",
-              "description": "Selects entities as if selecting them for upgrade cancellation."
-            },
-            {
-              "complex_type": "literal",
-              "value": "downgrade",
-              "description": "Selects entities as if selecting them for downgrading."
-            },
-            {
-              "complex_type": "literal",
-              "value": "entity-with-health",
-              "description": "Selects entities that are an [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype)."
-            },
-            {
-              "complex_type": "literal",
-              "value": "entity-with-force",
-              "description": "Deprecated. Replaced by \"is-military-target\"."
-            },
-            {
-              "complex_type": "literal",
-              "value": "is-military-target",
-              "description": "Selects entities which are [EntityWithOwnerPrototype::is_military_target](prototype:EntityWithOwnerPrototype::is_military_target)."
-            },
-            {
-              "complex_type": "literal",
-              "value": "entity-with-owner",
-              "description": "Selects entities that are an [EntityWithOwnerPrototype](prototype:EntityWithOwnerPrototype)."
-            },
-            {
-              "complex_type": "literal",
-              "value": "avoid-rolling-stock",
-              "description": "Selects entities that are not a [RollingStockPrototype](prototype:RollingStockPrototype)."
-            },
-            {
-              "complex_type": "literal",
-              "value": "entity-ghost",
-              "description": "Selects entities that are an [EntityGhostPrototype](prototype:EntityGhostPrototype)."
-            },
-            {
-              "complex_type": "literal",
-              "value": "tile-ghost",
-              "description": "Selects entities that are a [TileGhostPrototype](prototype:TileGhostPrototype)."
+        "complex_type": "union",
+        "options": [
+          {
+            "complex_type": "union",
+            "options": [
+              {
+                "complex_type": "literal",
+                "value": "blueprint",
+                "description": "Selects entities and tiles as if selecting them for a blueprint."
+              },
+              {
+                "complex_type": "literal",
+                "value": "deconstruct",
+                "description": "Selects entities and tiles as if selecting them for deconstruction."
+              },
+              {
+                "complex_type": "literal",
+                "value": "cancel-deconstruct",
+                "description": "Selects entities and tiles as if selecting them for deconstruction cancellation."
+              },
+              {
+                "complex_type": "literal",
+                "value": "items",
+                "description": "Selects items on the ground."
+              },
+              {
+                "complex_type": "literal",
+                "value": "trees",
+                "description": "Selects trees."
+              },
+              {
+                "complex_type": "literal",
+                "value": "buildable-type",
+                "description": "Selects entities which are considered [a building](runtime:LuaEntityPrototype::is_building), plus landmines."
+              },
+              {
+                "complex_type": "literal",
+                "value": "nothing",
+                "description": "Selects no entities or tiles, but is useful to select an area."
+              },
+              {
+                "complex_type": "literal",
+                "value": "items-to-place",
+                "description": "Selects entities and tiles that can be built by an item."
+              },
+              {
+                "complex_type": "literal",
+                "value": "any-entity",
+                "description": "Selects all entities."
+              },
+              {
+                "complex_type": "literal",
+                "value": "any-tile",
+                "description": "Selects all tiles."
+              },
+              {
+                "complex_type": "literal",
+                "value": "same-force",
+                "description": "Selects entities with the same force as the selecting player."
+              },
+              {
+                "complex_type": "literal",
+                "value": "not-same-force",
+                "description": "Selects entities with a different force as the selecting player."
+              },
+              {
+                "complex_type": "literal",
+                "value": "friend",
+                "description": "Selects entities from a friendly force."
+              },
+              {
+                "complex_type": "literal",
+                "value": "enemy",
+                "description": "Selects entities from an enemy force."
+              },
+              {
+                "complex_type": "literal",
+                "value": "upgrade",
+                "description": "Selects entities as if selecting them for upgrading."
+              },
+              {
+                "complex_type": "literal",
+                "value": "cancel-upgrade",
+                "description": "Selects entities as if selecting them for upgrade cancellation."
+              },
+              {
+                "complex_type": "literal",
+                "value": "downgrade",
+                "description": "Selects entities as if selecting them for downgrading."
+              },
+              {
+                "complex_type": "literal",
+                "value": "entity-with-health",
+                "description": "Selects entities that are an [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype)."
+              },
+              {
+                "complex_type": "literal",
+                "value": "entity-with-force",
+                "description": "Deprecated. Replaced by \"is-military-target\"."
+              },
+              {
+                "complex_type": "literal",
+                "value": "is-military-target",
+                "description": "Selects entities which are [EntityWithOwnerPrototype::is_military_target](prototype:EntityWithOwnerPrototype::is_military_target)."
+              },
+              {
+                "complex_type": "literal",
+                "value": "entity-with-owner",
+                "description": "Selects entities that are an [EntityWithOwnerPrototype](prototype:EntityWithOwnerPrototype)."
+              },
+              {
+                "complex_type": "literal",
+                "value": "avoid-rolling-stock",
+                "description": "Selects entities that are not a [RollingStockPrototype](prototype:RollingStockPrototype)."
+              },
+              {
+                "complex_type": "literal",
+                "value": "entity-ghost",
+                "description": "Selects entities that are an [EntityGhostPrototype](prototype:EntityGhostPrototype)."
+              },
+              {
+                "complex_type": "literal",
+                "value": "tile-ghost",
+                "description": "Selects entities that are a [TileGhostPrototype](prototype:TileGhostPrototype)."
+              }
+            ],
+            "full_format": true
+          },
+          {
+            "complex_type": "array",
+            "value": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "blueprint",
+                  "description": "Selects entities and tiles as if selecting them for a blueprint."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "deconstruct",
+                  "description": "Selects entities and tiles as if selecting them for deconstruction."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "cancel-deconstruct",
+                  "description": "Selects entities and tiles as if selecting them for deconstruction cancellation."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "items",
+                  "description": "Selects items on the ground."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "trees",
+                  "description": "Selects trees."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "buildable-type",
+                  "description": "Selects entities which are considered [a building](runtime:LuaEntityPrototype::is_building), plus landmines."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "nothing",
+                  "description": "Selects no entities or tiles, but is useful to select an area."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "items-to-place",
+                  "description": "Selects entities and tiles that can be built by an item."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "any-entity",
+                  "description": "Selects all entities."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "any-tile",
+                  "description": "Selects all tiles."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "same-force",
+                  "description": "Selects entities with the same force as the selecting player."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "not-same-force",
+                  "description": "Selects entities with a different force as the selecting player."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "friend",
+                  "description": "Selects entities from a friendly force."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "enemy",
+                  "description": "Selects entities from an enemy force."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "upgrade",
+                  "description": "Selects entities as if selecting them for upgrading."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "cancel-upgrade",
+                  "description": "Selects entities as if selecting them for upgrade cancellation."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "downgrade",
+                  "description": "Selects entities as if selecting them for downgrading."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "entity-with-health",
+                  "description": "Selects entities that are an [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype)."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "entity-with-force",
+                  "description": "Deprecated. Replaced by \"is-military-target\"."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-military-target",
+                  "description": "Selects entities which are [EntityWithOwnerPrototype::is_military_target](prototype:EntityWithOwnerPrototype::is_military_target)."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "entity-with-owner",
+                  "description": "Selects entities that are an [EntityWithOwnerPrototype](prototype:EntityWithOwnerPrototype)."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "avoid-rolling-stock",
+                  "description": "Selects entities that are not a [RollingStockPrototype](prototype:RollingStockPrototype)."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "entity-ghost",
+                  "description": "Selects entities that are an [EntityGhostPrototype](prototype:EntityGhostPrototype)."
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "tile-ghost",
+                  "description": "Selects entities that are a [TileGhostPrototype](prototype:TileGhostPrototype)."
+                }
+              ],
+              "full_format": true
             }
-          ],
-          "full_format": true
-        }
+          }
+        ],
+        "full_format": false
       }
     },
     {
@@ -54503,6 +54662,9 @@
       "name": "Sprite4Way",
       "order": 372,
       "description": "A map of sprites for all 4 directions of the entity. If this is loaded as a single Sprite, it applies to all directions.",
+      "examples": [
+        "```\n-- separate sprites per direction\n{\n  north =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-N.png\",\n    priority = \"extra-high\",\n    width = 35,\n    height = 18,\n    shift = util.by_pixel(2.5, 14)\n  },\n  east =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-E.png\",\n    priority = \"extra-high\",\n    width = 20,\n    height = 38,\n    shift = util.by_pixel(-25, 1)\n  },\n  south =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-S.png\",\n    priority = \"extra-high\",\n    width = 44,\n    height = 31,\n    shift = util.by_pixel(0, -31.5)\n  },\n  west =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-W.png\",\n    priority = \"extra-high\",\n    width = 19,\n    height = 37,\n    shift = util.by_pixel(25.5, 1.5)\n  }\n}\n```"
+      ],
       "abstract": false,
       "inline": false,
       "type": {
@@ -57065,7 +57227,7 @@
           "order": 5,
           "description": "",
           "override": false,
-          "type": "float",
+          "type": "int32",
           "optional": true
         },
         {
@@ -57073,7 +57235,7 @@
           "order": 6,
           "description": "",
           "override": false,
-          "type": "float",
+          "type": "int32",
           "optional": true
         },
         {
@@ -57105,7 +57267,7 @@
           "order": 17,
           "description": "",
           "override": false,
-          "type": "float",
+          "type": "int32",
           "optional": true
         },
         {
@@ -57113,7 +57275,7 @@
           "order": 18,
           "description": "",
           "override": false,
-          "type": "float",
+          "type": "int32",
           "optional": true
         },
         {
@@ -57554,7 +57716,7 @@
         {
           "name": "count",
           "order": 0,
-          "description": "Frame count.",
+          "description": "Frame count.\n\nOptional if it is loaded inside of a `hr_version`, see that property for more information.",
           "override": false,
           "type": "uint32",
           "optional": false
@@ -57562,7 +57724,7 @@
         {
           "name": "hr_version",
           "order": 2,
-          "description": "If this property exists and high resolution sprites are turned on, its contents are used to load the tile sprite.",
+          "description": "If this property exists and high resolution sprites are turned on, its contents are used to load the tile sprite.\n\n`count` in `hr_version` has to be either unspecified or the same as for normal resolution definition.",
           "override": false,
           "type": "TileSprite",
           "optional": true
@@ -58131,7 +58293,7 @@
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
-      "inline": true,
+      "inline": false,
       "type": {
         "complex_type": "struct"
       },
@@ -58160,7 +58322,7 @@
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
-      "inline": true,
+      "inline": false,
       "type": {
         "complex_type": "struct"
       },
@@ -58192,7 +58354,7 @@
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
-      "inline": true,
+      "inline": false,
       "type": {
         "complex_type": "struct"
       },
