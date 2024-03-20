@@ -1,6 +1,7 @@
 # v2.9.0
 
 - Updated to factorio version 1.1.105
+- Fixed links to `defines` in documentation comments for the prototype stage
 
 # 2.8.0
 - The `type` attribute of prototype classes now includes all subclasses of that prototype. For instance, `EntityPrototype.type` includes `"accumulator"`, `"assembling-machine"`, etc. 
