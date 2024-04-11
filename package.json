@@ -26,7 +26,7 @@
     "generate-no-format": "tsx --tsconfig generator/tsconfig.json generator/main.ts --no-format",
     "clean": "rimraf runtime/generated prototype/generated",
     "lint": "eslint .",
-    "check": "tsc --noEmit && npm run lint",
+    "check": "tsc --noEmit && npm run lint && prettier --check .",
     "prepublishOnly": "npm run generate && npm run check",
     "script": "tsx --tsconfig scripts/tsconfig.json",
     "download-latest-json-apis": "npm run script ./scripts/download-latest.ts",

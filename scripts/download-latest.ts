@@ -12,9 +12,11 @@ const destinationFolder = path.resolve(__dirname, "../generator/input")
 async function downloadApi(stage: string) {
   const url = `https://lua-api.factorio.com/latest/${stage}-api.json`
   console.log("downloading", url)
-  const result = (await download(url, {
-    timeout: 5000
-  })).toString("utf8")
+  const result = (
+    await download(url, {
+      timeout: 5000,
+    })
+  ).toString("utf8")
   const contents = JSON.parse(result) as {
     application: string
     stage: string

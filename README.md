@@ -10,7 +10,8 @@ The generator uses both the Factorio api docs JSON and manually defined addition
 To use in your [TypescriptToLua](https://typescripttolua.github.io/) project:
 
 1. Install this package: `npm install typed-factorio`
-    - Note: When types are updated for a new factorio version, you will need to update this package.
+
+   - Note: When types are updated for a new factorio version, you will need to update this package.
 
 2. Add types for the [stages](https://lua-api.factorio.com/1.1.89/index.html) used to `tsconfig.json > compilerOptions > types`.
    The available stages are `"typed-factorio/settings"`, `"typed-factorio/prototype"`, and `"typed-factorio/runtime"`.
@@ -35,7 +36,8 @@ Here are some notes on using the types:
 
 ### Types for other stages
 
-No matter which stage(s) are selected, _type_ definitions for all stages are available in the modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`: 
+No matter which stage(s) are selected, _type_ definitions for all stages are available in the modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`:
+
 ```ts
 import { BoolSettingDefinition } from "factorio:settings"
 import { ItemPrototype } from "factorio:prototype"
@@ -45,40 +47,46 @@ import { LuaEntity } from "factorio:runtime"
 You can also include just `"typed-factorio"` in your `types` field. This will include only global variables available to _all_ stages.
 
 ### `data.extend()` types
-In the settings and prototype stages, the `data` global variable is available. 
+
+In the settings and prototype stages, the `data` global variable is available.
 
 For [performance reasons](https://github.com/microsoft/TypeScript/wiki/Performance#preferring-base-types-over-unions), `data.extend()` is by default loosely typed.
 To get full type checking, you can use specific types in one of the following ways:
+
 ```ts
 // Use `satisfies` to check types:
 data.extend([
-   {
-     type: "ammo-category",
-     name: "foo",
-   } satisfies AmmoCategory,
-   { 
-     type: "item",
-     name: "bar",
-     // ...other fields
-   } satisfies ItemPrototype,
+  {
+    type: "ammo-category",
+    name: "foo",
+  } satisfies AmmoCategory,
+  {
+    type: "item",
+    name: "bar",
+    // ...other fields
+  } satisfies ItemPrototype,
 ])
 
 // List types as a type argument to `extend`:
 data.extend<AmmoCategory | ItemPrototype>([
-   {
-      type: "ammo-category",
-      name: "foo"
-   },
-   {
-      type: "item",
-      name: "bar",
-      // ...other fields
-   } 
+  {
+    type: "ammo-category",
+    name: "foo",
+  },
+  {
+    type: "item",
+    name: "bar",
+    // ...other fields
+  },
 ])
 
 // Use types on separate variables:
-const fooCategory: AmmoCategory = {/* ... */}
-const barItem: ItemPrototype = {/* ... */}
+const fooCategory: AmmoCategory = {
+  /* ... */
+}
+const barItem: ItemPrototype = {
+  /* ... */
+}
 data.extend([fooCategory, barItem])
 ```
 
@@ -149,6 +157,7 @@ Event IDs (`defines.events`) hold type info for their corresponding event type a
 You can pass an event data type parameter to `script.generate_event_name<T>()`, and it will return a `CustomEventId` that includes type info.
 
 ### Optional custominput name checking
+
 You can optionally enable type-checking for custom input names (for `script.on_event` and `CustomInputPrototype`).
 To do so, specify names by extending the CustomInputNames interface like so:
 
@@ -159,7 +168,7 @@ declare module "factorio:common" {
   }
 }
 
-script.on_event("my-custom-input", ()=>{}) // type-checked
+script.on_event("my-custom-input", () => {}) // type-checked
 ```
 
 If not specified, `CustomInputName` defaults to just `string`.
@@ -201,11 +210,8 @@ Similarly, `GuiSpec` (the table passed to `LuaGuiElement.add`), is also a discri
 
 This is done both to provide more accurate types, and for possible integration with [JSX](https://typescripttolua.github.io/docs/jsx/).
 
-
 ## Support
 
 If you find this project useful, consider tipping me on Kofi!
 
 <a href='https://ko-fi.com/Z8Z1VI6P8' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-
-

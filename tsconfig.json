@@ -13,5 +13,5 @@
     "types": [],
     "noEmit": true
   },
-  "include": ["**/index.d.ts"],
+  "include": ["**/index.d.ts"]
 }
