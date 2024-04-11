@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.105",
+  "application_version": "1.1.106",
   "api_version": 4,
   "stage": "prototype",
   "prototypes": [
@@ -19199,7 +19199,7 @@
         {
           "name": "filename",
           "order": 8,
-          "description": "Supported sound file formats are `.ogg (Vorbis)` and `.wav`.\n\nOnly loaded, and mandatory if `variations` is not defined.",
+          "description": "Supported sound file formats are `.ogg` (Vorbis) and `.wav`.\n\nOnly loaded, and mandatory if `variations` is not defined.",
           "override": false,
           "type": "FileName",
           "optional": true
@@ -20288,7 +20288,7 @@
       "properties": [
         {
           "name": "circuit_connector_sprites",
-          "order": 9,
+          "order": 11,
           "description": "Mandatory if circuit_wire_max_distance  > 0.",
           "override": false,
           "type": {
@@ -20304,7 +20304,7 @@
         },
         {
           "name": "circuit_wire_connection_points",
-          "order": 8,
+          "order": 10,
           "description": "Mandatory if circuit_wire_max_distance  > 0.",
           "override": false,
           "type": {
@@ -20320,7 +20320,7 @@
         },
         {
           "name": "circuit_wire_max_distance",
-          "order": 5,
+          "order": 7,
           "description": "",
           "override": false,
           "type": "double",
@@ -20332,7 +20332,7 @@
         },
         {
           "name": "draw_circuit_wires",
-          "order": 7,
+          "order": 9,
           "description": "",
           "override": false,
           "type": "bool",
@@ -20344,7 +20344,7 @@
         },
         {
           "name": "draw_copper_wires",
-          "order": 6,
+          "order": 8,
           "description": "",
           "override": false,
           "type": "bool",
@@ -20380,8 +20380,20 @@
         },
         {
           "name": "scale_info_icons",
-          "order": 10,
+          "order": 5,
           "description": "If the icons of fluids shown in alt-mode should be scaled to the storage tank's size.",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
+          "name": "show_fluid_icon",
+          "order": 6,
+          "description": "Whether the \"alt-mode icon\" should be drawn at all.",
           "override": false,
           "type": "bool",
           "optional": true,
@@ -53657,7 +53669,7 @@
         {
           "name": "filename",
           "order": 5,
-          "description": "Supported sound file formats are `.ogg (Vorbis)` and `.wav`.\n\nOnly loaded, and mandatory if `variations` is not defined.",
+          "description": "Supported sound file formats are `.ogg` (Vorbis) and `.wav`.\n\nOnly loaded, and mandatory if `variations` is not defined.",
           "override": false,
           "type": "FileName",
           "optional": true
@@ -53752,7 +53764,7 @@
         {
           "name": "filename",
           "order": 0,
-          "description": "Supported sound file formats are `.ogg (Vorbis)` and `.wav`.",
+          "description": "Supported sound file formats are `.ogg` (Vorbis) and `.wav`.",
           "override": false,
           "type": "FileName",
           "optional": false

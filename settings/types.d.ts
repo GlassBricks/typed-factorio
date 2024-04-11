@@ -2,8 +2,8 @@
 
 /** @noResolution */
 declare module "factorio:settings" {
-  import { LocalisedString } from "factorio:prototype"
-  export type SettingType = "bool-setting" | "int-setting" | "double-setting" | "string-setting"
+  import { Color, LocalisedString } from "factorio:prototype"
+  export type SettingType = "bool-setting" | "int-setting" | "double-setting" | "string-setting" | "color-setting"
 
   export interface BaseSettingDefinition {
     readonly type: SettingType
@@ -12,9 +12,8 @@ declare module "factorio:settings" {
      * all mods. Because of that it is recommended to prefix mod settings with your mod name,
      */
     name: string
-    localized_name?: LocalisedString
-    localized_description?: LocalisedString
-
+    localised_name?: LocalisedString
+    localised_description?: LocalisedString
     /**
      * The order property can be used to change how the mod settings are ordered in the settings gui. Mod settings are sorted
      *
@@ -41,7 +40,6 @@ declare module "factorio:settings" {
      *
      * This "setting_type" also determines in which tab the setting is showed in the mod settings menu.
      */
-
     setting_type: "startup" | "runtime-global" | "runtime-per-user"
   }
   /** A true/false checkbox */
@@ -101,12 +99,19 @@ declare module "factorio:settings" {
      */
     allowed_values?: string[]
   }
+  /** a color picker (sliders), with whole number textfields. Includes alpha. */
+  export interface ColorSettingDefinition extends BaseSettingDefinition {
+    readonly type: "color-setting"
+    /** Defines the default value of the setting. */
+    default_value: Color
+  }
 
   export interface PrototypeMap {
     "bool-setting": BoolSettingDefinition
     "int-setting": IntSettingDefinition
     "double-setting": DoubleSettingDefinition
     "string-setting": StringSettingDefinition
+    "color-setting": ColorSettingDefinition
   }
 
   export type SettingsPrototypeMap = PrototypeMap
