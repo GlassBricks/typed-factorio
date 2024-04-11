@@ -111,6 +111,7 @@ declare module "factorio:settings" {
     "int-setting": IntSettingDefinition
     "double-setting": DoubleSettingDefinition
     "string-setting": StringSettingDefinition
+    "color-setting": ColorSettingDefinition
   }
 
   export type SettingsPrototypeMap = PrototypeMap
