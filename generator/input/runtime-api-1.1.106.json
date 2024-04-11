@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.105",
+  "application_version": "1.1.106",
   "api_version": 4,
   "stage": "runtime",
   "classes": [
@@ -10475,7 +10475,7 @@
         },
         {
           "name": "build_distance",
-          "order": 226,
+          "order": 227,
           "description": "",
           "subclasses": [
             "Character"
@@ -10565,7 +10565,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 238,
+          "order": 239,
           "description": "",
           "subclasses": [
             "Character"
@@ -10910,7 +10910,7 @@
         },
         {
           "name": "damage_hit_tint",
-          "order": 237,
+          "order": 238,
           "description": "",
           "subclasses": [
             "Character"
@@ -11024,7 +11024,7 @@
         },
         {
           "name": "drop_item_distance",
-          "order": 227,
+          "order": 228,
           "description": "",
           "subclasses": [
             "Character"
@@ -11145,7 +11145,7 @@
         },
         {
           "name": "enter_vehicle_distance",
-          "order": 232,
+          "order": 233,
           "description": "",
           "subclasses": [
             "Character"
@@ -11597,7 +11597,7 @@
         },
         {
           "name": "item_pickup_distance",
-          "order": 230,
+          "order": 231,
           "description": "",
           "subclasses": [
             "Character"
@@ -11906,7 +11906,7 @@
         },
         {
           "name": "loot_pickup_distance",
-          "order": 231,
+          "order": 232,
           "description": "",
           "subclasses": [
             "Character"
@@ -12153,7 +12153,7 @@
         },
         {
           "name": "maximum_corner_sliding_distance",
-          "order": 225,
+          "order": 226,
           "description": "",
           "subclasses": [
             "Character"
@@ -12381,7 +12381,7 @@
         },
         {
           "name": "object_name",
-          "order": 240,
+          "order": 241,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "type": "string",
           "optional": false,
@@ -12463,7 +12463,7 @@
         },
         {
           "name": "reach_distance",
-          "order": 228,
+          "order": 229,
           "description": "",
           "subclasses": [
             "Character"
@@ -12475,7 +12475,7 @@
         },
         {
           "name": "reach_resource_distance",
-          "order": 229,
+          "order": 230,
           "description": "",
           "subclasses": [
             "Character"
@@ -12595,7 +12595,7 @@
         },
         {
           "name": "respawn_time",
-          "order": 236,
+          "order": 237,
           "description": "",
           "subclasses": [
             "Character"
@@ -12682,7 +12682,7 @@
         },
         {
           "name": "running_speed",
-          "order": 224,
+          "order": 225,
           "description": "The current movement speed of this character, including effects from exoskeletons, tiles, stickers and shooting.",
           "subclasses": [
             "Character"
@@ -12960,7 +12960,7 @@
         },
         {
           "name": "ticks_to_keep_aiming_direction",
-          "order": 234,
+          "order": 235,
           "description": "",
           "subclasses": [
             "Character"
@@ -12972,7 +12972,7 @@
         },
         {
           "name": "ticks_to_keep_gun",
-          "order": 233,
+          "order": 234,
           "description": "",
           "subclasses": [
             "Character"
@@ -12984,7 +12984,7 @@
         },
         {
           "name": "ticks_to_stay_in_combat",
-          "order": 235,
+          "order": 236,
           "description": "",
           "subclasses": [
             "Character"
@@ -13128,10 +13128,22 @@
         },
         {
           "name": "valid",
-          "order": 239,
+          "order": 240,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "type": "boolean",
           "optional": false,
+          "read": true,
+          "write": false
+        },
+        {
+          "name": "vector_to_place_result",
+          "order": 224,
+          "description": "",
+          "subclasses": [
+            "MiningDrill"
+          ],
+          "type": "Vector",
+          "optional": true,
           "read": true,
           "write": false
         },
@@ -38636,7 +38648,7 @@
             {
               "name": "ghost_name",
               "order": 5,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -38653,7 +38665,7 @@
             {
               "name": "ghost_type",
               "order": 6,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -38691,7 +38703,7 @@
             {
               "name": "name",
               "order": 3,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -38736,7 +38748,7 @@
             {
               "name": "type",
               "order": 4,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -38839,7 +38851,7 @@
             {
               "name": "name",
               "order": 3,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -38863,7 +38875,7 @@
             {
               "name": "radius",
               "order": 2,
-              "description": "If given with position, will return all entities within the radius of the position.",
+              "description": "If given with position, will return all tiles within the radius of the position.",
               "type": "double",
               "optional": true
             },
@@ -40347,7 +40359,7 @@
             {
               "name": "ghost_name",
               "order": 5,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -40364,7 +40376,7 @@
             {
               "name": "ghost_type",
               "order": 6,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -40409,7 +40421,7 @@
             {
               "name": "name",
               "order": 3,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -40454,7 +40466,7 @@
             {
               "name": "type",
               "order": 4,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -40830,7 +40842,7 @@
             {
               "name": "name",
               "order": 3,
-              "description": "",
+              "description": "An empty array means the same as providing nothing (`nil`).",
               "type": {
                 "complex_type": "union",
                 "options": [
@@ -40854,7 +40866,7 @@
             {
               "name": "radius",
               "order": 2,
-              "description": "If given with position, will return all entities within the radius of the position.",
+              "description": "If given with position, will return all tiles within the radius of the position.",
               "type": "double",
               "optional": true
             },
