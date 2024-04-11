@@ -1,10 +1,8 @@
 // Based off of https://wiki.factorio.com/Tutorial:Mod_settings
 
-import { Color } from "factorio:prototype"
-
 /** @noResolution */
 declare module "factorio:settings" {
-  import { LocalisedString } from "factorio:prototype"
+  import { Color, LocalisedString } from "factorio:prototype"
   export type SettingType = "bool-setting" | "int-setting" | "double-setting" | "string-setting" | "color-setting"
 
   export interface BaseSettingDefinition {
@@ -101,6 +99,7 @@ declare module "factorio:settings" {
      */
     allowed_values?: string[]
   }
+  /** a color picker (sliders), with whole number textfields. Includes alpha. */
   export interface ColorSettingDefinition extends BaseSettingDefinition {
     readonly type: "color-setting"
     /** Defines the default value of the setting. */
