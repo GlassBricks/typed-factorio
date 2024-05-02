@@ -26,7 +26,7 @@
     "check": "npm run lint && npm run format:check && tsc --noEmit",
     "prepublishOnly": "npm run generate && npm run check",
     "script": "tsx --tsconfig scripts/tsconfig.json",
-    "download-latest-json-apis": "npm run script ./scripts/download-latest.ts",
+    "download-latest-api-jsons": "npm run script ./scripts/download-latest.ts",
     "new-version-changelog": "npm run script ./scripts/new-version-changelog.ts",
     "next-factorio-version-diff": "npm run script ./scripts/new-version-diff.ts"
   },
