@@ -20,12 +20,8 @@ jobs:
           node-version: "18"
       - run: npm ci
       - run: npm run download-latest-api-jsons
-      - name: record change
-        if: success()
-        run: echo "updated=true" >> $GITHUB_OUTPUT
-      - name: record failure
-        if: failure()
-        run: echo "updated=false" >> $GITHUB_OUTPUT
+      - name: Check if version is updated
+        run: if [[ `git status --porcelain -- generator/input` ]]; then echo "updated=true" >> $GITHUB_OUTPUT; echo "Version updated"; else echo "updated=false" >> $GITHUB_OUTPUT; echo "Nothing changed"; fi
 
   create-pr-for-updated-factorio-version:
     runs-on: ubuntu-latest
