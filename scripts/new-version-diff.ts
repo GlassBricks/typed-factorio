@@ -25,10 +25,22 @@ function commit(message: string) {
 }
 commit("Run generator without link")
 
-run("npm run download-latest-json-apis")
-run("npm run generate -- --no-link")
-const newFactorioVersion = getCurrentFactorioVersion()
-commit(`Diff for factorio version ${newFactorioVersion}`)
+let success = false
+try {
+  run("npm run download-latest-api-jsons")
+  success = true
+} catch (e) {
+  console.log("no version change detected")
+}
+if (success) {
+  run("npm run generate -- --no-link")
+  const newFactorioVersion = getCurrentFactorioVersion()
+  commit(`Diff for factorio version ${newFactorioVersion}`)
+}
 
 // switch back to previous branch
 run(`git checkout ${currentBranch}`)
+
+if (!success) {
+  process.exit(1)
+}
