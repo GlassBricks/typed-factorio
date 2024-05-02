@@ -1,0 +1,32 @@
+name: Check PR
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  check-lint-and-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+
+  check-generated-files:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - run: npm ci
+      - run: npm run clean
+      - run: npm run generate
+      - run: git diff --exit-code || (echo "Generated files are out of date. Please run 'npm run generate' and commit the changes." && exit 1)
+      - run: tsc --noEmit
