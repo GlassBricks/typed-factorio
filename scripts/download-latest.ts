@@ -65,6 +65,6 @@ const gitStatus = child_process
   .stdout.toString()
 
 if (!gitStatus.trim()) {
-  console.error("No changes to json api files in /input")
+  console.error("No changes to api json files")
   process.exit(1)
 }
