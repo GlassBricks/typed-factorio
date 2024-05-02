@@ -56,3 +56,15 @@ child_process.spawnSync("git", ["add", path.relative(projectDir, destinationFold
   cwd: projectDir,
   stdio: "inherit",
 })
+
+// exit with code 1 if git says no changes in /input
+const gitStatus = child_process
+  .spawnSync("git", ["status", "--porcelain", "--", "generator/input"], {
+    cwd: projectDir,
+  })
+  .stdout.toString()
+
+if (!gitStatus.trim()) {
+  console.error("No changes to json api files in /input")
+  process.exit(1)
+}

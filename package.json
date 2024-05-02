@@ -28,7 +28,6 @@
     "script": "tsx --tsconfig scripts/tsconfig.json",
     "download-latest-json-apis": "npm run script ./scripts/download-latest.ts",
     "new-version-changelog": "npm run script ./scripts/new-version-changelog.ts",
-    "next-factorio-version": "npm run download-latest-json-apis && npm run clean && npm run generate && npm run check && npm run new-version-changelog && npm version minor",
     "next-factorio-version-diff": "npm run script ./scripts/new-version-diff.ts"
   },
   "peerDependencies": {
