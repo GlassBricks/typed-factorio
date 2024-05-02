@@ -45,6 +45,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          base: main
+          base: next-version-script
           commit-message: "Update to Factorio API version ${{ env.FACTORIO_VERSION }}"
           title: "Update to Factorio API version ${{ env.FACTORIO_VERSION }}"

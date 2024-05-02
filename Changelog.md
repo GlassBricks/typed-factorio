@@ -1,6 +1,5 @@
 # v2.10.1
 
-- Updated to factorio version 1.1.107
 - Added types for the new "color-setting".
 - Fixed wrong spelling for `localised_name` and `localised_description` in settings definitions.
 
