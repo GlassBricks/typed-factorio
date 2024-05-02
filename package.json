@@ -3,10 +3,7 @@
   "version": "2.10.1",
   "description": "Featureful typescript definitions for the Factorio modding api.",
   "keywords": [
-    "factorio",
-    "types",
-    "typescript-to-lua",
-    "tstl"
+    "factorio", "types", "typescript-to-lua", "tstl"
   ],
   "repository": {
     "type": "git",
@@ -15,9 +12,7 @@
   "homepage": "https://github.com/GlassBricks/typed-factorio#readme",
   "license": "MIT",
   "files": [
-    "**/*.d.ts",
-    "*.d.ts",
-    "!generator/**/*"
+    "**/*.d.ts", "*.d.ts", "!generator/**/*"
   ],
   "type": "module",
   "packageManager": "npm@9.5.0",
@@ -26,7 +21,8 @@
     "generate-no-format": "tsx --tsconfig generator/tsconfig.json generator/main.ts --no-format",
     "clean": "rimraf runtime/generated prototype/generated",
     "lint": "eslint .",
-    "check": "tsc --noEmit && npm run lint && prettier --check .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run format:check && tsc --noEmit",
     "prepublishOnly": "npm run generate && npm run check",
     "script": "tsx --tsconfig scripts/tsconfig.json",
     "download-latest-json-apis": "npm run script ./scripts/download-latest.ts",
