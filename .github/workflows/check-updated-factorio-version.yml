@@ -41,7 +41,7 @@ jobs:
       - run: npm run clean
       - run: npm run generate
       - run: npm run new-version-changelog
-      - run: npm version minor
+      - run: npm version minor --no-git-tag-version
       - name: Create Pull Request
         #        uses: peter-evans/create-pull-request@v6
         #        with:
