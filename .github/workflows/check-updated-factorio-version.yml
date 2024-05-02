@@ -12,7 +12,8 @@ concurrency:
 jobs:
   check-for-updated-version:
     runs-on: ubuntu-latest
-
+    outputs:
+      updated: ${{ steps.check-updated.outputs.updated }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
@@ -21,6 +22,7 @@ jobs:
       - run: npm ci
       - run: npm run download-latest-api-jsons
       - name: Check if version is updated
+        id: check-updated
         run: if [[ `git status --porcelain -- generator/input` ]]; then echo "updated=true" >> $GITHUB_OUTPUT; echo "Version updated"; else echo "updated=false" >> $GITHUB_OUTPUT; echo "Nothing changed"; fi
 
   create-pr-for-updated-factorio-version:
