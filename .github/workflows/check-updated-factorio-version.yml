@@ -21,7 +21,7 @@ jobs:
           node-version: "18"
       - run: npm ci
       - run: npm run download-latest-api-jsons
-      - name: Check if version is updated
+      - name: Check if factorio version updated
         id: check-updated
         run: if [[ `git status --porcelain -- generator/input` ]]; then echo "updated=true" >> $GITHUB_OUTPUT; echo "Version updated"; else echo "updated=false" >> $GITHUB_OUTPUT; echo "Nothing changed"; fi
 
@@ -42,9 +42,16 @@ jobs:
       - run: npm run generate
       - run: npm run new-version-changelog
       - run: npm version minor --no-git-tag-version
+      - id: create-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          base: next-version-script
+          base: main
           commit-message: "Update to Factorio API version ${{ env.FACTORIO_VERSION }}"
           title: "Update to Factorio API version ${{ env.FACTORIO_VERSION }}"
+          branch: factorio-version-${{ env.FACTORIO_VERSION }}
+          token: ${{ steps.create-token.outputs.token }}
