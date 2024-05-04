@@ -16,7 +16,7 @@ jobs:
       updated: ${{ steps.check-updated.outputs.updated }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: npm ci
@@ -31,7 +31,7 @@ jobs:
     if: ${{ needs.check-for-updated-version.outputs.updated == 'true' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: npm ci
