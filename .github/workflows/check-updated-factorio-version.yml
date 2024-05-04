@@ -3,7 +3,6 @@ name: Check for updated Factorio version
 on:
   schedule:
     - cron: "0 6 * * *"
-  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
