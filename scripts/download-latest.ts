@@ -9,8 +9,11 @@ const __dirname = path.dirname(__filename)
 
 const destinationFolder = path.resolve(__dirname, "../generator/input")
 
+const args = process.argv.slice(2)
+const versionToDownload = args[0] ?? "latest"
+
 async function downloadApi(stage: string) {
-  const url = `https://lua-api.factorio.com/latest/${stage}-api.json`
+  const url = `https://lua-api.factorio.com/${versionToDownload}/${stage}-api.json`
   console.log("downloading", url)
   const result = (
     await download(url, {
