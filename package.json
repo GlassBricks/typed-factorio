@@ -26,9 +26,9 @@
     "check": "npm run lint && npm run format:check && tsc --noEmit",
     "prepublishOnly": "npm run generate && npm run check",
     "script": "tsx --tsconfig scripts/tsconfig.json",
-    "download-latest-json-apis": "npm run script ./scripts/download-latest.ts",
+    "download-latest-api-jsons": "npm run script ./scripts/download-latest.ts",
     "new-version-changelog": "npm run script ./scripts/new-version-changelog.ts",
-    "next-factorio-version": "npm run download-latest-json-apis && npm run clean && npm run generate && npm run check && npm run new-version-changelog && npm version minor",
+    "get-current-factorio-version": "npm run script ./scripts/get-current-version.ts",
     "next-factorio-version-diff": "npm run script ./scripts/new-version-diff.ts"
   },
   "peerDependencies": {

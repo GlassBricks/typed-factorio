@@ -33,6 +33,3 @@ const newContent = `${sectionHeader}\n${noteContent}\n${changelogContent}`
 fs.writeFileSync(changelogDir, newContent)
 
 child_process.execSync("git add .", { cwd: path.resolve(__dirname, "..") })
-child_process.execSync(`git commit -m "update to factorio version ${factorioVersion}"`, {
-  cwd: path.resolve(__dirname, ".."),
-})
