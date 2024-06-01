@@ -8,7 +8,7 @@ import * as prototype from "./FactorioPrototypeApiJson.js"
 export interface AnyApiJson {
   application: "factorio"
   stage: string
-  api_version: 4
+  api_version: 5
   application_version: string
 }
 

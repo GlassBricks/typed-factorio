@@ -1,42 +1,38 @@
 // runtime stage
-// reference: https://lua-api.factorio.com/1.1.89/auxiliary/json-docs-runtime.html
+// https://lua-api.factorio.com/1.1.108/auxiliary/json-docs-runtime.html
 export interface FactorioRuntimeApiJson {
   application: "factorio"
-  stage: "runtime"
   application_version: string
-  api_version: 4
+  api_version: 5
+  stage: "runtime"
 
   classes: Class[]
   events: Event[]
-  defines: Define[]
-  builtin_types: BuiltinType[]
   concepts: Concept[]
-  global_objects: GlobalObject[]
+  defines: Define[]
   global_functions: Method[]
 }
-export interface BasicMember {
+
+export interface BasicObject {
   name: string
   order: number
-  readonly description: string
+  description: string
 }
 
-export interface WithNotes {
-  notes?: string[]
+export interface BasicMember extends BasicObject {
+  lists?: string[]
   examples?: string[]
+  images?: Image[]
 }
 
-export interface WithVariantParameterGroups {
-  parameters: Parameter[]
-  variant_parameter_groups?: ParameterGroup[]
-  variant_parameter_description: string
-}
-
-export interface Class extends BasicMember, WithNotes {
+export type Expansions = "space_age"
+export interface Class extends BasicMember {
+  visibility?: Expansions[]
+  parent: string
+  abstract: boolean
   methods: Method[]
   attributes: Attribute[]
   operators: Operator[]
-  abstract: boolean
-  base_classes?: string[]
 }
 
 export interface CallOperator extends Method {
@@ -53,43 +49,42 @@ export interface LengthOperator extends Attribute {
 
 export type Operator = CallOperator | IndexOperator | LengthOperator
 
-export interface Event extends BasicMember, WithNotes {
+export interface Event extends BasicMember {
   data: Parameter[]
+  /** The name of the filter concept that applies to this event. */
+  filter?: string
 }
 
-export interface Define extends BasicMember {
-  values?: BasicMember[]
-  subkeys?: Define[]
-}
-
-export type BuiltinType = BasicMember
-
-export interface Concept extends BasicMember, WithNotes {
+export interface Concept extends BasicMember {
   type: Type
 }
 
-export interface GlobalObject extends BasicMember {
-  type: string
+export interface Define extends BasicMember {
+  values?: BasicObject[]
+  subkeys?: Define[]
 }
 
-export interface EventRaised extends BasicMember {
-  timeframe: "instantly" | "current_tick" | "future_tick"
-  optional: boolean
+// other types
+
+export interface WithVariantParameterGroups {
+  parameters: Parameter[]
+  variant_parameter_groups?: ParameterGroup[]
+  variant_parameter_description: string
 }
 
 // type
-
 export type Type =
   | string
   | TypeType
   | UnionType
   | ArrayType
   | DictionaryType
+  | TableType
+  | TupleType
   | FunctionType
   | LiteralType
   | LuaLazyLoadedValueType
   | LuaStructType
-  | TableType
 
 export interface TypeType {
   complex_type: "type"
@@ -114,6 +109,15 @@ export interface DictionaryType {
   value: Type
 }
 
+export interface TableType extends WithVariantParameterGroups {
+  complex_type: "table"
+}
+
+export interface TupleType {
+  complex_type: "tuple"
+  values: Type[]
+}
+
 export interface FunctionType {
   complex_type: "function"
   parameters: Type[]
@@ -135,8 +139,49 @@ export interface LuaStructType {
   attributes: Attribute[]
 }
 
-export interface TableType extends WithVariantParameterGroups {
-  complex_type: "table" | "tuple"
+export interface EventRaised extends BasicMember {
+  timeframe: "instantly" | "current_tick" | "future_tick"
+  optional: boolean
+}
+
+export interface Parameter extends BasicObject {
+  type: Type
+  optional: boolean
+}
+
+export interface ParameterGroup extends BasicObject {
+  parameters: Parameter[]
+}
+
+export interface Method extends BasicMember, WithVariantParameterGroups {
+  visibility?: Expansions[]
+  raises?: EventRaised[]
+  subclasses?: string[]
+  variadic_description?: string
+
+  /** Only applies if takes_table is true */
+  variadic_parameter?: VariadicParameter
+  format: MethodFormat
+
+  return_values: Omit<Parameter, "name">[]
+}
+export interface VariadicParameter {
+  type?: Type
+  description: string
+}
+export interface MethodFormat {
+  takes_table: boolean
+  table_option?: boolean
+}
+
+export interface Attribute extends BasicMember {
+  visibility?: Expansions[]
+  raises?: EventRaised[]
+  subclasses?: string[]
+  type: Type
+  optional: boolean
+  read: boolean
+  write: boolean
 }
 
 export interface EventRaised extends BasicMember {
@@ -144,30 +189,7 @@ export interface EventRaised extends BasicMember {
   optional: boolean
 }
 
-export interface Parameter extends BasicMember {
-  type: Type
-  optional: boolean
-}
-
-export interface ParameterGroup extends BasicMember {
-  parameters: Parameter[]
-}
-
-export interface Method extends BasicMember, WithNotes, WithVariantParameterGroups {
-  raises?: EventRaised[]
-  subclasses?: string[]
-  variadic_type?: Type
-  variadic_description?: string
-  takes_table: boolean
-  table_is_optional?: boolean
-  return_values: Omit<Parameter, "name">[]
-}
-
-export interface Attribute extends BasicMember, WithNotes {
-  raises?: EventRaised[]
-  subclasses?: string[]
-  type: Type
-  optional: boolean
-  read: boolean
-  write: boolean
+export interface Image {
+  filename: string
+  caption?: string
 }
