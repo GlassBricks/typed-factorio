@@ -1,19 +1,7 @@
-import ts from "typescript"
-import { addJsDoc } from "../documentation.js"
 import { analyzeMethod, mapFunction } from "./members.js"
 import { byOrder } from "../util.js"
 import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
-
-export function preprocessBuiltins(context: RuntimeGenerationContext): void {
-  for (const builtin of context.apiDocs.builtin_types) {
-    if (builtin.name === "boolean" || builtin.name === "string" || builtin.name === "number") continue
-    context.references.set(builtin.name, builtin.name)
-    const existing = context.manualDefs.getDeclaration(builtin.name)
-    if (existing?.kind === "type" && existing.node.type.kind === ts.SyntaxKind.NumberKeyword)
-      context.numericTypes.add(builtin.name)
-  }
-}
 
 export function preprocessGlobalFunctions(context: RuntimeGenerationContext): void {
   for (const globalFunction of context.apiDocs.global_functions) {

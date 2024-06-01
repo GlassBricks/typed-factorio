@@ -10,6 +10,7 @@ export interface FactorioRuntimeApiJson {
   events: Event[]
   concepts: Concept[]
   defines: Define[]
+  global_objects: Parameter[]
   global_functions: Method[]
 }
 
@@ -86,6 +87,7 @@ export type Type =
   | LiteralType
   | LuaLazyLoadedValueType
   | LuaStructType
+  | BuiltinType
 
 export interface TypeType {
   complex_type: "type"
@@ -138,6 +140,10 @@ export interface LuaLazyLoadedValueType {
 export interface LuaStructType {
   complex_type: "LuaStruct"
   attributes: Attribute[]
+}
+
+export interface BuiltinType {
+  complex_type: "builtin"
 }
 
 export interface EventRaised extends BasicMember {

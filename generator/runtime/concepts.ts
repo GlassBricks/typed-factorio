@@ -1,7 +1,7 @@
 import assert from "assert"
 import ts from "typescript"
 import { addJsDoc, createSeeTag } from "../documentation.js"
-import { Concept, TableType } from "../FactorioRuntimeApiJson.js"
+import { Concept, TableType, TupleType } from "../FactorioRuntimeApiJson.js"
 import { Modifiers } from "../genUtil.js"
 import {
   finalizeConceptUsageAnalysis,
@@ -16,7 +16,6 @@ import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 import { copyExistingDeclaration } from "../manualDefinitions.js"
 
-const tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TableType }>()
 /**
  * Should be last to preprocess
  * @param context
@@ -42,7 +41,7 @@ export function preprocessConcepts(context: RuntimeGenerationContext): void {
     if (existing?.annotations.replace) continue
     const tableOrArray = tryGetTableOrArrayConcept(context, concept)
     if (tableOrArray) {
-      tableOrArrayConcepts.set(concept, tableOrArray)
+      context.conceptUsageAnalysis.tableOrArrayConcepts.set(concept, tableOrArray)
       const readName = concept.name
       // const writeName = `${concept.name} | ${concept.name}Array`
       const writeName = ts.factory.createUnionTypeNode([
@@ -70,12 +69,12 @@ function stringsToType(types: string[] | undefined) {
 }
 
 function tryGetTableOrArrayConcept(
-  context: RuntimeGenerationContext,
+  _context: RuntimeGenerationContext,
   concept: Concept,
 ):
   | {
       table: TableType
-      array: TableType
+      array: TupleType
     }
   | undefined {
   const type = concept.type
@@ -85,7 +84,7 @@ function tryGetTableOrArrayConcept(
   if (!tableType || !arrayType) return undefined
   return {
     table: tableType as TableType,
-    array: arrayType as TableType,
+    array: arrayType as TupleType,
   }
 }
 
@@ -135,13 +134,13 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     return
   }
 
-  const tableOrArray = tableOrArrayConcepts.get(concept)
+  const tableOrArray = context.conceptUsageAnalysis.tableOrArrayConcepts.get(concept)
   if (tableOrArray) {
     createTableOrArrayConcept(context, concept, tableOrArray)
     return
   }
 
-  const { mainType, description, altWriteType } = mapConceptType(
+  const conceptType = mapConceptType(
     context,
     concept.type,
     {
@@ -150,6 +149,11 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     },
     conceptUsage,
   )
+  if (!conceptType) {
+    context.warning("No type for concept", concept.name)
+    return
+  }
+  const { mainType, description, altWriteType } = conceptType
 
   const mainResult = typeToDeclaration(mainType, concept.name)
 
@@ -183,7 +187,7 @@ function getWriteDescription(concept: Concept): string {
 function createTableOrArrayConcept(
   context: RuntimeGenerationContext,
   concept: Concept,
-  tableOrArray: { table: TableType; array: TableType },
+  tableOrArray: { table: TableType; array: TupleType },
 ): void {
   // /** description */
   // interface Concept { ...table read }

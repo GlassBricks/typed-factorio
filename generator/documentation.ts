@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { BasicMember, EventRaised } from "./FactorioRuntimeApiJson.js"
+import { EventRaised } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { byOrder } from "./util.js"
@@ -7,8 +7,9 @@ import { LiteralType, PrototypeWithExamples } from "./FactorioPrototypeApiJson.j
 import { GenerationContext } from "./GenerationContext.js"
 import assert from "assert"
 
-export interface Documentable extends BasicMember, PrototypeWithExamples {
+export interface Documentable extends PrototypeWithExamples {
   description: string
+  name?: string
   subclasses?: string[]
   raises?: EventRaised[]
   instance_limit?: number

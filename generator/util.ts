@@ -2,9 +2,8 @@ export function byOrder(a: { order: number }, b: { order: number }): number {
   return a.order - b.order
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function assertNever(_value: never): never {
-  throw new Error("Value should be never")
+export function assertNever(value: never): never {
+  throw new Error("Value should be never: " + value)
 }
 
 export function getFirst<T>(elemOrArray: T | T[]): T {

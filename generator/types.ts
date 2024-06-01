@@ -10,9 +10,9 @@ import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./read-write-types.js"
 import { assertNever, byOrder } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime/index.js"
+import { RuntimeGenerationContext } from "./runtime"
 import { GenerationContext } from "./GenerationContext.js"
-import { PrototypeGenerationContext } from "./prototype/index.js"
+import { PrototypeGenerationContext } from "./prototype"
 import { getTypeAsPrototypeSubtypes } from "./prototypeSubclassTypes.js"
 
 export interface TypeContext {
@@ -62,8 +62,11 @@ export function mapRuntimeType(
   usage: RWUsage,
 ): RWType {
   const result = mapTypeInternal(context, type, name !== undefined ? { contextName: name } : undefined, usage)
-  if (result.description) {
+  if (result?.description) {
     context.warning("Don't have use for type description: " + JSON.stringify(type))
+  }
+  if (!result) {
+    throw new Error("No result for type: " + JSON.stringify(type))
   }
   return result
 }
@@ -73,11 +76,13 @@ export function mapConceptType(
   type: runtime.Type,
   typeContext: TypeContext,
   usage: RWUsage,
-): {
-  mainType: ts.TypeNode
-  altWriteType?: ts.TypeNode
-  description?: string
-} {
+):
+  | {
+      mainType: ts.TypeNode
+      altWriteType?: ts.TypeNode
+      description?: string
+    }
+  | undefined {
   return mapTypeInternal(context, type, typeContext, usage)
 }
 
@@ -89,6 +94,7 @@ export function mapPrototypeType(
   description?: string
 } {
   const iType = mapTypeInternal(context, type, undefined, RWUsage.Write)
+  if (!iType) throw new Error("No result for type: " + JSON.stringify(type))
   return {
     type: iType.mainType,
     description: iType.description,
@@ -113,6 +119,7 @@ export function mapPrototypeConcept(
     },
     RWUsage.Write,
   )
+  if (!iType) throw new Error("No result for type: " + JSON.stringify(type))
   return {
     type: iType.mainType,
     description: iType.description,
@@ -135,7 +142,7 @@ function mapTypeInternal(
   type: runtime.Type | prototype.Type,
   typeContext: TypeContext | undefined,
   usage: RWUsage,
-): IntermediateType {
+): IntermediateType | undefined {
   // assert(usage !== RWUsage.None)
   if (typeof type === "string") return mapBasicType(context, type, typeContext, usage)
   switch (type.complex_type) {
@@ -163,6 +170,8 @@ function mapTypeInternal(
       return mapTupleType(context, type, typeContext, usage)
     case "struct":
       return mapPrototypeStructType(context, typeContext)
+    case "builtin":
+      return mapBuiltinType(context, type, typeContext)
     default:
       assertNever(type)
   }
@@ -268,6 +277,7 @@ function mapTypeType(
   usage: RWUsage,
 ): IntermediateType {
   const result = mapTypeInternal(context, type.value, typeContext, usage)
+  if (!result) throw new Error("No result for type: " + JSON.stringify(type))
   if (type.description) {
     if (result.description) {
       context.warning("type type already has description: " + JSON.stringify(type))
@@ -302,7 +312,10 @@ function mapUnionType(
     }
   }
 
-  const types = type.options.map((t) => mapTypeInternal(context, t, typeContext, usage))
+  const types = type.options.map((t) => mapTypeInternal(context, t, typeContext, usage)) as IntermediateType[]
+  types.forEach((t) => {
+    if (!t) throw new Error("No result for type: " + JSON.stringify(type))
+  })
 
   let description: string | undefined
   if (type.full_format) {
@@ -379,6 +392,7 @@ function mapArrayType(
   usage: RWUsage,
 ): IntermediateType {
   const elementType = mapTypeInternal(context, type.value, typeContext, usage)
+  if (!elementType) throw new Error("No result for type: " + JSON.stringify(type))
   let mainType: ts.TypeNode = ts.factory.createArrayTypeNode(elementType.mainType)
   // add readonly modifier if write but not read
   if (usage === RWUsage.Write) {
@@ -460,6 +474,7 @@ function mapDictionaryType(
 
   const keyType = mapTypeInternal(context, type.key, undefined, usage)
   const valueType = mapTypeInternal(context, type.value, undefined, usage)
+  if (!keyType || !valueType) throw new Error("No result for type: " + JSON.stringify(type))
   if (keyType.altWriteType) {
     context.warning("Dictionary type has key with altWriteType: " + JSON.stringify(type))
   }
@@ -502,6 +517,7 @@ function makeFlagsType(
       return property
     } else {
       const rwType = mapTypeInternal(context, o, undefined, usage)
+      if (!rwType) throw new Error("No result for type: " + JSON.stringify(o))
       const node = ts.factory.createMappedTypeNode(
         Modifiers.readonly,
         ts.factory.createTypeParameterDeclaration(undefined, "T", rwType.mainType),
@@ -515,6 +531,7 @@ function makeFlagsType(
     }
   })
   const normalKeyType = mapTypeInternal(context, keyType, typeContext, usage)
+  if (!normalKeyType) throw new Error("No result for type: " + JSON.stringify(keyType))
   if (normalKeyType.altWriteType) {
     context.warning("Flag type has key with altWriteType: " + JSON.stringify(keyType))
   }
@@ -552,6 +569,7 @@ function mapLuaCustomTableType(
   assertIsRuntimeGenerationContext(context)
   const keyType = mapTypeInternal(context, type.key, undefined, usage)
   const valueType = mapTypeInternal(context, type.value, undefined, usage)
+  if (!keyType || !valueType) throw new Error("No result for type: " + JSON.stringify(type))
   if (keyType.description || valueType.description) {
     context.warning("LuaCustomTable type has element with description: " + JSON.stringify(type))
   }
@@ -568,6 +586,7 @@ function mapFunctionType(context: GenerationContext, type: runtime.FunctionType)
   assertIsRuntimeGenerationContext(context)
   const parameters = type.parameters.map((value, index) => {
     const paramType = mapTypeInternal(context, value, undefined, RWUsage.Read)
+    if (!paramType) throw new Error("No result for type: " + JSON.stringify(value))
     if (paramType.description) context.warning("Function type has parameter with description: " + JSON.stringify(type))
     return ts.factory.createParameterDeclaration(
       undefined,
@@ -605,6 +624,7 @@ function mapLuaLazyLoadedValueType(
     context.warning("LuaLazyLoadedValue can only be read")
   }
   const valueType = mapTypeInternal(context, type.value, undefined, usage)
+  if (!valueType) throw new Error("No result for type: " + JSON.stringify(type))
   if (valueType.description)
     context.warning("LuaLazyLoadedValue type has element with description: " + JSON.stringify(type))
   return {
@@ -642,7 +662,9 @@ function mapTableType(
   if (type.variant_parameter_groups) {
     context.warning("variant_parameter_groups is not supported in mapType")
   }
-
+  if (usage === RWUsage.ReadWrite) {
+    context.warning("Table cannot be read-write")
+  }
   const existingDef = typeContext.existingDef
   const parameters = type.parameters
     .sort(byOrder)
@@ -673,61 +695,13 @@ function mapTableType(
 
 function mapTupleType(
   context: GenerationContext,
-  type: runtime.TableType | prototype.TupleType,
-  typeContext: TypeContext | undefined,
-  usage: RWUsage,
-): IntermediateType {
-  if (context instanceof RuntimeGenerationContext) {
-    return mapRuntimeTupleType(context, type as runtime.TableType, typeContext, usage)
-  }
-  if (context instanceof PrototypeGenerationContext) {
-    return mapPrototypeTupleType(context, type as prototype.TupleType, typeContext, usage)
-  }
-  throw new Error("unknown context type: " + context.constructor.name)
-}
-
-function mapRuntimeTupleType(
-  context: RuntimeGenerationContext,
-  type: runtime.TableType,
-  typeContext: TypeContext | undefined,
-  usage: RWUsage,
-): IntermediateType {
-  assert(typeContext && typeContext.contextName)
-  if (type.variant_parameter_groups) {
-    context.warning("variant_parameter_groups is not supported for tuples")
-  }
-  if (usage === RWUsage.ReadWrite) {
-    context.warning("Tuple cannot be read-write")
-  }
-  const parameters = type.parameters.sort(byOrder).map((p) => {
-    const paramType = mapMemberType(context, p, typeContext.contextName!, p.type, usage).mainType
-    let name = p.name
-    if (name.startsWith("[") && name.endsWith("]")) {
-      name = "_" + name.slice(1, -1)
-    }
-    return ts.factory.createNamedTupleMember(
-      undefined,
-      ts.factory.createIdentifier(name),
-      p.optional ? Tokens.question : undefined,
-      paramType,
-    )
-  })
-  return {
-    mainType: ts.factory.createTypeOperatorNode(
-      ts.SyntaxKind.ReadonlyKeyword,
-      ts.factory.createTupleTypeNode(parameters),
-    ),
-    asString: undefined,
-  }
-}
-function mapPrototypeTupleType(
-  context: PrototypeGenerationContext,
-  type: prototype.TupleType,
+  type: runtime.TupleType | prototype.TupleType,
   typeContext: TypeContext | undefined,
   usage: RWUsage,
 ): IntermediateType {
   const values = type.values.map((v) => {
     const type = mapTypeInternal(context, v, typeContext, usage)
+    if (!type) throw new Error("No result for type: " + JSON.stringify(v))
     if (type.description) {
       context.warning("Unknown description for tuple member: " + type.description)
     }
@@ -743,7 +717,41 @@ function mapPrototypeTupleType(
     asString: undefined,
   }
 }
-
+//
+// function mapRuntimeTableType(
+//   context: RuntimeGenerationContext,
+//   type: runtime.TableType,
+//   typeContext: TypeContext | undefined,
+//   usage: RWUsage,
+// ): IntermediateType {
+//   assert(typeContext && typeContext.contextName)
+//   if (type.variant_parameter_groups) {
+//     context.warning("variant_parameter_groups is not supported for tables")
+//   }
+//   if (usage === RWUsage.ReadWrite) {
+//     context.warning("Table cannot be read-write")
+//   }
+//   const parameters = type.parameters.sort(byOrder).map((p) => {
+//     const paramType = mapMemberType(context, p, typeContext.contextName!, p.type, usage).mainType
+//     let name = p.name
+//     if (name.startsWith("[") && name.endsWith("]")) {
+//       name = "_" + name.slice(1, -1)
+//     }
+//     return ts.factory.createNamedTupleMember(
+//       undefined,
+//       ts.factory.createIdentifier(name),
+//       p.optional ? Tokens.question : undefined,
+//       paramType,
+//     )
+//   })
+//   return {
+//     mainType: ts.factory.createTypeOperatorNode(
+//       ts.SyntaxKind.ReadonlyKeyword,
+//       ts.factory.createTupleTypeNode(parameters),
+//     ),
+//     asString: undefined,
+//   }
+// }
 function mapPrototypeStructType(context: GenerationContext, typeContext: TypeContext | undefined): IntermediateType {
   assert(typeContext)
   if (!typeContext.prototypeConceptProperties) {
@@ -755,6 +763,31 @@ function mapPrototypeStructType(context: GenerationContext, typeContext: TypeCon
     asString: undefined,
   }
 }
+
+function mapBuiltinType(
+  context: GenerationContext,
+  _builtin: runtime.BuiltinType,
+  typeContext: TypeContext | undefined,
+): IntermediateType | undefined {
+  if (!typeContext) throw new Error("No type context for builtin")
+  const name = typeContext.contextName
+  if (name === "boolean" || name === "string" || name === "number") return
+  const existing = typeContext.existingDef
+  if (!existing) {
+    context.warning(`No existing definition for builtin ${name}`)
+    return undefined
+  }
+  if (existing.kind !== "type") {
+    context.warning(`Existing definition is not a type alias for builtin ${name}`)
+    return undefined
+  }
+  // context.currentFile.add(addJsDoc(context, existing.node, builtin, builtin.name, undefined))
+  return {
+    mainType: existing.node.type,
+    asString: undefined,
+  }
+}
+
 function tryUseIndexType(
   context: RuntimeGenerationContext,
   member: {
