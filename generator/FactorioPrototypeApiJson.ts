@@ -7,7 +7,7 @@ export interface FactorioPrototypeApiJson {
   application: "factorio"
   stage: "prototype"
   application_version: string
-  api_version: 4
+  api_version: 5
 
   prototypes: Prototype[]
   types: PrototypeConcept[]

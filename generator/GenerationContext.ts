@@ -64,7 +64,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   private checkApiDocs() {
     for (const [k, v] of Object.entries({
       application: "factorio",
-      api_version: 4,
+      api_version: 5,
       stage: this.stageName,
     })) {
       if (this.apiDocs[k as keyof AnyApiJson] !== v) {
@@ -78,7 +78,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
     this.hasWarnings = true
   }
 
-  warnIfHasVisibility(obj: { visibility?: string[] }) {
+  warnIfHasVisibility(obj: { visibility?: string[] }): void {
     if (obj.visibility && obj.visibility.length > 1) {
       this.warning("Visibility not implemented yet")
     }
