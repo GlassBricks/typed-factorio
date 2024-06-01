@@ -406,11 +406,37 @@ function makeUnion(types: ts.TypeNode[]): ts.TypeNode {
 
 function mapArrayType(
   context: GenerationContext,
-  type: runtime.ArrayType | prototype.ArrayType,
+  type:
+    | runtime.ArrayType
+    | prototype.ArrayType
+    | {
+        complex_type: "array"
+        value: runtime.UnionType | prototype.UnionType
+        unionArray: true
+      },
   typeContext: TypeContext | undefined,
   usage: RWUsage,
 ): IntermediateType {
+  if (
+    typeof type.value === "object" &&
+    type.value.complex_type === "union" &&
+    typeContext?.contextName?.endsWith("Filter")
+  ) {
+    // array of union -> union of arrays
+    const unionType: runtime.UnionType | prototype.UnionType = {
+      complex_type: "union" as const,
+      options: type.value.options.map((o) => ({
+        complex_type: "array",
+        value: o,
+        unionArray: true,
+      })) as runtime.ArrayType[],
+      full_format: type.value.full_format,
+    }
+    return mapUnionType(context, unionType, typeContext, usage)
+  }
+
   const elementType = mapTypeInternal(context, type.value, typeContext, usage)
+
   let mainType: ts.TypeNode = ts.factory.createArrayTypeNode(elementType.mainType)
   // add readonly modifier if write but not read
   if (usage === RWUsage.Write) {
@@ -422,12 +448,17 @@ function mapArrayType(
       ts.SyntaxKind.ReadonlyKeyword,
       ts.factory.createArrayTypeNode(elementType.altWriteType),
     )
+  } else if ("unionArray" in type && usage & RWUsage.Write) {
+    altWriteType = ts.factory.createTypeOperatorNode(
+      ts.SyntaxKind.ReadonlyKeyword,
+      ts.factory.createArrayTypeNode(elementType.mainType),
+    )
   }
 
   return {
     mainType,
     altWriteType,
-    asString: undefined,
+    asString: "unionArray" in type ? elementType.asString : undefined,
     description: elementType.description,
   }
 }

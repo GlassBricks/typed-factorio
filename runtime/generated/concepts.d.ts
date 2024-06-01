@@ -372,57 +372,55 @@ declare module "factorio:runtime" {
    * - {@link LuaSectorScannedEventFilter}
    * @see EventFilterWrite
    */
-  export type EventFilter = (
-    | LuaScriptRaisedReviveEventFilter
-    | LuaEntityDiedEventFilter
-    | LuaEntityMarkedForDeconstructionEventFilter
-    | LuaPreGhostDeconstructedEventFilter
-    | LuaScriptRaisedDestroyEventFilter
-    | LuaUpgradeCancelledEventFilter
-    | LuaPlayerRepairedEntityEventFilter
-    | LuaScriptRaisedTeleportedEventFilter
-    | LuaEntityMarkedForUpgradeEventFilter
-    | LuaPostEntityDiedEventFilter
-    | LuaPreRobotMinedEntityEventFilter
-    | LuaEntityClonedEventFilter
-    | LuaScriptRaisedBuiltEventFilter
-    | LuaRobotMinedEntityEventFilter
-    | LuaPrePlayerMinedEntityEventFilter
-    | LuaRobotBuiltEntityEventFilter
-    | LuaPreGhostUpgradedEventFilter
-    | LuaEntityDeconstructionCancelledEventFilter
-    | LuaPlayerBuiltEntityEventFilter
-    | LuaPlayerMinedEntityEventFilter
-    | LuaEntityDamagedEventFilter
-    | LuaSectorScannedEventFilter
-  )[]
+  export type EventFilter =
+    | LuaScriptRaisedReviveEventFilter[]
+    | LuaEntityDiedEventFilter[]
+    | LuaEntityMarkedForDeconstructionEventFilter[]
+    | LuaPreGhostDeconstructedEventFilter[]
+    | LuaScriptRaisedDestroyEventFilter[]
+    | LuaUpgradeCancelledEventFilter[]
+    | LuaPlayerRepairedEntityEventFilter[]
+    | LuaScriptRaisedTeleportedEventFilter[]
+    | LuaEntityMarkedForUpgradeEventFilter[]
+    | LuaPostEntityDiedEventFilter[]
+    | LuaPreRobotMinedEntityEventFilter[]
+    | LuaEntityClonedEventFilter[]
+    | LuaScriptRaisedBuiltEventFilter[]
+    | LuaRobotMinedEntityEventFilter[]
+    | LuaPrePlayerMinedEntityEventFilter[]
+    | LuaRobotBuiltEntityEventFilter[]
+    | LuaPreGhostUpgradedEventFilter[]
+    | LuaEntityDeconstructionCancelledEventFilter[]
+    | LuaPlayerBuiltEntityEventFilter[]
+    | LuaPlayerMinedEntityEventFilter[]
+    | LuaEntityDamagedEventFilter[]
+    | LuaSectorScannedEventFilter[]
   /**
    * Write form of {@link EventFilter}, where table-or-array concepts are allowed to take an array form.
    */
-  export type EventFilterWrite = readonly (
-    | LuaScriptRaisedReviveEventFilter
-    | LuaEntityDiedEventFilter
-    | LuaEntityMarkedForDeconstructionEventFilter
-    | LuaPreGhostDeconstructedEventFilter
-    | LuaScriptRaisedDestroyEventFilter
-    | LuaUpgradeCancelledEventFilter
-    | LuaPlayerRepairedEntityEventFilter
-    | LuaScriptRaisedTeleportedEventFilter
-    | LuaEntityMarkedForUpgradeEventFilter
-    | LuaPostEntityDiedEventFilter
-    | LuaPreRobotMinedEntityEventFilter
-    | LuaEntityClonedEventFilter
-    | LuaScriptRaisedBuiltEventFilter
-    | LuaRobotMinedEntityEventFilter
-    | LuaPrePlayerMinedEntityEventFilter
-    | LuaRobotBuiltEntityEventFilter
-    | LuaPreGhostUpgradedEventFilter
-    | LuaEntityDeconstructionCancelledEventFilter
-    | LuaPlayerBuiltEntityEventFilter
-    | LuaPlayerMinedEntityEventFilter
-    | LuaEntityDamagedEventFilterWrite
-    | LuaSectorScannedEventFilter
-  )[]
+  export type EventFilterWrite =
+    | readonly LuaScriptRaisedReviveEventFilter[]
+    | readonly LuaEntityDiedEventFilter[]
+    | readonly LuaEntityMarkedForDeconstructionEventFilter[]
+    | readonly LuaPreGhostDeconstructedEventFilter[]
+    | readonly LuaScriptRaisedDestroyEventFilter[]
+    | readonly LuaUpgradeCancelledEventFilter[]
+    | readonly LuaPlayerRepairedEntityEventFilter[]
+    | readonly LuaScriptRaisedTeleportedEventFilter[]
+    | readonly LuaEntityMarkedForUpgradeEventFilter[]
+    | readonly LuaPostEntityDiedEventFilter[]
+    | readonly LuaPreRobotMinedEntityEventFilter[]
+    | readonly LuaEntityClonedEventFilter[]
+    | readonly LuaScriptRaisedBuiltEventFilter[]
+    | readonly LuaRobotMinedEntityEventFilter[]
+    | readonly LuaPrePlayerMinedEntityEventFilter[]
+    | readonly LuaRobotBuiltEntityEventFilter[]
+    | readonly LuaPreGhostUpgradedEventFilter[]
+    | readonly LuaEntityDeconstructionCancelledEventFilter[]
+    | readonly LuaPlayerBuiltEntityEventFilter[]
+    | readonly LuaPlayerMinedEntityEventFilter[]
+    | readonly LuaEntityDamagedEventFilterWrite[]
+    | readonly LuaSectorScannedEventFilter[]
   /**
    * Types `"signal"` and `"item-group"` do not support filters.
    *
@@ -441,33 +439,31 @@ declare module "factorio:runtime" {
    * - EntityPrototypeFilter
    * @see PrototypeFilterWrite
    */
-  export type PrototypeFilter = (
-    | ItemPrototypeFilter
-    | ModSettingPrototypeFilter
-    | TechnologyPrototypeFilter
-    | DecorativePrototypeFilter
-    | AchievementPrototypeFilter
-    | FluidPrototypeFilter
-    | EquipmentPrototypeFilter
-    | TilePrototypeFilter
-    | RecipePrototypeFilter
-    | EntityPrototypeFilter
-  )[]
+  export type PrototypeFilter =
+    | ItemPrototypeFilter[]
+    | ModSettingPrototypeFilter[]
+    | TechnologyPrototypeFilter[]
+    | DecorativePrototypeFilter[]
+    | AchievementPrototypeFilter[]
+    | FluidPrototypeFilter[]
+    | EquipmentPrototypeFilter[]
+    | TilePrototypeFilter[]
+    | RecipePrototypeFilter[]
+    | EntityPrototypeFilter[]
   /**
    * Write form of {@link PrototypeFilter}, where table-or-array concepts are allowed to take an array form.
    */
-  export type PrototypeFilterWrite = readonly (
-    | ItemPrototypeFilterWrite
-    | ModSettingPrototypeFilter
-    | TechnologyPrototypeFilterWrite
-    | DecorativePrototypeFilter
-    | AchievementPrototypeFilter
-    | FluidPrototypeFilterWrite
-    | EquipmentPrototypeFilter
-    | TilePrototypeFilterWrite
-    | RecipePrototypeFilterWrite
-    | EntityPrototypeFilterWrite
-  )[]
+  export type PrototypeFilterWrite =
+    | readonly ItemPrototypeFilterWrite[]
+    | readonly ModSettingPrototypeFilter[]
+    | readonly TechnologyPrototypeFilterWrite[]
+    | readonly DecorativePrototypeFilter[]
+    | readonly AchievementPrototypeFilter[]
+    | readonly FluidPrototypeFilterWrite[]
+    | readonly EquipmentPrototypeFilter[]
+    | readonly TilePrototypeFilterWrite[]
+    | readonly RecipePrototypeFilterWrite[]
+    | readonly EntityPrototypeFilterWrite[]
   export interface ElemID {
     readonly type: ElemType
     /**
