@@ -11,6 +11,32 @@ import type { VersionString } from "factorio:common"
  */
 declare module "factorio:runtime" {
   /**
+   * @see AutoplaceSettingsWrite
+   */
+  export interface AutoplaceSettings {
+    /**
+     * Whether missing autoplace names for this type should be default enabled. Always defined when reading autoplace settings.
+     */
+    readonly treat_missing_as_default?: boolean
+    /**
+     * Always defined when reading autoplace settings.
+     */
+    readonly settings?: Record<string, AutoplaceControl>
+  }
+  /**
+   * Write form of {@link AutoplaceSettings}, where table-or-array concepts are allowed to take an array form.
+   */
+  export interface AutoplaceSettingsWrite {
+    /**
+     * Whether missing autoplace names for this type should be default enabled. Always defined when reading autoplace settings.
+     */
+    readonly treat_missing_as_default?: boolean
+    /**
+     * Always defined when reading autoplace settings.
+     */
+    readonly settings?: Record<string, AutoplaceControlWrite>
+  }
+  /**
    * Used by {@link TriggerEffectItem}.
    *
    * ## Union members
@@ -217,7 +243,7 @@ declare module "factorio:runtime" {
      */
     readonly volume_modifier?: double
     /**
-     * If set to false, message will not be part of game state and will dissapear from output console after save-load. Defaults to `true`.
+     * If set to false, message will not be part of game state and will disappear from output console after save-load. Defaults to `true`.
      */
     readonly game_state?: boolean
   }
@@ -316,6 +342,132 @@ declare module "factorio:runtime" {
      */
     readonly steps_count: uint
   }
+  /**
+   * Used to filter out irrelevant event callbacks in a performant way.
+   *
+   * Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
+   *
+   * ## Union members
+   * - {@link LuaScriptRaisedReviveEventFilter}
+   * - {@link LuaEntityDiedEventFilter}
+   * - {@link LuaEntityMarkedForDeconstructionEventFilter}
+   * - {@link LuaPreGhostDeconstructedEventFilter}
+   * - {@link LuaScriptRaisedDestroyEventFilter}
+   * - {@link LuaUpgradeCancelledEventFilter}
+   * - {@link LuaPlayerRepairedEntityEventFilter}
+   * - {@link LuaScriptRaisedTeleportedEventFilter}
+   * - {@link LuaEntityMarkedForUpgradeEventFilter}
+   * - {@link LuaPostEntityDiedEventFilter}
+   * - {@link LuaPreRobotMinedEntityEventFilter}
+   * - {@link LuaEntityClonedEventFilter}
+   * - {@link LuaScriptRaisedBuiltEventFilter}
+   * - {@link LuaRobotMinedEntityEventFilter}
+   * - {@link LuaPrePlayerMinedEntityEventFilter}
+   * - {@link LuaRobotBuiltEntityEventFilter}
+   * - {@link LuaPreGhostUpgradedEventFilter}
+   * - {@link LuaEntityDeconstructionCancelledEventFilter}
+   * - {@link LuaPlayerBuiltEntityEventFilter}
+   * - {@link LuaPlayerMinedEntityEventFilter}
+   * - LuaEntityDamagedEventFilter
+   * - {@link LuaSectorScannedEventFilter}
+   * @see EventFilterWrite
+   */
+  export type EventFilter = (
+    | LuaScriptRaisedReviveEventFilter
+    | LuaEntityDiedEventFilter
+    | LuaEntityMarkedForDeconstructionEventFilter
+    | LuaPreGhostDeconstructedEventFilter
+    | LuaScriptRaisedDestroyEventFilter
+    | LuaUpgradeCancelledEventFilter
+    | LuaPlayerRepairedEntityEventFilter
+    | LuaScriptRaisedTeleportedEventFilter
+    | LuaEntityMarkedForUpgradeEventFilter
+    | LuaPostEntityDiedEventFilter
+    | LuaPreRobotMinedEntityEventFilter
+    | LuaEntityClonedEventFilter
+    | LuaScriptRaisedBuiltEventFilter
+    | LuaRobotMinedEntityEventFilter
+    | LuaPrePlayerMinedEntityEventFilter
+    | LuaRobotBuiltEntityEventFilter
+    | LuaPreGhostUpgradedEventFilter
+    | LuaEntityDeconstructionCancelledEventFilter
+    | LuaPlayerBuiltEntityEventFilter
+    | LuaPlayerMinedEntityEventFilter
+    | LuaEntityDamagedEventFilter
+    | LuaSectorScannedEventFilter
+  )[]
+  /**
+   * Write form of {@link EventFilter}, where table-or-array concepts are allowed to take an array form.
+   */
+  export type EventFilterWrite = readonly (
+    | LuaScriptRaisedReviveEventFilter
+    | LuaEntityDiedEventFilter
+    | LuaEntityMarkedForDeconstructionEventFilter
+    | LuaPreGhostDeconstructedEventFilter
+    | LuaScriptRaisedDestroyEventFilter
+    | LuaUpgradeCancelledEventFilter
+    | LuaPlayerRepairedEntityEventFilter
+    | LuaScriptRaisedTeleportedEventFilter
+    | LuaEntityMarkedForUpgradeEventFilter
+    | LuaPostEntityDiedEventFilter
+    | LuaPreRobotMinedEntityEventFilter
+    | LuaEntityClonedEventFilter
+    | LuaScriptRaisedBuiltEventFilter
+    | LuaRobotMinedEntityEventFilter
+    | LuaPrePlayerMinedEntityEventFilter
+    | LuaRobotBuiltEntityEventFilter
+    | LuaPreGhostUpgradedEventFilter
+    | LuaEntityDeconstructionCancelledEventFilter
+    | LuaPlayerBuiltEntityEventFilter
+    | LuaPlayerMinedEntityEventFilter
+    | LuaEntityDamagedEventFilterWrite
+    | LuaSectorScannedEventFilter
+  )[]
+  /**
+   * Types `"signal"` and `"item-group"` do not support filters.
+   *
+   * Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
+   *
+   * ## Union members
+   * - ItemPrototypeFilter
+   * - {@link ModSettingPrototypeFilter}
+   * - TechnologyPrototypeFilter
+   * - {@link DecorativePrototypeFilter}
+   * - {@link AchievementPrototypeFilter}
+   * - FluidPrototypeFilter
+   * - {@link EquipmentPrototypeFilter}
+   * - TilePrototypeFilter
+   * - RecipePrototypeFilter
+   * - EntityPrototypeFilter
+   * @see PrototypeFilterWrite
+   */
+  export type PrototypeFilter = (
+    | ItemPrototypeFilter
+    | ModSettingPrototypeFilter
+    | TechnologyPrototypeFilter
+    | DecorativePrototypeFilter
+    | AchievementPrototypeFilter
+    | FluidPrototypeFilter
+    | EquipmentPrototypeFilter
+    | TilePrototypeFilter
+    | RecipePrototypeFilter
+    | EntityPrototypeFilter
+  )[]
+  /**
+   * Write form of {@link PrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   */
+  export type PrototypeFilterWrite = readonly (
+    | ItemPrototypeFilterWrite
+    | ModSettingPrototypeFilter
+    | TechnologyPrototypeFilterWrite
+    | DecorativePrototypeFilter
+    | AchievementPrototypeFilter
+    | FluidPrototypeFilterWrite
+    | EquipmentPrototypeFilter
+    | TilePrototypeFilterWrite
+    | RecipePrototypeFilterWrite
+    | EntityPrototypeFilterWrite
+  )[]
   export interface ElemID {
     readonly type: ElemType
     /**
@@ -540,25 +692,32 @@ declare module "factorio:runtime" {
   /**
    * Localised strings are a way to support translation of in-game text. It is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.
    *
-   * The key identifies the string template. For example, `"gui-alert-tooltip.attack"` (for the template `"__1__
-   *
-   *     objects are being damaged"`; see the file `data/core/locale/en.cfg`).
+   * The key identifies the string template. For example, `"gui-alert-tooltip.attack"` (for the template `"__1__ objects are being damaged"`; see the file `data/core/locale/en.cfg`).
    *
    * The template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.
    *
    * There are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`""`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`"?"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.
    *
    * Furthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number, boolean or `nil`, which will be converted to their textual representation.
-   * @example In the English translation, this will print `"No ammo"`; in the Czech translation, it will print `"Bez munice"`:
+   * @example
+   * -- In the English translation, this will print "No ammo"; in the Czech translation, it will print "Bez munice":
    * game.player.print({"description.no-ammo"})
-   * @example In the English translation, this will print `"Durability: 5/9"`; in the Japanese one, it will print `"耐久度: 5/9"`:
+   * -- The 'description.no-ammo' template contains no placeholders, so no further parameters are necessary.
+   * @example
+   * -- In the English translation, this will print "Durability: 5/9"; in the Japanese one, it will print "耐久度: 5/9":
    * game.player.print({"description.durability", 5, 9})
-   * @example This will print `"hello"` in all translations:
+   * @example
+   * -- This will print "hello" in all translations:
    * game.player.print({"", "hello"})
-   * @example This will print `"Iron plate: 60"` in the English translation and `"Eisenplatte: 60"` in the German translation.
+   * @example
+   * -- This will print "Iron plate: 60" in the English translation and "Eisenplatte: 60" in the German translation.
    * game.print({"", {"item-name.iron-plate"}, ": ", 60})
-   * @example As an example of a localised string with fallback, consider this:
+   * @example
+   * -- As an example of a localised string with fallback, consider this:
    * {"?", {"", {"entity-description.furnace"}, "\n"}, {"item-description.furnace"}, "optional fallback"}
+   * -- If 'entity-description.furnace' exists, it is concatenated with "\n" and returned. Otherwise, if 'item-description.furnace'
+   * --  exists, it is returned as-is. Otherwise, "optional fallback" is returned. If this value wasn't specified, the
+   * --  translation result would be "Unknown key: 'item-description.furnace'".
    */
   export type LocalisedString = string | number | boolean | LuaObject | nil | [string, ...LocalisedString[]]
   export interface DisplayResolution {
@@ -590,10 +749,12 @@ declare module "factorio:runtime" {
    *
    * The coordinates are saved as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.
    * @see MapPositionArray
-   * @example Explicit definition:
+   * @example
+   * -- Explicit definition
    * {x = 5.5, y = 2}
    * {y = 2.25, x = 5.125}
-   * @example Shorthand:
+   * @example
+   * -- Shorthand
    * {1.625, 2.375}
    */
   export interface MapPosition {
@@ -604,7 +765,7 @@ declare module "factorio:runtime" {
    * Array form of {@link MapPosition}.
    * @see MapPosition
    */
-  export type MapPositionArray = readonly [x: double, y: double]
+  export type MapPositionArray = readonly [double, double]
   /**
    * Coordinates of a chunk in a {@link LuaSurface} where each integer `x`/`y` represents a different chunk. This uses the same format as {@link MapPosition}, meaning it can be specified either with or without explicit keys. A {@link MapPosition} can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.
    * @see ChunkPositionArray
@@ -617,7 +778,7 @@ declare module "factorio:runtime" {
    * Array form of {@link ChunkPosition}.
    * @see ChunkPosition
    */
-  export type ChunkPositionArray = readonly [x: int, y: int]
+  export type ChunkPositionArray = readonly [int, int]
   /**
    * Coordinates of a tile on a {@link LuaSurface} where each integer `x`/`y` represents a different tile. This uses the same format as {@link MapPosition}, except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.
    * @see TilePositionArray
@@ -630,14 +791,16 @@ declare module "factorio:runtime" {
    * Array form of {@link TilePosition}.
    * @see TilePosition
    */
-  export type TilePositionArray = readonly [x: int, y: int]
+  export type TilePositionArray = readonly [int, int]
   /**
    * Position inside an equipment grid. This uses the same format as {@link MapPosition}, meaning it can be specified either with or without explicit keys.
    * @see EquipmentPositionArray
-   * @example Explicit definition:
+   * @example
+   * -- Explicit definition
    * {x = 5, y = 2}
    * {y = 2, x = 5}
-   * @example Shorthand:
+   * @example
+   * -- Shorthand
    * {1, 2}
    */
   export interface EquipmentPosition {
@@ -648,7 +811,7 @@ declare module "factorio:runtime" {
    * Array form of {@link EquipmentPosition}.
    * @see EquipmentPosition
    */
-  export type EquipmentPositionArray = readonly [x: int, y: int]
+  export type EquipmentPositionArray = readonly [int, int]
   /**
    * Screen coordinates of a GUI element in a {@link LuaGui}. This uses the same format as {@link TilePosition}, meaning it can be specified either with or without explicit keys.
    * @see GuiLocationArray
@@ -661,7 +824,7 @@ declare module "factorio:runtime" {
    * Array form of {@link GuiLocation}.
    * @see GuiLocation
    */
-  export type GuiLocationArray = readonly [x: int, y: int]
+  export type GuiLocationArray = readonly [int, int]
   /**
    * A {@link ChunkPosition} with an added bounding box for the area of the chunk.
    */
@@ -710,7 +873,7 @@ declare module "factorio:runtime" {
    */
   export type Tags = Record<string, AnyBasic>
   /**
-   * @remarks The vectors for all 5 position attributes are a table with `x` and `y` keys instead of an array.
+   * The vectors for all 5 position attributes are a table with `x` and `y` keys instead of an array.
    */
   export interface SmokeSource {
     readonly name: string
@@ -742,9 +905,11 @@ declare module "factorio:runtime" {
   /**
    * Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with {@link MapPosition}, the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero.
    * @see BoundingBoxArray
-   * @example Explicit definition:
+   * @example
+   * -- Explicit definition
    * {left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}
-   * @example Shorthand:
+   * @example
+   * -- Shorthand
    * {{-2, -3}, {5, 8}}
    */
   export interface BoundingBox {
@@ -764,11 +929,7 @@ declare module "factorio:runtime" {
    * Array form of {@link BoundingBox}.
    * @see BoundingBox
    */
-  export type BoundingBoxArray = readonly [
-    left_top: MapPosition | MapPositionArray,
-    right_bottom: MapPosition | MapPositionArray,
-    orientation?: RealOrientation,
-  ]
+  export type BoundingBoxArray = readonly [MapPosition | MapPositionArray, MapPosition | MapPositionArray]
   /**
    * An area defined using the map editor.
    * @see ScriptAreaWrite
@@ -945,7 +1106,7 @@ declare module "factorio:runtime" {
     readonly changed: string[]
   }
   /**
-   * @remarks Either `icon`, `text`, or both must be provided.
+   * Either `icon`, `text`, or both must be provided.
    */
   export interface ChartTagSpec {
     readonly position: MapPosition | MapPositionArray
@@ -1101,15 +1262,13 @@ declare module "factorio:runtime" {
    * player = 0
    * for neighbour in all chunks within enemy_building_influence_radius from chunk:
    *   player += number of player buildings on neighbour
-   *           * building_coefficient
-   *           * neighbouring_chunk_coefficient^distance(chunk, neighbour)
-   *
+   *     * building_coefficient
+   *     * neighbouring_chunk_coefficient^distance(chunk, neighbour)
    * base = 0
    * for neighbour in all chunk within friendly_base_influence_radius from chunk:
    *   base += num of enemy bases on neighbour
-   *           * other_base_coefficient
-   *           * neighbouring_base_chunk_coefficient^distance(chunk, neighbour)
-   *
+   *     * other_base_coefficient
+   *     * neighbouring_base_chunk_coefficient^distance(chunk, neighbour)
    * score(chunk) = 1 / (1 + player + base)
    * ```
    */
@@ -1370,7 +1529,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Various game-related settings. Updating any of the attributes will immediately take effect in the game engine.
-   * @example Increase the number of short paths the pathfinder can cache.
+   * @example
+   * -- Increase the number of short paths the pathfinder can cache
    * game.map_settings.path_finder.short_cache_size = 15
    */
   export interface MapSettings {
@@ -1847,13 +2007,17 @@ declare module "factorio:runtime" {
    *
    * Other attributes may be specified depending on `type`:
    * - `"fluid"`: {@link FluidProduct}
-   * @example Products of the "steel-chest" recipe (an array of Product):
+   * @example
+   * -- Products of the "steel-chest" recipe (an array of Product)
    * {{type="item", name="steel-chest", amount=1}}
-   * @example Products of the "advanced-oil-processing" recipe:
+   * @example
+   * -- Products of the "advanced-oil-processing" recipe
    * {{type="fluid", name="heavy-oil", amount=1},
-   *  {type="fluid", name="light-oil", amount=4.5},
-   *  {type="fluid", name="petroleum-gas", amount=5.5}}
-   * @example What a custom recipe would look like that had a probability of 0.5 to return a minimum amount of 1 and a maximum amount of 5:
+   *   {type="fluid", name="light-oil", amount=4.5},
+   *   {type="fluid", name="petroleum-gas", amount=5.5}}
+   * @example
+   * -- What a custom recipe would look like that had a probability of 0.5 to return a
+   * -- minimum amount of 1 and amaximum amount of 5
    * {{type="item", name="custom-item", probability=0.5, amount_min=1, amount_max=5}}
    */
   export type Product = FluidProduct | OtherProduct
@@ -2134,6 +2298,8 @@ declare module "factorio:runtime" {
    *
    * For backwards compatibility, MapGenSizes can also be specified as one of the following strings, which will be converted to a number (when queried, a number will always be returned):
    *
+   * The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.
+   *
    * ## Union members
    * - {@link float}: Specifying a map gen dimension.
    * - `"none"`: equivalent to `0`.
@@ -2152,7 +2318,6 @@ declare module "factorio:runtime" {
    * - `"very-high"`: equivalent to `2`.
    * - `"very-big"`: equivalent to `2`.
    * - `"very-good"`: equivalent to `2`.
-   * @remarks The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.
    */
   export type MapGenSize =
     | float
@@ -2185,7 +2350,7 @@ declare module "factorio:runtime" {
      */
     readonly size: float
     /**
-     * Has different effects for different things, but generally affects the 'health' or density of a thing that is placed without affecting where it is placed. For trees, richness affects tree health. For ores, richness multiplies the amount of ore at any given tile in a patch. Metadata about autoplace controls (such as whether or not 'richness' does anything for them) can be found in the {@link LuaAutoplaceControlPrototype} by looking up `game.autoplace_control_prototypes[(control prototype name)]`, e.g. `game.autoplace_control_prototypes["enemy-base"].richness` is false, because enemy base autoplacement doesn't use richness.
+     * Has different effects for different things, but generally affects the 'health' or density of a thing that is placed without affecting where it is placed. For trees, richness affects tree health.  For ores, richness multiplies the amount of ore at any given tile in a patch. Metadata about autoplace controls (such as whether or not 'richness' does anything for them) can be found in the {@link LuaAutoplaceControlPrototype} by looking up `game.autoplace_control_prototypes[(control prototype name)]`, e.g. `game.autoplace_control_prototypes["enemy-base"].richness` is false, because enemy base autoplacement doesn't use richness.
      */
     readonly richness: float
   }
@@ -2202,29 +2367,9 @@ declare module "factorio:runtime" {
      */
     readonly size: MapGenSize
     /**
-     * Has different effects for different things, but generally affects the 'health' or density of a thing that is placed without affecting where it is placed. For trees, richness affects tree health. For ores, richness multiplies the amount of ore at any given tile in a patch. Metadata about autoplace controls (such as whether or not 'richness' does anything for them) can be found in the {@link LuaAutoplaceControlPrototype} by looking up `game.autoplace_control_prototypes[(control prototype name)]`, e.g. `game.autoplace_control_prototypes["enemy-base"].richness` is false, because enemy base autoplacement doesn't use richness.
+     * Has different effects for different things, but generally affects the 'health' or density of a thing that is placed without affecting where it is placed. For trees, richness affects tree health.  For ores, richness multiplies the amount of ore at any given tile in a patch. Metadata about autoplace controls (such as whether or not 'richness' does anything for them) can be found in the {@link LuaAutoplaceControlPrototype} by looking up `game.autoplace_control_prototypes[(control prototype name)]`, e.g. `game.autoplace_control_prototypes["enemy-base"].richness` is false, because enemy base autoplacement doesn't use richness.
      */
     readonly richness: MapGenSize
-  }
-  /**
-   * @see AutoplaceSettingsWrite
-   */
-  export interface AutoplaceSettings {
-    /**
-     * Whether missing autoplace names for this type should be default enabled.
-     */
-    readonly treat_missing_as_default: boolean
-    readonly settings: Record<string, AutoplaceControl>
-  }
-  /**
-   * Write form of {@link AutoplaceSettings}, where table-or-array concepts are allowed to take an array form.
-   */
-  export interface AutoplaceSettingsWrite {
-    /**
-     * Whether missing autoplace names for this type should be default enabled.
-     */
-    readonly treat_missing_as_default: boolean
-    readonly settings: Record<string, AutoplaceControlWrite>
   }
   /**
    * @see CliffPlacementSettingsWrite
@@ -2271,16 +2416,21 @@ declare module "factorio:runtime" {
   /**
    * The 'map type' dropdown in the map generation GUI is actually a selector for elevation generator. The base game sets `property_expression_names.elevation` to `"0_16-elevation"` to reproduce terrain from 0.16 or to `"0_17-island"` for the island preset. If generators are available for other properties, the 'map type' dropdown in the GUI will be renamed to 'elevation' and shown along with selectors for the other selectable properties.
    * @see MapGenSettingsWrite
-   * @example Assuming a NamedNoiseExpression with the name "my-alternate-grass1-probability" is defined
+   * @example
+   * -- Assuming a NamedNoiseExpression with the name "my-alternate-grass1-probability" is defined...
    * local surface = game.player.surface
    * local mgs = surface.map_gen_settings
    * mgs.property_expression_names["tile:grass1:probability"] = "my-alternate-grass1-probability"
    * surface.map_gen_settings = mgs
-   * @example To make there be no deep water on (newly generated chunks) a surface:
+   * -- ...would override the probability of grass1 being placed at any given point on the current surface.
+   * @example
+   * -- To make there be no deep water on (newly generated chunks) a surface
    * local surface = game.player.surface
    * local mgs = surface.map_gen_settings
    * mgs.property_expression_names["tile:deepwater:probability"] = -1000
    * surface.map_gen_settings = mgs
+   * -- This does not require a NamedNoiseExpression to be defined, since literal numbers (and strings naming literal
+   * -- numbers, e.g. `"123"`) are understood to stand for constant value expressions.
    */
   export interface MapGenSettings {
     /**
@@ -2332,21 +2482,9 @@ declare module "factorio:runtime" {
      */
     readonly peaceful_mode: boolean
     /**
-     * Overrides for tile property value generators. Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `"5"`). All other controls can be overridden by a property expression names. Notable properties:
-     * - `moisture` - a value between 0 and 1 that determines whether a tile becomes sandy (low moisture) or grassy (high moisture).
-     * - `aux` - a value between 0 and 1 that determines whether low-moisture tiles become sand or red desert.
-     * - `temperature` - provides a value (vaguely representing degrees Celsius, varying between -20 and 50) that is used (together with moisture and aux) as part of tree and decorative placement.
-     * - `elevation` - tiles values less than zero become water. Cliffs are placed along certain contours according to {@link CliffPlacementSettings}.
-     * - `cliffiness` - determines whether (when >0.5) or not (when <0.5) a cliff will be placed at an otherwise suitable (according to {@link CliffPlacementSettings}) location.
-     * - `enemy-base-intensity` - a number that is referenced by both `enemy-base-frequency` and `enemy-base-radius`. i.e. if this is overridden, enemy base frequency and size will both be affected and do something reasonable. By default, this expression returns a value proportional to distance from any starting point, clamped at about 7.
-     * - `enemy-base-frequency` - a number representing average number of enemy bases per tile for a region, by default in terms of `enemy-base-intensity`.
-     * - `enemy-base-radius` - a number representing the radius of an enemy base, if one were to be placed on the given tile, by default proportional to a constant plus `enemy-base-intensity`. Climate controls ('Moisture' and 'Terrain type' at the bottom of the Terrain tab in the map generator GUI) don't have their own dedicated structures in MapGenSettings. Instead, their values are stored as property expression overrides with long names:
-     * - `control-setting:moisture:frequency:multiplier` - frequency (inverse of scale) multiplier for moisture noise. Default is 1.
-     * - `control-setting:moisture:bias` - global bias for moisture (which normally varies between 0 and 1). Default is 0.
-     * - `control-setting:aux:frequency:multiplier` - frequency (inverse of scale) multiplier for aux (called 'terrain type' in the GUI) noise. Default is 1.
-     * - `control-setting:aux:bias` - global bias for aux/terrain type (which normally varies between 0 and 1). Default is 0. All other MapGenSettings feed into named noise expressions, and therefore placement can be overridden by including the name of a property in this dictionary. The probability and richness functions for placing specific tiles, entities, and decoratives can be overridden by including an entry named `{tile|entity|decorative}:(prototype name):{probability|richness}`.
+     * Overrides for tile property value generators.
      */
-    readonly property_expression_names: Record<string, string>
+    readonly property_expression_names: PropertyExpressionNames
   }
   /**
    * Write form of {@link MapGenSettings}, where table-or-array concepts are allowed to take an array form.
@@ -2401,22 +2539,18 @@ declare module "factorio:runtime" {
      */
     readonly peaceful_mode: boolean
     /**
-     * Overrides for tile property value generators. Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `"5"`). All other controls can be overridden by a property expression names. Notable properties:
-     * - `moisture` - a value between 0 and 1 that determines whether a tile becomes sandy (low moisture) or grassy (high moisture).
-     * - `aux` - a value between 0 and 1 that determines whether low-moisture tiles become sand or red desert.
-     * - `temperature` - provides a value (vaguely representing degrees Celsius, varying between -20 and 50) that is used (together with moisture and aux) as part of tree and decorative placement.
-     * - `elevation` - tiles values less than zero become water. Cliffs are placed along certain contours according to {@link CliffPlacementSettings}.
-     * - `cliffiness` - determines whether (when >0.5) or not (when <0.5) a cliff will be placed at an otherwise suitable (according to {@link CliffPlacementSettings}) location.
-     * - `enemy-base-intensity` - a number that is referenced by both `enemy-base-frequency` and `enemy-base-radius`. i.e. if this is overridden, enemy base frequency and size will both be affected and do something reasonable. By default, this expression returns a value proportional to distance from any starting point, clamped at about 7.
-     * - `enemy-base-frequency` - a number representing average number of enemy bases per tile for a region, by default in terms of `enemy-base-intensity`.
-     * - `enemy-base-radius` - a number representing the radius of an enemy base, if one were to be placed on the given tile, by default proportional to a constant plus `enemy-base-intensity`. Climate controls ('Moisture' and 'Terrain type' at the bottom of the Terrain tab in the map generator GUI) don't have their own dedicated structures in MapGenSettings. Instead, their values are stored as property expression overrides with long names:
-     * - `control-setting:moisture:frequency:multiplier` - frequency (inverse of scale) multiplier for moisture noise. Default is 1.
-     * - `control-setting:moisture:bias` - global bias for moisture (which normally varies between 0 and 1). Default is 0.
-     * - `control-setting:aux:frequency:multiplier` - frequency (inverse of scale) multiplier for aux (called 'terrain type' in the GUI) noise. Default is 1.
-     * - `control-setting:aux:bias` - global bias for aux/terrain type (which normally varies between 0 and 1). Default is 0. All other MapGenSettings feed into named noise expressions, and therefore placement can be overridden by including the name of a property in this dictionary. The probability and richness functions for placing specific tiles, entities, and decoratives can be overridden by including an entry named `{tile|entity|decorative}:(prototype name):{probability|richness}`.
+     * Overrides for tile property value generators.
      */
-    readonly property_expression_names: Record<string, string>
+    readonly property_expression_names: PropertyExpressionNames
   }
+  /**
+   * All other MapGenSettings feed into named noise expressions, and therefore placement can be overridden by including the name of a property in this dictionary. The probability and richness functions for placing specific tiles, entities, and decoratives can be overridden by including an entry named `{tile|entity|decorative}:(prototype name):{probability|richness}`.
+   *
+   * {@link https://lua-api.factorio.com/latest/concepts.html#PropertyExpressionNames > Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `5`). All other controls can be overridden by a property expression names. Notable properties:}
+   *
+   * {@link https://lua-api.factorio.com/latest/concepts.html#PropertyExpressionNames > Climate controls ('Moisture' and 'Terrain type' at the bottom of the Terrain tab in the map generator GUI) don't have their own dedicated structures in MapGenSettings. Instead, their values are stored as property expression overrides with long names:}
+   */
+  export type PropertyExpressionNames = Record<string, string>
   export interface AdvancedMapGenSettings {
     readonly pollution: PollutionMapSettings
     readonly enemy_evolution: EnemyEvolutionMapSettings
@@ -2637,6 +2771,8 @@ declare module "factorio:runtime" {
   /**
    * A string that specifies how the inputs should be compared
    *
+   * While the API accepts both versions for `"less/greater than or equal to"` and `"not equal"`, it'll always return `"≥"`, `"≤"` or `"≠"` respectively when reading them back.
+   *
    * ## Union members
    * - `"="`: "equal to"
    * - `">"`: "greater than"
@@ -2647,7 +2783,6 @@ declare module "factorio:runtime" {
    * - `"<="`: "lesser than or equal to"
    * - `"≠"`: "not equal to"
    * - `"!="`: "not equal to"
-   * @remarks While the API accepts both versions for `"less/greater than or equal to"` and `"not equal"`, it'll always return `"≥"`, `"≤"` or `"≠"` respectively when reading them back.
    */
   export type ComparatorString = "=" | ">" | "<" | "≥" | ">=" | "≤" | "<=" | "≠" | "!="
   /** @see ComparatorString */
@@ -3185,12 +3320,17 @@ declare module "factorio:runtime" {
    * ## Union members
    * - `string`: The name of the item, which represents a full stack of that item.
    * - {@link ItemStackDefinition}: The detailed definition of an item stack.
-   * @example Both of these lines specify an item stack of one iron plate:
+   * @example
+   * -- Both of these lines specify an item stack of one iron plate
    * {name="iron-plate"}
-   * @example This is a stack of 47 copper plates:
+   * {name="iron-plate", count=1}
+   * @example
+   * -- This is a stack of 47 copper plates
    * {name="copper-plate", count=47}
-   * @example These are both full stacks of iron plates (for iron-plate, a full stack is 100 plates):
+   * @example
+   * These are both full stacks of iron plates (for iron-plate, a full stack is 100 plates)
    * "iron-plate"
+   * {name="iron-plate", count=100}
    */
   export type SimpleItemStack = string | ItemStackDefinition
   /**
@@ -3446,23 +3586,11 @@ declare module "factorio:runtime" {
     | "file"
     | "utility"
   /**
-   * It can be either the name of a {@link import("factorio:prototype").SpritePrototype SpritePrototype} defined in the data stage, or a path in form "type/name".
+   * It can be either the name of a {@link import("factorio:prototype").SpritePrototype SpritePrototype} defined in the data stage, or a path in form "type/name" or "type.name".
    *
    * The validity of a SpritePath can be verified at runtime using {@link LuaGameScript#is_valid_sprite_path LuaGameScript::is_valid_sprite_path}.
    *
-   * The supported types are:
-   * - `"item"` - for example "item/iron-plate" is the icon sprite of iron plate
-   * - `"entity"` - for example "entity/small-biter" is the icon sprite of the small biter
-   * - `"technology"`
-   * - `"recipe"`
-   * - `"item-group"`
-   * - `"fluid"`
-   * - `"tile"`
-   * - `"virtual-signal"`
-   * - `"achievement"`
-   * - `"equipment"`
-   * - `"file"` - path to an image file located inside the current scenario. This file is not preloaded so it will be slower; for frequently used sprites, it is better to define sprite prototype and use it instead.
-   * - `"utility"` - sprite defined in the utility-sprites object, these are the pictures used by the game internally for the UI.
+   * {@link https://lua-api.factorio.com/latest/concepts.html#SpritePath > The supported types are:}
    */
   export type SpritePath =
     | (string & {
@@ -3489,29 +3617,11 @@ declare module "factorio:runtime" {
    *
    * The validity of a SoundPath can be verified at runtime using {@link LuaGameScript#is_valid_sound_path LuaGameScript::is_valid_sound_path}.
    *
-   * The utility and ambient types each contain general use sound prototypes defined by the game itself.
-   * - `"utility"` - Uses {@link import("factorio:prototype").UtilitySounds UtilitySounds}. Example: `"utility/wire_connect_pole"`
-   * - `"ambient"` - Uses {@link import("factorio:prototype").AmbientSound AmbientSound}. Example: `"ambient/resource-deficiency"`
+   * {@link https://lua-api.factorio.com/latest/concepts.html#SoundPath > The utility and ambient types each contain general use sound prototypes defined by the game itself:}
    *
-   * The following types can be combined with any tile name as long as its prototype defines the
+   * {@link https://lua-api.factorio.com/latest/concepts.html#SoundPath > The following types can be combined with any tile name as long as its prototype defines the corresponding sound:}
    *
-   *     corresponding sound.
-   * - `"tile-walking"` - Uses {@link import("factorio:prototype").TilePrototype#walking_sound TilePrototype::walking_sound}. Example: `"tile-walking/concrete"`
-   * - `"tile-mined"` - Uses {@link import("factorio:prototype").TilePrototype#mined_sound TilePrototype::mined_sound}
-   * - `"tile-build-small"` - Uses {@link import("factorio:prototype").TilePrototype#build_sound TilePrototype::build_sound}. Example: `"tile-build-small/concrete"`
-   * - `"tile-build-medium"` - Uses {@link import("factorio:prototype").TilePrototype#build_sound TilePrototype::build_sound}
-   * - `"tile-build-large"` - Uses {@link import("factorio:prototype").TilePrototype#build_sound TilePrototype::build_sound}
-   *
-   * The following types can be combined with any entity name as long as its prototype defines the
-   *
-   *     corresponding sound.
-   * - `"entity-build"` - Uses {@link import("factorio:prototype").EntityPrototype#build_sound Entity::build_sound}. Example: `"entity-build/wooden-chest"`
-   * - `"entity-mined"` - Uses {@link import("factorio:prototype").EntityPrototype#mined_sound Entity::mined_sound}
-   * - `"entity-mining"` - Uses {@link import("factorio:prototype").EntityPrototype#mining_sound Entity::mining_sound}
-   * - `"entity-vehicle_impact"` - Uses {@link import("factorio:prototype").EntityPrototype#vehicle_impact_sound EntityPrototype::vehicle_impact_sound}
-   * - `"entity-rotated"` - Uses {@link import("factorio:prototype").EntityPrototype#rotated_sound EntityPrototype::rotated_sound}
-   * - `"entity-open"` - Uses {@link import("factorio:prototype").EntityPrototype#open_sound Entity::open_sound}
-   * - `"entity-close"` - Uses {@link import("factorio:prototype").EntityPrototype#close_sound Entity::close_sound}
+   * {@link https://lua-api.factorio.com/latest/concepts.html#SoundPath > The following types can be combined with any entity name as long as its prototype defines the corresponding sound:}
    */
   export type SoundPath =
     | (string & {
@@ -3525,11 +3635,12 @@ declare module "factorio:runtime" {
     readonly bonus: float
   }
   /**
-   * @example These are the effects of the vanilla Productivity Module 3 (up to floating point imprecisions):
+   * @example
+   * -- These are the effects of the vanilla Productivity Module 3 (up to floating point imprecisions)
    * {consumption={bonus=0.6},
-   *  speed={bonus=-0.15},
-   *  productivity={bonus=0.06},
-   *  pollution={bonus=0.075}}
+   *   speed={bonus=-0.15},
+   *   productivity={bonus=0.06},
+   *   pollution={bonus=0.075}}
    */
   export interface ModuleEffects {
     readonly consumption?: ModuleEffectValue
@@ -3538,9 +3649,7 @@ declare module "factorio:runtime" {
     readonly pollution?: ModuleEffectValue
   }
   /**
-   * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
-   *
-   * By default, none of these flags are set.
+   * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all. By default, none of these flags are set.
    */
   export type EntityPrototypeFlags = {
     readonly [T in EntityPrototypeFlag]?: true
@@ -3604,9 +3713,7 @@ declare module "factorio:runtime" {
     | "not-in-kill-statistics"
     | "not-in-made-in"
   /**
-   * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
-   *
-   * By default, none of these flags are set.
+   * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all. By default, none of these flags are set.
    */
   export type ItemPrototypeFlags = {
     readonly [T in ItemPrototypeFlag]?: true
@@ -3709,44 +3816,7 @@ declare module "factorio:runtime" {
    * A set of trigger target masks.
    */
   export type TriggerTargetMask = Record<string, boolean>
-  export interface CircularParticleCreationSpecification {
-    /**
-     * Name of the {@link LuaEntityPrototype}.
-     */
-    readonly name: string
-    readonly direction: float
-    readonly direction_deviation: float
-    readonly speed: float
-    readonly speed_deviation: float
-    readonly starting_frame_speed: float
-    readonly starting_frame_speed_deviation: float
-    readonly height: float
-    readonly height_deviation: float
-    readonly vertical_speed: float
-    readonly vertical_speed_deviation: float
-    /**
-     * This vector is a table with `x` and `y` keys instead of an array.
-     */
-    readonly center: MapPosition
-    readonly creation_distance: double
-    readonly creation_distance_orientation: double
-    readonly use_source_position: boolean
-  }
-  export type CircularProjectileCreationSpecification = readonly [_1: RealOrientation, _2: Vector]
-  export interface AttackParameterFluid {
-    /**
-     * Name of the {@link LuaFluidPrototype}.
-     */
-    readonly type: string
-    /**
-     * Multiplier applied to the damage of an attack.
-     */
-    readonly damage_modifier: double
-  }
-  /**
-   * Common attributes to all variants of {@link AttackParameters}.
-   */
-  export interface BaseAttackParameters {
+  export interface AttackParameters {
     /**
      * The type of AttackParameter.
      */
@@ -3803,51 +3873,9 @@ declare module "factorio:runtime" {
     readonly movement_slow_down_cooldown: float
     readonly ammo_type?: AmmoType
     /**
-     * List of the names of compatible {@link LuaAmmoCategoryPrototype LuaAmmoCategoryPrototypes}.
+     * List of the names of compatible
      */
     readonly ammo_categories?: string[]
-  }
-  /**
-   * `"projectile"` variant of {@link AttackParameters}.
-   */
-  export interface ProjectileAttackParameters extends BaseAttackParameters {
-    readonly type: "projectile"
-    readonly projectile_center: Vector
-    readonly projectile_creation_distance: float
-    readonly projectile_orientation_offset: float
-    readonly shell_particle?: CircularParticleCreationSpecification
-    readonly projectile_creation_parameters?: CircularProjectileCreationSpecification[]
-  }
-  /**
-   * `"stream"` variant of {@link AttackParameters}.
-   */
-  export interface StreamAttackParameters extends BaseAttackParameters {
-    readonly type: "stream"
-    readonly gun_barrel_length: float
-    readonly gun_center_shift: GunShift4Way
-    readonly fluid_consumption: float
-    readonly fluids?: AttackParameterFluid[]
-    readonly projectile_creation_parameters?: CircularProjectileCreationSpecification[]
-  }
-  /**
-   * Variants of {@link AttackParameters} with no additional attributes.
-   */
-  export interface OtherAttackParameters extends BaseAttackParameters {
-    readonly type: "beam"
-  }
-  /**
-   * Base attributes: {@link BaseAttackParameters}
-   *
-   * Other attributes may be specified depending on `type`:
-   * - `"projectile"`: {@link ProjectileAttackParameters}
-   * - `"stream"`: {@link StreamAttackParameters}
-   */
-  export type AttackParameters = ProjectileAttackParameters | StreamAttackParameters | OtherAttackParameters
-  export interface GunShift4Way {
-    readonly north: Vector
-    readonly east: Vector
-    readonly south: Vector
-    readonly west: Vector
   }
   export interface BaseCapsuleAction {
     readonly type: "throw" | "equipment-remote" | "use-on-self" | "artillery-remote" | "destroy-cliffs"
@@ -4494,52 +4522,71 @@ declare module "factorio:runtime" {
    */
   export type ScrollPolicy = "never" | "dont-show-but-allow-scrolling" | "always" | "auto" | "auto-and-reserve-space"
   /**
-   * Types `"signal"` and `"item-group"` do not support filters.
-   *
-   * ## Union members
-   * - ItemPrototypeFilter: for type `"item"`
-   * - TilePrototypeFilter: for type `"tile"`
-   * - EntityPrototypeFilter: for type `"entity"`
-   * - FluidPrototypeFilter: for type `"fluid"`
-   * - RecipePrototypeFilter: for type `"recipe"`
-   * - {@link DecorativePrototypeFilter}: for type `"decorative"`
-   * - {@link AchievementPrototypeFilter}: for type `"achievement"`
-   * - {@link EquipmentPrototypeFilter}: for type `"equipment"`
-   * - TechnologyPrototypeFilter: for type `"technology"`
-   * @see PrototypeFilterWrite
-   * @remarks Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
+   * A floating-point number. This is a single-precision floating point number. Whilst Lua only uses double-precision numbers, when a function takes a float, the game engine will immediately convert the double-precision number to single-precision.
    */
-  export type PrototypeFilter = (
-    | ItemPrototypeFilter
-    | TilePrototypeFilter
-    | EntityPrototypeFilter
-    | FluidPrototypeFilter
-    | RecipePrototypeFilter
-    | DecorativePrototypeFilter
-    | AchievementPrototypeFilter
-    | EquipmentPrototypeFilter
-    | TechnologyPrototypeFilter
-  )[]
+  export type float = number
   /**
-   * Write form of {@link PrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * A double-precision floating-point number. This is the same data type as all Lua numbers use.
    */
-  export type PrototypeFilterWrite = readonly (
-    | ItemPrototypeFilterWrite
-    | TilePrototypeFilterWrite
-    | EntityPrototypeFilterWrite
-    | FluidPrototypeFilterWrite
-    | RecipePrototypeFilterWrite
-    | DecorativePrototypeFilter
-    | AchievementPrototypeFilter
-    | EquipmentPrototypeFilter
-    | TechnologyPrototypeFilterWrite
-  )[]
+  export type double = number
+  /**
+   * 32-bit signed integer. Possible values are `-2 147 483 648` to `2 147 483 647`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `int` will floor the given double.
+   */
+  export type int = number
+  /**
+   * 8-bit signed integer. Possible values are `-128` to `127`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `int8` will floor the given double.
+   */
+  export type int8 = number
+  /**
+   * 32-bit unsigned integer. Possible values are `0` to `4 294 967 295`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `uint` will floor the given double.
+   */
+  export type uint = number
+  /**
+   * 8-bit unsigned integer. Possible values are `0` to `255`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `uint8` will floor the given double.
+   */
+  export type uint8 = number
+  /**
+   * 16-bit unsigned integer. Possible values are `0` to `65 535`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `uint16` will floor the given double.
+   */
+  export type uint16 = number
+  /**
+   * 64-bit unsigned integer. Possible values are `0` to `18 446 744 073 709 551 615`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `uint64` will floor the given double.
+   */
+  export type uint64 = number
+  /**
+   * Nil is the type of the value `nil`, whose main property is to be different from any other value. It usually represents the absence of a useful value.
+   */
+  export type nil = undefined
+  /**
+   * Tables are enclosed in curly brackets, like this `{}`.
+   *
+   * Throughout the API docs, the terms "array" and "dictionary" are used. These are fundamentally just {@linkplain http://www.lua.org/pil/2.5.html Lua tables}, but have a limitation on which kind of table keys can be used. An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.
+   */
+  export type table = object
+  /**
+   * Any LuaObject listed on the {@linkplain https://lua-api.factorio.com/latest/classes.html Classes} page.
+   */
+  export interface LuaObject {
+    readonly object_name: string
+  }
   /**
    * Common attributes to all variants of {@link ItemPrototypeFilter}.
    */
   export interface BaseItemPrototypeFilter {
     /**
-     * The condition to filter on. One of `"tool"`, `"mergeable"`, `"item-with-inventory"`, `"selection-tool"`, `"item-with-label"`, `"has-rocket-launch-products"`, `"fuel"`, `"place-result"`, `"burnt-result"`, `"place-as-tile"`, `"placed-as-equipment-result"`, `"name"`, `"type"`, `"flag"`, `"subgroup"`, `"fuel-category"`, `"stack-size"`, `"default-request-amount"`, `"wire-count"`, `"fuel-value"`, `"fuel-acceleration-multiplier"`, `"fuel-top-speed-multiplier"`, `"fuel-emissions-multiplier"`.
+     * The condition to filter on.
      */
     readonly filter:
       | "tool"
@@ -4638,7 +4685,9 @@ declare module "factorio:runtime" {
   /**
    * `"name"` variant of {@link ItemPrototypeFilter}.
    *
-   * For use within nested filters such as the `has-product-item` filter of array[{@link RecipePrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript#item_prototypes LuaGameScript::item_prototypes}.
+   * For use within nested filters such as the `has-product-item` filter of array[{@link RecipePrototypeFilter}].
+   *
+   * To get a specific prototype by name, see {@link LuaGameScript#item_prototypes LuaGameScript::item_prototypes}.
    */
   export interface NameItemPrototypeFilter extends BaseItemPrototypeFilter {
     readonly filter: "name"
@@ -4843,8 +4892,6 @@ declare module "factorio:runtime" {
       | "fuel"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseItemPrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -4909,7 +4956,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseModSettingPrototypeFilter {
     /**
-     * The condition to filter on. One of `"type"`, `"mod"`, `"setting-type"`.
+     * The condition to filter on.
      */
     readonly filter: "type" | "mod" | "setting-type"
     /**
@@ -4929,7 +4976,7 @@ declare module "factorio:runtime" {
     /**
      * The prototype type, or a list of acceptable types.
      */
-    readonly type: string | readonly string[]
+    readonly type: string | string[]
   }
   /**
    * `"mod"` variant of {@link ModSettingPrototypeFilter}.
@@ -4947,13 +4994,11 @@ declare module "factorio:runtime" {
   export interface SettingTypeModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
     readonly filter: "setting-type"
     /**
-     * The setting scope type (`"startup"`, `"runtime-global"`, or `"runtime-per-user"`)
+     * The setting scope type.
      */
     readonly type: "startup" | "runtime-global" | "runtime-per-user"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseModSettingPrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -4970,7 +5015,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseTechnologyPrototypeFilter {
     /**
-     * The condition to filter on. One of `"enabled"`, `"hidden"`, `"upgrade"`, `"visible-when-disabled"`, `"has-effects"`, `"has-prerequisites"`, `"research-unit-ingredient"`, `"unlocks-recipe"`, `"level"`, `"max-level"`, `"time"`.
+     * The condition to filter on.
      */
     readonly filter:
       | "enabled"
@@ -5077,8 +5122,6 @@ declare module "factorio:runtime" {
     readonly filter: "enabled" | "hidden" | "upgrade" | "visible-when-disabled" | "has-effects" | "has-prerequisites"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseTechnologyPrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -5110,7 +5153,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseDecorativePrototypeFilter {
     /**
-     * The condition to filter on. One of `"decal"`, `"autoplace"`, `"collision-mask"`.
+     * The condition to filter on.
      */
     readonly filter: "decal" | "autoplace" | "collision-mask"
     /**
@@ -5129,7 +5172,7 @@ declare module "factorio:runtime" {
     readonly filter: "collision-mask"
     readonly mask: CollisionMask | CollisionMaskWithFlags
     /**
-     * How to filter: `"collides"`, `"layers-equals"`, `"contains-any"` or `"contains-all"`
+     * How to filter.
      */
     readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
   }
@@ -5140,8 +5183,6 @@ declare module "factorio:runtime" {
     readonly filter: "decal" | "autoplace"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseDecorativePrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -5153,7 +5194,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseAchievementPrototypeFilter {
     /**
-     * The condition to filter on. One of `"allowed-without-fight"`, `"type"`.
+     * The condition to filter on.
      */
     readonly filter: "allowed-without-fight" | "type"
     /**
@@ -5182,8 +5223,6 @@ declare module "factorio:runtime" {
     readonly filter: "allowed-without-fight"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseAchievementPrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -5195,7 +5234,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseFluidPrototypeFilter {
     /**
-     * The condition to filter on. One of `"hidden"`, `"name"`, `"subgroup"`, `"default-temperature"`, `"max-temperature"`, `"heat-capacity"`, `"fuel-value"`, `"emissions-multiplier"`, `"gas-temperature"`.
+     * The condition to filter on.
      */
     readonly filter:
       | "hidden"
@@ -5219,7 +5258,9 @@ declare module "factorio:runtime" {
   /**
    * `"name"` variant of {@link FluidPrototypeFilter}.
    *
-   * For use within nested filters such as the `has-product-fluid` filter of array[{@link RecipePrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript#fluid_prototypes LuaGameScript::fluid_prototypes}.
+   * For use within nested filters such as the `has-product-fluid` filter of array[{@link RecipePrototypeFilter}].
+   *
+   * To get a specific prototype by name, see {@link LuaGameScript#fluid_prototypes LuaGameScript::fluid_prototypes}.
    */
   export interface NameFluidPrototypeFilter extends BaseFluidPrototypeFilter {
     readonly filter: "name"
@@ -5359,8 +5400,6 @@ declare module "factorio:runtime" {
     readonly filter: "hidden"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseFluidPrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -5401,7 +5440,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseEquipmentPrototypeFilter {
     /**
-     * The condition to filter on. One of `"item-to-place"`, `"type"`.
+     * The condition to filter on.
      */
     readonly filter: "item-to-place" | "type"
     /**
@@ -5430,8 +5469,6 @@ declare module "factorio:runtime" {
     readonly filter: "item-to-place"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseEquipmentPrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -5443,7 +5480,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseTilePrototypeFilter {
     /**
-     * The condition to filter on. One of `"minable"`, `"autoplace"`, `"blueprintable"`, `"item-to-place"`, `"collision-mask"`, `"walking-speed-modifier"`, `"vehicle-friction-modifier"`, `"decorative-removal-probability"`, `"emissions"`.
+     * The condition to filter on.
      */
     readonly filter:
       | "minable"
@@ -5471,7 +5508,7 @@ declare module "factorio:runtime" {
     readonly filter: "collision-mask"
     readonly mask: CollisionMask | CollisionMaskWithFlags
     /**
-     * How to filter: `"collides"`, `"layers-equals"`, `"contains-any"` or `"contains-all"`
+     * How to filter.
      */
     readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
   }
@@ -5558,8 +5595,6 @@ declare module "factorio:runtime" {
     readonly filter: "minable" | "autoplace" | "blueprintable" | "item-to-place"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseTilePrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -5591,7 +5626,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseRecipePrototypeFilter {
     /**
-     * The condition to filter on. One of `"enabled"`, `"hidden"`, `"hidden-from-flow-stats"`, `"hidden-from-player-crafting"`, `"allow-as-intermediate"`, `"allow-intermediates"`, `"allow-decomposition"`, `"always-show-made-in"`, `"always-show-products"`, `"show-amount-in-title"`, `"has-ingredients"`, `"has-products"`, `"has-ingredient-item"`, `"has-ingredient-fluid"`, `"has-product-item"`, `"has-product-fluid"`, `"subgroup"`, `"category"`, `"energy"`, `"emissions-multiplier"`, `"request-paste-multiplier"`, `"overload-multiplier"`.
+     * The condition to filter on.
      */
     readonly filter:
       | "enabled"
@@ -5644,8 +5679,6 @@ declare module "factorio:runtime" {
   }
   /**
    * `"has-ingredient-fluid"` variant of {@link RecipePrototypeFilter}.
-   *
-   * Usage example:
    *
    * ```
    * -- selects recipes that consume sulfuric acid
@@ -5826,8 +5859,6 @@ declare module "factorio:runtime" {
       | "has-products"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseRecipePrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -5874,7 +5905,7 @@ declare module "factorio:runtime" {
    */
   export interface BaseEntityPrototypeFilter {
     /**
-     * The condition to filter on. One of `"flying-robot"`, `"robot-with-logistics-interface"`, `"rail"`, `"ghost"`, `"explosion"`, `"vehicle"`, `"crafting-machine"`, `"rolling-stock"`, `"turret"`, `"transport-belt-connectable"`, `"wall-connectable"`, `"buildable"`, `"placable-in-editor"`, `"clonable"`, `"selectable"`, `"hidden"`, `"entity-with-health"`, `"building"`, `"fast-replaceable"`, `"uses-direction"`, `"minable"`, `"circuit-connectable"`, `"autoplace"`, `"blueprintable"`, `"item-to-place"`, `"name"`, `"type"`, `"collision-mask"`, `"flag"`, `"build-base-evolution-requirement"`, `"selection-priority"`, `"emissions"`, `"crafting-category"`.
+     * The condition to filter on.
      */
     readonly filter:
       | "flying-robot"
@@ -5922,7 +5953,9 @@ declare module "factorio:runtime" {
   /**
    * `"name"` variant of {@link EntityPrototypeFilter}.
    *
-   * For use within nested filters such as the `place-result` filter of array[{@link ItemPrototypeFilter}]. To get a specific prototype by name, see {@link LuaGameScript#entity_prototypes LuaGameScript::entity_prototypes}.
+   * For use within nested filters such as the `place-result` filter of array[{@link ItemPrototypeFilter}].
+   *
+   * To get a specific prototype by name, see {@link LuaGameScript#entity_prototypes LuaGameScript::entity_prototypes}.
    */
   export interface NameEntityPrototypeFilter extends BaseEntityPrototypeFilter {
     readonly filter: "name"
@@ -6073,8 +6106,6 @@ declare module "factorio:runtime" {
       | "item-to-place"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseEntityPrototypeFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -6111,90 +6142,17 @@ declare module "factorio:runtime" {
     | CraftingCategoryEntityPrototypeFilter
     | OtherEntityPrototypeFilter
   /**
-   * Used to filter out irrelevant event callbacks in a performant way.
-   *
-   * ## Union members
-   * - {@link LuaEntityClonedEventFilter}
-   * - LuaEntityDamagedEventFilter
-   * - {@link LuaPlayerMinedEntityEventFilter}
-   * - {@link LuaPreRobotMinedEntityEventFilter}
-   * - {@link LuaRobotBuiltEntityEventFilter}
-   * - {@link LuaPostEntityDiedEventFilter}
-   * - {@link LuaEntityDiedEventFilter}
-   * - {@link LuaScriptRaisedReviveEventFilter}
-   * - {@link LuaPrePlayerMinedEntityEventFilter}
-   * - {@link LuaEntityMarkedForDeconstructionEventFilter}
-   * - {@link LuaPreGhostDeconstructedEventFilter}
-   * - {@link LuaPreGhostUpgradedEventFilter}
-   * - {@link LuaEntityDeconstructionCancelledEventFilter}
-   * - {@link LuaEntityMarkedForUpgradeEventFilter}
-   * - {@link LuaSectorScannedEventFilter}
-   * - {@link LuaRobotMinedEntityEventFilter}
-   * - {@link LuaScriptRaisedDestroyEventFilter}
-   * - {@link LuaUpgradeCancelledEventFilter}
-   * - {@link LuaScriptRaisedBuiltEventFilter}
-   * - {@link LuaPlayerBuiltEntityEventFilter}
-   * - {@link LuaPlayerRepairedEntityEventFilter}
-   * @see EventFilterWrite
-   * @remarks Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
-   */
-  export type EventFilter = (
-    | LuaEntityClonedEventFilter
-    | LuaEntityDamagedEventFilter
-    | LuaPlayerMinedEntityEventFilter
-    | LuaPreRobotMinedEntityEventFilter
-    | LuaRobotBuiltEntityEventFilter
-    | LuaPostEntityDiedEventFilter
-    | LuaEntityDiedEventFilter
-    | LuaScriptRaisedReviveEventFilter
-    | LuaPrePlayerMinedEntityEventFilter
-    | LuaEntityMarkedForDeconstructionEventFilter
-    | LuaPreGhostDeconstructedEventFilter
-    | LuaPreGhostUpgradedEventFilter
-    | LuaEntityDeconstructionCancelledEventFilter
-    | LuaEntityMarkedForUpgradeEventFilter
-    | LuaSectorScannedEventFilter
-    | LuaRobotMinedEntityEventFilter
-    | LuaScriptRaisedDestroyEventFilter
-    | LuaUpgradeCancelledEventFilter
-    | LuaScriptRaisedBuiltEventFilter
-    | LuaPlayerBuiltEntityEventFilter
-    | LuaPlayerRepairedEntityEventFilter
-  )[]
-  /**
-   * Write form of {@link EventFilter}, where table-or-array concepts are allowed to take an array form.
-   */
-  export type EventFilterWrite = readonly (
-    | LuaEntityClonedEventFilter
-    | LuaEntityDamagedEventFilterWrite
-    | LuaPlayerMinedEntityEventFilter
-    | LuaPreRobotMinedEntityEventFilter
-    | LuaRobotBuiltEntityEventFilter
-    | LuaPostEntityDiedEventFilter
-    | LuaEntityDiedEventFilter
-    | LuaScriptRaisedReviveEventFilter
-    | LuaPrePlayerMinedEntityEventFilter
-    | LuaEntityMarkedForDeconstructionEventFilter
-    | LuaPreGhostDeconstructedEventFilter
-    | LuaPreGhostUpgradedEventFilter
-    | LuaEntityDeconstructionCancelledEventFilter
-    | LuaEntityMarkedForUpgradeEventFilter
-    | LuaSectorScannedEventFilter
-    | LuaRobotMinedEntityEventFilter
-    | LuaScriptRaisedDestroyEventFilter
-    | LuaUpgradeCancelledEventFilter
-    | LuaScriptRaisedBuiltEventFilter
-    | LuaPlayerBuiltEntityEventFilter
-    | LuaPlayerRepairedEntityEventFilter
-  )[]
-  /**
    * Common attributes to all variants of {@link LuaScriptRaisedReviveEventFilter}.
    */
   export interface BaseScriptRaisedReviveEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -6206,10 +6164,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -6225,7 +6179,7 @@ declare module "factorio:runtime" {
   export interface TypeScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -6235,7 +6189,7 @@ declare module "factorio:runtime" {
   export interface NameScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -6245,7 +6199,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -6255,7 +6209,7 @@ declare module "factorio:runtime" {
   export interface GhostNameScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -6277,8 +6231,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseScriptRaisedReviveEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -6298,9 +6250,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseEntityDiedEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -6312,10 +6268,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -6331,7 +6283,7 @@ declare module "factorio:runtime" {
   export interface TypeEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -6341,7 +6293,7 @@ declare module "factorio:runtime" {
   export interface NameEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -6351,7 +6303,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -6361,7 +6313,7 @@ declare module "factorio:runtime" {
   export interface GhostNameEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -6383,8 +6335,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseEntityDiedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -6404,9 +6354,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseEntityMarkedForDeconstructionEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -6418,10 +6372,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -6437,7 +6387,7 @@ declare module "factorio:runtime" {
   export interface TypeEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -6447,7 +6397,7 @@ declare module "factorio:runtime" {
   export interface NameEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -6458,7 +6408,7 @@ declare module "factorio:runtime" {
     extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -6469,7 +6419,7 @@ declare module "factorio:runtime" {
     extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -6491,8 +6441,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseEntityMarkedForDeconstructionEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -6512,9 +6460,13 @@ declare module "factorio:runtime" {
    */
   export interface BasePreGhostDeconstructedEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -6526,10 +6478,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -6545,7 +6493,7 @@ declare module "factorio:runtime" {
   export interface TypePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -6555,7 +6503,7 @@ declare module "factorio:runtime" {
   export interface NamePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -6565,7 +6513,7 @@ declare module "factorio:runtime" {
   export interface GhostTypePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -6575,7 +6523,7 @@ declare module "factorio:runtime" {
   export interface GhostNamePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -6597,8 +6545,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BasePreGhostDeconstructedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -6618,9 +6564,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseScriptRaisedDestroyEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -6632,10 +6582,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -6651,7 +6597,7 @@ declare module "factorio:runtime" {
   export interface TypeScriptRaisedDestroyEventFilter extends BaseScriptRaisedDestroyEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -6661,7 +6607,7 @@ declare module "factorio:runtime" {
   export interface NameScriptRaisedDestroyEventFilter extends BaseScriptRaisedDestroyEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -6671,7 +6617,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeScriptRaisedDestroyEventFilter extends BaseScriptRaisedDestroyEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -6681,7 +6627,7 @@ declare module "factorio:runtime" {
   export interface GhostNameScriptRaisedDestroyEventFilter extends BaseScriptRaisedDestroyEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -6703,8 +6649,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseScriptRaisedDestroyEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -6724,9 +6668,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseUpgradeCancelledEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -6738,10 +6686,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -6757,7 +6701,7 @@ declare module "factorio:runtime" {
   export interface TypeUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -6767,7 +6711,7 @@ declare module "factorio:runtime" {
   export interface NameUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -6777,7 +6721,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -6787,7 +6731,7 @@ declare module "factorio:runtime" {
   export interface GhostNameUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -6809,8 +6753,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseUpgradeCancelledEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -6830,9 +6772,13 @@ declare module "factorio:runtime" {
    */
   export interface BasePlayerRepairedEntityEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -6844,10 +6790,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -6863,7 +6805,7 @@ declare module "factorio:runtime" {
   export interface TypePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -6873,7 +6815,7 @@ declare module "factorio:runtime" {
   export interface NamePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -6883,7 +6825,7 @@ declare module "factorio:runtime" {
   export interface GhostTypePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -6893,7 +6835,7 @@ declare module "factorio:runtime" {
   export interface GhostNamePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -6915,8 +6857,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BasePlayerRepairedEntityEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -6936,9 +6876,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseScriptRaisedTeleportedEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -6950,10 +6894,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -6969,7 +6909,7 @@ declare module "factorio:runtime" {
   export interface TypeScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -6979,7 +6919,7 @@ declare module "factorio:runtime" {
   export interface NameScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -6989,7 +6929,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -6999,7 +6939,7 @@ declare module "factorio:runtime" {
   export interface GhostNameScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7021,8 +6961,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseScriptRaisedTeleportedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7042,9 +6980,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseEntityMarkedForUpgradeEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7056,10 +6998,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -7075,7 +7013,7 @@ declare module "factorio:runtime" {
   export interface TypeEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7085,7 +7023,7 @@ declare module "factorio:runtime" {
   export interface NameEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7095,7 +7033,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -7105,7 +7043,7 @@ declare module "factorio:runtime" {
   export interface GhostNameEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7127,8 +7065,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseEntityMarkedForUpgradeEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7148,7 +7084,7 @@ declare module "factorio:runtime" {
    */
   export interface BasePostEntityDiedEventFilter {
     /**
-     * The condition to filter on. Can only be `"type"`.
+     * The condition to filter on.
      */
     readonly filter: "type"
     /**
@@ -7166,13 +7102,11 @@ declare module "factorio:runtime" {
   export interface TypePostEntityDiedEventFilter extends BasePostEntityDiedEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BasePostEntityDiedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7184,9 +7118,13 @@ declare module "factorio:runtime" {
    */
   export interface BasePreRobotMinedEntityEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7198,10 +7136,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -7217,7 +7151,7 @@ declare module "factorio:runtime" {
   export interface TypePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7227,7 +7161,7 @@ declare module "factorio:runtime" {
   export interface NamePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7237,7 +7171,7 @@ declare module "factorio:runtime" {
   export interface GhostTypePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -7247,7 +7181,7 @@ declare module "factorio:runtime" {
   export interface GhostNamePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7269,8 +7203,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BasePreRobotMinedEntityEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7290,9 +7222,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseEntityClonedEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7304,10 +7240,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -7323,7 +7255,7 @@ declare module "factorio:runtime" {
   export interface TypeEntityClonedEventFilter extends BaseEntityClonedEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7333,7 +7265,7 @@ declare module "factorio:runtime" {
   export interface NameEntityClonedEventFilter extends BaseEntityClonedEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7343,7 +7275,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeEntityClonedEventFilter extends BaseEntityClonedEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -7353,7 +7285,7 @@ declare module "factorio:runtime" {
   export interface GhostNameEntityClonedEventFilter extends BaseEntityClonedEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7375,8 +7307,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseEntityClonedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7396,9 +7326,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseScriptRaisedBuiltEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7410,10 +7344,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -7429,7 +7359,7 @@ declare module "factorio:runtime" {
   export interface TypeScriptRaisedBuiltEventFilter extends BaseScriptRaisedBuiltEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7439,7 +7369,7 @@ declare module "factorio:runtime" {
   export interface NameScriptRaisedBuiltEventFilter extends BaseScriptRaisedBuiltEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7449,7 +7379,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeScriptRaisedBuiltEventFilter extends BaseScriptRaisedBuiltEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -7459,7 +7389,7 @@ declare module "factorio:runtime" {
   export interface GhostNameScriptRaisedBuiltEventFilter extends BaseScriptRaisedBuiltEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7481,8 +7411,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseScriptRaisedBuiltEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7502,9 +7430,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseRobotMinedEntityEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7516,10 +7448,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -7535,7 +7463,7 @@ declare module "factorio:runtime" {
   export interface TypeRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7545,7 +7473,7 @@ declare module "factorio:runtime" {
   export interface NameRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7555,7 +7483,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -7565,7 +7493,7 @@ declare module "factorio:runtime" {
   export interface GhostNameRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7587,8 +7515,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseRobotMinedEntityEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7608,9 +7534,13 @@ declare module "factorio:runtime" {
    */
   export interface BasePrePlayerMinedEntityEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7622,10 +7552,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -7641,7 +7567,7 @@ declare module "factorio:runtime" {
   export interface TypePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7651,7 +7577,7 @@ declare module "factorio:runtime" {
   export interface NamePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7661,7 +7587,7 @@ declare module "factorio:runtime" {
   export interface GhostTypePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -7671,7 +7597,7 @@ declare module "factorio:runtime" {
   export interface GhostNamePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7693,8 +7619,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BasePrePlayerMinedEntityEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7714,9 +7638,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseRobotBuiltEntityEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`, `"force"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7728,10 +7656,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
       | "force"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
@@ -7748,7 +7672,7 @@ declare module "factorio:runtime" {
   export interface TypeRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7758,7 +7682,7 @@ declare module "factorio:runtime" {
   export interface NameRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7768,7 +7692,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -7778,7 +7702,7 @@ declare module "factorio:runtime" {
   export interface GhostNameRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7810,8 +7734,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseRobotBuiltEntityEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7833,9 +7755,13 @@ declare module "factorio:runtime" {
    */
   export interface BasePreGhostUpgradedEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7847,10 +7773,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -7866,7 +7788,7 @@ declare module "factorio:runtime" {
   export interface TypePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7876,7 +7798,7 @@ declare module "factorio:runtime" {
   export interface NamePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7886,7 +7808,7 @@ declare module "factorio:runtime" {
   export interface GhostTypePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -7896,7 +7818,7 @@ declare module "factorio:runtime" {
   export interface GhostNamePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -7918,8 +7840,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BasePreGhostUpgradedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -7939,9 +7859,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseEntityDeconstructionCancelledEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -7953,10 +7877,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -7972,7 +7892,7 @@ declare module "factorio:runtime" {
   export interface TypeEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -7982,7 +7902,7 @@ declare module "factorio:runtime" {
   export interface NameEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -7993,7 +7913,7 @@ declare module "factorio:runtime" {
     extends BaseEntityDeconstructionCancelledEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -8004,7 +7924,7 @@ declare module "factorio:runtime" {
     extends BaseEntityDeconstructionCancelledEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -8026,8 +7946,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseEntityDeconstructionCancelledEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -8047,9 +7965,13 @@ declare module "factorio:runtime" {
    */
   export interface BasePlayerBuiltEntityEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`, `"force"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -8061,10 +7983,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
       | "force"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
@@ -8081,7 +7999,7 @@ declare module "factorio:runtime" {
   export interface TypePlayerBuiltEntityEventFilter extends BasePlayerBuiltEntityEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -8091,7 +8009,7 @@ declare module "factorio:runtime" {
   export interface NamePlayerBuiltEntityEventFilter extends BasePlayerBuiltEntityEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -8101,7 +8019,7 @@ declare module "factorio:runtime" {
   export interface GhostTypePlayerBuiltEntityEventFilter extends BasePlayerBuiltEntityEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -8111,7 +8029,7 @@ declare module "factorio:runtime" {
   export interface GhostNamePlayerBuiltEntityEventFilter extends BasePlayerBuiltEntityEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -8143,8 +8061,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BasePlayerBuiltEntityEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -8166,9 +8082,13 @@ declare module "factorio:runtime" {
    */
   export interface BasePlayerMinedEntityEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -8180,10 +8100,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -8199,7 +8115,7 @@ declare module "factorio:runtime" {
   export interface TypePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -8209,7 +8125,7 @@ declare module "factorio:runtime" {
   export interface NamePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -8219,7 +8135,7 @@ declare module "factorio:runtime" {
   export interface GhostTypePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -8229,7 +8145,7 @@ declare module "factorio:runtime" {
   export interface GhostNamePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -8251,8 +8167,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BasePlayerMinedEntityEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -8272,9 +8186,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseEntityDamagedEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`, `"original-damage-amount"`, `"final-damage-amount"`, `"damage-type"`, `"final-health"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -8286,10 +8204,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
       | "original-damage-amount"
       | "final-damage-amount"
       | "damage-type"
@@ -8309,7 +8223,7 @@ declare module "factorio:runtime" {
   export interface TypeEntityDamagedEventFilter extends BaseEntityDamagedEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -8319,7 +8233,7 @@ declare module "factorio:runtime" {
   export interface NameEntityDamagedEventFilter extends BaseEntityDamagedEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -8329,7 +8243,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeEntityDamagedEventFilter extends BaseEntityDamagedEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -8339,7 +8253,7 @@ declare module "factorio:runtime" {
   export interface GhostNameEntityDamagedEventFilter extends BaseEntityDamagedEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -8387,7 +8301,7 @@ declare module "factorio:runtime" {
   export interface DamageTypeEntityDamagedEventFilter extends BaseEntityDamagedEventFilter {
     readonly filter: "damage-type"
     /**
-     * A {@link LuaDamagePrototype} name
+     * A {@link LuaDamagePrototype} name.
      */
     readonly type: EntityType
   }
@@ -8428,8 +8342,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseEntityDamagedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
@@ -8470,9 +8382,13 @@ declare module "factorio:runtime" {
    */
   export interface BaseSectorScannedEventFilter {
     /**
-     * The condition to filter on. One of `"ghost"`, `"rail"`, `"rail-signal"`, `"rolling-stock"`, `"robot-with-logistics-interface"`, `"vehicle"`, `"turret"`, `"crafting-machine"`, `"wall-connectable"`, `"transport-belt-connectable"`, `"circuit-network-connectable"`, `"type"`, `"name"`, `"ghost_type"`, `"ghost_name"`.
+     * The condition to filter on.
      */
     readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
       | "ghost"
       | "rail"
       | "rail-signal"
@@ -8484,10 +8400,6 @@ declare module "factorio:runtime" {
       | "wall-connectable"
       | "transport-belt-connectable"
       | "circuit-network-connectable"
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -8503,7 +8415,7 @@ declare module "factorio:runtime" {
   export interface TypeSectorScannedEventFilter extends BaseSectorScannedEventFilter {
     readonly filter: "type"
     /**
-     * The prototype type
+     * The prototype type.
      */
     readonly type: EntityType
   }
@@ -8513,7 +8425,7 @@ declare module "factorio:runtime" {
   export interface NameSectorScannedEventFilter extends BaseSectorScannedEventFilter {
     readonly filter: "name"
     /**
-     * The prototype name
+     * The prototype name.
      */
     readonly name: string
   }
@@ -8523,7 +8435,7 @@ declare module "factorio:runtime" {
   export interface GhostTypeSectorScannedEventFilter extends BaseSectorScannedEventFilter {
     readonly filter: "ghost_type"
     /**
-     * The ghost prototype type
+     * The ghost prototype type.
      */
     readonly type: EntityType
   }
@@ -8533,7 +8445,7 @@ declare module "factorio:runtime" {
   export interface GhostNameSectorScannedEventFilter extends BaseSectorScannedEventFilter {
     readonly filter: "ghost_name"
     /**
-     * The ghost prototype name
+     * The ghost prototype name.
      */
     readonly name: string
   }
@@ -8555,8 +8467,6 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Depending on the value of `filter`, the table may take additional fields. `filter` may be one of the following:
-   *
    * Base attributes: {@link BaseSectorScannedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:

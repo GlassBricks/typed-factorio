@@ -2432,7 +2432,7 @@ declare module "factorio:prototype" {
     trigger_effect?: TriggerEffect
     autoplace?: AutoplaceSpecification
     /**
-     * **Default:** `"doodad-layer"`
+     * **Default:** ``{"doodad-layer"}``
      */
     collision_mask?: CollisionMask
   }
@@ -2492,7 +2492,7 @@ declare module "factorio:prototype" {
      * @example
      * included = "solar-panel"
      */
-    included: EntityID | readonly EntityID[]
+    included?: EntityID | readonly EntityID[]
     /**
      * **Default:** `false`
      */
@@ -3041,12 +3041,14 @@ declare module "factorio:prototype" {
      * **Default:** `"automatic"`
      *
      * Whether this entity should remove decoratives that collide with it when this entity is built. When set to "automatic", if the entity type is considered {@link import("factorio:runtime").LuaEntityPrototype#is_building a building} (e.g. an assembling machine or a wall) it will remove decoratives.
+     *
+     * Using boolean values for this property is deprecated, however they have the same meaning as the corresponding strings.
      */
-    remove_decoratives?: "automatic" | "true" | "false"
+    remove_decoratives?: "automatic" | "true" | "false" | true | false
     /**
      * **Default:** `0`
      *
-     * Amount of emissions created (positive number) or cleaned (negative number) every second by the entity. This is passive, and it is independent concept of the emissions of machines, these are created actively depending on the power consumption. Currently used just for trees.
+     * Amount of emissions created (positive number) or cleaned (negative number) every second by the entity. This is passive and currently used just for trees and fires. This is independent of the {@link BaseEnergySource#emissions_per_minute emissions of energy sources} used by machines, which are created actively depending on the power consumption.
      * @example
      * emissions_per_second = -0.001 -- cleaning effect of big tree
      */
@@ -3288,6 +3290,8 @@ declare module "factorio:prototype" {
     healing_per_tick?: float
     /**
      * **Default:** `1`
+     *
+     * Multiplier of {@link RepairToolPrototype#speed RepairToolPrototype::speed} for this entity prototype.
      */
     repair_speed_modifier?: float
     /**
@@ -3332,6 +3336,8 @@ declare module "factorio:prototype" {
     attack_reaction?: AttackReactionItem | readonly AttackReactionItem[]
     /**
      * **Default:** `Utility sound defaultManualRepair`
+     *
+     * Played when this entity is repaired with a {@link RepairToolPrototype}.
      */
     repair_sound?: Sound
     /**
@@ -7240,7 +7246,7 @@ declare module "factorio:prototype" {
      *
      * Can be set to an empty table to create a recipe that produces nothing. Duplicate results, e.g. two entries with the same name, are allowed.
      *
-     * Mandatory if neither `normal` nor `expensive` are defined.
+     * Only loaded if neither `normal` nor `expensive` are defined.
      * @example
      * results = {
      *   {type="fluid", name="heavy-oil", amount=3},
@@ -7259,7 +7265,7 @@ declare module "factorio:prototype" {
     /**
      * The item created by this recipe. Must be the name of an {@link ItemPrototype item}, such as `"iron-gear-wheel"`.
      *
-     * Only loaded if neither `results`, `normal` nor `expensive` are defined.
+     * Only loaded, and mandatory if neither `results`, `normal` nor `expensive` are defined.
      */
     result?: ItemID
     /**
@@ -7408,10 +7414,15 @@ declare module "factorio:prototype" {
     unlock_results?: bool
   }
   /**
-   * A {@linkplain https://wiki.factorio.com/Repair_pack repair pack}.
+   * A {@linkplain https://wiki.factorio.com/Repair_pack repair pack}. Using the tool decreases durability to restore entity health.
    */
   export interface RepairToolPrototype extends ToolPrototype {
     type: "repair-tool"
+    /**
+     * Entity health repaired per used {@link ToolPrototype#durability ToolPrototype::durability}. E.g. a repair tool with 5 durability and a repair speed of 2 will restore 10 health.
+     *
+     * This is then multiplied by the {@link EntityWithHealthPrototype#repair_speed_modifier EntityWithHealthPrototype::repair_speed_modifier} of the entity.
+     */
     speed: float
     /**
      * This does nothing, it is never triggered.
@@ -7622,13 +7633,13 @@ declare module "factorio:prototype" {
     /**
      * **Default:** `0`
      *
-     * Must be positive.
+     * Must be greater than or equal to `0`.
      */
     tree_removal_probability?: double
     /**
      * **Default:** `1`
      *
-     * Must be positive.
+     * Must be greater than or equal to `0`.
      */
     cliff_removal_probability?: double
     /**

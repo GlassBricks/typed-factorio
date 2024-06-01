@@ -316,7 +316,7 @@ function addOtherVariant(
   variants: WithVariantParameterGroups,
   allVariants: Set<string> | undefined,
 ): void {
-  const otherTypes = variants.variant_parameter_groups!.find((x) => x.name === "Other types")
+  const otherTypes = variants.variant_parameter_groups!.find((x) => x.name === "OtherTypes")
   if (otherTypes) {
     otherTypes.order = variants.variant_parameter_groups!.length + 1
     otherTypes.name = "Other"

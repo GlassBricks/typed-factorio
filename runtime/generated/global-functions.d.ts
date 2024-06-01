@@ -18,11 +18,11 @@ declare global {
    *
    * ```
    * local function size(t)
-   *     local count = 0
-   *     for k,v in pairs(t) do
-   *         count = count + 1
-   *     end
-   *     return count
+   *   local count = 0
+   *   for k,v in pairs(t) do
+   *     count = count + 1
+   *   end
+   *   return count
    * end
    * ```
    *

@@ -77,9 +77,8 @@ export function finalizeConceptUsageAnalysis(context: RuntimeGenerationContext):
   }
 }
 
-export function recordConceptDependencies(context: RuntimeGenerationContext, concept: Concept): void {
+export function analyzeConcept(context: RuntimeGenerationContext, concept: Concept): void {
   analyzeTypeWorker(concept.type)
-
   function analyzeTypeWorker(type: Type): void {
     if (typeof type === "string") {
       const referencedConcept = context.concepts.get(type)
@@ -96,7 +95,7 @@ export function recordConceptDependencies(context: RuntimeGenerationContext, con
         return analyzeTypeWorker(type.value)
       case "literal":
       case "builtin":
-        return
+        return preprocessBuiltin()
       case "union":
         return type.options.forEach(analyzeTypeWorker)
       case "function":
@@ -115,6 +114,13 @@ export function recordConceptDependencies(context: RuntimeGenerationContext, con
       default:
         assertNever(type)
     }
+  }
+
+  function preprocessBuiltin(): void {
+    if (concept.name === "boolean" || concept.name === "string" || concept.name === "number") return
+    const existing = context.manualDefs.getDeclaration(concept.name)
+    if (existing?.kind === "type" && existing.node.type.kind === ts.SyntaxKind.NumberKeyword)
+      context.numericTypes.add(concept.name)
   }
 }
 

@@ -135,9 +135,10 @@ declare module "factorio:runtime" {
     help(): string
     /**
      * This arithmetic combinator's parameters.
-     * @remarks Writing `nil` clears the combinator's parameters.
+     *
+     * Writing `nil` clears the combinator's parameters.
      */
-    parameters: ArithmeticCombinatorParameters
+    parameters: ArithmeticCombinatorParameters | nil
     /**
      * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
      */
@@ -188,13 +189,17 @@ declare module "factorio:runtime" {
    */
   export interface LuaBootstrap {
     /**
-     * Register a function to be run on mod initialization. This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@linkplain https://lua-api.factorio.com/latest/global.html global} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
+     * Register a function to be run on mod initialization.
+     *
+     * This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@linkplain https://lua-api.factorio.com/latest/global.html global} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
+     *
+     * For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/data-lifecycle.html Data Lifecycle} page.
      * @param handler The handler for this event. Passing `nil` will unregister it.
-     * @example Initialize a `players` table in `global` for later use.
+     * @example
+     * -- Initialize a `players` table in `global` for later use
      * script.on_init(function()
      *   global.players = {}
      * end)
-     * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/data-lifecycle.html Data Lifecycle} page.
      */
     on_init(handler: (() => void) | nil): void
     /**
@@ -203,19 +208,26 @@ declare module "factorio:runtime" {
      * It gives the mod the opportunity to rectify potential differences in local state introduced by the save/load cycle. Doing anything other than the following three will lead to desyncs, breaking multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@linkplain https://lua-api.factorio.com/latest/global.html global} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
      *
      * The only legitimate uses of this event are these:
+     *
      * - Re-setup {@linkplain https://www.lua.org/pil/13.html metatables} as they are not persisted through the save/load cycle.
+     *
      * - Re-setup conditional event handlers, meaning subscribing to an event only when some condition is met to save processing time.
+     *
      * - Create local references to data stored in the {@linkplain https://lua-api.factorio.com/latest/global.html global} table.
      *
      * For all other purposes, {@link LuaBootstrap#on_init LuaBootstrap::on_init}, {@link LuaBootstrap#on_configuration_changed LuaBootstrap::on_configuration_changed} or {@linkplain https://lua-api.factorio.com/latest/migrations.html migrations} should be used instead.
+     *
+     * For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/data-lifecycle.html Data Lifecycle} page.
      * @param handler The handler for this event. Passing `nil` will unregister it.
-     * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/data-lifecycle.html Data Lifecycle} page.
      */
     on_load(handler: (() => void) | nil): void
     /**
-     * Register a function to be run when mod configuration changes. This is called when the game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, when any prototypes have been added or removed, or when a migration was applied. It allows the mod to make any changes it deems appropriate to both the data structures in its {@linkplain https://lua-api.factorio.com/latest/global.html global} table or to the game state through {@link LuaGameScript}.
+     * Register a function to be run when mod configuration changes.
+     *
+     * This is called when the game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, when any prototypes have been added or removed, or when a migration was applied. It allows the mod to make any changes it deems appropriate to both the data structures in its {@linkplain https://lua-api.factorio.com/latest/global.html global} table or to the game state through {@link LuaGameScript}.
+     *
+     * For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/data-lifecycle.html Data Lifecycle} page.
      * @param handler The handler for this event. Passing `nil` will unregister it.
-     * @remarks For more context, refer to the {@linkplain https://lua-api.factorio.com/latest/data-lifecycle.html Data Lifecycle} page.
      */
     on_configuration_changed(handler: ((arg1: ConfigurationChangedData) => void) | nil): void
     /**
@@ -223,10 +235,12 @@ declare module "factorio:runtime" {
      * @param event The event(s) or custom-input to invoke the handler on.
      * @param handler The handler for this event. Passing `nil` will unregister it.
      * @param filters The filters for this event. Can only be used when registering for individual events.
-     * @example Register for the {@link OnTickEvent on_tick} event to print the current tick to console each tick.
+     * @example
+     * -- Register for the on_tick event to print the current tick to console each tick
      * script.on_event(defines.events.on_tick,
      * function(event) game.print(event.tick) end)
-     * @example Register for the {@link OnBuiltEntityEvent on_built_entity} event, limiting it to only be received when a `"fast-inserter"` is built.
+     * @example
+     * -- Register for the on_built_entity event, limiting it to only be received when a `"fast-inserter"` is built
      * script.on_event(defines.events.on_built_entity,
      * function(event) game.print("Gotta go fast!") end,
      * {{filter = "name", name = "fast-inserter"}})
@@ -245,24 +259,41 @@ declare module "factorio:runtime" {
      */
     on_nth_tick(tick: uint | readonly uint[] | nil, handler: ((arg1: NthTickEventData) => void) | nil): void
     /**
-     * Registers an entity so that after it's destroyed, {@link OnEntityDestroyedEvent on_entity_destroyed} is called. Once an entity is registered, it stays registered until it is actually destroyed, even through save/load cycles. The registration is global across all mods, meaning once one mod registers an entity, all mods listening to {@link OnEntityDestroyedEvent on_entity_destroyed} will receive the event when it is destroyed. Registering the same entity multiple times will still only fire the destruction event once, and will return the same registration number.
+     * Registers an entity so that after it's destroyed, {@link OnEntityDestroyedEvent on_entity_destroyed} is called.
+     *
+     * Once an entity is registered, it stays registered until it is actually destroyed, even through save/load cycles. The registration is global across all mods, meaning once one mod registers an entity, all mods listening to {@link OnEntityDestroyedEvent on_entity_destroyed} will receive the event when it is destroyed. Registering the same entity multiple times will still only fire the destruction event once, and will return the same registration number.
+     *
+     * Depending on when a given entity is destroyed, {@link OnEntityDestroyedEvent on_entity_destroyed} will either be fired at the end of the current tick or at the end of the next tick.
      * @param entity The entity to register.
      * @returns The registration number. It is used to identify the entity in the {@link OnEntityDestroyedEvent on_entity_destroyed} event.
-     * @remarks Depending on when a given entity is destroyed, {@link OnEntityDestroyedEvent on_entity_destroyed} will either be fired at the end of the current tick or at the end of the next tick.
      */
     register_on_entity_destroyed(entity: LuaEntity): RegistrationNumber
     /**
-     * Register a metatable to have linkage recorded and restored when saving/loading. The metatable itself will not be saved. Instead, only the linkage to a registered metatable is saved, and the metatable registered under that name will be used when loading the table.
-     * @param name The name of this metatable. Names must be unique per mod.
-     * @param metatable The metatable to register.
-     * @example The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in {@linkplain https://lua-api.factorio.com/latest/global.html global}.
+     * Register a metatable to have linkage recorded and restored when saving/loading.
+     *
+     * The metatable itself will not be saved. Instead, only the linkage to a registered metatable is saved, and the metatable registered under that name will be used when loading the table.
+     *
+     * `register_metatable()` can not be used in the console, in event listeners or during a `remote.call()`.
+     *
+     * The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in {@linkplain https://lua-api.factorio.com/latest/global.html global}.
+     *
+     * ```
      * local metatable = {
-     *    __index = function(key)
-     *       return "no value for key " .. key
-     *    end
+     *   __index = function(key)
+     *     return "no value for key " .. key
+     *   end
      * }
      * script.register_metatable("my_metatable", metatable)
-     * @remarks `register_metatable()` can not be used in the console, in event listeners or during a `remote.call()`.
+     * ```
+     *
+     * This previously defined `metatable` can then be set on any table as usual:
+     *
+     * ```
+     * local table = {key="value"}
+     * setmetatable(table, metatable)
+     * ```
+     * @param name The name of this metatable. Names must be unique per mod.
+     * @param metatable The metatable to register.
      */
     register_metatable(name: string, metatable: table): void
     /**
@@ -283,14 +314,26 @@ declare module "factorio:runtime" {
     get_event_order(): string
     /**
      * Sets the filters for the given event. The filters are only retained when set after the actual event registration, because registering for an event with different or no filters will overwrite previously set ones.
+     *
+     * Limit the {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction} event to only be received when a non-ghost entity is marked for deconstruction.
+     *
+     * ```
+     * script.set_event_filter(defines.events.on_marked_for_deconstruction, {{filter = "ghost", invert = true}})
+     * ```
+     *
+     * Limit the {@link OnBuiltEntityEvent on_built_entity} event to only be received when either a `unit` or a `unit-spawner` is built.
+     *
+     * ```
+     * script.set_event_filter(defines.events.on_built_entity, {{filter = "type", type = "unit"}, {filter = "type", type = "unit-spawner"}})
+     * ```
+     *
+     * Limit the {@link OnEntityDamagedEvent on_entity_damaged} event to only be received when a `rail` is damaged by an `acid` attack.
+     *
+     * ```
+     * script.set_event_filter(defines.events.on_entity_damaged, {{filter = "rail"}, {filter = "damage-type", type = "acid", mode = "and"}})
+     * ```
      * @param event ID of the event to filter.
      * @param filters The filters or `nil` to clear them.
-     * @example Limit the {@link OnMarkedForDeconstructionEvent on_marked_for_deconstruction} event to only be received when a non-ghost entity is marked for deconstruction.
-     * script.set_event_filter(defines.events.on_marked_for_deconstruction, {{filter = "ghost", invert = true}})
-     * @example Limit the {@link OnBuiltEntityEvent on_built_entity} event to only be received when either a `unit` or a `unit-spawner` is built.
-     * script.set_event_filter(defines.events.on_built_entity, {{filter = "type", type = "unit"}, {filter = "type", type = "unit-spawner"}})
-     * @example Limit the {@link OnEntityDamagedEvent on_entity_damaged} event to only be received when a `rail` is damaged by an `acid` attack.
-     * script.set_event_filter(defines.events.on_entity_damaged, {{filter = "rail"}, {filter = "damage-type", type = "acid", mode = "and"}})
      */
     set_event_filter<E extends EventId<any, table>>(event: E, filters: E["_filter"][] | nil): void
     /**
@@ -304,21 +347,13 @@ declare module "factorio:runtime" {
      */
     get_prototype_history(type: keyof PrototypeMap, name: string): PrototypeHistory
     /**
-     * Raise an event. Only events generated with {@link LuaBootstrap#generate_event_name LuaBootstrap::generate_event_name} and the following can be raised:
+     * Raise an event. Only events generated with {@link LuaBootstrap#generate_event_name LuaBootstrap::generate_event_name} and the following can be raised.
      *
-     * - {@link OnConsoleChatEvent on_console_chat}
-     * - {@link OnPlayerCraftedItemEvent on_player_crafted_item}
-     * - {@link OnPlayerFastTransferredEvent on_player_fast_transferred}
-     * - {@link OnBiterBaseBuiltEvent on_biter_base_built}
-     * - {@link OnMarketItemPurchasedEvent on_market_item_purchased}
-     * - {@link ScriptRaisedBuiltEvent script_raised_built}
-     * - {@link ScriptRaisedDestroyEvent script_raised_destroy}
-     * - {@link ScriptRaisedReviveEvent script_raised_revive}
-     * - {@link ScriptRaisedTeleportedEvent script_raised_teleported}
-     * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}
+     * {@link https://lua-api.factorio.com/latest/classes/LuaBootstrap.html#LuaBootstrap.raise_event > Events that can be raised manually:}
      * @param event ID of the event to raise.
      * @param data Table with extra data that will be passed to the event handler. Any invalid LuaObjects will silently stop the event from being raised.
-     * @example Raise the {@link OnConsoleChatEvent on_console_chat} event with the desired message 'from' the first player.
+     * @example
+     * -- Raise the on_console_chat event with the desired message 'from' the first player
      * local data = {player_index = 1, message = "Hello friends!"}
      * script.raise_event(defines.events.on_console_chat, data)
      */
@@ -479,6 +514,10 @@ declare module "factorio:runtime" {
       readonly tiles: readonly TileWrite[]
     }): void
     /**
+     * All methods and properties that this object supports.
+     */
+    help(): string
+    /**
      * The name of the mod from the environment this is used in.
      */
     readonly mod_name: string
@@ -509,14 +548,15 @@ declare module "factorio:runtime" {
     }
     /**
      * A dictionary listing the names of all currently active mods and mapping them to their version.
-     * @example This will print the names and versions of all active mods to the console.
+     * @example
+     * -- This will print the names and versions of all active mods to the console.
      * for name, version in pairs(script.active_mods) do
      *   game.print(name .. " version " .. version)
      * end
      */
     readonly active_mods: ActiveMods
     /**
-     * This object's name.
+     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
      */
     readonly object_name: "LuaBootstrap"
   }
@@ -551,19 +591,22 @@ declare module "factorio:runtime" {
     readonly heat_capacity: double
     /**
      * The amount of energy left in the currently-burning fuel item.
-     * @remarks Writing to this will silently do nothing if there's no {@link LuaBurner#currently_burning LuaBurner::currently_burning} set.
+     *
+     * Writing to this will silently do nothing if there's no {@link LuaBurner#currently_burning LuaBurner::currently_burning} set.
      */
     remaining_burning_fuel: double
     /**
      * The currently burning item. Writing `nil` will void the currently burning item without producing a {@link LuaBurner#burnt_result LuaBurner::burnt_result}.
-     * @remarks Writing to this automatically handles correcting {@link LuaBurner#remaining_burning_fuel LuaBurner::remaining_burning_fuel}.
+     *
+     * Writing to this automatically handles correcting {@link LuaBurner#remaining_burning_fuel LuaBurner::remaining_burning_fuel}.
      */
     currently_burning?: LuaItemPrototype
     /**
      * The fuel categories this burner uses.
-     * @remarks The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     *
+     * The value in the dictionary is meaningless and exists just to allow for easy lookup.
      */
-    readonly fuel_categories: Record<string, boolean>
+    readonly fuel_categories: Record<string, true>
     /**
      * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
      */
@@ -609,9 +652,9 @@ declare module "factorio:runtime" {
       readonly color: Color
     }
     /**
-     * @remarks The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     * The value in the dictionary is meaningless and exists just to allow for easy lookup.
      */
-    readonly fuel_categories: Record<string, boolean>
+    readonly fuel_categories: Record<string, true>
     /**
      * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
      */
@@ -638,7 +681,7 @@ declare module "factorio:runtime" {
      */
     help(): string
     /**
-     * Gets the next chunk position if the iterator is not yet done and increments the it.
+     * Gets the next chunk position if the iterator is not yet done and increments the iterator.
      */
     (): ChunkPositionAndArea | nil
     /**
@@ -718,10 +761,12 @@ declare module "factorio:runtime" {
   export interface LuaCommandProcessor {
     /**
      * Add a custom console command.
-     * @param name The desired name of the command (case sensitive).
-     * @param help The localised help message. It will be shown to players using the `/help` command.
-     * @param _function The function that will be called when this command is invoked.
-     * @example This will register a custom event called `print_tick` that prints the current tick to either the player issuing the command or to everyone on the server, depending on the command parameter. It shows the usage of the table that gets passed to any function handling a custom command. This specific example makes use of the `tick` and the optional `player_index` and `parameter` fields. The user is supposed to either call it without any parameter (`"/print_tick"`) or with the `"me"` parameter (`"/print_tick me"`).
+     *
+     * Trying to add a command with the `name` of a game command or the name of a custom command that is already in use will result in an error.
+     *
+     * This example command will register a custom event called `print_tick` that prints the current tick to either the player issuing the command or to everyone on the server, depending on the command parameter:
+     *
+     * ```
      * commands.add_command("print_tick", nil, function(command)
      *   if command.player_index ~= nil and command.parameter == "me" then
      *     game.get_player(command.player_index).print(command.tick)
@@ -729,7 +774,12 @@ declare module "factorio:runtime" {
      *     game.print(command.tick)
      *   end
      * end)
-     * @remarks Trying to add a command with the `name` of a game command or the name of a custom command that is already in use will result in an error.
+     * ```
+     *
+     * This shows the usage of the table that gets passed to any function handling a custom command. This specific example makes use of the `tick` and the optional `player_index` and `parameter` fields. The user is supposed to either call it without any parameter (`"/print_tick"`) or with the `"me"` parameter (`"/print_tick me"`).
+     * @param name The desired name of the command (case sensitive).
+     * @param help The localised help message. It will be shown to players using the `/help` command.
+     * @param _function The function that will be called when this command is invoked.
      */
     add_command(name: string, help: LocalisedString, _function: (arg1: CustomCommandData) => void): void
     /**
@@ -739,6 +789,10 @@ declare module "factorio:runtime" {
      */
     remove_command(name: string): boolean
     /**
+     * All methods and properties that this object supports.
+     */
+    help(): string
+    /**
      * Lists the custom commands registered by scripts through `LuaCommandProcessor`.
      */
     readonly commands: Record<string, LocalisedString>
@@ -747,7 +801,7 @@ declare module "factorio:runtime" {
      */
     readonly game_commands: Record<string, LocalisedString>
     /**
-     * This object's name.
+     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
      */
     readonly object_name: "LuaCommandProcessor"
   }
@@ -810,11 +864,7 @@ declare module "factorio:runtime" {
      */
     readonly object_name: "LuaContainerControlBehavior"
   }
-  /**
-   * Common attributes to all variants of {@link ControlSetGuiArrow}.
-   */
   export interface BaseControlSetGuiArrow {
-    readonly margin: uint
     /**
      * Where to point to. This field determines what other fields are mandatory.
      */
@@ -878,8 +928,9 @@ declare module "factorio:runtime" {
   export interface LuaControl {
     /**
      * Get an inventory belonging to this entity. This can be either the "main" inventory or some auxiliary one, like the module slots or logistic trash slots.
+     *
+     * A given {@link defines.inventory} is only meaningful for the corresponding LuaObject type. EG: get_inventory(defines.inventory.character_main) is only meaningful if 'this' is a player character. You may get a value back but if the type of 'this' isn't the type referred to by the {@link defines.inventory} it's almost guaranteed to not be the inventory asked for.
      * @returns The inventory or `nil` if none with the given index was found.
-     * @remarks A given {@link defines.inventory} is only meaningful for the corresponding LuaObject type. EG: get_inventory(defines.inventory.character_main) is only meaningful if 'this' is a player character. You may get a value back but if the type of 'this' isn't the type referred to by the {@link defines.inventory} it's almost guaranteed to not be the inventory asked for.
      */
     get_inventory(inventory: defines.inventory): LuaInventory | nil
     /**
@@ -907,8 +958,6 @@ declare module "factorio:runtime" {
     insert(items: ItemStackIdentification): uint
     /**
      * Create an arrow which points at this entity. This is used in the tutorial. For examples, see `control.lua` in the campaign missions.
-     *
-     * Base attributes: {@link BaseControlSetGuiArrow}
      *
      * Other attributes may be specified depending on `type`:
      * - `"entity"`: {@link EntityControlSetGuiArrow}
@@ -947,6 +996,10 @@ declare module "factorio:runtime" {
     /**
      * Teleport the entity to a given position, possibly on another surface.
      *
+     * Some entities may not be teleported. For instance, transport belts won't allow teleportation and this method will always return `false` when used on any such entity.
+     *
+     * You can also pass 1 or 2 numbers as the parameters and they will be used as relative teleport coordinates `'teleport(0, 1)'` to move the entity 1 tile positive y. `'teleport(4)'` to move the entity 4 tiles to the positive x.
+     *
      * ## Raised events
      * - {@link OnPlayerChangedPositionEvent on_player_changed_position}? _instantly_ Raised if the teleported entity is a player character.
      * - {@link ScriptRaisedTeleportedEvent script_raised_teleported}? _instantly_ Raised if the `raise_teleported` flag was set and the entity was successfully teleported.
@@ -954,7 +1007,6 @@ declare module "factorio:runtime" {
      * @param surface Surface to teleport to. If not given, will teleport to the entity's current surface. Only players, cars, and spidertrons can be teleported cross-surface.
      * @param raise_teleported If true, {@link defines.events.script_raised_teleported} will be fired on successful entity teleportation.
      * @returns `true` if the entity was successfully teleported.
-     * @remarks Some entities may not be teleported. For instance, transport belts won't allow teleportation and this method will always return `false` when used on any such entity.<br>You can also pass 1 or 2 numbers as the parameters and they will be used as relative teleport coordinates `'teleport(0, 1)'` to move the entity 1 tile positive y. `'teleport(4)'` to move the entity 4 tiles to the positive x.<br>`script_raised_teleported` will not be raised if teleporting a player with no character.
      */
     teleport(
       position: MapPosition | MapPositionArray,
@@ -1068,12 +1120,13 @@ declare module "factorio:runtime" {
     /**
      * Sets a personal logistic request and auto-trash slot to the given value.
      *
+     * This will silently fail if personal logistics are not researched yet.
+     *
      * ## Raised events
      * - {@link OnEntityLogisticSlotChangedEvent on_entity_logistic_slot_changed}? _instantly_ Raised if setting of logistic slot was successful.
      * @param slot_index The slot to set.
      * @param value The logistic request parameters.
      * @returns Whether the slot was set successfully. `false` if personal logistics are not researched yet.
-     * @remarks This will silently fail if personal logistics are not researched yet.
      */
     set_personal_logistic_slot(slot_index: uint, value: LogisticParameters): boolean
     /**
@@ -1099,17 +1152,19 @@ declare module "factorio:runtime" {
      */
     get_vehicle_logistic_slot(slot_index: uint): LogisticParameters
     /**
+     * This will silently fail if personal logistics are not researched yet.
+     *
      * ## Raised events
      * - {@link OnEntityLogisticSlotChangedEvent on_entity_logistic_slot_changed}? _instantly_ Raised if clearing of logistic slot was successful.
      * @param slot_index The slot to clear.
-     * @remarks This will silently fail if personal logistics are not researched yet.
      */
     clear_personal_logistic_slot(slot_index: uint): void
     /**
+     * This will silently fail if the vehicle does not use logistics.
+     *
      * ## Raised events
      * - {@link OnEntityLogisticSlotChangedEvent on_entity_logistic_slot_changed}? _instantly_ Raised if clearing of logistic slot was successful.
      * @param slot_index The slot to clear.
-     * @remarks This will silently fail if the vehicle does not use logistics.
      */
     clear_vehicle_logistic_slot(slot_index: uint): void
     /**
@@ -1124,7 +1179,7 @@ declare module "factorio:runtime" {
      */
     get_blueprint_entities(): BlueprintEntity[] | nil
     /**
-     * Returns whether the player is holding something in the cursor. It takes into account items from the blueprint library, as well as items and ghost cursor.
+     * Returns whether the player is holding something in the cursor. Takes into account items from the blueprint library, as well as items and ghost cursor.
      */
     is_cursor_empty(): boolean
     /**
@@ -1162,11 +1217,12 @@ declare module "factorio:runtime" {
     /**
      * The GUI the player currently has open.
      *
-     * This is the GUI that will asked to close (by firing the {@link OnGuiClosedEvent on_gui_closed} event) when the `Esc` or `E` keys are pressed. If this attribute is not `nil`, and a new GUI is written to it, the existing one will be asked to close.
+     * This is the GUI that will asked to close (by firing the {@link OnGuiClosedEvent on_gui_closed} event) when the `Esc` or `E` keys are pressed. If this attribute is non-nil, then writing `nil` or a new GUI to it will ask the existing GUI to close.
+     *
+     * Write supports any of the types. Read will return the `entity`, `equipment`, `equipment-grid`, `player`, `element`, `inventory`, `technology`, or `nil`.
      *
      * ## Raised events
      * - {@link OnGuiOpenedEvent on_gui_opened}? _instantly_ Raised when writing a valid GUI target to this attribute.
-     * @remarks Write supports any of the types. Read will return the `entity`, `equipment`, `equipment-grid`, `player`, `element`, `inventory`, `technology`, or `nil`.
      */
     set opened(
       value:
@@ -1200,7 +1256,8 @@ declare module "factorio:runtime" {
     crafting_queue_progress: double
     /**
      * Current walking state.
-     * @example Make the player go north. Note that a one-shot action like this will only make the player walk for one tick.
+     * @example
+     * -- Make the player go north. Note that a one-shot action like this will only make the player walk for one tick.
      * game.player.walking_state = {walking = true, direction = defines.direction.north}
      */
     walking_state: {
@@ -1219,7 +1276,8 @@ declare module "factorio:runtime" {
     riding_state: RidingState
     /**
      * Current mining state.
-     * @remarks When the player isn't mining tiles the player will mine whatever entity is currently selected. See {@link LuaControl#selected LuaControl::selected} and {@link LuaControl#update_selected_entity LuaControl::update_selected_entity}.
+     *
+     * When the player isn't mining tiles the player will mine whatever entity is currently selected. See {@link LuaControl#selected LuaControl::selected} and {@link LuaControl#update_selected_entity LuaControl::update_selected_entity}.
      */
     get mining_state(): {
       /**
@@ -1293,13 +1351,16 @@ declare module "factorio:runtime" {
     })
     /**
      * The player's cursor stack. `nil` if the player controller is a spectator.
-     * @example Even though this property is marked as read-only, it returns a {@link LuaItemStack}, meaning it can be manipulated like so:
+     * @example
+     * -- Even though this property is marked as read-only, it returns a LuaItemStack,
+     * -- meaning it can be manipulated like so:
      * player.cursor_stack.clear()
      */
     readonly cursor_stack?: LuaItemStack
     /**
      * The ghost prototype in the player's cursor. When read, it will be a {@link LuaItemPrototype}.
-     * @remarks Items in the cursor stack will take priority over the cursor ghost.
+     *
+     * Items in the cursor stack will take priority over the cursor ghost.
      */
     get cursor_ghost(): LuaItemPrototype | nil
     set cursor_ghost(value: ItemPrototypeIdentification | nil)
@@ -1316,7 +1377,8 @@ declare module "factorio:runtime" {
     readonly crafting_queue: CraftingQueueItem[]
     /**
      * The current combat robots following the character.
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character(see {@link LuaPlayer#character LuaPlayer::character}).
+     *
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     readonly following_robots: LuaEntity[]
     /**
@@ -1324,60 +1386,61 @@ declare module "factorio:runtime" {
      */
     cheat_mode: boolean
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_crafting_speed_modifier: double
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_mining_speed_modifier: double
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_additional_mining_categories: string[]
     /**
      * Modifies the running speed of this character by the given value as a percentage. Setting the running modifier to `0.5` makes the character run 50% faster. The minimum value of `-1` reduces the movement speed by 100%, resulting in a speed of `0`.
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     *
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_running_speed_modifier: double
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_build_distance_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_item_drop_distance_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_reach_distance_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_resource_reach_distance_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_item_pickup_distance_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_loot_pickup_distance_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_inventory_slots_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_trash_slot_count_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_maximum_following_robot_count_bonus: uint
     /**
-     * @remarks When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
+     * When called on a {@link LuaPlayer}, it must be associated with a character (see {@link LuaPlayer#character LuaPlayer::character}).
      */
     character_health_bonus: float
     /**
@@ -1428,7 +1491,8 @@ declare module "factorio:runtime" {
   }
   /**
    * The control behavior for an entity. Inserters have logistic network and circuit network behavior logic, lamps have circuit logic and so on. This is an abstract base class that concrete control behaviors inherit.
-   * @remarks An control reference becomes invalid once the control behavior is removed or the entity (see {@link LuaEntity}) it resides in is destroyed.
+   *
+   * A control reference becomes invalid once the control behavior is removed or the entity (see {@link LuaEntity}) it resides in is destroyed.
    * @noSelf
    */
   export interface LuaControlBehavior {
@@ -1617,14 +1681,27 @@ declare module "factorio:runtime" {
    * Lazily evaluated table. For performance reasons, we sometimes return a custom table-like type instead of a native Lua table. This custom type lazily constructs the necessary Lua wrappers of the corresponding C++ objects, therefore preventing their unnecessary construction in some cases.
    *
    * There are some notable consequences to the usage of a custom table type rather than the native Lua table type: Iterating a custom table is only possible using the `pairs` Lua function; `ipairs` won't work. Another key difference is that custom tables cannot be serialised into a game save file -- if saving the game would require serialisation of a custom table, an error will be displayed and the game will not be saved.
-   * @example In previous versions of Factorio, this would create a {@link LuaPlayer} instance for every player in the game, even though only one such wrapper is needed. In the current version, accessing {@link LuaGameScript#players game.players} by itself does not create any {@link LuaPlayer} instances; they are created lazily when accessed. Therefore, this example only constructs one {@link LuaPlayer} instance, no matter how many elements there are in `game.players`.
+   *
+   * In previous versions of Factorio, this would create a {@link LuaPlayer} instance for every player in the game, even though only one such wrapper is needed. In the current version, accessing {@link LuaGameScript#players game.players} by itself does not create any {@link LuaPlayer} instances; they are created lazily when accessed. Therefore, this example only constructs one {@link LuaPlayer} instance, no matter how many elements there are in `game.players`.
+   *
+   * ```
    * game.players["Oxyd"].character.die()
-   * @example Custom tables may be iterated using `pairs`.
-   * for _, p in pairs(game.players) do game.player.print(p.name); end
-   * @example The following will produce no output because `ipairs` is not supported with custom tables.
-   * for _, p in ipairs(game.players) do game.player.print(p.name); end  -- incorrect; use pairs instead
-   * @example This statement will execute successfully and `global.p` will be useable as one might expect. However, as soon as the user tries to save the game, a "LuaCustomTable cannot be serialized" error will be shown. The game will remain unsaveable so long as `global.p` refers to an instance of a custom table.
+   * ```
+   *
+   * This statement will execute successfully and `global.p` will be useable as one might expect. However, as soon as the user tries to save the game, a "LuaCustomTable cannot be serialized" error will be shown. The game will remain unsaveable so long as `global.p` refers to an instance of a custom table.
+   *
+   * ```
    * global.p = game.players  -- This has high potential to make the game unsaveable
+   * ```
+   *
+   * The following will produce no output because `ipairs` is not supported with custom tables.
+   *
+   * ```
+   * for _, p in ipairs(game.players) do game.player.print(p.name); end  -- incorrect; use pairs instead
+   * ```
+   * @example
+   * -- Custom tables may be iterated using `pairs`.
+   * for _, p in pairs(game.players) do game.player.print(p.name); end
    */
   export type LuaCustomTable<K extends string | number, V> = LuaCustomTableMembers &
     CustomTableIndexer<K, V> &
@@ -1672,10 +1749,11 @@ declare module "factorio:runtime" {
     help(): string
     /**
      * This decider combinator's parameters.
-     * @remarks Writing `nil` clears the combinator's parameters.
+     *
+     * Writing `nil` clears the combinator's parameters.
      */
-    get parameters(): DeciderCombinatorParameters
-    set parameters(value: DeciderCombinatorParametersWrite)
+    get parameters(): DeciderCombinatorParameters | nil
+    set parameters(value: DeciderCombinatorParametersWrite | nil)
     /**
      * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
      */
@@ -1800,10 +1878,11 @@ declare module "factorio:runtime" {
     /**
      * Destroys the entity.
      *
+     * Not all entities can be destroyed - things such as rails under trains cannot be destroyed until the train is moved or destroyed.
+     *
      * ## Raised events
      * - {@link ScriptRaisedDestroyEvent script_raised_destroy}? _instantly_ Raised if the `raise_destroy` flag was set and the entity was successfully destroyed.
      * @returns Returns `false` if the entity was valid and destruction failed, `true` in all other cases.
-     * @remarks Not all entities can be destroyed - things such as rails under trains cannot be destroyed until the train is moved or destroyed.
      */
     destroy(params?: {
       /**
@@ -1844,15 +1923,17 @@ declare module "factorio:runtime" {
      * @param force The force to attribute the kill to.
      * @param cause The cause to attribute the kill to.
      * @returns Whether the entity was successfully killed.
-     * @example This function can be called with only the `cause` argument and no `force`:
+     * @example
+     * -- This function can be called with only the `cause` argument and no `force`:
      * entity.die(nil, killer_entity)
      */
     die(force?: ForceIdentification, cause?: LuaEntity): boolean
     /**
      * Test whether this entity's prototype has a certain flag set.
+     *
+     * `entity.has_flag(f)` is a shortcut for `entity.prototype.has_flag(f)`.
      * @param flag The flag to test.
      * @returns `true` if this entity has the given flag set.
-     * @remarks `entity.has_flag(f)` is a shortcut for `entity.prototype.has_flag(f)`.
      */
     has_flag(flag: EntityPrototypeFlag): boolean
     /**
@@ -1867,19 +1948,22 @@ declare module "factorio:runtime" {
      * Offer a thing on the market.
      *
      * _Can only be used if this is Market_
-     * @example Adds market offer, 1 copper ore for 10 iron ore.
+     * @example
+     * -- Adds market offer, 1 copper ore for 10 iron ore
      * market.add_market_item{price={{"iron-ore", 10}}, offer={type="give-item", item="copper-ore"}}
-     * @example Adds market offer, 1 copper ore for 5 iron ore and 5 stone ore.
+     * @example
+     * -- Adds market offer, 1 copper ore for 5 iron ore and 5 stone ore
      * market.add_market_item{price={{"iron-ore", 5}, {"stone", 5}}, offer={type="give-item", item="copper-ore"}}
      */
     add_market_item(offer: Offer): void
     /**
      * Remove an offer from a market.
      *
+     * The other offers are moved down to fill the gap created by removing the offer, which decrements the overall size of the offer array.
+     *
      * _Can only be used if this is Market_
      * @param offer Index of offer to remove.
      * @returns `true` if the offer was successfully removed; `false` when the given index was not valid.
-     * @remarks The other offers are moved down to fill the gap created by removing the offer, which decrements the overall size of the offer array.
      */
     remove_market_item(offer: uint): boolean
     /**
@@ -1897,8 +1981,9 @@ declare module "factorio:runtime" {
     /**
      * Connect two devices with a circuit wire or copper cable. Depending on which type of connection should be made, there are different procedures:
      *
-     * - To connect two electric poles, `target` must be a {@link LuaEntity} that specifies another electric pole. This will connect them with copper cable.
-     * - To connect two devices with circuit wire, `target` must be a table of type {@link WireConnectionDefinition}.
+     * To connect two electric poles, `target` must be a {@link LuaEntity} that specifies another electric pole. This will connect them with copper cable.
+     *
+     * To connect two devices with circuit wire, `target` must be a table of type {@link WireConnectionDefinition}.
      * @param target The target with which to establish a connection.
      * @returns Whether the connection was successfully formed.
      */
@@ -1906,10 +1991,7 @@ declare module "factorio:runtime" {
     /**
      * Disconnect circuit wires or copper cables between devices. Depending on which type of connection should be cut, there are different procedures:
      *
-     * - To remove all copper cables, leave the `target` parameter blank: `pole.disconnect_neighbour()`.
-     * - To remove all wires of a specific color, set `target` to {@link defines.wire_type.red} or {@link defines.wire_type.green}.
-     * - To remove a specific copper cable between two electric poles, `target` must be a {@link LuaEntity} that specifies the other pole: `pole1.disconnect_neighbour(pole2)`.
-     * - To remove a specific circuit wire, `target` must be a table of type {@link WireConnectionDefinition}.
+     * {@link https://lua-api.factorio.com/latest/classes/LuaEntity.html#LuaEntity.disconnect_neighbour > Wires can be selectively removed in different ways:}
      * @param target The target with which to cut a connection.
      */
     disconnect_neighbour(target?: defines.wire_type | LuaEntity | WireConnectionDefinition): void
@@ -1973,24 +2055,21 @@ declare module "factorio:runtime" {
      */
     to_be_upgraded(): boolean
     /**
-     * Get a logistic requester slot.
+     * Get a logistic requester slot. Only useable on entities that have requester slots.
      * @param slot The slot index.
      * @returns Contents of the specified slot; `nil` if the given slot contains no request.
-     * @remarks Useable only on entities that have requester slots.
      */
     get_request_slot(slot: uint): SimpleItemStack | nil
     /**
-     * Set a logistic requester slot.
+     * Set a logistic requester slot. Only useable on entities that have requester slots.
      * @param request What to request.
      * @param slot The slot index.
      * @returns Whether the slot was set.
-     * @remarks Useable only on entities that have requester slots.
      */
     set_request_slot(request: ItemStackIdentification, slot: uint): boolean
     /**
-     * Clear a logistic requester slot.
+     * Clear a logistic requester slot. Only useable on entities that have requester slots.
      * @param slot The slot index.
-     * @remarks Useable only on entities that have requester slots.
      */
     clear_request_slot(slot: uint): void
     /**
@@ -2052,7 +2131,7 @@ declare module "factorio:runtime" {
      */
     launch_rocket(): boolean
     /**
-     * Revive a ghost. I.e. turn it from a ghost to a real entity or tile.
+     * Revive a ghost, which turns it from a ghost into a real entity or tile.
      *
      * ## Raised events
      * - {@link ScriptRaisedReviveEvent script_raised_revive}? _instantly_ Raised if this was an entity ghost and the `raise_revive` flag was set and the entity was successfully revived.
@@ -2074,7 +2153,7 @@ declare module "factorio:runtime" {
       readonly raise_revive?: boolean
     }): LuaMultiReturn<[Record<string, uint> | nil, LuaEntity | nil, LuaEntity | nil]>
     /**
-     * Revives a ghost silently.
+     * Revives a ghost silently, so the revival makes no sound and no smoke is created.
      *
      * ## Raised events
      * - {@link ScriptRaisedReviveEvent script_raised_revive}? _instantly_ Raised if this was an entity ghost and the `raise_revive` flag was set and the entity was successfully revived.
@@ -2114,43 +2193,48 @@ declare module "factorio:runtime" {
     /**
      * Get the rail signal or train stop at the start/end of the rail segment this rail is in.
      *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+     *
      * _Can only be used if this is Rail_
      * @param direction The direction of travel relative to this rail.
      * @param in_else_out If true, gets the entity at the entrance of the rail segment, otherwise gets the entity at the exit of the rail segment.
      * @returns `nil` if the rail segment doesn't start/end with a signal nor a train stop.
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_entity(direction: defines.rail_direction, in_else_out: boolean): LuaEntity | nil
     /**
      * Get the rail at the end of the rail segment this rail is in.
      *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+     *
      * _Can only be used if this is Rail_
      * @returns The rail entity.
      * @returns A rail direction pointing out of the rail segment from the end rail.
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
     /**
-     * Get all rails of a rail segment this rail is in
+     * Get all rails of a rail segment this rail is in.
+     *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      *
      * _Can only be used if this is Rail_
      * @param direction Selects end of this rail that points to a rail segment end from which to start returning rails
      * @returns Rails of this rail segment
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_rails(direction: defines.rail_direction): LuaEntity[]
     /**
      * Get the length of the rail segment this rail is in.
      *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+     *
      * _Can only be used if this is Rail_
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_length(): double
     /**
      * Get a rail from each rail segment that overlaps with this rail's rail segment.
      *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+     *
      * _Can only be used if this is Rail_
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_overlaps(): LuaEntity[]
     /**
@@ -2190,17 +2274,15 @@ declare module "factorio:runtime" {
      */
     get_outbound_signals(): LuaEntity[]
     /**
-     * Get the filter for a slot in an inserter, loader, or logistic storage container.
+     * Get the filter for a slot in an inserter, loader, or logistic storage container. The entity must allow filters.
      * @param slot_index Index of the slot to get the filter for.
      * @returns Prototype name of the item being filtered. `nil` if the given slot has no filter.
-     * @remarks The entity must allow filters.
      */
     get_filter(slot_index: uint): string | nil
     /**
-     * Set the filter for a slot in an inserter, loader, or logistic storage container.
+     * Set the filter for a slot in an inserter, loader, or logistic storage container. The entity must allow filters.
      * @param slot_index Index of the slot to set the filter for.
      * @param item Prototype name of the item to filter, or `nil` to clear the filter.
-     * @remarks The entity must allow filters.
      */
     set_filter(slot_index: uint, item: string | nil): void
     /**
@@ -2288,8 +2370,9 @@ declare module "factorio:runtime" {
     copy_settings(entity: LuaEntity, by_player?: PlayerIdentification): Record<string, uint>
     /**
      * Gets all the `LuaLogisticPoint`s that this entity owns. Optionally returns only the point specified by the index parameter.
+     *
+     * When `index` is not given, this will be a single `LuaLogisticPoint` for most entities. For some (such as the player character), it can be zero or more.
      * @param index If provided, only returns the `LuaLogisticPoint` specified by this index.
-     * @remarks When `index` is not given, this will be a single `LuaLogisticPoint` for most entities. For some (such as the player character), it can be zero or more.
      */
     get_logistic_point(index: defines.logistic_member_index): LuaLogisticPoint | nil
     get_logistic_point(): Record<defines.logistic_member_index, LuaLogisticPoint> | nil
@@ -2372,31 +2455,34 @@ declare module "factorio:runtime" {
     /**
      * Sets the driver of this vehicle.
      *
+     * This differs from {@link LuaEntity#set_passenger LuaEntity::set_passenger} in that the passenger can't drive the vehicle.
+     *
      * ## Raised events
      * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
      *
      * _Can only be used if this is Vehicle_
      * @param driver The new driver. Writing `nil` ejects the current driver, if any.
-     * @remarks This differs from {@link LuaEntity#set_passenger LuaEntity::set_passenger} in that the passenger can't drive the vehicle.
      */
     set_driver(driver?: LuaEntity | PlayerIdentification): void
     /**
      * Gets the passenger of this car or spidertron if any.
      *
+     * This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
+     *
      * _Can only be used if this is Car or SpiderVehicle_
      * @returns `nil` if the vehicle contains no passenger. To check if there's a driver see {@link LuaEntity#get_driver LuaEntity::get_driver}.
-     * @remarks This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      */
     get_passenger(): LuaEntity | LuaPlayer | nil
     /**
      * Sets the passenger of this car or spidertron.
+     *
+     * This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      *
      * ## Raised events
      * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
      *
      * _Can only be used if this is Car or SpiderVehicle_
      * @param passenger The new passenger. Writing `nil` ejects the current passenger, if any.
-     * @remarks This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      */
     set_passenger(passenger?: LuaEntity | PlayerIdentification): void
     /**
@@ -2439,20 +2525,23 @@ declare module "factorio:runtime" {
     }): LuaEntity | nil
     /**
      * Get the amount of all or some fluid in this entity.
+     *
+     * If information about fluid temperatures is required, {@link LuaEntity#fluidbox LuaEntity::fluidbox} should be used instead.
      * @param fluid Prototype name of the fluid to count. If not specified, count all fluids.
-     * @remarks If information about fluid temperatures is required, {@link LuaEntity#fluidbox LuaEntity::fluidbox} should be used instead.
      */
     get_fluid_count(fluid?: string): double
     /**
      * Get amounts of all fluids in this entity.
+     *
+     * If information about fluid temperatures is required, {@link LuaEntity#fluidbox LuaEntity::fluidbox} should be used instead.
      * @returns The amounts, indexed by fluid names.
-     * @remarks If information about fluid temperatures is required, {@link LuaEntity#fluidbox LuaEntity::fluidbox} should be used instead.
      */
     get_fluid_contents(): Record<string, double>
     /**
      * Remove fluid from this entity.
+     *
+     * If temperature is given only fluid matching that exact temperature is removed. If minimum and maximum is given fluid within that range is removed.
      * @returns Amount of fluid actually removed.
-     * @remarks If temperature is given only fluid matching that exact temperature is removed. If minimum and maximum is given fluid within that range is removed.
      */
     remove_fluid(params: {
       /**
@@ -2468,7 +2557,7 @@ declare module "factorio:runtime" {
       readonly temperature?: double
     }): double
     /**
-     * Insert fluid into this entity. Fluidbox is chosen automatically.
+     * Insert fluid into this entity. The fluidbox is chosen automatically.
      * @param fluid Fluid to insert.
      * @returns Amount of fluid actually inserted.
      */
@@ -2511,7 +2600,9 @@ declare module "factorio:runtime" {
      */
     get_health_ratio(): float | nil
     /**
-     * Creates the same smoke that is created when you place a building by hand. You can play the building sound to go with it by using {@link LuaSurface#play_sound LuaSurface::play_sound}, eg: entity.surface.play_sound{path="entity-build/"..entity.prototype.name, position=entity.position}
+     * Creates the same smoke that is created when you place a building by hand.
+     *
+     * You can play the building sound to go with it by using {@link LuaSurface#play_sound LuaSurface::play_sound}, eg: `entity.surface.play_sound{path="entity-build/"..entity.prototype.name, position=entity.position}`
      */
     create_build_effect_smoke(): void
     /**
@@ -2522,7 +2613,8 @@ declare module "factorio:runtime" {
     release_from_spawner(): void
     /**
      * Toggle this entity's equipment movement bonus. Does nothing if the entity does not have an equipment grid.
-     * @remarks This property can also be read and written on the equipment grid of this entity.
+     *
+     * This property can also be read and written on the equipment grid of this entity.
      */
     toggle_equipment_movement_bonus(): void
     /**
@@ -2532,7 +2624,9 @@ declare module "factorio:runtime" {
      */
     can_shoot(target: LuaEntity, position: MapPosition | MapPositionArray): boolean
     /**
-     * Only works if the entity is a speech-bubble, with an "effect" defined in its wrapper_flow_style. Starts animating the opacity of the speech bubble towards zero, and destroys the entity when it hits zero.
+     * Only works if the entity is a speech-bubble, with an "effect" defined in its wrapper_flow_style.
+     *
+     * Starts animating the opacity of the speech bubble towards zero, and destroys the entity when it hits zero.
      *
      * _Can only be used if this is SpeechBubble_
      */
@@ -2564,10 +2658,13 @@ declare module "factorio:runtime" {
     /**
      * Mines this entity.
      *
+     * 'Standard' operation is to keep calling `LuaEntity.mine` with an inventory until all items are transferred and the items dealt with.
+     *
+     * The result of mining the entity (the item(s) it produces when mined) will be dropped on the ground if they don't fit into the provided inventory.
+     *
      * ## Raised events
      * - {@link ScriptRaisedDestroyEvent script_raised_destroy}? _instantly_ Raised if the `raise_destroyed` flag was set and the entity was successfully mined.
      * @returns Whether mining succeeded.
-     * @remarks 'Standard' operation is to keep calling `LuaEntity.mine` with an inventory until all items are transferred and the items dealt with.<br>The result of mining the entity (the item(s) it produces when mined) will be dropped on the ground if they don't fit into the provided inventory.
      */
     mine(params?: {
       /**
@@ -2606,20 +2703,34 @@ declare module "factorio:runtime" {
       direction: defines.rail_direction,
     ): LuaMultiReturn<[LuaEntity | nil, defines.rail_direction | nil]>
     /**
-     * Is this entity or tile ghost or item request proxy registered for construction? If false, it means a construction robot has been dispatched to build the entity, or it is not an entity that can be constructed.
+     * Is this entity or tile ghost or item request proxy registered for construction?
+     *
+     * If false, it means a construction robot has been dispatched to build the entity, or it is not an entity that can be constructed.
      */
     is_registered_for_construction(): boolean
     /**
-     * Is this entity registered for deconstruction with this force? If false, it means a construction robot has been dispatched to deconstruct it, or it is not marked for deconstruction. The complexity is effectively O(1) - it depends on the number of objects targeting this entity which should be small enough.
+     * Is this entity registered for deconstruction with this force?
+     *
+     * If false, it means a construction robot has been dispatched to deconstruct it, or it is not marked for deconstruction.
+     *
+     * The complexity is effectively O(1) - it depends on the number of objects targeting this entity which should be small enough.
      * @param force The force construction manager to check.
      */
     is_registered_for_deconstruction(force: ForceIdentification): boolean
     /**
-     * Is this entity registered for upgrade? If false, it means a construction robot has been dispatched to upgrade it, or it is not marked for upgrade. This is worst-case O(N) complexity where N is the current number of things in the upgrade queue.
+     * Is this entity registered for upgrade?
+     *
+     * If false, it means a construction robot has been dispatched to upgrade it, or it is not marked for upgrade.
+     *
+     * This is worst-case O(N) complexity where N is the current number of things in the upgrade queue.
      */
     is_registered_for_upgrade(): boolean
     /**
-     * Is this entity registered for repair? If false, it means a construction robot has been dispatched to upgrade it, or it is not damaged. This is worst-case O(N) complexity where N is the current number of things in the repair queue.
+     * Is this entity registered for repair?
+     *
+     * If false, it means a construction robot has been dispatched to upgrade it, or it is not damaged.
+     *
+     * This is worst-case O(N) complexity where N is the current number of things in the repair queue.
      */
     is_registered_for_repair(): boolean
     /**
@@ -2632,18 +2743,22 @@ declare module "factorio:runtime" {
     /**
      * Connects current linked belt with another one.
      *
-     * Neighbours have to be of different type. If given linked belt is connected to something else it will be disconnected first. If provided neighbour is connected to something else it will also be disconnected first. Automatically updates neighbour to be connected back to this one.
+     * Neighbours have to be of different type. If given linked belt is connected to something else it will be disconnected first. If provided neighbour is connected to something else it will also be disconnected first.
+     *
+     * Automatically updates neighbour to be connected back to this one.
+     *
+     * Can also be used on entity ghost if it contains linked-belt.
      *
      * _Can only be used if this is LinkedBelt_
      * @param neighbour Another linked belt or entity ghost containing linked belt to connect or nil to disconnect
-     * @remarks Can also be used on entity ghost if it contains linked-belt
      */
     connect_linked_belts(neighbour: LuaEntity | nil): void
     /**
      * Disconnects linked belt from its neighbour.
      *
+     * Can also be used on entity ghost if it contains linked-belt.
+     *
      * _Can only be used if this is LinkedBelt_
-     * @remarks Can also be used on entity ghost if it contains linked-belt
      */
     disconnect_linked_belts(): void
     /**
@@ -2709,21 +2824,30 @@ declare module "factorio:runtime" {
     readonly ghost_type: EntityType
     /**
      * Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).
-     * @remarks Entities that are not active naturally can't be set to be active (setting it to be active will do nothing)<br>Ghosts, simple smoke, and corpses can't be modified at this time.<br>It is even possible to set the character to not be active, so he can't move and perform most of the tasks.
+     *
+     * Entities that are not active naturally can't be set to be active (setting it to be active will do nothing)
+     *
+     * Ghosts, simple smoke, and corpses can't be modified at this time.
+     *
+     * It is even possible to set the character to not be active, so he can't move and perform most of the tasks.
      */
     active: boolean
     /**
      * If set to `false`, this entity can't be damaged and won't be attacked automatically. It can however still be mined.
-     * @remarks Entities that are indestructible naturally (they have no health, like smoke, resource etc) can't be set to be destructible.
+     *
+     * Entities that are indestructible naturally (they have no health, like smoke, resource etc) can't be set to be destructible.
      */
     destructible: boolean
     /**
-     * @remarks Not minable entities can still be destroyed.<br>Entities that are not minable naturally (like smoke, character, enemy units etc) can't be set to minable.
+     * Not minable entities can still be destroyed.
+     *
+     * Entities that are not minable naturally (like smoke, character, enemy units etc) can't be set to minable.
      */
     minable: boolean
     /**
      * When entity is not to be rotatable (inserter, transport belt etc), it can't be rotated by player using the R key.
-     * @remarks Entities that are not rotatable naturally (like chest or furnace) can't be set to be rotatable.
+     *
+     * Entities that are not rotatable naturally (like chest or furnace) can't be set to be rotatable.
      */
     rotatable: boolean
     /**
@@ -2732,7 +2856,8 @@ declare module "factorio:runtime" {
     operable: boolean
     /**
      * The current health of the entity, if any. Health is automatically clamped to be between `0` and max health (inclusive). Entities with a health of `0` can not be attacked.
-     * @remarks To get the maximum possible health of this entity, see {@link LuaEntityPrototype#max_health LuaEntityPrototype::max_health} on its prototype.
+     *
+     * To get the maximum possible health of this entity, see {@link LuaEntityPrototype#max_health LuaEntityPrototype::max_health} on its prototype.
      */
     health?: float
     /**
@@ -2755,7 +2880,8 @@ declare module "factorio:runtime" {
     readonly cliff_orientation: CliffOrientation
     /**
      * The relative orientation of the vehicle turret, artillery turret, artillery wagon. `nil` if this entity isn't a vehicle with a vehicle turret or artillery turret/wagon.
-     * @remarks Writing does nothing if the vehicle doesn't have a turret.
+     *
+     * Writing does nothing if the vehicle doesn't have a turret.
      */
     relative_turret_orientation?: RealOrientation
     /**
@@ -2773,8 +2899,9 @@ declare module "factorio:runtime" {
     /**
      * Count of initial resource units contained. `nil` if this is not an infinite resource.
      *
+     * If this is not an infinite resource, writing will produce an error.
+     *
      * _Can only be used if this is ResourceEntity_
-     * @remarks If this is not an infinite resource, writing will produce an error.
      */
     initial_amount?: uint
     /**
@@ -2793,7 +2920,8 @@ declare module "factorio:runtime" {
      * Multiplies the car friction rate.
      *
      * _Can only be used if this is Car_
-     * @example This will allow the car to go much faster
+     * @example
+     * -- This will allow the car to go much faster
      * game.player.vehicle.friction_modifier = 0.5
      */
     friction_modifier: float
@@ -2837,15 +2965,17 @@ declare module "factorio:runtime" {
     readonly ghost_prototype: LuaEntityPrototype | LuaTilePrototype
     /**
      * Position where the entity puts its stuff.
-     * @remarks Meaningful only for entities that put stuff somewhere, such as mining drills or inserters. Mining drills can't have their drop position changed; inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the drop position.
+     *
+     * Meaningful only for entities that put stuff somewhere, such as mining drills or inserters. Mining drills can't have their drop position changed; inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the drop position.
      */
     get drop_position(): MapPosition
     set drop_position(value: MapPosition | MapPositionArray)
     /**
      * Where the inserter will pick up items from.
      *
+     * Inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the pickup position.
+     *
      * _Can only be used if this is Inserter_
-     * @remarks Inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the pickup position.
      */
     get pickup_position(): MapPosition
     set pickup_position(value: MapPosition | MapPositionArray)
@@ -2866,7 +2996,7 @@ declare module "factorio:runtime" {
      */
     selected_gun_index?: uint
     /**
-     * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities that don't have the concept of energy stored inside.
+     * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.
      * @example
      * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
      * game.player.selected.energy = 3000
@@ -2901,15 +3031,13 @@ declare module "factorio:runtime" {
     /**
      * A list of neighbours for certain types of entities. Applies to electric poles, power switches, underground belts, walls, gates, reactors, cliffs, and pipe-connectable entities.
      *
-     * - When called on an electric pole, this is a dictionary of all connections, indexed by the strings `"copper"`, `"red"`, and `"green"`.
-     * - When called on a pipe-connectable entity, this is an array of entity arrays of all entities a given fluidbox is connected to.
-     * - When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.
-     * - When called on a wall-connectable entity or reactor, this is a dictionary of all connections indexed by the connection direction "north", "south", "east", and "west".
-     * - When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction "north", "south", "east", and "west".
+     * {@link https://lua-api.factorio.com/latest/classes/LuaEntity.html#LuaEntity.neighbours > Differs depending on the type of entity:}
      */
-    readonly neighbours: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity | nil
+    readonly neighbours: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity
     /**
-     * The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of this entity. Does not contain the other end of an underground belt, see {@link LuaEntity#neighbours LuaEntity::neighbours} for that.
+     * The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of this entity.
+     *
+     * Does not contain the other end of an underground belt, see {@link LuaEntity#neighbours LuaEntity::neighbours} for that.
      *
      * _Can only be used if this is TransportBeltConnectable_
      */
@@ -2926,13 +3054,14 @@ declare module "factorio:runtime" {
     /**
      * Fluidboxes of this entity.
      */
-    fluidbox: LuaFluidBox
+    set fluidbox(value: LuaFluidBox)
     /**
      * The backer name assigned to this entity. Entities that support backer names are labs, locomotives, radars, roboports, and train stops. `nil` if this entity doesn't support backer names.
      *
+     * While train stops get the name of a backer when placed down, players can rename them if they want to. In this case, `backer_name` returns the player-given name of the entity.
+     *
      * ## Raised events
      * - {@link OnEntityRenamedEvent on_entity_renamed} _instantly_
-     * @remarks While train stops get the name of a backer when placed down, players can rename them if they want to. In this case, `backer_name` returns the player-given name of the entity.
      */
     backer_name?: string
     /**
@@ -2945,15 +3074,17 @@ declare module "factorio:runtime" {
     /**
      * The ticks left before a ghost, combat robot, highlight box, smoke with trigger or sticker is destroyed.
      *
-     * - for ghosts set to uint32 max (4 294 967 295) to never expire.
-     * - for ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
+     * For ghosts set to uint32 max (4 294 967 295) to never expire.
+     *
+     * For ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
      *
      * _Can only be used if this is Ghost, CombatRobot, HighlightBox, SmokeWithTrigger or Sticker_
      */
     time_to_live: uint
     /**
      * The color of this character, rolling stock, train stop, car, spider-vehicle, flying text, corpse or simple-entity-with-owner. `nil` if this entity doesn't use custom colors.
-     * @remarks Car color is overridden by the color of the current driver/passenger, if there is one.
+     *
+     * Car color is overridden by the color of the current driver/passenger, if there is one.
      */
     get color(): Color | nil
     set color(value: Color | ColorArray | nil)
@@ -3001,7 +3132,8 @@ declare module "factorio:runtime" {
     bonus_progress: double
     /**
      * The productivity bonus of this entity.
-     * @remarks This includes force based bonuses as well as beacon/module bonuses.
+     *
+     * This includes force based bonuses as well as beacon/module bonuses.
      */
     readonly productivity_bonus: double
     /**
@@ -3009,8 +3141,7 @@ declare module "factorio:runtime" {
      */
     readonly pollution_bonus: double
     /**
-     * The speed bonus of this entity.
-     * @remarks This includes force based bonuses as well as beacon/module bonuses.
+     * The speed bonus of this entity. This includes force based bonuses as well as beacon/module bonuses.
      */
     readonly speed_bonus: double
     /**
@@ -3044,7 +3175,9 @@ declare module "factorio:runtime" {
      */
     readonly logistic_cell: LuaLogisticCell | nil
     /**
-     * Items this ghost will request when revived or items this item request proxy is requesting. Result is a dictionary mapping each item prototype name to the required count.
+     * Items this ghost will request when revived or items this item request proxy is requesting.
+     *
+     * The result is a dictionary mapping each item prototype name to the required count.
      */
     item_requests: Record<string, uint>
     /**
@@ -3082,7 +3215,8 @@ declare module "factorio:runtime" {
     set last_user(value: LuaPlayer | PlayerIdentification | nil)
     /**
      * The buffer size for the electric energy source. `nil` if the entity doesn't have an electric energy source.
-     * @remarks Write access is limited to the ElectricEnergyInterface type
+     *
+     * Write access is limited to the ElectricEnergyInterface type.
      */
     electric_buffer_size?: double
     /**
@@ -3138,7 +3272,9 @@ declare module "factorio:runtime" {
      */
     readonly bounding_box: BoundingBox
     /**
-     * The secondary bounding box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.
+     * The secondary bounding box of this entity or `nil` if it doesn't have one.
+     *
+     * This only exists for curved rails, and is automatically determined by the game.
      */
     readonly secondary_bounding_box?: BoundingBox
     /**
@@ -3146,7 +3282,9 @@ declare module "factorio:runtime" {
      */
     readonly selection_box: BoundingBox
     /**
-     * The secondary selection box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.
+     * The secondary selection box of this entity or `nil` if it doesn't have one.
+     *
+     * This only exists for curved rails, and is automatically determined by the game.
      */
     readonly secondary_selection_box?: BoundingBox
     /**
@@ -3174,7 +3312,8 @@ declare module "factorio:runtime" {
     readonly circuit_connection_definitions?: CircuitConnectionDefinition[]
     /**
      * The connection definition for entities that are directly connected to this entity via copper cables.
-     * @remarks This function is temporary in 1.1.x, it will not be available in 1.2
+     *
+     * This function is temporary in 1.1.x, it will not be available in 2.0.
      */
     readonly copper_connection_definitions: CopperConnectionDefinition[]
     /**
@@ -3285,15 +3424,17 @@ declare module "factorio:runtime" {
     /**
      * Returns the current target pickup count of the inserter.
      *
+     * This considers the circuit network, manual override and the inserter stack size limit based on technology.
+     *
      * _Can only be used if this is Inserter_
-     * @remarks This considers the circuit network, manual override and the inserter stack size limit based on technology.
      */
     readonly inserter_target_pickup_count: uint
     /**
      * Sets the stack size limit on this inserter. If the stack size is > than the force stack size limit the value is ignored.
      *
+     * Set to `0` to reset.
+     *
      * _Can only be used if this is Inserter_
-     * @remarks Set to 0 to reset.
      */
     inserter_stack_size_override: uint
     /**
@@ -3355,8 +3496,9 @@ declare module "factorio:runtime" {
     /**
      * The player index associated with this character corpse.
      *
+     * The index is not guaranteed to be valid so it should always be checked first if a player with that index actually exists.
+     *
      * _Can only be used if this is CharacterCorpse_
-     * @remarks The index is not guaranteed to be valid so it should always be checked first if a player with that index actually exists.
      */
     character_corpse_player_index: uint
     /**
@@ -3378,8 +3520,9 @@ declare module "factorio:runtime" {
      *
      * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
      *
+     * A character associated with a player is not directly controlled by any player.
+     *
      * _Can only be used if this is Character_
-     * @remarks A character associated with a player is not directly controlled by any player.
      */
     get associated_player(): LuaPlayer | nil
     set associated_player(value: LuaPlayer | PlayerIdentification | nil)
@@ -3468,13 +3611,13 @@ declare module "factorio:runtime" {
      */
     readonly ai_settings: LuaAISettings
     /**
-     * The hightlight box type of this highlight box entity.
+     * The highlight box type of this highlight box entity.
      *
      * _Can only be used if this is HighlightBox_
      */
     highlight_box_type: CursorBoxRenderType
     /**
-     * The blink interval of this highlight box entity. 0 indicates no blink.
+     * The blink interval of this highlight box entity. `0` indicates no blink.
      *
      * _Can only be used if this is HighlightBox_
      */
@@ -3498,7 +3641,8 @@ declare module "factorio:runtime" {
     set render_player(value: LuaPlayer | PlayerIdentification | nil)
     /**
      * The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array when this entity is rendered for all forces.
-     * @remarks Reading will always give an array of {@link LuaForce}
+     *
+     * Reading will always give an array of {@link LuaForce}
      */
     get render_to_forces(): LuaForce[] | nil
     set render_to_forces(value: readonly ForceIdentification[] | nil)
@@ -3542,7 +3686,8 @@ declare module "factorio:runtime" {
     storage_filter?: LuaItemPrototype
     /**
      * Whether this requester chest is set to also request from buffer chests.
-     * @remarks Useable only on entities that have requester slots.
+     *
+     * Useable only on entities that have requester slots.
      */
     request_from_buffers: boolean
     /**
@@ -3595,15 +3740,21 @@ declare module "factorio:runtime" {
     /**
      * Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint.
      *
+     * Train may be included multiple times when braking distance covers this train stop multiple times.
+     *
+     * Value may be read even when train stop has no control behavior.
+     *
      * _Can only be used if this is TrainStop_
-     * @remarks Train may be included multiple times when braking distance covers this train stop multiple times<br>Value may be read even when train stop has no control behavior
      */
     readonly trains_count: uint
     /**
-     * Amount of trains above which no new trains will be sent to this train stop. Writing nil will disable the limit (will set a maximum possible value).
+     * Amount of trains above which no new trains will be sent to this train stop.
+     *
+     * Writing nil will disable the limit (will set a maximum possible value).
+     *
+     * When a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it.
      *
      * _Can only be used if this is TrainStop_
-     * @remarks When a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it
      */
     trains_limit: uint | nil
     /**
@@ -3611,7 +3762,9 @@ declare module "factorio:runtime" {
      */
     readonly is_entity_with_force: boolean
     /**
-     * Whether this entity is a MilitaryTarget. Can be written to if {@link LuaEntityPrototype#allow_run_time_change_of_is_military_target LuaEntityPrototype::allow_run_time_change_of_is_military_target} returns `true`.
+     * Whether this entity is a MilitaryTarget.
+     *
+     * Can be written to if {@link LuaEntityPrototype#allow_run_time_change_of_is_military_target LuaEntityPrototype::allow_run_time_change_of_is_military_target} returns `true`.
      */
     is_military_target: boolean
     /**
@@ -3649,15 +3802,21 @@ declare module "factorio:runtime" {
     /**
      * Type of linked belt. Changing type will also flip direction so the belt is out of the same side.
      *
+     * Can only be changed when linked belt is disconnected (has no neighbour set).
+     *
+     * Can also be used on entity ghost if it contains linked-belt.
+     *
      * _Can only be used if this is LinkedBelt_
-     * @remarks Can only be changed when linked belt is disconnected (has no neighbour set).<br>Can also be used on entity ghost if it contains linked-belt.
      */
     linked_belt_type: "input" | "output"
     /**
      * Neighbour to which this linked belt is connected to, if any.
      *
+     * Can also be used on entity ghost if it contains linked-belt.
+     *
+     * May return entity ghost which contains linked belt to which connection is made.
+     *
      * _Can only be used if this is LinkedBelt_
-     * @remarks Can also be used on entity ghost if it contains linked-belt.<br>May return entity ghost which contains linked belt to which connection is made.
      */
     readonly linked_belt_neighbour?: LuaEntity
     /**
@@ -3673,11 +3832,15 @@ declare module "factorio:runtime" {
      */
     readonly rocket_silo_status: defines.rocket_silo_status
     /**
-     * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.
+     * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension).
+     *
+     * Uses the current direction of the entity.
      */
     readonly tile_width: uint
     /**
-     * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.
+     * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension).
+     *
+     * Uses the current direction of the entity.
      */
     readonly tile_height: uint
     /**
@@ -3695,8 +3858,9 @@ declare module "factorio:runtime" {
     /**
      * Gives what is the current shape of a transport-belt.
      *
+     * Can also be used on entity ghost if it contains transport-belt.
+     *
      * _Can only be used if this is TransportBelt_
-     * @remarks Can also be used on entity ghost if it contains transport-belt.
      */
     readonly belt_shape: "straight" | "left" | "right"
     /**
@@ -3746,10 +3910,11 @@ declare module "factorio:runtime" {
     /**
      * Destroys the entity.
      *
+     * Not all entities can be destroyed - things such as rails under trains cannot be destroyed until the train is moved or destroyed.
+     *
      * ## Raised events
      * - {@link ScriptRaisedDestroyEvent script_raised_destroy}? _instantly_ Raised if the `raise_destroy` flag was set and the entity was successfully destroyed.
      * @returns Returns `false` if the entity was valid and destruction failed, `true` in all other cases.
-     * @remarks Not all entities can be destroyed - things such as rails under trains cannot be destroyed until the train is moved or destroyed.
      */
     destroy(params?: {
       /**
@@ -3772,22 +3937,25 @@ declare module "factorio:runtime" {
      * @param force The force to attribute the kill to.
      * @param cause The cause to attribute the kill to.
      * @returns Whether the entity was successfully killed.
-     * @example This function can be called with only the `cause` argument and no `force`:
+     * @example
+     * -- This function can be called with only the `cause` argument and no `force`:
      * entity.die(nil, killer_entity)
      */
     die(force?: ForceIdentification, cause?: LuaEntity): boolean
     /**
      * Test whether this entity's prototype has a certain flag set.
+     *
+     * `entity.has_flag(f)` is a shortcut for `entity.prototype.has_flag(f)`.
      * @param flag The flag to test.
      * @returns `true` if this entity has the given flag set.
-     * @remarks `entity.has_flag(f)` is a shortcut for `entity.prototype.has_flag(f)`.
      */
     has_flag(flag: EntityPrototypeFlag): boolean
     /**
      * Connect two devices with a circuit wire or copper cable. Depending on which type of connection should be made, there are different procedures:
      *
-     * - To connect two electric poles, `target` must be a {@link LuaEntity} that specifies another electric pole. This will connect them with copper cable.
-     * - To connect two devices with circuit wire, `target` must be a table of type {@link WireConnectionDefinition}.
+     * To connect two electric poles, `target` must be a {@link LuaEntity} that specifies another electric pole. This will connect them with copper cable.
+     *
+     * To connect two devices with circuit wire, `target` must be a table of type {@link WireConnectionDefinition}.
      * @param target The target with which to establish a connection.
      * @returns Whether the connection was successfully formed.
      */
@@ -3795,10 +3963,7 @@ declare module "factorio:runtime" {
     /**
      * Disconnect circuit wires or copper cables between devices. Depending on which type of connection should be cut, there are different procedures:
      *
-     * - To remove all copper cables, leave the `target` parameter blank: `pole.disconnect_neighbour()`.
-     * - To remove all wires of a specific color, set `target` to {@link defines.wire_type.red} or {@link defines.wire_type.green}.
-     * - To remove a specific copper cable between two electric poles, `target` must be a {@link LuaEntity} that specifies the other pole: `pole1.disconnect_neighbour(pole2)`.
-     * - To remove a specific circuit wire, `target` must be a table of type {@link WireConnectionDefinition}.
+     * {@link https://lua-api.factorio.com/latest/classes/LuaEntity.html#LuaEntity.disconnect_neighbour > Wires can be selectively removed in different ways:}
      * @param target The target with which to cut a connection.
      */
     disconnect_neighbour(target?: defines.wire_type | LuaEntity | WireConnectionDefinition): void
@@ -3862,38 +4027,33 @@ declare module "factorio:runtime" {
      */
     to_be_upgraded(): boolean
     /**
-     * Get a logistic requester slot.
+     * Get a logistic requester slot. Only useable on entities that have requester slots.
      * @param slot The slot index.
      * @returns Contents of the specified slot; `nil` if the given slot contains no request.
-     * @remarks Useable only on entities that have requester slots.
      */
     get_request_slot(slot: uint): SimpleItemStack | nil
     /**
-     * Set a logistic requester slot.
+     * Set a logistic requester slot. Only useable on entities that have requester slots.
      * @param request What to request.
      * @param slot The slot index.
      * @returns Whether the slot was set.
-     * @remarks Useable only on entities that have requester slots.
      */
     set_request_slot(request: ItemStackIdentification, slot: uint): boolean
     /**
-     * Clear a logistic requester slot.
+     * Clear a logistic requester slot. Only useable on entities that have requester slots.
      * @param slot The slot index.
-     * @remarks Useable only on entities that have requester slots.
      */
     clear_request_slot(slot: uint): void
     /**
-     * Get the filter for a slot in an inserter, loader, or logistic storage container.
+     * Get the filter for a slot in an inserter, loader, or logistic storage container. The entity must allow filters.
      * @param slot_index Index of the slot to get the filter for.
      * @returns Prototype name of the item being filtered. `nil` if the given slot has no filter.
-     * @remarks The entity must allow filters.
      */
     get_filter(slot_index: uint): string | nil
     /**
-     * Set the filter for a slot in an inserter, loader, or logistic storage container.
+     * Set the filter for a slot in an inserter, loader, or logistic storage container. The entity must allow filters.
      * @param slot_index Index of the slot to set the filter for.
      * @param item Prototype name of the item to filter, or `nil` to clear the filter.
-     * @remarks The entity must allow filters.
      */
     set_filter(slot_index: uint, item: string | nil): void
     /**
@@ -3940,8 +4100,9 @@ declare module "factorio:runtime" {
     copy_settings(entity: LuaEntity, by_player?: PlayerIdentification): Record<string, uint>
     /**
      * Gets all the `LuaLogisticPoint`s that this entity owns. Optionally returns only the point specified by the index parameter.
+     *
+     * When `index` is not given, this will be a single `LuaLogisticPoint` for most entities. For some (such as the player character), it can be zero or more.
      * @param index If provided, only returns the `LuaLogisticPoint` specified by this index.
-     * @remarks When `index` is not given, this will be a single `LuaLogisticPoint` for most entities. For some (such as the player character), it can be zero or more.
      */
     get_logistic_point(index: defines.logistic_member_index): LuaLogisticPoint | nil
     get_logistic_point(): Record<defines.logistic_member_index, LuaLogisticPoint> | nil
@@ -4007,20 +4168,23 @@ declare module "factorio:runtime" {
     }): LuaEntity | nil
     /**
      * Get the amount of all or some fluid in this entity.
+     *
+     * If information about fluid temperatures is required, {@link LuaEntity#fluidbox LuaEntity::fluidbox} should be used instead.
      * @param fluid Prototype name of the fluid to count. If not specified, count all fluids.
-     * @remarks If information about fluid temperatures is required, {@link LuaEntity#fluidbox LuaEntity::fluidbox} should be used instead.
      */
     get_fluid_count(fluid?: string): double
     /**
      * Get amounts of all fluids in this entity.
+     *
+     * If information about fluid temperatures is required, {@link LuaEntity#fluidbox LuaEntity::fluidbox} should be used instead.
      * @returns The amounts, indexed by fluid names.
-     * @remarks If information about fluid temperatures is required, {@link LuaEntity#fluidbox LuaEntity::fluidbox} should be used instead.
      */
     get_fluid_contents(): Record<string, double>
     /**
      * Remove fluid from this entity.
+     *
+     * If temperature is given only fluid matching that exact temperature is removed. If minimum and maximum is given fluid within that range is removed.
      * @returns Amount of fluid actually removed.
-     * @remarks If temperature is given only fluid matching that exact temperature is removed. If minimum and maximum is given fluid within that range is removed.
      */
     remove_fluid(params: {
       /**
@@ -4036,7 +4200,7 @@ declare module "factorio:runtime" {
       readonly temperature?: double
     }): double
     /**
-     * Insert fluid into this entity. Fluidbox is chosen automatically.
+     * Insert fluid into this entity. The fluidbox is chosen automatically.
      * @param fluid Fluid to insert.
      * @returns Amount of fluid actually inserted.
      */
@@ -4055,12 +4219,15 @@ declare module "factorio:runtime" {
      */
     get_health_ratio(): float | nil
     /**
-     * Creates the same smoke that is created when you place a building by hand. You can play the building sound to go with it by using {@link LuaSurface#play_sound LuaSurface::play_sound}, eg: entity.surface.play_sound{path="entity-build/"..entity.prototype.name, position=entity.position}
+     * Creates the same smoke that is created when you place a building by hand.
+     *
+     * You can play the building sound to go with it by using {@link LuaSurface#play_sound LuaSurface::play_sound}, eg: `entity.surface.play_sound{path="entity-build/"..entity.prototype.name, position=entity.position}`
      */
     create_build_effect_smoke(): void
     /**
      * Toggle this entity's equipment movement bonus. Does nothing if the entity does not have an equipment grid.
-     * @remarks This property can also be read and written on the equipment grid of this entity.
+     *
+     * This property can also be read and written on the equipment grid of this entity.
      */
     toggle_equipment_movement_bonus(): void
     /**
@@ -4081,10 +4248,13 @@ declare module "factorio:runtime" {
     /**
      * Mines this entity.
      *
+     * 'Standard' operation is to keep calling `LuaEntity.mine` with an inventory until all items are transferred and the items dealt with.
+     *
+     * The result of mining the entity (the item(s) it produces when mined) will be dropped on the ground if they don't fit into the provided inventory.
+     *
      * ## Raised events
      * - {@link ScriptRaisedDestroyEvent script_raised_destroy}? _instantly_ Raised if the `raise_destroyed` flag was set and the entity was successfully mined.
      * @returns Whether mining succeeded.
-     * @remarks 'Standard' operation is to keep calling `LuaEntity.mine` with an inventory until all items are transferred and the items dealt with.<br>The result of mining the entity (the item(s) it produces when mined) will be dropped on the ground if they don't fit into the provided inventory.
      */
     mine(params?: {
       /**
@@ -4113,20 +4283,34 @@ declare module "factorio:runtime" {
      */
     can_wires_reach(entity: LuaEntity): boolean
     /**
-     * Is this entity or tile ghost or item request proxy registered for construction? If false, it means a construction robot has been dispatched to build the entity, or it is not an entity that can be constructed.
+     * Is this entity or tile ghost or item request proxy registered for construction?
+     *
+     * If false, it means a construction robot has been dispatched to build the entity, or it is not an entity that can be constructed.
      */
     is_registered_for_construction(): boolean
     /**
-     * Is this entity registered for deconstruction with this force? If false, it means a construction robot has been dispatched to deconstruct it, or it is not marked for deconstruction. The complexity is effectively O(1) - it depends on the number of objects targeting this entity which should be small enough.
+     * Is this entity registered for deconstruction with this force?
+     *
+     * If false, it means a construction robot has been dispatched to deconstruct it, or it is not marked for deconstruction.
+     *
+     * The complexity is effectively O(1) - it depends on the number of objects targeting this entity which should be small enough.
      * @param force The force construction manager to check.
      */
     is_registered_for_deconstruction(force: ForceIdentification): boolean
     /**
-     * Is this entity registered for upgrade? If false, it means a construction robot has been dispatched to upgrade it, or it is not marked for upgrade. This is worst-case O(N) complexity where N is the current number of things in the upgrade queue.
+     * Is this entity registered for upgrade?
+     *
+     * If false, it means a construction robot has been dispatched to upgrade it, or it is not marked for upgrade.
+     *
+     * This is worst-case O(N) complexity where N is the current number of things in the upgrade queue.
      */
     is_registered_for_upgrade(): boolean
     /**
-     * Is this entity registered for repair? If false, it means a construction robot has been dispatched to upgrade it, or it is not damaged. This is worst-case O(N) complexity where N is the current number of things in the repair queue.
+     * Is this entity registered for repair?
+     *
+     * If false, it means a construction robot has been dispatched to upgrade it, or it is not damaged.
+     *
+     * This is worst-case O(N) complexity where N is the current number of things in the repair queue.
      */
     is_registered_for_repair(): boolean
     /**
@@ -4152,21 +4336,30 @@ declare module "factorio:runtime" {
     readonly type: EntityType
     /**
      * Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).
-     * @remarks Entities that are not active naturally can't be set to be active (setting it to be active will do nothing)<br>Ghosts, simple smoke, and corpses can't be modified at this time.<br>It is even possible to set the character to not be active, so he can't move and perform most of the tasks.
+     *
+     * Entities that are not active naturally can't be set to be active (setting it to be active will do nothing)
+     *
+     * Ghosts, simple smoke, and corpses can't be modified at this time.
+     *
+     * It is even possible to set the character to not be active, so he can't move and perform most of the tasks.
      */
     active: boolean
     /**
      * If set to `false`, this entity can't be damaged and won't be attacked automatically. It can however still be mined.
-     * @remarks Entities that are indestructible naturally (they have no health, like smoke, resource etc) can't be set to be destructible.
+     *
+     * Entities that are indestructible naturally (they have no health, like smoke, resource etc) can't be set to be destructible.
      */
     destructible: boolean
     /**
-     * @remarks Not minable entities can still be destroyed.<br>Entities that are not minable naturally (like smoke, character, enemy units etc) can't be set to minable.
+     * Not minable entities can still be destroyed.
+     *
+     * Entities that are not minable naturally (like smoke, character, enemy units etc) can't be set to minable.
      */
     minable: boolean
     /**
      * When entity is not to be rotatable (inserter, transport belt etc), it can't be rotated by player using the R key.
-     * @remarks Entities that are not rotatable naturally (like chest or furnace) can't be set to be rotatable.
+     *
+     * Entities that are not rotatable naturally (like chest or furnace) can't be set to be rotatable.
      */
     rotatable: boolean
     /**
@@ -4175,7 +4368,8 @@ declare module "factorio:runtime" {
     operable: boolean
     /**
      * The current health of the entity, if any. Health is automatically clamped to be between `0` and max health (inclusive). Entities with a health of `0` can not be attacked.
-     * @remarks To get the maximum possible health of this entity, see {@link LuaEntityPrototype#max_health LuaEntityPrototype::max_health} on its prototype.
+     *
+     * To get the maximum possible health of this entity, see {@link LuaEntityPrototype#max_health LuaEntityPrototype::max_health} on its prototype.
      */
     health?: float
     /**
@@ -4192,7 +4386,8 @@ declare module "factorio:runtime" {
     orientation: RealOrientation
     /**
      * The relative orientation of the vehicle turret, artillery turret, artillery wagon. `nil` if this entity isn't a vehicle with a vehicle turret or artillery turret/wagon.
-     * @remarks Writing does nothing if the vehicle doesn't have a turret.
+     *
+     * Writing does nothing if the vehicle doesn't have a turret.
      */
     relative_turret_orientation?: RealOrientation
     /**
@@ -4207,7 +4402,8 @@ declare module "factorio:runtime" {
     readonly prototype: LuaEntityPrototype
     /**
      * Position where the entity puts its stuff.
-     * @remarks Meaningful only for entities that put stuff somewhere, such as mining drills or inserters. Mining drills can't have their drop position changed; inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the drop position.
+     *
+     * Meaningful only for entities that put stuff somewhere, such as mining drills or inserters. Mining drills can't have their drop position changed; inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the drop position.
      */
     get drop_position(): MapPosition
     set drop_position(value: MapPosition | MapPositionArray)
@@ -4216,7 +4412,7 @@ declare module "factorio:runtime" {
      */
     drop_target?: LuaEntity
     /**
-     * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). always 0 for entities that don't have the concept of energy stored inside.
+     * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.
      * @example
      * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
      * game.player.selected.energy = 3000
@@ -4233,23 +4429,20 @@ declare module "factorio:runtime" {
     /**
      * A list of neighbours for certain types of entities. Applies to electric poles, power switches, underground belts, walls, gates, reactors, cliffs, and pipe-connectable entities.
      *
-     * - When called on an electric pole, this is a dictionary of all connections, indexed by the strings `"copper"`, `"red"`, and `"green"`.
-     * - When called on a pipe-connectable entity, this is an array of entity arrays of all entities a given fluidbox is connected to.
-     * - When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.
-     * - When called on a wall-connectable entity or reactor, this is a dictionary of all connections indexed by the connection direction "north", "south", "east", and "west".
-     * - When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction "north", "south", "east", and "west".
+     * {@link https://lua-api.factorio.com/latest/classes/LuaEntity.html#LuaEntity.neighbours > Differs depending on the type of entity:}
      */
-    readonly neighbours: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity | nil
+    readonly neighbours: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity
     /**
      * Fluidboxes of this entity.
      */
-    fluidbox: LuaFluidBox
+    set fluidbox(value: LuaFluidBox)
     /**
      * The backer name assigned to this entity. Entities that support backer names are labs, locomotives, radars, roboports, and train stops. `nil` if this entity doesn't support backer names.
      *
+     * While train stops get the name of a backer when placed down, players can rename them if they want to. In this case, `backer_name` returns the player-given name of the entity.
+     *
      * ## Raised events
      * - {@link OnEntityRenamedEvent on_entity_renamed} _instantly_
-     * @remarks While train stops get the name of a backer when placed down, players can rename them if they want to. In this case, `backer_name` returns the player-given name of the entity.
      */
     backer_name?: string
     /**
@@ -4261,13 +4454,15 @@ declare module "factorio:runtime" {
     entity_label?: string
     /**
      * The color of this character, rolling stock, train stop, car, spider-vehicle, flying text, corpse or simple-entity-with-owner. `nil` if this entity doesn't use custom colors.
-     * @remarks Car color is overridden by the color of the current driver/passenger, if there is one.
+     *
+     * Car color is overridden by the color of the current driver/passenger, if there is one.
      */
     get color(): Color | nil
     set color(value: Color | ColorArray | nil)
     /**
      * The productivity bonus of this entity.
-     * @remarks This includes force based bonuses as well as beacon/module bonuses.
+     *
+     * This includes force based bonuses as well as beacon/module bonuses.
      */
     readonly productivity_bonus: double
     /**
@@ -4275,8 +4470,7 @@ declare module "factorio:runtime" {
      */
     readonly pollution_bonus: double
     /**
-     * The speed bonus of this entity.
-     * @remarks This includes force based bonuses as well as beacon/module bonuses.
+     * The speed bonus of this entity. This includes force based bonuses as well as beacon/module bonuses.
      */
     readonly speed_bonus: double
     /**
@@ -4292,12 +4486,15 @@ declare module "factorio:runtime" {
      */
     readonly logistic_cell: LuaLogisticCell | nil
     /**
-     * Items this ghost will request when revived or items this item request proxy is requesting. Result is a dictionary mapping each item prototype name to the required count.
+     * Items this ghost will request when revived or items this item request proxy is requesting.
+     *
+     * The result is a dictionary mapping each item prototype name to the required count.
      */
     item_requests: Record<string, uint>
     /**
      * The buffer size for the electric energy source. `nil` if the entity doesn't have an electric energy source.
-     * @remarks Write access is limited to the ElectricEnergyInterface type
+     *
+     * Write access is limited to the ElectricEnergyInterface type.
      */
     electric_buffer_size?: double
     /**
@@ -4335,7 +4532,9 @@ declare module "factorio:runtime" {
      */
     readonly bounding_box: BoundingBox
     /**
-     * The secondary bounding box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.
+     * The secondary bounding box of this entity or `nil` if it doesn't have one.
+     *
+     * This only exists for curved rails, and is automatically determined by the game.
      */
     readonly secondary_bounding_box?: BoundingBox
     /**
@@ -4343,7 +4542,9 @@ declare module "factorio:runtime" {
      */
     readonly selection_box: BoundingBox
     /**
-     * The secondary selection box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.
+     * The secondary selection box of this entity or `nil` if it doesn't have one.
+     *
+     * This only exists for curved rails, and is automatically determined by the game.
      */
     readonly secondary_selection_box?: BoundingBox
     /**
@@ -4365,7 +4566,8 @@ declare module "factorio:runtime" {
     readonly circuit_connection_definitions?: CircuitConnectionDefinition[]
     /**
      * The connection definition for entities that are directly connected to this entity via copper cables.
-     * @remarks This function is temporary in 1.1.x, it will not be available in 1.2
+     *
+     * This function is temporary in 1.1.x, it will not be available in 2.0.
      */
     readonly copper_connection_definitions: CopperConnectionDefinition[]
     /**
@@ -4420,7 +4622,8 @@ declare module "factorio:runtime" {
     set render_player(value: LuaPlayer | PlayerIdentification | nil)
     /**
      * The forces that this `simple-entity-with-owner`, `simple-entity-with-force`, or `flying-text` is visible to. `nil` or an empty array when this entity is rendered for all forces.
-     * @remarks Reading will always give an array of {@link LuaForce}
+     *
+     * Reading will always give an array of {@link LuaForce}
      */
     get render_to_forces(): LuaForce[] | nil
     set render_to_forces(value: readonly ForceIdentification[] | nil)
@@ -4434,7 +4637,8 @@ declare module "factorio:runtime" {
     storage_filter?: LuaItemPrototype
     /**
      * Whether this requester chest is set to also request from buffer chests.
-     * @remarks Useable only on entities that have requester slots.
+     *
+     * Useable only on entities that have requester slots.
      */
     request_from_buffers: boolean
     /**
@@ -4446,7 +4650,9 @@ declare module "factorio:runtime" {
      */
     readonly is_entity_with_force: boolean
     /**
-     * Whether this entity is a MilitaryTarget. Can be written to if {@link LuaEntityPrototype#allow_run_time_change_of_is_military_target LuaEntityPrototype::allow_run_time_change_of_is_military_target} returns `true`.
+     * Whether this entity is a MilitaryTarget.
+     *
+     * Can be written to if {@link LuaEntityPrototype#allow_run_time_change_of_is_military_target LuaEntityPrototype::allow_run_time_change_of_is_military_target} returns `true`.
      */
     is_military_target: boolean
     /**
@@ -4458,11 +4664,15 @@ declare module "factorio:runtime" {
      */
     readonly is_entity_with_health: boolean
     /**
-     * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.
+     * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension).
+     *
+     * Uses the current direction of the entity.
      */
     readonly tile_width: uint
     /**
-     * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.
+     * Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension).
+     *
+     * Uses the current direction of the entity.
      */
     readonly tile_height: uint
     /**
@@ -4601,19 +4811,22 @@ declare module "factorio:runtime" {
      * Offer a thing on the market.
      *
      * _Can only be used if this is Market_
-     * @example Adds market offer, 1 copper ore for 10 iron ore.
+     * @example
+     * -- Adds market offer, 1 copper ore for 10 iron ore
      * market.add_market_item{price={{"iron-ore", 10}}, offer={type="give-item", item="copper-ore"}}
-     * @example Adds market offer, 1 copper ore for 5 iron ore and 5 stone ore.
+     * @example
+     * -- Adds market offer, 1 copper ore for 5 iron ore and 5 stone ore
      * market.add_market_item{price={{"iron-ore", 5}, {"stone", 5}}, offer={type="give-item", item="copper-ore"}}
      */
     add_market_item(offer: Offer): void
     /**
      * Remove an offer from a market.
      *
+     * The other offers are moved down to fill the gap created by removing the offer, which decrements the overall size of the offer array.
+     *
      * _Can only be used if this is Market_
      * @param offer Index of offer to remove.
      * @returns `true` if the offer was successfully removed; `false` when the given index was not valid.
-     * @remarks The other offers are moved down to fill the gap created by removing the offer, which decrements the overall size of the offer array.
      */
     remove_market_item(offer: uint): boolean
     /**
@@ -4724,7 +4937,9 @@ declare module "factorio:runtime" {
      */
     get_max_transport_line_index(): uint
     /**
-     * The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of this entity. Does not contain the other end of an underground belt, see {@link LuaEntity#neighbours LuaEntity::neighbours} for that.
+     * The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of this entity.
+     *
+     * Does not contain the other end of an underground belt, see {@link LuaEntity#neighbours LuaEntity::neighbours} for that.
      *
      * _Can only be used if this is TransportBeltConnectable_
      */
@@ -4775,7 +4990,7 @@ declare module "factorio:runtime" {
    */
   export interface GhostEntity extends BaseEntity {
     /**
-     * Revive a ghost. I.e. turn it from a ghost to a real entity or tile.
+     * Revive a ghost, which turns it from a ghost into a real entity or tile.
      *
      * ## Raised events
      * - {@link ScriptRaisedReviveEvent script_raised_revive}? _instantly_ Raised if this was an entity ghost and the `raise_revive` flag was set and the entity was successfully revived.
@@ -4797,7 +5012,7 @@ declare module "factorio:runtime" {
       readonly raise_revive?: boolean
     }): LuaMultiReturn<[Record<string, uint> | nil, LuaEntity | nil, LuaEntity | nil]>
     /**
-     * Revives a ghost silently.
+     * Revives a ghost silently, so the revival makes no sound and no smoke is created.
      *
      * ## Raised events
      * - {@link ScriptRaisedReviveEvent script_raised_revive}? _instantly_ Raised if this was an entity ghost and the `raise_revive` flag was set and the entity was successfully revived.
@@ -4849,8 +5064,9 @@ declare module "factorio:runtime" {
     /**
      * The ticks left before a ghost, combat robot, highlight box, smoke with trigger or sticker is destroyed.
      *
-     * - for ghosts set to uint32 max (4 294 967 295) to never expire.
-     * - for ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
+     * For ghosts set to uint32 max (4 294 967 295) to never expire.
+     *
+     * For ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
      *
      * _Can only be used if this is Ghost, CombatRobot, HighlightBox, SmokeWithTrigger or Sticker_
      */
@@ -4873,43 +5089,48 @@ declare module "factorio:runtime" {
     /**
      * Get the rail signal or train stop at the start/end of the rail segment this rail is in.
      *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+     *
      * _Can only be used if this is Rail_
      * @param direction The direction of travel relative to this rail.
      * @param in_else_out If true, gets the entity at the entrance of the rail segment, otherwise gets the entity at the exit of the rail segment.
      * @returns `nil` if the rail segment doesn't start/end with a signal nor a train stop.
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_entity(direction: defines.rail_direction, in_else_out: boolean): LuaEntity | nil
     /**
      * Get the rail at the end of the rail segment this rail is in.
      *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+     *
      * _Can only be used if this is Rail_
      * @returns The rail entity.
      * @returns A rail direction pointing out of the rail segment from the end rail.
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_end(direction: defines.rail_direction): LuaMultiReturn<[LuaEntity, defines.rail_direction]>
     /**
-     * Get all rails of a rail segment this rail is in
+     * Get all rails of a rail segment this rail is in.
+     *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      *
      * _Can only be used if this is Rail_
      * @param direction Selects end of this rail that points to a rail segment end from which to start returning rails
      * @returns Rails of this rail segment
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_rails(direction: defines.rail_direction): LuaEntity[]
     /**
      * Get the length of the rail segment this rail is in.
      *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+     *
      * _Can only be used if this is Rail_
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_length(): double
     /**
      * Get a rail from each rail segment that overlaps with this rail's rail segment.
      *
+     * A rail segment is a continuous section of rail with no branches, signals, nor train stops.
+     *
      * _Can only be used if this is Rail_
-     * @remarks A rail segment is a continuous section of rail with no branches, signals, nor train stops.
      */
     get_rail_segment_overlaps(): LuaEntity[]
     /**
@@ -5163,12 +5384,13 @@ declare module "factorio:runtime" {
     /**
      * Sets the driver of this vehicle.
      *
+     * This differs from {@link LuaEntity#set_passenger LuaEntity::set_passenger} in that the passenger can't drive the vehicle.
+     *
      * ## Raised events
      * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
      *
      * _Can only be used if this is Vehicle_
      * @param driver The new driver. Writing `nil` ejects the current driver, if any.
-     * @remarks This differs from {@link LuaEntity#set_passenger LuaEntity::set_passenger} in that the passenger can't drive the vehicle.
      */
     set_driver(driver?: LuaEntity | PlayerIdentification): void
     /**
@@ -5185,20 +5407,22 @@ declare module "factorio:runtime" {
     /**
      * Gets the passenger of this car or spidertron if any.
      *
+     * This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
+     *
      * _Can only be used if this is Car or SpiderVehicle_
      * @returns `nil` if the vehicle contains no passenger. To check if there's a driver see {@link LuaEntity#get_driver LuaEntity::get_driver}.
-     * @remarks This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      */
     get_passenger(): LuaEntity | LuaPlayer | nil
     /**
      * Sets the passenger of this car or spidertron.
+     *
+     * This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      *
      * ## Raised events
      * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
      *
      * _Can only be used if this is Car or SpiderVehicle_
      * @param passenger The new passenger. Writing `nil` ejects the current passenger, if any.
-     * @remarks This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      */
     set_passenger(passenger?: LuaEntity | PlayerIdentification): void
     /**
@@ -5217,7 +5441,8 @@ declare module "factorio:runtime" {
      * Multiplies the car friction rate.
      *
      * _Can only be used if this is Car_
-     * @example This will allow the car to go much faster
+     * @example
+     * -- This will allow the car to go much faster
      * game.player.vehicle.friction_modifier = 0.5
      */
     friction_modifier: float
@@ -5241,20 +5466,22 @@ declare module "factorio:runtime" {
     /**
      * Gets the passenger of this car or spidertron if any.
      *
+     * This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
+     *
      * _Can only be used if this is Car or SpiderVehicle_
      * @returns `nil` if the vehicle contains no passenger. To check if there's a driver see {@link LuaEntity#get_driver LuaEntity::get_driver}.
-     * @remarks This differs over {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      */
     get_passenger(): LuaEntity | LuaPlayer | nil
     /**
      * Sets the passenger of this car or spidertron.
+     *
+     * This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      *
      * ## Raised events
      * - {@link OnPlayerDrivingChangedStateEvent on_player_driving_changed_state}? _instantly_
      *
      * _Can only be used if this is Car or SpiderVehicle_
      * @param passenger The new passenger. Writing `nil` ejects the current passenger, if any.
-     * @remarks This differs from {@link LuaEntity#get_driver LuaEntity::get_driver} in that the passenger can't drive the car.
      */
     set_passenger(passenger?: LuaEntity | PlayerIdentification): void
     /**
@@ -5357,15 +5584,21 @@ declare module "factorio:runtime" {
     /**
      * Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint.
      *
+     * Train may be included multiple times when braking distance covers this train stop multiple times.
+     *
+     * Value may be read even when train stop has no control behavior.
+     *
      * _Can only be used if this is TrainStop_
-     * @remarks Train may be included multiple times when braking distance covers this train stop multiple times<br>Value may be read even when train stop has no control behavior
      */
     readonly trains_count: uint
     /**
-     * Amount of trains above which no new trains will be sent to this train stop. Writing nil will disable the limit (will set a maximum possible value).
+     * Amount of trains above which no new trains will be sent to this train stop.
+     *
+     * Writing nil will disable the limit (will set a maximum possible value).
+     *
+     * When a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it.
      *
      * _Can only be used if this is TrainStop_
-     * @remarks When a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it
      */
     trains_limit: uint | nil
   }
@@ -5427,8 +5660,9 @@ declare module "factorio:runtime" {
      *
      * Reading this property will return a {@link LuaPlayer}, while {@link PlayerIdentification} can be used when writing.
      *
+     * A character associated with a player is not directly controlled by any player.
+     *
      * _Can only be used if this is Character_
-     * @remarks A character associated with a player is not directly controlled by any player.
      */
     get associated_player(): LuaPlayer | nil
     set associated_player(value: LuaPlayer | PlayerIdentification | nil)
@@ -5456,7 +5690,9 @@ declare module "factorio:runtime" {
    */
   export interface SpeechBubbleEntity extends BaseEntity {
     /**
-     * Only works if the entity is a speech-bubble, with an "effect" defined in its wrapper_flow_style. Starts animating the opacity of the speech bubble towards zero, and destroys the entity when it hits zero.
+     * Only works if the entity is a speech-bubble, with an "effect" defined in its wrapper_flow_style.
+     *
+     * Starts animating the opacity of the speech bubble towards zero, and destroys the entity when it hits zero.
      *
      * _Can only be used if this is SpeechBubble_
      */
@@ -5484,8 +5720,9 @@ declare module "factorio:runtime" {
     /**
      * Count of initial resource units contained. `nil` if this is not an infinite resource.
      *
+     * If this is not an infinite resource, writing will produce an error.
+     *
      * _Can only be used if this is ResourceEntity_
-     * @remarks If this is not an infinite resource, writing will produce an error.
      */
     initial_amount?: uint
   }
@@ -5496,32 +5733,42 @@ declare module "factorio:runtime" {
     /**
      * Connects current linked belt with another one.
      *
-     * Neighbours have to be of different type. If given linked belt is connected to something else it will be disconnected first. If provided neighbour is connected to something else it will also be disconnected first. Automatically updates neighbour to be connected back to this one.
+     * Neighbours have to be of different type. If given linked belt is connected to something else it will be disconnected first. If provided neighbour is connected to something else it will also be disconnected first.
+     *
+     * Automatically updates neighbour to be connected back to this one.
+     *
+     * Can also be used on entity ghost if it contains linked-belt.
      *
      * _Can only be used if this is LinkedBelt_
      * @param neighbour Another linked belt or entity ghost containing linked belt to connect or nil to disconnect
-     * @remarks Can also be used on entity ghost if it contains linked-belt
      */
     connect_linked_belts(neighbour: LuaEntity | nil): void
     /**
      * Disconnects linked belt from its neighbour.
      *
+     * Can also be used on entity ghost if it contains linked-belt.
+     *
      * _Can only be used if this is LinkedBelt_
-     * @remarks Can also be used on entity ghost if it contains linked-belt
      */
     disconnect_linked_belts(): void
     /**
      * Type of linked belt. Changing type will also flip direction so the belt is out of the same side.
      *
+     * Can only be changed when linked belt is disconnected (has no neighbour set).
+     *
+     * Can also be used on entity ghost if it contains linked-belt.
+     *
      * _Can only be used if this is LinkedBelt_
-     * @remarks Can only be changed when linked belt is disconnected (has no neighbour set).<br>Can also be used on entity ghost if it contains linked-belt.
      */
     linked_belt_type: "input" | "output"
     /**
      * Neighbour to which this linked belt is connected to, if any.
      *
+     * Can also be used on entity ghost if it contains linked-belt.
+     *
+     * May return entity ghost which contains linked belt to which connection is made.
+     *
      * _Can only be used if this is LinkedBelt_
-     * @remarks Can also be used on entity ghost if it contains linked-belt.<br>May return entity ghost which contains linked belt to which connection is made.
      */
     readonly linked_belt_neighbour?: LuaEntity
   }
@@ -5560,8 +5807,9 @@ declare module "factorio:runtime" {
     /**
      * Where the inserter will pick up items from.
      *
+     * Inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the pickup position.
+     *
      * _Can only be used if this is Inserter_
-     * @remarks Inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the pickup position.
      */
     get pickup_position(): MapPosition
     set pickup_position(value: MapPosition | MapPositionArray)
@@ -5586,15 +5834,17 @@ declare module "factorio:runtime" {
     /**
      * Returns the current target pickup count of the inserter.
      *
+     * This considers the circuit network, manual override and the inserter stack size limit based on technology.
+     *
      * _Can only be used if this is Inserter_
-     * @remarks This considers the circuit network, manual override and the inserter stack size limit based on technology.
      */
     readonly inserter_target_pickup_count: uint
     /**
      * Sets the stack size limit on this inserter. If the stack size is > than the force stack size limit the value is ignored.
      *
+     * Set to `0` to reset.
+     *
      * _Can only be used if this is Inserter_
-     * @remarks Set to 0 to reset.
      */
     inserter_stack_size_override: uint
     /**
@@ -5616,8 +5866,9 @@ declare module "factorio:runtime" {
     /**
      * The ticks left before a ghost, combat robot, highlight box, smoke with trigger or sticker is destroyed.
      *
-     * - for ghosts set to uint32 max (4 294 967 295) to never expire.
-     * - for ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
+     * For ghosts set to uint32 max (4 294 967 295) to never expire.
+     *
+     * For ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
      *
      * _Can only be used if this is Ghost, CombatRobot, HighlightBox, SmokeWithTrigger or Sticker_
      */
@@ -5633,20 +5884,21 @@ declare module "factorio:runtime" {
     /**
      * The ticks left before a ghost, combat robot, highlight box, smoke with trigger or sticker is destroyed.
      *
-     * - for ghosts set to uint32 max (4 294 967 295) to never expire.
-     * - for ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
+     * For ghosts set to uint32 max (4 294 967 295) to never expire.
+     *
+     * For ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
      *
      * _Can only be used if this is Ghost, CombatRobot, HighlightBox, SmokeWithTrigger or Sticker_
      */
     time_to_live: uint
     /**
-     * The hightlight box type of this highlight box entity.
+     * The highlight box type of this highlight box entity.
      *
      * _Can only be used if this is HighlightBox_
      */
     highlight_box_type: CursorBoxRenderType
     /**
-     * The blink interval of this highlight box entity. 0 indicates no blink.
+     * The blink interval of this highlight box entity. `0` indicates no blink.
      *
      * _Can only be used if this is HighlightBox_
      */
@@ -5656,8 +5908,9 @@ declare module "factorio:runtime" {
     /**
      * The ticks left before a ghost, combat robot, highlight box, smoke with trigger or sticker is destroyed.
      *
-     * - for ghosts set to uint32 max (4 294 967 295) to never expire.
-     * - for ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
+     * For ghosts set to uint32 max (4 294 967 295) to never expire.
+     *
+     * For ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
      *
      * _Can only be used if this is Ghost, CombatRobot, HighlightBox, SmokeWithTrigger or Sticker_
      */
@@ -5673,8 +5926,9 @@ declare module "factorio:runtime" {
     /**
      * The ticks left before a ghost, combat robot, highlight box, smoke with trigger or sticker is destroyed.
      *
-     * - for ghosts set to uint32 max (4 294 967 295) to never expire.
-     * - for ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
+     * For ghosts set to uint32 max (4 294 967 295) to never expire.
+     *
+     * For ghosts can not be set higher than {@link LuaForce#ghost_time_to_live LuaForce::ghost_time_to_live} of the entity's force.
      *
      * _Can only be used if this is Ghost, CombatRobot, HighlightBox, SmokeWithTrigger or Sticker_
      */
@@ -5877,8 +6131,9 @@ declare module "factorio:runtime" {
     /**
      * The player index associated with this character corpse.
      *
+     * The index is not guaranteed to be valid so it should always be checked first if a player with that index actually exists.
+     *
      * _Can only be used if this is CharacterCorpse_
-     * @remarks The index is not guaranteed to be valid so it should always be checked first if a player with that index actually exists.
      */
     character_corpse_player_index: uint
     /**
@@ -5986,8 +6241,9 @@ declare module "factorio:runtime" {
     /**
      * Gives what is the current shape of a transport-belt.
      *
+     * Can also be used on entity ghost if it contains transport-belt.
+     *
      * _Can only be used if this is TransportBelt_
-     * @remarks Can also be used on entity ghost if it contains transport-belt.
      */
     readonly belt_shape: "straight" | "left" | "right"
   }
@@ -6051,8 +6307,9 @@ declare module "factorio:runtime" {
     /**
      * Name of the category of this resource.
      *
+     * During data stage, this property is named "category".
+     *
      * _Can only be used if this is ResourceEntity_
-     * @remarks During data stage, this property is named "category".
      */
     readonly resource_category?: string
     /**
@@ -6350,17 +6607,19 @@ declare module "factorio:runtime" {
     /**
      * The {@link LuaRecipeCategoryPrototype crafting categories} this entity prototype supports.
      *
+     * The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     *
      * _Can only be used if this is CraftingMachine or Character_
-     * @remarks The value in the dictionary is meaningless and exists just to allow for easy lookup.
      */
-    readonly crafting_categories?: Record<string, boolean>
+    readonly crafting_categories?: Record<string, true>
     /**
      * The {@link LuaResourceCategoryPrototype resource categories} this character or mining drill supports.
      *
+     * The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     *
      * _Can only be used if this is MiningDrill or Character_
-     * @remarks The value in the dictionary is meaningless and exists just to allow for easy lookup.
      */
-    readonly resource_categories?: Record<string, boolean>
+    readonly resource_categories?: Record<string, true>
     /**
      * The supply area of this electric pole or beacon prototype.
      *
@@ -6583,7 +6842,8 @@ declare module "factorio:runtime" {
     readonly fluid?: LuaFluidPrototype
     /**
      * The fluid capacity of this entity or 0 if this entity doesn't support fluids.
-     * @remarks Crafting machines will report 0 due to their fluid capacity being whatever a given recipe needs.
+     *
+     * Crafting machines will report 0 due to their fluid capacity being whatever a given recipe needs.
      */
     readonly fluid_capacity: double
     /**
@@ -6792,7 +7052,8 @@ declare module "factorio:runtime" {
     readonly energy_per_hit_point?: double
     /**
      * If this prototype will attempt to create a ghost of itself on death.
-     * @remarks If this is false then a ghost will never be made, if it's true a ghost may be made.
+     *
+     * If this is false then a ghost will never be made, if it's true a ghost may be made.
      */
     readonly create_ghost_on_death: boolean
     /**
@@ -6834,50 +7095,7 @@ declare module "factorio:runtime" {
      */
     readonly belt_length?: double
     /**
-     * Everything in the following list is considered a building.
-     *
-     * - AccumulatorPrototype
-     * - ArtilleryTurretPrototype
-     * - BeaconPrototype
-     * - BoilerPrototype
-     * - BurnerGeneratorPrototype
-     * - CombinatorPrototype → ArithmeticCombinator, DeciderCombinator
-     * - ConstantCombinatorPrototype
-     * - ContainerPrototype → LogisticContainer, InfinityContainer
-     * - CraftingMachinePrototype → AssemblingMachine, RocketSilo, Furnace
-     * - ElectricEnergyInterfacePrototype
-     * - ElectricPolePrototype
-     * - EnemySpawnerPrototype
-     * - GatePrototype
-     * - GeneratorPrototype
-     * - HeatInterfacePrototype
-     * - HeatPipePrototype
-     * - InserterPrototype
-     * - LabPrototype
-     * - LampPrototype
-     * - LinkedContainerPrototype
-     * - MarketPrototype
-     * - MiningDrillPrototype
-     * - OffshorePumpPrototype
-     * - PipePrototype → InfinityPipe
-     * - PipeToGroundPrototype
-     * - PlayerPortPrototype
-     * - PowerSwitchPrototype
-     * - ProgrammableSpeakerPrototype
-     * - PumpPrototype
-     * - RadarPrototype
-     * - RailPrototype → CurvedRail, StraightRail
-     * - RailSignalBasePrototype → RailChainSignal, RailSignal
-     * - ReactorPrototype
-     * - RoboportPrototype
-     * - SimpleEntityPrototype
-     * - SimpleEntityWithOwnerPrototype → SimpleEntityWithForce
-     * - SolarPanelPrototype
-     * - StorageTankPrototype
-     * - TrainStopPrototype
-     * - TransportBeltConnectablePrototype → LinkedBelt, Loader1x1, Loader1x2, Splitter, TransportBelt, UndergroundBelt
-     * - TurretPrototype → AmmoTurret, ElectricTurret, FluidTurret
-     * - WallPrototype
+     * {@link https://lua-api.factorio.com/latest/classes/LuaEntityPrototype.html#LuaEntityPrototype.is_building > These are the objects that are considered buildings:}
      */
     readonly is_building: boolean
     /**
@@ -7127,7 +7345,7 @@ declare module "factorio:runtime" {
      */
     readonly grid_prototype?: LuaEquipmentGridPrototype
     /**
-     * Whether this entity should remove decoratives that collide with it when this entity is built. Possible values are `"automatic"`, `"true"` and `"false"`.
+     * Whether this entity should remove decoratives that collide with it when this entity is built.
      */
     readonly remove_decoratives: "automatic" | "true" | "false"
     /**
@@ -7139,7 +7357,7 @@ declare module "factorio:runtime" {
      *
      * _Can only be used if this is Inserter_
      */
-    readonly inserter_stack_size_bonus?: double
+    readonly inserter_stack_size_bonus?: uint
     /**
      * True if this entity prototype should be included during tile collision checks with {@link LuaTilePrototype#check_collision_with_entities LuaTilePrototype::check_collision_with_entities} enabled.
      */
@@ -7163,8 +7381,9 @@ declare module "factorio:runtime" {
     /**
      * The logistic parameters for this roboport.
      *
+     * Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
+     *
      * _Can only be used if this is Roboport_
-     * @remarks Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
      */
     readonly logistic_parameters?: {
       readonly spawn_and_station_height: float
@@ -7628,7 +7847,8 @@ declare module "factorio:runtime" {
     readonly building_grid_bit_shift: uint
     /**
      * The fluid capacity of this entity or 0 if this entity doesn't support fluids.
-     * @remarks Crafting machines will report 0 due to their fluid capacity being whatever a given recipe needs.
+     *
+     * Crafting machines will report 0 due to their fluid capacity being whatever a given recipe needs.
      */
     readonly fluid_capacity: double
     /**
@@ -7657,7 +7877,8 @@ declare module "factorio:runtime" {
     readonly allowed_effects?: Record<string, boolean>
     /**
      * If this prototype will attempt to create a ghost of itself on death.
-     * @remarks If this is false then a ghost will never be made, if it's true a ghost may be made.
+     *
+     * If this is false then a ghost will never be made, if it's true a ghost may be made.
      */
     readonly create_ghost_on_death: boolean
     /**
@@ -7665,50 +7886,7 @@ declare module "factorio:runtime" {
      */
     readonly fluidbox_prototypes: LuaFluidBoxPrototype[]
     /**
-     * Everything in the following list is considered a building.
-     *
-     * - AccumulatorPrototype
-     * - ArtilleryTurretPrototype
-     * - BeaconPrototype
-     * - BoilerPrototype
-     * - BurnerGeneratorPrototype
-     * - CombinatorPrototype → ArithmeticCombinator, DeciderCombinator
-     * - ConstantCombinatorPrototype
-     * - ContainerPrototype → LogisticContainer, InfinityContainer
-     * - CraftingMachinePrototype → AssemblingMachine, RocketSilo, Furnace
-     * - ElectricEnergyInterfacePrototype
-     * - ElectricPolePrototype
-     * - EnemySpawnerPrototype
-     * - GatePrototype
-     * - GeneratorPrototype
-     * - HeatInterfacePrototype
-     * - HeatPipePrototype
-     * - InserterPrototype
-     * - LabPrototype
-     * - LampPrototype
-     * - LinkedContainerPrototype
-     * - MarketPrototype
-     * - MiningDrillPrototype
-     * - OffshorePumpPrototype
-     * - PipePrototype → InfinityPipe
-     * - PipeToGroundPrototype
-     * - PlayerPortPrototype
-     * - PowerSwitchPrototype
-     * - ProgrammableSpeakerPrototype
-     * - PumpPrototype
-     * - RadarPrototype
-     * - RailPrototype → CurvedRail, StraightRail
-     * - RailSignalBasePrototype → RailChainSignal, RailSignal
-     * - ReactorPrototype
-     * - RoboportPrototype
-     * - SimpleEntityPrototype
-     * - SimpleEntityWithOwnerPrototype → SimpleEntityWithForce
-     * - SolarPanelPrototype
-     * - StorageTankPrototype
-     * - TrainStopPrototype
-     * - TransportBeltConnectablePrototype → LinkedBelt, Loader1x1, Loader1x2, Splitter, TransportBelt, UndergroundBelt
-     * - TurretPrototype → AmmoTurret, ElectricTurret, FluidTurret
-     * - WallPrototype
+     * {@link https://lua-api.factorio.com/latest/classes/LuaEntityPrototype.html#LuaEntityPrototype.is_building > These are the objects that are considered buildings:}
      */
     readonly is_building: boolean
     /**
@@ -7732,7 +7910,7 @@ declare module "factorio:runtime" {
      */
     readonly grid_prototype?: LuaEquipmentGridPrototype
     /**
-     * Whether this entity should remove decoratives that collide with it when this entity is built. Possible values are `"automatic"`, `"true"` and `"false"`.
+     * Whether this entity should remove decoratives that collide with it when this entity is built.
      */
     readonly remove_decoratives: "automatic" | "true" | "false"
     /**
@@ -7789,8 +7967,9 @@ declare module "factorio:runtime" {
     /**
      * Name of the category of this resource.
      *
+     * During data stage, this property is named "category".
+     *
      * _Can only be used if this is ResourceEntity_
-     * @remarks During data stage, this property is named "category".
      */
     readonly resource_category?: string
   }
@@ -7989,10 +8168,11 @@ declare module "factorio:runtime" {
     /**
      * The {@link LuaResourceCategoryPrototype resource categories} this character or mining drill supports.
      *
+     * The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     *
      * _Can only be used if this is MiningDrill or Character_
-     * @remarks The value in the dictionary is meaningless and exists just to allow for easy lookup.
      */
-    readonly resource_categories?: Record<string, boolean>
+    readonly resource_categories?: Record<string, true>
     /**
      * The base productivity of this crafting machine, lab, or mining drill.
      *
@@ -8014,17 +8194,19 @@ declare module "factorio:runtime" {
     /**
      * The {@link LuaRecipeCategoryPrototype crafting categories} this entity prototype supports.
      *
+     * The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     *
      * _Can only be used if this is CraftingMachine or Character_
-     * @remarks The value in the dictionary is meaningless and exists just to allow for easy lookup.
      */
-    readonly crafting_categories?: Record<string, boolean>
+    readonly crafting_categories?: Record<string, true>
     /**
      * The {@link LuaResourceCategoryPrototype resource categories} this character or mining drill supports.
      *
+     * The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     *
      * _Can only be used if this is MiningDrill or Character_
-     * @remarks The value in the dictionary is meaningless and exists just to allow for easy lookup.
      */
-    readonly resource_categories?: Record<string, boolean>
+    readonly resource_categories?: Record<string, true>
     /**
      * Whether this unit, car, or character prototype has belt immunity.
      *
@@ -8160,10 +8342,11 @@ declare module "factorio:runtime" {
     /**
      * The {@link LuaRecipeCategoryPrototype crafting categories} this entity prototype supports.
      *
+     * The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     *
      * _Can only be used if this is CraftingMachine or Character_
-     * @remarks The value in the dictionary is meaningless and exists just to allow for easy lookup.
      */
-    readonly crafting_categories?: Record<string, boolean>
+    readonly crafting_categories?: Record<string, true>
     /**
      * The base productivity of this crafting machine, lab, or mining drill.
      *
@@ -8653,7 +8836,7 @@ declare module "factorio:runtime" {
      *
      * _Can only be used if this is Inserter_
      */
-    readonly inserter_stack_size_bonus?: double
+    readonly inserter_stack_size_bonus?: uint
   }
   export interface SimpleEntityPrototype extends BaseEntityPrototype {
     /**
@@ -8805,8 +8988,9 @@ declare module "factorio:runtime" {
     /**
      * The logistic parameters for this roboport.
      *
+     * Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
+     *
      * _Can only be used if this is Roboport_
-     * @remarks Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
      */
     readonly logistic_parameters?: {
       readonly spawn_and_station_height: float
@@ -9014,7 +9198,8 @@ declare module "factorio:runtime" {
     }
     /**
      * Current shield value of the equipment.
-     * @remarks Can't be set higher than {@link LuaEquipment#max_shield LuaEquipment::max_shield}.
+     *
+     * Can't be set higher than {@link LuaEquipment#max_shield LuaEquipment::max_shield}.
      */
     shield: double
     /**
@@ -9333,8 +9518,9 @@ declare module "factorio:runtime" {
     /**
      * The logistic parameters for this roboport equipment.
      *
+     * Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
+     *
      * _Can only be used if this is RoboportEquipment_
-     * @remarks Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
      */
     readonly logistic_parameters?: {
       readonly spawn_and_station_height: float
@@ -9484,8 +9670,9 @@ declare module "factorio:runtime" {
     /**
      * The logistic parameters for this roboport equipment.
      *
+     * Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
+     *
      * _Can only be used if this is RoboportEquipment_
-     * @remarks Both the `charging_station_shift` and `stationing_offset` vectors are tables with `x` and `y` keys instead of an array.
      */
     readonly logistic_parameters?: {
       readonly spawn_and_station_height: float
@@ -9520,11 +9707,14 @@ declare module "factorio:runtime" {
     readonly attack_parameters?: AttackParameters
   }
   /**
-   * Encapsulates statistic data for different parts of the game. In the context of flow statistics, `input` and `output` describe on which side of the associated GUI the values are shown. Input values are shown on the left side, output values on the right side.
+   * Encapsulates statistic data for different parts of the game.
    *
-   * Examples:
+   * In the context of flow statistics, `input` and `output` describe on which side of the associated GUI the values are shown. Input values are shown on the left side, output values on the right side.
+   *
    * - The item production GUI shows "consumption" on the right, thus `output` describes the item consumption numbers. The same goes for fluid consumption.
+   *
    * - The kills GUI shows "losses" on the right, so `output` describes how many of the force's entities were killed by enemies.
+   *
    * - The electric network GUI shows "power consumption" on the left side, so in this case `input` describes the power consumption numbers.
    * @noSelf
    */
@@ -9619,7 +9809,8 @@ declare module "factorio:runtime" {
    * An array of fluid boxes of an entity. Entities may contain more than one fluid box, and some can change the number of fluid boxes -- for instance, an assembling machine will change its number of fluid boxes depending on its active recipe. See {@link Fluid}.
    *
    * Do note that reading from a {@link LuaFluidBox} creates a new table and writing will copy the given fields from the table into the engine's own fluid box structure. Therefore, the correct way to update a fluidbox of an entity is to read it first, modify the table, then write the modified table back. Directly accessing the returned table's attributes won't have the desired effect.
-   * @example Double the temperature of the fluid in `entity`'s first fluid box.
+   * @example
+   * -- Double the temperature of the fluid in entity's first fluid box.
    * fluid = entity.fluidbox[1]
    * fluid.temperature = fluid.temperature * 2
    * entity.fluidbox[1] = fluid
@@ -9650,19 +9841,21 @@ declare module "factorio:runtime" {
     get_filter(index: uint): FluidBoxFilter | nil
     /**
      * Set a fluid box filter.
+     *
+     * Some entities cannot have their fluidbox filter set, notably fluid wagons and crafting machines.
      * @param index The index of the filter to set.
      * @param filter The filter to set. Setting `nil` clears the filter.
      * @returns Whether the filter was set successfully.
-     * @remarks Some entities cannot have their fluidbox filter set, notably fluid wagons and crafting machines.
      */
     set_filter(index: uint, filter: FluidBoxFilterSpec | nil): boolean
     /**
      * Flow through the fluidbox in the last tick. It is the larger of in-flow and out-flow.
-     * @remarks Fluid wagons do not track it and will return 0.
+     *
+     * Fluid wagons do not track it and will return 0.
      */
     get_flow(index: uint): double
     /**
-     * Returns the fluid the fluidbox is locked onto
+     * Returns the fluid the fluidbox is locked onto.
      * @returns `nil` if the fluidbox is not locked to any fluid.
      */
     get_locked_fluid(index: uint): string | nil
@@ -9908,9 +10101,10 @@ declare module "factorio:runtime" {
   export interface LuaForce {
     /**
      * Count entities of given type.
+     *
+     * This function has O(1) time complexity as entity counts are kept and maintained in the game engine.
      * @param name Prototype name of the entity.
      * @returns Number of entities of given prototype belonging to this force.
-     * @remarks This function has O(1) time complexity as entity counts are kept and maintained in the game engine.
      */
     get_entity_count(name: string): uint
     /**
@@ -9926,7 +10120,7 @@ declare module "factorio:runtime" {
      */
     disable_all_prototypes(): void
     /**
-     * Enables all recipes and technologies. The opposite of {@link LuaForce#disable_all_prototypes LuaForce::disable_all_prototypes}
+     * Enables all recipes and technologies. The opposite of {@link LuaForce#disable_all_prototypes LuaForce::disable_all_prototypes}.
      */
     enable_all_prototypes(): void
     /**
@@ -9970,7 +10164,8 @@ declare module "factorio:runtime" {
     /**
      * Chart a portion of the map. The chart for the given area is refreshed; it creates chart for any parts of the given area that haven't been charted yet.
      * @param area The area on the given surface to chart.
-     * @example Charts a 2048x2048 rectangle centered around the origin.
+     * @example
+     * -- Charts a 2048x2048 rectangle centered around the origin.
      * game.player.force.chart(game.player.surface, {{x = -1024, y = -1024}, {x = 1024, y = 1024}})
      */
     chart(surface: SurfaceIdentification, area: BoundingBoxWrite | BoundingBoxArray): void
@@ -10098,7 +10293,8 @@ declare module "factorio:runtime" {
     set_item_launched(item: string, count: uint): void
     /**
      * Print text to the chat console of all players on this force.
-     * @remarks By default, messages that are identical to a message sent in the last 60 ticks are not printed again.
+     *
+     * By default, messages that are identical to a message sent in the last 60 ticks are not printed again.
      */
     print(message: LocalisedString, print_settings?: (Color | ColorArray) | PrintSettings): void
     /**
@@ -10108,11 +10304,12 @@ declare module "factorio:runtime" {
     /**
      * Adds a custom chart tag to the given surface and returns the new tag or `nil` if the given position isn't valid for a chart tag.
      *
+     * The chunk must be charted for a tag to be valid at that location.
+     *
      * ## Raised events
      * - {@link OnChartTagAddedEvent on_chart_tag_added}? _instantly_ Raised if the chart tag was successfully added.
      * @param surface Which surface to add the tag to.
      * @param tag The tag to add.
-     * @remarks The chunk must be charted for a tag to be valid at that location.
      */
     add_chart_tag(surface: SurfaceIdentification, tag: ChartTagSpec): LuaCustomChartTag | nil
     /**
@@ -10137,7 +10334,8 @@ declare module "factorio:runtime" {
     reset_evolution(): void
     /**
      * Play a sound for every player in this force.
-     * @remarks The sound is not played if its location is not {@link LuaForce#chart charted} for this force.
+     *
+     * The sound is not played if its location is not {@link LuaForce#chart charted} for this force.
      */
     play_sound(params: {
       /**
@@ -10208,31 +10406,35 @@ declare module "factorio:runtime" {
     help(): string
     /**
      * Name of the force.
-     * @example Prints "`player`"
-     * game.player.print(game.player.force.name)
+     * @example
+     * game.player.print(game.player.force.name) -- => "player"
      */
     readonly name: string
     /**
      * Technologies owned by this force, indexed by `name`.
-     * @example Researches the technology for the player's force
+     * @example
+     * -- Researches the technology for the player's force
      * game.player.force.technologies["steel-processing"].researched = true
      */
     readonly technologies: LuaCustomTable<string, LuaTechnology>
     /**
      * Recipes available to this force, indexed by `name`.
-     * @example Prints the category of the given recipe
+     * @example
+     * -- Prints the category of the given recipe
      * game.player.print(game.player.force.recipes["transport-belt"].category)
      */
     readonly recipes: LuaCustomTable<string, LuaRecipe>
     /**
      * Multiplier of the manual mining speed. Default value is `0`. The actual mining speed will be multiplied by `1 + manual_mining_speed_modifier`.
-     * @example Double the player's mining speed
+     * @example
+     * -- Double the player's mining speed
      * game.player.force.manual_mining_speed_modifier = 1
      */
     manual_mining_speed_modifier: double
     /**
      * Multiplier of the manual crafting speed. Default value is `0`. The actual crafting speed will be multiplied by `1 + manual_crafting_speed_modifier`.
-     * @example Double the player's crafting speed
+     * @example
+     * -- Double the player's crafting speed
      * game.player.force.manual_crafting_speed_modifier = 1
      */
     manual_crafting_speed_modifier: double
@@ -10246,7 +10448,7 @@ declare module "factorio:runtime" {
      */
     readonly current_research?: LuaTechnology
     /**
-     * Progress of current research, as a number in range [0, 1].
+     * Progress of current research, as a number in range `[0, 1]`.
      */
     research_progress: double
     /**
@@ -10283,7 +10485,10 @@ declare module "factorio:runtime" {
     readonly players: LuaPlayer[]
     /**
      * Enables some higher-level AI behaviour for this force. When set to `true`, biters belonging to this force will automatically expand into new territories, build new spawners, and form unit groups. By default, this value is `true` for the enemy force and `false` for all others.
-     * @remarks Setting this to `false` does not turn off biters' AI. They will still move around and attack players who come close.<br>It is necessary for a force to be AI controllable in order to be able to create unit groups or build bases from scripts.
+     *
+     * Setting this to `false` does not turn off biters' AI. They will still move around and attack players who come close.
+     *
+     * It is necessary for a force to be AI controllable in order to be able to create unit groups or build bases from scripts.
      */
     ai_controllable: boolean
     /**
@@ -10318,7 +10523,7 @@ declare module "factorio:runtime" {
     character_item_pickup_distance_bonus: double
     character_loot_pickup_distance_bonus: double
     /**
-     * the number of additional inventory slots the character main inventory has.
+     * The number of additional inventory slots the character main inventory has.
      */
     character_inventory_slots_bonus: uint
     /**
@@ -10364,7 +10569,8 @@ declare module "factorio:runtime" {
      * The connected players belonging to this force.
      *
      * This is primarily useful when you want to do some action against all online players of this force.
-     * @remarks This does *not* index using player index. See {@link LuaPlayer#index LuaPlayer::index} on each player instance for the player index.
+     *
+     * This does *not* index using player index. See {@link LuaPlayer#index LuaPlayer::index} on each player instance for the player index.
      */
     readonly connected_players: LuaPlayer[]
     mining_drill_productivity_bonus: double
@@ -10395,8 +10601,9 @@ declare module "factorio:runtime" {
     /**
      * The research queue of this force. The first technology in the array is the currently active one. Reading this attribute gives an array of {@link LuaTechnology}.
      *
-     * To write to this, the entire table must be written. Providing an empty table or `nil` will empty the research queue and cancel the current research. Writing to this when the research queue is disabled will simply set the last research in the table as the current research.
-     * @remarks This only allows mods to queue research that this force is able to research in the first place. As an example, an already researched technology or one whose prerequisites are not fulfilled will not be queued, but dropped silently instead.
+     * To write to this, the entire table must be written. Providing an empty table or `nil` will empty the research queue and cancel the current research.  Writing to this when the research queue is disabled will simply set the last research in the table as the current research.
+     *
+     * This only allows mods to queue research that this force is able to research in the first place. As an example, an already researched technology or one whose prerequisites are not fulfilled will not be queued, but dropped silently instead.
      */
     get research_queue(): LuaTechnology[] | nil
     set research_queue(value: readonly TechnologyIdentification[] | nil)
@@ -10405,7 +10612,7 @@ declare module "factorio:runtime" {
      */
     readonly research_enabled: boolean
     /**
-     * Custom color for this force. If specified, will take priority over other sources of the force color. Writing nil clears custom color. Will return nil if it was not specified or if was set to {0,0,0,0}
+     * Custom color for this force. If specified, will take priority over other sources of the force color. Writing `nil` clears custom color. Will return `nil` if it was not specified or if was set to `{0,0,0,0}`.
      */
     get custom_color(): Color | nil
     set custom_color(value: Color | ColorArray | nil)
@@ -10475,7 +10682,8 @@ declare module "factorio:runtime" {
     get_entity_by_tag(tag: string): LuaEntity | nil
     /**
      * Show an in-game message dialog.
-     * @remarks Can only be used when the map contains exactly one player.
+     *
+     * Can only be used when the map contains exactly one player.
      */
     show_message_dialog(params: {
       /**
@@ -10505,33 +10713,43 @@ declare module "factorio:runtime" {
     is_demo(): boolean
     /**
      * Forces a reload of the scenario script from the original scenario location.
-     * @remarks This disables the replay if replay is enabled.
+     *
+     * This disables the replay if replay is enabled.
      */
     reload_script(): void
     /**
      * Forces a reload of all mods.
-     * @remarks This will act like saving and loading from the mod(s) perspective.<br>This will do nothing if run in multiplayer.<br>This disables the replay if replay is enabled.
+     *
+     * This will act like saving and loading from the mod(s) perspective.
+     *
+     * This will do nothing if run in multiplayer.
+     *
+     * This disables the replay if replay is enabled.
      */
     reload_mods(): void
     /**
      * Saves the current configuration of Atlas to a file. This will result in huge file containing all of the game graphics moved to as small space as possible.
-     * @remarks Exists mainly for debugging reasons.
+     *
+     * Exists mainly for debugging reasons.
      */
     save_atlas(): void
     /**
      * Run internal consistency checks. Allegedly prints any errors it finds.
-     * @remarks Exists mainly for debugging reasons.
+     *
+     * Exists mainly for debugging reasons.
      */
     check_consistency(): void
     /**
      * Regenerate autoplacement of some entities on all surfaces. This can be used to autoplace newly-added entities.
+     *
+     * All specified entity prototypes must be autoplacable.
      * @param entities Prototype names of entity or entities to autoplace.
-     * @remarks All specified entity prototypes must be autoplacable.
      */
     regenerate_entity(entities: string | readonly string[]): void
     /**
      * Take a screenshot of the game and save it to the `script-output` folder, located in the game's {@linkplain https://wiki.factorio.com/User_data_directory user data directory}. The name of the image file can be specified via the `path` parameter.
-     * @remarks If Factorio is running headless, this function will do nothing.
+     *
+     * If Factorio is running headless, this function will do nothing.
      */
     take_screenshot(params: {
       /**
@@ -10671,33 +10889,38 @@ declare module "factorio:runtime" {
     /**
      * Create a new force.
      *
+     * The game currently supports a maximum of 64 forces, including the three built-in forces. This means that a maximum of 61 new forces may be created. Force names must be unique.
+     *
      * ## Raised events
      * - {@link OnForceCreatedEvent on_force_created} _instantly_
      * @param force Name of the new force
      * @returns The force that was just created
-     * @remarks The game currently supports a maximum of 64 forces, including the three built-in forces. This means that a maximum of 61 new forces may be created.<br>Force names must be unique.
      */
     create_force(force: string): LuaForce
     /**
      * Marks two forces to be merged together. All players and entities in the source force will be reassigned to the target force. The source force will then be destroyed. Importantly, this does not merge technologies or bonuses, which are instead retained from the target force.
+     *
+     * The three built-in forces (player, enemy and neutral) can't be destroyed, meaning they can't be used as the source argument to this function.
+     *
+     * The source force is not removed until the end of the current tick, or if called during the {@link OnForcesMergingEvent on_forces_merging} or {@link OnForcesMergedEvent on_forces_merged} event, the end of the next tick.
      *
      * ## Raised events
      * - {@link OnForcesMergingEvent on_forces_merging} _future_tick_
      * - {@link OnForcesMergedEvent on_forces_merged} _future_tick_
      * @param source The force to remove.
      * @param destination The force to reassign all entities to.
-     * @remarks The three built-in forces (player, enemy and neutral) can't be destroyed, meaning they can't be used as the source argument to this function.<br>The source force is not removed until the end of the current tick, or if called during the {@link OnForcesMergingEvent on_forces_merging} or {@link OnForcesMergedEvent on_forces_merged} event, the end of the next tick.
      */
     merge_forces(source: ForceIdentification, destination: ForceIdentification): void
     /**
      * Create a new surface.
+     *
+     * The game currently supports a maximum of 4 294 967 295 surfaces, including the default surface. Surface names must be unique.
      *
      * ## Raised events
      * - {@link OnSurfaceCreatedEvent on_surface_created} _instantly_
      * @param name Name of the new surface.
      * @param settings Map generation settings.
      * @returns The surface that was just created.
-     * @remarks The game currently supports a maximum of 4 294 967 295 surfaces, including the default surface.<br>Surface names must be unique.
      */
     create_surface(name: string, settings?: MapGenSettingsWrite): LuaSurface
     /**
@@ -10707,8 +10930,9 @@ declare module "factorio:runtime" {
     server_save(name?: string): void
     /**
      * Instruct the game to perform an auto-save.
+     *
+     * Only the server will save in multiplayer. In single player a standard auto-save is triggered.
      * @param name The autosave name if any. Saves will be named _autosave-*name* when provided.
-     * @remarks Only the server will save in multiplayer. In single player a standard auto-save is triggered.
      */
     auto_save(name?: string): void
     /**
@@ -10731,25 +10955,29 @@ declare module "factorio:runtime" {
     /**
      * Converts the given direction into the string version of the direction.
      */
-    direction_to_string(direction: defines.direction): void
+    direction_to_string(direction: defines.direction): string
     /**
      * Print text to the chat console all players.
-     * @remarks By default, messages that are identical to a message sent in the last 60 ticks are not printed again.
+     *
+     * By default, messages that are identical to a message sent in the last 60 ticks are not printed again.
      */
     print(message: LocalisedString, print_settings?: (Color | ColorArray) | PrintSettings): void
     /**
      * Creates a deterministic standalone random generator with the given seed or if a seed is not provided the initial map seed is used.
-     * @remarks *Make sure* you actually want to use this over math.random(...) as this provides entirely different functionality over math.random(...).
+     *
+     * *Make sure* you actually want to use this over math.random(...) as this provides entirely different functionality over math.random(...).
      */
     create_random_generator(seed?: uint): LuaRandomGenerator
     /**
      * Goes over all items, entities, tiles, recipes, technologies among other things and logs if the locale is incorrect.
-     * @remarks Also prints true/false if called from the console.
+     *
+     * Also prints true/false if called from the console.
      */
     check_prototype_translations(): void
     /**
      * Play a sound for every player in the game.
-     * @remarks The sound is not played if its location is not {@link LuaForce#chart charted} for that player.
+     *
+     * The sound is not played if its location is not {@link LuaForce#chart charted} for that player.
      */
     play_sound(params: {
       /**
@@ -10844,8 +11072,9 @@ declare module "factorio:runtime" {
     is_multiplayer(): boolean
     /**
      * Gets the number of entities that are active (updated each tick).
+     *
+     * This is very expensive to determine.
      * @param surface If given, only the entities active on this surface are counted.
-     * @remarks This is very expensive to determine.
      */
     get_active_entities_count(surface?: SurfaceIdentification): uint
     /**
@@ -10880,28 +11109,34 @@ declare module "factorio:runtime" {
     get_player(player: PlayerIndex | string): LuaPlayer | nil
     /**
      * Gets the given surface or returns `nil` if no surface is found.
+     *
+     * This is a shortcut for {@link LuaGameScript#surfaces LuaGameScript::surfaces}.
      * @param surface The surface index or name.
-     * @remarks This is a shortcut for game.surfaces[...]
      */
     get_surface(surface: SurfaceIndex | string): LuaSurface | nil
     /**
      * Creates a {@link LuaProfiler}, which is used for measuring script performance.
+     *
+     * LuaProfiler cannot be serialized.
      * @param stopped Create the timer stopped
-     * @remarks LuaProfiler cannot be serialized.
      */
     create_profiler(stopped?: boolean): LuaProfiler
     /**
-     * Evaluate an expression, substituting variables as provided. For details on the formula, see {@link import("factorio:prototype").TechnologyPrototype#unit TechnologyPrototype::unit}.
+     * Evaluate an expression, substituting variables as provided.
+     *
+     * For details on the formula, see {@link import("factorio:prototype").TechnologyPrototype#unit TechnologyPrototype::unit}.
      * @param expression The expression to evaluate.
      * @param variables Variables to be substituted.
-     * @example Calculate the number of research units required to unlock mining productivity level 10.
+     * @example
+     * -- Calculate the number of research units required to unlock mining productivity level 10
      * local formula = game.forces["player"].technologies["mining-productivity-4"].research_unit_count_formula
      * local units = game.evaluate_expression(formula, { L = 10, l = 10 })
      */
     evaluate_expression(expression: string, variables?: Record<string, double>): double
     /**
      * Returns a dictionary of all LuaEntityPrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every entity prototype that can craft recipes involving fluids in the way some assembling machines can.
+     * @example
+     * -- Get every entity prototype that can craft recipes involving fluids in the way some assembling machines can
      * local prototypes = game.get_filtered_entity_prototypes{{filter="crafting-category", crafting_category="crafting-with-fluid"}}
      */
     get_filtered_entity_prototypes(
@@ -10909,13 +11144,15 @@ declare module "factorio:runtime" {
     ): LuaCustomTable<string, LuaEntityPrototype>
     /**
      * Returns a dictionary of all LuaItemPrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every item prototype that, when launched with a rocket, produces a result.
+     * @example
+     * -- Get every item prototype that, when launched with a rocket, produces a result.
      * local prototypes = game.get_filtered_item_prototypes{{filter="has-rocket-launch-products"}}
      */
     get_filtered_item_prototypes(filters: readonly ItemPrototypeFilterWrite[]): LuaCustomTable<string, LuaItemPrototype>
     /**
      * Returns a dictionary of all LuaEquipmentPrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every equipment prototype that functions as a battery.
+     * @example
+     * -- Get every equipment prototype that functions as a battery.
      * local prototypes = game.get_filtered_equipment_prototypes{{filter="type", type="battery-equipment"}}
      */
     get_filtered_equipment_prototypes(
@@ -10923,7 +11160,8 @@ declare module "factorio:runtime" {
     ): LuaCustomTable<string, LuaEquipmentPrototype>
     /**
      * Returns a dictionary of all LuaModSettingPrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every mod setting prototype that belongs to the specified mod.
+     * @example
+     * -- Get every mod setting prototype that belongs to the specified mod.
      * local prototypes = game.get_filtered_mod_setting_prototypes{{filter="mod", mod="space-exploration"}}
      */
     get_filtered_mod_setting_prototypes(
@@ -10931,7 +11169,8 @@ declare module "factorio:runtime" {
     ): LuaCustomTable<string, LuaModSettingPrototype>
     /**
      * Returns a dictionary of all LuaAchievementPrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every achievement prototype that is not allowed to be completed on the peaceful difficulty setting.
+     * @example
+     * -- Get every achievement prototype that is not allowed to be completed on the peaceful difficulty setting.
      * local prototypes = game.get_filtered_achievement_prototypes{{filter="allowed-without-fight", invert=true}}
      */
     get_filtered_achievement_prototypes(
@@ -10939,13 +11178,15 @@ declare module "factorio:runtime" {
     ): LuaCustomTable<string, LuaAchievementPrototype>
     /**
      * Returns a dictionary of all LuaTilePrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every tile prototype that improves a player's walking speed by at least 50%.
+     * @example
+     * -- Get every tile prototype that improves a player's walking speed by at least 50%.
      * local prototypes = game.get_filtered_tile_prototypes{{filter="walking-speed-modifier", comparison="≥", value=1.5}}
      */
     get_filtered_tile_prototypes(filters: readonly TilePrototypeFilterWrite[]): LuaCustomTable<string, LuaTilePrototype>
     /**
      * Returns a dictionary of all LuaDecorativePrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every decorative prototype that is auto-placed.
+     * @example
+     * -- Get every decorative prototype that is auto-placed.
      * local prototypes = game.get_filtered_decorative_prototypes{{filter="autoplace"}}
      */
     get_filtered_decorative_prototypes(
@@ -10953,7 +11194,8 @@ declare module "factorio:runtime" {
     ): LuaCustomTable<string, LuaDecorativePrototype>
     /**
      * Returns a dictionary of all LuaFluidPrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every fluid prototype that has a heat capacity of exactly `100`.
+     * @example
+     * -- Get every fluid prototype that has a heat capacity of exactly `100`.
      * local prototypes = game.get_filtered_fluid_prototypes{{filter="heat-capacity", comparison="=", value=100}}
      */
     get_filtered_fluid_prototypes(
@@ -10961,7 +11203,8 @@ declare module "factorio:runtime" {
     ): LuaCustomTable<string, LuaFluidPrototype>
     /**
      * Returns a dictionary of all LuaRecipePrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every recipe prototype that takes less than half a second to craft (at crafting speed `1`).
+     * @example
+     * -- Get every recipe prototype that takes less than half a second to craft (at crafting speed `1`).
      * local prototypes = game.get_filtered_recipe_prototypes{{filter="energy", comparison="<", value=0.5}}
      */
     get_filtered_recipe_prototypes(
@@ -10969,23 +11212,28 @@ declare module "factorio:runtime" {
     ): LuaCustomTable<string, LuaRecipePrototype>
     /**
      * Returns a dictionary of all LuaTechnologyPrototypes that fit the given filters. The prototypes are indexed by `name`.
-     * @example Get every technology prototype that can be researched at the start of the game.
+     * @example
+     * -- Get every technology prototype that can be researched at the start of the game.
      * local prototypes = game.get_filtered_technology_prototypes{{filter="has-prerequisites", invert=true}}
      */
     get_filtered_technology_prototypes(
       filters: readonly TechnologyPrototypeFilterWrite[],
     ): LuaCustomTable<string, LuaTechnologyPrototype>
     /**
-     * Creates an inventory that is not owned by any game object. It can be resized later with {@link LuaInventory#resize LuaInventory::resize}.
+     * Creates an inventory that is not owned by any game object.
+     *
+     * It can be resized later with {@link LuaInventory#resize LuaInventory::resize}.
+     *
+     * Make sure to destroy it when you are done with it using {@link LuaInventory#destroy LuaInventory::destroy}.
      * @param size The number of slots the inventory initially has.
-     * @remarks Make sure to destroy it when you are done with it using {@link LuaInventory#destroy LuaInventory::destroy}.
      */
     create_inventory(size: uint16): LuaInventory
     /**
-     * Gets the inventories created through {@link LuaGameScript#create_inventory LuaGameScript::create_inventory}
-     * @param mod The mod who's inventories to get. If not provided all inventories are returned.
+     * Gets the inventories created through {@link LuaGameScript#create_inventory LuaGameScript::create_inventory}.
+     *
+     * Inventories created through console commands will be owned by `"core"`.
+     * @param mod The mod whose inventories to get. If not provided all inventories are returned.
      * @returns A mapping of mod name to array of inventories owned by that mod.
-     * @remarks Inventories created through console commands will be owned by `"core"`.
      */
     get_script_inventories(mod?: string): Record<string, LuaInventory[]>
     /**
@@ -11058,6 +11306,10 @@ declare module "factorio:runtime" {
       readonly steps_limit?: uint
     }): TrainPathFinderPathResult | TrainPathAnyGoalResult | TrainPathAllGoalsResult
     /**
+     * All methods and properties that this object supports.
+     */
+    help(): string
+    /**
      * This property is only populated inside {@link LuaCommandProcessor custom command} handlers and when writing {@linkplain https://wiki.factorio.com/Console#Scripting_and_cheat_commands Lua console commands}. Returns the player that is typing the command, `nil` in all other instances.
      *
      * See {@link LuaGameScript#players LuaGameScript::players} for accessing all players.
@@ -11071,12 +11323,14 @@ declare module "factorio:runtime" {
     readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
     /**
      * The currently active set of map settings. Even though this property is marked as read-only, the members of the dictionary that is returned can be modified mid-game.
-     * @remarks This does not contain difficulty settings, use {@link LuaGameScript#difficulty_settings LuaGameScript::difficulty_settings} instead.
+     *
+     * This does not contain difficulty settings, use {@link LuaGameScript#difficulty_settings LuaGameScript::difficulty_settings} instead.
      */
     readonly map_settings: MapSettings
     /**
      * The currently active set of difficulty settings. Even though this property is marked as read-only, the members of the dictionary that is returned can be modified mid-game. This is however not recommended as different difficulties can have differing technology and recipe trees, which can cause problems for players.
-     * @example This will set the technology price multiplier to 12.
+     * @example
+     * -- This will set the technology price multiplier to 12.
      * game.difficulty_settings.technology_price_multiplier = 12
      */
     readonly difficulty_settings: DifficultySettings
@@ -11206,7 +11460,8 @@ declare module "factorio:runtime" {
     readonly font_prototypes: LuaCustomTable<string, LuaFontPrototype>
     /**
      * A dictionary containing every MapGenPreset indexed by `name`.
-     * @remarks A MapGenPreset is an exact copy of the prototype table provided from the data stage.
+     *
+     * A MapGenPreset is an exact copy of the prototype table provided from the data stage.
      */
     readonly map_gen_presets: LuaCustomTable<string, MapGenPreset>
     /**
@@ -11232,7 +11487,11 @@ declare module "factorio:runtime" {
      */
     tick_paused: boolean
     /**
-     * The number of ticks to be run while the tick is paused. When {@link LuaGameScript#tick_paused LuaGameScript::tick_paused} is true, ticks_to_run behaves the following way: While this is > 0, the entity update is running normally and this value is decremented every tick. When this reaches 0, the game will pause again.
+     * The number of ticks to be run while the tick is paused.
+     *
+     * When {@link LuaGameScript#tick_paused LuaGameScript::tick_paused} is true, ticks_to_run behaves the following way:
+     *
+     * While this is > 0, the entity update is running normally and this value is decremented every tick. When this reaches 0, the game will pause again.
      */
     ticks_to_run: uint
     /**
@@ -11244,8 +11503,7 @@ declare module "factorio:runtime" {
      */
     readonly finished_but_continuing: boolean
     /**
-     * Speed to update the map at. 1.0 is normal speed -- 60 UPS.
-     * @remarks Minimum value is 0.01.
+     * Speed to update the map at. 1.0 is normal speed -- 60 UPS. Minimum value is 0.01.
      */
     speed: float
     /**
@@ -11254,7 +11512,8 @@ declare module "factorio:runtime" {
     readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
     /**
      * The active mods versions. The keys are mod names, the values are the versions.
-     * @example This will print the names and versions of active mods to player p's console.
+     * @example
+     * -- This will print the names and versions of active mods to player p's console.
      * for name, version in pairs(game.active_mods) do
      *   p.print(name .. " version " .. version)
      * end
@@ -11263,8 +11522,9 @@ declare module "factorio:runtime" {
     /**
      * The players that are currently online.
      *
+     * This does *not* index using player index. See {@link LuaPlayer#index LuaPlayer::index} on each player instance for the player index.
+     *
      * This is primarily useful when you want to do some action against all online players.
-     * @remarks This does *not* index using player index. See {@link LuaPlayer#index LuaPlayer::index} on each player instance for the player index.
      */
     readonly connected_players: LuaPlayer[]
     readonly permissions: LuaPermissionGroups
@@ -11302,38 +11562,41 @@ declare module "factorio:runtime" {
     readonly max_pipe_to_ground_distance: uint8
     readonly max_underground_belt_distance: uint8
     /**
-     * This object's name.
+     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
      */
     readonly object_name: "LuaGameScript"
   }
   /**
    * An abstract base class for behaviors that support switching the entity on or off based on some condition.
-   * @noSelf
    */
   export interface LuaGenericOnOffControlBehavior extends LuaControlBehavior {
-    /**
-     * All methods and properties that this object supports.
-     */
-    help(): string
     /**
      * If the entity is currently disabled because of the control behavior.
      */
     readonly disabled: boolean
     /**
      * The circuit condition. Writing `nil` clears the circuit condition.
-     * @example Tell an entity to be active (for example a lamp to be lit) when it receives a circuit signal of more than 4 chain signals.
-     * a_behavior.circuit_condition = {condition={comparator=">",
-     *                                            first_signal={type="item", name="rail-chain-signal"},
-     *                                            constant=4}}
+     * @example
+     * -- Tell an entity to be active (for example a lamp to be lit) when it receives a
+     * -- circuit signal of more than 4 chain signals.
+     * a_behavior.circuit_condition = {condition={
+     *   comparator=">",
+     *   first_signal={type="item", name="rail-chain-signal"},
+     *   constant=4}
+     * }
      */
     get circuit_condition(): CircuitConditionDefinition | nil
     set circuit_condition(value: CircuitConditionDefinitionWrite | nil)
     /**
      * The logistic condition. Writing `nil` clears the logistic condition.
-     * @example Tell an entity to be active (for example a lamp to be lit) when the logistics network it's connected to has more than four chain signals.
-     * a_behavior.logistic_condition = {condition={comparator=">",
-     *                                             first_signal={type="item", name="rail-chain-signal"},
-     *                                             constant=4}}
+     * @example
+     * -- Tell an entity to be active (for example a lamp to be lit) when the logistics
+     * -- network it's connected to has more than four chain signals.
+     * a_behavior.logistic_condition = {condition={
+     *   comparator=">",
+     *   first_signal={type="item", name="rail-chain-signal"},
+     *   constant=4}
+     * }
      */
     get logistic_condition(): CircuitConditionDefinition | nil
     set logistic_condition(value: CircuitConditionDefinitionWrite | nil)
@@ -11341,14 +11604,6 @@ declare module "factorio:runtime" {
      * `true` if this should connect to the logistic network.
      */
     connect_to_logistic_network: boolean
-    /**
-     * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
-     */
-    readonly valid: boolean
-    /**
-     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
-     */
-    readonly object_name: string
   }
   /**
    * Item group or subgroup.
@@ -11446,8 +11701,9 @@ declare module "factorio:runtime" {
     readonly order_in_recipe: string
   }
   /**
-   * The root of the GUI. This type houses the root elements, `top`, `left`, `center`, `goal`, and `screen`, to which other elements can be added to be displayed on screen.
-   * @remarks Every player can have a different GUI state.
+   * The root of the GUI. This type houses the root elements, `top`, `left`, `center`,  `goal`, and `screen`, to which other elements can be added to be displayed on screen.
+   *
+   * Every player can have a different GUI state.
    * @noSelf
    */
   export interface LuaGui {
@@ -12100,19 +12356,22 @@ declare module "factorio:runtime" {
     clear(): void
     /**
      * Remove this element, along with its children. Any {@link LuaGuiElement} objects referring to the destroyed elements become invalid after this operation.
+     *
+     * The top-level GUI elements - {@link LuaGui#top LuaGui::top}, {@link LuaGui#left LuaGui::left}, {@link LuaGui#center LuaGui::center} and {@link LuaGui#screen LuaGui::screen} - can't be destroyed.
      * @example
      * game.player.gui.top.greeting.destroy()
-     * @remarks The top-level GUI elements - {@link LuaGui#top LuaGui::top}, {@link LuaGui#left LuaGui::left}, {@link LuaGui#center LuaGui::center} and {@link LuaGui#screen LuaGui::screen} - can't be destroyed.
      */
     destroy(): void
     /**
      * The mod that owns this Gui element or `nil` if it's owned by the scenario script.
-     * @remarks This has a not-super-expensive, but non-free cost to get.
+     *
+     * This has a not-super-expensive, but non-free cost to get.
      */
     get_mod(): string | nil
     /**
      * Gets the index that this element has in its parent element.
-     * @remarks This iterates through the children of the parent of this element, meaning this has a non-free cost to get, but is faster than doing the equivalent in Lua.
+     *
+     * This iterates through the children of the parent of this element, meaning this has a non-free cost to get, but is faster than doing the equivalent in Lua.
      */
     get_index_in_parent(): uint
     /**
@@ -12127,7 +12386,8 @@ declare module "factorio:runtime" {
     focus(): void
     /**
      * Moves this GUI element to the "front" so it will draw over other elements.
-     * @remarks Only works for elements in {@link LuaGui#screen LuaGui::screen}
+     *
+     * Only works for elements in {@link LuaGui#screen LuaGui::screen}.
      */
     bring_to_front(): void
     /**
@@ -12154,7 +12414,8 @@ declare module "factorio:runtime" {
     name: string
     /**
      * The text displayed on this element. For frames, this is the "heading". For other elements, like buttons or labels, this is the content.
-     * @remarks Whilst this attribute may be used on all elements without producing an error, it doesn't make sense for tables and flows as they won't display it.
+     *
+     * Whilst this attribute may be used on all elements without producing an error, it doesn't make sense for tables and flows as they won't display it.
      */
     caption: LocalisedString
     /**
@@ -12337,13 +12598,15 @@ declare module "factorio:runtime" {
     /**
      * The `frame` that is being moved when dragging this GUI element, if any. This element needs to be a child of the `drag_target` at some level.
      *
+     * Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
+     *
      * _Can only be used if this is flow, frame, label, table or empty-widget_
-     * @example This creates a frame that contains a dragging handle which can move the frame.
+     * @example
+     * -- This creates a frame that contains a dragging handle which can move the frame.
      * local frame = player.gui.screen.add{type="frame", direction="vertical"}
      * local dragger = frame.add{type="empty-widget", style="draggable_space"}
      * dragger.style.size = {128, 24}
      * dragger.drag_target = frame
-     * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
      */
     drag_target?: FrameGuiElement
   }
@@ -12380,13 +12643,15 @@ declare module "factorio:runtime" {
     /**
      * The `frame` that is being moved when dragging this GUI element, if any. This element needs to be a child of the `drag_target` at some level.
      *
+     * Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
+     *
      * _Can only be used if this is flow, frame, label, table or empty-widget_
-     * @example This creates a frame that contains a dragging handle which can move the frame.
+     * @example
+     * -- This creates a frame that contains a dragging handle which can move the frame.
      * local frame = player.gui.screen.add{type="frame", direction="vertical"}
      * local dragger = frame.add{type="empty-widget", style="draggable_space"}
      * dragger.style.size = {128, 24}
      * dragger.drag_target = frame
-     * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
      */
     drag_target?: FrameGuiElement
   }
@@ -12399,13 +12664,15 @@ declare module "factorio:runtime" {
     /**
      * The `frame` that is being moved when dragging this GUI element, if any. This element needs to be a child of the `drag_target` at some level.
      *
+     * Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
+     *
      * _Can only be used if this is flow, frame, label, table or empty-widget_
-     * @example This creates a frame that contains a dragging handle which can move the frame.
+     * @example
+     * -- This creates a frame that contains a dragging handle which can move the frame.
      * local frame = player.gui.screen.add{type="frame", direction="vertical"}
      * local dragger = frame.add{type="empty-widget", style="draggable_space"}
      * dragger.style.size = {128, 24}
      * dragger.drag_target = frame
-     * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
      */
     drag_target?: FrameGuiElement
   }
@@ -12429,7 +12696,7 @@ declare module "factorio:runtime" {
      */
     readonly type: "progressbar"
     /**
-     * How much this progress bar is filled. It is a value in the range [0, 1].
+     * How much this progress bar is filled. It is a value in the range `[0, 1]`.
      *
      * _Can only be used if this is progressbar_
      */
@@ -12474,13 +12741,15 @@ declare module "factorio:runtime" {
     /**
      * The `frame` that is being moved when dragging this GUI element, if any. This element needs to be a child of the `drag_target` at some level.
      *
+     * Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
+     *
      * _Can only be used if this is flow, frame, label, table or empty-widget_
-     * @example This creates a frame that contains a dragging handle which can move the frame.
+     * @example
+     * -- This creates a frame that contains a dragging handle which can move the frame.
      * local frame = player.gui.screen.add{type="frame", direction="vertical"}
      * local dragger = frame.add{type="empty-widget", style="draggable_space"}
      * dragger.style.size = {128, 24}
      * dragger.drag_target = frame
-     * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
      */
     drag_target?: FrameGuiElement
   }
@@ -12505,9 +12774,11 @@ declare module "factorio:runtime" {
      * _Can only be used if this is textfield or text-box_
      * @param start_index The index of the first character to select
      * @param end_index The index of the last character to select
-     * @example Select the characters `amp` from `example`:
+     * @example
+     * -- Select the characters "amp" from "example":
      * textbox.select(3, 5)
-     * @example Move the cursor to the start of the text box:
+     * @example
+     * -- Move the cursor to the start of the text box:
      * textbox.select(1, 0)
      */
     select(start_index: int, end_index: int): void
@@ -12518,7 +12789,7 @@ declare module "factorio:runtime" {
      */
     text: string
     /**
-     * Whether this textfield is limited to only numberic characters.
+     * Whether this textfield is limited to only numeric characters.
      *
      * _Can only be used if this is textfield_
      */
@@ -12815,23 +13086,31 @@ declare module "factorio:runtime" {
     /**
      * The elem value of this choose-elem-button, if any.
      *
+     * The `"signal"` type operates with {@link SignalID}, while all other types use strings.
+     *
      * _Can only be used if this is choose-elem-button_
-     * @remarks The `"signal"` type operates with {@link SignalID}, while all other types use strings.
      */
     elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | nil
     /**
      * The elem filters of this choose-elem-button, if any. The compatible type of filter is determined by `elem_type`.
      *
+     * Writing to this field does not change or clear the currently selected element.
+     *
      * _Can only be used if this is choose-elem-button_
-     * @example This will configure a choose-elem-button of type `"entity"` to only show items of type `"furnace"`.
+     * @example
+     * -- This will configure a choose-elem-button of type "entity" to only show items of type "furnace".
      * button.elem_filters = {{filter = "type", type = "furnace"}}
-     * @example Then, there are some types of filters that work on a specific kind of attribute. The following will configure a choose-elem-button of type `"entity"` to only show entities that have their `"hidden"` {@link EntityPrototypeFlags flags} set.
+     * @example
+     * -- Then, there are some types of filters that work on a specific kind of attribute. The following will configure a
+     * --   choose-elem-button of type "entity" to only show entities that have their "hidden" flags set.
      * button.elem_filters = {{filter = "hidden"}}
-     * @example Lastly, these filters can be combined at will, taking care to specify how they should be combined (either `"and"` or `"or"`. The following will filter for any `"entities"` that are `"furnaces"` and that are not `"hidden"`.
+     * @example
+     * -- Lastly, these filters can be combined at will, taking care to specify how they should be combined (either "and" or "or").
+     * --   The following will filter for any entities that are "furnaces" and that are not "hidden".
      * button.elem_filters = {{filter = "type", type = "furnace"}, {filter = "hidden", invert = true, mode = "and"}}
-     * @remarks Writing to this field does not change or clear the currently selected element.
      */
-    elem_filters: ChooseElemButtonFilters[this["elem_type"]] | nil
+    get elem_filters(): PrototypeFilter | nil
+    set elem_filters(value: PrototypeFilterWrite | nil)
     /**
      * Whether this choose-elem-button can be changed by the player.
      *
@@ -12884,9 +13163,11 @@ declare module "factorio:runtime" {
      * _Can only be used if this is textfield or text-box_
      * @param start_index The index of the first character to select
      * @param end_index The index of the last character to select
-     * @example Select the characters `amp` from `example`:
+     * @example
+     * -- Select the characters "amp" from "example":
      * textbox.select(3, 5)
-     * @example Move the cursor to the start of the text box:
+     * @example
+     * -- Move the cursor to the start of the text box:
      * textbox.select(1, 0)
      */
     select(start_index: int, end_index: int): void
@@ -12939,8 +13220,7 @@ declare module "factorio:runtime" {
      */
     get_slider_maximum(): double
     /**
-     * Sets this sliders minimum and maximum values.
-     * @remarks The minimum can't be >= the maximum.
+     * Sets this sliders minimum and maximum values. The minimum can't be >= the maximum.
      */
     set_slider_minimum_maximum(minimum: double, maximum: double): void
     /**
@@ -12956,8 +13236,7 @@ declare module "factorio:runtime" {
      */
     get_slider_discrete_values(): boolean
     /**
-     * Sets the minimum distance this slider can move.
-     * @remarks The minimum distance can't be > (max - min).
+     * Sets the minimum distance this slider can move. The minimum distance can't be > (max - min).
      */
     set_slider_value_step(value: double): void
     /**
@@ -13041,13 +13320,15 @@ declare module "factorio:runtime" {
     /**
      * The `frame` that is being moved when dragging this GUI element, if any. This element needs to be a child of the `drag_target` at some level.
      *
+     * Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
+     *
      * _Can only be used if this is flow, frame, label, table or empty-widget_
-     * @example This creates a frame that contains a dragging handle which can move the frame.
+     * @example
+     * -- This creates a frame that contains a dragging handle which can move the frame.
      * local frame = player.gui.screen.add{type="frame", direction="vertical"}
      * local dragger = frame.add{type="empty-widget", style="draggable_space"}
      * dragger.style.size = {128, 24}
      * dragger.drag_target = frame
-     * @remarks Only top-level elements in {@link LuaGui#screen LuaGui::screen} can be `drag_target`s.
      */
     drag_target?: FrameGuiElement
   }
@@ -13071,11 +13352,12 @@ declare module "factorio:runtime" {
     /**
      * Removes the given tab and its associated content from this tabbed pane.
      *
+     * Removing a tab does not destroy the tab or the tab contents. It just removes them from the view. When removing tabs, {@link LuaGuiElement#selected_tab_index LuaGuiElement::selected_tab_index} needs to be manually updated.
+     *
      * _Can only be used if this is tabbed-pane_
-     * @param tab The tab to remove. If not given, it removes all tabs.
-     * @remarks Removing a tab does not destroy the tab or the tab contents. It just removes them from the view.<br>When removing tabs, {@link LuaGuiElement#selected_tab_index LuaGuiElement::selected_tab_index} needs to be manually updated.
+     * @param tab The tab to remove or `nil` to remove all tabs.
      */
-    remove_tab(tab: LuaGuiElement): void
+    remove_tab(tab: LuaGuiElement | nil): void
     /**
      * The selected tab index for this tabbed pane, if any.
      *
@@ -13111,15 +13393,17 @@ declare module "factorio:runtime" {
     /**
      * The switch state for this switch.
      *
+     * If {@link LuaGuiElement#allow_none_state LuaGuiElement::allow_none_state} is false this can't be set to `"none"`.
+     *
      * _Can only be used if this is switch_
-     * @remarks If {@link LuaGuiElement#allow_none_state LuaGuiElement::allow_none_state} is false this can't be set to `"none"`.
      */
     switch_state: SwitchState
     /**
      * Whether the `"none"` state is allowed for this switch.
      *
+     * This can't be set to false if the current `switch_state` is `"none"`.
+     *
      * _Can only be used if this is switch_
-     * @remarks This can't be set to false if the current switch_state is 'none'.
      */
     allow_none_state: boolean
     /**
@@ -13180,11 +13464,14 @@ declare module "factorio:runtime" {
    * For information on all supported GUI elements, see {@link GuiElementType}.
    *
    * Each GUI element allows access to its children by having them as attributes. Thus, one can use the `parent.child` syntax to refer to children. Lua also supports the `parent["child"]` syntax to refer to the same element. This can be used in cases where the child has a name that isn't a valid Lua identifier.
-   * @example This will add a label called `greeting` to the top flow. Immediately after, it will change its text to illustrate accessing child elements.
+   * @example
+   * -- This will add a label called "greeting" to the top flow.
+   * -- Immediately after, it will change its text to illustrate accessing child elements.
    * game.player.gui.top.add{type="label", name="greeting", caption="Hi"}
    * game.player.gui.top.greeting.caption = "Hello there!"
    * game.player.gui.top["greeting"].caption = "Actually, never mind, I don't like your face"
-   * @example This will add a tabbed-pane and 2 tabs with contents.
+   * @example
+   * -- This will add a tabbed-pane and 2 tabs with contents.
    * local tabbed_pane = game.player.gui.top.add{type="tabbed-pane"}
    * local tab1 = tabbed_pane.add{type="tab", caption="Tab 1"}
    * local tab2 = tabbed_pane.add{type="tab", caption="Tab 2"}
@@ -13338,18 +13625,21 @@ declare module "factorio:runtime" {
     get_contents(): Record<string, uint>
     /**
      * Does this inventory support a bar? Bar is the draggable red thing, found for example on chests, that limits the portion of the inventory that may be manipulated by machines.
-     * @remarks "Supporting a bar" doesn't mean that the bar is set to some nontrivial value. Supporting a bar means the inventory supports having this limit at all. The character's inventory is an example of an inventory without a bar; the wooden chest's inventory is an example of one with a bar.
+     *
+     * "Supporting a bar" doesn't mean that the bar is set to some nontrivial value. Supporting a bar means the inventory supports having this limit at all. The character's inventory is an example of an inventory without a bar; the wooden chest's inventory is an example of one with a bar.
      */
     supports_bar(): boolean
     /**
      * Get the current bar. This is the index at which the red area starts.
-     * @remarks Only useable if this inventory supports having a bar.
+     *
+     * Only useable if this inventory supports having a bar.
      */
     get_bar(): uint
     /**
      * Set the current bar.
+     *
+     * Only useable if this inventory supports having a bar.
      * @param bar The new limit. Omitting this parameter will clear the limit.
-     * @remarks Only useable if this inventory supports having a bar.
      */
     set_bar(bar?: uint): void
     /**
@@ -13374,10 +13664,11 @@ declare module "factorio:runtime" {
     get_filter(index: uint): string | nil
     /**
      * Sets the filter for the given item stack index.
+     *
+     * Some inventory slots don't allow some filters (gun ammo can't be filtered for non-ammo).
      * @param index The item stack index.
      * @param filter The new filter. `nil` erases any existing filter.
      * @returns If the filter was allowed to be set.
-     * @remarks Some inventory slots don't allow some filters (gun ammo can't be filtered for non-ammo).
      */
     set_filter(index: uint, filter: string | nil): boolean
     /**
@@ -13402,8 +13693,11 @@ declare module "factorio:runtime" {
     count_empty_stacks(include_filtered?: boolean, include_bar?: boolean): uint
     /**
      * Gets the number of the given item that can be inserted into this inventory.
+     *
+     * This is a "best guess" number; things like assembling machine filtered slots, module slots, items with durability, and items with mixed health will cause the result to be inaccurate. The main use for this is in checking how many of a basic item can fit into a basic inventory.
+     *
+     * This accounts for the 'bar' on the inventory.
      * @param item The item to check.
-     * @remarks This is a "best guess" number; things like assembling machine filtered slots, module slots, items with durability, and items with mixed health will cause the result to be inaccurate.<br>The main use for this is in checking how many of a basic item can fit into a basic inventory.<br>This accounts for the 'bar' on the inventory.
      */
     get_insertable_count(item: string): uint
     /**
@@ -13413,16 +13707,20 @@ declare module "factorio:runtime" {
     /**
      * Resizes the inventory.
      *
+     * Items in slots beyond the new capacity are deleted.
+     *
+     * Only inventories created by {@link LuaGameScript#create_inventory LuaGameScript::create_inventory} can be resized.
+     *
      * ## Raised events
      * - {@link OnPreScriptInventoryResizedEvent on_pre_script_inventory_resized} _instantly_
      * - {@link OnScriptInventoryResizedEvent on_script_inventory_resized} _instantly_
      * @param size New size of a inventory
-     * @remarks Items in slots beyond the new capacity are deleted.<br>Only inventories created by {@link LuaGameScript#create_inventory LuaGameScript::create_inventory} can be resized.
      */
     resize(size: uint16): void
     /**
      * Destroys this inventory.
-     * @remarks Only inventories created by {@link LuaGameScript#create_inventory LuaGameScript::create_inventory} can be destroyed this way.
+     *
+     * Only inventories created by {@link LuaGameScript#create_inventory LuaGameScript::create_inventory} can be destroyed this way.
      */
     destroy(): void
     /**
@@ -13431,13 +13729,15 @@ declare module "factorio:runtime" {
     help(): string
     /**
      * Get the number of slots in this inventory.
-     * @example Will print the number of slots in the player's main inventory.
+     * @example
+     * -- Will print the number of slots in the player's main inventory.
      * game.player.print(#game.player.get_main_inventory())
      */
     readonly length: uint
     /**
      * The indexing operator.
-     * @example Will get the first item in the player's inventory.
+     * @example
+     * -- Will get the first item in the player's inventory.
      * game.player.get_main_inventory()[1]
      */
     readonly [index: number]: LuaItemStack
@@ -13471,9 +13771,7 @@ declare module "factorio:runtime" {
     readonly object_name: "LuaInventory"
   }
   /**
-   * Prototype of an item.
-   * @example
-   * game.item_prototypes["iron-plate"]
+   * Prototype of an item. For example, an item prototype can be obtained from {@link LuaGameScript#item_prototypes LuaGameScript::item_prototypes} by its name: `game.item_prototypes["iron-plate"]`.
    * @noSelf
    */
   export interface LuaItemPrototype {
@@ -13874,31 +14172,35 @@ declare module "factorio:runtime" {
     /**
      * The entity type filters used by this selection tool indexed by entity type.
      *
+     * The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+     *
      * _Can only be used if this is SelectionTool_
-     * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
      */
-    readonly entity_type_filters?: Record<string, boolean>
+    readonly entity_type_filters?: Record<string, true>
     /**
      * The alt entity type filters used by this selection tool indexed by entity type.
      *
+     * The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+     *
      * _Can only be used if this is SelectionTool_
-     * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
      */
-    readonly alt_entity_type_filters?: Record<string, boolean>
+    readonly alt_entity_type_filters?: Record<string, true>
     /**
      * The reverse entity type filters used by this selection tool indexed by entity type.
      *
+     * The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+     *
      * _Can only be used if this is SelectionTool_
-     * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
      */
-    readonly reverse_entity_type_filters?: Record<string, boolean>
+    readonly reverse_entity_type_filters?: Record<string, true>
     /**
      * The alt reverse entity type filters used by this selection tool indexed by entity type.
      *
+     * The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+     *
      * _Can only be used if this is SelectionTool_
-     * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
      */
-    readonly alt_reverse_entity_type_filters?: Record<string, boolean>
+    readonly alt_reverse_entity_type_filters?: Record<string, true>
     /**
      * The tile filters used by this selection tool indexed by tile name.
      *
@@ -14400,31 +14702,35 @@ declare module "factorio:runtime" {
     /**
      * The entity type filters used by this selection tool indexed by entity type.
      *
+     * The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+     *
      * _Can only be used if this is SelectionTool_
-     * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
      */
-    readonly entity_type_filters?: Record<string, boolean>
+    readonly entity_type_filters?: Record<string, true>
     /**
      * The alt entity type filters used by this selection tool indexed by entity type.
      *
+     * The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+     *
      * _Can only be used if this is SelectionTool_
-     * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
      */
-    readonly alt_entity_type_filters?: Record<string, boolean>
+    readonly alt_entity_type_filters?: Record<string, true>
     /**
      * The reverse entity type filters used by this selection tool indexed by entity type.
      *
+     * The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+     *
      * _Can only be used if this is SelectionTool_
-     * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
      */
-    readonly reverse_entity_type_filters?: Record<string, boolean>
+    readonly reverse_entity_type_filters?: Record<string, true>
     /**
      * The alt reverse entity type filters used by this selection tool indexed by entity type.
      *
+     * The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
+     *
      * _Can only be used if this is SelectionTool_
-     * @remarks The boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.
      */
-    readonly alt_reverse_entity_type_filters?: Record<string, boolean>
+    readonly alt_reverse_entity_type_filters?: Record<string, true>
     /**
      * The tile filters used by this selection tool indexed by tile name.
      *
@@ -14494,7 +14800,10 @@ declare module "factorio:runtime" {
   }
   /**
    * A reference to an item and count owned by some external entity.
-   * @remarks In most instances this is a simple reference as in: it points at a specific slot in an inventory and not the item in the slot.<br>In the instance this references an item on a {@link LuaTransportLine} the reference is only guaranteed to stay valid (and refer to the same item) as long as nothing changes the transport line.
+   *
+   * In most instances this is a simple reference as in: it points at a specific slot in an inventory and not the item in the slot.
+   *
+   * In the instance this references an item on a {@link LuaTransportLine} the reference is only guaranteed to stay valid (and refer to the same item) as long as nothing changes the transport line.
    * @noSelf
    */
   export interface LuaItemStack {
@@ -14606,8 +14915,10 @@ declare module "factorio:runtime" {
      */
     get_inventory(inventory: defines.inventory): LuaInventory | nil
     /**
+     * Build this blueprint or blueprint book at the given location.
+     *
+     * Built entities can be come invalid between the building of the blueprint and the function returning if by_player or raise_built is used and one of those events invalidates the entity.
      * @returns Array of created ghosts
-     * @remarks Built entities can be come invalid between the building of the blueprint and the function returning if by_player or raise_built is used and one of those events invalidates the entity.
      */
     build_blueprint(params: {
       /**
@@ -14862,7 +15173,9 @@ declare module "factorio:runtime" {
      */
     help(): string
     /**
-     * Is this valid for reading? Differs from the usual `valid` in that `valid` will be `true` even if the item stack is blank but the entity that holds it is still valid.
+     * Is this valid for reading? Differs from the usual `valid` in that `valid` will be `true` even if
+     *
+     * the item stack is blank but the entity that holds it is still valid.
      */
     readonly valid_for_read: boolean
     /**
@@ -14886,7 +15199,7 @@ declare module "factorio:runtime" {
      */
     readonly grid?: LuaEquipmentGrid
     /**
-     * How much health the item has, as a number in range [0, 1].
+     * How much health the item has, as a number in range `[0, 1]`.
      */
     health: float
     /**
@@ -15031,18 +15344,7 @@ declare module "factorio:runtime" {
     /**
      * The unique identifier for this item , if any. Note that this ID stays the same no matter where the item is moved to.
      *
-     * Only these types of items have unique IDs:
-     * - `"armor"`
-     * - `"spidertron-remote"`
-     * - `"selection-tool"`
-     * - `"copy-paste-tool"`
-     * - `"upgrade-item"`
-     * - `"deconstruction-item"`
-     * - `"blueprint"`
-     * - `"blueprint-book"`
-     * - `"item-with-entity-data"`
-     * - `"item-with-inventory"`
-     * - `"item-with-tags"`
+     * {@link https://lua-api.factorio.com/latest/classes/LuaItemStack.html#LuaItemStack.item_number > Only these types of items have unique IDs:}
      */
     readonly item_number?: uint
     /**
@@ -15191,8 +15493,10 @@ declare module "factorio:runtime" {
      */
     get_inventory(inventory: defines.inventory): LuaInventory | nil
     /**
+     * Build this blueprint or blueprint book at the given location.
+     *
+     * Built entities can be come invalid between the building of the blueprint and the function returning if by_player or raise_built is used and one of those events invalidates the entity.
      * @returns Array of created ghosts
-     * @remarks Built entities can be come invalid between the building of the blueprint and the function returning if by_player or raise_built is used and one of those events invalidates the entity.
      */
     build_blueprint(params: {
       /**
@@ -15325,7 +15629,9 @@ declare module "factorio:runtime" {
      */
     help(): string
     /**
-     * Is this valid for reading? Differs from the usual `valid` in that `valid` will be `true` even if the item stack is blank but the entity that holds it is still valid.
+     * Is this valid for reading? Differs from the usual `valid` in that `valid` will be `true` even if
+     *
+     * the item stack is blank but the entity that holds it is still valid.
      */
     readonly valid_for_read: boolean
     /**
@@ -15349,7 +15655,7 @@ declare module "factorio:runtime" {
      */
     readonly grid?: LuaEquipmentGrid
     /**
-     * How much health the item has, as a number in range [0, 1].
+     * How much health the item has, as a number in range `[0, 1]`.
      */
     health: float
     /**
@@ -15367,18 +15673,7 @@ declare module "factorio:runtime" {
     /**
      * The unique identifier for this item , if any. Note that this ID stays the same no matter where the item is moved to.
      *
-     * Only these types of items have unique IDs:
-     * - `"armor"`
-     * - `"spidertron-remote"`
-     * - `"selection-tool"`
-     * - `"copy-paste-tool"`
-     * - `"upgrade-item"`
-     * - `"deconstruction-item"`
-     * - `"blueprint"`
-     * - `"blueprint-book"`
-     * - `"item-with-entity-data"`
-     * - `"item-with-inventory"`
-     * - `"item-with-tags"`
+     * {@link https://lua-api.factorio.com/latest/classes/LuaItemStack.html#LuaItemStack.item_number > Only these types of items have unique IDs:}
      */
     readonly item_number?: uint
     /**
@@ -16189,7 +16484,8 @@ declare module "factorio:runtime" {
     readonly logistic_member_index: uint
     /**
      * The logistic filters for this logistic point, if this uses any.
-     * @remarks The returned array will always have an entry for each filter and will be indexed in sequence when not nil.
+     *
+     * The returned array will always have an entry for each filter and will be indexed in sequence when not nil.
      */
     readonly filters?: LogisticFilter[]
     /**
@@ -16198,7 +16494,8 @@ declare module "factorio:runtime" {
     readonly mode: defines.logistic_mode
     /**
      * The force of this logistic point.
-     * @remarks This will always be the same as the {@link LuaLogisticPoint#owner LuaLogisticPoint::owner} force.
+     *
+     * This will always be the same as the {@link LuaLogisticPoint#owner LuaLogisticPoint::owner} force.
      */
     readonly force: LuaForce
     /**
@@ -16488,15 +16785,16 @@ declare module "factorio:runtime" {
     help(): string
     /**
      * The name of this group.
-     * @remarks Setting the name to `nil` or an empty string sets the name to the default value.
+     *
+     * Setting the name to `nil` or an empty string sets the name to the default value.
      */
-    name: string
+    name: string | nil
     /**
      * The players in this group.
      */
     readonly players: LuaPlayer[]
     /**
-     * The group ID
+     * The group ID.
      */
     readonly group_id: uint
     /**
@@ -16553,7 +16851,8 @@ declare module "factorio:runtime" {
     set_ending_screen_data(message: LocalisedString, file?: string): void
     /**
      * Print text to the chat console.
-     * @remarks By default, messages that are identical to a message sent in the last 60 ticks are not printed again.
+     *
+     * By default, messages that are identical to a message sent in the last 60 ticks are not printed again.
      */
     print(message: LocalisedString, print_settings?: (Color | ColorArray) | PrintSettings): void
     /**
@@ -16572,7 +16871,8 @@ declare module "factorio:runtime" {
     set_goal_description(text?: LocalisedString, only_update?: boolean): void
     /**
      * Set the controller type of the player.
-     * @remarks Setting a player to {@link defines.controllers.editor} auto promotes the player to admin and enables cheat mode.<br>Setting a player to {@link defines.controllers.editor} also requires the calling player be an admin.
+     *
+     * Setting a player to {@link defines.controllers.editor} auto promotes the player to admin and enables cheat mode. Setting a player to {@link defines.controllers.editor} also requires the calling player be an admin.
      */
     set_controller(params: {
       /**
@@ -16666,9 +16966,10 @@ declare module "factorio:runtime" {
     clear_cursor(): boolean
     /**
      * Creates and attaches a character entity to this player.
+     *
+     * The player must not have a character already connected and must be online (see {@link LuaPlayer#connected LuaPlayer::connected}).
      * @param character The character to create else the default is used.
      * @returns Whether the character was created.
-     * @remarks The player must not have a character already connected and must be online (see {@link LuaPlayer#connected LuaPlayer::connected}).
      */
     create_character(character?: string): boolean
     /**
@@ -16817,7 +17118,8 @@ declare module "factorio:runtime" {
     use_from_cursor(position: MapPosition | MapPositionArray): void
     /**
      * Play a sound for this player.
-     * @remarks The sound is not played if its location is not {@link LuaForce#chart charted} for this player.
+     *
+     * The sound is not played if its location is not {@link LuaForce#chart charted} for this player.
      */
     play_sound(params: {
       /**
@@ -16839,24 +17141,34 @@ declare module "factorio:runtime" {
     }): void
     /**
      * The characters associated with this player.
-     * @remarks The array will always be empty when the player is disconnected (see {@link LuaPlayer#connected LuaPlayer::connected}) regardless of there being associated characters.<br>Characters associated with this player will be logged off when this player disconnects but are not controlled by any player.
+     *
+     * The array will always be empty when the player is disconnected (see {@link LuaPlayer#connected LuaPlayer::connected}) regardless of there being associated characters.
+     *
+     * Characters associated with this player will be logged off when this player disconnects but are not controlled by any player.
      */
     get_associated_characters(): LuaEntity[]
     /**
      * Associates a character with this player.
+     *
+     * The character must not be connected to any controller.
+     *
+     * If this player is currently disconnected (see {@link LuaPlayer#connected LuaPlayer::connected}) the character will be immediately "logged off". See {@link LuaPlayer#get_associated_characters LuaPlayer::get_associated_characters} for more information.
      * @param character The character entity.
-     * @remarks The character must not be connected to any controller.<br>If this player is currently disconnected (see {@link LuaPlayer#connected LuaPlayer::connected}) the character will be immediately "logged off".<br>See {@link LuaPlayer#get_associated_characters LuaPlayer::get_associated_characters} for more information.
      */
     associate_character(character: LuaEntity): void
     /**
      * Disassociates a character from this player. This is functionally the same as setting {@link LuaEntity#associated_player LuaEntity::associated_player} to `nil`.
+     *
+     * See {@link LuaPlayer#get_associated_characters LuaPlayer::get_associated_characters} for more information.
      * @param character The character entity
-     * @remarks See {@link LuaPlayer#get_associated_characters LuaPlayer::get_associated_characters} for more information.
      */
     disassociate_character(character: LuaEntity): void
     /**
      * Spawn flying text that is only visible to this player. Either `position` or `create_at_cursor` are required. When `create_at_cursor` is `true`, all parameters other than `text` are ignored.
-     * @remarks If no custom `speed` is set and the text is longer than 25 characters, its `time_to_live` and `speed` are dynamically adjusted to give players more time to read it.<br>Local flying text is not saved, which means it will disappear after a save/load-cycle.
+     *
+     * If no custom `speed` is set and the text is longer than 25 characters, its `time_to_live` and `speed` are dynamically adjusted to give players more time to read it.
+     *
+     * Local flying text is not saved, which means it will disappear after a save/load-cycle.
      */
     create_local_flying_text(params: {
       /**
@@ -16890,11 +17202,11 @@ declare module "factorio:runtime" {
      */
     get_quick_bar_slot(index: uint): LuaItemPrototype | nil
     /**
-     * Sets the quick bar filter for the given slot.
+     * Sets the quick bar filter for the given slot. If a {@link LuaItemStack} is provided, the slot will be set to that particular item instance if it has extra data, for example a specific blueprint or spidertron remote.
      * @param index The slot index. 1 for the first slot of page one, 2 for slot two of page one, 11 for the first slot of page 2, etc.
-     * @param filter The filter or `nil`.
+     * @param filter The filter or `nil` to clear it.
      */
-    set_quick_bar_slot(index: uint, filter: string | LuaItemPrototype | LuaItemStack | nil): void
+    set_quick_bar_slot(index: uint, filter: LuaItemStack | ItemPrototypeIdentification | nil): void
     /**
      * Gets which quick bar page is being used for the given screen page or `nil` if not known.
      * @param index The screen page. Index 1 is the top row in the gui. Index can go beyond the visible number of bars on the screen to account for the interface config setting change.
@@ -16950,7 +17262,8 @@ declare module "factorio:runtime" {
     set_shortcut_available(prototype_name: string, available: boolean): void
     /**
      * Asks the player if they would like to connect to the given server.
-     * @remarks This only does anything when used on a multiplayer peer. Single player and server hosts will ignore the prompt.
+     *
+     * This only does anything when used on a multiplayer peer. Single player and server hosts will ignore the prompt.
      */
     connect_to_server(params: {
       /**
@@ -16978,19 +17291,21 @@ declare module "factorio:runtime" {
     /**
      * Requests a translation for the given localised string. If the request is successful, the {@link OnStringTranslatedEvent on_string_translated} event will be fired with the results.
      *
+     * Does nothing if this player is not connected (see {@link LuaPlayer#connected LuaPlayer::connected}).
+     *
      * ## Raised events
      * - {@link OnStringTranslatedEvent on_string_translated}? _future_tick_ Raised if the request was successfully sent.
      * @returns The unique ID for the requested translation.
-     * @remarks Does nothing if this player is not connected (see {@link LuaPlayer#connected LuaPlayer::connected}).
      */
     request_translation(localised_string: LocalisedString): uint | nil
     /**
      * Requests translation for the given set of localised strings. If the request is successful, a {@link OnStringTranslatedEvent on_string_translated} event will be fired for each string with the results.
      *
+     * Does nothing if this player is not connected (see {@link LuaPlayer#connected LuaPlayer::connected}).
+     *
      * ## Raised events
      * - {@link OnStringTranslatedEvent on_string_translated}? _future_tick_ Raised if the request was successfully sent.
      * @returns The unique IDs for the requested translations.
-     * @remarks Does nothing if this player is not connected (see {@link LuaPlayer#connected LuaPlayer::connected}).
      */
     request_translations(localised_strings: readonly LocalisedString[]): uint[] | nil
     /**
@@ -17048,7 +17363,7 @@ declare module "factorio:runtime" {
      */
     readonly cutscene_character: LuaEntity | nil
     /**
-     * This player's index in {@link LuaGameScript#players LuaGameScript::players} (unique ID). It is assigned when a player is created, and remains so (even when the player is not {@link LuaPlayer#connected connected}) until the player is irreversably {@link OnPlayerRemovedEvent removed}. Indexes of removed players can be reused.
+     * This player's index in {@link LuaGameScript#players LuaGameScript::players} (unique ID). It is assigned when a player is created, and remains so (even when the player is not {@link LuaPlayer#connected connected}) until the player is irreversibly {@link OnPlayerRemovedEvent removed}. Indexes of removed players can be reused.
      */
     readonly index: PlayerIndex
     readonly gui: LuaGui
@@ -17058,8 +17373,7 @@ declare module "factorio:runtime" {
     readonly opened_self: boolean
     readonly controller_type: defines.controllers
     /**
-     * The stashed controller type, if any.
-     * @remarks This is mainly useful when a player is in the map editor.
+     * The stashed controller type, if any. This is mainly useful when a player is in the map editor.
      */
     readonly stashed_controller_type?: defines.controllers
     /**
@@ -17094,7 +17408,8 @@ declare module "factorio:runtime" {
     readonly connected: boolean
     /**
      * `true` if the player is an admin.
-     * @remarks Trying to change player admin status from the console when you aren't an admin does nothing.
+     *
+     * Trying to change player admin status from the console when you aren't an admin does nothing.
      */
     admin: boolean
     /**
@@ -17130,17 +17445,20 @@ declare module "factorio:runtime" {
      * The number of ticks until this player will respawn. `nil` if this player is not waiting to respawn.
      *
      * Set to `nil` to immediately respawn the player.
-     * @remarks Set to any positive value to trigger the respawn state for this player.
+     *
+     * Set to any positive value to trigger the respawn state for this player.
      */
     ticks_to_respawn?: uint
     /**
      * The display resolution for this player.
-     * @remarks During {@link OnPlayerCreatedEvent on_player_created}, this attribute will always return a resolution of `{width=1920, height=1080}`. To get the actual resolution, listen to the {@link OnPlayerDisplayResolutionChangedEvent on_player_display_resolution_changed} event raised shortly afterwards.
+     *
+     * During {@link OnPlayerCreatedEvent on_player_created}, this attribute will always return a resolution of `{width=1920, height=1080}`. To get the actual resolution, listen to the {@link OnPlayerDisplayResolutionChangedEvent on_player_display_resolution_changed} event raised shortly afterwards.
      */
     readonly display_resolution: DisplayResolution
     /**
      * The display scale for this player.
-     * @remarks During {@link OnPlayerCreatedEvent on_player_created}, this attribute will always return a scale of `1`. To get the actual scale, listen to the {@link OnPlayerDisplayScaleChangedEvent on_player_display_scale_changed} event raised shortly afterwards.
+     *
+     * During {@link OnPlayerCreatedEvent on_player_created}, this attribute will always return a scale of `1`. To get the actual scale, listen to the {@link OnPlayerDisplayScaleChangedEvent on_player_display_scale_changed} event raised shortly afterwards.
      */
     readonly display_scale: double
     /**
@@ -17206,7 +17524,8 @@ declare module "factorio:runtime" {
   }
   /**
    * An object used to measure script performance.
-   * @remarks Since performance is non-deterministic, these objects don't allow reading the raw time values from Lua. They can be used anywhere a {@link LocalisedString} is used, except for {@link LuaGuiElement#add LuaGuiElement::add}'s LocalisedString arguments, {@link LuaSurface#create_entity LuaSurface::create_entity}'s `text` argument, and {@link LuaEntity#add_market_item LuaEntity::add_market_item}.
+   *
+   * Since performance is non-deterministic, these objects don't allow reading the raw time values from Lua. They can be used anywhere a {@link LocalisedString} is used, except for {@link LuaGuiElement#add LuaGuiElement::add}'s LocalisedString arguments, {@link LuaSurface#create_entity LuaSurface::create_entity}'s `text` argument, and {@link LuaEntity#add_market_item LuaEntity::add_market_item}.
    * @noSelf
    */
   export interface LuaProfiler {
@@ -17224,14 +17543,16 @@ declare module "factorio:runtime" {
     restart(): void
     /**
      * Add the duration of another timer to this timer. Useful to reduce start/stop overhead when accumulating time onto many timers at once.
+     *
+     * If other is running, the time to now will be added.
      * @param other The timer to add to this timer.
-     * @remarks If other is running, the time to now will be added.
      */
     add(other: LuaProfiler): void
     /**
      * Divides the current duration by a set value. Useful for calculating the average of many iterations.
+     *
+     * Does nothing if this isn't stopped.
      * @param number The number to divide by. Must be > 0.
-     * @remarks Does nothing if this isn't stopped.
      */
     divide(number: double): void
     /**
@@ -17278,7 +17599,11 @@ declare module "factorio:runtime" {
      */
     print(message: LocalisedString): void
     /**
-     * This object's name.
+     * All methods and properties that this object supports.
+     */
+    help(): string
+    /**
+     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
      */
     readonly object_name: "LuaRCON"
   }
@@ -17326,7 +17651,7 @@ declare module "factorio:runtime" {
      */
     readonly total_distance: double
     /**
-     * The total distance travelled.
+     * The total distance traveled.
      */
     readonly travelled_distance: double
     /**
@@ -17381,8 +17706,11 @@ declare module "factorio:runtime" {
     readonly object_name: "LuaRailSignalControlBehavior"
   }
   /**
-   * A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state. Note this is entirely different from calling {@linkplain https://lua-api.factorio.com/latest/libraries.html math.random}() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.
-   * @example Create a generator and use it to print a random number.
+   * A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state.
+   *
+   * Note this is entirely different from calling {@linkplain https://lua-api.factorio.com/latest/libraries.html math.random()} and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()`, then you probably don't need to use this.
+   * @example
+   * -- Create a generator and use it to print a random number.
    * global.generator = game.create_random_generator()
    * game.player.print(global.generator())
    * @noSelf
@@ -17390,7 +17718,8 @@ declare module "factorio:runtime" {
   export interface LuaRandomGenerator {
     /**
      * Re-seeds the random generator with the given value.
-     * @remarks Seeds that are close together will produce similar results. Seeds from 0 to 341 will produce the same results.
+     *
+     * Seeds that are close together will produce similar results. Seeds from 0 to 341 will produce the same results.
      */
     re_seed(seed: uint): void
     /**
@@ -17398,7 +17727,7 @@ declare module "factorio:runtime" {
      */
     help(): string
     /**
-     * Generates a random number. If no parameters are given a number in the [0, 1) range is returned. If a single parameter is given a floored number in the [1, N] range is returned. If 2 parameters are given a floored number in the [N1, N2] range is returned.
+     * Generates a random number. If no parameters are given a number in the `[0, 1)` range is returned. If a single parameter is given a floored number in the [1, N] range is returned. If 2 parameters are given a floored number in the [N1, N2] range is returned.
      * @param lower Inclusive lower bound on the result
      * @param upper Inclusive upper bound on the result
      */
@@ -17448,13 +17777,15 @@ declare module "factorio:runtime" {
     readonly category: string
     /**
      * The ingredients to this recipe.
-     * @example The ingredients of `"advanced-oil-processing"` would look like this:
+     * @example
+     * -- The ingredients of "advanced-oil-processing" would look like this:
      * {{type="fluid", name="crude-oil", amount=100}, {type="fluid", name="water", amount=50}}
      */
     readonly ingredients: Ingredient[]
     /**
      * The results/products of this recipe.
-     * @example The products of `"advanced-oil-processing"` would look like this:
+     * @example
+     * -- The products of "advanced-oil-processing" would look like this:
      * {{type="fluid", name="heavy-oil", amount=25}, {type="fluid", name="light-oil", amount=45}, {type="fluid", name="petroleum-gas", amount=55}}
      */
     readonly products: Product[]
@@ -17551,13 +17882,15 @@ declare module "factorio:runtime" {
     readonly category: string
     /**
      * The ingredients to this recipe.
-     * @example The ingredients of `"advanced-oil-processing"` would look like this:
+     * @example
+     * -- The ingredients of "advanced-oil-processing" would look like this
      * {{type="fluid", name="crude-oil", amount=100}, {type="fluid", name="water", amount=50}}
      */
     readonly ingredients: Ingredient[]
     /**
      * The results/products of this recipe.
-     * @example The products of `"advanced-oil-processing"` would look like this:
+     * @example
+     * -- The products of "advanced-oil-processing" would look like this:
      * {{type="fluid", name="heavy-oil", amount=25}, {type="fluid", name="light-oil", amount=45}, {type="fluid", name="petroleum-gas", amount=55}}
      */
     readonly products: Product[]
@@ -17648,10 +17981,13 @@ declare module "factorio:runtime" {
   }
   /**
    * Registry of interfaces between scripts. An interface is simply a dictionary mapping names to functions. A script or mod can then register an interface with {@link LuaRemote}, after that any script can call the registered functions, provided it knows the interface name and the desired function name. An instance of LuaRemote is available through the global object named `remote`.
-   * @example Will register a remote interface containing two functions. Later, it will call these functions through `remote`.
+   * @example
+   * -- Will register a remote interface containing two functions. Later, it will call these functions through `remote`.
    * remote.add_interface("human interactor",
-   *                      {hello = function() game.player.print("Hi!") end,
-   *                       bye = function(name) game.player.print("Bye " .. name) end})
+   *   {
+   *     hello = function() game.player.print("Hi!") end,
+   *     bye = function(name) game.player.print("Bye " .. name) end
+   *   })
    * -- Some time later, possibly in a different mod...
    * remote.call("human interactor", "hello")
    * remote.call("human interactor", "bye", "dear reader")
@@ -17672,6 +18008,8 @@ declare module "factorio:runtime" {
     remove_interface(name: string): boolean
     /**
      * Call a function of an interface.
+     *
+     * Providing an unknown interface or function name will result in a script error.
      * @param _interface Interface to look up `function` in.
      * @param _function Function name that belongs to the `interface`.
      * @param args Arguments to pass to the called function. Note that any arguments passed through the interface are a copy of the original, not a reference. Metatables are not retained, while references to LuaObjects stay intact.
@@ -17679,29 +18017,37 @@ declare module "factorio:runtime" {
     call<T extends (...args: any) => any>(_interface: string, _function: string, ...args: Parameters<T>): ReturnType<T>
     call(_interface: string, _function: string, ...args: readonly Any[]): Any | nil
     /**
+     * All methods and properties that this object supports.
+     */
+    help(): string
+    /**
      * List of all registered interfaces. For each interface name, `remote.interfaces[name]` is a dictionary mapping the interface's registered functions to `true`.
-     * @example Assuming the "human interactor" interface is registered as above
+     * @example
+     * -- Assuming the "human interactor" interface is registered as above
      * game.player.print(tostring(remote.interfaces["human interactor"]["hello"]))        -- prints true
      * game.player.print(tostring(remote.interfaces["human interactor"]["nonexistent"]))  -- prints nil
      */
     readonly interfaces: Record<string, Record<string, true>>
     /**
-     * This object's name.
+     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
      */
     readonly object_name: "LuaRemote"
   }
   /**
    * Allows rendering of geometric shapes, text and sprites in the game world through the global object named `rendering`. Each render object is identified by an id that is universally unique for the lifetime of a whole game.
-   * @remarks If an entity target of an object is destroyed or changes surface, then the object is also destroyed.
+   *
+   * If an entity target of an object is destroyed or changes surface, then the object is also destroyed.
    * @noSelf
    */
   export interface LuaRendering {
     /**
      * Create a line.
      * @returns Id of the render object
-     * @example Draw a white and 2 pixel wide line from {0, 0} to {2, 2}.
+     * @example
+     * -- Draw a white and 2 pixel wide line from {0, 0} to {2, 2}.
      * rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {2, 2}, color = {1, 1, 1}, width = 2}
-     * @example Draw a red and 3 pixel wide line from {0, 0} to {0, 5}. The line has 1 tile long dashes and gaps.
+     * @example
+     * -- Draw a red and 3 pixel wide line from {0, 0} to {0, 5}. The line has 1 tile long dashes and gaps.
      * rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {0, 5}, color = {r = 1}, width = 3, gap_length = 1, dash_length = 1}
      */
     draw_line(params: {
@@ -17760,8 +18106,9 @@ declare module "factorio:runtime" {
     }): uint64
     /**
      * Create a text.
+     *
+     * Note that not all fonts support scaling.
      * @returns Id of the render object
-     * @remarks Not all fonts support scaling.
      */
     draw_text(params: {
       /**
@@ -17877,7 +18224,8 @@ declare module "factorio:runtime" {
     /**
      * Create a rectangle.
      * @returns Id of the render object
-     * @example Draw a white and 1 pixel wide square outline with the corners {0, 0} and {2, 2}.
+     * @example
+     * -- Draw a white and 1 pixel wide square outline with the corners {0, 0} and {2, 2}.
      * rendering.draw_rectangle{surface = game.player.surface, left_top = {0, 0}, right_bottom = {2, 2}, color = {1, 1, 1}}
      */
     draw_rectangle(params: {
@@ -18039,9 +18387,11 @@ declare module "factorio:runtime" {
     /**
      * Create a sprite.
      * @returns Id of the render object
-     * @example This will draw an iron plate icon at the character's feet. The sprite will move together with the character.
+     * @example
+     * -- This will draw an iron plate icon at the character's feet. The sprite will move together with the character.
      * rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, surface = game.player.surface}
-     * @example This will draw an iron plate icon at the character's head. The sprite will move together with the character.
+     * @example
+     * -- This will draw an iron plate icon at the character's head. The sprite will move together with the character.
      * rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, target_offset = {0, -2}, surface = game.player.surface}
      */
     draw_sprite(params: {
@@ -18111,8 +18461,9 @@ declare module "factorio:runtime" {
     }): uint64
     /**
      * Create a light.
+     *
+     * The base game uses the utility sprites `light_medium` and `light_small` for lights.
      * @returns Id of the render object
-     * @remarks The base game uses the utility sprites `light_medium` and `light_small` for lights.
      */
     draw_light(params: {
       readonly sprite: SpritePath
@@ -18440,31 +18791,35 @@ declare module "factorio:runtime" {
     /**
      * Get where the object with this id is drawn.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object does not support target.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_target(id: uint64): ScriptRenderTarget | nil
     /**
      * Set where the object with this id is drawn. Does nothing if this object does not support target.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_target(id: uint64, target: (MapPosition | MapPositionArray) | LuaEntity, target_offset?: Vector): void
     /**
      * Get the orientation of the object with this id.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object is not a text, polygon, sprite, light or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation(id: uint64): RealOrientation | nil
     /**
      * Set the orientation of the object with this id. Does nothing if this object is not a text, polygon, sprite, light or animation.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation(id: uint64, orientation: RealOrientation): void
     /**
@@ -18746,18 +19101,20 @@ declare module "factorio:runtime" {
      */
     set_render_layer(id: uint64, render_layer: RenderLayer): void
     /**
-     * The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Get the orientation_target of the object with this id.
+     * Get the orientation_target of the object with this id. The object rotates so that it faces this target. Note that `orientation` is still applied to the object.
+     *
+     * Polygon vertices that are set to an entity will ignore this.
      *
      * _Can only be used if this is Polygon, Sprite or Animation_
      * @returns `nil` if no target or if this object is not a polygon, sprite, or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation_target(id: uint64): ScriptRenderTarget | nil
     /**
-     * The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. Set to `nil` if the object should not have an orientation_target.
+     * Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set to `nil` if the object should not have an orientation_target.
+     *
+     * Polygon vertices that are set to an entity will ignore this.
      *
      * _Can only be used if this is Polygon, Sprite or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation_target(
       id: uint64,
@@ -18765,14 +19122,14 @@ declare module "factorio:runtime" {
       orientation_target_offset?: Vector,
     ): void
     /**
-     * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Get the oriented_offset of the sprite or animation with this id.
+     * Get the oriented_offset of the sprite or animation with this id. Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation.
      *
      * _Can only be used if this is Sprite or Animation_
      * @returns `nil` if this object is not a sprite or animation.
      */
     get_oriented_offset(id: uint64): Vector | nil
     /**
-     * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Set the oriented_offset of the sprite or animation with this id. Does nothing if this object is not a sprite or animation.
+     * Set the oriented_offset of the sprite or animation with this id. Does nothing if this object is not a sprite or animation. Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation.
      *
      * _Can only be used if this is Sprite or Animation_
      */
@@ -18858,7 +19215,11 @@ declare module "factorio:runtime" {
      */
     set_animation_offset(id: uint64, animation_offset: double): void
     /**
-     * This object's name.
+     * All methods and properties that this object supports.
+     */
+    help(): string
+    /**
+     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
      */
     readonly object_name: "LuaRendering"
   }
@@ -18869,9 +19230,11 @@ declare module "factorio:runtime" {
     /**
      * Create a line.
      * @returns Id of the render object
-     * @example Draw a white and 2 pixel wide line from {0, 0} to {2, 2}.
+     * @example
+     * -- Draw a white and 2 pixel wide line from {0, 0} to {2, 2}.
      * rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {2, 2}, color = {1, 1, 1}, width = 2}
-     * @example Draw a red and 3 pixel wide line from {0, 0} to {0, 5}. The line has 1 tile long dashes and gaps.
+     * @example
+     * -- Draw a red and 3 pixel wide line from {0, 0} to {0, 5}. The line has 1 tile long dashes and gaps.
      * rendering.draw_line{surface = game.player.surface, from = {0, 0}, to = {0, 5}, color = {r = 1}, width = 3, gap_length = 1, dash_length = 1}
      */
     draw_line(params: {
@@ -18930,8 +19293,9 @@ declare module "factorio:runtime" {
     }): uint64
     /**
      * Create a text.
+     *
+     * Note that not all fonts support scaling.
      * @returns Id of the render object
-     * @remarks Not all fonts support scaling.
      */
     draw_text(params: {
       /**
@@ -19047,7 +19411,8 @@ declare module "factorio:runtime" {
     /**
      * Create a rectangle.
      * @returns Id of the render object
-     * @example Draw a white and 1 pixel wide square outline with the corners {0, 0} and {2, 2}.
+     * @example
+     * -- Draw a white and 1 pixel wide square outline with the corners {0, 0} and {2, 2}.
      * rendering.draw_rectangle{surface = game.player.surface, left_top = {0, 0}, right_bottom = {2, 2}, color = {1, 1, 1}}
      */
     draw_rectangle(params: {
@@ -19209,9 +19574,11 @@ declare module "factorio:runtime" {
     /**
      * Create a sprite.
      * @returns Id of the render object
-     * @example This will draw an iron plate icon at the character's feet. The sprite will move together with the character.
+     * @example
+     * -- This will draw an iron plate icon at the character's feet. The sprite will move together with the character.
      * rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, surface = game.player.surface}
-     * @example This will draw an iron plate icon at the character's head. The sprite will move together with the character.
+     * @example
+     * -- This will draw an iron plate icon at the character's head. The sprite will move together with the character.
      * rendering.draw_sprite{sprite = "item.iron-plate", target = game.player.character, target_offset = {0, -2}, surface = game.player.surface}
      */
     draw_sprite(params: {
@@ -19281,8 +19648,9 @@ declare module "factorio:runtime" {
     }): uint64
     /**
      * Create a light.
+     *
+     * The base game uses the utility sprites `light_medium` and `light_small` for lights.
      * @returns Id of the render object
-     * @remarks The base game uses the utility sprites `light_medium` and `light_small` for lights.
      */
     draw_light(params: {
       readonly sprite: SpritePath
@@ -19512,7 +19880,11 @@ declare module "factorio:runtime" {
      */
     set_use_target_orientation(id: uint64, use_target_orientation: boolean): void
     /**
-     * This object's name.
+     * All methods and properties that this object supports.
+     */
+    help(): string
+    /**
+     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
      */
     readonly object_name: "LuaRendering"
   }
@@ -19548,31 +19920,35 @@ declare module "factorio:runtime" {
     /**
      * Get where the object with this id is drawn.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object does not support target.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_target(id: uint64): ScriptRenderTarget | nil
     /**
      * Set where the object with this id is drawn. Does nothing if this object does not support target.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_target(id: uint64, target: (MapPosition | MapPositionArray) | LuaEntity, target_offset?: Vector): void
     /**
      * Get the orientation of the object with this id.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object is not a text, polygon, sprite, light or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation(id: uint64): RealOrientation | nil
     /**
      * Set the orientation of the object with this id. Does nothing if this object is not a text, polygon, sprite, light or animation.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation(id: uint64, orientation: RealOrientation): void
     /**
@@ -19813,16 +20189,18 @@ declare module "factorio:runtime" {
     /**
      * Get where the object with this id is drawn.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object does not support target.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_target(id: uint64): ScriptRenderTarget | nil
     /**
      * Set where the object with this id is drawn. Does nothing if this object does not support target.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_target(id: uint64, target: (MapPosition | MapPositionArray) | LuaEntity, target_offset?: Vector): void
     /**
@@ -19982,16 +20360,18 @@ declare module "factorio:runtime" {
     /**
      * Get where the object with this id is drawn.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object does not support target.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_target(id: uint64): ScriptRenderTarget | nil
     /**
      * Set where the object with this id is drawn. Does nothing if this object does not support target.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_target(id: uint64, target: (MapPosition | MapPositionArray) | LuaEntity, target_offset?: Vector): void
     /**
@@ -20081,31 +20461,35 @@ declare module "factorio:runtime" {
     /**
      * Get where the object with this id is drawn.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object does not support target.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_target(id: uint64): ScriptRenderTarget | nil
     /**
      * Set where the object with this id is drawn. Does nothing if this object does not support target.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_target(id: uint64, target: (MapPosition | MapPositionArray) | LuaEntity, target_offset?: Vector): void
     /**
      * Get the orientation of the object with this id.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object is not a text, polygon, sprite, light or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation(id: uint64): RealOrientation | nil
     /**
      * Set the orientation of the object with this id. Does nothing if this object is not a text, polygon, sprite, light or animation.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation(id: uint64, orientation: RealOrientation): void
     /**
@@ -20122,18 +20506,20 @@ declare module "factorio:runtime" {
      */
     set_vertices(id: uint64, vertices: readonly ScriptRenderVertexTarget[]): void
     /**
-     * The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Get the orientation_target of the object with this id.
+     * Get the orientation_target of the object with this id. The object rotates so that it faces this target. Note that `orientation` is still applied to the object.
+     *
+     * Polygon vertices that are set to an entity will ignore this.
      *
      * _Can only be used if this is Polygon, Sprite or Animation_
      * @returns `nil` if no target or if this object is not a polygon, sprite, or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation_target(id: uint64): ScriptRenderTarget | nil
     /**
-     * The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. Set to `nil` if the object should not have an orientation_target.
+     * Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set to `nil` if the object should not have an orientation_target.
+     *
+     * Polygon vertices that are set to an entity will ignore this.
      *
      * _Can only be used if this is Polygon, Sprite or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation_target(
       id: uint64,
@@ -20161,31 +20547,35 @@ declare module "factorio:runtime" {
     /**
      * Get where the object with this id is drawn.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object does not support target.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_target(id: uint64): ScriptRenderTarget | nil
     /**
      * Set where the object with this id is drawn. Does nothing if this object does not support target.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_target(id: uint64, target: (MapPosition | MapPositionArray) | LuaEntity, target_offset?: Vector): void
     /**
      * Get the orientation of the object with this id.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object is not a text, polygon, sprite, light or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation(id: uint64): RealOrientation | nil
     /**
      * Set the orientation of the object with this id. Does nothing if this object is not a text, polygon, sprite, light or animation.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation(id: uint64, orientation: RealOrientation): void
     /**
@@ -20241,18 +20631,20 @@ declare module "factorio:runtime" {
      */
     set_render_layer(id: uint64, render_layer: RenderLayer): void
     /**
-     * The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Get the orientation_target of the object with this id.
+     * Get the orientation_target of the object with this id. The object rotates so that it faces this target. Note that `orientation` is still applied to the object.
+     *
+     * Polygon vertices that are set to an entity will ignore this.
      *
      * _Can only be used if this is Polygon, Sprite or Animation_
      * @returns `nil` if no target or if this object is not a polygon, sprite, or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation_target(id: uint64): ScriptRenderTarget | nil
     /**
-     * The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. Set to `nil` if the object should not have an orientation_target.
+     * Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set to `nil` if the object should not have an orientation_target.
+     *
+     * Polygon vertices that are set to an entity will ignore this.
      *
      * _Can only be used if this is Polygon, Sprite or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation_target(
       id: uint64,
@@ -20260,14 +20652,14 @@ declare module "factorio:runtime" {
       orientation_target_offset?: Vector,
     ): void
     /**
-     * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Get the oriented_offset of the sprite or animation with this id.
+     * Get the oriented_offset of the sprite or animation with this id. Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation.
      *
      * _Can only be used if this is Sprite or Animation_
      * @returns `nil` if this object is not a sprite or animation.
      */
     get_oriented_offset(id: uint64): Vector | nil
     /**
-     * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Set the oriented_offset of the sprite or animation with this id. Does nothing if this object is not a sprite or animation.
+     * Set the oriented_offset of the sprite or animation with this id. Does nothing if this object is not a sprite or animation. Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation.
      *
      * _Can only be used if this is Sprite or Animation_
      */
@@ -20293,31 +20685,35 @@ declare module "factorio:runtime" {
     /**
      * Get where the object with this id is drawn.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object does not support target.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_target(id: uint64): ScriptRenderTarget | nil
     /**
      * Set where the object with this id is drawn. Does nothing if this object does not support target.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_target(id: uint64, target: (MapPosition | MapPositionArray) | LuaEntity, target_offset?: Vector): void
     /**
      * Get the orientation of the object with this id.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object is not a text, polygon, sprite, light or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation(id: uint64): RealOrientation | nil
     /**
      * Set the orientation of the object with this id. Does nothing if this object is not a text, polygon, sprite, light or animation.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation(id: uint64, orientation: RealOrientation): void
     /**
@@ -20406,31 +20802,35 @@ declare module "factorio:runtime" {
     /**
      * Get where the object with this id is drawn.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object does not support target.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_target(id: uint64): ScriptRenderTarget | nil
     /**
      * Set where the object with this id is drawn. Does nothing if this object does not support target.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Circle, Arc, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_target(id: uint64, target: (MapPosition | MapPositionArray) | LuaEntity, target_offset?: Vector): void
     /**
      * Get the orientation of the object with this id.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
      * @returns `nil` if the object is not a text, polygon, sprite, light or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation(id: uint64): RealOrientation | nil
     /**
      * Set the orientation of the object with this id. Does nothing if this object is not a text, polygon, sprite, light or animation.
      *
+     * Polygon vertices that are set to an entity will ignore this.
+     *
      * _Can only be used if this is Text, Polygon, Sprite, Light or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation(id: uint64, orientation: RealOrientation): void
     /**
@@ -20473,18 +20873,20 @@ declare module "factorio:runtime" {
      */
     set_render_layer(id: uint64, render_layer: RenderLayer): void
     /**
-     * The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Get the orientation_target of the object with this id.
+     * Get the orientation_target of the object with this id. The object rotates so that it faces this target. Note that `orientation` is still applied to the object.
+     *
+     * Polygon vertices that are set to an entity will ignore this.
      *
      * _Can only be used if this is Polygon, Sprite or Animation_
      * @returns `nil` if no target or if this object is not a polygon, sprite, or animation.
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     get_orientation_target(id: uint64): ScriptRenderTarget | nil
     /**
-     * The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. Set to `nil` if the object should not have an orientation_target.
+     * Set the orientation_target of the object with this id. Does nothing if this object is not a polygon, sprite, or animation. The object rotates so that it faces this target. Note that `orientation` is still applied to the object. Set to `nil` if the object should not have an orientation_target.
+     *
+     * Polygon vertices that are set to an entity will ignore this.
      *
      * _Can only be used if this is Polygon, Sprite or Animation_
-     * @remarks Polygon vertices that are set to an entity will ignore this.
      */
     set_orientation_target(
       id: uint64,
@@ -20492,14 +20894,14 @@ declare module "factorio:runtime" {
       orientation_target_offset?: Vector,
     ): void
     /**
-     * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Get the oriented_offset of the sprite or animation with this id.
+     * Get the oriented_offset of the sprite or animation with this id. Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation.
      *
      * _Can only be used if this is Sprite or Animation_
      * @returns `nil` if this object is not a sprite or animation.
      */
     get_oriented_offset(id: uint64): Vector | nil
     /**
-     * Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation. Set the oriented_offset of the sprite or animation with this id. Does nothing if this object is not a sprite or animation.
+     * Set the oriented_offset of the sprite or animation with this id. Does nothing if this object is not a sprite or animation. Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation.
      *
      * _Can only be used if this is Sprite or Animation_
      */
@@ -20619,6 +21021,10 @@ declare module "factorio:runtime" {
      */
     get_player_settings(player: PlayerIdentification): LuaCustomTable<string, ModSetting>
     /**
+     * All methods and properties that this object supports.
+     */
+    help(): string
+    /**
      * The startup mod settings, indexed by prototype name.
      */
     readonly startup: {
@@ -20637,7 +21043,7 @@ declare module "factorio:runtime" {
      */
     readonly player: LuaCustomTable<string, ModSetting>
     /**
-     * This object's name.
+     * The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.
      */
     readonly object_name: "LuaSettings"
   }
@@ -20794,11 +21200,15 @@ declare module "factorio:runtime" {
      */
     vertically_stretchable?: boolean
     /**
-     * Whether the GUI element can be squashed (by maximal width of some parent element) horizontally. `nil` if this element does not support squashing. This is mainly meant to be used for scroll-pane The default value is false.
+     * Whether the GUI element can be squashed (by maximal width of some parent element) horizontally. `nil` if this element does not support squashing.
+     *
+     * This is mainly meant to be used for scroll-pane. The default value is `false`.
      */
     horizontally_squashable?: boolean
     /**
-     * Whether the GUI element can be squashed (by maximal height of some parent element) vertically. `nil` if this element does not support squashing. This is mainly meant to be used for scroll-pane The default (parent) value for scroll pane is true, false otherwise.
+     * Whether the GUI element can be squashed (by maximal height of some parent element) vertically. `nil` if this element does not support squashing.
+     *
+     * This is mainly meant to be used for scroll-pane. The default (parent) value for scroll pane is `true`, `false` otherwise.
      */
     vertically_squashable?: boolean
     /**
@@ -20881,7 +21291,7 @@ declare module "factorio:runtime" {
     get color(): Color
     set color(value: Color | ColorArray)
     /**
-     * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
+     * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable.
      * @example
      * table_element.style.column_alignments[1] = "center"
      */
@@ -21060,15 +21470,19 @@ declare module "factorio:runtime" {
      */
     vertically_stretchable?: boolean
     /**
-     * Whether the GUI element can be squashed (by maximal width of some parent element) horizontally. `nil` if this element does not support squashing. This is mainly meant to be used for scroll-pane The default value is false.
+     * Whether the GUI element can be squashed (by maximal width of some parent element) horizontally. `nil` if this element does not support squashing.
+     *
+     * This is mainly meant to be used for scroll-pane. The default value is `false`.
      */
     horizontally_squashable?: boolean
     /**
-     * Whether the GUI element can be squashed (by maximal height of some parent element) vertically. `nil` if this element does not support squashing. This is mainly meant to be used for scroll-pane The default (parent) value for scroll pane is true, false otherwise.
+     * Whether the GUI element can be squashed (by maximal height of some parent element) vertically. `nil` if this element does not support squashing.
+     *
+     * This is mainly meant to be used for scroll-pane. The default (parent) value for scroll pane is `true`, `false` otherwise.
      */
     vertically_squashable?: boolean
     /**
-     * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable, like so:
+     * Array containing the alignment for every column of this table element. Even though this property is marked as read-only, the alignment can be changed by indexing the LuaCustomTable.
      * @example
      * table_element.style.column_alignments[1] = "center"
      */
@@ -21511,7 +21925,7 @@ declare module "factorio:runtime" {
      */
     readonly inner_name: string
     /**
-     * If `false` the ghost entity will not expire. Default is `false`.
+     * If `false` the ghost entity will not expire. Default is `false`. Creating ghost with `expires = true` when ghost_time_to_live of this force is 0 will result in a script error.
      */
     readonly expires?: boolean
   }
@@ -21641,6 +22055,26 @@ declare module "factorio:runtime" {
     readonly type?: "output" | "input"
   }
   /**
+   * `"loader"` variant of {@link SurfaceCreateEntity}.
+   */
+  export interface LoaderSurfaceCreateEntity extends BaseSurfaceCreateEntity {
+    /**
+     * Defaults to `"input"`.
+     */
+    readonly type?: "output" | "input"
+    readonly request_filters?: readonly InventoryFilter[]
+  }
+  /**
+   * `"loader-1x1"` variant of {@link SurfaceCreateEntity}.
+   */
+  export interface Loader1x1SurfaceCreateEntity extends BaseSurfaceCreateEntity {
+    /**
+     * Defaults to `"input"`.
+     */
+    readonly type?: "output" | "input"
+    readonly request_filters?: readonly InventoryFilter[]
+  }
+  /**
    * `"programmable-speaker"` variant of {@link SurfaceCreateEntity}.
    */
   export interface ProgrammableSpeakerSurfaceCreateEntity extends BaseSurfaceCreateEntity {
@@ -21719,6 +22153,8 @@ declare module "factorio:runtime" {
     | ArtilleryProjectileSurfaceCreateEntity
     | ResourceSurfaceCreateEntity
     | UndergroundBeltSurfaceCreateEntity
+    | LoaderSurfaceCreateEntity
+    | Loader1x1SurfaceCreateEntity
     | ProgrammableSpeakerSurfaceCreateEntity
     | CharacterCorpseSurfaceCreateEntity
     | HighlightBoxSurfaceCreateEntity
@@ -21732,9 +22168,10 @@ declare module "factorio:runtime" {
   export interface LuaSurface {
     /**
      * Get the pollution for a given position.
+     *
+     * Pollution is stored per chunk, so this will return the same value for all positions in one chunk.
      * @example
      * game.surfaces[1].get_pollution({1,2})
-     * @remarks Pollution is stored per chunk, so this will return the same value for all positions in one chunk.
      */
     get_pollution(position: MapPosition | MapPositionArray): double
     /**
@@ -21804,7 +22241,8 @@ declare module "factorio:runtime" {
      * Find entities in a given area.
      *
      * If no area is given all entities on the surface are returned.
-     * @example Will evaluate to a list of all entities within given area.
+     * @example
+     * -- Will evaluate to a list of all entities within given area.
      * game.surfaces["nauvis"].find_entities({{-10, -10}, {10, 10}})
      */
     find_entities(area?: BoundingBoxWrite | BoundingBoxArray): LuaEntity[]
@@ -21814,8 +22252,11 @@ declare module "factorio:runtime" {
      * If no filters (`name`, `type`, `force`, etc.) are given, this returns all entities in the search area. If multiple filters are specified, only entities matching all given filters are returned.
      *
      * - If no `area` or `position` are given, the entire surface is searched.
+     *
      * - If `position` is given, this returns the entities colliding with that position (i.e the given position is within the entity's collision box).
+     *
      * - If `position` and `radius` are given, this returns the entities within the radius of the position. Looks for the center of entities.
+     *
      * - If `area` is specified, this returns the entities colliding with that area.
      * @example
      * game.surfaces[1].find_entities_filtered{area = {{-10, -10}, {10, 10}}, type = "resource"} -- gets all resources in the rectangle
@@ -21902,7 +22343,13 @@ declare module "factorio:runtime" {
     /**
      * Count entities of given type or name in a given area. Works just like {@link LuaSurface#find_entities_filtered LuaSurface::find_entities_filtered}, except this only returns the count. As it doesn't construct all the wrapper objects, this is more efficient if one is only interested in the number of entities.
      *
-     * If no `area` or `position` are given, the entire surface is searched. If `position` is given, this returns the entities colliding with that position (i.e the given position is within the entity's collision box). If `position` and `radius` are given, this returns entities in the radius of the position. If `area` is specified, this returns entities colliding with that area.
+     * - If no `area` or `position` are given, the entire surface is searched.
+     *
+     * - If `position` is given, this returns the entities colliding with that position (i.e the given position is within the entity's collision box).
+     *
+     * - If `position` and `radius` are given, this returns entities in the radius of the position.
+     *
+     * - If `area` is specified, this returns entities colliding with that area.
      */
     count_entities_filtered(params: {
       readonly area?: BoundingBoxWrite | BoundingBoxArray
@@ -21977,13 +22424,14 @@ declare module "factorio:runtime" {
     }): uint
     /**
      * Find a non-colliding position within a given radius.
+     *
+     * Special care needs to be taken when using a radius of `0`. The game will not stop searching until it finds a suitable position, so it is important to make sure such a position exists. One particular case where it would not be able to find a solution is running it before any chunks have been generated.
      * @param name Prototype name of the entity to find a position for. (The bounding box for the collision checking is taken from this prototype.)
      * @param center Center of the search area.
      * @param radius Max distance from `center` to search in. A radius of `0` means an infinitely-large search area.
      * @param precision The step length from the given position as it searches, in tiles. Minimum value is `0.01`.
-     * @param force_to_tile_center Will only check tile centers. This can be useful when your intent is to place a building at the resulting position, as they must generally be placed at tile centers. Default false.
+     * @param force_to_tile_center Will only check tile centers. This can be useful when your intent is to place a building at the resulting position, as they must generally be placed at tile centers. Defaults to `false`.
      * @returns The non-colliding position. May be `nil` if no suitable position was found.
-     * @remarks Special care needs to be taken when using a radius of `0`. The game will not stop searching until it finds a suitable position, so it is important to make sure such a position exists. One particular case where it would not be able to find a solution is running it before any chunks have been generated.
      */
     find_non_colliding_position(
       name: string,
@@ -21997,7 +22445,7 @@ declare module "factorio:runtime" {
      * @param name Prototype name of the entity to find a position for. (The bounding box for the collision checking is taken from this prototype.)
      * @param search_space The rectangle to search inside.
      * @param precision The step length from the given position as it searches, in tiles. Minimum value is 0.01.
-     * @param force_to_tile_center Will only check tile centers. This can be useful when your intent is to place a building at the resulting position, as they must generally be placed at tile centers. Default false.
+     * @param force_to_tile_center Will only check tile centers. This can be useful when your intent is to place a building at the resulting position, as they must generally be placed at tile centers. Defaults to `false`.
      * @returns The non-colliding position. May be `nil` if no suitable position was found.
      */
     find_non_colliding_position_in_box(
@@ -22024,21 +22472,26 @@ declare module "factorio:runtime" {
     ): LuaEntity[]
     /**
      * Find enemy units (entities with type "unit") of a given force within an area.
+     *
+     * This is more efficient than {@link LuaSurface#find_entities LuaSurface::find_entities}.
      * @param center Center of the search area
      * @param radius Radius of the circular search area
      * @param force Force to find enemies of. If not given, uses the player force.
-     * @example Find all units who would be interested to attack the player, within 100-tile area.
+     * @example
+     * -- Find all units who would be interested to attack the player, within 100-tile area.
      * local enemies = game.player.surface.find_enemy_units(game.player.position, 100)
-     * @remarks This is more efficient than {@link LuaSurface#find_entities LuaSurface::find_entities}.
      */
     find_enemy_units(center: MapPosition | MapPositionArray, radius: double, force?: ForceIdentification): LuaEntity[]
     /**
      * Find units (entities with type "unit") of a given force and force condition within a given area.
-     * @example Find friendly units to "player" force
+     *
+     * This is more efficient than {@link LuaSurface#find_entities LuaSurface::find_entities}.
+     * @example
+     * -- Find friendly units to "player" force
      * local friendly_units = game.player.surface.find_units({area = {{-10, -10},{10, 10}}, force = "player", condition = "friend")
-     * @example Find units of "player" force
+     * @example
+     * -- Find units of "player" force
      * local units = game.player.surface.find_units({area = {{-10, -10},{10, 10}}, force = "player", condition = "same"})
-     * @remarks This is more efficient than {@link LuaSurface#find_entities LuaSurface::find_entities}.
      */
     find_units(params: {
       /**
@@ -22135,6 +22588,8 @@ declare module "factorio:runtime" {
      * - `"artillery-projectile"`: {@link ArtilleryProjectileSurfaceCreateEntity}
      * - `"resource"`: {@link ResourceSurfaceCreateEntity}
      * - `"underground-belt"`: {@link UndergroundBeltSurfaceCreateEntity}
+     * - `"loader"`: {@link LoaderSurfaceCreateEntity}
+     * - `"loader-1x1"`: {@link Loader1x1SurfaceCreateEntity}
      * - `"programmable-speaker"`: {@link ProgrammableSpeakerSurfaceCreateEntity}
      * - `"character-corpse"`: {@link CharacterCorpseSurfaceCreateEntity}
      * - `"highlight-box"`: {@link HighlightBoxSurfaceCreateEntity}
@@ -22147,15 +22602,20 @@ declare module "factorio:runtime" {
      * @returns The created entity or `nil` if the creation failed.
      * @example
      * asm = game.surfaces[1].create_entity{name = "assembling-machine-1", position = {15, 3}, force = game.forces.player, recipe = "iron-stick"}
-     * @example Creates a filter inserter with circuit conditions and a filter
+     * @example
+     * -- Creates a filter inserter with circuit conditions and a filter
      * game.surfaces[1].create_entity{
      *   name = "filter-inserter", position = {20, 15}, force = game.player.force,
-     *   conditions = {red = {name = "wood", count = 3, operator = ">"},
-     *               green = {name = "iron-ore", count = 1, operator = "<"},
-     *   logistics = {name = "wood", count = 3, operator = "="}},
+     *   conditions =
+     *   {
+     *     red = {name = "wood", count = 3, operator = ">"},
+     *     green = {name = "iron-ore", count = 1, operator = "<"},
+     *     logistics = {name = "wood", count = 3, operator = "="}
+     *   },
      *   filters = {{index = 1, name = "iron-ore"}}
      * }
-     * @example Creates a requester chest already set to request 128 iron plates.
+     * @example
+     * -- Creates a requester chest already set to request 128 iron plates.
      * game.surfaces[1].create_entity{
      *   name = "logistic-chest-requester", position = {game.player.position.x+3, game.player.position.y},
      *   force = game.player.force, request_filters = {{index = 1, name = "iron-plate", count = 128}}
@@ -22163,7 +22623,8 @@ declare module "factorio:runtime" {
      * @example
      * game.surfaces[1].create_entity{name = "big-biter", position = {15, 3}, force = game.forces.player} -- Friendly biter
      * game.surfaces[1].create_entity{name = "medium-biter", position = {15, 3}, force = game.forces.enemy} -- Enemy biter
-     * @example Creates a basic inserter at the player's location facing north
+     * @example
+     * -- Creates a basic inserter at the player's location facing north
      * game.surfaces[1].create_entity{name = "inserter", position = game.player.position, direction = defines.direction.north}
      */
     create_entity(params: SurfaceCreateEntity): LuaEntity | nil
@@ -22212,15 +22673,17 @@ declare module "factorio:runtime" {
     }): LuaUnitGroup
     /**
      * Send a group to build a new base.
+     *
+     * The specified force must be AI-controlled; i.e. `force.ai_controllable` must be `true`.
      * @param position Location of the new base.
      * @param unit_count Number of biters to send for the base-building task.
      * @param force Force the new base will belong to. Defaults to enemy.
-     * @remarks The specified force must be AI-controlled; i.e. `force.ai_controllable` must be `true`.
      */
     build_enemy_base(position: MapPosition | MapPositionArray, unit_count: uint, force?: ForceIdentification): void
     /**
      * Get the tile at a given position. An alternative call signature for this method is passing it a single {@link TilePosition}.
-     * @remarks Non-integer values will result in them being rounded down.
+     *
+     * Non-integer values will result in them being rounded down.
      */
     get_tile(x: int, y: int): LuaTile
     /**
@@ -22228,13 +22691,14 @@ declare module "factorio:runtime" {
      *
      * Placing a {@link LuaTilePrototype#mineable_properties mineable} tile on top of a non-mineable one will turn the latter into the {@link LuaTile#hidden_tile LuaTile::hidden_tile} for that tile. Placing a mineable tile on a mineable one or a non-mineable tile on a non-mineable one will not modify the hidden tile. This restriction can however be circumvented by using {@link LuaSurface#set_hidden_tile LuaSurface::set_hidden_tile}.
      *
+     * It is recommended to call this method once for all the tiles you want to change rather than calling it individually for every tile. As the tile correction is used after every step, calling it one by one could cause the tile correction logic to redo some of the changes. Also, many small API calls are generally more performance intensive than one big one.
+     *
      * ## Raised events
      * - {@link ScriptRaisedSetTilesEvent script_raised_set_tiles}? _instantly_ Raised if the `raise_event` flag was set.
      * @param correct_tiles If `false`, the correction logic is not applied to the changed tiles. Defaults to `true`.
      * @param remove_colliding_entities Defaults to `true`.
      * @param remove_colliding_decoratives Defaults to `true`.
      * @param raise_event Defaults to `false`.
-     * @remarks It is recommended to call this method once for all the tiles you want to change rather than calling it individually for every tile. As the tile correction is used after every step, calling it one by one could cause the tile correction logic to redo some of the changes. Also, many small API calls are generally more performance intensive than one big one.
      */
     set_tiles(
       tiles: readonly TileWrite[],
@@ -22429,12 +22893,13 @@ declare module "factorio:runtime" {
     set_hidden_tile(position: TilePosition | TilePositionArray, tile: string | LuaTilePrototype | nil): void
     /**
      * Gets all tiles of the given types that are connected horizontally or vertically to the given tile position including the given tile position.
+     *
+     * This won't find tiles in non-generated chunks.
      * @param position The tile position to start at.
      * @param tiles The tiles to search for.
      * @param include_diagonal Include tiles that are connected diagonally.
      * @param area The area to find connected tiles in. If provided the start position must be in this area.
      * @returns The resulting set of tiles.
-     * @remarks This won't find tiles in non-generated chunks.
      */
     get_connected_tiles(
       position: TilePosition | TilePositionArray,
@@ -22451,9 +22916,10 @@ declare module "factorio:runtime" {
     delete_chunk(position: ChunkPosition | ChunkPositionArray): void
     /**
      * Regenerate autoplacement of some entities on this surface. This can be used to autoplace newly-added entities.
+     *
+     * All specified entity prototypes must be autoplacable. If nothing is given all entities are generated on all chunks.
      * @param entities Prototype names of entity or entities to autoplace. When `nil` all entities with an autoplace are used.
      * @param chunks The chunk positions to regenerate the entities on. If not given all chunks are regenerated. Note chunks with status < entities are ignored.
-     * @remarks All specified entity prototypes must be autoplacable. If nothing is given all entities are generated on all chunks.
      */
     regenerate_entity(
       entities?: string | readonly string[],
@@ -22461,9 +22927,10 @@ declare module "factorio:runtime" {
     ): void
     /**
      * Regenerate autoplacement of some decoratives on this surface. This can be used to autoplace newly-added decoratives.
+     *
+     * All specified decorative prototypes must be autoplacable. If nothing is given all decoratives are generated on all chunks.
      * @param decoratives Prototype names of decorative or decoratives to autoplace. When `nil` all decoratives with an autoplace are used.
      * @param chunks The chunk positions to regenerate the entities on. If not given all chunks are regenerated. Note chunks with status < entities are ignored.
-     * @remarks All specified decorative prototypes must be autoplacable. If nothing is given all decoratives are generated on all chunks.
      */
     regenerate_decorative(
       decoratives?: string | readonly string[],
@@ -22471,11 +22938,14 @@ declare module "factorio:runtime" {
     ): void
     /**
      * Print text to the chat console of all players on this surface.
-     * @remarks By default, messages that are identical to a message sent in the last 60 ticks are not printed again.
+     *
+     * By default, messages that are identical to a message sent in the last 60 ticks are not printed again.
      */
     print(message: LocalisedString, print_settings?: (Color | ColorArray) | PrintSettings): void
     /**
-     * Removes all decoratives from the given area. If no area and no position are given, then the entire surface is searched.
+     * Removes all decoratives from the given area.
+     *
+     * If no area and no position are given, then the entire surface is searched.
      */
     destroy_decoratives(params: {
       readonly area?: BoundingBoxWrite | BoundingBoxArray
@@ -22496,7 +22966,8 @@ declare module "factorio:runtime" {
     }): void
     /**
      * Adds the given decoratives to the surface.
-     * @remarks This will merge decoratives of the same type that already exist effectively increasing the "amount" field.
+     *
+     * This will merge decoratives of the same type that already exist effectively increasing the "amount" field.
      */
     create_decoratives(params: {
       /**
@@ -22540,7 +23011,8 @@ declare module "factorio:runtime" {
     clear_pollution(): void
     /**
      * Play a sound for every player on this surface.
-     * @remarks The sound is not played if its location is not {@link LuaForce#chart charted} for that player.
+     *
+     * The sound is not played if its location is not {@link LuaForce#chart charted} for that player.
      */
     play_sound(params: {
       /**
@@ -22569,12 +23041,11 @@ declare module "factorio:runtime" {
      */
     get_random_chunk(): ChunkPosition
     /**
-     * Clones the given area.
+     * Clones the given area. Entities are cloned in an order such that they can always be created, eg. rails before trains.
      *
      * ## Raised events
      * - {@link OnEntityClonedEvent on_entity_cloned} _instantly_ Raised for every entity that was cloned.
      * - {@link OnAreaClonedEvent on_area_cloned} _instantly_ Raised after the individual `on_entity_cloned` events.
-     * @remarks Entities are cloned in an order such that they can always be created, eg rails before trains.
      */
     clone_area(params: {
       readonly source_area: BoundingBoxWrite | BoundingBoxArray
@@ -22612,7 +23083,10 @@ declare module "factorio:runtime" {
     }): void
     /**
      * Clones the given area.
-     * @remarks {@link defines.events.on_entity_cloned} is raised for each entity, and then {@link defines.events.on_area_cloned} is raised.<br>Entities are cloned in an order such that they can always be created, eg rails before trains.
+     *
+     * {@link defines.events.on_entity_cloned} is raised for each entity, and then {@link defines.events.on_area_cloned} is raised.
+     *
+     * Entities are cloned in an order such that they can always be created, eg. rails before trains.
      */
     clone_brush(params: {
       readonly source_offset: TilePosition | TilePositionArray
@@ -22656,9 +23130,10 @@ declare module "factorio:runtime" {
     /**
      * Clones the given entities.
      *
+     * Entities are cloned in an order such that they can always be created, eg. rails before trains.
+     *
      * ## Raised events
      * - {@link OnEntityClonedEvent on_entity_cloned} _instantly_ Raised for every entity that was cloned.
-     * @remarks Entities are cloned in an order such that they can always be created, eg rails before trains.
      */
     clone_entities(params: {
       readonly entities: readonly LuaEntity[]
@@ -22828,6 +23303,9 @@ declare module "factorio:runtime" {
      */
     decorative_prototype_collides(prototype: string, position: MapPosition | MapPositionArray): boolean
     /**
+     * Calculate values for a list of tile properties at a list of positions.
+     *
+     * Requests for unrecognized properties will be ignored, so this can also be used to test whether those properties exist.
      * @param property_names Names of properties (`"elevation"`, etc) to calculate.
      * @param positions Positions for which to calculate property values
      * @returns Table of property value lists, keyed by property name
@@ -22854,9 +23332,10 @@ declare module "factorio:runtime" {
     /**
      * The name of this surface. Names are unique among surfaces.
      *
+     * The default surface can't be renamed.
+     *
      * ## Raised events
      * - {@link OnSurfaceRenamedEvent on_surface_renamed} _instantly_
-     * @remarks the default surface can't be renamed.
      */
     name: string
     /**
@@ -22877,11 +23356,11 @@ declare module "factorio:runtime" {
      */
     always_day: boolean
     /**
-     * Current time of day, as a number in range [0, 1).
+     * Current time of day, as a number in range `[0, 1)`.
      */
     daytime: double
     /**
-     * Amount of darkness at the current time, as a number in range [0, 1].
+     * Amount of darkness at the current time, as a number in range `[0, 1]`.
      */
     readonly darkness: float
     /**
@@ -22935,17 +23414,17 @@ declare module "factorio:runtime" {
     /**
      * Defines how surface daytime brightness influences each color channel of the current color lookup table (LUT).
      *
-     * The LUT is multiplied by `((1 - weight) + brightness * weight)` and result is clamped to range [0, 1].
+     * The LUT is multiplied by `((1 - weight) + brightness * weight)` and result is clamped to range `[0, 1]`.
      *
      * Default is `{0, 0, 0}`, which means no influence.
-     * @example Makes night on the surface pitch black, assuming {@link LuaSurface#min_brightness LuaSurface::min_brightness} being set to default value `0.15`.
+     * @example
+     * -- Makes night on the surface pitch black, LuaSurface::min_brightness is set to default value 0.15.
      * game.surfaces[1].brightness_visual_weights = { 1 / 0.85, 1 / 0.85, 1 / 0.85 }
      */
     get brightness_visual_weights(): ColorModifier
     set brightness_visual_weights(value: ColorModifier | ColorModifierArray)
     /**
-     * If clouds are shown on this surface.
-     * @remarks If false, clouds are never shown. If true the player must also have clouds enabled in graphics settings for them to be shown.
+     * If clouds are shown on this surface. If `false`, clouds are never shown. If `true`, the player must also have clouds enabled in graphics settings for them to be shown.
      */
     show_clouds: boolean
     /**
@@ -23017,7 +23496,8 @@ declare module "factorio:runtime" {
     readonly effects: TechnologyModifier[]
     /**
      * The number of research units required for this technology.
-     * @remarks This is multiplied by the current research cost multiplier, unless {@link LuaTechnologyPrototype#ignore_tech_cost_multiplier LuaTechnologyPrototype::ignore_tech_cost_multiplier} is `true`.
+     *
+     * This is multiplied by the current research cost multiplier, unless {@link LuaTechnologyPrototype#ignore_tech_cost_multiplier LuaTechnologyPrototype::ignore_tech_cost_multiplier} is `true`.
      */
     readonly research_unit_count: uint
     /**
@@ -23077,7 +23557,8 @@ declare module "factorio:runtime" {
     readonly visible_when_disabled: boolean
     /**
      * If this technology ignores the technology cost multiplier setting.
-     * @remarks {@link LuaTechnologyPrototype#research_unit_count LuaTechnologyPrototype::research_unit_count} will already take this setting into account.
+     *
+     * {@link LuaTechnologyPrototype#research_unit_count LuaTechnologyPrototype::research_unit_count} will already take this setting into account.
      */
     readonly ignore_tech_cost_multiplier: boolean
     /**
@@ -23098,7 +23579,8 @@ declare module "factorio:runtime" {
     readonly effects: TechnologyModifier[]
     /**
      * The number of research units required for this technology.
-     * @remarks This is multiplied by the current research cost multiplier, unless {@link LuaTechnologyPrototype#ignore_tech_cost_multiplier LuaTechnologyPrototype::ignore_tech_cost_multiplier} is `true`.
+     *
+     * This is multiplied by the current research cost multiplier, unless {@link LuaTechnologyPrototype#ignore_tech_cost_multiplier LuaTechnologyPrototype::ignore_tech_cost_multiplier} is `true`.
      */
     readonly research_unit_count: uint
     /**
@@ -23137,7 +23619,8 @@ declare module "factorio:runtime" {
   export interface LuaTile {
     /**
      * What type of things can collide with this tile?
-     * @example Check if the character would collide with a tile
+     * @example
+     * -- Check if the character would collide with a tile
      * game.player.print(tostring(game.player.surface.get_tile(1, 1).collides_with("player-layer")))
      */
     collides_with(layer: CollisionMaskLayer): boolean
@@ -23189,7 +23672,9 @@ declare module "factorio:runtime" {
      */
     readonly position: TilePosition
     /**
-     * The name of the {@link LuaTilePrototype} hidden under this tile, if any. During normal gameplay, only {@link LuaTilePrototype#mineable_properties non-mineable} tiles can become hidden. This can however be circumvented with {@link LuaSurface#set_hidden_tile LuaSurface::set_hidden_tile}.
+     * The name of the {@link LuaTilePrototype} hidden under this tile, if any.
+     *
+     * During normal gameplay, only {@link LuaTilePrototype#mineable_properties non-mineable} tiles can become hidden. This can however be circumvented with {@link LuaSurface#set_hidden_tile LuaSurface::set_hidden_tile}.
      */
     readonly hidden_tile?: string
     /**
@@ -23371,7 +23856,8 @@ declare module "factorio:runtime" {
     manual_mode: boolean
     /**
      * Current speed.
-     * @remarks Changing the speed of the train is potentially an unsafe operation because train uses the speed for its internal calculations of break distances, etc.
+     *
+     * Changing the speed of the train is potentially an unsafe operation because train uses the speed for its internal calculations of break distances, etc.
      */
     speed: double
     /**
@@ -23416,7 +23902,8 @@ declare module "factorio:runtime" {
     readonly fluid_wagons: LuaEntity[]
     /**
      * This train's current schedule, if any. Set to `nil` to clear.
-     * @remarks The schedule can't be changed by modifying the returned table. Instead, changes must be made by assigning a new table to this attribute.
+     *
+     * The schedule can't be changed by modifying the returned table. Instead, changes must be made by assigning a new table to this attribute.
      */
     get schedule(): TrainSchedule | nil
     set schedule(value: TrainScheduleWrite | nil)
@@ -23463,8 +23950,9 @@ declare module "factorio:runtime" {
      */
     readonly id: uint
     /**
-     * The player passengers on the train
-     * @remarks This does *not* index using player index. See {@link LuaPlayer#index LuaPlayer::index} on each player instance for the player index.
+     * The player passengers on the train.
+     *
+     * This does *not* index using player index. See {@link LuaPlayer#index LuaPlayer::index} on each player instance for the player index.
      */
     readonly passengers: LuaPlayer[]
     /**
@@ -23630,7 +24118,8 @@ declare module "factorio:runtime" {
     get_contents(): Record<string, uint>
     /**
      * Returns whether the associated internal transport line of this line is the same as the others associated internal transport line.
-     * @remarks This can return true even when the {@link LuaTransportLine#owner LuaTransportLine::owner}s are different (so `this == other` is false), because the internal transport lines can span multiple tiles.
+     *
+     * This can return true even when the {@link LuaTransportLine#owner LuaTransportLine::owner}s are different (so `this == other` is false), because the internal transport lines can span multiple tiles.
      */
     line_equals(other: LuaTransportLine): boolean
     /**
@@ -23715,7 +24204,8 @@ declare module "factorio:runtime" {
   export interface LuaUnitGroup {
     /**
      * Make a unit a member of this group. Has the same effect as giving a `group_command` with this group to the unit.
-     * @remarks The member must have the same force as the unit group.
+     *
+     * The member must have the same force as the unit group.
      */
     add_member(unit: LuaEntity): void
     /**

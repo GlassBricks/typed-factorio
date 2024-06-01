@@ -8,6 +8,7 @@ import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessEvents(context: RuntimeGenerationContext): void {
+  context.apiDocs.events.sort(byOrder)
   for (const event of context.apiDocs.events) {
     context.references.set(event.name, getMappedEventName(event.name))
     for (const parameter of event.data) {
@@ -22,7 +23,7 @@ export function preprocessEvents(context: RuntimeGenerationContext): void {
 export function generateEvents(context: RuntimeGenerationContext): void {
   context.addFile("events", ModuleType.Runtime, () => {
     const heritageClause = createExtendsClause("EventData")
-    for (const event of context.apiDocs.events.sort(byOrder)) {
+    for (const event of context.apiDocs.events) {
       const name = getMappedEventName(event.name)
       const existing = context.manualDefs.getDeclaration(name)
       const declaration = ts.factory.createInterfaceDeclaration(

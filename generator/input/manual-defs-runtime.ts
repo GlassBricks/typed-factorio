@@ -325,8 +325,6 @@ export type LuaGuiElement = {
   readonly elem_type: ChooseElemButtonType
   // @ts-ignore
   elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | nil
-  // @ts-ignore
-  elem_filters: ChooseElemButtonFilters[this["elem_type"]] | nil
 
   /** @subclasses slider */
   get_slider_minimum()
@@ -615,12 +613,6 @@ export type CollisionMaskLayer = `layer-${bigint}`
 /** @unionReplace type */
 export type RenderLayer = `${bigint}`
 
-/** @omit */
-export interface EventFilter {}
-
-/** @omit */
-export interface PrototypeFilter {}
-
 // where a vector is supposed to be a position table instead
 
 export interface SmokeSource {
@@ -635,9 +627,15 @@ export interface FluidBoxConnection {
   readonly positions: MapPosition[]
 }
 
-export interface CircularParticleCreationSpecification {
-  readonly center: MapPosition
-}
+// these are present in the prototype definitions, but not in the runtime definitions??
+/** @omit */
+export interface CircularParticleCreationSpecification {}
+/** @omit */
+export interface CircularProjectileCreationSpecification {}
+/** @omit */
+export interface AttackParameterFluid {}
+/** @omit */
+export interface GunShift4Way {}
 
 /** @writeType BoundingBoxWrite BoundingBoxArray */
 export interface BoundingBox {}

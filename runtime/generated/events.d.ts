@@ -8,7 +8,8 @@
 declare module "factorio:runtime" {
   /**
    * Called when a {@link import("factorio:prototype").CustomInputPrototype CustomInputPrototype} is activated.
-   * @example This will be raised when a custom input with the name "my-potato-control" and action "lua" is pressed
+   * @example
+   * -- This will be raised when a custom input with the name "my-potato-control" and action "lua" is pressed
    * script.on_event("my-potato-control", function(event)
    *   game.print("Keyboard shortcut pressed on tick: " ..tostring(event.tick))
    * end)
@@ -90,7 +91,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when a biter migration builds a base.
-   * @remarks This will be called multiple times for each migration, once for every biter that is sacrificed to build part of the new base.
+   *
+   * This will be called multiple times for each migration, once for every biter that is sacrificed to build part of the new base.
    */
   interface OnBiterBaseBuiltEvent extends EventData {
     /**
@@ -152,7 +154,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when player builds something. Can be filtered using {@link LuaPlayerBuiltEntityEventFilter}.
+   * Called when player builds something.
+   *
+   * Event filter: [LuaPlayerBuiltEntityEventFilter](LuaPlayerBuiltEntityEventFilter]
    */
   interface OnBuiltEntityEvent extends EventData {
     readonly created_entity: LuaEntity
@@ -176,7 +180,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when the deconstruction of an entity is canceled. Can be filtered using {@link LuaEntityDeconstructionCancelledEventFilter}.
+   * Called when the deconstruction of an entity is canceled.
+   *
+   * Event filter: [LuaEntityDeconstructionCancelledEventFilter](LuaEntityDeconstructionCancelledEventFilter]
    */
   interface OnCancelledDeconstructionEvent extends EventData {
     readonly entity: LuaEntity
@@ -191,7 +197,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when the upgrade of an entity is canceled. Can be filtered using {@link LuaUpgradeCancelledEventFilter}.
+   * Called when the upgrade of an entity is canceled.
+   *
+   * Event filter: [LuaUpgradeCancelledEventFilter](LuaUpgradeCancelledEventFilter]
    */
   interface OnCancelledUpgradeEvent extends EventData {
     readonly entity: LuaEntity
@@ -209,7 +217,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when a character corpse expires due to timeout or all of the items being removed from it.
-   * @remarks this is not called if the corpse is mined. See {@link defines.events.on_pre_player_mined_item} to detect that.
+   *
+   * This is not called if the corpse is mined. See {@link defines.events.on_pre_player_mined_item} to detect that.
    */
   interface OnCharacterCorpseExpiredEvent extends EventData {
     /**
@@ -359,7 +368,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when a message is sent to the in-game console, either by a player or through the server interface.
-   * @remarks This event only fires for plain messages, not for any commands (including `/shout` or `/whisper`).
+   *
+   * This event only fires for plain messages, not for any commands (including `/shout` or `/whisper`).
    */
   interface OnConsoleChatEvent extends EventData {
     /**
@@ -459,7 +469,8 @@ declare module "factorio:runtime" {
    * Called when a cutscene is playing, each time it reaches a waypoint in that cutscene.
    *
    * This refers to an index in the table previously passed to set_controller which started the cutscene.
-   * @remarks Due to implementation omission, waypoint_index is 0-based.
+   *
+   * Due to implementation omission, `waypoint_index` is 0-based.
    */
   interface OnCutsceneWaypointReachedEvent extends EventData {
     /**
@@ -481,7 +492,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when the map difficulty settings are changed.
-   * @remarks It's not guaranteed that both settings are changed - just that at least one has been changed.
+   *
+   * It's not guaranteed that both settings are changed - just that at least one has been changed.
    */
   interface OnDifficultySettingsChangedEvent extends EventData {
     readonly old_recipe_difficulty: uint
@@ -496,7 +508,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when an entity is cloned. Can be filtered for the source entity using {@link LuaEntityClonedEventFilter}.
+   * Called when an entity is cloned. The filter applies to the source entity.
+   *
+   * Event filter: [LuaEntityClonedEventFilter](LuaEntityClonedEventFilter]
    */
   interface OnEntityClonedEvent extends EventData {
     readonly source: LuaEntity
@@ -512,7 +526,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called after an entity has been recolored either by the player or through script.
-   * @remarks Automatic recoloring due to {@link LuaPlayer#color LuaPlayer::color} will not raise events, as that is a separate mechanism.
+   *
+   * Automatic recoloring due to {@link LuaPlayer#color LuaPlayer::color} will not raise events, as that is a separate mechanism.
    */
   interface OnEntityColorChangedEvent extends EventData {
     /**
@@ -529,8 +544,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when an entity is damaged. Can be filtered using {@link LuaEntityDamagedEventFilter}.
-   * @remarks This is not called when an entities health is set directly by another mod.
+   * Called when an entity is damaged. This is not called when an entities health is set directly by another mod.
+   *
+   * Event filter: [LuaEntityDamagedEventFilter](LuaEntityDamagedEventFilter]
    */
   interface OnEntityDamagedEvent extends EventData {
     readonly entity: LuaEntity
@@ -566,7 +582,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called after an entity is destroyed that has been registered with {@link LuaBootstrap#register_on_entity_destroyed LuaBootstrap::register_on_entity_destroyed}.
-   * @remarks Depending on when a given entity is destroyed, this event will be fired at the end of the current tick or at the end of the next tick.
+   *
+   * Depending on when a given entity is destroyed, this event will be fired at the end of the current tick or at the end of the next tick.
    */
   interface OnEntityDestroyedEvent extends EventData {
     /**
@@ -587,7 +604,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when an entity dies. Can be filtered using {@link LuaEntityDiedEventFilter}.
+   * Called when an entity dies.
+   *
+   * Event filter: [LuaEntityDiedEventFilter](LuaEntityDiedEventFilter]
    */
   interface OnEntityDiedEvent extends EventData {
     /**
@@ -621,7 +640,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when one of an entity's personal logistic slots changes.
-   * @remarks "Personal logistic slot" refers to a character or vehicle's personal request / auto-trash slots, not the request slots on logistic chests.
+   *
+   * "Personal logistic slot" refers to a character or vehicle's personal request / auto-trash slots, not the request slots on logistic chests.
    */
   interface OnEntityLogisticSlotChangedEvent extends EventData {
     /**
@@ -775,7 +795,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when a new force is created using `game.create_force()`
-   * @remarks This is not called when the default forces (`'player'`, `'enemy'`, `'neutral'`) are created as they will always exist.
+   *
+   * This is not called when the default forces (`'player'`, `'enemy'`, `'neutral'`) are created as they will always exist.
    */
   interface OnForceCreatedEvent extends EventData {
     /**
@@ -832,7 +853,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called after two forces have been merged using `game.merge_forces()`.
-   * @remarks The source force is invalidated before this event is called and the name can be re-used in this event if desired.
+   *
+   * The source force is invalidated before this event is called and the name can be re-used in this event if desired.
    */
   interface OnForcesMergedEvent extends EventData {
     /**
@@ -879,7 +901,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when a game is created from a scenario. This is fired for every mod, even when the scenario's save data already includes it. In those cases however, {@link LuaBootstrap#on_init LuaBootstrap::on_init} is not fired.
-   * @remarks This event is not fired when the scenario is loaded via the map editor.
+   *
+   * This event is not fired when the scenario is loaded via the map editor.
    */
   interface OnGameCreatedFromScenarioEvent extends EventData {
     /**
@@ -957,7 +980,8 @@ declare module "factorio:runtime" {
    * Called when the player closes the GUI they have open.
    *
    * This can only be raised when the GUI's player controller is still valid. If a GUI is thus closed due to the player disconnecting, dying, or becoming a spectator in other ways, it won't cause this event to be raised.
-   * @remarks It's not advised to open any other GUI during this event because if this is run as a request to open a different GUI the game will force close the new opened GUI without notice to ensure the original requested GUI is opened.
+   *
+   * It's not advised to open any other GUI during this event because if this is run as a request to open a different GUI the game will force close the new opened GUI without notice to ensure the original requested GUI is opened.
    */
   interface OnGuiClosedEvent extends EventData {
     /**
@@ -1313,7 +1337,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when an entity is marked for deconstruction with the Deconstruction planner or via script. Can be filtered using {@link LuaEntityMarkedForDeconstructionEventFilter}.
+   * Called when an entity is marked for deconstruction with the Deconstruction planner or via script.
+   *
+   * Event filter: [LuaEntityMarkedForDeconstructionEventFilter](LuaEntityMarkedForDeconstructionEventFilter]
    */
   interface OnMarkedForDeconstructionEvent extends EventData {
     readonly entity: LuaEntity
@@ -1328,7 +1354,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when an entity is marked for upgrade with the Upgrade planner or via script. Can be filtered using {@link LuaEntityMarkedForUpgradeEventFilter}.
+   * Called when an entity is marked for upgrade with the Upgrade planner or via script.
+   *
+   * Event filter: [LuaEntityMarkedForUpgradeEventFilter](LuaEntityMarkedForUpgradeEventFilter]
    */
   interface OnMarkedForUpgradeEvent extends EventData {
     readonly entity: LuaEntity
@@ -1456,7 +1484,7 @@ declare module "factorio:runtime" {
      */
     readonly group: LuaPermissionGroup
     /**
-     * The edit type: "add-permission", "remove-permission", "enable-all", "disable-all", "add-player", "remove-player", "rename".
+     * The edit type.
      */
     readonly type:
       | "add-permission"
@@ -1467,19 +1495,19 @@ declare module "factorio:runtime" {
       | "remove-player"
       | "rename"
     /**
-     * The action when the `type` is "add-permission" or "remove-permission".
+     * The action when the `type` is `"add-permission"` or `"remove-permission"`.
      */
     readonly action: defines.input_action
     /**
-     * The other player when the `type` is "add-player" or "remove-player".
+     * The other player when the `type` is `"add-player"` or `"remove-player"`.
      */
     readonly other_player_index: uint
     /**
-     * The old group name when the `type` is "rename".
+     * The old group name when the `type` is `"rename"`.
      */
     readonly old_name: string
     /**
-     * The new group name when the `type` is "rename".
+     * The new group name when the `type` is `"rename"`.
      */
     readonly new_name: string
     /**
@@ -1676,7 +1704,7 @@ declare module "factorio:runtime" {
      */
     readonly item?: LuaItemPrototype
     /**
-     * The stack used to build the tiles (may be empty if all of the items where used to build the tiles).
+     * The stack used to build the tiles (may be empty if all of the items were used to build the tiles).
      */
     readonly stack?: LuaItemStack
     /**
@@ -1757,7 +1785,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called after a player changes surfaces.
-   * @remarks In the instance a player is moved off a surface due to it being deleted this is not called.
+   *
+   * In the instance a player is moved off a surface due to it being deleted this is not called.
    */
   interface OnPlayerChangedSurfaceEvent extends EventData {
     /**
@@ -1914,7 +1943,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called after a player's {@link LuaControl#cursor_stack cursor stack} changed in some way. This is fired in the same tick that the change happens, but not instantly.
+   * Called after a player's {@link LuaControl#cursor_stack cursor stack} changed in some way.
+   *
+   * This is fired in the same tick that the change happens, but not instantly.
    */
   interface OnPlayerCursorStackChangedEvent extends EventData {
     readonly player_index: PlayerIndex
@@ -2036,7 +2067,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when the player's driving state has changed, meaning a player has either entered or left a vehicle.
-   * @remarks This event is not raised when the player is ejected from a vehicle due to it being destroyed.
+   *
+   * This event is not raised when the player is ejected from a vehicle due to it being destroyed.
    */
   interface OnPlayerDrivingChangedStateEvent extends EventData {
     readonly player_index: PlayerIndex
@@ -2148,8 +2180,7 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when a player's input method changes.
-   * @remarks See {@link LuaPlayer#input_method LuaPlayer::input_method}.
+   * Called when a player's input method changes. See {@link LuaPlayer#input_method LuaPlayer::input_method}.
    */
   interface OnPlayerInputMethodChangedEvent extends EventData {
     /**
@@ -2234,8 +2265,13 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called after the results of an entity being mined are collected just before the entity is destroyed. After this event any items in the buffer will be transferred into the player as if they came from mining the entity. Can be filtered using {@link LuaPlayerMinedEntityEventFilter}.
-   * @remarks The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.
+   * Called after the results of an entity being mined are collected just before the entity is destroyed.
+   *
+   * After this event any items in the buffer will be transferred into the player as if they came from mining the entity.
+   *
+   * The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.
+   *
+   * Event filter: [LuaPlayerMinedEntityEventFilter](LuaPlayerMinedEntityEventFilter]
    */
   interface OnPlayerMinedEntityEvent extends EventData {
     /**
@@ -2424,7 +2460,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when a player repairs an entity. Can be filtered using {@link LuaPlayerRepairedEntityEventFilter}.
+   * Called when a player repairs an entity.
+   *
+   * Event filter: [LuaPlayerRepairedEntityEventFilter](LuaPlayerRepairedEntityEventFilter]
    */
   interface OnPlayerRepairedEntityEvent extends EventData {
     readonly player_index: PlayerIndex
@@ -2750,7 +2788,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called after an entity dies. Can be filtered using {@link LuaPostEntityDiedEventFilter}.
+   * Called after an entity dies.
+   *
+   * Event filter: [LuaPostEntityDiedEventFilter](LuaPostEntityDiedEventFilter]
    */
   interface OnPostEntityDiedEvent extends EventData {
     /**
@@ -2876,7 +2916,11 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called before a ghost entity is destroyed as a result of being marked for deconstruction. Also called for item request proxies before they are destroyed as a result of being marked for deconstruction. Can be filtered using {@link LuaPreGhostDeconstructedEventFilter}.
+   * Called before a ghost entity is destroyed as a result of being marked for deconstruction.
+   *
+   * Also called for item request proxies before they are destroyed as a result of being marked for deconstruction.
+   *
+   * Event filter: [LuaPreGhostDeconstructedEventFilter](LuaPreGhostDeconstructedEventFilter]
    */
   interface OnPreGhostDeconstructedEvent extends EventData {
     /**
@@ -2894,7 +2938,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called before a ghost entity is upgraded. Can be filtered using {@link LuaPreGhostUpgradedEventFilter}.
+   * Called before a ghost entity is upgraded.
+   *
+   * Event filter: [LuaPreGhostUpgradedEventFilter](LuaPreGhostUpgradedEventFilter]
    */
   interface OnPreGhostUpgradedEvent extends EventData {
     /**
@@ -3010,7 +3056,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when the player completes a mining action, but before the entity is potentially removed from the map. This is called even if the entity does not end up being removed. Can be filtered using {@link LuaPrePlayerMinedEntityEventFilter}.
+   * Called when the player completes a mining action, but before the entity is potentially removed from the map. This is called even if the entity does not end up being removed.
+   *
+   * Event filter: [LuaPrePlayerMinedEntityEventFilter](LuaPrePlayerMinedEntityEventFilter]
    */
   interface OnPrePlayerMinedItemEvent extends EventData {
     /**
@@ -3231,7 +3279,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when a construction robot builds an entity. Can be filtered using {@link LuaRobotBuiltEntityEventFilter}.
+   * Called when a construction robot builds an entity.
+   *
+   * Event filter: [LuaRobotBuiltEntityEventFilter](LuaRobotBuiltEntityEventFilter]
    */
   interface OnRobotBuiltEntityEvent extends EventData {
     /**
@@ -3336,8 +3386,13 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called after the results of an entity being mined are collected just before the entity is destroyed. After this event any items in the buffer will be transferred into the robot as if they came from mining the entity. Can be filtered using {@link LuaRobotMinedEntityEventFilter}.
-   * @remarks The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.
+   * Called after the results of an entity being mined are collected just before the entity is destroyed.
+   *
+   * After this event any items in the buffer will be transferred into the robot as if they came from mining the entity.
+   *
+   * The buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.
+   *
+   * Event filter: [LuaRobotMinedEntityEventFilter](LuaRobotMinedEntityEventFilter]
    */
   interface OnRobotMinedEntityEvent extends EventData {
     /**
@@ -3387,7 +3442,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called before a robot mines an entity. Can be filtered using {@link LuaPreRobotMinedEntityEventFilter}.
+   * Called before a robot mines an entity.
+   *
+   * Event filter: [LuaPreRobotMinedEntityEventFilter](LuaPreRobotMinedEntityEventFilter]
    */
   interface OnRobotPreMinedEvent extends EventData {
     /**
@@ -3457,10 +3514,7 @@ declare module "factorio:runtime" {
      * The prototype name of the setting that was changed.
      */
     readonly setting: string
-    /**
-     * Either "runtime-per-user" or "runtime-global".
-     */
-    readonly setting_type: "runtime-per-user" | "runtime-global"
+    readonly setting_type: "runtime-global" | "runtime-per-user"
     /**
      * Identifier of the event
      */
@@ -3555,7 +3609,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * Called when an entity of type `radar` finishes scanning a sector. Can be filtered for the radar using {@link LuaSectorScannedEventFilter}.
+   * Called when an entity of type `radar` finishes scanning a sector.
+   *
+   * Event filter: [LuaSectorScannedEventFilter](LuaSectorScannedEventFilter]
    */
   interface OnSectorScannedEvent extends EventData {
     /**
@@ -3666,7 +3722,8 @@ declare module "factorio:runtime" {
   }
   /**
    * Called when a surface is created.
-   * @remarks This is not called when the default surface is created as it will always exist.
+   *
+   * This is not called when the default surface is created as it will always exist.
    */
   interface OnSurfaceCreatedEvent extends EventData {
     readonly surface_index: SurfaceIndex
@@ -3912,7 +3969,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * A static event mods can use to tell other mods they built something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_built LuaBootstrap::raise_script_built}, or when `raise_built` is passed to {@link LuaSurface#create_entity LuaSurface::create_entity}. Can be filtered using {@link LuaScriptRaisedBuiltEventFilter}.
+   * A static event mods can use to tell other mods they built something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_built LuaBootstrap::raise_script_built}, or when `raise_built` is passed to {@link LuaSurface#create_entity LuaSurface::create_entity}.
+   *
+   * Event filter: [LuaScriptRaisedBuiltEventFilter](LuaScriptRaisedBuiltEventFilter]
    */
   interface ScriptRaisedBuiltEvent extends EventData {
     /**
@@ -3929,7 +3988,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * A static event mods can use to tell other mods they destroyed something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_destroy LuaBootstrap::raise_script_destroy}, or when `raise_destroy` is passed to {@link LuaEntity#destroy LuaEntity::destroy}. Can be filtered using {@link LuaScriptRaisedDestroyEventFilter}.
+   * A static event mods can use to tell other mods they destroyed something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_destroy LuaBootstrap::raise_script_destroy}, or when `raise_destroy` is passed to {@link LuaEntity#destroy LuaEntity::destroy}.
+   *
+   * Event filter: [LuaScriptRaisedDestroyEventFilter](LuaScriptRaisedDestroyEventFilter]
    */
   interface ScriptRaisedDestroyEvent extends EventData {
     /**
@@ -3946,7 +4007,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * A static event mods can use to tell other mods they revived something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_revive LuaBootstrap::raise_script_revive}, or when `raise_revive` is passed to {@link LuaEntity#revive LuaEntity::revive}. Can be filtered using {@link LuaScriptRaisedReviveEventFilter}.
+   * A static event mods can use to tell other mods they revived something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_revive LuaBootstrap::raise_script_revive}, or when `raise_revive` is passed to {@link LuaEntity#revive LuaEntity::revive}.
+   *
+   * Event filter: [LuaScriptRaisedReviveEventFilter](LuaScriptRaisedReviveEventFilter]
    */
   interface ScriptRaisedReviveEvent extends EventData {
     /**
@@ -3988,7 +4051,9 @@ declare module "factorio:runtime" {
     readonly tick: uint
   }
   /**
-   * A static event mods can use to tell other mods they teleported something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_teleported LuaBootstrap::raise_script_teleported}, or when `raise_teleported` is passed to {@link LuaControl#teleport LuaControl::teleport}. Can be filtered using {@link LuaScriptRaisedTeleportedEventFilter}.
+   * A static event mods can use to tell other mods they teleported something by script. This event is only raised if a mod does so with {@link LuaBootstrap#raise_event LuaBootstrap::raise_event} or {@link LuaBootstrap#raise_script_teleported LuaBootstrap::raise_script_teleported}, or when `raise_teleported` is passed to {@link LuaControl#teleport LuaControl::teleport}.
+   *
+   * Event filter: [LuaScriptRaisedTeleportedEventFilter](LuaScriptRaisedTeleportedEventFilter]
    */
   interface ScriptRaisedTeleportedEvent extends EventData {
     /**

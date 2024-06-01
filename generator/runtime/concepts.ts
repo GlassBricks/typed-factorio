@@ -3,12 +3,7 @@ import ts from "typescript"
 import { addJsDoc, createSeeTag } from "../documentation.js"
 import { Concept, TableType, TupleType } from "../FactorioRuntimeApiJson.js"
 import { Modifiers } from "../genUtil.js"
-import {
-  finalizeConceptUsageAnalysis,
-  recordConceptDependencies,
-  RWUsage,
-  setReadWriteType,
-} from "../read-write-types.js"
+import { analyzeConcept, finalizeConceptUsageAnalysis, RWUsage, setReadWriteType } from "../read-write-types.js"
 import { mapConceptType, mapRuntimeType, typeToDeclaration } from "../types.js"
 import { byOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
@@ -27,17 +22,18 @@ export function preprocessConcepts(context: RuntimeGenerationContext): void {
   for (const concept of concepts) {
     context.references.set(concept.name, concept.name)
     const existing = context.manualDefs.getDeclaration(concept.name)
-    if (!existing?.annotations.omit) recordConceptDependencies(context, concept)
+    if (!existing?.annotations.omit) analyzeConcept(context, concept)
   }
   finalizeConceptUsageAnalysis(context)
 
   for (const concept of concepts) {
+    const existing = context.manualDefs.getDeclaration(concept.name)
+    if (existing?.annotations.omit) continue
     const usage = context.conceptUsageAnalysis.conceptUsages.get(concept)
     if (usage === RWUsage.None) {
       context.warning(`Unknown concept usage for ${concept.name}`)
     }
 
-    const existing = context.manualDefs.getDeclaration(concept.name)
     if (existing?.annotations.replace) continue
     const tableOrArray = tryGetTableOrArrayConcept(context, concept)
     if (tableOrArray) {
@@ -115,13 +111,12 @@ function createVariantParameterConcept(
 function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
   const existing = context.manualDefs.getDeclaration(concept.name)
 
-  if (existing?.annotations) {
-    if (existing.annotations.replace) {
-      const node = copyExistingDeclaration(existing.node)
-      addJsDoc(context, node, concept, concept.name)
-      context.currentFile.add(node)
-      return
-    }
+  if (existing?.annotations.omit) return
+  if (existing?.annotations.replace) {
+    const node = copyExistingDeclaration(existing.node)
+    addJsDoc(context, node, concept, concept.name)
+    context.currentFile.add(node)
+    return
   }
 
   const conceptUsage = context.conceptUsageAnalysis.conceptUsages.get(concept)!
@@ -150,33 +145,39 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     conceptUsage,
   )
   if (!conceptType) {
-    context.warning("No type for concept", concept.name)
+    assert(typeof concept.type === "object" && concept.type.complex_type === "builtin")
     return
   }
-  const { mainType, description, altWriteType } = conceptType
+  if ("builtinType" in conceptType) {
+    assert(typeof concept.type === "object" && concept.type.complex_type === "builtin")
+    const node = copyExistingDeclaration(conceptType.builtinType)
+    addJsDoc(context, node, concept, concept.name)
+    context.currentFile.add(node)
+  } else {
+    const { mainType, description, altWriteType } = conceptType
+    const mainResult = typeToDeclaration(mainType, concept.name)
 
-  const mainResult = typeToDeclaration(mainType, concept.name)
+    const writeName = `${concept.name}Write`
+    let tags: ts.JSDocTag[] | undefined
+    if (altWriteType) {
+      tags = [createSeeTag(writeName)]
+    }
+    addJsDoc(context, mainResult, concept, concept.name, { tags, post: description })
+    context.currentFile.add(mainResult)
 
-  const writeName = `${concept.name}Write`
-  let tags: ts.JSDocTag[] | undefined
-  if (altWriteType) {
-    tags = [createSeeTag(writeName)]
-  }
-  addJsDoc(context, mainResult, concept, concept.name, { tags, post: description })
-  context.currentFile.add(mainResult)
+    if (altWriteType) {
+      const writeResult = typeToDeclaration(altWriteType, writeName)
+      addJsDoc(
+        context,
+        writeResult,
+        {
+          description: getWriteDescription(concept),
+        },
+        concept.name,
+      )
 
-  if (altWriteType) {
-    const writeResult = typeToDeclaration(altWriteType, writeName)
-    addJsDoc(
-      context,
-      writeResult,
-      {
-        description: getWriteDescription(concept),
-      },
-      concept.name,
-    )
-
-    context.currentFile.add(writeResult)
+      context.currentFile.add(writeResult)
+    }
   }
 }
 

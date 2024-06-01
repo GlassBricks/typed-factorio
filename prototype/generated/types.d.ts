@@ -3068,7 +3068,7 @@ declare module "factorio:prototype" {
   export interface DistanceFromNearestPointArguments {
     x: NoiseNumber
     y: NoiseNumber
-    points: NoiseArrayConstruction
+    points: NoiseArray
     /**
      * **Default:** `max double`
      */
@@ -3136,7 +3136,7 @@ declare module "factorio:prototype" {
     /**
      * **Default:** `0`
      *
-     * Precision is ignored beyond two decimals - `0.567` results in `0.56` and means 56% etc.
+     * Precision is ignored beyond two decimals - `0.567` results in `0.56` and means 56% etc. Values can range from `-327.68` to `327.67`. Numbers outside of this range will wrap around.
      * @example
      * bonus = 0.07 -- 7% bonus
      */
@@ -4012,7 +4012,7 @@ declare module "factorio:prototype" {
   export interface FluidEnergySource extends BaseEnergySource {
     readonly type: "fluid"
     /**
-     * All standard fluid box configurations are acceptable, but the type must be `"input"` or `"input-output"` to function correctly. `scale_fluid_usage`, `fluid_usage_per_tick`, or a filter on the fluidbox must be set to be able to calculate the fluid usage of the energy source.
+     * All standard fluid box configurations are acceptable, but the type must be `"input"` or `"input-output"` to function correctly. `scale_fluid_usage = true`, `fluid_usage_per_tick`, or a filter on the fluidbox must be set to be able to calculate the fluid usage of the energy source.
      */
     fluid_box: FluidBox
     smoke?: readonly SmokeSource[]
@@ -4052,7 +4052,7 @@ declare module "factorio:prototype" {
     /**
      * **Default:** `0`
      *
-     * `0` means unlimited maximum temperature. If specified while `scale_fluid_usage` is `false` and `fluid_usage_per_tick` is not specified, the game will use this value to calculate `fluid_usage_per_tick`.
+     * `0` means unlimited maximum temperature. If this is non-zero while `scale_fluid_usage` is `false` and `fluid_usage_per_tick` is not specified, the game will use this value to calculate `fluid_usage_per_tick`. To do that, the filter on the `fluid_box` must be set.
      *
      * Only loaded if `burns_fluid` is `false`.
      */
@@ -4122,17 +4122,17 @@ declare module "factorio:prototype" {
      */
     amount?: double
     /**
-     * Only loaded if `amount` is not defined.
+     * Only loaded, and mandatory if `amount` is not defined.
      *
      * Can not be `< 0`.
      */
-    amount_min: MaterialAmountType
+    amount_min?: MaterialAmountType
     /**
-     * Only loaded if `amount` is not defined.
+     * Only loaded, and mandatory if `amount` is not defined.
      *
      * If set to a number that is less than `amount_min`, the game will use `amount_min` instead.
      */
-    amount_max: MaterialAmountType
+    amount_max?: MaterialAmountType
     /**
      * **Default:** `1`
      *
@@ -4517,6 +4517,12 @@ declare module "factorio:prototype" {
      * May contain up to 32 connections.
      */
     connections?: readonly HeatConnection[]
+    /**
+     * **Default:** `0`
+     *
+     * Heat energy sources do not support producing pollution.
+     */
+    emissions_per_minute?: double
   }
   /**
    * ## Union members
@@ -4760,15 +4766,15 @@ declare module "factorio:prototype" {
         name: ItemID
         amount?: uint16
         /**
-         * Only loaded if `amount` is not defined.
+         * Only loaded, and mandatory if `amount` is not defined.
          */
-        amount_min: uint16
+        amount_min?: uint16
         /**
-         * Only loaded if `amount` is not defined.
+         * Only loaded, and mandatory if `amount` is not defined.
          *
          * If set to a number that is less than `amount_min`, the game will use `amount_min` instead.
          */
-        amount_max: uint16
+        amount_max?: uint16
         /**
          * **Default:** `1`
          *
@@ -6098,6 +6104,15 @@ declare module "factorio:prototype" {
     action: Trigger
   }
   /**
+   * An array-like noise expression, for example constructed with {@link NoiseArrayConstruction} or a variable such as `noise.var("starting_positions")`.
+   *
+   * ## Union members
+   * - {@link NoiseVariable}
+   * - {@link NoiseArrayConstruction}
+   * - {@link NoiseFunctionOffsetPoints}
+   */
+  export type NoiseArray = NoiseVariable | NoiseArrayConstruction | NoiseFunctionOffsetPoints
+  /**
    * `value_expressions` property should be a list of numeric expressions, each of which will be evaluated to come up with the corresponding numeric value in the resulting array.
    *
    * Used to construct map positions (`{x, y}`) and map position lists (`{{x0,y0}, {y1,y1}, {@link NoiseFunctionOffsetPoints ...]}`) for [offset-points} and {@link NoiseFunctionDistanceFromNearestPoint distance-from-nearest-point} functions.
@@ -6548,7 +6563,7 @@ declare module "factorio:prototype" {
   export interface NoiseFunctionOffsetPoints {
     readonly type: "function-application"
     function_name: "offset-points"
-    arguments: readonly [NoiseArrayConstruction, NoiseArrayConstruction]
+    arguments: readonly [NoiseArray, NoiseArray]
   }
   /**
    * Subtracts a random value in the `[0, amplitude)` range from `source` if `source` is larger than `0`.
@@ -7683,11 +7698,11 @@ declare module "factorio:prototype" {
      * @example
      * results = {{type = "fluid", name = "steam", amount = 1, temperature = 165}}
      */
-    results: readonly ProductPrototype[]
+    results?: readonly ProductPrototype[]
     /**
      * The item created by this recipe. Must be the name of an {@link ItemPrototype item}, such as `"iron-gear-wheel"`.
      *
-     * Only loaded if `results` is not defined.
+     * Only loaded, and mandatory if `results` is not defined.
      */
     result?: ItemID
     /**
@@ -7970,7 +7985,7 @@ declare module "factorio:prototype" {
      */
     layers?: readonly RotatedAnimation[]
     /**
-     * Only loaded if `layers` is not defined.
+     * Only loaded, and mandatory if `layers` is not defined.
      *
      * The sequential animation instance is loaded equal to the entities direction within the `direction_count` setting.
      *
@@ -7984,7 +7999,7 @@ declare module "factorio:prototype" {
      *
      * - `8`: North (1), Northeast (2), East (3), Southeast (4), South (5), Southwest (6), West (7), Northwest (8)
      */
-    direction_count: uint32
+    direction_count?: uint32
     /**
      * Only loaded if `layers` is not defined.
      *
@@ -8139,9 +8154,11 @@ declare module "factorio:prototype" {
      */
     layers?: readonly RotatedSprite[]
     /**
+     * Only loaded, and mandatory if `layers` is not defined.
+     *
      * Count of direction (frames) specified.
      */
-    direction_count: uint16
+    direction_count?: uint16
     /**
      * Only loaded if `layers` is not defined.
      *
@@ -8490,7 +8507,7 @@ declare module "factorio:prototype" {
    * game.smart_belt_building [W]
    * player.drag_start_position [W]
    * player.raw_build_from_cursor{ghost_mode=bool,created_by_moving=bool,position=position}
-   * surface.create_entities_from_blueprint_string{string=string,position=position,force=force,direction=defines.direction,flip_horizonal=bool,flip_vertical=bool,by_player=player}
+   * surface.create_entities_from_blueprint_string{string=string,position=position,force=force,direction=defines.direction,flip_horizontal=bool,flip_vertical=bool,by_player=player}
    * ```
    */
   export interface SimulationDefinition {
@@ -8948,7 +8965,7 @@ declare module "factorio:prototype" {
     spot_favorability_expression: NoiseLiteralExpression
     basement_value: ConstantNoiseNumber
     maximum_spot_basement_radius: ConstantNoiseNumber
-    comment: NoiseLiteralString
+    comment?: NoiseLiteralString
   }
   /**
    * Specifies one picture that can be used in the game.
@@ -9213,8 +9230,8 @@ declare module "factorio:prototype" {
    * - `"gui"`: This flag will internally set these flags: `"no-crop"`, `"no-scale"`, `"mipmap"`, `"linear-minification"`, `"linear-magnification"`, `"linear-mip-level"`, `"not-compressed"`, `"group=gui"`
    * - `"gui-icon"`: This flag will internally set these flags: `"no-crop"`, `"no-scale"`, `"mipmap"`, `"linear-minification"`, `"linear-magnification"`, `"not-compressed"`, `"group=icon"`
    * - `"light"`: This flag will internally set these flags: `"mipmap"`, `"linear-mip-level"`, `"linear-minification"`, `"linear-magnification"`, `"group=none"`
-   * - `"terrain"`: This flag will internally set these flags: `"mipmap"`, `"linear-mip-level"`, `"linear-minifaction"`, `"no-crop"`, `"group=terrain"`
-   * - `"terrain-effect-map"`: This flag will internally set these flags: `"mipmap"`, `"linear-mip-level"`, `"linear-minifaction"`, `"no-crop"`, `"terrain-effect-map"` (internal group flag)
+   * - `"terrain"`: This flag will internally set these flags: `"mipmap"`, `"linear-mip-level"`, `"linear-minification"`, `"no-crop"`, `"group=terrain"`
+   * - `"terrain-effect-map"`: This flag will internally set these flags: `"mipmap"`, `"linear-mip-level"`, `"linear-minification"`, `"no-crop"`, `"terrain-effect-map"` (internal group flag)
    * - `"shadow"`
    * - `"smoke"`: This flag will internally set these flags: `"mipmap"`, `"linear-minification"`, `"linear-magnification"`, `"group=smoke"`
    * - `"decal"`: This flag will internally set these flags: `"group=decal"`
@@ -10168,29 +10185,29 @@ declare module "factorio:prototype" {
    */
   export interface TileTransitions {
     /**
-     * This or side_mask needs to be specified if `empty_transitions` is not true.
+     * This or `side_mask` needs to be specified if `empty_transitions` is not true.
      */
-    side: TileTransitionSprite
+    side?: TileTransitionSprite
     /**
-     * This or side needs to be specified if `empty_transitions` is not true.
+     * This or `side` needs to be specified if `empty_transitions` is not true.
      */
-    side_mask: TileTransitionSprite
+    side_mask?: TileTransitionSprite
     /**
-     * This or inner_corner_mask needs to be specified if `empty_transitions` is not true.
+     * This or `inner_corner_mask` needs to be specified if `empty_transitions` is not true.
      */
-    inner_corner: TileTransitionSprite
+    inner_corner?: TileTransitionSprite
     /**
-     * This or inner_corner needs to be specified if `empty_transitions` is not true.
+     * This or `inner_corner` needs to be specified if `empty_transitions` is not true.
      */
-    inner_corner_mask: TileTransitionSprite
+    inner_corner_mask?: TileTransitionSprite
     /**
-     * This or outer_corner_mask needs to be specified if `empty_transitions` is not true.
+     * This or `outer_corner_mask` needs to be specified if `empty_transitions` is not true.
      */
-    outer_corner: TileTransitionSprite
+    outer_corner?: TileTransitionSprite
     /**
-     * This or outer_corner needs to be specified if `empty_transitions` is not true.
+     * This or `outer_corner` needs to be specified if `empty_transitions` is not true.
      */
-    outer_corner_mask: TileTransitionSprite
+    outer_corner_mask?: TileTransitionSprite
     /**
      * **Default:** `false`
      */
