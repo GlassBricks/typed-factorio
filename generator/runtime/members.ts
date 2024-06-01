@@ -33,6 +33,8 @@ export function mapAttribute(
   parent: string,
   existingContainer: InterfaceDef | TypeAliasDef | undefined,
 ): ts.TypeElement | ts.TypeElement[] {
+  context.warnIfHasVisibility(attribute)
+
   let member: ts.TypeElement | ts.TypeElement[]
   const existing = existingContainer?.members[attribute.name]
   const type = mapMemberType(
@@ -208,6 +210,8 @@ export function mapMethod(
   parent: string,
   existingContainer: InterfaceDef | TypeAliasDef | undefined,
 ): ts.MethodSignature[] {
+  context.warnIfHasVisibility(method)
+
   const existingMethods = existingContainer?.members[method.name]
   const firstExistingMethod = existingMethods?.[0]
   const thisPath = parent ? parent + "." + method.name : method.name

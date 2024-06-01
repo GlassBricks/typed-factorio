@@ -40,11 +40,6 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
 
   private allFiles: OutputFile[] = []
 
-  warning(...args: unknown[]): void {
-    console.log(chalk.yellow(...args))
-    this.hasWarnings = true
-  }
-
   addFile(fileName: string, moduleType: ModuleType, fn: () => void): void {
     if (this._currentFile) throw new Error("Nested addFile")
     const builder = new OutputFileBuilderImpl(this.manualDefs, fileName, moduleType)
@@ -75,6 +70,17 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
       if (this.apiDocs[k as keyof AnyApiJson] !== v) {
         throw new Error(`Expected ${k}=${v}, got ${this.apiDocs[k as keyof AnyApiJson]}`)
       }
+    }
+  }
+
+  warning(...args: unknown[]): void {
+    console.log(chalk.yellow(...args))
+    this.hasWarnings = true
+  }
+
+  warnIfHasVisibility(obj: { visibility?: string[] }) {
+    if (obj.visibility && obj.visibility.length > 1) {
+      this.warning("Visibility not implemented yet")
     }
   }
 

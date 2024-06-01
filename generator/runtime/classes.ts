@@ -59,6 +59,8 @@ function generateClass(
   clazz: Class,
   existing: InterfaceDef | TypeAliasDef | undefined,
 ) {
+  context.warnIfHasVisibility(clazz)
+
   const superTypes = getSupertypes()
   const arrayType = getArrayType()
 
