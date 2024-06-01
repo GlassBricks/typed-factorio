@@ -68,6 +68,7 @@ export interface Define extends BasicMember {
 
 export interface WithVariantParameterGroups {
   parameters: Parameter[]
+  /** For methods: only applies if takes_table is true */
   variant_parameter_groups?: ParameterGroup[]
   variant_parameter_description: string
 }
@@ -157,9 +158,7 @@ export interface Method extends BasicMember, WithVariantParameterGroups {
   visibility?: Expansions[]
   raises?: EventRaised[]
   subclasses?: string[]
-  variadic_description?: string
 
-  /** Only applies if takes_table is true */
   variadic_parameter?: VariadicParameter
   format: MethodFormat
 
@@ -171,7 +170,7 @@ export interface VariadicParameter {
 }
 export interface MethodFormat {
   takes_table: boolean
-  table_option?: boolean
+  table_optional?: boolean
 }
 
 export interface Attribute extends BasicMember {
