@@ -13,9 +13,8 @@ export function preprocessEvents(context: RuntimeGenerationContext): void {
     for (const parameter of event.data) {
       analyzeType(context, parameter.type, RWUsage.Read)
     }
-    const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
-    if (eventFilterName) {
-      analyzeType(context, eventFilterName, RWUsage.ReadWrite)
+    if (event.filter) {
+      analyzeType(context, event.filter, RWUsage.ReadWrite)
     }
   }
 }
@@ -38,7 +37,12 @@ export function generateEvents(context: RuntimeGenerationContext): void {
           return mapParameterToProperty(context, p, name, RWUsage.Read, existing).mainProperty
         }),
       )
-      addJsDoc(context, declaration, event, event.name, undefined)
+      const additions = event.filter
+        ? {
+            post: `Event filter: [${event.filter}](${event.filter}]`,
+          }
+        : undefined
+      addJsDoc(context, declaration, event, event.name, additions)
       context.currentFile.add(declaration)
     }
   })
