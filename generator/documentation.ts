@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { EventRaised, WithNotes } from "./FactorioRuntimeApiJson.js"
+import { BasicObject, EventRaised } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { byOrder } from "./util.js"
@@ -7,7 +7,7 @@ import { LiteralType, PrototypeWithExamples } from "./FactorioPrototypeApiJson.j
 import { GenerationContext } from "./GenerationContext.js"
 import assert from "assert"
 
-export interface Documentable extends WithNotes, PrototypeWithExamples {
+export interface Documentable extends BasicObject, PrototypeWithExamples {
   description: string
   subclasses?: string[]
   raises?: EventRaised[]
@@ -216,10 +216,6 @@ export function addJsDoc<T extends ts.Node>(
   if (element.examples) {
     tags.push(...element.examples.map((e) => createTag("example", processExample(context, e))))
   }
-  if (element.notes) {
-    tags.push(createTag("remarks", processDescription(context, element.notes.join("<br>"))))
-  }
-
   if (!comment && tags.length === 0 && additions.allowEmpty !== true) {
     return node
   }
