@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { EventRaised, WithNotes } from "./FactorioRuntimeApiJson.js"
+import { EventRaised } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { byOrder } from "./util.js"
@@ -7,8 +7,9 @@ import { LiteralType, PrototypeWithExamples } from "./FactorioPrototypeApiJson.j
 import { GenerationContext } from "./GenerationContext.js"
 import assert from "assert"
 
-export interface Documentable extends WithNotes, PrototypeWithExamples {
+export interface Documentable extends PrototypeWithExamples {
   description: string
+  name?: string
   subclasses?: string[]
   raises?: EventRaised[]
   instance_limit?: number
@@ -173,7 +174,14 @@ function getImages(context: GenerationContext, element: Documentable): string | 
 
 function processExample(context: GenerationContext, example: string): string {
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
-  const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
+
+  const codeBlock1 = codeBlock.replaceAll(/\$ref\(\$runtime, (.*?)\)/g, (_, name) => {
+    if (context.apiDocs.application_version !== "1.1.108") {
+      context.warning("Remove $ref($runtime) fix")
+    }
+    return name
+  })
+  const result = processDescription(context, header + "\n" + codeBlock1.trim(), false)!
   return result.replaceAll("\n", "\n * ")
 }
 
@@ -216,10 +224,6 @@ export function addJsDoc<T extends ts.Node>(
   if (element.examples) {
     tags.push(...element.examples.map((e) => createTag("example", processExample(context, e))))
   }
-  if (element.notes) {
-    tags.push(createTag("remarks", processDescription(context, element.notes.join("<br>"))))
-  }
-
   if (!comment && tags.length === 0 && additions.allowEmpty !== true) {
     return node
   }

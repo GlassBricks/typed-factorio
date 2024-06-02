@@ -19,8 +19,8 @@ export function analyzeMethod(context: RuntimeGenerationContext, method: Method)
       analyzeType(context, parameter.type, RWUsage.Write)
     }
   }
-  if (method.variadic_type) {
-    analyzeType(context, method.variadic_type, RWUsage.Write)
+  if (method.variadic_parameter?.type) {
+    analyzeType(context, method.variadic_parameter.type, RWUsage.Write)
   }
   for (const returnValue of method.return_values) {
     analyzeType(context, returnValue.type, RWUsage.Read)
@@ -33,6 +33,8 @@ export function mapAttribute(
   parent: string,
   existingContainer: InterfaceDef | TypeAliasDef | undefined,
 ): ts.TypeElement | ts.TypeElement[] {
+  context.warnIfHasVisibility(attribute)
+
   let member: ts.TypeElement | ts.TypeElement[]
   const existing = existingContainer?.members[attribute.name]
   const type = mapMemberType(
@@ -208,14 +210,16 @@ export function mapMethod(
   parent: string,
   existingContainer: InterfaceDef | TypeAliasDef | undefined,
 ): ts.MethodSignature[] {
+  context.warnIfHasVisibility(method)
+
   const existingMethods = existingContainer?.members[method.name]
   const firstExistingMethod = existingMethods?.[0]
   const thisPath = parent ? parent + "." + method.name : method.name
 
   let parameters: ts.ParameterDeclaration[]
   let additionalDescription: string | undefined
-  if (method.takes_table && method.variant_parameter_groups !== undefined) {
-    assert(!method.variadic_type)
+  if (method.format.takes_table && method.variant_parameter_groups !== undefined) {
+    assert(!method.variadic_parameter)
     const name =
       (firstExistingMethod && getAnnotations(firstExistingMethod as unknown as ts.JSDocContainer).variantsName?.[0]) ??
       removeLuaPrefix(parent) + toPascalCase(method.name)
@@ -227,7 +231,7 @@ export function mapMethod(
         undefined,
         undefined,
         "params",
-        method.table_is_optional ? Tokens.question : undefined,
+        method.format.table_optional ? Tokens.question : undefined,
         type,
       ),
     ]
@@ -287,7 +291,7 @@ export function mapFunction(context: RuntimeGenerationContext, method: Method): 
 
 function getParameters(context: RuntimeGenerationContext, method: Method, thisPath: string): ts.ParameterDeclaration[] {
   let parameters: ts.ParameterDeclaration[]
-  if (method.takes_table) {
+  if (method.format.takes_table) {
     const type = ts.factory.createTypeLiteralNode(
       method.parameters
         .sort(byOrder)
@@ -298,19 +302,21 @@ function getParameters(context: RuntimeGenerationContext, method: Method, thisPa
         undefined,
         undefined,
         "params",
-        method.table_is_optional ? Tokens.question : undefined,
+        method.format.table_optional ? Tokens.question : undefined,
         type,
       ),
     ]
   } else {
     parameters = method.parameters.sort(byOrder).map((m) => mapParameterToParameter(context, m, thisPath))
   }
-  if (method.variadic_type) {
+  if (method.variadic_parameter) {
+    assert(!method.format.takes_table)
+    assert(method.variadic_parameter.type)
     const type = mapRuntimeType(
       context,
       {
         complex_type: "array",
-        value: method.variadic_type,
+        value: method.variadic_parameter.type,
       },
       thisPath,
       RWUsage.Write,
@@ -354,10 +360,10 @@ function addMethodJSDoc(
   additionalDescription?: string,
 ): void {
   const tags = []
-  if (!method.takes_table) {
+  if (!method.format.takes_table) {
     tags.push(
       ...(method.parameters as { name: string; description?: string }[])
-        .concat([{ name: "args", description: method.variadic_description }])
+        .concat([{ name: "args", description: method.variadic_parameter?.description }])
         .filter((p) => p.description)
         .map((p) =>
           ts.factory.createJSDocParameterTag(

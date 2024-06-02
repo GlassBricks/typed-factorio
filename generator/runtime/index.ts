@@ -1,8 +1,17 @@
-import { Class, Concept, Define, Event, FactorioRuntimeApiJson, Type } from "../FactorioRuntimeApiJson.js"
+import {
+  Class,
+  Concept,
+  Define,
+  Event,
+  FactorioRuntimeApiJson,
+  TableType,
+  TupleType,
+  Type,
+} from "../FactorioRuntimeApiJson.js"
 import { RWUsage } from "../read-write-types.js"
 import ts from "typescript"
 import { GenerationContext } from "../GenerationContext.js"
-import { generateBuiltins, generateGlobalFunctions, preprocessBuiltins, preprocessGlobalFunctions } from "./others.js"
+import { generateGlobalFunctions, preprocessGlobalFunctions } from "./others.js"
 import { generateDefines, preprocessDefines } from "./defines.js"
 import { generateEvents, preprocessEvents } from "./events.js"
 import { generateClasses, preprocessClasses } from "./classes.js"
@@ -13,7 +22,6 @@ import { generateGlobalObjects, preprocessGlobalObjects } from "./global-objects
 export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeApiJson> {
   stageName = "runtime"
 
-  builtins = new Set(this.apiDocs.builtin_types.map((e) => e.name))
   defines = new Map<string, Define>()
   events = new Map<string, Event>(this.apiDocs.events.map((e) => [e.name, e]))
   classes = new Map<string, Class>(this.apiDocs.classes.map((e) => [e.name, e]))
@@ -31,9 +39,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
 
   getOnlineDocUrl(reference: string): string {
     let relative_link: string
-    if (this.builtins.has(reference)) {
-      relative_link = "builtin-types.html#" + reference
-    } else if (this.classes.has(reference)) {
+    if (this.classes.has(reference)) {
       relative_link = `classes/${reference}.html`
     } else if (this.events.has(reference)) {
       relative_link = "events.html#" + reference
@@ -65,7 +71,6 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   }
 
   preprocessAll(): void {
-    preprocessBuiltins(this)
     preprocessGlobalObjects(this)
     preprocessGlobalFunctions(this)
     preprocessDefines(this)
@@ -75,7 +80,6 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     preprocessIndexTypes(this)
   }
   generateAll(): void {
-    generateBuiltins(this)
     generateGlobalObjects(this)
     generateGlobalFunctions(this)
     generateDefines(this)
@@ -93,4 +97,6 @@ class ConceptUsageAnalysis {
   conceptReferencedBy = new Map<Concept, Set<Concept>>(this.concepts.map((e) => [e, new Set()]))
   // empty object = has separate read/write types, but not yet known form (may use default)
   conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
+
+  tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TupleType }>()
 }

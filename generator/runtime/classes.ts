@@ -59,6 +59,8 @@ function generateClass(
   clazz: Class,
   existing: InterfaceDef | TypeAliasDef | undefined,
 ) {
+  context.warnIfHasVisibility(clazz)
+
   const superTypes = getSupertypes()
   const arrayType = getArrayType()
 
@@ -74,11 +76,9 @@ function generateClass(
 
   function getSupertypes() {
     const supertypes: ts.ExpressionWithTypeArguments[] = []
-    if (clazz.base_classes) {
+    if (clazz.parent) {
       supertypes.push(
-        ...clazz.base_classes.map((b) =>
-          ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(b), undefined),
-        ),
+        ts.factory.createExpressionWithTypeArguments(ts.factory.createIdentifier(clazz.parent), undefined),
       )
     }
     if (existing) {

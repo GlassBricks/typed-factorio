@@ -11,7 +11,6 @@ and factorio:runtime modules.
 /// <reference path="prototype/generated/prototypes.d.ts" />
 /// <reference path="prototype/generated/types.d.ts" />
 
-/// <reference path="runtime/generated/builtin-types.d.ts" />
 /// <reference path="runtime/generated/events.d.ts" />
 /// <reference path="runtime/generated/classes.d.ts" />
 /// <reference path="runtime/generated/concepts.d.ts" />

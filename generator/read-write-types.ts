@@ -33,6 +33,7 @@ export function analyzeType(context: RuntimeGenerationContext, type: Type, usage
     case "LuaLazyLoadedValue":
       return analyzeType(context, type.value, usage)
     case "literal":
+    case "builtin":
       return
     case "union":
       return type.options.forEach((t) => analyzeType(context, t, usage))
@@ -40,14 +41,15 @@ export function analyzeType(context: RuntimeGenerationContext, type: Type, usage
       return type.parameters.forEach((p) => analyzeType(context, p, RWUsage.Read))
     case "LuaStruct":
       return type.attributes.forEach((a) => analyzeType(context, a.type, usage))
-    case "table":
-    case "tuple": {
+    case "table": {
       type.parameters.forEach((p) => analyzeType(context, p.type, usage))
       type.variant_parameter_groups?.forEach((group) => {
         group.parameters.forEach((p) => analyzeType(context, p.type, usage))
       })
       return
     }
+    case "tuple":
+      return type.values.forEach((v) => analyzeType(context, v, usage))
     default:
       assertNever(type)
   }
@@ -75,9 +77,8 @@ export function finalizeConceptUsageAnalysis(context: RuntimeGenerationContext):
   }
 }
 
-export function recordConceptDependencies(context: RuntimeGenerationContext, concept: Concept): void {
+export function analyzeConcept(context: RuntimeGenerationContext, concept: Concept): void {
   analyzeTypeWorker(concept.type)
-
   function analyzeTypeWorker(type: Type): void {
     if (typeof type === "string") {
       const referencedConcept = context.concepts.get(type)
@@ -93,24 +94,33 @@ export function recordConceptDependencies(context: RuntimeGenerationContext, con
       case "LuaLazyLoadedValue":
         return analyzeTypeWorker(type.value)
       case "literal":
-        return
+      case "builtin":
+        return preprocessBuiltin()
       case "union":
         return type.options.forEach(analyzeTypeWorker)
       case "function":
         return // function parameters are always Read, so don't need to record dependencies
       case "LuaStruct":
         return type.attributes.forEach((a) => analyzeTypeWorker(a.type))
-      case "table":
-      case "tuple": {
+      case "table": {
         type.parameters.forEach((p) => analyzeTypeWorker(p.type))
         type.variant_parameter_groups?.forEach((group) => {
           group.parameters.forEach((p) => analyzeTypeWorker(p.type))
         })
         return
       }
+      case "tuple":
+        return type.values.forEach(analyzeTypeWorker)
       default:
         assertNever(type)
     }
+  }
+
+  function preprocessBuiltin(): void {
+    if (concept.name === "boolean" || concept.name === "string" || concept.name === "number") return
+    const existing = context.manualDefs.getDeclaration(concept.name)
+    if (existing?.kind === "type" && existing.node.type.kind === ts.SyntaxKind.NumberKeyword)
+      context.numericTypes.add(concept.name)
   }
 }
 

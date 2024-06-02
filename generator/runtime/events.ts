@@ -8,14 +8,14 @@ import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessEvents(context: RuntimeGenerationContext): void {
+  context.apiDocs.events.sort(byOrder)
   for (const event of context.apiDocs.events) {
     context.references.set(event.name, getMappedEventName(event.name))
     for (const parameter of event.data) {
       analyzeType(context, parameter.type, RWUsage.Read)
     }
-    const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
-    if (eventFilterName) {
-      analyzeType(context, eventFilterName, RWUsage.ReadWrite)
+    if (event.filter) {
+      analyzeType(context, event.filter, RWUsage.ReadWrite)
     }
   }
 }
@@ -23,7 +23,7 @@ export function preprocessEvents(context: RuntimeGenerationContext): void {
 export function generateEvents(context: RuntimeGenerationContext): void {
   context.addFile("events", ModuleType.Runtime, () => {
     const heritageClause = createExtendsClause("EventData")
-    for (const event of context.apiDocs.events.sort(byOrder)) {
+    for (const event of context.apiDocs.events) {
       const name = getMappedEventName(event.name)
       const existing = context.manualDefs.getDeclaration(name)
       const declaration = ts.factory.createInterfaceDeclaration(
@@ -38,7 +38,12 @@ export function generateEvents(context: RuntimeGenerationContext): void {
           return mapParameterToProperty(context, p, name, RWUsage.Read, existing).mainProperty
         }),
       )
-      addJsDoc(context, declaration, event, event.name, undefined)
+      const additions = event.filter
+        ? {
+            post: `Event filter: [${event.filter}](${event.filter}]`,
+          }
+        : undefined
+      addJsDoc(context, declaration, event, event.name, additions)
       context.currentFile.add(declaration)
     }
   })

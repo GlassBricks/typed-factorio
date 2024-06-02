@@ -1,7 +1,7 @@
 {
   "application": "factorio",
-  "application_version": "1.1.107",
-  "api_version": 4,
+  "application_version": "1.1.108",
+  "api_version": 5,
   "stage": "prototype",
   "prototypes": [
     {
@@ -5636,10 +5636,7 @@
           "override": false,
           "type": "CollisionMask",
           "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": "doodad-layer"
-          }
+          "default": "`{\"doodad-layer\"}`"
         },
         {
           "name": "decal_overdraw_priority",
@@ -5852,7 +5849,7 @@
             ],
             "full_format": false
           },
-          "optional": false
+          "optional": true
         },
         {
           "name": "last_hour_only",
@@ -6856,7 +6853,7 @@
         {
           "name": "emissions_per_second",
           "order": 20,
-          "description": "Amount of emissions created (positive number) or cleaned (negative number) every second by the entity. This is passive, and it is independent concept of the emissions of machines, these are created actively depending on the power consumption. Currently used just for trees.",
+          "description": "Amount of emissions created (positive number) or cleaned (negative number) every second by the entity. This is passive and currently used just for trees and fires. This is independent of the [emissions of energy sources](prototype:BaseEnergySource::emissions_per_minute) used by machines, which are created actively depending on the power consumption.",
           "examples": [
             "```\nemissions_per_second = -0.001 -- cleaning effect of big tree\n```"
           ],
@@ -7095,7 +7092,7 @@
         {
           "name": "remove_decoratives",
           "order": 19,
-          "description": "Whether this entity should remove decoratives that collide with it when this entity is built. When set to \"automatic\", if the entity type is considered [a building](runtime:LuaEntityPrototype::is_building) (e.g. an assembling machine or a wall) it will remove decoratives.",
+          "description": "Whether this entity should remove decoratives that collide with it when this entity is built. When set to \"automatic\", if the entity type is considered [a building](runtime:LuaEntityPrototype::is_building) (e.g. an assembling machine or a wall) it will remove decoratives.\n\nUsing boolean values for this property is deprecated, however they have the same meaning as the corresponding strings.",
           "override": false,
           "type": {
             "complex_type": "union",
@@ -7111,6 +7108,14 @@
               {
                 "complex_type": "literal",
                 "value": "false"
+              },
+              {
+                "complex_type": "literal",
+                "value": true
+              },
+              {
+                "complex_type": "literal",
+                "value": false
               }
             ],
             "full_format": false
@@ -7443,7 +7448,7 @@
         {
           "name": "repair_sound",
           "order": 9,
-          "description": "",
+          "description": "Played when this entity is repaired with a [RepairToolPrototype](prototype:RepairToolPrototype).",
           "override": false,
           "type": "Sound",
           "optional": true,
@@ -7452,7 +7457,7 @@
         {
           "name": "repair_speed_modifier",
           "order": 2,
-          "description": "",
+          "description": "Multiplier of [RepairToolPrototype::speed](prototype:RepairToolPrototype::speed) for this entity prototype.",
           "override": false,
           "type": "float",
           "optional": true,
@@ -15850,7 +15855,7 @@
         {
           "name": "result",
           "order": 11,
-          "description": "The item created by this recipe. Must be the name of an [item](prototype:ItemPrototype), such as `\"iron-gear-wheel\"`.\n\nOnly loaded if neither `results`, `normal` nor `expensive` are defined.",
+          "description": "The item created by this recipe. Must be the name of an [item](prototype:ItemPrototype), such as `\"iron-gear-wheel\"`.\n\nOnly loaded, and mandatory if neither `results`, `normal` nor `expensive` are defined.",
           "override": false,
           "type": "ItemID",
           "optional": true
@@ -15870,7 +15875,7 @@
         {
           "name": "results",
           "order": 10,
-          "description": "A table containing result names and counts. Can also contain information about fluid temperature and catalyst amounts. The catalyst amounts are automatically calculated from the recipe, or can be set manually in the ProductPrototype (see [here](https://factorio.com/blog/post/fff-256)).\n\nCan be set to an empty table to create a recipe that produces nothing. Duplicate results, e.g. two entries with the same name, are allowed.\n\nMandatory if neither `normal` nor `expensive` are defined.",
+          "description": "A table containing result names and counts. Can also contain information about fluid temperature and catalyst amounts. The catalyst amounts are automatically calculated from the recipe, or can be set manually in the ProductPrototype (see [here](https://factorio.com/blog/post/fff-256)).\n\nCan be set to an empty table to create a recipe that produces nothing. Duplicate results, e.g. two entries with the same name, are allowed.\n\nOnly loaded if neither `normal` nor `expensive` are defined.",
           "examples": [
             "```\nresults = {\n  {type=\"fluid\", name=\"heavy-oil\", amount=3},\n  {type=\"fluid\", name=\"light-oil\", amount=3},\n  {type=\"fluid\", name=\"petroleum-gas\", amount=4}\n}\n```",
             "```\nresults = {\n  {type = \"item\", name = \"iron-nuggets\", amount = 9},\n  {type = \"item\", name = \"gold-nuggets\", amount = 1}\n}\n```",
@@ -15920,7 +15925,7 @@
     {
       "name": "RepairToolPrototype",
       "order": 153,
-      "description": "A [repair pack](https://wiki.factorio.com/Repair_pack).",
+      "description": "A [repair pack](https://wiki.factorio.com/Repair_pack). Using the tool decreases durability to restore entity health.",
       "parent": "ToolPrototype",
       "abstract": false,
       "typename": "repair-tool",
@@ -15937,7 +15942,7 @@
         {
           "name": "speed",
           "order": 0,
-          "description": "",
+          "description": "Entity health repaired per used [ToolPrototype::durability](prototype:ToolPrototype::durability). E.g. a repair tool with 5 durability and a repair speed of 2 will restore 10 health.\n\nThis is then multiplied by the [EntityWithHealthPrototype::repair_speed_modifier](prototype:EntityWithHealthPrototype::repair_speed_modifier) of the entity.",
           "override": false,
           "type": "float",
           "optional": false
@@ -16019,7 +16024,7 @@
         {
           "name": "cliff_removal_probability",
           "order": 19,
-          "description": "Must be positive.",
+          "description": "Must be greater than or equal to `0`.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -16243,7 +16248,7 @@
         {
           "name": "tree_removal_probability",
           "order": 18,
-          "description": "Must be positive.",
+          "description": "Must be greater than or equal to `0`.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -38245,7 +38250,7 @@
           "order": 2,
           "description": "",
           "override": false,
-          "type": "NoiseArrayConstruction",
+          "type": "NoiseArray",
           "optional": false
         },
         {
@@ -38486,7 +38491,7 @@
         {
           "name": "bonus",
           "order": 0,
-          "description": "Precision is ignored beyond two decimals - `0.567` results in `0.56` and means 56% etc.",
+          "description": "Precision is ignored beyond two decimals - `0.567` results in `0.56` and means 56% etc. Values can range from `-327.68` to `327.67`. Numbers outside of this range will wrap around.",
           "examples": [
             "```\nbonus = 0.07 -- 7% bonus\n```"
           ],
@@ -40697,7 +40702,7 @@
         {
           "name": "fluid_box",
           "order": 1,
-          "description": "All standard fluid box configurations are acceptable, but the type must be `\"input\"` or `\"input-output\"` to function correctly. `scale_fluid_usage`, `fluid_usage_per_tick`, or a filter on the fluidbox must be set to be able to calculate the fluid usage of the energy source.",
+          "description": "All standard fluid box configurations are acceptable, but the type must be `\"input\"` or `\"input-output\"` to function correctly. `scale_fluid_usage = true`, `fluid_usage_per_tick`, or a filter on the fluidbox must be set to be able to calculate the fluid usage of the energy source.",
           "override": false,
           "type": "FluidBox",
           "optional": false
@@ -40725,7 +40730,7 @@
         {
           "name": "maximum_temperature",
           "order": 9,
-          "description": "`0` means unlimited maximum temperature. If specified while `scale_fluid_usage` is `false` and `fluid_usage_per_tick` is not specified, the game will use this value to calculate `fluid_usage_per_tick`.\n\nOnly loaded if `burns_fluid` is `false`.",
+          "description": "`0` means unlimited maximum temperature. If this is non-zero while `scale_fluid_usage` is `false` and `fluid_usage_per_tick` is not specified, the game will use this value to calculate `fluid_usage_per_tick`. To do that, the filter on the `fluid_box` must be set.\n\nOnly loaded if `burns_fluid` is `false`.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -40893,18 +40898,18 @@
         {
           "name": "amount_max",
           "order": 4,
-          "description": "Only loaded if `amount` is not defined.\n\nIf set to a number that is less than `amount_min`, the game will use `amount_min` instead.",
+          "description": "Only loaded, and mandatory if `amount` is not defined.\n\nIf set to a number that is less than `amount_min`, the game will use `amount_min` instead.",
           "override": false,
           "type": "MaterialAmountType",
-          "optional": false
+          "optional": true
         },
         {
           "name": "amount_min",
           "order": 3,
-          "description": "Only loaded if `amount` is not defined.\n\nCan not be `< 0`.",
+          "description": "Only loaded, and mandatory if `amount` is not defined.\n\nCan not be `< 0`.",
           "override": false,
           "type": "MaterialAmountType",
-          "optional": false
+          "optional": true
         },
         {
           "name": "catalyst_amount",
@@ -42063,6 +42068,18 @@
           }
         },
         {
+          "name": "emissions_per_minute",
+          "order": 13,
+          "description": "Heat energy sources do not support producing pollution.",
+          "override": true,
+          "type": "double",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
           "name": "heat_glow",
           "order": 11,
           "description": "",
@@ -42719,18 +42736,18 @@
         {
           "name": "amount_max",
           "order": 4,
-          "description": "Only loaded if `amount` is not defined.\n\nIf set to a number that is less than `amount_min`, the game will use `amount_min` instead.",
+          "description": "Only loaded, and mandatory if `amount` is not defined.\n\nIf set to a number that is less than `amount_min`, the game will use `amount_min` instead.",
           "override": false,
           "type": "uint16",
-          "optional": false
+          "optional": true
         },
         {
           "name": "amount_min",
           "order": 3,
-          "description": "Only loaded if `amount` is not defined.",
+          "description": "Only loaded, and mandatory if `amount` is not defined.",
           "override": false,
           "type": "uint16",
-          "optional": false
+          "optional": true
         },
         {
           "name": "catalyst_amount",
@@ -46241,8 +46258,36 @@
       ]
     },
     {
-      "name": "NoiseArrayConstruction",
+      "name": "NoiseArray",
       "order": 245,
+      "description": "An array-like noise expression, for example constructed with [NoiseArrayConstruction](prototype:NoiseArrayConstruction) or a variable such as `noise.var(\"starting_positions\")`.",
+      "abstract": false,
+      "inline": false,
+      "type": {
+        "complex_type": "union",
+        "options": [
+          {
+            "complex_type": "type",
+            "value": "NoiseVariable",
+            "description": ""
+          },
+          {
+            "complex_type": "type",
+            "value": "NoiseArrayConstruction",
+            "description": ""
+          },
+          {
+            "complex_type": "type",
+            "value": "NoiseFunctionOffsetPoints",
+            "description": ""
+          }
+        ],
+        "full_format": true
+      }
+    },
+    {
+      "name": "NoiseArrayConstruction",
+      "order": 246,
       "description": "`value_expressions` property should be a list of numeric expressions, each of which will be evaluated to come up with the corresponding numeric value in the resulting array.\n\nUsed to construct map positions (`{x, y}`) and map position lists (`{{x0,y0}, {y1,y1}, [...]}`) for [offset-points](prototype:NoiseFunctionOffsetPoints) and [distance-from-nearest-point](prototype:NoiseFunctionDistanceFromNearestPoint) functions.",
       "examples": [
         "```\n-- Examples of constructing a map position and map position list\nlocal noise = require(\"noise\")\nlocal tne = noise.to_noise_expression\n\nlocal map_pos_1 = -- the map position {x = 100, y = -200} specified directly\n{\n  type = \"array-construction\",\n  value_expressions = {tne(100), tne(-200)}\n}\n-- or with make_array from the noise lib required above\nlocal map_pos_2 = noise.make_array({100, 200})\n\nlocal map_pos_list = -- a map position list: {{x = 100, y = -200}, {x = 100, y = 200}}\n{\n  type = \"array-construction\",\n  value_expressions = {map_pos_1, map_pos_2}\n}\n-- or with the noise lib\nlocal also_map_post_list = noise.make_point_list({{100, -200}, {100, 200}})\n```"
@@ -46279,7 +46324,7 @@
     },
     {
       "name": "NoiseExpression",
-      "order": 246,
+      "order": 247,
       "description": "Loaded as one of the noise expressions listed in this union, based on the value of the `type` key.\n\nA fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation.\n\nNoise expressions can be provided as table literals or built using functions in the built-in [noise library](https://github.com/wube/factorio-data/blob/master/core/lualib/noise.lua). The built-in noise library allows writing much more concise code, so its usage will be shown in most examples for noise expressions.\n\n[noise.define_noise_function](https://github.com/wube/factorio-data/blob/master/core/lualib/noise.lua#L272) allows noise expressions to be defined using a shorthand that's a subset of Lua (see the example for details).\n\nSee [here](https://togos.github.io/togos-example-noise-programs/) for a tutorial on authoring noise expressions.\n\nThe most frequently used noise functions are loaded via [NoiseFunctionApplication](prototype:NoiseFunctionApplication).",
       "examples": [
         "```\n-- \"noise\" library required beforehand\nexpression = noise.define_noise_function(function(x, y, tile, map)\n  return (x + y) / 1000\nend)\n```",
@@ -46346,7 +46391,7 @@
     },
     {
       "name": "NoiseFunctionAbsoluteValue",
-      "order": 247,
+      "order": 248,
       "description": "Takes a single argument and returns its absolute value. Ie. if the argument is negative, it is inverted.",
       "abstract": false,
       "inline": false,
@@ -46393,7 +46438,7 @@
     },
     {
       "name": "NoiseFunctionAdd",
-      "order": 248,
+      "order": 249,
       "description": "Takes between 0 and 32 numbers and adds them up.",
       "abstract": false,
       "inline": false,
@@ -46438,7 +46483,7 @@
     },
     {
       "name": "NoiseFunctionApplication",
-      "order": 249,
+      "order": 250,
       "description": "Loaded as one of the NoiseFunctions listed in this union, based on the value of the `function_name` key.\n\nApply a function to a list or associative array of arguments. Some functions expect arguments to be named and some expect them not to be.\n\nFunction calls are their own class of expression (as opposed to every function just being its own expression type) because function calls all have similar properties -- arguments are themselves expressions, a function call with all-constant arguments can be constant-folded (due to [referential transparency](http://en.wikipedia.org/wiki/Referential_transparency)), etc.",
       "abstract": false,
       "inline": false,
@@ -46621,7 +46666,7 @@
     },
     {
       "name": "NoiseFunctionAtan2",
-      "order": 250,
+      "order": 251,
       "description": "Returns the arc tangent of y/x using the signs of arguments to determine the correct quadrant.",
       "abstract": false,
       "inline": false,
@@ -46669,7 +46714,7 @@
     },
     {
       "name": "NoiseFunctionAutoplaceProbability",
-      "order": 251,
+      "order": 252,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -46716,7 +46761,7 @@
     },
     {
       "name": "NoiseFunctionAutoplaceRichness",
-      "order": 252,
+      "order": 253,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -46763,7 +46808,7 @@
     },
     {
       "name": "NoiseFunctionBitwiseAnd",
-      "order": 253,
+      "order": 254,
       "description": "Casts between 0 and 32 numbers to 32-bit integers and performs a bitwise AND on them.",
       "abstract": false,
       "inline": false,
@@ -46808,7 +46853,7 @@
     },
     {
       "name": "NoiseFunctionBitwiseNot",
-      "order": 254,
+      "order": 255,
       "description": "Casts the single argument to a 32-bit integer and performs bitwise negates it.",
       "abstract": false,
       "inline": false,
@@ -46855,7 +46900,7 @@
     },
     {
       "name": "NoiseFunctionBitwiseOr",
-      "order": 255,
+      "order": 256,
       "description": "Casts between 0 and 32 numbers to 32-bit integers and performs a bitwise OR on them.",
       "abstract": false,
       "inline": false,
@@ -46900,7 +46945,7 @@
     },
     {
       "name": "NoiseFunctionBitwiseXor",
-      "order": 256,
+      "order": 257,
       "description": "Casts between 0 and 32 numbers to 32-bit integers and performs a bitwise EXCLUSIVE OR on them.",
       "abstract": false,
       "inline": false,
@@ -46945,7 +46990,7 @@
     },
     {
       "name": "NoiseFunctionCeil",
-      "order": 257,
+      "order": 258,
       "description": "Takes a single argument and returns its ceil.",
       "abstract": false,
       "inline": false,
@@ -46992,7 +47037,7 @@
     },
     {
       "name": "NoiseFunctionClamp",
-      "order": 258,
+      "order": 259,
       "description": "The first argument is clamped to be between the second and third. The second is treated as a lower limit and the third the upper limit.",
       "abstract": false,
       "inline": false,
@@ -47041,7 +47086,7 @@
     },
     {
       "name": "NoiseFunctionCompileTimeLog",
-      "order": 259,
+      "order": 260,
       "description": "Prints between 0 and 32 arguments to the [log file](https://wiki.factorio.com/Log_file) when the expression is compiled. For that it needs to part of another expression that is compiled. The last argument of the `compile-time-log` is returned as the \"result\" of the `compile-time-log`.",
       "examples": [
         "```\n-- Example usage inside a NamedNoiseExpression\nlocal noise = require(\"noise\")\nlocal tne = noise.to_noise_expression\n\ndata:extend{{\n  type = \"noise-expression\",\n  name = \"compile-log-test\",\n  intended_property = \"elevation\",\n  expression = noise.compile_time_log(2000, noise.var(\"y\"), tne(100) - noise.var(\"distance\"))\n}}\n\n-- When \"compile-log-test\" is selected as the map type and a map preview or map is generated, this logs:\n--  Info data-updates.lua:24: 2000.000000 reference to variable 'y' subtract\n-- Furthermore, the elevation noise expression is set to 'tne(100) - noise.var(\"distance\")', producing a circular island with a 100 tile radius\n```"
@@ -47089,7 +47134,7 @@
     },
     {
       "name": "NoiseFunctionCos",
-      "order": 260,
+      "order": 261,
       "description": "Takes a single argument and returns its cosine.",
       "abstract": false,
       "inline": false,
@@ -47136,7 +47181,7 @@
     },
     {
       "name": "NoiseFunctionDistanceFromNearestPoint",
-      "order": 261,
+      "order": 262,
       "description": "Computes the [euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance) of the position `{x, y}` to all position listed in points and returns the shortest distance. The returned distance can be `maximum_distance` at most.",
       "examples": [
         "```\n-- Shortest distance at the current {x, y} from the two given points, but at most 1000\nlocal noise = require(\"noise\")\nlocal tne = noise.to_noise_expression\nlocal positions = noise.make_point_list({{-100, -40}, {-50, -200}})\n\nlocal shortest_distance =\n{\n  type = \"function-application\",\n  function_name = \"distance-from-nearest-point\",\n  arguments = {x = noise.var(\"x\"), y = noise.var(\"y\"), points = positions, maximum_distance = tne(1000)}\n}\n-- or with the noise lib\nlocal also_shortest_distance = noise.function_application(\"distance-from-nearest-point\", {x = noise.var(\"x\"), y = noise.var(\"y\"), points = positions, maximum_distance = 1000})\n```"
@@ -47181,7 +47226,7 @@
     },
     {
       "name": "NoiseFunctionDivide",
-      "order": 262,
+      "order": 263,
       "description": "Takes two arguments and divides the first by the second.",
       "abstract": false,
       "inline": false,
@@ -47229,7 +47274,7 @@
     },
     {
       "name": "NoiseFunctionEquals",
-      "order": 263,
+      "order": 264,
       "description": "Returns the result of first argument == second argument as a literal number that is `0` for false and `1` for true.",
       "abstract": false,
       "inline": false,
@@ -47277,7 +47322,7 @@
     },
     {
       "name": "NoiseFunctionExponentiate",
-      "order": 264,
+      "order": 265,
       "description": "Takes two arguments and raises the first to the second power.",
       "examples": [
         "```\nlocal one_thousand = -- 10^3\n{\n  type = \"function-application\",\n  function_name = \"exponentiate\",\n  arguments = {\n    {\n      type = \"literal-number\",\n      literal_value = 10\n    },\n    {\n      type = \"literal-number\",\n      literal_value = 3\n    }\n}\n\n-- or with the noise lib\nlocal noise = require(\"noise\")\nlocal tne = noise.to_noise_expression\n\nlocal twentyfive = tne(5)^tne(2) -- 5^2\n```"
@@ -47328,7 +47373,7 @@
     },
     {
       "name": "NoiseFunctionFactorioBasisNoise",
-      "order": 265,
+      "order": 266,
       "description": "Scaling input and output can be accomplished other ways, but are done so commonly as to be built into this function for performance reasons.",
       "abstract": false,
       "inline": false,
@@ -47370,7 +47415,7 @@
     },
     {
       "name": "NoiseFunctionFactorioMultioctaveNoise",
-      "order": 266,
+      "order": 267,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -47412,7 +47457,7 @@
     },
     {
       "name": "NoiseFunctionFactorioQuickMultioctaveNoise",
-      "order": 267,
+      "order": 268,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -47454,7 +47499,7 @@
     },
     {
       "name": "NoiseFunctionFloor",
-      "order": 268,
+      "order": 269,
       "description": "Takes a single argument and returns its floor.",
       "abstract": false,
       "inline": false,
@@ -47501,7 +47546,7 @@
     },
     {
       "name": "NoiseFunctionLessOrEqual",
-      "order": 269,
+      "order": 270,
       "description": "Returns the result of first argument <= second argument as a literal number that is `0` for false and `1` for true.",
       "abstract": false,
       "inline": false,
@@ -47549,7 +47594,7 @@
     },
     {
       "name": "NoiseFunctionLessThan",
-      "order": 270,
+      "order": 271,
       "description": "Returns the result of first argument < second argument as a literal number that is `0` for false and `1` for true.",
       "abstract": false,
       "inline": false,
@@ -47597,7 +47642,7 @@
     },
     {
       "name": "NoiseFunctionLog2",
-      "order": 271,
+      "order": 272,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -47644,7 +47689,7 @@
     },
     {
       "name": "NoiseFunctionModulo",
-      "order": 272,
+      "order": 273,
       "description": "Takes two arguments and divides the first by the second and returns the remainder. This is implemented using [fmod(double, double)](https://en.cppreference.com/w/cpp/numeric/math/fmod).",
       "abstract": false,
       "inline": false,
@@ -47692,7 +47737,7 @@
     },
     {
       "name": "NoiseFunctionMultiply",
-      "order": 273,
+      "order": 274,
       "description": "Takes between 0 and 32 numbers and multiplies them.",
       "abstract": false,
       "inline": false,
@@ -47737,7 +47782,7 @@
     },
     {
       "name": "NoiseFunctionNoiseLayerNameToID",
-      "order": 274,
+      "order": 275,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -47784,7 +47829,7 @@
     },
     {
       "name": "NoiseFunctionOffsetPoints",
-      "order": 275,
+      "order": 276,
       "description": "The first argument represents a vector of how the positions should be shifted, and the second argument lists the positions that should be shifted.",
       "examples": [
         "```\n-- Shifts \"positions\" by {100, 90}\nlocal noise = require(\"noise\")\nlocal positions = noise.make_point_list({{-10, -40}, {-50, -20}})\nlocal offset = noise.make_array({100, 90})\nlocal offset_positions =\n{\n  type = \"function-application\",\n  function_name = \"offset-points\",\n  arguments = {offset, positions}\n}\n-- or with the noise lib\nlocal also_offset_positions = noise.function_application(\"offset-points\", {offset, positions})\n```"
@@ -47803,8 +47848,8 @@
           "type": {
             "complex_type": "tuple",
             "values": [
-              "NoiseArrayConstruction",
-              "NoiseArrayConstruction"
+              "NoiseArray",
+              "NoiseArray"
             ]
           },
           "optional": false
@@ -47835,7 +47880,7 @@
     },
     {
       "name": "NoiseFunctionRandomPenalty",
-      "order": 276,
+      "order": 277,
       "description": "Subtracts a random value in the `[0, amplitude)` range from `source` if `source` is larger than `0`.",
       "abstract": false,
       "inline": false,
@@ -47877,7 +47922,7 @@
     },
     {
       "name": "NoiseFunctionRidge",
-      "order": 277,
+      "order": 278,
       "description": "Similar to [clamp](prototype:NoiseFunctionClamp), where the first argument is folded back across the third and second limits until it lies between them.",
       "examples": [
         "```\nlocal noise = require(\"noise\")\nlocal ridge_1 = noise.ridge(6, 1, 5) -- this returns 4\nlocal ridge_2 = noise.ridge(-1, 1, 5) -- this returns 3\n```"
@@ -47929,7 +47974,7 @@
     },
     {
       "name": "NoiseFunctionSin",
-      "order": 278,
+      "order": 279,
       "description": "Takes a single argument and returns its sine.",
       "abstract": false,
       "inline": false,
@@ -47976,7 +48021,7 @@
     },
     {
       "name": "NoiseFunctionSpotNoise",
-      "order": 279,
+      "order": 280,
       "description": "Generates random conical spots. The map is divided into square regions, and within each region, candidate points are chosen at random and target density, spot quantity, and radius are calculated for each point (or one of every `skip_span` candidate points) by configured expressions. Each spot contributes a quantity to a regional target total (which is the average of sampled target densities times the area of the region) until the total has been reached or a maximum spot count is hit. The output value of the function is the maximum height of any spot at a given point.\n\nThe parameters that provide expressions to be evaluated for each point (all named something_expression) need to actually return expression objects.\n\nThe quantity of the spot is assumed to be the same as its volume. Since the volume of a cone is `pi * radius^2 * height / 3`, the height ('peak value') of any given spot is calculated as `3 * quantity / (pi * radius^2)`\n\nThe infinite series of candidate points (of which `candidate_point_count` are actually considered) generated by `spot-noise` expressions with the same `seed0`, `seed1`, `region_size`, and `suggested_minimum_candidate_point_spacing` will be identical. This allows multiple spot-noise expressions (e.g. for different ore patches) to avoid overlap by using different points from the same list, determined by `skip_span` and `skip_offset`.",
       "abstract": false,
       "inline": false,
@@ -48018,7 +48063,7 @@
     },
     {
       "name": "NoiseFunctionSubtract",
-      "order": 280,
+      "order": 281,
       "description": "Takes two arguments and subtracts the second from the first.",
       "abstract": false,
       "inline": false,
@@ -48066,7 +48111,7 @@
     },
     {
       "name": "NoiseFunctionTerrace",
-      "order": 281,
+      "order": 282,
       "description": "The first argument is the value to be terraced. The second argument is the offset, the third the width, and the fourth the strength.",
       "abstract": false,
       "inline": false,
@@ -48116,7 +48161,7 @@
     },
     {
       "name": "NoiseIfElseChain",
-      "order": 282,
+      "order": 283,
       "description": "Has an `arguments` property that is a list of condition-result expression pairs followed by a default result expression, like so:\n\n```\n{\n  type = \"if-else-chain\",\n  arguments = {\n    condition1, result1,\n    condition2, result2,\n    ...\n    defaultResult\n  }\n}\n```\n\nThe result of the if-else-chain is the value of the first result expression whose condition expression evaluated to true, or the value of the default result ('else') expression.",
       "abstract": false,
       "inline": false,
@@ -48150,7 +48195,7 @@
     },
     {
       "name": "NoiseLayerID",
-      "order": 283,
+      "order": 284,
       "description": "The name of a [NoiseLayer](prototype:NoiseLayer).",
       "examples": [
         "```\n\"aux\"\n```",
@@ -48162,7 +48207,7 @@
     },
     {
       "name": "NoiseLiteralBoolean",
-      "order": 284,
+      "order": 285,
       "description": "Evaluates to the same boolean value (true or false) every time, given by the `literal_value` property. May be used as a number value, evaluates to `1` for true and `0` for false.",
       "abstract": false,
       "inline": false,
@@ -48193,7 +48238,7 @@
     },
     {
       "name": "NoiseLiteralExpression",
-      "order": 285,
+      "order": 286,
       "description": "Returns the expression represented by its `literal_value` property. Useful mostly for passing expressions (to be evaluated later) to the [spot-noise](prototype:NoiseFunctionSpotNoise) function.",
       "abstract": false,
       "inline": false,
@@ -48224,7 +48269,7 @@
     },
     {
       "name": "NoiseLiteralNumber",
-      "order": 286,
+      "order": 287,
       "description": "Evaluates to the same number every time, given by the `literal_value` property. All numbers are treated as [float](prototype:float) internally unless otherwise specified. May be used as a boolean value, evaluates to true for numbers bigger than zero, anything else evaluates to false.",
       "examples": [
         "```\nlocal ten =\n{\n  type = \"literal-number\",\n  literal_value = 10\n}\n\n-- or with the noise lib\nlocal noise = require(\"noise\")\nlocal twenty_point_five = noise.to_noise_expression(20.5)\n```"
@@ -48258,7 +48303,7 @@
     },
     {
       "name": "NoiseLiteralObject",
-      "order": 287,
+      "order": 288,
       "description": "Evaluates to the same object every time, given by the `literal_value` property. Since the noise generation runtime has no notion of objects or use for them, this is useful only in constant contexts, such as the argument of the `autoplace-probability` function (where the 'literal object' is an [AutoplaceSpecification](prototype:AutoplaceSpecification)).",
       "examples": [
         "```\n{\n  type = \"literal-object\",\n  literal_value = {\n    name = \"Bob Hope\",\n    birth_date = {\n      year = 1903,\n      month = 5,\n      day_of_month = 29\n    }\n  }\n}\n```"
@@ -48292,7 +48337,7 @@
     },
     {
       "name": "NoiseLiteralString",
-      "order": 288,
+      "order": 289,
       "description": "Evaluates to the same string every time, given by the `literal_value` property. Since the noise generation runtime has no notion of strings or use for them, this is useful only in constant contexts.",
       "abstract": false,
       "inline": false,
@@ -48323,7 +48368,7 @@
     },
     {
       "name": "NoiseNumber",
-      "order": 289,
+      "order": 290,
       "description": "A numeric noise expression, such as a literal number, the result of addition, or multioctave noise.\n\nThis encompasses all [NoiseExpressions](prototype:NoiseExpression), except for [NoiseLiteralBoolean](prototype:NoiseLiteralBoolean), [NoiseLiteralString](prototype:NoiseLiteralString), [NoiseLiteralObject](prototype:NoiseLiteralObject), [NoiseLiteralExpression](prototype:NoiseLiteralExpression), [NoiseArrayConstruction](prototype:NoiseArrayConstruction), and [NoiseFunctionOffsetPoints](prototype:NoiseFunctionOffsetPoints).",
       "abstract": false,
       "inline": false,
@@ -48526,7 +48571,7 @@
     },
     {
       "name": "NoiseProcedureDelimiter",
-      "order": 290,
+      "order": 291,
       "description": "Evaluates and returns the value of its expression property, which is itself an expression.\n\nThis hints to the compiler that it should break the subexpression into its own procedure so that the result can be re-used in multiple places. For instance if you want to re-use the same multioctave noise for determining probability of multiple tiles/entities, wrap the multioctave noise expression in a procedure-delimiter. Alternatively, make the noise its own [NamedNoiseExpression](prototype:NamedNoiseExpression) and reference it by name, using a [NoiseVariable](prototype:NoiseVariable).",
       "abstract": false,
       "inline": false,
@@ -48557,7 +48602,7 @@
     },
     {
       "name": "NoiseVariable",
-      "order": 291,
+      "order": 292,
       "description": "Variables referencing named noise expressions may have their reference overridden by other named noise expression if their `intended_property` is the variable name and it is selected by the user in the map generator GUI. See the second example on [NamedNoiseExpression::intended_property](prototype:NamedNoiseExpression::intended_property).",
       "examples": [
         "```\nlocal noise = require(\"noise\")\n\nlocal y =\n{\n  type = \"variable\",\n  variable_name = \"y\" -- predefined variable\n}\nlocal x = noise.var(\"x\") -- predefined variable, with the noise lib\n\nlocal width =\n{\n  type = \"variable\",\n  variable_name = \"map_width\" -- predefined constant\n}\nlocal height = noise.var(\"map_height\") -- predefined constant, with the noise lib\n\nlocal aux =\n{\n  type = \"variable\",\n  variable_name = \"aux\" -- named noise expression\n}\nlocal cliffiness = noise.var(\"cliffiness\") -- named noise expression, with the noise lib\n```"
@@ -48607,7 +48652,7 @@
     },
     {
       "name": "NoiseVariableConstants",
-      "order": 292,
+      "order": 293,
       "description": "A set of constants largely determined by [MapGenSettings](prototype:MapGenSettings).",
       "abstract": false,
       "inline": false,
@@ -48705,7 +48750,7 @@
     },
     {
       "name": "NothingModifier",
-      "order": 293,
+      "order": 294,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -48749,7 +48794,7 @@
     },
     {
       "name": "OffshorePumpGraphicsSet",
-      "order": 294,
+      "order": 295,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -48825,7 +48870,7 @@
     },
     {
       "name": "OrTipTrigger",
-      "order": 295,
+      "order": 296,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -48859,7 +48904,7 @@
     },
     {
       "name": "Order",
-      "order": 296,
+      "order": 297,
       "description": "The order property is a simple `string`. When the game needs to sort prototypes (of the same type), it looks at their order properties and sorts those alphabetically. A prototype with an order string of `\"a\"` will be listed before other prototypes with order string `\"b\"` or `\"c\"`. The `\"-\"` or `\"[]\"` structures that can be found in vanilla order strings do *not* have any special meaning.\n\nThe alphabetical sorting uses [lexicographical comparison](https://en.wikipedia.org/wiki/Lexicographic_order) to determine if a given prototype is shown before or after another. If the order strings are equal then the game falls back to comparing the prototype names to determine order.",
       "examples": [
         "```\n{  -- This item will be shown after the below one\n  type = \"item\",\n  name = \"item-1\",\n  order = \"ad\",\n},\n{  -- This item will be shown before the above one\n  type = \"item\",\n  name = \"item-2\",\n  order = \"ab\",\n}\n```",
@@ -48871,7 +48916,7 @@
     },
     {
       "name": "OrientedCliffPrototype",
-      "order": 297,
+      "order": 298,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -48907,7 +48952,7 @@
     },
     {
       "name": "OrientedCliffPrototypeSet",
-      "order": 298,
+      "order": 299,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -49079,7 +49124,7 @@
     },
     {
       "name": "OtherColors",
-      "order": 299,
+      "order": 300,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -49115,7 +49160,7 @@
     },
     {
       "name": "ParticleID",
-      "order": 300,
+      "order": 301,
       "description": "The name of a [ParticlePrototype](prototype:ParticlePrototype).",
       "examples": [
         "```\n\"beacon-metal-particle-small\"\n```",
@@ -49127,7 +49172,7 @@
     },
     {
       "name": "PasteEntitySettingsTipTrigger",
-      "order": 301,
+      "order": 302,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -49190,7 +49235,7 @@
     },
     {
       "name": "PathFinderSettings",
-      "order": 302,
+      "order": 303,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -49464,7 +49509,7 @@
     },
     {
       "name": "PipeConnectionDefinition",
-      "order": 303,
+      "order": 304,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -49539,7 +49584,7 @@
     },
     {
       "name": "PipePictures",
-      "order": 304,
+      "order": 305,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -49751,7 +49796,7 @@
     },
     {
       "name": "PipeToGroundPictures",
-      "order": 305,
+      "order": 306,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -49795,7 +49840,7 @@
     },
     {
       "name": "PlaceAsTile",
-      "order": 306,
+      "order": 307,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -49831,7 +49876,7 @@
     },
     {
       "name": "PlaceEquipmentTipTrigger",
-      "order": 307,
+      "order": 308,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -49874,7 +49919,7 @@
     },
     {
       "name": "PlayFor",
-      "order": 308,
+      "order": 309,
       "description": "Defines when controller vibrations should be played.",
       "abstract": false,
       "inline": true,
@@ -49897,7 +49942,7 @@
     },
     {
       "name": "PlaySoundTriggerEffectItem",
-      "order": 309,
+      "order": 310,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -49986,7 +50031,7 @@
     },
     {
       "name": "PlayerColorData",
-      "order": 310,
+      "order": 311,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -50022,7 +50067,7 @@
     },
     {
       "name": "PlayerInputMethodFilter",
-      "order": 311,
+      "order": 312,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -50050,7 +50095,7 @@
     },
     {
       "name": "PollutionSettings",
-      "order": 312,
+      "order": 313,
       "description": "The pollution settings, the values are for 60 ticks (1 second).",
       "abstract": false,
       "inline": false,
@@ -50158,7 +50203,7 @@
     },
     {
       "name": "ProductPrototype",
-      "order": 313,
+      "order": 314,
       "description": "Defaults to loading products as items.",
       "abstract": false,
       "inline": false,
@@ -50181,7 +50226,7 @@
     },
     {
       "name": "ProductionType",
-      "order": 314,
+      "order": 315,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -50219,7 +50264,7 @@
     },
     {
       "name": "ProgrammableSpeakerInstrument",
-      "order": 315,
+      "order": 316,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -50250,7 +50295,7 @@
     },
     {
       "name": "ProgrammableSpeakerNote",
-      "order": 316,
+      "order": 317,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -50278,7 +50323,7 @@
     },
     {
       "name": "ProgressBarStyleSpecification",
-      "order": 317,
+      "order": 318,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -50385,7 +50430,7 @@
     },
     {
       "name": "ProjectileAttackParameters",
-      "order": 318,
+      "order": 319,
       "description": "",
       "parent": "BaseAttackParameters",
       "abstract": false,
@@ -50458,7 +50503,7 @@
     },
     {
       "name": "ProjectileTriggerDelivery",
-      "order": 319,
+      "order": 320,
       "description": "",
       "parent": "TriggerDeliveryItem",
       "abstract": false,
@@ -50558,7 +50603,7 @@
     },
     {
       "name": "PumpConnectorGraphics",
-      "order": 320,
+      "order": 321,
       "description": "A mapping of arrays of [PumpConnectorGraphicsAnimations](prototype:PumpConnectorGraphicsAnimation) to all 4 directions of the pump connection (to a fluid wagon).",
       "examples": [
         "```\nload_animations =\n{\nwest = {\n  [1] = {\n    standup_base = {\n      filename = \"__base__/graphics/entity/pump/connector/V-R-135-load-standup-base.png\",\n      width = 55,\n      height = 63,\n      line_length =1,\n      frame_count =20,\n      shift = util.by_pixel(-23.5, -13.5),\n      hr_version = {\n        filename = \"__base__/graphics/entity/pump/connector/hr-V-R-135-load-standup-base.png\",\n        width = 110,\n        height = 126,\n        scale = 0.5,\n        line_length = 1,\n        frame_count = 20,\n        shift = util.by_pixel(-23.5, -13.5)\n      },\n    },\n    standup_shadow = {\n      filename = \"__base__/graphics/entity/pump/connector/V-R-1-load-standup-base-shadow.png\",\n      width = 79,\n      height = 69,\n      line_length =1,\n      frame_count =20,\n      shift = util.by_pixel(-8.5, 8.5),\n      hr_version = {\n        filename = \"__base__/graphics/entity/pump/connector/hr-V-R-1-load-standup-base-shadow.png\",\n        width = 157,\n        height = 136,\n        scale = 0.5,\n        line_length = 1,\n        frame_count = 20,\n        shift = util.by_pixel(-8.75, 8.5)\n      },\n    },\n  },\n  [2] = {\n    standup_base = { ... },\n    standup_shadow = { ... },\n    connector_shadow = { ... },\n  },\n  [3] = { ... },\n  [4] = { ... },\n  [5] = { ... },\n  [6] = { ... },\n},\nnorth = { ... },\neast = { ... },\nsouth = { ... },\n}\n```"
@@ -50617,7 +50662,7 @@
     },
     {
       "name": "PumpConnectorGraphicsAnimation",
-      "order": 321,
+      "order": 322,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -50669,7 +50714,7 @@
     },
     {
       "name": "PushBackTriggerEffectItem",
-      "order": 322,
+      "order": 323,
       "description": "The push back effect used by the [discharge defense](https://wiki.factorio.com/Discharge_defense).\n\nAims to push the target entity away from the source entity by the `distance` from the target entity's current position. Searches within double the `distance` from the pushed to position for the nearest non-colliding position for the target entity to be teleported too. If no valid non-colliding position is found or the target is not teleportable, then no push back occurs.",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -50701,7 +50746,7 @@
     },
     {
       "name": "RadioButtonStyleSpecification",
-      "order": 323,
+      "order": 324,
       "description": "",
       "parent": "StyleWithClickableGraphicalSetSpecification",
       "abstract": false,
@@ -50757,7 +50802,7 @@
     },
     {
       "name": "RadiusVisualisationSpecification",
-      "order": 324,
+      "order": 325,
       "description": "Sprite to be shown around the entity when it is selected/held in the cursor.",
       "abstract": false,
       "inline": false,
@@ -50821,7 +50866,7 @@
     },
     {
       "name": "RailPictureSet",
-      "order": 325,
+      "order": 326,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -50953,7 +50998,7 @@
     },
     {
       "name": "RailPieceLayers",
-      "order": 326,
+      "order": 327,
       "description": "Used for graphics by [RailPrototype](prototype:RailPrototype) and [RailRemnantsPrototype](prototype:RailRemnantsPrototype).",
       "abstract": false,
       "inline": false,
@@ -51045,7 +51090,7 @@
     },
     {
       "name": "RandomPenaltyArguments",
-      "order": 327,
+      "order": 328,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -51105,7 +51150,7 @@
     },
     {
       "name": "RealOrientation",
-      "order": 328,
+      "order": 329,
       "description": "Specified by a [float](prototype:float) between 0 and 1, including 0 and excluding 1.",
       "abstract": false,
       "inline": false,
@@ -51113,7 +51158,7 @@
     },
     {
       "name": "RecipeCategoryID",
-      "order": 329,
+      "order": 330,
       "description": "The name of a [RecipeCategory](prototype:RecipeCategory).",
       "examples": [
         "```\n\"crafting\"\n```",
@@ -51125,7 +51170,7 @@
     },
     {
       "name": "RecipeData",
-      "order": 330,
+      "order": 331,
       "description": "Used when defining a [RecipePrototype](prototype:RecipePrototype) that uses difficulty. For a recipe without difficulty, these same properties are defined on the prototype itself.",
       "abstract": false,
       "inline": false,
@@ -51328,7 +51373,7 @@
         {
           "name": "result",
           "order": 2,
-          "description": "The item created by this recipe. Must be the name of an [item](prototype:ItemPrototype), such as `\"iron-gear-wheel\"`.\n\nOnly loaded if `results` is not defined.",
+          "description": "The item created by this recipe. Must be the name of an [item](prototype:ItemPrototype), such as `\"iron-gear-wheel\"`.\n\nOnly loaded, and mandatory if `results` is not defined.",
           "override": false,
           "type": "ItemID",
           "optional": true
@@ -51359,7 +51404,7 @@
             "complex_type": "array",
             "value": "ProductPrototype"
           },
-          "optional": false
+          "optional": true
         },
         {
           "name": "show_amount_in_title",
@@ -51389,7 +51434,7 @@
     },
     {
       "name": "RecipeID",
-      "order": 331,
+      "order": 332,
       "description": "The name of a [RecipePrototype](prototype:RecipePrototype).",
       "examples": [
         "```\n\"electronic-circuit\"\n```",
@@ -51401,7 +51446,7 @@
     },
     {
       "name": "RenderLayer",
-      "order": 332,
+      "order": 333,
       "description": "The render layer specifies the order of the sprite when rendering, most of the objects have it hardcoded in the source, but some are configurable. The union contains valid values from lowest to highest.",
       "abstract": false,
       "inline": false,
@@ -51629,7 +51674,7 @@
     },
     {
       "name": "ResearchTechnologyTipTrigger",
-      "order": 333,
+      "order": 334,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -51660,7 +51705,7 @@
     },
     {
       "name": "Resistance",
-      "order": 334,
+      "order": 335,
       "description": "Resistances to certain types of attacks from enemy, and physical damage. See [Damage](https://wiki.factorio.com/Damage).",
       "examples": [
         "```\nresistances =\n{\n  {\n    type = \"physical\",\n    decrease = 6,\n    percent = 30\n  },\n  {\n    type = \"explosion\",\n    decrease = 20,\n    percent = 30\n  },\n  {\n    type = \"acid\",\n    decrease = 3,\n    percent = 30\n  },\n  {\n    type = \"fire\",\n    decrease = 0,\n    percent = 30\n  }\n}\n```"
@@ -51707,7 +51752,7 @@
     },
     {
       "name": "ResourceCategoryID",
-      "order": 335,
+      "order": 336,
       "description": "The name of a [ResourceCategory](prototype:ResourceCategory).",
       "examples": [
         "```\n\"basic-solid\"\n```",
@@ -51719,7 +51764,7 @@
     },
     {
       "name": "RichTextSetting",
-      "order": 336,
+      "order": 337,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -51747,7 +51792,7 @@
     },
     {
       "name": "RotatedAnimation",
-      "order": 337,
+      "order": 338,
       "description": "",
       "parent": "AnimationParameters",
       "abstract": false,
@@ -51795,10 +51840,10 @@
         {
           "name": "direction_count",
           "order": 1,
-          "description": "Only loaded if `layers` is not defined.\n\nThe sequential animation instance is loaded equal to the entities direction within the `direction_count` setting.\n\nDirection count to [Direction](prototype:Direction) (animation sequence number):\n\n- `1`: North (1)\n\n- `2`: North (1), South (2)\n\n- `4`: North (1), East (2), South (3), West (4)\n\n- `8`: North (1), Northeast (2), East (3), Southeast (4), South (5), Southwest (6), West (7), Northwest (8)",
+          "description": "Only loaded, and mandatory if `layers` is not defined.\n\nThe sequential animation instance is loaded equal to the entities direction within the `direction_count` setting.\n\nDirection count to [Direction](prototype:Direction) (animation sequence number):\n\n- `1`: North (1)\n\n- `2`: North (1), South (2)\n\n- `4`: North (1), East (2), South (3), West (4)\n\n- `8`: North (1), Northeast (2), East (3), Southeast (4), South (5), Southwest (6), West (7), Northwest (8)",
           "override": false,
           "type": "uint32",
-          "optional": false
+          "optional": true
         },
         {
           "name": "filename",
@@ -51905,7 +51950,7 @@
     },
     {
       "name": "RotatedAnimation4Way",
-      "order": 338,
+      "order": 339,
       "description": "A map of rotated animations for all 4 directions of the entity. If this is loaded as a single RotatedAnimation, it applies to all directions.",
       "abstract": false,
       "inline": false,
@@ -51956,7 +52001,7 @@
     },
     {
       "name": "RotatedAnimationVariations",
-      "order": 339,
+      "order": 340,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -51974,7 +52019,7 @@
     },
     {
       "name": "RotatedSprite",
-      "order": 340,
+      "order": 341,
       "description": "Specifies series of sprites used to visualize different rotations of the object.",
       "examples": [
         "```\npictures =\n{\n  layers =\n  {\n    {\n      filename = \"__base__/graphics/entity/radar/radar.png\",\n      priority = \"low\",\n      width = 98,\n      height = 128,\n      apply_projection = false,\n      direction_count = 64,\n      line_length = 8,\n      shift = util.by_pixel(1, -16),\n      hr_version =\n      {\n        filename = \"__base__/graphics/entity/radar/hr-radar.png\",\n        priority = \"low\",\n        width = 196,\n        height = 254,\n        apply_projection = false,\n        direction_count = 64,\n        line_length = 8,\n        shift = util.by_pixel(1, -16),\n        scale = 0.5\n      }\n    },\n    {\n      filename = \"__base__/graphics/entity/radar/radar-shadow.png\",\n      priority = \"low\",\n      width = 172,\n      height = 94,\n      apply_projection = false,\n      direction_count = 64,\n      line_length = 8,\n      shift = util.by_pixel(39,3),\n      draw_as_shadow = true,\n      hr_version =\n      {\n        filename = \"__base__/graphics/entity/radar/hr-radar-shadow.png\",\n        priority = \"low\",\n        width = 343,\n        height = 186,\n        apply_projection = false,\n        direction_count = 64,\n        line_length = 8,\n        shift = util.by_pixel(39.25,3),\n        draw_as_shadow = true,\n        scale = 0.5\n      }\n    }\n  }\n}\n```"
@@ -52049,10 +52094,10 @@
         {
           "name": "direction_count",
           "order": 1,
-          "description": "Count of direction (frames) specified.",
+          "description": "Only loaded, and mandatory if `layers` is not defined.\n\nCount of direction (frames) specified.",
           "override": false,
           "type": "uint16",
-          "optional": false
+          "optional": true
         },
         {
           "name": "filename",
@@ -52159,7 +52204,7 @@
     },
     {
       "name": "ScriptTriggerEffectItem",
-      "order": 341,
+      "order": 342,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -52191,7 +52236,7 @@
     },
     {
       "name": "ScrollBarStyleSpecification",
-      "order": 342,
+      "order": 343,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": true,
@@ -52220,7 +52265,7 @@
     },
     {
       "name": "ScrollPaneStyleSpecification",
-      "order": 343,
+      "order": 344,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -52372,7 +52417,7 @@
     },
     {
       "name": "SelectionModeFlags",
-      "order": 344,
+      "order": 345,
       "description": "An array containing the following values.",
       "abstract": false,
       "inline": false,
@@ -52640,7 +52685,7 @@
     },
     {
       "name": "SequenceTipTrigger",
-      "order": 345,
+      "order": 346,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -52674,7 +52719,7 @@
     },
     {
       "name": "SetFilterTipTrigger",
-      "order": 346,
+      "order": 347,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -52741,7 +52786,7 @@
     },
     {
       "name": "SetLogisticRequestTipTrigger",
-      "order": 347,
+      "order": 348,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -52788,7 +52833,7 @@
     },
     {
       "name": "SetRecipeTipTrigger",
-      "order": 348,
+      "order": 349,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -52848,7 +52893,7 @@
     },
     {
       "name": "SetTileTriggerEffectItem",
-      "order": 349,
+      "order": 350,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -52908,7 +52953,7 @@
     },
     {
       "name": "Settings",
-      "order": 350,
+      "order": 351,
       "description": "A struct that provides access to the user-set values of startup [mod settings](https://wiki.factorio.com/Tutorial:Mod_settings).",
       "examples": [
         "```\n-- Accessing the value of a mod setting\nlocal val = settings.startup[\"my-mod-setting-name\"].value\n```"
@@ -52935,7 +52980,7 @@
     },
     {
       "name": "ShiftAnimationWaypoints",
-      "order": 351,
+      "order": 352,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -52991,7 +53036,7 @@
     },
     {
       "name": "ShiftBuildTipTrigger",
-      "order": 352,
+      "order": 353,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -53026,7 +53071,7 @@
     },
     {
       "name": "ShowExplosionOnChartTriggerEffectItem",
-      "order": 353,
+      "order": 354,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -53058,7 +53103,7 @@
     },
     {
       "name": "SignalColorMapping",
-      "order": 354,
+      "order": 355,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -53119,7 +53164,7 @@
     },
     {
       "name": "SignalIDConnector",
-      "order": 355,
+      "order": 356,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -53172,7 +53217,7 @@
     },
     {
       "name": "SimpleModifier",
-      "order": 356,
+      "order": 357,
       "description": "",
       "parent": "BaseModifier",
       "abstract": true,
@@ -53193,8 +53238,8 @@
     },
     {
       "name": "SimulationDefinition",
-      "order": 357,
-      "description": "Used by tips and tricks and main menu simulations.\n\nThere are a few simulation-only APIs:\n\n```\ngame.create_test_player{name=string}\ngame.activate_rail_planner{position=position,ghost_mode=bool}\ngame.deactivate_rail_planner()\ngame.move_cursor{position=position,speed=number}  -- should be called every tick; returns true when target is reached\ngame.activate_selection()\ngame.finish_selection()\ngame.deactivate_selection()\ngame.scroll_clipboard_forwards()\ngame.scroll_clipboard_backwards()\ngame.camera_player_cursor_position [RW]\ngame.camera_position [RW]\ngame.camera_zoom [W]\ngame.camera_player [W]\ngame.camera_player_cursor_direction [W]\ngame.camera_alt_info [W]\ngame.smart_belt_building [W]\nplayer.drag_start_position [W]\nplayer.raw_build_from_cursor{ghost_mode=bool,created_by_moving=bool,position=position}\nsurface.create_entities_from_blueprint_string{string=string,position=position,force=force,direction=defines.direction,flip_horizonal=bool,flip_vertical=bool,by_player=player}\n```",
+      "order": 358,
+      "description": "Used by tips and tricks and main menu simulations.\n\nThere are a few simulation-only APIs:\n\n```\ngame.create_test_player{name=string}\ngame.activate_rail_planner{position=position,ghost_mode=bool}\ngame.deactivate_rail_planner()\ngame.move_cursor{position=position,speed=number}  -- should be called every tick; returns true when target is reached\ngame.activate_selection()\ngame.finish_selection()\ngame.deactivate_selection()\ngame.scroll_clipboard_forwards()\ngame.scroll_clipboard_backwards()\ngame.camera_player_cursor_position [RW]\ngame.camera_position [RW]\ngame.camera_zoom [W]\ngame.camera_player [W]\ngame.camera_player_cursor_direction [W]\ngame.camera_alt_info [W]\ngame.smart_belt_building [W]\nplayer.drag_start_position [W]\nplayer.raw_build_from_cursor{ghost_mode=bool,created_by_moving=bool,position=position}\nsurface.create_entities_from_blueprint_string{string=string,position=position,force=force,direction=defines.direction,flip_horizontal=bool,flip_vertical=bool,by_player=player}\n```",
       "abstract": false,
       "inline": false,
       "type": {
@@ -53328,7 +53373,7 @@
     },
     {
       "name": "SliderStyleSpecification",
-      "order": 358,
+      "order": 359,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -53416,7 +53461,7 @@
     },
     {
       "name": "SmokeSource",
-      "order": 359,
+      "order": 360,
       "description": "Definition of the smoke of an entity.",
       "abstract": false,
       "inline": false,
@@ -53624,7 +53669,7 @@
     },
     {
       "name": "Sound",
-      "order": 360,
+      "order": 361,
       "description": "",
       "examples": [
         "```\n{\n  filename = \"__base__/sound/ambient/world-ambience-3.ogg\",\n  volume = 1.2\n}\n```"
@@ -53764,7 +53809,7 @@
     },
     {
       "name": "SoundDefinition",
-      "order": 361,
+      "order": 362,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -53840,7 +53885,7 @@
     },
     {
       "name": "SoundType",
-      "order": 362,
+      "order": 363,
       "description": "This defines which slider in the sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.",
       "abstract": false,
       "inline": false,
@@ -53888,7 +53933,7 @@
     },
     {
       "name": "SpawnPoint",
-      "order": 363,
+      "order": 364,
       "description": "The definition of a evolution and probability weights for a [spawnable unit](prototype:UnitSpawnDefinition) for a [EnemySpawnerPrototype](prototype:EnemySpawnerPrototype).\n\nIt can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the evolution factor and the second is the spawn weight.",
       "abstract": false,
       "inline": false,
@@ -53929,7 +53974,7 @@
     },
     {
       "name": "SpeechBubbleStyleSpecification",
-      "order": 364,
+      "order": 365,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -54001,7 +54046,7 @@
     },
     {
       "name": "SpiderEnginePrototype",
-      "order": 365,
+      "order": 366,
       "description": "Used by [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -54039,7 +54084,7 @@
     },
     {
       "name": "SpiderLegGraphicsSet",
-      "order": 366,
+      "order": 367,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -54127,7 +54172,7 @@
     },
     {
       "name": "SpiderLegPart",
-      "order": 367,
+      "order": 368,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -54211,7 +54256,7 @@
     },
     {
       "name": "SpiderLegSpecification",
-      "order": 368,
+      "order": 369,
       "description": "Used by [SpiderEnginePrototype](prototype:SpiderEnginePrototype) for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -54266,7 +54311,7 @@
     },
     {
       "name": "SpiderVehicleGraphicsSet",
-      "order": 369,
+      "order": 370,
       "description": "Used to specify the graphics for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -54432,7 +54477,7 @@
     },
     {
       "name": "SpotNoiseArguments",
-      "order": 370,
+      "order": 371,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -54475,7 +54520,7 @@
           "description": "",
           "override": false,
           "type": "NoiseLiteralString",
-          "optional": false
+          "optional": true
         },
         {
           "name": "density_expression",
@@ -54610,7 +54655,7 @@
     },
     {
       "name": "Sprite",
-      "order": 371,
+      "order": 372,
       "description": "Specifies one picture that can be used in the game.\n\nWhen there is more than one sprite or [Animation](prototype:Animation) frame with the same source file and dimensions/position in the game, they all share the same memory.",
       "examples": [
         "```\n-- simple sprite\npicture_set_enemy =\n{\n  filename = \"__base__/graphics/entity/land-mine/land-mine-set-enemy.png\",\n  priority = \"medium\",\n  width = 32,\n  height = 32\n}\n```",
@@ -54683,7 +54728,7 @@
     },
     {
       "name": "Sprite4Way",
-      "order": 372,
+      "order": 373,
       "description": "A map of sprites for all 4 directions of the entity. If this is loaded as a single Sprite, it applies to all directions.",
       "examples": [
         "```\n-- separate sprites per direction\n{\n  north =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-N.png\",\n    priority = \"extra-high\",\n    width = 35,\n    height = 18,\n    shift = util.by_pixel(2.5, 14)\n  },\n  east =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-E.png\",\n    priority = \"extra-high\",\n    width = 20,\n    height = 38,\n    shift = util.by_pixel(-25, 1)\n  },\n  south =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-S.png\",\n    priority = \"extra-high\",\n    width = 44,\n    height = 31,\n    shift = util.by_pixel(0, -31.5)\n  },\n  west =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-W.png\",\n    priority = \"extra-high\",\n    width = 19,\n    height = 37,\n    shift = util.by_pixel(25.5, 1.5)\n  }\n}\n```"
@@ -54756,7 +54801,7 @@
     },
     {
       "name": "Sprite8Way",
-      "order": 373,
+      "order": 374,
       "description": "A map of sprites for all 8 directions of the entity.",
       "abstract": false,
       "inline": false,
@@ -54851,7 +54896,7 @@
     },
     {
       "name": "SpriteFlags",
-      "order": 374,
+      "order": 375,
       "description": "An array containing the following values.",
       "examples": [
         "```\nflags = { \"linear-minification\", \"linear-magnification\" }\n```"
@@ -54936,12 +54981,12 @@
             {
               "complex_type": "literal",
               "value": "terrain",
-              "description": "This flag will internally set these flags: `\"mipmap\"`, `\"linear-mip-level\"`, `\"linear-minifaction\"`, `\"no-crop\"`, `\"group=terrain\"`"
+              "description": "This flag will internally set these flags: `\"mipmap\"`, `\"linear-mip-level\"`, `\"linear-minification\"`, `\"no-crop\"`, `\"group=terrain\"`"
             },
             {
               "complex_type": "literal",
               "value": "terrain-effect-map",
-              "description": "This flag will internally set these flags: `\"mipmap\"`, `\"linear-mip-level\"`, `\"linear-minifaction\"`, `\"no-crop\"`, `\"terrain-effect-map\"` (internal group flag)"
+              "description": "This flag will internally set these flags: `\"mipmap\"`, `\"linear-mip-level\"`, `\"linear-minification\"`, `\"no-crop\"`, `\"terrain-effect-map\"` (internal group flag)"
             },
             {
               "complex_type": "literal",
@@ -55025,7 +55070,7 @@
     },
     {
       "name": "SpriteNWaySheet",
-      "order": 375,
+      "order": 376,
       "description": "",
       "examples": [
         "```\nsheet =\n{\n  filename = \"__base__/graphics/entity/burner-inserter/burner-inserter-platform.png\",\n  priority = \"extra-high\",\n  width = 46,\n  height = 46,\n  shift = {0.09375, 0},\n  hr_version =\n  {\n    filename = \"__base__/graphics/entity/burner-inserter/hr-burner-inserter-platform.png\",\n    priority = \"extra-high\",\n    width = 105,\n    height = 79,\n    shift = util.by_pixel(1.5, 7.5-1),\n    scale = 0.5\n  }\n}\n```"
@@ -55070,7 +55115,7 @@
     },
     {
       "name": "SpriteParameters",
-      "order": 376,
+      "order": 377,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -55329,7 +55374,7 @@
     },
     {
       "name": "SpritePriority",
-      "order": 377,
+      "order": 378,
       "description": "This sets the \"caching priority\" of a sprite, so deciding priority of it being included in VRAM instead of streaming it and is therefore a purely technical value. See [here](https://forums.factorio.com/viewtopic.php?p=437380#p437380) and [here](https://www.factorio.com/blog/post/fff-264). The possible values are listed below.",
       "abstract": false,
       "inline": false,
@@ -55377,7 +55422,7 @@
     },
     {
       "name": "SpriteSheet",
-      "order": 378,
+      "order": 379,
       "description": "",
       "parent": "SpriteParameters",
       "abstract": false,
@@ -55442,7 +55487,7 @@
     },
     {
       "name": "SpriteSizeType",
-      "order": 379,
+      "order": 380,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55450,7 +55495,7 @@
     },
     {
       "name": "SpriteVariations",
-      "order": 380,
+      "order": 381,
       "description": "",
       "examples": [
         "```\n-- array of sprites\npictures =\n{\n  { size = 64, filename = \"__base__/graphics/icons/coal.png\",   scale = 0.25, mipmap_count = 4 },\n  { size = 64, filename = \"__base__/graphics/icons/coal-1.png\", scale = 0.25, mipmap_count = 4 },\n  { size = 64, filename = \"__base__/graphics/icons/coal-2.png\", scale = 0.25, mipmap_count = 4 },\n  { size = 64, filename = \"__base__/graphics/icons/coal-3.png\", scale = 0.25, mipmap_count = 4 }\n}\n```",
@@ -55485,7 +55530,7 @@
     },
     {
       "name": "StackInserterCapacityBonusModifier",
-      "order": 381,
+      "order": 382,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -55533,7 +55578,7 @@
     },
     {
       "name": "StackTransferTipTrigger",
-      "order": 382,
+      "order": 383,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55597,7 +55642,7 @@
     },
     {
       "name": "StateSteeringSettings",
-      "order": 383,
+      "order": 384,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55641,7 +55686,7 @@
     },
     {
       "name": "StatusColors",
-      "order": 384,
+      "order": 385,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55725,7 +55770,7 @@
     },
     {
       "name": "SteeringSettings",
-      "order": 385,
+      "order": 386,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -55753,7 +55798,7 @@
     },
     {
       "name": "StorageTankPictures",
-      "order": 386,
+      "order": 387,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -55805,7 +55850,7 @@
     },
     {
       "name": "StreamAttackParameters",
-      "order": 387,
+      "order": 388,
       "description": "",
       "parent": "BaseAttackParameters",
       "abstract": false,
@@ -55887,7 +55932,7 @@
     },
     {
       "name": "StreamFluidProperties",
-      "order": 388,
+      "order": 389,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -55919,7 +55964,7 @@
     },
     {
       "name": "StreamTriggerDelivery",
-      "order": 389,
+      "order": 390,
       "description": "",
       "parent": "TriggerDeliveryItem",
       "abstract": false,
@@ -55959,7 +56004,7 @@
     },
     {
       "name": "StretchRule",
-      "order": 390,
+      "order": 391,
       "description": "Sets whether a GUI element can be stretched or squashed.",
       "abstract": false,
       "inline": false,
@@ -55992,7 +56037,7 @@
     },
     {
       "name": "Stripe",
-      "order": 391,
+      "order": 392,
       "description": "Used as an alternative way to specify animations.",
       "abstract": false,
       "inline": false,
@@ -56052,7 +56097,7 @@
     },
     {
       "name": "StyleSpecification",
-      "order": 392,
+      "order": 393,
       "description": "Loaded as one of the [BaseStyleSpecification](prototype:BaseStyleSpecification) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -56220,7 +56265,7 @@
     },
     {
       "name": "StyleWithClickableGraphicalSetSpecification",
-      "order": 393,
+      "order": 394,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": true,
@@ -56297,7 +56342,7 @@
     },
     {
       "name": "SwitchStyleSpecification",
-      "order": 394,
+      "order": 395,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -56393,7 +56438,7 @@
     },
     {
       "name": "TabStyleSpecification",
-      "order": 395,
+      "order": 396,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -56617,7 +56662,7 @@
     },
     {
       "name": "TabbedPaneStyleSpecification",
-      "order": 396,
+      "order": 397,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -56665,7 +56710,7 @@
     },
     {
       "name": "TableStyleSpecification",
-      "order": 397,
+      "order": 398,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -56927,7 +56972,7 @@
     },
     {
       "name": "TechnologyData",
-      "order": 398,
+      "order": 399,
       "description": "Used when defining a [TechnologyPrototype](prototype:TechnologyPrototype) that uses difficulty. For a technology without difficulty, these same properties are defined on the prototype itself.",
       "abstract": false,
       "inline": false,
@@ -57056,7 +57101,7 @@
     },
     {
       "name": "TechnologyID",
-      "order": 399,
+      "order": 400,
       "description": "The name of a [TechnologyPrototype](prototype:TechnologyPrototype).",
       "examples": [
         "```\n\"automated-rail-transportation\"\n```",
@@ -57068,7 +57113,7 @@
     },
     {
       "name": "TechnologySlotStyleSpecification",
-      "order": 400,
+      "order": 401,
       "description": "",
       "parent": "ButtonStyleSpecification",
       "abstract": false,
@@ -57356,7 +57401,7 @@
     },
     {
       "name": "TechnologyUnit",
-      "order": 401,
+      "order": 402,
       "description": "Either `count` or `count_formula` must be defined, never both.",
       "examples": [
         "```\nunit =\n{\n  count_formula = \"2^(L-6)*1000\",\n  ingredients =\n  {\n    {\"automation-science-pack\", 1},\n    {\"logistic-science-pack\", 1},\n    {\"chemical-science-pack\", 1},\n    {\"production-science-pack\", 1},\n    {\"utility-science-pack\", 1},\n    {\"space-science-pack\", 1}\n  },\n  time = 60\n}\n```"
@@ -57406,7 +57451,7 @@
     },
     {
       "name": "TextBoxStyleSpecification",
-      "order": 402,
+      "order": 403,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -57550,7 +57595,7 @@
     },
     {
       "name": "ThrowCapsuleAction",
-      "order": 403,
+      "order": 404,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57593,7 +57638,7 @@
     },
     {
       "name": "TileAndAlpha",
-      "order": 404,
+      "order": 405,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -57621,7 +57666,7 @@
     },
     {
       "name": "TileBuildSound",
-      "order": 405,
+      "order": 406,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -57657,7 +57702,7 @@
     },
     {
       "name": "TileID",
-      "order": 406,
+      "order": 407,
       "description": "The name of a [TilePrototype](prototype:TilePrototype).",
       "examples": [
         "```\n\"grass-2\"\n```",
@@ -57669,7 +57714,7 @@
     },
     {
       "name": "TileIDRestriction",
-      "order": 407,
+      "order": 408,
       "description": "Name of an allowed tile, or a list of two tile names for entities allowed on transitions.",
       "abstract": false,
       "inline": true,
@@ -57690,7 +57735,7 @@
     },
     {
       "name": "TileRenderLayer",
-      "order": 408,
+      "order": 409,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57728,7 +57773,7 @@
     },
     {
       "name": "TileSprite",
-      "order": 409,
+      "order": 410,
       "description": "Used by [TilePrototype](prototype:TilePrototype).",
       "abstract": false,
       "inline": false,
@@ -57812,7 +57857,7 @@
     },
     {
       "name": "TileSpriteWithProbability",
-      "order": 410,
+      "order": 411,
       "description": "",
       "parent": "TileSprite",
       "abstract": false,
@@ -57856,7 +57901,7 @@
     },
     {
       "name": "TileTransitionSprite",
-      "order": 411,
+      "order": 412,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57940,7 +57985,7 @@
     },
     {
       "name": "TileTransitions",
-      "order": 412,
+      "order": 413,
       "description": "Used for [TilePrototype](prototype:TilePrototype) graphics.",
       "abstract": true,
       "inline": false,
@@ -58003,10 +58048,10 @@
         {
           "name": "inner_corner",
           "order": 2,
-          "description": "This or inner_corner_mask needs to be specified if `empty_transitions` is not true.",
+          "description": "This or `inner_corner_mask` needs to be specified if `empty_transitions` is not true.",
           "override": false,
           "type": "TileTransitionSprite",
-          "optional": false
+          "optional": true
         },
         {
           "name": "inner_corner_background",
@@ -58035,10 +58080,10 @@
         {
           "name": "inner_corner_mask",
           "order": 3,
-          "description": "This or inner_corner needs to be specified if `empty_transitions` is not true.",
+          "description": "This or `inner_corner` needs to be specified if `empty_transitions` is not true.",
           "override": false,
           "type": "TileTransitionSprite",
-          "optional": false
+          "optional": true
         },
         {
           "name": "inner_corner_weights",
@@ -58134,10 +58179,10 @@
         {
           "name": "outer_corner",
           "order": 4,
-          "description": "This or outer_corner_mask needs to be specified if `empty_transitions` is not true.",
+          "description": "This or `outer_corner_mask` needs to be specified if `empty_transitions` is not true.",
           "override": false,
           "type": "TileTransitionSprite",
-          "optional": false
+          "optional": true
         },
         {
           "name": "outer_corner_background",
@@ -58166,10 +58211,10 @@
         {
           "name": "outer_corner_mask",
           "order": 5,
-          "description": "This or outer_corner needs to be specified if `empty_transitions` is not true.",
+          "description": "This or `outer_corner` needs to be specified if `empty_transitions` is not true.",
           "override": false,
           "type": "TileTransitionSprite",
-          "optional": false
+          "optional": true
         },
         {
           "name": "outer_corner_weights",
@@ -58201,10 +58246,10 @@
         {
           "name": "side",
           "order": 0,
-          "description": "This or side_mask needs to be specified if `empty_transitions` is not true.",
+          "description": "This or `side_mask` needs to be specified if `empty_transitions` is not true.",
           "override": false,
           "type": "TileTransitionSprite",
-          "optional": false
+          "optional": true
         },
         {
           "name": "side_background",
@@ -58233,10 +58278,10 @@
         {
           "name": "side_mask",
           "order": 1,
-          "description": "This or side needs to be specified if `empty_transitions` is not true.",
+          "description": "This or `side` needs to be specified if `empty_transitions` is not true.",
           "override": false,
           "type": "TileTransitionSprite",
-          "optional": false
+          "optional": true
         },
         {
           "name": "side_weights",
@@ -58312,7 +58357,7 @@
     },
     {
       "name": "TileTransitionsBetweenTransitions",
-      "order": 413,
+      "order": 414,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -58341,7 +58386,7 @@
     },
     {
       "name": "TileTransitionsToTiles",
-      "order": 414,
+      "order": 415,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -58373,7 +58418,7 @@
     },
     {
       "name": "TileTransitionsVariants",
-      "order": 415,
+      "order": 416,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -58405,7 +58450,7 @@
     },
     {
       "name": "TimeElapsedTipTrigger",
-      "order": 416,
+      "order": 417,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58436,7 +58481,7 @@
     },
     {
       "name": "TipStatus",
-      "order": 417,
+      "order": 418,
       "description": "This is used by [TipsAndTricksItem](prototype:TipsAndTricksItem) for the initial starting status. One of the following values:",
       "abstract": false,
       "inline": false,
@@ -58489,7 +58534,7 @@
     },
     {
       "name": "TipTrigger",
-      "order": 418,
+      "order": 419,
       "description": "Loaded as one of the tip triggers, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -58647,7 +58692,7 @@
     },
     {
       "name": "TrainBrakingForceBonusModifier",
-      "order": 419,
+      "order": 420,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -58695,7 +58740,7 @@
     },
     {
       "name": "TrainPathFinderConstants",
-      "order": 420,
+      "order": 421,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -58803,7 +58848,7 @@
     },
     {
       "name": "TrainStopDrawingBoxes",
-      "order": 421,
+      "order": 422,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -58847,7 +58892,7 @@
     },
     {
       "name": "TrainStopLight",
-      "order": 422,
+      "order": 423,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58883,7 +58928,7 @@
     },
     {
       "name": "TransportBeltAnimationSet",
-      "order": 423,
+      "order": 424,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -59067,7 +59112,7 @@
     },
     {
       "name": "TransportBeltAnimationSetWithCorners",
-      "order": 424,
+      "order": 425,
       "description": "",
       "parent": "TransportBeltAnimationSet",
       "abstract": false,
@@ -59176,7 +59221,7 @@
     },
     {
       "name": "TransportBeltConnectorFrame",
-      "order": 425,
+      "order": 426,
       "description": "Used to define the graphics for the (in vanilla) yellow frame that is used when a [TransportBeltPrototype](prototype:TransportBeltPrototype) is connected to the circuit network.",
       "abstract": false,
       "inline": false,
@@ -59380,7 +59425,7 @@
     },
     {
       "name": "TreeVariation",
-      "order": 426,
+      "order": 427,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -59464,7 +59509,7 @@
     },
     {
       "name": "Trigger",
-      "order": 427,
+      "order": 428,
       "description": "Loaded as one of the [TriggerItem](prototype:TriggerItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -59532,7 +59577,7 @@
     },
     {
       "name": "TriggerDelivery",
-      "order": 428,
+      "order": 429,
       "description": "Loaded as one of the [TriggerDeliveryItem](prototype:TriggerDeliveryItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -59575,7 +59620,7 @@
     },
     {
       "name": "TriggerDeliveryItem",
-      "order": 429,
+      "order": 430,
       "description": "The abstract base of all [TriggerDeliveries](prototype:TriggerDelivery).",
       "abstract": true,
       "inline": false,
@@ -59603,7 +59648,7 @@
     },
     {
       "name": "TriggerEffect",
-      "order": 430,
+      "order": 431,
       "description": "Loaded as one of the [TriggerEffectItem](prototype:TriggerEffectItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -59831,7 +59876,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 431,
+      "order": 432,
       "description": "The abstract base of all [TriggerEffects](prototype:TriggerEffect).",
       "abstract": true,
       "inline": false,
@@ -59911,7 +59956,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 432,
+      "order": 433,
       "description": "The abstract base of all [Triggers](prototype:Trigger).",
       "abstract": true,
       "inline": false,
@@ -60013,7 +60058,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 433,
+      "order": 434,
       "description": "An array of names of [TriggerTargetType](prototype:TriggerTargetType). See [Design discussion: Trigger target type](https://forums.factorio.com/71657) and [Blacklist for prototypes turrets shouldn't attack](https://forums.factorio.com/86164).",
       "abstract": false,
       "inline": false,
@@ -60024,7 +60069,7 @@
     },
     {
       "name": "TrivialSmokeID",
-      "order": 434,
+      "order": 435,
       "description": "The name of a [TrivialSmokePrototype](prototype:TrivialSmokePrototype).",
       "examples": [
         "```\n\"smoke-building\"\n```",
@@ -60036,7 +60081,7 @@
     },
     {
       "name": "TurretAttackModifier",
-      "order": 435,
+      "order": 436,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -60100,7 +60145,7 @@
     },
     {
       "name": "UndergroundBeltStructure",
-      "order": 436,
+      "order": 437,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -60160,7 +60205,7 @@
     },
     {
       "name": "UnitAISettings",
-      "order": 437,
+      "order": 438,
       "description": "Used by [UnitPrototype](prototype:UnitPrototype).",
       "abstract": false,
       "inline": false,
@@ -60220,7 +60265,7 @@
     },
     {
       "name": "UnitAlternativeFrameSequence",
-      "order": 438,
+      "order": 439,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60338,7 +60383,7 @@
     },
     {
       "name": "UnitGroupSettings",
-      "order": 439,
+      "order": 440,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60454,7 +60499,7 @@
     },
     {
       "name": "UnitSpawnDefinition",
-      "order": 440,
+      "order": 441,
       "description": "It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the unit and the second is the spawn points.",
       "abstract": false,
       "inline": false,
@@ -60501,7 +60546,7 @@
     },
     {
       "name": "UnlockRecipeModifier",
-      "order": 441,
+      "order": 442,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -60545,7 +60590,7 @@
     },
     {
       "name": "UnlockRecipeTipTrigger",
-      "order": 442,
+      "order": 443,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60576,7 +60621,7 @@
     },
     {
       "name": "UseConfirmTipTrigger",
-      "order": 443,
+      "order": 444,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60611,7 +60656,7 @@
     },
     {
       "name": "UseOnSelfCapsuleAction",
-      "order": 444,
+      "order": 445,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60654,7 +60699,7 @@
     },
     {
       "name": "UsePipetteTipTrigger",
-      "order": 445,
+      "order": 446,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60689,7 +60734,7 @@
     },
     {
       "name": "Vector",
-      "order": 446,
+      "order": 447,
       "description": "A vector is a two-element array or dictionary containing the x and y components. Positive x goes east, positive y goes south.",
       "examples": [
         "```\nshift = {0, 12}\n```",
@@ -60735,7 +60780,7 @@
     },
     {
       "name": "Vector3D",
-      "order": 447,
+      "order": 448,
       "description": "If this is specified as a three-element array then the array items are x, y and z, in that order.",
       "abstract": false,
       "inline": false,
@@ -60785,7 +60830,7 @@
     },
     {
       "name": "VectorRotation",
-      "order": 448,
+      "order": 449,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -60816,7 +60861,7 @@
     },
     {
       "name": "VerticalAlign",
-      "order": 449,
+      "order": 450,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60844,7 +60889,7 @@
     },
     {
       "name": "VerticalFlowStyleSpecification",
-      "order": 450,
+      "order": 451,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -60876,7 +60921,7 @@
     },
     {
       "name": "VerticalScrollBarStyleSpecification",
-      "order": 451,
+      "order": 452,
       "description": "",
       "parent": "ScrollBarStyleSpecification",
       "abstract": false,
@@ -60900,7 +60945,7 @@
     },
     {
       "name": "VirtualSignalID",
-      "order": 452,
+      "order": 453,
       "description": "The name of a [VirtualSignalPrototype](prototype:VirtualSignalPrototype).",
       "examples": [
         "```\n\"signal-red\"\n```",
@@ -60912,7 +60957,7 @@
     },
     {
       "name": "VoidEnergySource",
-      "order": 453,
+      "order": 454,
       "description": "Void energy sources provide unlimited free energy.",
       "examples": [
         "```\nenergy_source = {type = \"void\"}\n```"
@@ -60939,7 +60984,7 @@
     },
     {
       "name": "WallPictures",
-      "order": 454,
+      "order": 455,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -61039,7 +61084,7 @@
     },
     {
       "name": "WaterReflectionDefinition",
-      "order": 455,
+      "order": 456,
       "description": "Entity water reflection. [Currently only renders](https://forums.factorio.com/100703) for [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype).",
       "abstract": false,
       "inline": false,
@@ -61083,7 +61128,7 @@
     },
     {
       "name": "WireConnectionPoint",
-      "order": 456,
+      "order": 457,
       "description": "Definition of a point where circuit network wires can be connected to an entity.",
       "abstract": false,
       "inline": false,
@@ -61111,7 +61156,7 @@
     },
     {
       "name": "WirePosition",
-      "order": 457,
+      "order": 458,
       "description": "Used by [WireConnectionPoint](prototype:WireConnectionPoint).",
       "abstract": false,
       "inline": false,
@@ -61147,7 +61192,7 @@
     },
     {
       "name": "WorkerRobotBatteryModifier",
-      "order": 458,
+      "order": 459,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -61195,7 +61240,7 @@
     },
     {
       "name": "WorkerRobotSpeedModifier",
-      "order": 459,
+      "order": 460,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -61243,7 +61288,7 @@
     },
     {
       "name": "WorkerRobotStorageModifier",
-      "order": 460,
+      "order": 461,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -61291,7 +61336,7 @@
     },
     {
       "name": "WorkingSound",
-      "order": 461,
+      "order": 462,
       "description": "This type is used to produce sound from in-game entities when they are working/idle.",
       "examples": [
         "```\n-- refinery\nworking_sound =\n{\n  sound = { filename = \"__base__/sound/oil-refinery.ogg\" },\n  idle_sound = { filename = \"__base__/sound/idle1.ogg\", volume = 0.6 },\n  apparent_volume = 2.5,\n}\n```",
@@ -61477,7 +61522,7 @@
     },
     {
       "name": "WorkingVisualisation",
-      "order": 462,
+      "order": 463,
       "description": "Used by crafting machines to display different graphics when the machine is running.",
       "abstract": false,
       "inline": false,
@@ -61776,7 +61821,7 @@
     },
     {
       "name": "ZoomToWorldBlueprintEnabledModifier",
-      "order": 463,
+      "order": 464,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -61812,7 +61857,7 @@
     },
     {
       "name": "ZoomToWorldDeconstructionPlannerEnabledModifier",
-      "order": 464,
+      "order": 465,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -61848,7 +61893,7 @@
     },
     {
       "name": "ZoomToWorldEnabledModifier",
-      "order": 465,
+      "order": 466,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -61884,7 +61929,7 @@
     },
     {
       "name": "ZoomToWorldGhostBuildingEnabledModifier",
-      "order": 466,
+      "order": 467,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -61920,7 +61965,7 @@
     },
     {
       "name": "ZoomToWorldSelectionToolEnabledModifier",
-      "order": 467,
+      "order": 468,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -61956,7 +62001,7 @@
     },
     {
       "name": "ZoomToWorldUpgradePlannerEnabledModifier",
-      "order": 468,
+      "order": 469,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -61992,7 +62037,7 @@
     },
     {
       "name": "bool",
-      "order": 469,
+      "order": 470,
       "description": "A variable type which can have one of two values: `true` or `false`. Wikipedia has a [comprehensive article](https://en.wikipedia.org/wiki/Boolean) on Booleans.\n\nBooleans used in prototypes can also be be defined by other variable types which are then coerced to boolean values by the game. This type coercion differs from the [standard Lua truthy/falsy](https://www.lua.org/manual/5.2/manual.html#2.1) coercion.\n\nIt is recommended to only use `true` and `false`.",
       "images": [
         {
@@ -62005,7 +62050,7 @@
     },
     {
       "name": "double",
-      "order": 470,
+      "order": 471,
       "description": "Format uses a dot as its decimal delimiter. Doubles are stored in the [double precision](http://en.wikipedia.org/wiki/Double-precision_floating-point_format) floating point format.\n\nMay not be [NaN](https://en.wikipedia.org/wiki/NaN).",
       "examples": [
         "```\n7.5\n6\n```"
@@ -62016,7 +62061,7 @@
     },
     {
       "name": "float",
-      "order": 471,
+      "order": 472,
       "description": "Format uses a dot as its decimal delimiter. Floats are stored in the [single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) floating point format.\n\nMay not be [NaN](https://en.wikipedia.org/wiki/NaN).",
       "examples": [
         "```\n7.5\n6\n```"
@@ -62027,7 +62072,7 @@
     },
     {
       "name": "int16",
-      "order": 472,
+      "order": 473,
       "description": "16 bit signed integer. Ranges from `-32 768` to `32 767`, or `[-2^15, 2^15-1]`.",
       "abstract": false,
       "inline": false,
@@ -62035,7 +62080,7 @@
     },
     {
       "name": "int32",
-      "order": 473,
+      "order": 474,
       "description": "32 bit signed integer. Ranges from `-2 147 483 648` to `2 147 483 647`, or `[-2^31, 2^31-1]`.",
       "abstract": false,
       "inline": false,
@@ -62043,7 +62088,7 @@
     },
     {
       "name": "int8",
-      "order": 474,
+      "order": 475,
       "description": "8 bit signed integer. Ranges from `-128` to `127`, or `[-2^7, 2^7-1]`.",
       "abstract": false,
       "inline": false,
@@ -62051,7 +62096,7 @@
     },
     {
       "name": "string",
-      "order": 475,
+      "order": 476,
       "description": "Strings are enclosed in double-quotes.",
       "examples": [
         "```\n\"Hello, world!\"\n```"
@@ -62062,7 +62107,7 @@
     },
     {
       "name": "uint16",
-      "order": 476,
+      "order": 477,
       "description": "16 bit unsigned integer. Ranges from `0` to `65 535`, or `[0, 2^16-1]`.",
       "abstract": false,
       "inline": false,
@@ -62070,7 +62115,7 @@
     },
     {
       "name": "uint32",
-      "order": 477,
+      "order": 478,
       "description": "32 bit unsigned integer. Ranges from `0` to `4 294 967 295`, or `[0, 2^32-1]`.",
       "abstract": false,
       "inline": false,
@@ -62078,7 +62123,7 @@
     },
     {
       "name": "uint64",
-      "order": 478,
+      "order": 479,
       "description": "64 bit unsigned integer.",
       "abstract": false,
       "inline": false,
@@ -62086,7 +62131,7 @@
     },
     {
       "name": "uint8",
-      "order": 479,
+      "order": 480,
       "description": "8 bit unsigned integer. Ranges from `0` to `255`, or `[0, 2^8-1]`.",
       "abstract": false,
       "inline": false,

@@ -8,7 +8,7 @@ import * as prototype from "./FactorioPrototypeApiJson.js"
 export interface AnyApiJson {
   application: "factorio"
   stage: string
-  api_version: 4
+  api_version: 5
   application_version: string
 }
 
@@ -40,11 +40,6 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
 
   private allFiles: OutputFile[] = []
 
-  warning(...args: unknown[]): void {
-    console.log(chalk.yellow(...args))
-    this.hasWarnings = true
-  }
-
   addFile(fileName: string, moduleType: ModuleType, fn: () => void): void {
     if (this._currentFile) throw new Error("Nested addFile")
     const builder = new OutputFileBuilderImpl(this.manualDefs, fileName, moduleType)
@@ -69,12 +64,23 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   private checkApiDocs() {
     for (const [k, v] of Object.entries({
       application: "factorio",
-      api_version: 4,
+      api_version: 5,
       stage: this.stageName,
     })) {
       if (this.apiDocs[k as keyof AnyApiJson] !== v) {
         throw new Error(`Expected ${k}=${v}, got ${this.apiDocs[k as keyof AnyApiJson]}`)
       }
+    }
+  }
+
+  warning(...args: unknown[]): void {
+    console.log(chalk.yellow(...args))
+    this.hasWarnings = true
+  }
+
+  warnIfHasVisibility(obj: { visibility?: string[] }): void {
+    if (obj.visibility && obj.visibility.length > 1) {
+      this.warning("Visibility not implemented yet")
     }
   }
 

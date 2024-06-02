@@ -5,8 +5,8 @@ import * as prettier from "prettier"
 import ts from "typescript"
 import { fileURLToPath } from "url"
 import { AnyApiJson, GenerationContext, Options } from "./GenerationContext.js"
-import { PrototypeGenerationContext } from "./prototype/index.js"
-import { RuntimeGenerationContext } from "./runtime/index.js"
+import { PrototypeGenerationContext } from "./prototype"
+import { RuntimeGenerationContext } from "./runtime"
 import { printer } from "./genUtil.js"
 
 const __filename = fileURLToPath(import.meta.url)
@@ -45,7 +45,7 @@ async function getApiJson<C extends AnyApiJson>(stage: string) {
     throw new Error(`Expected stage ${stage}, got ${apiJson.stage}`)
   }
 
-  console.log(`  factorio ${apiJson.stage} v${jsonVersion}`)
+  console.log(`${stage}: loaded v${jsonVersion}`)
   return apiJson
 }
 

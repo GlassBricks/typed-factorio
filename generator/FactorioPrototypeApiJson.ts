@@ -1,11 +1,13 @@
 // prototype stage
-// reference: https://lua-api.factorio.com/1.1.89/auxiliary/json-docs-prototype.html
+// https://lua-api.factorio.com/latest/auxiliary/json-docs-prototype.html
+
+import { Expansions } from "./FactorioRuntimeApiJson"
 
 export interface FactorioPrototypeApiJson {
   application: "factorio"
   stage: "prototype"
   application_version: string
-  api_version: 4
+  api_version: 5
 
   prototypes: Prototype[]
   types: PrototypeConcept[]
@@ -22,6 +24,7 @@ export interface PrototypeWithExamples {
 }
 
 export interface Prototype extends BasicMember, PrototypeWithExamples {
+  visibility: Expansions
   parent?: string
   abstract: boolean
   typename?: string

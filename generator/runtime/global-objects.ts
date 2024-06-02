@@ -5,8 +5,8 @@ import { byOrder } from "../util.js"
 import { createComment, createConst } from "../genUtil.js"
 import { mapRuntimeType } from "../types.js"
 import { addJsDoc } from "../documentation.js"
-import { GlobalObject } from "../FactorioRuntimeApiJson.js"
 import assert from "assert"
+import { Parameter } from "../FactorioRuntimeApiJson"
 
 export function preprocessGlobalObjects(context: RuntimeGenerationContext): void {
   for (const globalObject of context.apiDocs.global_objects) {
@@ -31,7 +31,7 @@ export function generateGlobalObjects(context: RuntimeGenerationContext): void {
   })
 }
 
-function handleSettingsGlobal(context: RuntimeGenerationContext, globalObject: GlobalObject) {
+function handleSettingsGlobal(context: RuntimeGenerationContext, globalObject: Parameter) {
   assert(globalObject.name === "settings")
   assert(globalObject.type === "LuaSettings")
   const statement = createComment(

@@ -67,6 +67,10 @@ function generatePrototype(
   prototype: Prototype,
   subclassMap: Map<string, string[]>,
 ): void {
+  if (prototype.visibility) {
+    context.warning("Visibility not yet implemented")
+  }
+
   const existing = context.manualDefs.getInterface(prototype.name)
   const members = getMembers(context, prototype, existing, subclassMap)
   const heritageClauses = getPrototypeHeritageClauses(prototype, context)
