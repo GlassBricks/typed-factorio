@@ -174,14 +174,7 @@ function getImages(context: GenerationContext, element: Documentable): string | 
 
 function processExample(context: GenerationContext, example: string): string {
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
-
-  const codeBlock1 = codeBlock.replaceAll(/\$ref\(\$runtime, (.*?)\)/g, (_, name) => {
-    if (context.apiDocs.application_version !== "1.1.108") {
-      context.warning("Remove $ref($runtime) fix")
-    }
-    return name
-  })
-  const result = processDescription(context, header + "\n" + codeBlock1.trim(), false)!
+  const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
   return result.replaceAll("\n", "\n * ")
 }
 

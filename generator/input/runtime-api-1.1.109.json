@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.108",
+  "application_version": "1.1.109",
   "api_version": 5,
   "stage": "runtime",
   "classes": [
@@ -686,8 +686,8 @@
           "order": 3,
           "description": "Register a handler to run on the specified event(s). Each mod can only register once for every event, as any additional registration will overwrite the previous one. This holds true even if different filters are used for subsequent registrations.",
           "examples": [
-            "```\n-- Register for the $ref($runtime, on_tick) event to print the current tick to console each tick\nscript.on_event(defines.events.on_tick,\nfunction(event) game.print(event.tick) end)\n```",
-            "```\n-- Register for the $ref($runtime, on_built_entity) event, limiting it to only be received when a `\"fast-inserter\"` is built\nscript.on_event(defines.events.on_built_entity,\nfunction(event) game.print(\"Gotta go fast!\") end,\n{{filter = \"name\", name = \"fast-inserter\"}})\n```"
+            "```\n-- Register for the on_tick event to print the current tick to console each tick\nscript.on_event(defines.events.on_tick,\nfunction(event) game.print(event.tick) end)\n```",
+            "```\n-- Register for the on_built_entity event, limiting it to only be received when a `\"fast-inserter\"` is built\nscript.on_event(defines.events.on_built_entity,\nfunction(event) game.print(\"Gotta go fast!\") end,\n{{filter = \"name\", name = \"fast-inserter\"}})\n```"
           ],
           "parameters": [
             {
@@ -925,7 +925,7 @@
             "Events that can be raised manually:\n\n- [on_console_chat](runtime:on_console_chat)\n- [on_player_crafted_item](runtime:on_player_crafted_item)\n- [on_player_fast_transferred](runtime:on_player_fast_transferred)\n- [on_biter_base_built](runtime:on_biter_base_built)\n- [on_market_item_purchased](runtime:on_market_item_purchased)\n- [script_raised_built](runtime:script_raised_built)\n- [script_raised_destroy](runtime:script_raised_destroy)\n- [script_raised_revive](runtime:script_raised_revive)\n- [script_raised_teleported](runtime:script_raised_teleported)\n- [script_raised_set_tiles](runtime:script_raised_set_tiles)"
           ],
           "examples": [
-            "```\n-- Raise the $ref($runtime, on_console_chat) event with the desired message 'from' the first player\nlocal data = {player_index = 1, message = \"Hello friends!\"}\nscript.raise_event(defines.events.on_console_chat, data)\n```"
+            "```\n-- Raise the on_console_chat event with the desired message 'from' the first player\nlocal data = {player_index = 1, message = \"Hello friends!\"}\nscript.raise_event(defines.events.on_console_chat, data)\n```"
           ],
           "parameters": [
             {
@@ -3011,8 +3011,15 @@
           "description": "Create an arrow which points at this entity. This is used in the tutorial. For examples, see `control.lua` in the campaign missions.",
           "parameters": [
             {
-              "name": "type",
+              "name": "margin",
               "order": 0,
+              "description": "",
+              "type": "uint",
+              "optional": false
+            },
+            {
+              "name": "type",
+              "order": 1,
               "description": "Where to point to. This field determines what other fields are mandatory.",
               "type": "GuiArrowType",
               "optional": false
@@ -20292,7 +20299,7 @@
         {
           "name": "forces",
           "order": 6,
-          "description": "Get a table of all the forces that currently exist. This sparse table allows you to find forces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the hash part of the table. Iterating with `ipairs()` will not work at all.",
+          "description": "Get a table of all the forces that currently exist. This sparse table allows you to find forces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will provide the `name`s as the keys. Iterating with `ipairs()` will not work at all.",
           "type": {
             "complex_type": "LuaCustomTable",
             "key": {
@@ -20662,7 +20669,7 @@
         {
           "name": "surfaces",
           "order": 46,
-          "description": "Get a table of all the surfaces that currently exist. This sparse table allows you to find surfaces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the hash part of the table. Iterating with `ipairs()` will not work at all.",
+          "description": "Get a table of all the surfaces that currently exist. This sparse table allows you to find surfaces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will provide the `name`s as the keys. Iterating with `ipairs()` will not work at all.",
           "type": {
             "complex_type": "LuaCustomTable",
             "key": {
@@ -54271,7 +54278,7 @@
           {
             "name": "ammo_categories",
             "order": 16,
-            "description": "List of the names of compatible",
+            "description": "List of the names of compatible [LuaAmmoCategoryPrototypes](runtime:LuaAmmoCategoryPrototype).",
             "type": {
               "complex_type": "array",
               "value": "string"
@@ -54420,7 +54427,103 @@
             "type": "uint",
             "optional": false
           }
-        ]
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "projectile",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "projectile_center",
+                "order": 0,
+                "description": "",
+                "type": "Vector",
+                "optional": false
+              },
+              {
+                "name": "projectile_creation_distance",
+                "order": 1,
+                "description": "",
+                "type": "float",
+                "optional": false
+              },
+              {
+                "name": "projectile_creation_parameters",
+                "order": 4,
+                "description": "",
+                "type": {
+                  "complex_type": "array",
+                  "value": "CircularProjectileCreationSpecification"
+                },
+                "optional": true
+              },
+              {
+                "name": "projectile_orientation_offset",
+                "order": 2,
+                "description": "",
+                "type": "float",
+                "optional": false
+              },
+              {
+                "name": "shell_particle",
+                "order": 3,
+                "description": "",
+                "type": "CircularParticleCreationSpecification",
+                "optional": true
+              }
+            ]
+          },
+          {
+            "name": "stream",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "fluid_consumption",
+                "order": 2,
+                "description": "",
+                "type": "float",
+                "optional": false
+              },
+              {
+                "name": "fluids",
+                "order": 3,
+                "description": "",
+                "type": {
+                  "complex_type": "array",
+                  "value": "AttackParameterFluid"
+                },
+                "optional": true
+              },
+              {
+                "name": "gun_barrel_length",
+                "order": 0,
+                "description": "",
+                "type": "float",
+                "optional": false
+              },
+              {
+                "name": "gun_center_shift",
+                "order": 1,
+                "description": "",
+                "type": "GunShift4Way",
+                "optional": false
+              },
+              {
+                "name": "projectile_creation_parameters",
+                "order": 4,
+                "description": "",
+                "type": {
+                  "complex_type": "array",
+                  "value": "CircularProjectileCreationSpecification"
+                },
+                "optional": true
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `type`:"
       }
     },
     {
@@ -56807,6 +56910,7 @@
         "attributes": [
           {
             "name": "recipe_difficulty",
+            "order": 0,
             "description": "",
             "type": "defines.difficulty_settings.recipe_difficulty",
             "optional": false,
@@ -56814,23 +56918,8 @@
             "write": true
           },
           {
-            "name": "technology_difficulty",
-            "description": "",
-            "type": "defines.difficulty_settings.technology_difficulty",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "technology_price_multiplier",
-            "description": "A value in range [0.001, 1000].",
-            "type": "double",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
             "name": "research_queue_setting",
+            "order": 3,
             "description": "Changing this to `\"always\"` or `\"after-victory\"` does not automatically unlock the research queue. See [LuaForce::research_queue_enabled](runtime:LuaForce::research_queue_enabled) for that.",
             "type": {
               "complex_type": "union",
@@ -56850,6 +56939,24 @@
               ],
               "full_format": false
             },
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "technology_difficulty",
+            "order": 1,
+            "description": "",
+            "type": "defines.difficulty_settings.technology_difficulty",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "technology_price_multiplier",
+            "order": 2,
+            "description": "A value in range [0.001, 1000].",
+            "type": "double",
             "optional": false,
             "read": true,
             "write": true
@@ -58506,39 +58613,8 @@
         "complex_type": "LuaStruct",
         "attributes": [
           {
-            "name": "show_controller_gui",
-            "description": "Show the controller GUI elements. This includes the toolbar, the selected tool slot, the armour slot, and the gun and ammunition slots.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_minimap",
-            "description": "Show the chart in the upper right-hand corner of the screen.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_research_info",
-            "description": "Show research progress and name in the upper right-hand corner of the screen.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_entity_info",
-            "description": "Show overlay icons on entities. Also known as \"alt-mode\".",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
             "name": "show_alert_gui",
+            "order": 4,
             "description": "Show the flashing alert icons next to the player's toolbar.",
             "type": "boolean",
             "optional": false,
@@ -58546,56 +58622,9 @@
             "write": true
           },
           {
-            "name": "update_entity_selection",
-            "description": "When `true` (the default), mousing over an entity will select it. Otherwise, moving the mouse won't update entity selection.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_rail_block_visualisation",
-            "description": "When `true` (`false` is default), the rails will always show the rail block visualisation.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_side_menu",
-            "description": "Shows or hides the buttons row.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_map_view_options",
-            "description": "Shows or hides the view options when map is opened.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_entity_tooltip",
-            "description": "Shows or hides the tooltip that is displayed when selecting an entity.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_quickbar",
-            "description": "Shows or hides quickbar of shortcuts.",
-            "type": "boolean",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "show_shortcut_bar",
-            "description": "Shows or hides the shortcut bar.",
+            "name": "show_controller_gui",
+            "order": 0,
+            "description": "Show the controller GUI elements. This includes the toolbar, the selected tool slot, the armour slot, and the gun and ammunition slots.",
             "type": "boolean",
             "optional": false,
             "read": true,
@@ -58603,6 +58632,7 @@
           },
           {
             "name": "show_crafting_queue",
+            "order": 12,
             "description": "Shows or hides the crafting queue.",
             "type": "boolean",
             "optional": false,
@@ -58610,8 +58640,18 @@
             "write": true
           },
           {
-            "name": "show_tool_bar",
-            "description": "Shows or hides the tool window with the weapons and armor.",
+            "name": "show_entity_info",
+            "order": 3,
+            "description": "Show overlay icons on entities. Also known as \"alt-mode\".",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_entity_tooltip",
+            "order": 9,
+            "description": "Shows or hides the tooltip that is displayed when selecting an entity.",
             "type": "boolean",
             "optional": false,
             "read": true,
@@ -58619,7 +58659,89 @@
           },
           {
             "name": "show_hotkey_suggestions",
+            "order": 14,
             "description": "Shows or hides the mouse and keyboard/controller button hints in the bottom left corner if they are enabled in the interface settings.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_map_view_options",
+            "order": 8,
+            "description": "Shows or hides the view options when map is opened.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_minimap",
+            "order": 1,
+            "description": "Show the chart in the upper right-hand corner of the screen.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_quickbar",
+            "order": 10,
+            "description": "Shows or hides quickbar of shortcuts.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_rail_block_visualisation",
+            "order": 6,
+            "description": "When `true` (`false` is default), the rails will always show the rail block visualisation.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_research_info",
+            "order": 2,
+            "description": "Show research progress and name in the upper right-hand corner of the screen.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_shortcut_bar",
+            "order": 11,
+            "description": "Shows or hides the shortcut bar.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_side_menu",
+            "order": 7,
+            "description": "Shows or hides the buttons row.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "show_tool_bar",
+            "order": 13,
+            "description": "Shows or hides the tool window with the weapons and armor.",
+            "type": "boolean",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "update_entity_selection",
+            "order": 5,
+            "description": "When `true` (the default), mousing over an entity will select it. Otherwise, moving the mouse won't update entity selection.",
             "type": "boolean",
             "optional": false,
             "read": true,
@@ -64466,15 +64588,8 @@
         "complex_type": "LuaStruct",
         "attributes": [
           {
-            "name": "pollution",
-            "description": "",
-            "type": "PollutionMapSettings",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
             "name": "enemy_evolution",
+            "order": 1,
             "description": "",
             "type": "EnemyEvolutionMapSettings",
             "optional": false,
@@ -64483,6 +64598,7 @@
           },
           {
             "name": "enemy_expansion",
+            "order": 2,
             "description": "",
             "type": "EnemyExpansionMapSettings",
             "optional": false,
@@ -64490,23 +64606,17 @@
             "write": true
           },
           {
-            "name": "unit_group",
-            "description": "",
-            "type": "UnitGroupMapSettings",
-            "optional": false,
-            "read": true,
-            "write": true
-          },
-          {
-            "name": "steering",
-            "description": "",
-            "type": "SteeringMapSetting",
+            "name": "max_failed_behavior_count",
+            "order": 6,
+            "description": "If a behavior fails this many times, the enemy (or enemy group) is destroyed. This solves biters getting stuck within their own base.",
+            "type": "uint",
             "optional": false,
             "read": true,
             "write": true
           },
           {
             "name": "path_finder",
+            "order": 5,
             "description": "",
             "type": "PathFinderMapSettings",
             "optional": false,
@@ -64514,9 +64624,28 @@
             "write": true
           },
           {
-            "name": "max_failed_behavior_count",
-            "description": "If a behavior fails this many times, the enemy (or enemy group) is destroyed. This solves biters getting stuck within their own base.",
-            "type": "uint",
+            "name": "pollution",
+            "order": 0,
+            "description": "",
+            "type": "PollutionMapSettings",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "steering",
+            "order": 4,
+            "description": "",
+            "type": "SteeringMapSetting",
+            "optional": false,
+            "read": true,
+            "write": true
+          },
+          {
+            "name": "unit_group",
+            "order": 3,
+            "description": "",
+            "type": "UnitGroupMapSettings",
             "optional": false,
             "read": true,
             "write": true
@@ -70105,6 +70234,103 @@
               ]
             }
           ]
+        },
+        {
+          "name": "type",
+          "order": 5,
+          "description": "",
+          "values": [
+            {
+              "name": "accumulator",
+              "order": 12,
+              "description": "[LuaAccumulatorControlBehavior](runtime:LuaAccumulatorControlBehavior)"
+            },
+            {
+              "name": "arithmetic_combinator",
+              "order": 9,
+              "description": "[LuaArithmeticCombinatorControlBehavior](runtime:LuaArithmeticCombinatorControlBehavior)"
+            },
+            {
+              "name": "constant_combinator",
+              "order": 10,
+              "description": "[LuaConstantCombinatorControlBehavior](runtime:LuaConstantCombinatorControlBehavior)"
+            },
+            {
+              "name": "container",
+              "order": 0,
+              "description": "[LuaContainerControlBehavior](runtime:LuaContainerControlBehavior)"
+            },
+            {
+              "name": "decider_combinator",
+              "order": 8,
+              "description": "[LuaDeciderCombinatorControlBehavior](runtime:LuaDeciderCombinatorControlBehavior)"
+            },
+            {
+              "name": "generic_on_off",
+              "order": 1,
+              "description": "[LuaGenericOnOffControlBehavior](runtime:LuaGenericOnOffControlBehavior)"
+            },
+            {
+              "name": "inserter",
+              "order": 2,
+              "description": "[LuaInserterControlBehavior](runtime:LuaInserterControlBehavior)"
+            },
+            {
+              "name": "lamp",
+              "order": 3,
+              "description": "[LuaLampControlBehavior](runtime:LuaLampControlBehavior)"
+            },
+            {
+              "name": "logistic_container",
+              "order": 4,
+              "description": "[LuaLogisticContainerControlBehavior](runtime:LuaLogisticContainerControlBehavior)"
+            },
+            {
+              "name": "mining_drill",
+              "order": 16,
+              "description": "[LuaMiningDrillControlBehavior](runtime:LuaMiningDrillControlBehavior)"
+            },
+            {
+              "name": "programmable_speaker",
+              "order": 17,
+              "description": "[LuaProgrammableSpeakerControlBehavior](runtime:LuaProgrammableSpeakerControlBehavior)"
+            },
+            {
+              "name": "rail_chain_signal",
+              "order": 14,
+              "description": "[LuaRailChainSignalControlBehavior](runtime:LuaRailChainSignalControlBehavior)"
+            },
+            {
+              "name": "rail_signal",
+              "order": 13,
+              "description": "[LuaRailSignalControlBehavior](runtime:LuaRailSignalControlBehavior)"
+            },
+            {
+              "name": "roboport",
+              "order": 5,
+              "description": "[LuaRoboportControlBehavior](runtime:LuaRoboportControlBehavior)"
+            },
+            {
+              "name": "storage_tank",
+              "order": 6,
+              "description": "[LuaStorageTankControlBehavior](runtime:LuaStorageTankControlBehavior)"
+            },
+            {
+              "name": "train_stop",
+              "order": 7,
+              "description": "[LuaTrainStopControlBehavior](runtime:LuaTrainStopControlBehavior)"
+            },
+            {
+              "name": "transport_belt",
+              "order": 11,
+              "description": "[LuaTransportBeltControlBehavior](runtime:LuaTransportBeltControlBehavior)"
+            },
+            {
+              "name": "wall",
+              "order": 15,
+              "description": "[LuaWallControlBehavior](runtime:LuaWallControlBehavior)"
+            }
+          ]
         }
       ]
     },
@@ -73954,105 +74180,8 @@
       ]
     },
     {
-      "name": "type",
-      "order": 44,
-      "description": "",
-      "values": [
-        {
-          "name": "accumulator",
-          "order": 12,
-          "description": "[LuaAccumulatorControlBehavior](runtime:LuaAccumulatorControlBehavior)"
-        },
-        {
-          "name": "arithmetic_combinator",
-          "order": 9,
-          "description": "[LuaArithmeticCombinatorControlBehavior](runtime:LuaArithmeticCombinatorControlBehavior)"
-        },
-        {
-          "name": "constant_combinator",
-          "order": 10,
-          "description": "[LuaConstantCombinatorControlBehavior](runtime:LuaConstantCombinatorControlBehavior)"
-        },
-        {
-          "name": "container",
-          "order": 0,
-          "description": "[LuaContainerControlBehavior](runtime:LuaContainerControlBehavior)"
-        },
-        {
-          "name": "decider_combinator",
-          "order": 8,
-          "description": "[LuaDeciderCombinatorControlBehavior](runtime:LuaDeciderCombinatorControlBehavior)"
-        },
-        {
-          "name": "generic_on_off",
-          "order": 1,
-          "description": "[LuaGenericOnOffControlBehavior](runtime:LuaGenericOnOffControlBehavior)"
-        },
-        {
-          "name": "inserter",
-          "order": 2,
-          "description": "[LuaInserterControlBehavior](runtime:LuaInserterControlBehavior)"
-        },
-        {
-          "name": "lamp",
-          "order": 3,
-          "description": "[LuaLampControlBehavior](runtime:LuaLampControlBehavior)"
-        },
-        {
-          "name": "logistic_container",
-          "order": 4,
-          "description": "[LuaLogisticContainerControlBehavior](runtime:LuaLogisticContainerControlBehavior)"
-        },
-        {
-          "name": "mining_drill",
-          "order": 16,
-          "description": "[LuaMiningDrillControlBehavior](runtime:LuaMiningDrillControlBehavior)"
-        },
-        {
-          "name": "programmable_speaker",
-          "order": 17,
-          "description": "[LuaProgrammableSpeakerControlBehavior](runtime:LuaProgrammableSpeakerControlBehavior)"
-        },
-        {
-          "name": "rail_chain_signal",
-          "order": 14,
-          "description": "[LuaRailChainSignalControlBehavior](runtime:LuaRailChainSignalControlBehavior)"
-        },
-        {
-          "name": "rail_signal",
-          "order": 13,
-          "description": "[LuaRailSignalControlBehavior](runtime:LuaRailSignalControlBehavior)"
-        },
-        {
-          "name": "roboport",
-          "order": 5,
-          "description": "[LuaRoboportControlBehavior](runtime:LuaRoboportControlBehavior)"
-        },
-        {
-          "name": "storage_tank",
-          "order": 6,
-          "description": "[LuaStorageTankControlBehavior](runtime:LuaStorageTankControlBehavior)"
-        },
-        {
-          "name": "train_stop",
-          "order": 7,
-          "description": "[LuaTrainStopControlBehavior](runtime:LuaTrainStopControlBehavior)"
-        },
-        {
-          "name": "transport_belt",
-          "order": 11,
-          "description": "[LuaTransportBeltControlBehavior](runtime:LuaTransportBeltControlBehavior)"
-        },
-        {
-          "name": "wall",
-          "order": 15,
-          "description": "[LuaWallControlBehavior](runtime:LuaWallControlBehavior)"
-        }
-      ]
-    },
-    {
       "name": "wire_connection_id",
-      "order": 45,
+      "order": 44,
       "description": "",
       "values": [
         {
@@ -74074,7 +74203,7 @@
     },
     {
       "name": "wire_type",
-      "order": 46,
+      "order": 45,
       "description": "",
       "values": [
         {

@@ -627,16 +627,6 @@ export interface FluidBoxConnection {
   readonly positions: MapPosition[]
 }
 
-// these are present in the prototype definitions, but not in the runtime definitions??
-/** @omit */
-export interface CircularParticleCreationSpecification {}
-/** @omit */
-export interface CircularProjectileCreationSpecification {}
-/** @omit */
-export interface AttackParameterFluid {}
-/** @omit */
-export interface GunShift4Way {}
-
 /** @writeType BoundingBoxWrite BoundingBoxArray */
 export interface BoundingBox {}
 

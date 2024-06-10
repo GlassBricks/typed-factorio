@@ -7,7 +7,6 @@ import { byOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
 import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
-import assert from "assert"
 
 export function preprocessDefines(context: RuntimeGenerationContext): void {
   function addDefine(define: Define, parent: string) {
@@ -31,18 +30,6 @@ export function preprocessDefines(context: RuntimeGenerationContext): void {
 }
 
 export function generateDefines(context: RuntimeGenerationContext): void {
-  if (context.apiDocs.application_version === "1.1.108") {
-    // manually fix bug in api docs
-    const typeDefineIndex = context.apiDocs.defines.findIndex((d) => d.name === "type")
-    assert(typeDefineIndex !== -1, "type define not found")
-    const [typeDefine] = context.apiDocs.defines.splice(typeDefineIndex, 1)
-    const controlBehaviorDefine = context.apiDocs.defines.find((d) => d.name === "control_behavior")
-    assert(controlBehaviorDefine, "control_behavior define not found")
-    controlBehaviorDefine.subkeys!.push(typeDefine)
-  } else {
-    context.warning("remove me after 1.1.108")
-  }
-
   context.addFile("defines", ModuleType.Global, () => {
     const [defines] = generateDefinesDeclaration(
       context,
