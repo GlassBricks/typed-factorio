@@ -190,8 +190,6 @@ import type {
   ScriptRaisedTeleportedEvent,
 } from "factorio:runtime"
 
-import type { PrototypeSubclassMap } from "factorio:prototype"
-
 declare global {
   namespace defines {
     enum alert_type {
