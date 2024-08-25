@@ -4,7 +4,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
-import { PrototypeMap, PrototypeSubclassMap } from "factorio:prototype"
+import { PrototypeMap } from "factorio:prototype"
 import { SettingsPrototypeMap } from "factorio:settings"
 
 export interface LuaObject {
@@ -23,12 +23,6 @@ export type uint64 = number
 export type nil = undefined
 
 declare namespace defines {
-  const prototypes: {
-    [Type in keyof PrototypeSubclassMap]: {
-      [Subtype in keyof PrototypeSubclassMap[Type]]: 0
-    }
-  }
-
   namespace difficulty_settings {
     enum recipe_difficulty {}
 
@@ -450,6 +444,7 @@ export interface ModChangeData {
   readonly old_version: VersionString | nil
   readonly new_version: VersionString | nil
 }
+
 export interface ConfigurationChangedData {
   readonly old_version?: VersionString
   readonly new_version?: VersionString
@@ -539,9 +534,11 @@ export type LocalisedString = [string, ...LocalisedString[]]
 export interface RealOrientation {}
 
 export interface MapPosition {}
+
 export interface MapPositionArray {}
 
 export interface Color {}
+
 export type ColorArray = readonly [r: double, g: double, b: double, a?: double]
 export type ColorModifierArray = readonly [r: double, g: double, b: double, a?: double]
 

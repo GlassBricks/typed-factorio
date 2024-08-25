@@ -230,43 +230,27 @@ function addPrototypeMap(
 
   context.currentFile.add(intf)
 
-  // interface PrototypeSubclassMap {
-  //   "rootType": {
-  //     "subType": Interface
-  //   }
-  // }
-
-  const rootMembers = rootPrototypes.map((p) => {
-    const typeName = classNameToTypeName(p)
-    const subTypes = new Set(subclassMap.get(p))
-    const subPrototypes = Array.from(context.prototypes)
-      .filter(([, prototype]) => prototype.typename && subTypes.has(prototype.typename))
-      .map(([name, prototype]) => {
-        return ts.factory.createPropertySignature(
-          undefined,
-          ts.factory.createStringLiteral(prototype.typename!),
-          undefined,
-          ts.factory.createTypeReferenceNode(name),
-        )
-      })
-    return ts.factory.createPropertySignature(
-      undefined,
-      ts.factory.createStringLiteral(typeName),
-      undefined,
-      ts.factory.createTypeLiteralNode(subPrototypes),
-    )
-  })
-
-  const rootIntf = ts.factory.createInterfaceDeclaration(
+  // type PrototypeSubclassMap = defines.prototypes
+  const typeAlias = ts.factory.createTypeAliasDeclaration(
     [Modifiers.export],
     "PrototypeSubclassMap",
     undefined,
-    undefined,
-    rootMembers,
+    ts.factory.createTypeReferenceNode("defines.prototypes"),
   )
-  context.currentFile.add(rootIntf)
+  addJsDoc(
+    context,
+    typeAlias,
+    {
+      description: "A map of prototype subclass types to their prototype types.",
+    },
+    undefined,
+    {
+      tags: [createTag("deprecated", "Use defines.prototypes instead.")],
+    },
+  )
+  context.currentFile.add(typeAlias)
 
-  // type <entity>Type = keyof PrototypeMap["entity"]
+  // type <entity>Type = keyof defines.prototypes["entity"]
   for (const prototype of rootPrototypes) {
     const subTypes = subclassMap.get(prototype)
     if (!subTypes || subTypes.length <= 1) continue
@@ -281,7 +265,7 @@ function addPrototypeMap(
       ts.factory.createTypeOperatorNode(
         ts.SyntaxKind.KeyOfKeyword,
         ts.factory.createIndexedAccessTypeNode(
-          ts.factory.createTypeReferenceNode("PrototypeSubclassMap"),
+          ts.factory.createTypeReferenceNode("defines.prototypes"),
           Types.stringLiteral(typeName),
         ),
       ),

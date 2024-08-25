@@ -12,7 +12,7 @@ import type { VersionString } from "factorio:common"
 declare module "factorio:runtime" {
   /**
    * @see AutoplaceSettingsWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#AutoplaceSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#AutoplaceSettings Online documentation}
    */
   export interface AutoplaceSettings {
     /**
@@ -26,7 +26,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link AutoplaceSettings}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#AutoplaceSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#AutoplaceSettings Online documentation}
    */
   export interface AutoplaceSettingsWrite {
     /**
@@ -39,97 +39,6 @@ declare module "factorio:runtime" {
     readonly settings?: Record<string, AutoplaceControlWrite>
   }
   /**
-   * Used by {@link TriggerEffectItem}.
-   *
-   * ## Union members
-   * - `"damage"`
-   * - `"create-entity"`
-   * - `"create-explosion"`
-   * - `"create-fire"`
-   * - `"create-smoke"`
-   * - `"create-trivial-smoke"`
-   * - `"create-particle"`
-   * - `"create-sticker"`
-   * - `"create-decorative"`
-   * - `"nested-result"`
-   * - `"play-sound"`
-   * - `"push-back"`
-   * - `"destroy-cliffs"`
-   * - `"show-explosion-on-chart"`
-   * - `"insert-item"`
-   * - `"script"`
-   * - `"set-tile"`
-   * - `"invoke-tile-trigger"`
-   * - `"destroy-decoratives"`
-   * - `"camera-effect"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TriggerEffectItemType Online documentation}
-   */
-  export type TriggerEffectItemType =
-    | "damage"
-    | "create-entity"
-    | "create-explosion"
-    | "create-fire"
-    | "create-smoke"
-    | "create-trivial-smoke"
-    | "create-particle"
-    | "create-sticker"
-    | "create-decorative"
-    | "nested-result"
-    | "play-sound"
-    | "push-back"
-    | "destroy-cliffs"
-    | "show-explosion-on-chart"
-    | "insert-item"
-    | "script"
-    | "set-tile"
-    | "invoke-tile-trigger"
-    | "destroy-decoratives"
-    | "camera-effect"
-  export interface TriggerEffectItem {
-    readonly type: TriggerEffectItemType
-    readonly repeat_count: uint16
-    readonly repeat_count_deviation: uint16
-    readonly probability: float
-    readonly affects_target: boolean
-    readonly show_in_tooltip: boolean
-    readonly damage_type_filters?: DamageTypeFilters
-  }
-  export interface TriggerItem {
-    readonly type: "direct" | "area" | "line" | "cluster"
-    readonly action_delivery?: TriggerDelivery[]
-    /**
-     * The trigger will only affect entities that contain any of these flags.
-     */
-    readonly entity_flags?: EntityPrototypeFlags
-    readonly ignore_collision_condition: boolean
-    /**
-     * The trigger will only affect entities that would collide with given collision mask.
-     */
-    readonly collision_mask: CollisionMask
-    readonly trigger_target_mask: TriggerTargetMask
-    /**
-     * If `"enemy"`, the trigger will only affect entities whose force is different from the attacker's and for which there is no cease-fire set. `"ally"` is the opposite of `"enemy"`.
-     */
-    readonly force: ForceCondition
-    readonly repeat_count: uint
-    readonly probability: float
-  }
-  export interface TriggerDelivery {
-    readonly type: "instant" | "projectile" | "flame-thrower" | "beam" | "stream" | "artillery"
-    readonly source_effects: TriggerEffectItem[]
-    readonly target_effects: TriggerEffectItem[]
-  }
-  export interface DamageTypeFilters {
-    /**
-     * Whether this is a whitelist or a blacklist of damage types. `true` means whitelist.
-     */
-    readonly whitelist: boolean
-    /**
-     * The damage types to filter for. The value in the dictionary is meaningless and exists just to allow for easy lookup.
-     */
-    readonly types: Record<string, true>
-  }
-  /**
    * The text is aligned so that the target position is at the given side of the text.
    *
    * For example, `"right"` aligned text means the right side of the text is at the target position. Or in other words, the target is on the right of the text.
@@ -138,7 +47,7 @@ declare module "factorio:runtime" {
    * - `"left"`
    * - `"right"`
    * - `"center"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TextAlign Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TextAlign Online documentation}
    */
   export type TextAlign = "left" | "right" | "center"
   /**
@@ -151,7 +60,7 @@ declare module "factorio:runtime" {
    * - `"middle"`
    * - `"baseline"`
    * - `"bottom"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#VerticalTextAlign Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#VerticalTextAlign Online documentation}
    */
   export type VerticalTextAlign = "top" | "middle" | "baseline" | "bottom"
   /**
@@ -219,7 +128,7 @@ declare module "factorio:runtime" {
    * - `"position"`: {@link PositionGuiArrowSpecification}
    * - `"crafting_queue"`: {@link CraftingQueueGuiArrowSpecification}
    * - `"item_stack"`: {@link ItemStackGuiArrowSpecification}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GuiArrowSpecification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GuiArrowSpecification Online documentation}
    */
   export type GuiArrowSpecification =
     | EntityGuiArrowSpecification
@@ -254,15 +163,187 @@ declare module "factorio:runtime" {
     readonly game_state?: boolean
   }
   /**
+   * What is shown in the map view. If a field is not given, that setting will not be changed.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapViewSettings Online documentation}
+   */
+  export interface MapViewSettings {
+    readonly "show-logistic-network"?: boolean
+    readonly "show-electric-network"?: boolean
+    readonly "show-turret-range"?: boolean
+    readonly "show-pollution"?: boolean
+    readonly "show-networkless-logistic-members"?: boolean
+    readonly "show-train-station-names"?: boolean
+    readonly "show-player-names"?: boolean
+    readonly "show-tags"?: boolean
+    readonly "show-worker-robots"?: boolean
+    readonly "show-rail-signal-states"?: boolean
+    readonly "show-recipe-icons"?: boolean
+    readonly "show-non-standard-map-info"?: boolean
+  }
+  /**
    * One of the following values:
    *
    * ## Union members
-   * - `"none"`
-   * - `"whitelist"`
-   * - `"blacklist"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#PrototypeFilterMode Online documentation}
+   * - `"entity"`: The normal entity selection box. Yellow by default.
+   * - `"electricity"`: The selection box used to specify electric poles an entity is connected to. Light blue by default.
+   * - `"copy"`: The selection box used when doing entity copy-paste. Green by default.
+   * - `"not-allowed"`: The selection box used when specifying colliding entities. Red by default.
+   * - `"pair"`: Light blue by default.
+   * - `"logistics"`: Light blue by default.
+   * - `"train-visualization"`: White by default.
+   * - `"blueprint-snap-rectangle"`: Green by default.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CursorBoxRenderType Online documentation}
    */
-  export type PrototypeFilterMode = "none" | "whitelist" | "blacklist"
+  export type CursorBoxRenderType =
+    | "entity"
+    | "electricity"
+    | "copy"
+    | "not-allowed"
+    | "pair"
+    | "logistics"
+    | "train-visualization"
+    | "blueprint-snap-rectangle"
+  /**
+   * Types `"signal"` and `"item-group"` do not support filters.
+   *
+   * Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
+   *
+   * ## Union members
+   * - {@link ModSettingPrototypeFilter}
+   * - {@link DecorativePrototypeFilter}
+   * - EntityPrototypeFilter
+   * - TechnologyPrototypeFilter
+   * - RecipePrototypeFilter
+   * - {@link EquipmentPrototypeFilter}
+   * - {@link AchievementPrototypeFilter}
+   * - FluidPrototypeFilter
+   * - ItemPrototypeFilter
+   * - TilePrototypeFilter
+   * @see PrototypeFilterWrite
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#PrototypeFilter Online documentation}
+   */
+  export type PrototypeFilter =
+    | ModSettingPrototypeFilter[]
+    | DecorativePrototypeFilter[]
+    | EntityPrototypeFilter[]
+    | TechnologyPrototypeFilter[]
+    | RecipePrototypeFilter[]
+    | EquipmentPrototypeFilter[]
+    | AchievementPrototypeFilter[]
+    | FluidPrototypeFilter[]
+    | ItemPrototypeFilter[]
+    | TilePrototypeFilter[]
+  /**
+   * Write form of {@link PrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#PrototypeFilter Online documentation}
+   */
+  export type PrototypeFilterWrite =
+    | readonly ModSettingPrototypeFilter[]
+    | readonly DecorativePrototypeFilter[]
+    | readonly EntityPrototypeFilterWrite[]
+    | readonly TechnologyPrototypeFilterWrite[]
+    | readonly RecipePrototypeFilterWrite[]
+    | readonly EquipmentPrototypeFilter[]
+    | readonly AchievementPrototypeFilter[]
+    | readonly FluidPrototypeFilterWrite[]
+    | readonly ItemPrototypeFilterWrite[]
+    | readonly TilePrototypeFilterWrite[]
+  /**
+   * A set of trigger target masks.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TriggerTargetMask Online documentation}
+   */
+  export type TriggerTargetMask = Record<string, true>
+  export interface DamageTypeFilters {
+    /**
+     * Whether this is a whitelist or a blacklist of damage types. `true` means whitelist.
+     */
+    readonly whitelist: boolean
+    /**
+     * The damage types to filter for. The value in the dictionary is meaningless and exists just to allow for easy lookup.
+     */
+    readonly types: Record<string, true>
+  }
+  export interface TriggerDelivery {
+    readonly type: "instant" | "projectile" | "flame-thrower" | "beam" | "stream" | "artillery"
+    readonly source_effects: TriggerEffectItem[]
+    readonly target_effects: TriggerEffectItem[]
+  }
+  /**
+   * Used by {@link TriggerEffectItem}.
+   *
+   * ## Union members
+   * - `"damage"`
+   * - `"create-entity"`
+   * - `"create-explosion"`
+   * - `"create-fire"`
+   * - `"create-smoke"`
+   * - `"create-trivial-smoke"`
+   * - `"create-particle"`
+   * - `"create-sticker"`
+   * - `"create-decorative"`
+   * - `"nested-result"`
+   * - `"play-sound"`
+   * - `"push-back"`
+   * - `"destroy-cliffs"`
+   * - `"show-explosion-on-chart"`
+   * - `"insert-item"`
+   * - `"script"`
+   * - `"set-tile"`
+   * - `"invoke-tile-trigger"`
+   * - `"destroy-decoratives"`
+   * - `"camera-effect"`
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TriggerEffectItemType Online documentation}
+   */
+  export type TriggerEffectItemType =
+    | "damage"
+    | "create-entity"
+    | "create-explosion"
+    | "create-fire"
+    | "create-smoke"
+    | "create-trivial-smoke"
+    | "create-particle"
+    | "create-sticker"
+    | "create-decorative"
+    | "nested-result"
+    | "play-sound"
+    | "push-back"
+    | "destroy-cliffs"
+    | "show-explosion-on-chart"
+    | "insert-item"
+    | "script"
+    | "set-tile"
+    | "invoke-tile-trigger"
+    | "destroy-decoratives"
+    | "camera-effect"
+  export interface TriggerEffectItem {
+    readonly type: TriggerEffectItemType
+    readonly repeat_count: uint16
+    readonly repeat_count_deviation: uint16
+    readonly probability: float
+    readonly affects_target: boolean
+    readonly show_in_tooltip: boolean
+    readonly damage_type_filters?: DamageTypeFilters
+  }
+  export interface TriggerItem {
+    readonly type: "direct" | "area" | "line" | "cluster"
+    readonly action_delivery?: TriggerDelivery[]
+    /**
+     * The trigger will only affect entities that contain any of these flags.
+     */
+    readonly entity_flags?: EntityPrototypeFlags
+    readonly ignore_collision_condition: boolean
+    /**
+     * The trigger will only affect entities that would collide with given collision mask.
+     */
+    readonly collision_mask: CollisionMask
+    readonly trigger_target_mask: TriggerTargetMask
+    /**
+     * If `"enemy"`, the trigger will only affect entities whose force is different from the attacker's and for which there is no cease-fire set. `"ally"` is the opposite of `"enemy"`.
+     */
+    readonly force: ForceCondition
+    readonly repeat_count: uint
+    readonly probability: float
+  }
   export interface RailEnd {
     readonly rail: LuaEntity
     readonly direction: defines.rail_direction
@@ -281,7 +362,7 @@ declare module "factorio:runtime" {
    * - `"any-goal-accessible"`: The method will return {@link TrainPathAnyGoalResult}.
    * - `"all-goals-accessible"`: The method will return {@link TrainPathAllGoalsResult}.
    * - `"all-goals-penalties"`: The method will return {@link TrainPathAllGoalsResult} with `penalties`.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TrainPathRequestType Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TrainPathRequestType Online documentation}
    */
   export type TrainPathRequestType = "path" | "any-goal-accessible" | "all-goals-accessible" | "all-goals-penalties"
   export interface TrainPathFinderPathResult {
@@ -356,264 +437,81 @@ declare module "factorio:runtime" {
    * Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
    *
    * ## Union members
-   * - {@link LuaScriptRaisedReviveEventFilter}
-   * - {@link LuaEntityDiedEventFilter}
-   * - {@link LuaEntityMarkedForDeconstructionEventFilter}
-   * - {@link LuaPreGhostDeconstructedEventFilter}
    * - {@link LuaScriptRaisedDestroyEventFilter}
-   * - {@link LuaUpgradeCancelledEventFilter}
-   * - {@link LuaPlayerRepairedEntityEventFilter}
-   * - {@link LuaScriptRaisedTeleportedEventFilter}
-   * - {@link LuaEntityMarkedForUpgradeEventFilter}
-   * - {@link LuaPostEntityDiedEventFilter}
-   * - {@link LuaPreRobotMinedEntityEventFilter}
-   * - {@link LuaEntityClonedEventFilter}
+   * - {@link LuaScriptRaisedReviveEventFilter}
    * - {@link LuaScriptRaisedBuiltEventFilter}
-   * - {@link LuaRobotMinedEntityEventFilter}
-   * - {@link LuaPrePlayerMinedEntityEventFilter}
-   * - {@link LuaRobotBuiltEntityEventFilter}
-   * - {@link LuaPreGhostUpgradedEventFilter}
-   * - {@link LuaEntityDeconstructionCancelledEventFilter}
+   * - {@link LuaPostEntityDiedEventFilter}
+   * - {@link LuaEntityDiedEventFilter}
    * - {@link LuaPlayerBuiltEntityEventFilter}
-   * - {@link LuaPlayerMinedEntityEventFilter}
-   * - LuaEntityDamagedEventFilter
+   * - {@link LuaEntityMarkedForDeconstructionEventFilter}
+   * - {@link LuaRobotMinedEntityEventFilter}
+   * - {@link LuaPreGhostDeconstructedEventFilter}
+   * - {@link LuaEntityMarkedForUpgradeEventFilter}
+   * - {@link LuaUpgradeCancelledEventFilter}
    * - {@link LuaSectorScannedEventFilter}
+   * - {@link LuaPreGhostUpgradedEventFilter}
+   * - {@link LuaPreRobotMinedEntityEventFilter}
+   * - {@link LuaEntityDeconstructionCancelledEventFilter}
+   * - LuaEntityDamagedEventFilter
+   * - {@link LuaScriptRaisedTeleportedEventFilter}
+   * - {@link LuaEntityClonedEventFilter}
+   * - {@link LuaPlayerRepairedEntityEventFilter}
+   * - {@link LuaRobotBuiltEntityEventFilter}
+   * - {@link LuaPlayerMinedEntityEventFilter}
+   * - {@link LuaPrePlayerMinedEntityEventFilter}
    * @see EventFilterWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EventFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EventFilter Online documentation}
    */
   export type EventFilter =
-    | LuaScriptRaisedReviveEventFilter[]
-    | LuaEntityDiedEventFilter[]
-    | LuaEntityMarkedForDeconstructionEventFilter[]
-    | LuaPreGhostDeconstructedEventFilter[]
     | LuaScriptRaisedDestroyEventFilter[]
-    | LuaUpgradeCancelledEventFilter[]
-    | LuaPlayerRepairedEntityEventFilter[]
-    | LuaScriptRaisedTeleportedEventFilter[]
-    | LuaEntityMarkedForUpgradeEventFilter[]
-    | LuaPostEntityDiedEventFilter[]
-    | LuaPreRobotMinedEntityEventFilter[]
-    | LuaEntityClonedEventFilter[]
+    | LuaScriptRaisedReviveEventFilter[]
     | LuaScriptRaisedBuiltEventFilter[]
-    | LuaRobotMinedEntityEventFilter[]
-    | LuaPrePlayerMinedEntityEventFilter[]
-    | LuaRobotBuiltEntityEventFilter[]
-    | LuaPreGhostUpgradedEventFilter[]
-    | LuaEntityDeconstructionCancelledEventFilter[]
+    | LuaPostEntityDiedEventFilter[]
+    | LuaEntityDiedEventFilter[]
     | LuaPlayerBuiltEntityEventFilter[]
-    | LuaPlayerMinedEntityEventFilter[]
-    | LuaEntityDamagedEventFilter[]
+    | LuaEntityMarkedForDeconstructionEventFilter[]
+    | LuaRobotMinedEntityEventFilter[]
+    | LuaPreGhostDeconstructedEventFilter[]
+    | LuaEntityMarkedForUpgradeEventFilter[]
+    | LuaUpgradeCancelledEventFilter[]
     | LuaSectorScannedEventFilter[]
+    | LuaPreGhostUpgradedEventFilter[]
+    | LuaPreRobotMinedEntityEventFilter[]
+    | LuaEntityDeconstructionCancelledEventFilter[]
+    | LuaEntityDamagedEventFilter[]
+    | LuaScriptRaisedTeleportedEventFilter[]
+    | LuaEntityClonedEventFilter[]
+    | LuaPlayerRepairedEntityEventFilter[]
+    | LuaRobotBuiltEntityEventFilter[]
+    | LuaPlayerMinedEntityEventFilter[]
+    | LuaPrePlayerMinedEntityEventFilter[]
   /**
    * Write form of {@link EventFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EventFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EventFilter Online documentation}
    */
   export type EventFilterWrite =
-    | readonly LuaScriptRaisedReviveEventFilter[]
-    | readonly LuaEntityDiedEventFilter[]
-    | readonly LuaEntityMarkedForDeconstructionEventFilter[]
-    | readonly LuaPreGhostDeconstructedEventFilter[]
     | readonly LuaScriptRaisedDestroyEventFilter[]
-    | readonly LuaUpgradeCancelledEventFilter[]
-    | readonly LuaPlayerRepairedEntityEventFilter[]
-    | readonly LuaScriptRaisedTeleportedEventFilter[]
-    | readonly LuaEntityMarkedForUpgradeEventFilter[]
-    | readonly LuaPostEntityDiedEventFilter[]
-    | readonly LuaPreRobotMinedEntityEventFilter[]
-    | readonly LuaEntityClonedEventFilter[]
+    | readonly LuaScriptRaisedReviveEventFilter[]
     | readonly LuaScriptRaisedBuiltEventFilter[]
-    | readonly LuaRobotMinedEntityEventFilter[]
-    | readonly LuaPrePlayerMinedEntityEventFilter[]
-    | readonly LuaRobotBuiltEntityEventFilter[]
-    | readonly LuaPreGhostUpgradedEventFilter[]
-    | readonly LuaEntityDeconstructionCancelledEventFilter[]
+    | readonly LuaPostEntityDiedEventFilter[]
+    | readonly LuaEntityDiedEventFilter[]
     | readonly LuaPlayerBuiltEntityEventFilter[]
-    | readonly LuaPlayerMinedEntityEventFilter[]
-    | readonly LuaEntityDamagedEventFilterWrite[]
+    | readonly LuaEntityMarkedForDeconstructionEventFilter[]
+    | readonly LuaRobotMinedEntityEventFilter[]
+    | readonly LuaPreGhostDeconstructedEventFilter[]
+    | readonly LuaEntityMarkedForUpgradeEventFilter[]
+    | readonly LuaUpgradeCancelledEventFilter[]
     | readonly LuaSectorScannedEventFilter[]
-  /**
-   * Types `"signal"` and `"item-group"` do not support filters.
-   *
-   * Filters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.
-   *
-   * ## Union members
-   * - ItemPrototypeFilter
-   * - {@link ModSettingPrototypeFilter}
-   * - TechnologyPrototypeFilter
-   * - {@link DecorativePrototypeFilter}
-   * - {@link AchievementPrototypeFilter}
-   * - FluidPrototypeFilter
-   * - {@link EquipmentPrototypeFilter}
-   * - TilePrototypeFilter
-   * - RecipePrototypeFilter
-   * - EntityPrototypeFilter
-   * @see PrototypeFilterWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#PrototypeFilter Online documentation}
-   */
-  export type PrototypeFilter =
-    | ItemPrototypeFilter[]
-    | ModSettingPrototypeFilter[]
-    | TechnologyPrototypeFilter[]
-    | DecorativePrototypeFilter[]
-    | AchievementPrototypeFilter[]
-    | FluidPrototypeFilter[]
-    | EquipmentPrototypeFilter[]
-    | TilePrototypeFilter[]
-    | RecipePrototypeFilter[]
-    | EntityPrototypeFilter[]
-  /**
-   * Write form of {@link PrototypeFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#PrototypeFilter Online documentation}
-   */
-  export type PrototypeFilterWrite =
-    | readonly ItemPrototypeFilterWrite[]
-    | readonly ModSettingPrototypeFilter[]
-    | readonly TechnologyPrototypeFilterWrite[]
-    | readonly DecorativePrototypeFilter[]
-    | readonly AchievementPrototypeFilter[]
-    | readonly FluidPrototypeFilterWrite[]
-    | readonly EquipmentPrototypeFilter[]
-    | readonly TilePrototypeFilterWrite[]
-    | readonly RecipePrototypeFilterWrite[]
-    | readonly EntityPrototypeFilterWrite[]
-  export interface ElemID {
-    readonly type: ElemType
-    /**
-     * Name of a prototype as defined by `type`.
-     */
-    readonly name: string
-  }
-  /**
-   * State of a GUI {@link LuaGuiElement#switch_state switch}.
-   *
-   * ## Union members
-   * - `"left"`
-   * - `"right"`
-   * - `"none"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#SwitchState Online documentation}
-   */
-  export type SwitchState = "left" | "right" | "none"
-  /**
-   * A `string` specifying a type for {@link LuaGuiElement#elem_type choose elem buttons}. It's also used by {@link ElemID} for {@link LuaGuiElement#elem_tooltip LuaGuiElement::elem_tooltip}.
-   *
-   * ## Union members
-   * - `"achievement"`
-   * - `"decorative"`
-   * - `"entity"`
-   * - `"equipment"`
-   * - `"fluid"`
-   * - `"item"`
-   * - `"item-group"`
-   * - `"recipe"`
-   * - `"signal"`
-   * - `"technology"`
-   * - `"tile"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ElemType Online documentation}
-   */
-  export type ElemType =
-    | "achievement"
-    | "decorative"
-    | "entity"
-    | "equipment"
-    | "fluid"
-    | "item"
-    | "item-group"
-    | "recipe"
-    | "signal"
-    | "technology"
-    | "tile"
-  /**
-   * One of the following values:
-   *
-   * ## Union members
-   * - `"entity"`: The normal entity selection box. Yellow by default.
-   * - `"electricity"`: The selection box used to specify electric poles an entity is connected to. Light blue by default.
-   * - `"copy"`: The selection box used when doing entity copy-paste. Green by default.
-   * - `"not-allowed"`: The selection box used when specifying colliding entities. Red by default.
-   * - `"pair"`: Light blue by default.
-   * - `"logistics"`: Light blue by default.
-   * - `"train-visualization"`: White by default.
-   * - `"blueprint-snap-rectangle"`: Green by default.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CursorBoxRenderType Online documentation}
-   */
-  export type CursorBoxRenderType =
-    | "entity"
-    | "electricity"
-    | "copy"
-    | "not-allowed"
-    | "pair"
-    | "logistics"
-    | "train-visualization"
-    | "blueprint-snap-rectangle"
-  /**
-   * What is shown in the map view. If a field is not given, that setting will not be changed.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapViewSettings Online documentation}
-   */
-  export interface MapViewSettings {
-    readonly "show-logistic-network"?: boolean
-    readonly "show-electric-network"?: boolean
-    readonly "show-turret-range"?: boolean
-    readonly "show-pollution"?: boolean
-    readonly "show-networkless-logistic-members"?: boolean
-    readonly "show-train-station-names"?: boolean
-    readonly "show-player-names"?: boolean
-    readonly "show-tags"?: boolean
-    readonly "show-worker-robots"?: boolean
-    readonly "show-rail-signal-states"?: boolean
-    readonly "show-recipe-icons"?: boolean
-    readonly "show-non-standard-map-info"?: boolean
-  }
-  export interface RadiusVisualisationSpecification {
-    readonly distance: double
-    readonly offset: Vector
-    readonly draw_in_cursor: boolean
-    readonly draw_on_selection: boolean
-  }
-  /**
-   * ## Union members
-   * - `"west-to-east"`
-   * - `"north-to-south"`
-   * - `"east-to-west"`
-   * - `"south-to-north"`
-   * - `"west-to-north"`
-   * - `"north-to-east"`
-   * - `"east-to-south"`
-   * - `"south-to-west"`
-   * - `"west-to-south"`
-   * - `"north-to-west"`
-   * - `"east-to-north"`
-   * - `"south-to-east"`
-   * - `"west-to-none"`
-   * - `"none-to-east"`
-   * - `"east-to-none"`
-   * - `"none-to-west"`
-   * - `"north-to-none"`
-   * - `"none-to-south"`
-   * - `"south-to-none"`
-   * - `"none-to-north"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CliffOrientation Online documentation}
-   */
-  export type CliffOrientation =
-    | "west-to-east"
-    | "north-to-south"
-    | "east-to-west"
-    | "south-to-north"
-    | "west-to-north"
-    | "north-to-east"
-    | "east-to-south"
-    | "south-to-west"
-    | "west-to-south"
-    | "north-to-west"
-    | "east-to-north"
-    | "south-to-east"
-    | "west-to-none"
-    | "none-to-east"
-    | "east-to-none"
-    | "none-to-west"
-    | "north-to-none"
-    | "none-to-south"
-    | "south-to-none"
-    | "none-to-north"
+    | readonly LuaPreGhostUpgradedEventFilter[]
+    | readonly LuaPreRobotMinedEntityEventFilter[]
+    | readonly LuaEntityDeconstructionCancelledEventFilter[]
+    | readonly LuaEntityDamagedEventFilterWrite[]
+    | readonly LuaScriptRaisedTeleportedEventFilter[]
+    | readonly LuaEntityClonedEventFilter[]
+    | readonly LuaPlayerRepairedEntityEventFilter[]
+    | readonly LuaRobotBuiltEntityEventFilter[]
+    | readonly LuaPlayerMinedEntityEventFilter[]
+    | readonly LuaPrePlayerMinedEntityEventFilter[]
   /**
    * Used by {@link TechnologyModifier}.
    *
@@ -659,7 +557,7 @@ declare module "factorio:runtime" {
    * - `"artillery-range"`
    * - `"nothing"`
    * - `"character-logistic-requests"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ModifierType Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ModifierType Online documentation}
    */
   export type ModifierType =
     | "inserter-stack-size-bonus"
@@ -704,6 +602,113 @@ declare module "factorio:runtime" {
     | "nothing"
     | "character-logistic-requests"
   /**
+   * One of the following values:
+   *
+   * ## Union members
+   * - `"none"`
+   * - `"whitelist"`
+   * - `"blacklist"`
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#PrototypeFilterMode Online documentation}
+   */
+  export type PrototypeFilterMode = "none" | "whitelist" | "blacklist"
+  export interface RadiusVisualisationSpecification {
+    readonly distance: double
+    readonly offset: Vector
+    readonly draw_in_cursor: boolean
+    readonly draw_on_selection: boolean
+  }
+  /**
+   * ## Union members
+   * - `"west-to-east"`
+   * - `"north-to-south"`
+   * - `"east-to-west"`
+   * - `"south-to-north"`
+   * - `"west-to-north"`
+   * - `"north-to-east"`
+   * - `"east-to-south"`
+   * - `"south-to-west"`
+   * - `"west-to-south"`
+   * - `"north-to-west"`
+   * - `"east-to-north"`
+   * - `"south-to-east"`
+   * - `"west-to-none"`
+   * - `"none-to-east"`
+   * - `"east-to-none"`
+   * - `"none-to-west"`
+   * - `"north-to-none"`
+   * - `"none-to-south"`
+   * - `"south-to-none"`
+   * - `"none-to-north"`
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CliffOrientation Online documentation}
+   */
+  export type CliffOrientation =
+    | "west-to-east"
+    | "north-to-south"
+    | "east-to-west"
+    | "south-to-north"
+    | "west-to-north"
+    | "north-to-east"
+    | "east-to-south"
+    | "south-to-west"
+    | "west-to-south"
+    | "north-to-west"
+    | "east-to-north"
+    | "south-to-east"
+    | "west-to-none"
+    | "none-to-east"
+    | "east-to-none"
+    | "none-to-west"
+    | "north-to-none"
+    | "none-to-south"
+    | "south-to-none"
+    | "none-to-north"
+  export interface ElemID {
+    readonly type: ElemType
+    /**
+     * Name of a prototype as defined by `type`.
+     */
+    readonly name: string
+  }
+  /**
+   * State of a GUI {@link LuaGuiElement#switch_state switch}.
+   *
+   * ## Union members
+   * - `"left"`
+   * - `"right"`
+   * - `"none"`
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#SwitchState Online documentation}
+   */
+  export type SwitchState = "left" | "right" | "none"
+  /**
+   * A `string` specifying a type for {@link LuaGuiElement#elem_type choose elem buttons}. It's also used by {@link ElemID} for {@link LuaGuiElement#elem_tooltip LuaGuiElement::elem_tooltip}.
+   *
+   * ## Union members
+   * - `"achievement"`
+   * - `"decorative"`
+   * - `"entity"`
+   * - `"equipment"`
+   * - `"fluid"`
+   * - `"item"`
+   * - `"item-group"`
+   * - `"recipe"`
+   * - `"signal"`
+   * - `"technology"`
+   * - `"tile"`
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ElemType Online documentation}
+   */
+  export type ElemType =
+    | "achievement"
+    | "decorative"
+    | "entity"
+    | "equipment"
+    | "fluid"
+    | "item"
+    | "item-group"
+    | "recipe"
+    | "signal"
+    | "technology"
+    | "tile"
+  /**
    * Localised strings are a way to support translation of in-game text. It is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.
    *
    * The key identifies the string template. For example, `"gui-alert-tooltip.attack"` (for the template `"__1__ objects are being damaged"`; see the file `data/core/locale/en.cfg`).
@@ -732,7 +737,7 @@ declare module "factorio:runtime" {
    * -- If 'entity-description.furnace' exists, it is concatenated with "\n" and returned. Otherwise, if 'item-description.furnace'
    * --  exists, it is returned as-is. Otherwise, "optional fallback" is returned. If this value wasn't specified, the
    * --  translation result would be "Unknown key: 'item-description.furnace'".
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LocalisedString Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LocalisedString Online documentation}
    */
   export type LocalisedString = string | number | boolean | LuaObject | nil | [string, ...LocalisedString[]]
   export interface DisplayResolution {
@@ -757,7 +762,7 @@ declare module "factorio:runtime" {
    * The smooth orientation. It is a {@link float} in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise. This means a value of `0` indicates "north", a value of `0.5` indicates "south".
    *
    * For example then, a value of `0.625` would indicate "south-west", and a value of `0.875` would indicate "north-west".
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#RealOrientation Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#RealOrientation Online documentation}
    */
   export type RealOrientation = float
   /**
@@ -772,7 +777,7 @@ declare module "factorio:runtime" {
    * @example
    * -- Shorthand
    * {1.625, 2.375}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapPosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapPosition Online documentation}
    */
   export interface MapPosition {
     readonly x: double
@@ -781,13 +786,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link MapPosition}.
    * @see MapPosition
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapPosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapPosition Online documentation}
    */
   export type MapPositionArray = readonly [double, double]
   /**
    * Coordinates of a chunk in a {@link LuaSurface} where each integer `x`/`y` represents a different chunk. This uses the same format as {@link MapPosition}, meaning it can be specified either with or without explicit keys. A {@link MapPosition} can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.
    * @see ChunkPositionArray
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ChunkPosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ChunkPosition Online documentation}
    */
   export interface ChunkPosition {
     readonly x: int
@@ -796,13 +801,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link ChunkPosition}.
    * @see ChunkPosition
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ChunkPosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ChunkPosition Online documentation}
    */
   export type ChunkPositionArray = readonly [int, int]
   /**
    * Coordinates of a tile on a {@link LuaSurface} where each integer `x`/`y` represents a different tile. This uses the same format as {@link MapPosition}, except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.
    * @see TilePositionArray
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TilePosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TilePosition Online documentation}
    */
   export interface TilePosition {
     readonly x: int
@@ -811,7 +816,7 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link TilePosition}.
    * @see TilePosition
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TilePosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TilePosition Online documentation}
    */
   export type TilePositionArray = readonly [int, int]
   /**
@@ -824,7 +829,7 @@ declare module "factorio:runtime" {
    * @example
    * -- Shorthand
    * {1, 2}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EquipmentPosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EquipmentPosition Online documentation}
    */
   export interface EquipmentPosition {
     readonly x: int
@@ -833,13 +838,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link EquipmentPosition}.
    * @see EquipmentPosition
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EquipmentPosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EquipmentPosition Online documentation}
    */
   export type EquipmentPositionArray = readonly [int, int]
   /**
    * Screen coordinates of a GUI element in a {@link LuaGui}. This uses the same format as {@link TilePosition}, meaning it can be specified either with or without explicit keys.
    * @see GuiLocationArray
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GuiLocation Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GuiLocation Online documentation}
    */
   export interface GuiLocation {
     readonly x: int
@@ -848,12 +853,12 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link GuiLocation}.
    * @see GuiLocation
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GuiLocation Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GuiLocation Online documentation}
    */
   export type GuiLocationArray = readonly [int, int]
   /**
    * A {@link ChunkPosition} with an added bounding box for the area of the chunk.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ChunkPositionAndArea Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ChunkPositionAndArea Online documentation}
    */
   export interface ChunkPositionAndArea {
     readonly x: int
@@ -862,7 +867,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A table used to define a manual shape for a piece of equipment.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EquipmentPoint Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EquipmentPoint Online documentation}
    */
   export interface EquipmentPoint {
     readonly x: uint
@@ -898,12 +903,12 @@ declare module "factorio:runtime" {
    * Note that the API returns tags as a simple table, meaning any modifications to it will not propagate back to the game. Thus, to modify a set of tags, the whole table needs to be written back to the respective property.
    * @example
    * {a = 1, b = true, c = "three", d = {e = "f"}}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Tags Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Tags Online documentation}
    */
   export type Tags = Record<string, AnyBasic>
   /**
    * The vectors for all 5 position attributes are a table with `x` and `y` keys instead of an array.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#SmokeSource Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#SmokeSource Online documentation}
    */
   export interface SmokeSource {
     readonly name: string
@@ -930,7 +935,7 @@ declare module "factorio:runtime" {
    * A vector is a two-element array containing the `x` and `y` components. In some specific cases, the vector is a table with `x` and `y` keys instead, which the documentation will point out.
    * @example
    * right = {1.0, 0.0}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Vector Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Vector Online documentation}
    */
   export type Vector = MapPositionArray
   /**
@@ -942,7 +947,7 @@ declare module "factorio:runtime" {
    * @example
    * -- Shorthand
    * {{-2, -3}, {5, 8}}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#BoundingBox Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#BoundingBox Online documentation}
    */
   export interface BoundingBox {
     readonly left_top: MapPosition
@@ -960,13 +965,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link BoundingBox}.
    * @see BoundingBox
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#BoundingBox Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#BoundingBox Online documentation}
    */
   export type BoundingBoxArray = readonly [MapPosition | MapPositionArray, MapPosition | MapPositionArray]
   /**
    * An area defined using the map editor.
    * @see ScriptAreaWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ScriptArea Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ScriptArea Online documentation}
    */
   export interface ScriptArea {
     readonly area: BoundingBox
@@ -976,7 +981,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link ScriptArea}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ScriptArea Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ScriptArea Online documentation}
    */
   export interface ScriptAreaWrite {
     readonly area: BoundingBoxWrite | BoundingBoxArray
@@ -987,7 +992,7 @@ declare module "factorio:runtime" {
   /**
    * A position defined using the map editor.
    * @see ScriptPositionWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ScriptPosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ScriptPosition Online documentation}
    */
   export interface ScriptPosition {
     readonly position: MapPosition
@@ -997,7 +1002,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link ScriptPosition}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ScriptPosition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ScriptPosition Online documentation}
    */
   export interface ScriptPositionWrite {
     readonly position: MapPosition | MapPositionArray
@@ -1015,7 +1020,7 @@ declare module "factorio:runtime" {
    * red2 = {r = 0.5, a = 0.5}                -- Same color as red1
    * black = {}                               -- All channels omitted: black
    * red1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Color Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Color Online documentation}
    */
   export interface Color {
     readonly r?: float
@@ -1026,13 +1031,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link Color}.
    * @see Color
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Color Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Color Online documentation}
    */
   export type ColorArray = readonly [r: double, g: double, b: double, a?: double]
   /**
    * Same as {@link Color}, but red, green, blue and alpha values can be any floating point number, without any special handling of the range [1, 255].
    * @see ColorModifierArray
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ColorModifier Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ColorModifier Online documentation}
    */
   export interface ColorModifier {
     readonly r?: float
@@ -1043,7 +1048,7 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link ColorModifier}.
    * @see ColorModifier
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ColorModifier Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ColorModifier Online documentation}
    */
   export type ColorModifierArray = readonly [r: double, g: double, b: double, a?: double]
   export interface CraftingQueueItem {
@@ -1083,7 +1088,7 @@ declare module "factorio:runtime" {
   }
   /**
    * One vertex of a ScriptRenderPolygon.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ScriptRenderVertexTarget Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ScriptRenderVertexTarget Online documentation}
    */
   export interface ScriptRenderVertexTarget {
     readonly target: (MapPosition | MapPositionArray) | LuaEntity
@@ -1149,7 +1154,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Either `icon`, `text`, or both must be provided.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ChartTagSpec Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ChartTagSpec Online documentation}
    */
   export interface ChartTagSpec {
     readonly position: MapPosition | MapPositionArray
@@ -1159,88 +1164,88 @@ declare module "factorio:runtime" {
   }
   /**
    * Parameters that affect the look and control of the game. Updating any of the member attributes here will immediately take effect in the game engine.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings Online documentation}
    */
   export interface GameViewSettings {
     /**
      * Show the controller GUI elements. This includes the toolbar, the selected tool slot, the armour slot, and the gun and ammunition slots.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_controller_gui Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_controller_gui Online documentation}
      */
     show_controller_gui: boolean
     /**
      * Show the chart in the upper right-hand corner of the screen.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_minimap Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_minimap Online documentation}
      */
     show_minimap: boolean
     /**
      * Show research progress and name in the upper right-hand corner of the screen.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_research_info Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_research_info Online documentation}
      */
     show_research_info: boolean
     /**
      * Show overlay icons on entities. Also known as "alt-mode".
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_entity_info Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_entity_info Online documentation}
      */
     show_entity_info: boolean
     /**
      * Show the flashing alert icons next to the player's toolbar.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_alert_gui Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_alert_gui Online documentation}
      */
     show_alert_gui: boolean
     /**
      * When `true` (the default), mousing over an entity will select it. Otherwise, moving the mouse won't update entity selection.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.update_entity_selection Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.update_entity_selection Online documentation}
      */
     update_entity_selection: boolean
     /**
      * When `true` (`false` is default), the rails will always show the rail block visualisation.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_rail_block_visualisation Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_rail_block_visualisation Online documentation}
      */
     show_rail_block_visualisation: boolean
     /**
      * Shows or hides the buttons row.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_side_menu Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_side_menu Online documentation}
      */
     show_side_menu: boolean
     /**
      * Shows or hides the view options when map is opened.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_map_view_options Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_map_view_options Online documentation}
      */
     show_map_view_options: boolean
     /**
      * Shows or hides the tooltip that is displayed when selecting an entity.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_entity_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_entity_tooltip Online documentation}
      */
     show_entity_tooltip: boolean
     /**
      * Shows or hides quickbar of shortcuts.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_quickbar Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_quickbar Online documentation}
      */
     show_quickbar: boolean
     /**
      * Shows or hides the shortcut bar.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_shortcut_bar Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_shortcut_bar Online documentation}
      */
     show_shortcut_bar: boolean
     /**
      * Shows or hides the crafting queue.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_crafting_queue Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_crafting_queue Online documentation}
      */
     show_crafting_queue: boolean
     /**
      * Shows or hides the tool window with the weapons and armor.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_tool_bar Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_tool_bar Online documentation}
      */
     show_tool_bar: boolean
     /**
      * Shows or hides the mouse and keyboard/controller button hints in the bottom left corner if they are enabled in the interface settings.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GameViewSettings.show_hotkey_suggestions Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GameViewSettings.show_hotkey_suggestions Online documentation}
      */
     show_hotkey_suggestions: boolean
   }
   /**
    * These values are for the time frame of one second (60 ticks).
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#PollutionMapSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#PollutionMapSettings Online documentation}
    */
   export interface PollutionMapSettings {
     /**
@@ -1294,7 +1299,7 @@ declare module "factorio:runtime" {
   }
   /**
    * These values represent a percentual increase in evolution. This means a value of `0.1` would increase evolution by 10%.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EnemyEvolutionMapSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EnemyEvolutionMapSettings Online documentation}
    */
   export interface EnemyEvolutionMapSettings {
     /**
@@ -1332,7 +1337,7 @@ declare module "factorio:runtime" {
    *     * neighbouring_base_chunk_coefficient^distance(chunk, neighbour)
    * score(chunk) = 1 / (1 + player + base)
    * ```
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EnemyExpansionMapSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EnemyExpansionMapSettings Online documentation}
    */
   export interface EnemyExpansionMapSettings {
     /**
@@ -1594,7 +1599,7 @@ declare module "factorio:runtime" {
    * @example
    * -- Increase the number of short paths the pathfinder can cache
    * game.map_settings.path_finder.short_cache_size = 15
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapSettings Online documentation}
    */
   export interface MapSettings {
     pollution: PollutionMapSettings
@@ -1605,31 +1610,31 @@ declare module "factorio:runtime" {
     path_finder: PathFinderMapSettings
     /**
      * If a behavior fails this many times, the enemy (or enemy group) is destroyed. This solves biters getting stuck within their own base.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapSettings.max_failed_behavior_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapSettings.max_failed_behavior_count Online documentation}
      */
     max_failed_behavior_count: uint
   }
   /**
    * Technology and recipe difficulty settings. Updating any of the attributes will immediately take effect in the game engine.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#DifficultySettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#DifficultySettings Online documentation}
    */
   export interface DifficultySettings {
     recipe_difficulty: defines.difficulty_settings.recipe_difficulty
     technology_difficulty: defines.difficulty_settings.technology_difficulty
     /**
      * A value in range [0.001, 1000].
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#DifficultySettings.technology_price_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#DifficultySettings.technology_price_multiplier Online documentation}
      */
     technology_price_multiplier: double
     /**
      * Changing this to `"always"` or `"after-victory"` does not automatically unlock the research queue. See {@link LuaForce#research_queue_enabled LuaForce::research_queue_enabled} for that.
-     * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#DifficultySettings.research_queue_setting Online documentation}
+     * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#DifficultySettings.research_queue_setting Online documentation}
      */
     research_queue_setting: "after-victory" | "always" | "never"
   }
   /**
    * A standard table containing all {@link MapSettings} attributes plus an additional table that contains all {@link DifficultySettings} properties.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapAndDifficultySettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapAndDifficultySettings Online documentation}
    */
   export interface MapAndDifficultySettings {
     readonly pollution: PollutionMapSettings
@@ -1658,7 +1663,7 @@ declare module "factorio:runtime" {
   }
   /**
    * The data that can be extracted from a map exchange string, as a plain table.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapExchangeStringData Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapExchangeStringData Online documentation}
    */
   export interface MapExchangeStringData {
     readonly map_settings: MapAndDifficultySettings
@@ -1677,7 +1682,7 @@ declare module "factorio:runtime" {
   /**
    * The representation of an entity inside of a blueprint. It has at least these fields, but can contain additional ones depending on the kind of entity.
    * @see BlueprintEntityWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#BlueprintEntity Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#BlueprintEntity Online documentation}
    */
   export interface BlueprintEntity {
     /**
@@ -1856,7 +1861,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintEntity}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#BlueprintEntity Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#BlueprintEntity Online documentation}
    */
   export interface BlueprintEntityWrite {
     /**
@@ -1944,7 +1949,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see TileWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Tile Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Tile Online documentation}
    */
   export interface Tile {
     /**
@@ -1958,7 +1963,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link Tile}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Tile Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Tile Online documentation}
    */
   export interface TileWrite {
     /**
@@ -2027,7 +2032,7 @@ declare module "factorio:runtime" {
    *
    * Other attributes may be specified depending on `type`:
    * - `"fluid"`: {@link FluidIngredient}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Ingredient Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Ingredient Online documentation}
    */
   export type Ingredient = FluidIngredient | OtherIngredient
   /**
@@ -2093,7 +2098,7 @@ declare module "factorio:runtime" {
    * -- What a custom recipe would look like that had a probability of 0.5 to return a
    * -- minimum amount of 1 and amaximum amount of 5
    * {{type="item", name="custom-item", probability=0.5, amount_min=1, amount_max=5}}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Product Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Product Online documentation}
    */
   export type Product = FluidProduct | OtherProduct
   export interface Loot {
@@ -2252,7 +2257,7 @@ declare module "factorio:runtime" {
    * - `"unlock-recipe"`: {@link UnlockRecipeTechnologyModifier}
    * - `"nothing"`: {@link NothingTechnologyModifier}
    * - Other types: {@link OtherTechnologyModifier}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TechnologyModifier Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TechnologyModifier Online documentation}
    */
   export type TechnologyModifier =
     | GunSpeedTechnologyModifier
@@ -2264,7 +2269,7 @@ declare module "factorio:runtime" {
     | OtherTechnologyModifier
   /**
    * A single offer on a market entity.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Offer Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Offer Online documentation}
    */
   export interface Offer {
     /**
@@ -2278,7 +2283,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Specifies how probability and richness are calculated when placing something on the map. Can be specified either using `probability_expression` and `richness_expression` or by using all the other fields.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#AutoplaceSpecification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#AutoplaceSpecification Online documentation}
    */
   export interface AutoplaceSpecification {
     readonly probability_expression: NoiseExpression
@@ -2304,7 +2309,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the {@link import("factorio:prototype").NamedNoiseExpression prototype docs}.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#NoiseExpression Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#NoiseExpression Online documentation}
    */
   export interface NoiseExpression {
     /**
@@ -2397,7 +2402,7 @@ declare module "factorio:runtime" {
    * - `"very-high"`: equivalent to `2`.
    * - `"very-big"`: equivalent to `2`.
    * - `"very-good"`: equivalent to `2`.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapGenSize Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapGenSize Online documentation}
    */
   export type MapGenSize =
     | float
@@ -2419,7 +2424,7 @@ declare module "factorio:runtime" {
     | "very-good"
   /**
    * @see AutoplaceControlWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#AutoplaceControl Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#AutoplaceControl Online documentation}
    */
   export interface AutoplaceControl {
     /**
@@ -2437,7 +2442,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link AutoplaceControl}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#AutoplaceControl Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#AutoplaceControl Online documentation}
    */
   export interface AutoplaceControlWrite {
     /**
@@ -2455,7 +2460,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see CliffPlacementSettingsWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CliffPlacementSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CliffPlacementSettings Online documentation}
    */
   export interface CliffPlacementSettings {
     /**
@@ -2477,7 +2482,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link CliffPlacementSettings}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CliffPlacementSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CliffPlacementSettings Online documentation}
    */
   export interface CliffPlacementSettingsWrite {
     /**
@@ -2515,7 +2520,7 @@ declare module "factorio:runtime" {
    * surface.map_gen_settings = mgs
    * -- This does not require a NamedNoiseExpression to be defined, since literal numbers (and strings naming literal
    * -- numbers, e.g. `"123"`) are understood to stand for constant value expressions.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapGenSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapGenSettings Online documentation}
    */
   export interface MapGenSettings {
     /**
@@ -2573,7 +2578,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link MapGenSettings}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MapGenSettings Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MapGenSettings Online documentation}
    */
   export interface MapGenSettingsWrite {
     /**
@@ -2632,10 +2637,10 @@ declare module "factorio:runtime" {
   /**
    * All other MapGenSettings feed into named noise expressions, and therefore placement can be overridden by including the name of a property in this dictionary. The probability and richness functions for placing specific tiles, entities, and decoratives can be overridden by including an entry named `{tile|entity|decorative}:(prototype name):{probability|richness}`.
    *
-   * {@link https://lua-api.factorio.com/1.1.109/concepts.html#PropertyExpressionNames > Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `5`). All other controls can be overridden by a property expression names. Notable properties:}
+   * {@link https://lua-api.factorio.com/1.1.110/concepts.html#PropertyExpressionNames > Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `5`). All other controls can be overridden by a property expression names. Notable properties:}
    *
-   * {@link https://lua-api.factorio.com/1.1.109/concepts.html#PropertyExpressionNames > Climate controls ('Moisture' and 'Terrain type' at the bottom of the Terrain tab in the map generator GUI) don't have their own dedicated structures in MapGenSettings. Instead, their values are stored as property expression overrides with long names:}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#PropertyExpressionNames Online documentation}
+   * {@link https://lua-api.factorio.com/1.1.110/concepts.html#PropertyExpressionNames > Climate controls ('Moisture' and 'Terrain type' at the bottom of the Terrain tab in the map generator GUI) don't have their own dedicated structures in MapGenSettings. Instead, their values are stored as property expression overrides with long names:}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#PropertyExpressionNames Online documentation}
    */
   export type PropertyExpressionNames = Record<string, string>
   export interface AdvancedMapGenSettings {
@@ -2665,7 +2670,7 @@ declare module "factorio:runtime" {
   }
   /**
    * An actual signal transmitted by the network.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Signal Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Signal Online documentation}
    */
   export interface Signal {
     /**
@@ -2686,7 +2691,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A single filter used by an infinity-filters instance.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#InfinityInventoryFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#InfinityInventoryFilter Online documentation}
    */
   export interface InfinityInventoryFilter {
     /**
@@ -2708,7 +2713,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A single filter used by an infinity-pipe type entity.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#InfinityPipeFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#InfinityPipeFilter Online documentation}
    */
   export interface InfinityPipeFilter {
     /**
@@ -2762,7 +2767,7 @@ declare module "factorio:runtime" {
   }
   /**
    * The settings used by a heat-interface type entity.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#HeatSetting Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#HeatSetting Online documentation}
    */
   export interface HeatSetting {
     /**
@@ -2780,7 +2785,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A definition of a fluidbox connection point.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#FluidBoxConnection Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#FluidBoxConnection Online documentation}
    */
   export interface FluidBoxConnection {
     readonly type: "input" | "output" | "input-output"
@@ -2795,7 +2800,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A single pipe connection for a given fluidbox.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#PipeConnection Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#PipeConnection Online documentation}
    */
   export interface PipeConnection {
     readonly flow_direction: "input" | "output" | "input-output"
@@ -2862,7 +2867,7 @@ declare module "factorio:runtime" {
     readonly index: uint
   }
   /**
-   * A string that specifies how the inputs should be compared
+   * A string that specifies how the inputs should be compared.
    *
    * While the API accepts both versions for `"less/greater than or equal to"` and `"not equal"`, it'll always return `"≥"`, `"≤"` or `"≠"` respectively when reading them back.
    *
@@ -2876,14 +2881,14 @@ declare module "factorio:runtime" {
    * - `"<="`: "lesser than or equal to"
    * - `"≠"`: "not equal to"
    * - `"!="`: "not equal to"
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ComparatorString Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ComparatorString Online documentation}
    */
   export type ComparatorString = "=" | ">" | "<" | "≥" | ">=" | "≤" | "<=" | "≠" | "!="
   /** @see ComparatorString */
   export type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
   /**
    * @see DeciderCombinatorParametersWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#DeciderCombinatorParameters Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#DeciderCombinatorParameters Online documentation}
    */
   export interface DeciderCombinatorParameters {
     /**
@@ -2913,7 +2918,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link DeciderCombinatorParameters}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#DeciderCombinatorParameters Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#DeciderCombinatorParameters Online documentation}
    */
   export interface DeciderCombinatorParametersWrite {
     /**
@@ -2947,7 +2952,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see CircuitConditionWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CircuitCondition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CircuitCondition Online documentation}
    */
   export interface CircuitCondition {
     /**
@@ -2969,7 +2974,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link CircuitCondition}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CircuitCondition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CircuitCondition Online documentation}
    */
   export interface CircuitConditionWrite {
     /**
@@ -2991,7 +2996,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see CircuitConditionDefinitionWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CircuitConditionDefinition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CircuitConditionDefinition Online documentation}
    */
   export interface CircuitConditionDefinition {
     readonly condition: CircuitCondition
@@ -3002,7 +3007,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link CircuitConditionDefinition}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CircuitConditionDefinition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CircuitConditionDefinition Online documentation}
    */
   export interface CircuitConditionDefinitionWrite {
     readonly condition: CircuitConditionWrite
@@ -3318,7 +3323,7 @@ declare module "factorio:runtime" {
    * - {@link defines.command.stop}: {@link StopCommand}
    * - {@link defines.command.flee}: {@link FleeCommand}
    * - {@link defines.command.build_base}: {@link BuildBaseCommand}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Command Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Command Online documentation}
    */
   export type Command =
     | AttackCommand
@@ -3332,7 +3337,7 @@ declare module "factorio:runtime" {
     | BuildBaseCommand
   /**
    * Write form of {@link Command}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Command Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Command Online documentation}
    */
   export type CommandWrite =
     | AttackCommand
@@ -3433,7 +3438,7 @@ declare module "factorio:runtime" {
    * These are both full stacks of iron plates (for iron-plate, a full stack is 100 plates)
    * "iron-plate"
    * {name="iron-plate", count=100}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#SimpleItemStack Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#SimpleItemStack Online documentation}
    */
   export type SimpleItemStack = string | ItemStackDefinition
   /**
@@ -3443,7 +3448,7 @@ declare module "factorio:runtime" {
    * - `string`: The fluid name.
    * - {@link LuaFluidPrototype}: The fluid prototype.
    * - {@link Fluid}: The fluid.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#FluidIdentification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#FluidIdentification Online documentation}
    */
   export type FluidIdentification = string | LuaFluidPrototype | Fluid
   /**
@@ -3453,7 +3458,7 @@ declare module "factorio:runtime" {
    * - ForceIndex: The force index.
    * - `string`: The force name.
    * - {@link LuaForce}: A reference to {@link LuaForce} may be passed directly.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ForceIdentification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ForceIdentification Online documentation}
    */
   export type ForceIdentification = ForceIndex | string | LuaForce
   /**
@@ -3463,7 +3468,7 @@ declare module "factorio:runtime" {
    * - `string`: The technology name.
    * - {@link LuaTechnology}: A reference to {@link LuaTechnology} may be passed directly.
    * - {@link LuaTechnologyPrototype}: A reference to {@link LuaTechnologyPrototype} may be passed directly.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TechnologyIdentification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TechnologyIdentification Online documentation}
    */
   export type TechnologyIdentification = string | LuaTechnology | LuaTechnologyPrototype
   /**
@@ -3473,7 +3478,7 @@ declare module "factorio:runtime" {
    * - SurfaceIndex: It will be the index of the surface. `nauvis` has index `1`, the first surface-created surface will have index `2` and so on.
    * - `string`: It will be the surface name. E.g. `"nauvis"`.
    * - {@link LuaSurface}: A reference to {@link LuaSurface} may be passed directly.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#SurfaceIdentification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#SurfaceIdentification Online documentation}
    */
   export type SurfaceIdentification = SurfaceIndex | string | LuaSurface
   /**
@@ -3483,7 +3488,7 @@ declare module "factorio:runtime" {
    * - PlayerIndex: The player index.
    * - `string`: The player name.
    * - {@link LuaPlayer}: A reference to {@link LuaPlayer} may be passed directly.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#PlayerIdentification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#PlayerIdentification Online documentation}
    */
   export type PlayerIdentification = PlayerIndex | string | LuaPlayer
   /**
@@ -3492,7 +3497,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link SimpleItemStack}
    * - {@link LuaItemStack}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ItemStackIdentification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ItemStackIdentification Online documentation}
    */
   export type ItemStackIdentification = SimpleItemStack | LuaItemStack
   /**
@@ -3502,7 +3507,7 @@ declare module "factorio:runtime" {
    * - {@link LuaEntity}: The entity.
    * - {@link LuaEntityPrototype}: The entity prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EntityPrototypeIdentification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EntityPrototypeIdentification Online documentation}
    */
   export type EntityPrototypeIdentification = LuaEntity | LuaEntityPrototype | string
   /**
@@ -3512,7 +3517,7 @@ declare module "factorio:runtime" {
    * - {@link LuaItemStack}: The item.
    * - {@link LuaItemPrototype}: The item prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ItemPrototypeIdentification Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ItemPrototypeIdentification Online documentation}
    */
   export type ItemPrototypeIdentification = LuaItemStack | LuaItemPrototype | string
   /**
@@ -3529,7 +3534,7 @@ declare module "factorio:runtime" {
    * - `"fluid_count"`
    * - `"passenger_present"`
    * - `"passenger_not_present"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#WaitConditionType Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#WaitConditionType Online documentation}
    */
   export type WaitConditionType =
     | "time"
@@ -3544,7 +3549,7 @@ declare module "factorio:runtime" {
     | "passenger_not_present"
   /**
    * @see WaitConditionWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#WaitCondition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#WaitCondition Online documentation}
    */
   export interface WaitCondition {
     readonly type: WaitConditionType
@@ -3563,7 +3568,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link WaitCondition}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#WaitCondition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#WaitCondition Online documentation}
    */
   export interface WaitConditionWrite {
     readonly type: WaitConditionType
@@ -3582,7 +3587,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see TrainScheduleRecordWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TrainScheduleRecord Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TrainScheduleRecord Online documentation}
    */
   export interface TrainScheduleRecord {
     /**
@@ -3605,7 +3610,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link TrainScheduleRecord}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TrainScheduleRecord Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TrainScheduleRecord Online documentation}
    */
   export interface TrainScheduleRecordWrite {
     /**
@@ -3628,7 +3633,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see TrainScheduleWrite
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TrainSchedule Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TrainSchedule Online documentation}
    */
   export interface TrainSchedule {
     /**
@@ -3639,7 +3644,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link TrainSchedule}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TrainSchedule Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TrainSchedule Online documentation}
    */
   export interface TrainScheduleWrite {
     /**
@@ -3655,7 +3660,7 @@ declare module "factorio:runtime" {
    * - `"entity"`: Fires at an entity.
    * - `"position"`: Fires directly at a position.
    * - `"direction"`: Fires in a direction.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TargetType Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TargetType Online documentation}
    */
   export type TargetType = "entity" | "position" | "direction"
   export interface AmmoType {
@@ -3709,8 +3714,8 @@ declare module "factorio:runtime" {
    *
    * The validity of a SpritePath can be verified at runtime using {@link LuaGameScript#is_valid_sprite_path LuaGameScript::is_valid_sprite_path}.
    *
-   * {@link https://lua-api.factorio.com/1.1.109/concepts.html#SpritePath > The supported types are:}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#SpritePath Online documentation}
+   * {@link https://lua-api.factorio.com/1.1.110/concepts.html#SpritePath > The supported types are:}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#SpritePath Online documentation}
    */
   export type SpritePath =
     | (string & {
@@ -3737,12 +3742,12 @@ declare module "factorio:runtime" {
    *
    * The validity of a SoundPath can be verified at runtime using {@link LuaGameScript#is_valid_sound_path LuaGameScript::is_valid_sound_path}.
    *
-   * {@link https://lua-api.factorio.com/1.1.109/concepts.html#SoundPath > The utility and ambient types each contain general use sound prototypes defined by the game itself:}
+   * {@link https://lua-api.factorio.com/1.1.110/concepts.html#SoundPath > The utility and ambient types each contain general use sound prototypes defined by the game itself:}
    *
-   * {@link https://lua-api.factorio.com/1.1.109/concepts.html#SoundPath > The following types can be combined with any tile name as long as its prototype defines the corresponding sound:}
+   * {@link https://lua-api.factorio.com/1.1.110/concepts.html#SoundPath > The following types can be combined with any tile name as long as its prototype defines the corresponding sound:}
    *
-   * {@link https://lua-api.factorio.com/1.1.109/concepts.html#SoundPath > The following types can be combined with any entity name as long as its prototype defines the corresponding sound:}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#SoundPath Online documentation}
+   * {@link https://lua-api.factorio.com/1.1.110/concepts.html#SoundPath > The following types can be combined with any entity name as long as its prototype defines the corresponding sound:}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#SoundPath Online documentation}
    */
   export type SoundPath =
     | (string & {
@@ -3762,7 +3767,7 @@ declare module "factorio:runtime" {
    *   speed={bonus=-0.15},
    *   productivity={bonus=0.06},
    *   pollution={bonus=0.075}}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ModuleEffects Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ModuleEffects Online documentation}
    */
   export interface ModuleEffects {
     readonly consumption?: ModuleEffectValue
@@ -3772,7 +3777,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all. By default, none of these flags are set.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EntityPrototypeFlags Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EntityPrototypeFlags Online documentation}
    */
   export type EntityPrototypeFlags = {
     readonly [T in EntityPrototypeFlag]?: true
@@ -3807,7 +3812,7 @@ declare module "factorio:runtime" {
    * - `"not-upgradable"`: Prevents the entity from being selected by the upgrade planner.
    * - `"not-in-kill-statistics"`: Prevents the entity from being shown in the kill statistics.
    * - `"not-in-made-in"`: Prevents the entity from being shown in the "made in" list in recipe tooltips.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EntityPrototypeFlag Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EntityPrototypeFlag Online documentation}
    */
   export type EntityPrototypeFlag =
     | "not-rotatable"
@@ -3838,7 +3843,7 @@ declare module "factorio:runtime" {
     | "not-in-made-in"
   /**
    * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all. By default, none of these flags are set.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ItemPrototypeFlags Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ItemPrototypeFlags Online documentation}
    */
   export type ItemPrototypeFlags = {
     readonly [T in ItemPrototypeFlag]?: true
@@ -3858,7 +3863,7 @@ declare module "factorio:runtime" {
    * - `"mod-openable"`: Allows the item to be opened by the player, firing the `on_mod_item_opened` event. Only has an effect for selection tool items.
    * - `"only-in-cursor"`: Makes it so the item is deleted when clearing the cursor, instead of being put into the player's inventory. The copy-paste tools use this by default, for example.
    * - `"spawnable"`: Allows the item to be spawned by a quickbar shortcut or custom input.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ItemPrototypeFlag Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ItemPrototypeFlag Online documentation}
    */
   export type ItemPrototypeFlag =
     | "draw-logistic-overlay"
@@ -3891,7 +3896,7 @@ declare module "factorio:runtime" {
    * - `"rail-layer"`
    * - `"transport-belt-layer"`
    * - `"not-setup"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CollisionMaskLayer Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CollisionMaskLayer Online documentation}
    */
   export type CollisionMaskLayer =
     | "ground-tile"
@@ -3910,7 +3915,7 @@ declare module "factorio:runtime" {
     | `layer-${bigint}`
   /**
    * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CollisionMask Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CollisionMask Online documentation}
    */
   export type CollisionMask = {
     readonly [T in CollisionMaskLayer]?: true
@@ -3923,7 +3928,7 @@ declare module "factorio:runtime" {
    * - `"not-colliding-with-itself"`: Any two entities that both have this option enabled on their prototype and have an identical collision mask layers list will not collide. Other collision mask options are not included in the identical layer list check. This does mean that two different prototypes with the same collision mask layers and this option enabled will not collide.
    * - `"consider-tile-transitions"`: Uses the prototypes position rather than its collision box when doing collision checks with tile prototypes. Allows the prototype to overlap colliding tiles up until its center point. This is only respected for character movement and cars driven by players.
    * - `"colliding-with-tiles-only"`: Any prototype with this collision option will only be checked for collision with other prototype's collision masks if they are a tile.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CollisionMaskWithFlags Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CollisionMaskWithFlags Online documentation}
    */
   export type CollisionMaskWithFlags = {
     /**
@@ -3941,11 +3946,6 @@ declare module "factorio:runtime" {
   } & {
     readonly [T in CollisionMaskLayer]?: true
   }
-  /**
-   * A set of trigger target masks.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TriggerTargetMask Online documentation}
-   */
-  export type TriggerTargetMask = Record<string, boolean>
   export interface CircularParticleCreationSpecification {
     /**
      * Name of the {@link LuaEntityPrototype}.
@@ -4078,7 +4078,7 @@ declare module "factorio:runtime" {
    * Other attributes may be specified depending on `type`:
    * - `"projectile"`: {@link ProjectileAttackParameters}
    * - `"stream"`: {@link StreamAttackParameters}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#AttackParameters Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#AttackParameters Online documentation}
    */
   export type AttackParameters = ProjectileAttackParameters | StreamAttackParameters | OtherAttackParameters
   export interface GunShift4Way {
@@ -4144,7 +4144,7 @@ declare module "factorio:runtime" {
    * - `"use-on-self"`: {@link UseOnSelfCapsuleAction}
    * - `"artillery-remote"`: {@link ArtilleryRemoteCapsuleAction}
    * - `"destroy-cliffs"`: {@link DestroyCliffsCapsuleAction}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#CapsuleAction Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#CapsuleAction Online documentation}
    */
   export type CapsuleAction =
     | ThrowCapsuleAction
@@ -4180,7 +4180,7 @@ declare module "factorio:runtime" {
    * - `"avoid-rolling-stock"`: Selects entities that are not `rolling-stock`s.
    * - `"entity-ghost"`: Selects entities that are `entity-ghost`s.
    * - `"tile-ghost"`: Selects entities that are `tile-ghost`s.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#SelectionModeFlags Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#SelectionModeFlags Online documentation}
    */
   export interface SelectionModeFlags {
     /**
@@ -4329,12 +4329,12 @@ declare module "factorio:runtime" {
   }
   /**
    * Any basic type (string, number, boolean) or table.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#AnyBasic Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#AnyBasic Online documentation}
    */
   export type AnyBasic = string | boolean | number | table
   /**
    * Any basic type (string, number, boolean), table, or LuaObject.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Any Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Any Online documentation}
    */
   export type Any = string | boolean | number | table | LuaObject
   export interface ProgrammableSpeakerParameters {
@@ -4372,7 +4372,7 @@ declare module "factorio:runtime" {
    * - `"top-right"`
    * - `"right"`: The same as `"middle-right"`
    * - `"bottom-right"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#Alignment Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#Alignment Online documentation}
    */
   export type Alignment =
     | "top-left"
@@ -4387,8 +4387,8 @@ declare module "factorio:runtime" {
     | "right"
     | "bottom-right"
   /**
-   * Information about the event that has been raised. The table can also contain other fields depending on the type of event. See {@linkplain https://lua-api.factorio.com/1.1.109/events.html the list of Factorio events} for more information on these.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EventData Online documentation}
+   * Information about the event that has been raised. The table can also contain other fields depending on the type of event. See {@linkplain https://lua-api.factorio.com/1.1.110/events.html the list of Factorio events} for more information on these.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EventData Online documentation}
    */
   export interface EventData {
     /**
@@ -4498,7 +4498,7 @@ declare module "factorio:runtime" {
    * - `"button-7"`
    * - `"button-8"`
    * - `"button-9"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#MouseButtonFlags Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#MouseButtonFlags Online documentation}
    */
   export interface MouseButtonFlags {
     readonly left?: true
@@ -4522,7 +4522,7 @@ declare module "factorio:runtime" {
    * - `"not-friend"`: Forces which are not friends pass.
    * - `"same"`: The same force pass.
    * - `"not-same"`: The non-same forces pass.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ForceCondition Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ForceCondition Online documentation}
    */
   export type ForceCondition = "all" | "enemy" | "ally" | "friend" | "not-friend" | "same" | "not-same"
   /**
@@ -4573,7 +4573,7 @@ declare module "factorio:runtime" {
    * - `"collision-selection-box"`: 189
    * - `"arrow"`: 190
    * - `"cursor"`: 210
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#RenderLayer Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#RenderLayer Online documentation}
    */
   export type RenderLayer =
     | `${bigint}`
@@ -4639,7 +4639,7 @@ declare module "factorio:runtime" {
    * - `"walking"`
    * - `"alert"`
    * - `"wind"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#SoundType Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#SoundType Online documentation}
    */
   export type SoundType = "game-effect" | "gui-effect" | "ambient" | "environment" | "walking" | "alert" | "wind"
   /**
@@ -4669,7 +4669,7 @@ declare module "factorio:runtime" {
    * - `"tabbed-pane"`: A collection of `tab`s and their contents. Relevant event: {@link OnGuiSelectedTabChangedEvent on_gui_selected_tab_changed}
    * - `"tab"`: A tab for use in a `tabbed-pane`.
    * - `"switch"`: A switch with three possible states. Can have labels attached to either side. Relevant event: {@link OnGuiSwitchStateChangedEvent on_gui_switch_state_changed}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GuiElementType Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GuiElementType Online documentation}
    */
   export type GuiElementType =
     | "button"
@@ -4709,7 +4709,7 @@ declare module "factorio:runtime" {
    * - `"position"`
    * - `"crafting_queue"`
    * - `"item_stack"`: Will point to a given item stack in an inventory.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GuiArrowType Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GuiArrowType Online documentation}
    */
   export type GuiArrowType =
     | "nowhere"
@@ -4730,7 +4730,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - `"horizontal"`
    * - `"vertical"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#GuiDirection Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#GuiDirection Online documentation}
    */
   export type GuiDirection = "horizontal" | "vertical"
   /**
@@ -4742,80 +4742,1136 @@ declare module "factorio:runtime" {
    * - `"always"`
    * - `"auto"`
    * - `"auto-and-reserve-space"`
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ScrollPolicy Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ScrollPolicy Online documentation}
    */
   export type ScrollPolicy = "never" | "dont-show-but-allow-scrolling" | "always" | "auto" | "auto-and-reserve-space"
   /**
    * A floating-point number. This is a single-precision floating point number. Whilst Lua only uses double-precision numbers, when a function takes a float, the game engine will immediately convert the double-precision number to single-precision.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#float Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#float Online documentation}
    */
   export type float = number
   /**
    * A double-precision floating-point number. This is the same data type as all Lua numbers use.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#double Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#double Online documentation}
    */
   export type double = number
   /**
    * 32-bit signed integer. Possible values are `-2 147 483 648` to `2 147 483 647`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `int` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#int Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#int Online documentation}
    */
   export type int = number
   /**
    * 8-bit signed integer. Possible values are `-128` to `127`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `int8` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#int8 Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#int8 Online documentation}
    */
   export type int8 = number
   /**
    * 32-bit unsigned integer. Possible values are `0` to `4 294 967 295`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#uint Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#uint Online documentation}
    */
   export type uint = number
   /**
    * 8-bit unsigned integer. Possible values are `0` to `255`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint8` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#uint8 Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#uint8 Online documentation}
    */
   export type uint8 = number
   /**
    * 16-bit unsigned integer. Possible values are `0` to `65 535`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint16` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#uint16 Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#uint16 Online documentation}
    */
   export type uint16 = number
   /**
    * 64-bit unsigned integer. Possible values are `0` to `18 446 744 073 709 551 615`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint64` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#uint64 Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#uint64 Online documentation}
    */
   export type uint64 = number
   /**
    * Nil is the type of the value `nil`, whose main property is to be different from any other value. It usually represents the absence of a useful value.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#nil Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#nil Online documentation}
    */
   export type nil = undefined
   /**
    * Tables are enclosed in curly brackets, like this `{}`.
    *
    * Throughout the API docs, the terms "array" and "dictionary" are used. These are fundamentally just {@linkplain http://www.lua.org/pil/2.5.html Lua tables}, but have a limitation on which kind of table keys can be used. An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#table Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#table Online documentation}
    */
   export type table = object
   /**
-   * Any LuaObject listed on the {@linkplain https://lua-api.factorio.com/1.1.109/classes.html Classes} page.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaObject Online documentation}
+   * Any LuaObject listed on the {@linkplain https://lua-api.factorio.com/1.1.110/classes.html Classes} page.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaObject Online documentation}
    */
   export interface LuaObject {
     readonly object_name: string
   }
+  /**
+   * Common attributes to all variants of {@link ModSettingPrototypeFilter}.
+   */
+  export interface BaseModSettingPrototypeFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter: "type" | "mod" | "setting-type"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link ModSettingPrototypeFilter}.
+   */
+  export interface TypeModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type, or a list of acceptable types.
+     */
+    readonly type: string | string[]
+  }
+  /**
+   * `"mod"` variant of {@link ModSettingPrototypeFilter}.
+   */
+  export interface ModModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
+    readonly filter: "mod"
+    /**
+     * The mod name
+     */
+    readonly mod: string
+  }
+  /**
+   * `"setting-type"` variant of {@link ModSettingPrototypeFilter}.
+   */
+  export interface SettingTypeModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
+    readonly filter: "setting-type"
+    /**
+     * The setting scope type.
+     */
+    readonly type: "startup" | "runtime-global" | "runtime-per-user"
+  }
+  /**
+   * Base attributes: {@link BaseModSettingPrototypeFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeModSettingPrototypeFilter}
+   * - `"mod"`: {@link ModModSettingPrototypeFilter}
+   * - `"setting-type"`: {@link SettingTypeModSettingPrototypeFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ModSettingPrototypeFilter Online documentation}
+   */
+  export type ModSettingPrototypeFilter =
+    | TypeModSettingPrototypeFilter
+    | ModModSettingPrototypeFilter
+    | SettingTypeModSettingPrototypeFilter
+  /**
+   * Common attributes to all variants of {@link DecorativePrototypeFilter}.
+   */
+  export interface BaseDecorativePrototypeFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter: "decal" | "autoplace" | "collision-mask"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"collision-mask"` variant of {@link DecorativePrototypeFilter}.
+   */
+  export interface CollisionMaskDecorativePrototypeFilter extends BaseDecorativePrototypeFilter {
+    readonly filter: "collision-mask"
+    readonly mask: CollisionMask | CollisionMaskWithFlags
+    /**
+     * How to filter.
+     */
+    readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
+  }
+  /**
+   * Variants of {@link DecorativePrototypeFilter} with no additional attributes.
+   */
+  export interface OtherDecorativePrototypeFilter extends BaseDecorativePrototypeFilter {
+    readonly filter: "decal" | "autoplace"
+  }
+  /**
+   * Base attributes: {@link BaseDecorativePrototypeFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"collision-mask"`: {@link CollisionMaskDecorativePrototypeFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#DecorativePrototypeFilter Online documentation}
+   */
+  export type DecorativePrototypeFilter = CollisionMaskDecorativePrototypeFilter | OtherDecorativePrototypeFilter
+  /**
+   * Common attributes to all variants of {@link EntityPrototypeFilter}.
+   */
+  export interface BaseEntityPrototypeFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "flying-robot"
+      | "robot-with-logistics-interface"
+      | "rail"
+      | "ghost"
+      | "explosion"
+      | "vehicle"
+      | "crafting-machine"
+      | "rolling-stock"
+      | "turret"
+      | "transport-belt-connectable"
+      | "wall-connectable"
+      | "buildable"
+      | "placable-in-editor"
+      | "clonable"
+      | "selectable"
+      | "hidden"
+      | "entity-with-health"
+      | "building"
+      | "fast-replaceable"
+      | "uses-direction"
+      | "minable"
+      | "circuit-connectable"
+      | "autoplace"
+      | "blueprintable"
+      | "item-to-place"
+      | "name"
+      | "type"
+      | "collision-mask"
+      | "flag"
+      | "build-base-evolution-requirement"
+      | "selection-priority"
+      | "emissions"
+      | "crafting-category"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"name"` variant of {@link EntityPrototypeFilter}.
+   *
+   * For use within nested filters such as the `place-result` filter of array[{@link ItemPrototypeFilter}].
+   *
+   * To get a specific prototype by name, see {@link LuaGameScript#entity_prototypes LuaGameScript::entity_prototypes}.
+   */
+  export interface NameEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name, or list of acceptable names.
+     */
+    readonly name: string | string[]
+  }
+  /**
+   * `"type"` variant of {@link EntityPrototypeFilter}.
+   *
+   * Usage example:
+   *
+   * ```
+   * game.get_filtered_entity_prototypes({{filter = "type", type = "unit"}})
+   * ```
+   */
+  export interface TypeEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type, or a list of acceptable types.
+     */
+    readonly type: string | string[]
+  }
+  /**
+   * `"collision-mask"` variant of {@link EntityPrototypeFilter}.
+   *
+   * Usage example:
+   *
+   * ```
+   * game.get_filtered_entity_prototypes({{filter = "collision-mask", mask = "player-layer", mask_mode = "collides"}})
+   * ```
+   */
+  export interface CollisionMaskEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter: "collision-mask"
+    readonly mask: CollisionMask | CollisionMaskWithFlags
+    readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
+  }
+  /**
+   * `"flag"` variant of {@link EntityPrototypeFilter}.
+   *
+   * Usage example:
+   *
+   * ```
+   * game.get_filtered_entity_prototypes({{filter = "flag", flag = "placeable-player"}, {filter = "flag", flag = "placeable-enemy", mode = "and"}})
+   * ```
+   */
+  export interface FlagEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter: "flag"
+    readonly flag: EntityPrototypeFlag
+  }
+  /**
+   * `"build-base-evolution-requirement"` variant of {@link EntityPrototypeFilter}.
+   */
+  export interface BuildBaseEvolutionRequirementEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter: "build-base-evolution-requirement"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface BuildBaseEvolutionRequirementEntityPrototypeFilterWrite extends BaseEntityPrototypeFilter {
+    readonly filter: "build-base-evolution-requirement"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"selection-priority"` variant of {@link EntityPrototypeFilter}.
+   */
+  export interface SelectionPriorityEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter: "selection-priority"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint8
+  }
+  export interface SelectionPriorityEntityPrototypeFilterWrite extends BaseEntityPrototypeFilter {
+    readonly filter: "selection-priority"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint8
+  }
+  /**
+   * `"emissions"` variant of {@link EntityPrototypeFilter}.
+   */
+  export interface EmissionsEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter: "emissions"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface EmissionsEntityPrototypeFilterWrite extends BaseEntityPrototypeFilter {
+    readonly filter: "emissions"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"crafting-category"` variant of {@link EntityPrototypeFilter}.
+   */
+  export interface CraftingCategoryEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter: "crafting-category"
+    /**
+     * Matches if the prototype is for a crafting machine with this {@link LuaEntityPrototype#crafting_categories crafting category}.
+     */
+    readonly crafting_category: string
+  }
+  /**
+   * Variants of {@link EntityPrototypeFilter} with no additional attributes.
+   */
+  export interface OtherEntityPrototypeFilter extends BaseEntityPrototypeFilter {
+    readonly filter:
+      | "flying-robot"
+      | "robot-with-logistics-interface"
+      | "rail"
+      | "ghost"
+      | "explosion"
+      | "vehicle"
+      | "crafting-machine"
+      | "rolling-stock"
+      | "turret"
+      | "transport-belt-connectable"
+      | "wall-connectable"
+      | "buildable"
+      | "placable-in-editor"
+      | "clonable"
+      | "selectable"
+      | "hidden"
+      | "entity-with-health"
+      | "building"
+      | "fast-replaceable"
+      | "uses-direction"
+      | "minable"
+      | "circuit-connectable"
+      | "autoplace"
+      | "blueprintable"
+      | "item-to-place"
+  }
+  /**
+   * Base attributes: {@link BaseEntityPrototypeFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"name"`: {@link NameEntityPrototypeFilter}
+   * - `"type"`: {@link TypeEntityPrototypeFilter}
+   * - `"collision-mask"`: {@link CollisionMaskEntityPrototypeFilter}
+   * - `"flag"`: {@link FlagEntityPrototypeFilter}
+   * - `"build-base-evolution-requirement"`: {@link BuildBaseEvolutionRequirementEntityPrototypeFilter}
+   * - `"selection-priority"`: {@link SelectionPriorityEntityPrototypeFilter}
+   * - `"emissions"`: {@link EmissionsEntityPrototypeFilter}
+   * - `"crafting-category"`: {@link CraftingCategoryEntityPrototypeFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EntityPrototypeFilter Online documentation}
+   */
+  export type EntityPrototypeFilter =
+    | NameEntityPrototypeFilter
+    | TypeEntityPrototypeFilter
+    | CollisionMaskEntityPrototypeFilter
+    | FlagEntityPrototypeFilter
+    | BuildBaseEvolutionRequirementEntityPrototypeFilter
+    | SelectionPriorityEntityPrototypeFilter
+    | EmissionsEntityPrototypeFilter
+    | CraftingCategoryEntityPrototypeFilter
+    | OtherEntityPrototypeFilter
+  /**
+   * Write form of {@link EntityPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EntityPrototypeFilter Online documentation}
+   */
+  export type EntityPrototypeFilterWrite =
+    | NameEntityPrototypeFilter
+    | TypeEntityPrototypeFilter
+    | CollisionMaskEntityPrototypeFilter
+    | FlagEntityPrototypeFilter
+    | BuildBaseEvolutionRequirementEntityPrototypeFilterWrite
+    | SelectionPriorityEntityPrototypeFilterWrite
+    | EmissionsEntityPrototypeFilterWrite
+    | CraftingCategoryEntityPrototypeFilter
+    | OtherEntityPrototypeFilter
+  /**
+   * Common attributes to all variants of {@link TechnologyPrototypeFilter}.
+   */
+  export interface BaseTechnologyPrototypeFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "enabled"
+      | "hidden"
+      | "upgrade"
+      | "visible-when-disabled"
+      | "has-effects"
+      | "has-prerequisites"
+      | "research-unit-ingredient"
+      | "unlocks-recipe"
+      | "level"
+      | "max-level"
+      | "time"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"research-unit-ingredient"` variant of {@link TechnologyPrototypeFilter}.
+   */
+  export interface ResearchUnitIngredientTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
+    readonly filter: "research-unit-ingredient"
+    /**
+     * The research ingredient to check.
+     */
+    readonly ingredient: string
+  }
+  /**
+   * `"unlocks-recipe"` variant of {@link TechnologyPrototypeFilter}.
+   */
+  export interface UnlocksRecipeTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
+    readonly filter: "unlocks-recipe"
+    /**
+     * The recipe to check.
+     */
+    readonly recipe: string
+  }
+  /**
+   * `"level"` variant of {@link TechnologyPrototypeFilter}.
+   */
+  export interface LevelTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
+    readonly filter: "level"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  export interface LevelTechnologyPrototypeFilterWrite extends BaseTechnologyPrototypeFilter {
+    readonly filter: "level"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  /**
+   * `"max-level"` variant of {@link TechnologyPrototypeFilter}.
+   */
+  export interface MaxLevelTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
+    readonly filter: "max-level"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  export interface MaxLevelTechnologyPrototypeFilterWrite extends BaseTechnologyPrototypeFilter {
+    readonly filter: "max-level"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  /**
+   * `"time"` variant of {@link TechnologyPrototypeFilter}.
+   */
+  export interface TimeTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
+    readonly filter: "time"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  export interface TimeTechnologyPrototypeFilterWrite extends BaseTechnologyPrototypeFilter {
+    readonly filter: "time"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  /**
+   * Variants of {@link TechnologyPrototypeFilter} with no additional attributes.
+   */
+  export interface OtherTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
+    readonly filter: "enabled" | "hidden" | "upgrade" | "visible-when-disabled" | "has-effects" | "has-prerequisites"
+  }
+  /**
+   * Base attributes: {@link BaseTechnologyPrototypeFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"research-unit-ingredient"`: {@link ResearchUnitIngredientTechnologyPrototypeFilter}
+   * - `"unlocks-recipe"`: {@link UnlocksRecipeTechnologyPrototypeFilter}
+   * - `"level"`: {@link LevelTechnologyPrototypeFilter}
+   * - `"max-level"`: {@link MaxLevelTechnologyPrototypeFilter}
+   * - `"time"`: {@link TimeTechnologyPrototypeFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TechnologyPrototypeFilter Online documentation}
+   */
+  export type TechnologyPrototypeFilter =
+    | ResearchUnitIngredientTechnologyPrototypeFilter
+    | UnlocksRecipeTechnologyPrototypeFilter
+    | LevelTechnologyPrototypeFilter
+    | MaxLevelTechnologyPrototypeFilter
+    | TimeTechnologyPrototypeFilter
+    | OtherTechnologyPrototypeFilter
+  /**
+   * Write form of {@link TechnologyPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TechnologyPrototypeFilter Online documentation}
+   */
+  export type TechnologyPrototypeFilterWrite =
+    | ResearchUnitIngredientTechnologyPrototypeFilter
+    | UnlocksRecipeTechnologyPrototypeFilter
+    | LevelTechnologyPrototypeFilterWrite
+    | MaxLevelTechnologyPrototypeFilterWrite
+    | TimeTechnologyPrototypeFilterWrite
+    | OtherTechnologyPrototypeFilter
+  /**
+   * Common attributes to all variants of {@link RecipePrototypeFilter}.
+   */
+  export interface BaseRecipePrototypeFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "enabled"
+      | "hidden"
+      | "hidden-from-flow-stats"
+      | "hidden-from-player-crafting"
+      | "allow-as-intermediate"
+      | "allow-intermediates"
+      | "allow-decomposition"
+      | "always-show-made-in"
+      | "always-show-products"
+      | "show-amount-in-title"
+      | "has-ingredients"
+      | "has-products"
+      | "has-ingredient-item"
+      | "has-ingredient-fluid"
+      | "has-product-item"
+      | "has-product-fluid"
+      | "subgroup"
+      | "category"
+      | "energy"
+      | "emissions-multiplier"
+      | "request-paste-multiplier"
+      | "overload-multiplier"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"has-ingredient-item"` variant of {@link RecipePrototypeFilter}.
+   */
+  export interface HasIngredientItemRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "has-ingredient-item"
+    /**
+     * Matches if at least 1 ingredient is an item that matches these filters.
+     */
+    readonly elem_filters?: ItemPrototypeFilter[]
+  }
+  export interface HasIngredientItemRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
+    readonly filter: "has-ingredient-item"
+    /**
+     * Matches if at least 1 ingredient is an item that matches these filters.
+     */
+    readonly elem_filters?: readonly ItemPrototypeFilterWrite[]
+  }
+  /**
+   * `"has-ingredient-fluid"` variant of {@link RecipePrototypeFilter}.
+   *
+   * ```
+   * -- selects recipes that consume sulfuric acid
+   * {{filter = "has-ingredient-fluid", elem_filters = {{filter = "name", name = "sulfuric-acid"}}}}
+   * ```
+   */
+  export interface HasIngredientFluidRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "has-ingredient-fluid"
+    /**
+     * Matches if at least 1 ingredient is a fluid that matches these filters.
+     */
+    readonly elem_filters?: FluidPrototypeFilter[]
+  }
+  export interface HasIngredientFluidRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
+    readonly filter: "has-ingredient-fluid"
+    /**
+     * Matches if at least 1 ingredient is a fluid that matches these filters.
+     */
+    readonly elem_filters?: readonly FluidPrototypeFilterWrite[]
+  }
+  /**
+   * `"has-product-item"` variant of {@link RecipePrototypeFilter}.
+   *
+   * Usage example:
+   *
+   * ```
+   * -- selects recipes that produce an item
+   * {{filter = "has-product-item"}}
+   * -- selects recipes that produce iron plates
+   * {{filter = "has-product-item", elem_filters = {{filter = "name", name = "iron-plate"}}}}
+   * -- selects recipes that produce items that place furnaces
+   * {{filter = "has-product-item", elem_filters = {{filter = "place-result", elem_filters = {{filter = "type", type = "furnace"}}}}}}
+   * ```
+   */
+  export interface HasProductItemRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "has-product-item"
+    /**
+     * Matches if at least 1 product is an item that matches these filters.
+     */
+    readonly elem_filters?: ItemPrototypeFilter[]
+  }
+  export interface HasProductItemRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
+    readonly filter: "has-product-item"
+    /**
+     * Matches if at least 1 product is an item that matches these filters.
+     */
+    readonly elem_filters?: readonly ItemPrototypeFilterWrite[]
+  }
+  /**
+   * `"has-product-fluid"` variant of {@link RecipePrototypeFilter}.
+   */
+  export interface HasProductFluidRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "has-product-fluid"
+    /**
+     * Matches if at least 1 product is a fluid that matches these filters.
+     */
+    readonly elem_filters?: FluidPrototypeFilter[]
+  }
+  export interface HasProductFluidRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
+    readonly filter: "has-product-fluid"
+    /**
+     * Matches if at least 1 product is a fluid that matches these filters.
+     */
+    readonly elem_filters?: readonly FluidPrototypeFilterWrite[]
+  }
+  /**
+   * `"subgroup"` variant of {@link RecipePrototypeFilter}.
+   */
+  export interface SubgroupRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "subgroup"
+    /**
+     * A {@link LuaGroup} (subgroup) name
+     */
+    readonly subgroup: string
+  }
+  /**
+   * `"category"` variant of {@link RecipePrototypeFilter}.
+   */
+  export interface CategoryRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "category"
+    /**
+     * A {@link LuaRecipeCategoryPrototype} name
+     */
+    readonly category: string
+  }
+  /**
+   * `"energy"` variant of {@link RecipePrototypeFilter}.
+   */
+  export interface EnergyRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "energy"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface EnergyRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
+    readonly filter: "energy"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"emissions-multiplier"` variant of {@link RecipePrototypeFilter}.
+   */
+  export interface EmissionsMultiplierRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "emissions-multiplier"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface EmissionsMultiplierRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
+    readonly filter: "emissions-multiplier"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"request-paste-multiplier"` variant of {@link RecipePrototypeFilter}.
+   */
+  export interface RequestPasteMultiplierRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "request-paste-multiplier"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  export interface RequestPasteMultiplierRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
+    readonly filter: "request-paste-multiplier"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  /**
+   * `"overload-multiplier"` variant of {@link RecipePrototypeFilter}.
+   */
+  export interface OverloadMultiplierRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter: "overload-multiplier"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  export interface OverloadMultiplierRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
+    readonly filter: "overload-multiplier"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: uint
+  }
+  /**
+   * Variants of {@link RecipePrototypeFilter} with no additional attributes.
+   */
+  export interface OtherRecipePrototypeFilter extends BaseRecipePrototypeFilter {
+    readonly filter:
+      | "enabled"
+      | "hidden"
+      | "hidden-from-flow-stats"
+      | "hidden-from-player-crafting"
+      | "allow-as-intermediate"
+      | "allow-intermediates"
+      | "allow-decomposition"
+      | "always-show-made-in"
+      | "always-show-products"
+      | "show-amount-in-title"
+      | "has-ingredients"
+      | "has-products"
+  }
+  /**
+   * Base attributes: {@link BaseRecipePrototypeFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"has-ingredient-item"`: {@link HasIngredientItemRecipePrototypeFilter}
+   * - `"has-ingredient-fluid"`: {@link HasIngredientFluidRecipePrototypeFilter}
+   * - `"has-product-item"`: {@link HasProductItemRecipePrototypeFilter}
+   * - `"has-product-fluid"`: {@link HasProductFluidRecipePrototypeFilter}
+   * - `"subgroup"`: {@link SubgroupRecipePrototypeFilter}
+   * - `"category"`: {@link CategoryRecipePrototypeFilter}
+   * - `"energy"`: {@link EnergyRecipePrototypeFilter}
+   * - `"emissions-multiplier"`: {@link EmissionsMultiplierRecipePrototypeFilter}
+   * - `"request-paste-multiplier"`: {@link RequestPasteMultiplierRecipePrototypeFilter}
+   * - `"overload-multiplier"`: {@link OverloadMultiplierRecipePrototypeFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#RecipePrototypeFilter Online documentation}
+   */
+  export type RecipePrototypeFilter =
+    | HasIngredientItemRecipePrototypeFilter
+    | HasIngredientFluidRecipePrototypeFilter
+    | HasProductItemRecipePrototypeFilter
+    | HasProductFluidRecipePrototypeFilter
+    | SubgroupRecipePrototypeFilter
+    | CategoryRecipePrototypeFilter
+    | EnergyRecipePrototypeFilter
+    | EmissionsMultiplierRecipePrototypeFilter
+    | RequestPasteMultiplierRecipePrototypeFilter
+    | OverloadMultiplierRecipePrototypeFilter
+    | OtherRecipePrototypeFilter
+  /**
+   * Write form of {@link RecipePrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#RecipePrototypeFilter Online documentation}
+   */
+  export type RecipePrototypeFilterWrite =
+    | HasIngredientItemRecipePrototypeFilterWrite
+    | HasIngredientFluidRecipePrototypeFilterWrite
+    | HasProductItemRecipePrototypeFilterWrite
+    | HasProductFluidRecipePrototypeFilterWrite
+    | SubgroupRecipePrototypeFilter
+    | CategoryRecipePrototypeFilter
+    | EnergyRecipePrototypeFilterWrite
+    | EmissionsMultiplierRecipePrototypeFilterWrite
+    | RequestPasteMultiplierRecipePrototypeFilterWrite
+    | OverloadMultiplierRecipePrototypeFilterWrite
+    | OtherRecipePrototypeFilter
+  /**
+   * Common attributes to all variants of {@link EquipmentPrototypeFilter}.
+   */
+  export interface BaseEquipmentPrototypeFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter: "item-to-place" | "type"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link EquipmentPrototypeFilter}.
+   */
+  export interface TypeEquipmentPrototypeFilter extends BaseEquipmentPrototypeFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type, or a list of acceptable types.
+     */
+    readonly type: string | string[]
+  }
+  /**
+   * Variants of {@link EquipmentPrototypeFilter} with no additional attributes.
+   */
+  export interface OtherEquipmentPrototypeFilter extends BaseEquipmentPrototypeFilter {
+    readonly filter: "item-to-place"
+  }
+  /**
+   * Base attributes: {@link BaseEquipmentPrototypeFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeEquipmentPrototypeFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#EquipmentPrototypeFilter Online documentation}
+   */
+  export type EquipmentPrototypeFilter = TypeEquipmentPrototypeFilter | OtherEquipmentPrototypeFilter
+  /**
+   * Common attributes to all variants of {@link AchievementPrototypeFilter}.
+   */
+  export interface BaseAchievementPrototypeFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter: "allowed-without-fight" | "type"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link AchievementPrototypeFilter}.
+   */
+  export interface TypeAchievementPrototypeFilter extends BaseAchievementPrototypeFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type, or a list of acceptable types.
+     */
+    readonly type: string | string[]
+  }
+  /**
+   * Variants of {@link AchievementPrototypeFilter} with no additional attributes.
+   */
+  export interface OtherAchievementPrototypeFilter extends BaseAchievementPrototypeFilter {
+    readonly filter: "allowed-without-fight"
+  }
+  /**
+   * Base attributes: {@link BaseAchievementPrototypeFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeAchievementPrototypeFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#AchievementPrototypeFilter Online documentation}
+   */
+  export type AchievementPrototypeFilter = TypeAchievementPrototypeFilter | OtherAchievementPrototypeFilter
+  /**
+   * Common attributes to all variants of {@link FluidPrototypeFilter}.
+   */
+  export interface BaseFluidPrototypeFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "hidden"
+      | "name"
+      | "subgroup"
+      | "default-temperature"
+      | "max-temperature"
+      | "heat-capacity"
+      | "fuel-value"
+      | "emissions-multiplier"
+      | "gas-temperature"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"name"` variant of {@link FluidPrototypeFilter}.
+   *
+   * For use within nested filters such as the `has-product-fluid` filter of array[{@link RecipePrototypeFilter}].
+   *
+   * To get a specific prototype by name, see {@link LuaGameScript#fluid_prototypes LuaGameScript::fluid_prototypes}.
+   */
+  export interface NameFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name, or list of acceptable names.
+     */
+    readonly name: string | string[]
+  }
+  /**
+   * `"subgroup"` variant of {@link FluidPrototypeFilter}.
+   */
+  export interface SubgroupFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "subgroup"
+    /**
+     * A {@link LuaGroup} (subgroup) name
+     */
+    readonly subgroup: string
+  }
+  /**
+   * `"default-temperature"` variant of {@link FluidPrototypeFilter}.
+   */
+  export interface DefaultTemperatureFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "default-temperature"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface DefaultTemperatureFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
+    readonly filter: "default-temperature"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"max-temperature"` variant of {@link FluidPrototypeFilter}.
+   */
+  export interface MaxTemperatureFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "max-temperature"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface MaxTemperatureFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
+    readonly filter: "max-temperature"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"heat-capacity"` variant of {@link FluidPrototypeFilter}.
+   */
+  export interface HeatCapacityFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "heat-capacity"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface HeatCapacityFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
+    readonly filter: "heat-capacity"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"fuel-value"` variant of {@link FluidPrototypeFilter}.
+   */
+  export interface FuelValueFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "fuel-value"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface FuelValueFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
+    readonly filter: "fuel-value"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"emissions-multiplier"` variant of {@link FluidPrototypeFilter}.
+   */
+  export interface EmissionsMultiplierFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "emissions-multiplier"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface EmissionsMultiplierFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
+    readonly filter: "emissions-multiplier"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * `"gas-temperature"` variant of {@link FluidPrototypeFilter}.
+   */
+  export interface GasTemperatureFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "gas-temperature"
+    readonly comparison: ComparatorStringRead
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  export interface GasTemperatureFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
+    readonly filter: "gas-temperature"
+    readonly comparison: ComparatorString
+    /**
+     * The value to compare against.
+     */
+    readonly value: double
+  }
+  /**
+   * Variants of {@link FluidPrototypeFilter} with no additional attributes.
+   */
+  export interface OtherFluidPrototypeFilter extends BaseFluidPrototypeFilter {
+    readonly filter: "hidden"
+  }
+  /**
+   * Base attributes: {@link BaseFluidPrototypeFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"name"`: {@link NameFluidPrototypeFilter}
+   * - `"subgroup"`: {@link SubgroupFluidPrototypeFilter}
+   * - `"default-temperature"`: {@link DefaultTemperatureFluidPrototypeFilter}
+   * - `"max-temperature"`: {@link MaxTemperatureFluidPrototypeFilter}
+   * - `"heat-capacity"`: {@link HeatCapacityFluidPrototypeFilter}
+   * - `"fuel-value"`: {@link FuelValueFluidPrototypeFilter}
+   * - `"emissions-multiplier"`: {@link EmissionsMultiplierFluidPrototypeFilter}
+   * - `"gas-temperature"`: {@link GasTemperatureFluidPrototypeFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#FluidPrototypeFilter Online documentation}
+   */
+  export type FluidPrototypeFilter =
+    | NameFluidPrototypeFilter
+    | SubgroupFluidPrototypeFilter
+    | DefaultTemperatureFluidPrototypeFilter
+    | MaxTemperatureFluidPrototypeFilter
+    | HeatCapacityFluidPrototypeFilter
+    | FuelValueFluidPrototypeFilter
+    | EmissionsMultiplierFluidPrototypeFilter
+    | GasTemperatureFluidPrototypeFilter
+    | OtherFluidPrototypeFilter
+  /**
+   * Write form of {@link FluidPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#FluidPrototypeFilter Online documentation}
+   */
+  export type FluidPrototypeFilterWrite =
+    | NameFluidPrototypeFilter
+    | SubgroupFluidPrototypeFilter
+    | DefaultTemperatureFluidPrototypeFilterWrite
+    | MaxTemperatureFluidPrototypeFilterWrite
+    | HeatCapacityFluidPrototypeFilterWrite
+    | FuelValueFluidPrototypeFilterWrite
+    | EmissionsMultiplierFluidPrototypeFilterWrite
+    | GasTemperatureFluidPrototypeFilterWrite
+    | OtherFluidPrototypeFilter
   /**
    * Common attributes to all variants of {@link ItemPrototypeFilter}.
    */
@@ -5146,7 +6202,7 @@ declare module "factorio:runtime" {
    * - `"fuel-acceleration-multiplier"`: {@link FuelAccelerationMultiplierItemPrototypeFilter}
    * - `"fuel-top-speed-multiplier"`: {@link FuelTopSpeedMultiplierItemPrototypeFilter}
    * - `"fuel-emissions-multiplier"`: {@link FuelEmissionsMultiplierItemPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ItemPrototypeFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ItemPrototypeFilter Online documentation}
    */
   export type ItemPrototypeFilter =
     | PlaceResultItemPrototypeFilter
@@ -5168,7 +6224,7 @@ declare module "factorio:runtime" {
     | OtherItemPrototypeFilter
   /**
    * Write form of {@link ItemPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ItemPrototypeFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#ItemPrototypeFilter Online documentation}
    */
   export type ItemPrototypeFilterWrite =
     | PlaceResultItemPrototypeFilterWrite
@@ -5188,538 +6244,6 @@ declare module "factorio:runtime" {
     | FuelTopSpeedMultiplierItemPrototypeFilterWrite
     | FuelEmissionsMultiplierItemPrototypeFilterWrite
     | OtherItemPrototypeFilter
-  /**
-   * Common attributes to all variants of {@link ModSettingPrototypeFilter}.
-   */
-  export interface BaseModSettingPrototypeFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter: "type" | "mod" | "setting-type"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link ModSettingPrototypeFilter}.
-   */
-  export interface TypeModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type, or a list of acceptable types.
-     */
-    readonly type: string | string[]
-  }
-  /**
-   * `"mod"` variant of {@link ModSettingPrototypeFilter}.
-   */
-  export interface ModModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
-    readonly filter: "mod"
-    /**
-     * The mod name
-     */
-    readonly mod: string
-  }
-  /**
-   * `"setting-type"` variant of {@link ModSettingPrototypeFilter}.
-   */
-  export interface SettingTypeModSettingPrototypeFilter extends BaseModSettingPrototypeFilter {
-    readonly filter: "setting-type"
-    /**
-     * The setting scope type.
-     */
-    readonly type: "startup" | "runtime-global" | "runtime-per-user"
-  }
-  /**
-   * Base attributes: {@link BaseModSettingPrototypeFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeModSettingPrototypeFilter}
-   * - `"mod"`: {@link ModModSettingPrototypeFilter}
-   * - `"setting-type"`: {@link SettingTypeModSettingPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#ModSettingPrototypeFilter Online documentation}
-   */
-  export type ModSettingPrototypeFilter =
-    | TypeModSettingPrototypeFilter
-    | ModModSettingPrototypeFilter
-    | SettingTypeModSettingPrototypeFilter
-  /**
-   * Common attributes to all variants of {@link TechnologyPrototypeFilter}.
-   */
-  export interface BaseTechnologyPrototypeFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "enabled"
-      | "hidden"
-      | "upgrade"
-      | "visible-when-disabled"
-      | "has-effects"
-      | "has-prerequisites"
-      | "research-unit-ingredient"
-      | "unlocks-recipe"
-      | "level"
-      | "max-level"
-      | "time"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"research-unit-ingredient"` variant of {@link TechnologyPrototypeFilter}.
-   */
-  export interface ResearchUnitIngredientTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
-    readonly filter: "research-unit-ingredient"
-    /**
-     * The research ingredient to check.
-     */
-    readonly ingredient: string
-  }
-  /**
-   * `"unlocks-recipe"` variant of {@link TechnologyPrototypeFilter}.
-   */
-  export interface UnlocksRecipeTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
-    readonly filter: "unlocks-recipe"
-    /**
-     * The recipe to check.
-     */
-    readonly recipe: string
-  }
-  /**
-   * `"level"` variant of {@link TechnologyPrototypeFilter}.
-   */
-  export interface LevelTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
-    readonly filter: "level"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  export interface LevelTechnologyPrototypeFilterWrite extends BaseTechnologyPrototypeFilter {
-    readonly filter: "level"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  /**
-   * `"max-level"` variant of {@link TechnologyPrototypeFilter}.
-   */
-  export interface MaxLevelTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
-    readonly filter: "max-level"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  export interface MaxLevelTechnologyPrototypeFilterWrite extends BaseTechnologyPrototypeFilter {
-    readonly filter: "max-level"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  /**
-   * `"time"` variant of {@link TechnologyPrototypeFilter}.
-   */
-  export interface TimeTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
-    readonly filter: "time"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  export interface TimeTechnologyPrototypeFilterWrite extends BaseTechnologyPrototypeFilter {
-    readonly filter: "time"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  /**
-   * Variants of {@link TechnologyPrototypeFilter} with no additional attributes.
-   */
-  export interface OtherTechnologyPrototypeFilter extends BaseTechnologyPrototypeFilter {
-    readonly filter: "enabled" | "hidden" | "upgrade" | "visible-when-disabled" | "has-effects" | "has-prerequisites"
-  }
-  /**
-   * Base attributes: {@link BaseTechnologyPrototypeFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"research-unit-ingredient"`: {@link ResearchUnitIngredientTechnologyPrototypeFilter}
-   * - `"unlocks-recipe"`: {@link UnlocksRecipeTechnologyPrototypeFilter}
-   * - `"level"`: {@link LevelTechnologyPrototypeFilter}
-   * - `"max-level"`: {@link MaxLevelTechnologyPrototypeFilter}
-   * - `"time"`: {@link TimeTechnologyPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TechnologyPrototypeFilter Online documentation}
-   */
-  export type TechnologyPrototypeFilter =
-    | ResearchUnitIngredientTechnologyPrototypeFilter
-    | UnlocksRecipeTechnologyPrototypeFilter
-    | LevelTechnologyPrototypeFilter
-    | MaxLevelTechnologyPrototypeFilter
-    | TimeTechnologyPrototypeFilter
-    | OtherTechnologyPrototypeFilter
-  /**
-   * Write form of {@link TechnologyPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TechnologyPrototypeFilter Online documentation}
-   */
-  export type TechnologyPrototypeFilterWrite =
-    | ResearchUnitIngredientTechnologyPrototypeFilter
-    | UnlocksRecipeTechnologyPrototypeFilter
-    | LevelTechnologyPrototypeFilterWrite
-    | MaxLevelTechnologyPrototypeFilterWrite
-    | TimeTechnologyPrototypeFilterWrite
-    | OtherTechnologyPrototypeFilter
-  /**
-   * Common attributes to all variants of {@link DecorativePrototypeFilter}.
-   */
-  export interface BaseDecorativePrototypeFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter: "decal" | "autoplace" | "collision-mask"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"collision-mask"` variant of {@link DecorativePrototypeFilter}.
-   */
-  export interface CollisionMaskDecorativePrototypeFilter extends BaseDecorativePrototypeFilter {
-    readonly filter: "collision-mask"
-    readonly mask: CollisionMask | CollisionMaskWithFlags
-    /**
-     * How to filter.
-     */
-    readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
-  }
-  /**
-   * Variants of {@link DecorativePrototypeFilter} with no additional attributes.
-   */
-  export interface OtherDecorativePrototypeFilter extends BaseDecorativePrototypeFilter {
-    readonly filter: "decal" | "autoplace"
-  }
-  /**
-   * Base attributes: {@link BaseDecorativePrototypeFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"collision-mask"`: {@link CollisionMaskDecorativePrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#DecorativePrototypeFilter Online documentation}
-   */
-  export type DecorativePrototypeFilter = CollisionMaskDecorativePrototypeFilter | OtherDecorativePrototypeFilter
-  /**
-   * Common attributes to all variants of {@link AchievementPrototypeFilter}.
-   */
-  export interface BaseAchievementPrototypeFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter: "allowed-without-fight" | "type"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link AchievementPrototypeFilter}.
-   */
-  export interface TypeAchievementPrototypeFilter extends BaseAchievementPrototypeFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type, or a list of acceptable types.
-     */
-    readonly type: string | string[]
-  }
-  /**
-   * Variants of {@link AchievementPrototypeFilter} with no additional attributes.
-   */
-  export interface OtherAchievementPrototypeFilter extends BaseAchievementPrototypeFilter {
-    readonly filter: "allowed-without-fight"
-  }
-  /**
-   * Base attributes: {@link BaseAchievementPrototypeFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeAchievementPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#AchievementPrototypeFilter Online documentation}
-   */
-  export type AchievementPrototypeFilter = TypeAchievementPrototypeFilter | OtherAchievementPrototypeFilter
-  /**
-   * Common attributes to all variants of {@link FluidPrototypeFilter}.
-   */
-  export interface BaseFluidPrototypeFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "hidden"
-      | "name"
-      | "subgroup"
-      | "default-temperature"
-      | "max-temperature"
-      | "heat-capacity"
-      | "fuel-value"
-      | "emissions-multiplier"
-      | "gas-temperature"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"name"` variant of {@link FluidPrototypeFilter}.
-   *
-   * For use within nested filters such as the `has-product-fluid` filter of array[{@link RecipePrototypeFilter}].
-   *
-   * To get a specific prototype by name, see {@link LuaGameScript#fluid_prototypes LuaGameScript::fluid_prototypes}.
-   */
-  export interface NameFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name, or list of acceptable names.
-     */
-    readonly name: string | string[]
-  }
-  /**
-   * `"subgroup"` variant of {@link FluidPrototypeFilter}.
-   */
-  export interface SubgroupFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "subgroup"
-    /**
-     * A {@link LuaGroup} (subgroup) name
-     */
-    readonly subgroup: string
-  }
-  /**
-   * `"default-temperature"` variant of {@link FluidPrototypeFilter}.
-   */
-  export interface DefaultTemperatureFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "default-temperature"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface DefaultTemperatureFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
-    readonly filter: "default-temperature"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"max-temperature"` variant of {@link FluidPrototypeFilter}.
-   */
-  export interface MaxTemperatureFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "max-temperature"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface MaxTemperatureFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
-    readonly filter: "max-temperature"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"heat-capacity"` variant of {@link FluidPrototypeFilter}.
-   */
-  export interface HeatCapacityFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "heat-capacity"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface HeatCapacityFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
-    readonly filter: "heat-capacity"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"fuel-value"` variant of {@link FluidPrototypeFilter}.
-   */
-  export interface FuelValueFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "fuel-value"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface FuelValueFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
-    readonly filter: "fuel-value"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"emissions-multiplier"` variant of {@link FluidPrototypeFilter}.
-   */
-  export interface EmissionsMultiplierFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "emissions-multiplier"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface EmissionsMultiplierFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
-    readonly filter: "emissions-multiplier"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"gas-temperature"` variant of {@link FluidPrototypeFilter}.
-   */
-  export interface GasTemperatureFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "gas-temperature"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface GasTemperatureFluidPrototypeFilterWrite extends BaseFluidPrototypeFilter {
-    readonly filter: "gas-temperature"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * Variants of {@link FluidPrototypeFilter} with no additional attributes.
-   */
-  export interface OtherFluidPrototypeFilter extends BaseFluidPrototypeFilter {
-    readonly filter: "hidden"
-  }
-  /**
-   * Base attributes: {@link BaseFluidPrototypeFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"name"`: {@link NameFluidPrototypeFilter}
-   * - `"subgroup"`: {@link SubgroupFluidPrototypeFilter}
-   * - `"default-temperature"`: {@link DefaultTemperatureFluidPrototypeFilter}
-   * - `"max-temperature"`: {@link MaxTemperatureFluidPrototypeFilter}
-   * - `"heat-capacity"`: {@link HeatCapacityFluidPrototypeFilter}
-   * - `"fuel-value"`: {@link FuelValueFluidPrototypeFilter}
-   * - `"emissions-multiplier"`: {@link EmissionsMultiplierFluidPrototypeFilter}
-   * - `"gas-temperature"`: {@link GasTemperatureFluidPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#FluidPrototypeFilter Online documentation}
-   */
-  export type FluidPrototypeFilter =
-    | NameFluidPrototypeFilter
-    | SubgroupFluidPrototypeFilter
-    | DefaultTemperatureFluidPrototypeFilter
-    | MaxTemperatureFluidPrototypeFilter
-    | HeatCapacityFluidPrototypeFilter
-    | FuelValueFluidPrototypeFilter
-    | EmissionsMultiplierFluidPrototypeFilter
-    | GasTemperatureFluidPrototypeFilter
-    | OtherFluidPrototypeFilter
-  /**
-   * Write form of {@link FluidPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#FluidPrototypeFilter Online documentation}
-   */
-  export type FluidPrototypeFilterWrite =
-    | NameFluidPrototypeFilter
-    | SubgroupFluidPrototypeFilter
-    | DefaultTemperatureFluidPrototypeFilterWrite
-    | MaxTemperatureFluidPrototypeFilterWrite
-    | HeatCapacityFluidPrototypeFilterWrite
-    | FuelValueFluidPrototypeFilterWrite
-    | EmissionsMultiplierFluidPrototypeFilterWrite
-    | GasTemperatureFluidPrototypeFilterWrite
-    | OtherFluidPrototypeFilter
-  /**
-   * Common attributes to all variants of {@link EquipmentPrototypeFilter}.
-   */
-  export interface BaseEquipmentPrototypeFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter: "item-to-place" | "type"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link EquipmentPrototypeFilter}.
-   */
-  export interface TypeEquipmentPrototypeFilter extends BaseEquipmentPrototypeFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type, or a list of acceptable types.
-     */
-    readonly type: string | string[]
-  }
-  /**
-   * Variants of {@link EquipmentPrototypeFilter} with no additional attributes.
-   */
-  export interface OtherEquipmentPrototypeFilter extends BaseEquipmentPrototypeFilter {
-    readonly filter: "item-to-place"
-  }
-  /**
-   * Base attributes: {@link BaseEquipmentPrototypeFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeEquipmentPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EquipmentPrototypeFilter Online documentation}
-   */
-  export type EquipmentPrototypeFilter = TypeEquipmentPrototypeFilter | OtherEquipmentPrototypeFilter
   /**
    * Common attributes to all variants of {@link TilePrototypeFilter}.
    */
@@ -5848,7 +6372,7 @@ declare module "factorio:runtime" {
    * - `"vehicle-friction-modifier"`: {@link VehicleFrictionModifierTilePrototypeFilter}
    * - `"decorative-removal-probability"`: {@link DecorativeRemovalProbabilityTilePrototypeFilter}
    * - `"emissions"`: {@link EmissionsTilePrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TilePrototypeFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TilePrototypeFilter Online documentation}
    */
   export type TilePrototypeFilter =
     | CollisionMaskTilePrototypeFilter
@@ -5859,7 +6383,7 @@ declare module "factorio:runtime" {
     | OtherTilePrototypeFilter
   /**
    * Write form of {@link TilePrototypeFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#TilePrototypeFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#TilePrototypeFilter Online documentation}
    */
   export type TilePrototypeFilterWrite =
     | CollisionMaskTilePrototypeFilter
@@ -5868,952 +6392,6 @@ declare module "factorio:runtime" {
     | DecorativeRemovalProbabilityTilePrototypeFilterWrite
     | EmissionsTilePrototypeFilterWrite
     | OtherTilePrototypeFilter
-  /**
-   * Common attributes to all variants of {@link RecipePrototypeFilter}.
-   */
-  export interface BaseRecipePrototypeFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "enabled"
-      | "hidden"
-      | "hidden-from-flow-stats"
-      | "hidden-from-player-crafting"
-      | "allow-as-intermediate"
-      | "allow-intermediates"
-      | "allow-decomposition"
-      | "always-show-made-in"
-      | "always-show-products"
-      | "show-amount-in-title"
-      | "has-ingredients"
-      | "has-products"
-      | "has-ingredient-item"
-      | "has-ingredient-fluid"
-      | "has-product-item"
-      | "has-product-fluid"
-      | "subgroup"
-      | "category"
-      | "energy"
-      | "emissions-multiplier"
-      | "request-paste-multiplier"
-      | "overload-multiplier"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"has-ingredient-item"` variant of {@link RecipePrototypeFilter}.
-   */
-  export interface HasIngredientItemRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "has-ingredient-item"
-    /**
-     * Matches if at least 1 ingredient is an item that matches these filters.
-     */
-    readonly elem_filters?: ItemPrototypeFilter[]
-  }
-  export interface HasIngredientItemRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
-    readonly filter: "has-ingredient-item"
-    /**
-     * Matches if at least 1 ingredient is an item that matches these filters.
-     */
-    readonly elem_filters?: readonly ItemPrototypeFilterWrite[]
-  }
-  /**
-   * `"has-ingredient-fluid"` variant of {@link RecipePrototypeFilter}.
-   *
-   * ```
-   * -- selects recipes that consume sulfuric acid
-   * {{filter = "has-ingredient-fluid", elem_filters = {{filter = "name", name = "sulfuric-acid"}}}}
-   * ```
-   */
-  export interface HasIngredientFluidRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "has-ingredient-fluid"
-    /**
-     * Matches if at least 1 ingredient is a fluid that matches these filters.
-     */
-    readonly elem_filters?: FluidPrototypeFilter[]
-  }
-  export interface HasIngredientFluidRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
-    readonly filter: "has-ingredient-fluid"
-    /**
-     * Matches if at least 1 ingredient is a fluid that matches these filters.
-     */
-    readonly elem_filters?: readonly FluidPrototypeFilterWrite[]
-  }
-  /**
-   * `"has-product-item"` variant of {@link RecipePrototypeFilter}.
-   *
-   * Usage example:
-   *
-   * ```
-   * -- selects recipes that produce an item
-   * {{filter = "has-product-item"}}
-   * -- selects recipes that produce iron plates
-   * {{filter = "has-product-item", elem_filters = {{filter = "name", name = "iron-plate"}}}}
-   * -- selects recipes that produce items that place furnaces
-   * {{filter = "has-product-item", elem_filters = {{filter = "place-result", elem_filters = {{filter = "type", type = "furnace"}}}}}}
-   * ```
-   */
-  export interface HasProductItemRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "has-product-item"
-    /**
-     * Matches if at least 1 product is an item that matches these filters.
-     */
-    readonly elem_filters?: ItemPrototypeFilter[]
-  }
-  export interface HasProductItemRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
-    readonly filter: "has-product-item"
-    /**
-     * Matches if at least 1 product is an item that matches these filters.
-     */
-    readonly elem_filters?: readonly ItemPrototypeFilterWrite[]
-  }
-  /**
-   * `"has-product-fluid"` variant of {@link RecipePrototypeFilter}.
-   */
-  export interface HasProductFluidRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "has-product-fluid"
-    /**
-     * Matches if at least 1 product is a fluid that matches these filters.
-     */
-    readonly elem_filters?: FluidPrototypeFilter[]
-  }
-  export interface HasProductFluidRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
-    readonly filter: "has-product-fluid"
-    /**
-     * Matches if at least 1 product is a fluid that matches these filters.
-     */
-    readonly elem_filters?: readonly FluidPrototypeFilterWrite[]
-  }
-  /**
-   * `"subgroup"` variant of {@link RecipePrototypeFilter}.
-   */
-  export interface SubgroupRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "subgroup"
-    /**
-     * A {@link LuaGroup} (subgroup) name
-     */
-    readonly subgroup: string
-  }
-  /**
-   * `"category"` variant of {@link RecipePrototypeFilter}.
-   */
-  export interface CategoryRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "category"
-    /**
-     * A {@link LuaRecipeCategoryPrototype} name
-     */
-    readonly category: string
-  }
-  /**
-   * `"energy"` variant of {@link RecipePrototypeFilter}.
-   */
-  export interface EnergyRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "energy"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface EnergyRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
-    readonly filter: "energy"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"emissions-multiplier"` variant of {@link RecipePrototypeFilter}.
-   */
-  export interface EmissionsMultiplierRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "emissions-multiplier"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface EmissionsMultiplierRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
-    readonly filter: "emissions-multiplier"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"request-paste-multiplier"` variant of {@link RecipePrototypeFilter}.
-   */
-  export interface RequestPasteMultiplierRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "request-paste-multiplier"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  export interface RequestPasteMultiplierRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
-    readonly filter: "request-paste-multiplier"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  /**
-   * `"overload-multiplier"` variant of {@link RecipePrototypeFilter}.
-   */
-  export interface OverloadMultiplierRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter: "overload-multiplier"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  export interface OverloadMultiplierRecipePrototypeFilterWrite extends BaseRecipePrototypeFilter {
-    readonly filter: "overload-multiplier"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint
-  }
-  /**
-   * Variants of {@link RecipePrototypeFilter} with no additional attributes.
-   */
-  export interface OtherRecipePrototypeFilter extends BaseRecipePrototypeFilter {
-    readonly filter:
-      | "enabled"
-      | "hidden"
-      | "hidden-from-flow-stats"
-      | "hidden-from-player-crafting"
-      | "allow-as-intermediate"
-      | "allow-intermediates"
-      | "allow-decomposition"
-      | "always-show-made-in"
-      | "always-show-products"
-      | "show-amount-in-title"
-      | "has-ingredients"
-      | "has-products"
-  }
-  /**
-   * Base attributes: {@link BaseRecipePrototypeFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"has-ingredient-item"`: {@link HasIngredientItemRecipePrototypeFilter}
-   * - `"has-ingredient-fluid"`: {@link HasIngredientFluidRecipePrototypeFilter}
-   * - `"has-product-item"`: {@link HasProductItemRecipePrototypeFilter}
-   * - `"has-product-fluid"`: {@link HasProductFluidRecipePrototypeFilter}
-   * - `"subgroup"`: {@link SubgroupRecipePrototypeFilter}
-   * - `"category"`: {@link CategoryRecipePrototypeFilter}
-   * - `"energy"`: {@link EnergyRecipePrototypeFilter}
-   * - `"emissions-multiplier"`: {@link EmissionsMultiplierRecipePrototypeFilter}
-   * - `"request-paste-multiplier"`: {@link RequestPasteMultiplierRecipePrototypeFilter}
-   * - `"overload-multiplier"`: {@link OverloadMultiplierRecipePrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#RecipePrototypeFilter Online documentation}
-   */
-  export type RecipePrototypeFilter =
-    | HasIngredientItemRecipePrototypeFilter
-    | HasIngredientFluidRecipePrototypeFilter
-    | HasProductItemRecipePrototypeFilter
-    | HasProductFluidRecipePrototypeFilter
-    | SubgroupRecipePrototypeFilter
-    | CategoryRecipePrototypeFilter
-    | EnergyRecipePrototypeFilter
-    | EmissionsMultiplierRecipePrototypeFilter
-    | RequestPasteMultiplierRecipePrototypeFilter
-    | OverloadMultiplierRecipePrototypeFilter
-    | OtherRecipePrototypeFilter
-  /**
-   * Write form of {@link RecipePrototypeFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#RecipePrototypeFilter Online documentation}
-   */
-  export type RecipePrototypeFilterWrite =
-    | HasIngredientItemRecipePrototypeFilterWrite
-    | HasIngredientFluidRecipePrototypeFilterWrite
-    | HasProductItemRecipePrototypeFilterWrite
-    | HasProductFluidRecipePrototypeFilterWrite
-    | SubgroupRecipePrototypeFilter
-    | CategoryRecipePrototypeFilter
-    | EnergyRecipePrototypeFilterWrite
-    | EmissionsMultiplierRecipePrototypeFilterWrite
-    | RequestPasteMultiplierRecipePrototypeFilterWrite
-    | OverloadMultiplierRecipePrototypeFilterWrite
-    | OtherRecipePrototypeFilter
-  /**
-   * Common attributes to all variants of {@link EntityPrototypeFilter}.
-   */
-  export interface BaseEntityPrototypeFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "flying-robot"
-      | "robot-with-logistics-interface"
-      | "rail"
-      | "ghost"
-      | "explosion"
-      | "vehicle"
-      | "crafting-machine"
-      | "rolling-stock"
-      | "turret"
-      | "transport-belt-connectable"
-      | "wall-connectable"
-      | "buildable"
-      | "placable-in-editor"
-      | "clonable"
-      | "selectable"
-      | "hidden"
-      | "entity-with-health"
-      | "building"
-      | "fast-replaceable"
-      | "uses-direction"
-      | "minable"
-      | "circuit-connectable"
-      | "autoplace"
-      | "blueprintable"
-      | "item-to-place"
-      | "name"
-      | "type"
-      | "collision-mask"
-      | "flag"
-      | "build-base-evolution-requirement"
-      | "selection-priority"
-      | "emissions"
-      | "crafting-category"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"name"` variant of {@link EntityPrototypeFilter}.
-   *
-   * For use within nested filters such as the `place-result` filter of array[{@link ItemPrototypeFilter}].
-   *
-   * To get a specific prototype by name, see {@link LuaGameScript#entity_prototypes LuaGameScript::entity_prototypes}.
-   */
-  export interface NameEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name, or list of acceptable names.
-     */
-    readonly name: string | string[]
-  }
-  /**
-   * `"type"` variant of {@link EntityPrototypeFilter}.
-   *
-   * Usage example:
-   *
-   * ```
-   * game.get_filtered_entity_prototypes({{filter = "type", type = "unit"}})
-   * ```
-   */
-  export interface TypeEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type, or a list of acceptable types.
-     */
-    readonly type: string | string[]
-  }
-  /**
-   * `"collision-mask"` variant of {@link EntityPrototypeFilter}.
-   *
-   * Usage example:
-   *
-   * ```
-   * game.get_filtered_entity_prototypes({{filter = "collision-mask", mask = "player-layer", mask_mode = "collides"}})
-   * ```
-   */
-  export interface CollisionMaskEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter: "collision-mask"
-    readonly mask: CollisionMask | CollisionMaskWithFlags
-    readonly mask_mode: "collides" | "layers-equals" | "contains-any" | "contains-all"
-  }
-  /**
-   * `"flag"` variant of {@link EntityPrototypeFilter}.
-   *
-   * Usage example:
-   *
-   * ```
-   * game.get_filtered_entity_prototypes({{filter = "flag", flag = "placeable-player"}, {filter = "flag", flag = "placeable-enemy", mode = "and"}})
-   * ```
-   */
-  export interface FlagEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter: "flag"
-    readonly flag: EntityPrototypeFlag
-  }
-  /**
-   * `"build-base-evolution-requirement"` variant of {@link EntityPrototypeFilter}.
-   */
-  export interface BuildBaseEvolutionRequirementEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter: "build-base-evolution-requirement"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface BuildBaseEvolutionRequirementEntityPrototypeFilterWrite extends BaseEntityPrototypeFilter {
-    readonly filter: "build-base-evolution-requirement"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"selection-priority"` variant of {@link EntityPrototypeFilter}.
-   */
-  export interface SelectionPriorityEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter: "selection-priority"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint8
-  }
-  export interface SelectionPriorityEntityPrototypeFilterWrite extends BaseEntityPrototypeFilter {
-    readonly filter: "selection-priority"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: uint8
-  }
-  /**
-   * `"emissions"` variant of {@link EntityPrototypeFilter}.
-   */
-  export interface EmissionsEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter: "emissions"
-    readonly comparison: ComparatorStringRead
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  export interface EmissionsEntityPrototypeFilterWrite extends BaseEntityPrototypeFilter {
-    readonly filter: "emissions"
-    readonly comparison: ComparatorString
-    /**
-     * The value to compare against.
-     */
-    readonly value: double
-  }
-  /**
-   * `"crafting-category"` variant of {@link EntityPrototypeFilter}.
-   */
-  export interface CraftingCategoryEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter: "crafting-category"
-    /**
-     * Matches if the prototype is for a crafting machine with this {@link LuaEntityPrototype#crafting_categories crafting category}.
-     */
-    readonly crafting_category: string
-  }
-  /**
-   * Variants of {@link EntityPrototypeFilter} with no additional attributes.
-   */
-  export interface OtherEntityPrototypeFilter extends BaseEntityPrototypeFilter {
-    readonly filter:
-      | "flying-robot"
-      | "robot-with-logistics-interface"
-      | "rail"
-      | "ghost"
-      | "explosion"
-      | "vehicle"
-      | "crafting-machine"
-      | "rolling-stock"
-      | "turret"
-      | "transport-belt-connectable"
-      | "wall-connectable"
-      | "buildable"
-      | "placable-in-editor"
-      | "clonable"
-      | "selectable"
-      | "hidden"
-      | "entity-with-health"
-      | "building"
-      | "fast-replaceable"
-      | "uses-direction"
-      | "minable"
-      | "circuit-connectable"
-      | "autoplace"
-      | "blueprintable"
-      | "item-to-place"
-  }
-  /**
-   * Base attributes: {@link BaseEntityPrototypeFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"name"`: {@link NameEntityPrototypeFilter}
-   * - `"type"`: {@link TypeEntityPrototypeFilter}
-   * - `"collision-mask"`: {@link CollisionMaskEntityPrototypeFilter}
-   * - `"flag"`: {@link FlagEntityPrototypeFilter}
-   * - `"build-base-evolution-requirement"`: {@link BuildBaseEvolutionRequirementEntityPrototypeFilter}
-   * - `"selection-priority"`: {@link SelectionPriorityEntityPrototypeFilter}
-   * - `"emissions"`: {@link EmissionsEntityPrototypeFilter}
-   * - `"crafting-category"`: {@link CraftingCategoryEntityPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EntityPrototypeFilter Online documentation}
-   */
-  export type EntityPrototypeFilter =
-    | NameEntityPrototypeFilter
-    | TypeEntityPrototypeFilter
-    | CollisionMaskEntityPrototypeFilter
-    | FlagEntityPrototypeFilter
-    | BuildBaseEvolutionRequirementEntityPrototypeFilter
-    | SelectionPriorityEntityPrototypeFilter
-    | EmissionsEntityPrototypeFilter
-    | CraftingCategoryEntityPrototypeFilter
-    | OtherEntityPrototypeFilter
-  /**
-   * Write form of {@link EntityPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#EntityPrototypeFilter Online documentation}
-   */
-  export type EntityPrototypeFilterWrite =
-    | NameEntityPrototypeFilter
-    | TypeEntityPrototypeFilter
-    | CollisionMaskEntityPrototypeFilter
-    | FlagEntityPrototypeFilter
-    | BuildBaseEvolutionRequirementEntityPrototypeFilterWrite
-    | SelectionPriorityEntityPrototypeFilterWrite
-    | EmissionsEntityPrototypeFilterWrite
-    | CraftingCategoryEntityPrototypeFilter
-    | OtherEntityPrototypeFilter
-  /**
-   * Common attributes to all variants of {@link LuaScriptRaisedReviveEventFilter}.
-   */
-  export interface BaseScriptRaisedReviveEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaScriptRaisedReviveEventFilter}.
-   */
-  export interface TypeScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaScriptRaisedReviveEventFilter}.
-   */
-  export interface NameScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaScriptRaisedReviveEventFilter}.
-   */
-  export interface GhostTypeScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaScriptRaisedReviveEventFilter}.
-   */
-  export interface GhostNameScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaScriptRaisedReviveEventFilter} with no additional attributes.
-   */
-  export interface OtherScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BaseScriptRaisedReviveEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeScriptRaisedReviveEventFilter}
-   * - `"name"`: {@link NameScriptRaisedReviveEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeScriptRaisedReviveEventFilter}
-   * - `"ghost_name"`: {@link GhostNameScriptRaisedReviveEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaScriptRaisedReviveEventFilter Online documentation}
-   */
-  export type LuaScriptRaisedReviveEventFilter =
-    | TypeScriptRaisedReviveEventFilter
-    | NameScriptRaisedReviveEventFilter
-    | GhostTypeScriptRaisedReviveEventFilter
-    | GhostNameScriptRaisedReviveEventFilter
-    | OtherScriptRaisedReviveEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaEntityDiedEventFilter}.
-   */
-  export interface BaseEntityDiedEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaEntityDiedEventFilter}.
-   */
-  export interface TypeEntityDiedEventFilter extends BaseEntityDiedEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaEntityDiedEventFilter}.
-   */
-  export interface NameEntityDiedEventFilter extends BaseEntityDiedEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaEntityDiedEventFilter}.
-   */
-  export interface GhostTypeEntityDiedEventFilter extends BaseEntityDiedEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaEntityDiedEventFilter}.
-   */
-  export interface GhostNameEntityDiedEventFilter extends BaseEntityDiedEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaEntityDiedEventFilter} with no additional attributes.
-   */
-  export interface OtherEntityDiedEventFilter extends BaseEntityDiedEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BaseEntityDiedEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeEntityDiedEventFilter}
-   * - `"name"`: {@link NameEntityDiedEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeEntityDiedEventFilter}
-   * - `"ghost_name"`: {@link GhostNameEntityDiedEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaEntityDiedEventFilter Online documentation}
-   */
-  export type LuaEntityDiedEventFilter =
-    | TypeEntityDiedEventFilter
-    | NameEntityDiedEventFilter
-    | GhostTypeEntityDiedEventFilter
-    | GhostNameEntityDiedEventFilter
-    | OtherEntityDiedEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaEntityMarkedForDeconstructionEventFilter}.
-   */
-  export interface BaseEntityMarkedForDeconstructionEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
-   */
-  export interface TypeEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
-   */
-  export interface NameEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
-   */
-  export interface GhostTypeEntityMarkedForDeconstructionEventFilter
-    extends BaseEntityMarkedForDeconstructionEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
-   */
-  export interface GhostNameEntityMarkedForDeconstructionEventFilter
-    extends BaseEntityMarkedForDeconstructionEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaEntityMarkedForDeconstructionEventFilter} with no additional attributes.
-   */
-  export interface OtherEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BaseEntityMarkedForDeconstructionEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeEntityMarkedForDeconstructionEventFilter}
-   * - `"name"`: {@link NameEntityMarkedForDeconstructionEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeEntityMarkedForDeconstructionEventFilter}
-   * - `"ghost_name"`: {@link GhostNameEntityMarkedForDeconstructionEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaEntityMarkedForDeconstructionEventFilter Online documentation}
-   */
-  export type LuaEntityMarkedForDeconstructionEventFilter =
-    | TypeEntityMarkedForDeconstructionEventFilter
-    | NameEntityMarkedForDeconstructionEventFilter
-    | GhostTypeEntityMarkedForDeconstructionEventFilter
-    | GhostNameEntityMarkedForDeconstructionEventFilter
-    | OtherEntityMarkedForDeconstructionEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaPreGhostDeconstructedEventFilter}.
-   */
-  export interface BasePreGhostDeconstructedEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
-   */
-  export interface TypePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
-   */
-  export interface NamePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
-   */
-  export interface GhostTypePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
-   */
-  export interface GhostNamePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaPreGhostDeconstructedEventFilter} with no additional attributes.
-   */
-  export interface OtherPreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BasePreGhostDeconstructedEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypePreGhostDeconstructedEventFilter}
-   * - `"name"`: {@link NamePreGhostDeconstructedEventFilter}
-   * - `"ghost_type"`: {@link GhostTypePreGhostDeconstructedEventFilter}
-   * - `"ghost_name"`: {@link GhostNamePreGhostDeconstructedEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaPreGhostDeconstructedEventFilter Online documentation}
-   */
-  export type LuaPreGhostDeconstructedEventFilter =
-    | TypePreGhostDeconstructedEventFilter
-    | NamePreGhostDeconstructedEventFilter
-    | GhostTypePreGhostDeconstructedEventFilter
-    | GhostNamePreGhostDeconstructedEventFilter
-    | OtherPreGhostDeconstructedEventFilter
   /**
    * Common attributes to all variants of {@link LuaScriptRaisedDestroyEventFilter}.
    */
@@ -6911,7 +6489,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameScriptRaisedDestroyEventFilter}
    * - `"ghost_type"`: {@link GhostTypeScriptRaisedDestroyEventFilter}
    * - `"ghost_name"`: {@link GhostNameScriptRaisedDestroyEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaScriptRaisedDestroyEventFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaScriptRaisedDestroyEventFilter Online documentation}
    */
   export type LuaScriptRaisedDestroyEventFilter =
     | TypeScriptRaisedDestroyEventFilter
@@ -6920,9 +6498,9 @@ declare module "factorio:runtime" {
     | GhostNameScriptRaisedDestroyEventFilter
     | OtherScriptRaisedDestroyEventFilter
   /**
-   * Common attributes to all variants of {@link LuaUpgradeCancelledEventFilter}.
+   * Common attributes to all variants of {@link LuaScriptRaisedReviveEventFilter}.
    */
-  export interface BaseUpgradeCancelledEventFilter {
+  export interface BaseScriptRaisedReviveEventFilter {
     /**
      * The condition to filter on.
      */
@@ -6952,9 +6530,9 @@ declare module "factorio:runtime" {
     readonly invert?: boolean
   }
   /**
-   * `"type"` variant of {@link LuaUpgradeCancelledEventFilter}.
+   * `"type"` variant of {@link LuaScriptRaisedReviveEventFilter}.
    */
-  export interface TypeUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+  export interface TypeScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter: "type"
     /**
      * The prototype type.
@@ -6962,9 +6540,9 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * `"name"` variant of {@link LuaUpgradeCancelledEventFilter}.
+   * `"name"` variant of {@link LuaScriptRaisedReviveEventFilter}.
    */
-  export interface NameUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+  export interface NameScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter: "name"
     /**
      * The prototype name.
@@ -6972,9 +6550,9 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * `"ghost_type"` variant of {@link LuaUpgradeCancelledEventFilter}.
+   * `"ghost_type"` variant of {@link LuaScriptRaisedReviveEventFilter}.
    */
-  export interface GhostTypeUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+  export interface GhostTypeScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter: "ghost_type"
     /**
      * The ghost prototype type.
@@ -6982,9 +6560,9 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * `"ghost_name"` variant of {@link LuaUpgradeCancelledEventFilter}.
+   * `"ghost_name"` variant of {@link LuaScriptRaisedReviveEventFilter}.
    */
-  export interface GhostNameUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+  export interface GhostNameScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter: "ghost_name"
     /**
      * The ghost prototype name.
@@ -6992,9 +6570,9 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * Variants of {@link LuaUpgradeCancelledEventFilter} with no additional attributes.
+   * Variants of {@link LuaScriptRaisedReviveEventFilter} with no additional attributes.
    */
-  export interface OtherUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+  export interface OtherScriptRaisedReviveEventFilter extends BaseScriptRaisedReviveEventFilter {
     readonly filter:
       | "ghost"
       | "rail"
@@ -7009,581 +6587,21 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Base attributes: {@link BaseUpgradeCancelledEventFilter}
+   * Base attributes: {@link BaseScriptRaisedReviveEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeUpgradeCancelledEventFilter}
-   * - `"name"`: {@link NameUpgradeCancelledEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeUpgradeCancelledEventFilter}
-   * - `"ghost_name"`: {@link GhostNameUpgradeCancelledEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaUpgradeCancelledEventFilter Online documentation}
+   * - `"type"`: {@link TypeScriptRaisedReviveEventFilter}
+   * - `"name"`: {@link NameScriptRaisedReviveEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeScriptRaisedReviveEventFilter}
+   * - `"ghost_name"`: {@link GhostNameScriptRaisedReviveEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaScriptRaisedReviveEventFilter Online documentation}
    */
-  export type LuaUpgradeCancelledEventFilter =
-    | TypeUpgradeCancelledEventFilter
-    | NameUpgradeCancelledEventFilter
-    | GhostTypeUpgradeCancelledEventFilter
-    | GhostNameUpgradeCancelledEventFilter
-    | OtherUpgradeCancelledEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaPlayerRepairedEntityEventFilter}.
-   */
-  export interface BasePlayerRepairedEntityEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
-   */
-  export interface TypePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
-   */
-  export interface NamePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
-   */
-  export interface GhostTypePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
-   */
-  export interface GhostNamePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaPlayerRepairedEntityEventFilter} with no additional attributes.
-   */
-  export interface OtherPlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BasePlayerRepairedEntityEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypePlayerRepairedEntityEventFilter}
-   * - `"name"`: {@link NamePlayerRepairedEntityEventFilter}
-   * - `"ghost_type"`: {@link GhostTypePlayerRepairedEntityEventFilter}
-   * - `"ghost_name"`: {@link GhostNamePlayerRepairedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaPlayerRepairedEntityEventFilter Online documentation}
-   */
-  export type LuaPlayerRepairedEntityEventFilter =
-    | TypePlayerRepairedEntityEventFilter
-    | NamePlayerRepairedEntityEventFilter
-    | GhostTypePlayerRepairedEntityEventFilter
-    | GhostNamePlayerRepairedEntityEventFilter
-    | OtherPlayerRepairedEntityEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaScriptRaisedTeleportedEventFilter}.
-   */
-  export interface BaseScriptRaisedTeleportedEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
-   */
-  export interface TypeScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
-   */
-  export interface NameScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
-   */
-  export interface GhostTypeScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
-   */
-  export interface GhostNameScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaScriptRaisedTeleportedEventFilter} with no additional attributes.
-   */
-  export interface OtherScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BaseScriptRaisedTeleportedEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeScriptRaisedTeleportedEventFilter}
-   * - `"name"`: {@link NameScriptRaisedTeleportedEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeScriptRaisedTeleportedEventFilter}
-   * - `"ghost_name"`: {@link GhostNameScriptRaisedTeleportedEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaScriptRaisedTeleportedEventFilter Online documentation}
-   */
-  export type LuaScriptRaisedTeleportedEventFilter =
-    | TypeScriptRaisedTeleportedEventFilter
-    | NameScriptRaisedTeleportedEventFilter
-    | GhostTypeScriptRaisedTeleportedEventFilter
-    | GhostNameScriptRaisedTeleportedEventFilter
-    | OtherScriptRaisedTeleportedEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaEntityMarkedForUpgradeEventFilter}.
-   */
-  export interface BaseEntityMarkedForUpgradeEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
-   */
-  export interface TypeEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
-   */
-  export interface NameEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
-   */
-  export interface GhostTypeEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
-   */
-  export interface GhostNameEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaEntityMarkedForUpgradeEventFilter} with no additional attributes.
-   */
-  export interface OtherEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BaseEntityMarkedForUpgradeEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeEntityMarkedForUpgradeEventFilter}
-   * - `"name"`: {@link NameEntityMarkedForUpgradeEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeEntityMarkedForUpgradeEventFilter}
-   * - `"ghost_name"`: {@link GhostNameEntityMarkedForUpgradeEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaEntityMarkedForUpgradeEventFilter Online documentation}
-   */
-  export type LuaEntityMarkedForUpgradeEventFilter =
-    | TypeEntityMarkedForUpgradeEventFilter
-    | NameEntityMarkedForUpgradeEventFilter
-    | GhostTypeEntityMarkedForUpgradeEventFilter
-    | GhostNameEntityMarkedForUpgradeEventFilter
-    | OtherEntityMarkedForUpgradeEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaPostEntityDiedEventFilter}.
-   */
-  export interface BasePostEntityDiedEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter: "type"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaPostEntityDiedEventFilter}.
-   */
-  export interface TypePostEntityDiedEventFilter extends BasePostEntityDiedEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * Base attributes: {@link BasePostEntityDiedEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypePostEntityDiedEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaPostEntityDiedEventFilter Online documentation}
-   */
-  export type LuaPostEntityDiedEventFilter = TypePostEntityDiedEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaPreRobotMinedEntityEventFilter}.
-   */
-  export interface BasePreRobotMinedEntityEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
-   */
-  export interface TypePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
-   */
-  export interface NamePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
-   */
-  export interface GhostTypePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
-   */
-  export interface GhostNamePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaPreRobotMinedEntityEventFilter} with no additional attributes.
-   */
-  export interface OtherPreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BasePreRobotMinedEntityEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypePreRobotMinedEntityEventFilter}
-   * - `"name"`: {@link NamePreRobotMinedEntityEventFilter}
-   * - `"ghost_type"`: {@link GhostTypePreRobotMinedEntityEventFilter}
-   * - `"ghost_name"`: {@link GhostNamePreRobotMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaPreRobotMinedEntityEventFilter Online documentation}
-   */
-  export type LuaPreRobotMinedEntityEventFilter =
-    | TypePreRobotMinedEntityEventFilter
-    | NamePreRobotMinedEntityEventFilter
-    | GhostTypePreRobotMinedEntityEventFilter
-    | GhostNamePreRobotMinedEntityEventFilter
-    | OtherPreRobotMinedEntityEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaEntityClonedEventFilter}.
-   */
-  export interface BaseEntityClonedEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaEntityClonedEventFilter}.
-   */
-  export interface TypeEntityClonedEventFilter extends BaseEntityClonedEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaEntityClonedEventFilter}.
-   */
-  export interface NameEntityClonedEventFilter extends BaseEntityClonedEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaEntityClonedEventFilter}.
-   */
-  export interface GhostTypeEntityClonedEventFilter extends BaseEntityClonedEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaEntityClonedEventFilter}.
-   */
-  export interface GhostNameEntityClonedEventFilter extends BaseEntityClonedEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaEntityClonedEventFilter} with no additional attributes.
-   */
-  export interface OtherEntityClonedEventFilter extends BaseEntityClonedEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BaseEntityClonedEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeEntityClonedEventFilter}
-   * - `"name"`: {@link NameEntityClonedEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeEntityClonedEventFilter}
-   * - `"ghost_name"`: {@link GhostNameEntityClonedEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaEntityClonedEventFilter Online documentation}
-   */
-  export type LuaEntityClonedEventFilter =
-    | TypeEntityClonedEventFilter
-    | NameEntityClonedEventFilter
-    | GhostTypeEntityClonedEventFilter
-    | GhostNameEntityClonedEventFilter
-    | OtherEntityClonedEventFilter
+  export type LuaScriptRaisedReviveEventFilter =
+    | TypeScriptRaisedReviveEventFilter
+    | NameScriptRaisedReviveEventFilter
+    | GhostTypeScriptRaisedReviveEventFilter
+    | GhostNameScriptRaisedReviveEventFilter
+    | OtherScriptRaisedReviveEventFilter
   /**
    * Common attributes to all variants of {@link LuaScriptRaisedBuiltEventFilter}.
    */
@@ -7681,7 +6699,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameScriptRaisedBuiltEventFilter}
    * - `"ghost_type"`: {@link GhostTypeScriptRaisedBuiltEventFilter}
    * - `"ghost_name"`: {@link GhostNameScriptRaisedBuiltEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaScriptRaisedBuiltEventFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaScriptRaisedBuiltEventFilter Online documentation}
    */
   export type LuaScriptRaisedBuiltEventFilter =
     | TypeScriptRaisedBuiltEventFilter
@@ -7690,9 +6708,44 @@ declare module "factorio:runtime" {
     | GhostNameScriptRaisedBuiltEventFilter
     | OtherScriptRaisedBuiltEventFilter
   /**
-   * Common attributes to all variants of {@link LuaRobotMinedEntityEventFilter}.
+   * Common attributes to all variants of {@link LuaPostEntityDiedEventFilter}.
    */
-  export interface BaseRobotMinedEntityEventFilter {
+  export interface BasePostEntityDiedEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter: "type"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaPostEntityDiedEventFilter}.
+   */
+  export interface TypePostEntityDiedEventFilter extends BasePostEntityDiedEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * Base attributes: {@link BasePostEntityDiedEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypePostEntityDiedEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaPostEntityDiedEventFilter Online documentation}
+   */
+  export type LuaPostEntityDiedEventFilter = TypePostEntityDiedEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaEntityDiedEventFilter}.
+   */
+  export interface BaseEntityDiedEventFilter {
     /**
      * The condition to filter on.
      */
@@ -7722,9 +6775,9 @@ declare module "factorio:runtime" {
     readonly invert?: boolean
   }
   /**
-   * `"type"` variant of {@link LuaRobotMinedEntityEventFilter}.
+   * `"type"` variant of {@link LuaEntityDiedEventFilter}.
    */
-  export interface TypeRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+  export interface TypeEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter: "type"
     /**
      * The prototype type.
@@ -7732,9 +6785,9 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * `"name"` variant of {@link LuaRobotMinedEntityEventFilter}.
+   * `"name"` variant of {@link LuaEntityDiedEventFilter}.
    */
-  export interface NameRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+  export interface NameEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter: "name"
     /**
      * The prototype name.
@@ -7742,9 +6795,9 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * `"ghost_type"` variant of {@link LuaRobotMinedEntityEventFilter}.
+   * `"ghost_type"` variant of {@link LuaEntityDiedEventFilter}.
    */
-  export interface GhostTypeRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+  export interface GhostTypeEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter: "ghost_type"
     /**
      * The ghost prototype type.
@@ -7752,9 +6805,9 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * `"ghost_name"` variant of {@link LuaRobotMinedEntityEventFilter}.
+   * `"ghost_name"` variant of {@link LuaEntityDiedEventFilter}.
    */
-  export interface GhostNameRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+  export interface GhostNameEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter: "ghost_name"
     /**
      * The ghost prototype name.
@@ -7762,9 +6815,9 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * Variants of {@link LuaRobotMinedEntityEventFilter} with no additional attributes.
+   * Variants of {@link LuaEntityDiedEventFilter} with no additional attributes.
    */
-  export interface OtherRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+  export interface OtherEntityDiedEventFilter extends BaseEntityDiedEventFilter {
     readonly filter:
       | "ghost"
       | "rail"
@@ -7779,456 +6832,21 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Base attributes: {@link BaseRobotMinedEntityEventFilter}
+   * Base attributes: {@link BaseEntityDiedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeRobotMinedEntityEventFilter}
-   * - `"name"`: {@link NameRobotMinedEntityEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeRobotMinedEntityEventFilter}
-   * - `"ghost_name"`: {@link GhostNameRobotMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaRobotMinedEntityEventFilter Online documentation}
+   * - `"type"`: {@link TypeEntityDiedEventFilter}
+   * - `"name"`: {@link NameEntityDiedEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeEntityDiedEventFilter}
+   * - `"ghost_name"`: {@link GhostNameEntityDiedEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaEntityDiedEventFilter Online documentation}
    */
-  export type LuaRobotMinedEntityEventFilter =
-    | TypeRobotMinedEntityEventFilter
-    | NameRobotMinedEntityEventFilter
-    | GhostTypeRobotMinedEntityEventFilter
-    | GhostNameRobotMinedEntityEventFilter
-    | OtherRobotMinedEntityEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaPrePlayerMinedEntityEventFilter}.
-   */
-  export interface BasePrePlayerMinedEntityEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
-   */
-  export interface TypePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
-   */
-  export interface NamePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
-   */
-  export interface GhostTypePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
-   */
-  export interface GhostNamePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaPrePlayerMinedEntityEventFilter} with no additional attributes.
-   */
-  export interface OtherPrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BasePrePlayerMinedEntityEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypePrePlayerMinedEntityEventFilter}
-   * - `"name"`: {@link NamePrePlayerMinedEntityEventFilter}
-   * - `"ghost_type"`: {@link GhostTypePrePlayerMinedEntityEventFilter}
-   * - `"ghost_name"`: {@link GhostNamePrePlayerMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaPrePlayerMinedEntityEventFilter Online documentation}
-   */
-  export type LuaPrePlayerMinedEntityEventFilter =
-    | TypePrePlayerMinedEntityEventFilter
-    | NamePrePlayerMinedEntityEventFilter
-    | GhostTypePrePlayerMinedEntityEventFilter
-    | GhostNamePrePlayerMinedEntityEventFilter
-    | OtherPrePlayerMinedEntityEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaRobotBuiltEntityEventFilter}.
-   */
-  export interface BaseRobotBuiltEntityEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-      | "force"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaRobotBuiltEntityEventFilter}.
-   */
-  export interface TypeRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaRobotBuiltEntityEventFilter}.
-   */
-  export interface NameRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaRobotBuiltEntityEventFilter}.
-   */
-  export interface GhostTypeRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaRobotBuiltEntityEventFilter}.
-   */
-  export interface GhostNameRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"force"` variant of {@link LuaRobotBuiltEntityEventFilter}.
-   */
-  export interface ForceRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
-    readonly filter: "force"
-    /**
-     * The entity force
-     */
-    readonly force: string
-  }
-  /**
-   * Variants of {@link LuaRobotBuiltEntityEventFilter} with no additional attributes.
-   */
-  export interface OtherRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BaseRobotBuiltEntityEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeRobotBuiltEntityEventFilter}
-   * - `"name"`: {@link NameRobotBuiltEntityEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeRobotBuiltEntityEventFilter}
-   * - `"ghost_name"`: {@link GhostNameRobotBuiltEntityEventFilter}
-   * - `"force"`: {@link ForceRobotBuiltEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaRobotBuiltEntityEventFilter Online documentation}
-   */
-  export type LuaRobotBuiltEntityEventFilter =
-    | TypeRobotBuiltEntityEventFilter
-    | NameRobotBuiltEntityEventFilter
-    | GhostTypeRobotBuiltEntityEventFilter
-    | GhostNameRobotBuiltEntityEventFilter
-    | ForceRobotBuiltEntityEventFilter
-    | OtherRobotBuiltEntityEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaPreGhostUpgradedEventFilter}.
-   */
-  export interface BasePreGhostUpgradedEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaPreGhostUpgradedEventFilter}.
-   */
-  export interface TypePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaPreGhostUpgradedEventFilter}.
-   */
-  export interface NamePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaPreGhostUpgradedEventFilter}.
-   */
-  export interface GhostTypePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaPreGhostUpgradedEventFilter}.
-   */
-  export interface GhostNamePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaPreGhostUpgradedEventFilter} with no additional attributes.
-   */
-  export interface OtherPreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BasePreGhostUpgradedEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypePreGhostUpgradedEventFilter}
-   * - `"name"`: {@link NamePreGhostUpgradedEventFilter}
-   * - `"ghost_type"`: {@link GhostTypePreGhostUpgradedEventFilter}
-   * - `"ghost_name"`: {@link GhostNamePreGhostUpgradedEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaPreGhostUpgradedEventFilter Online documentation}
-   */
-  export type LuaPreGhostUpgradedEventFilter =
-    | TypePreGhostUpgradedEventFilter
-    | NamePreGhostUpgradedEventFilter
-    | GhostTypePreGhostUpgradedEventFilter
-    | GhostNamePreGhostUpgradedEventFilter
-    | OtherPreGhostUpgradedEventFilter
-  /**
-   * Common attributes to all variants of {@link LuaEntityDeconstructionCancelledEventFilter}.
-   */
-  export interface BaseEntityDeconstructionCancelledEventFilter {
-    /**
-     * The condition to filter on.
-     */
-    readonly filter:
-      | "type"
-      | "name"
-      | "ghost_type"
-      | "ghost_name"
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-    /**
-     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
-     */
-    readonly mode?: "or" | "and"
-    /**
-     * Inverts the condition. Default is `false`.
-     */
-    readonly invert?: boolean
-  }
-  /**
-   * `"type"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
-   */
-  export interface TypeEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
-    readonly filter: "type"
-    /**
-     * The prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"name"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
-   */
-  export interface NameEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
-    readonly filter: "name"
-    /**
-     * The prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * `"ghost_type"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
-   */
-  export interface GhostTypeEntityDeconstructionCancelledEventFilter
-    extends BaseEntityDeconstructionCancelledEventFilter {
-    readonly filter: "ghost_type"
-    /**
-     * The ghost prototype type.
-     */
-    readonly type: EntityType
-  }
-  /**
-   * `"ghost_name"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
-   */
-  export interface GhostNameEntityDeconstructionCancelledEventFilter
-    extends BaseEntityDeconstructionCancelledEventFilter {
-    readonly filter: "ghost_name"
-    /**
-     * The ghost prototype name.
-     */
-    readonly name: string
-  }
-  /**
-   * Variants of {@link LuaEntityDeconstructionCancelledEventFilter} with no additional attributes.
-   */
-  export interface OtherEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
-    readonly filter:
-      | "ghost"
-      | "rail"
-      | "rail-signal"
-      | "rolling-stock"
-      | "robot-with-logistics-interface"
-      | "vehicle"
-      | "turret"
-      | "crafting-machine"
-      | "wall-connectable"
-      | "transport-belt-connectable"
-      | "circuit-network-connectable"
-  }
-  /**
-   * Base attributes: {@link BaseEntityDeconstructionCancelledEventFilter}
-   *
-   * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeEntityDeconstructionCancelledEventFilter}
-   * - `"name"`: {@link NameEntityDeconstructionCancelledEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeEntityDeconstructionCancelledEventFilter}
-   * - `"ghost_name"`: {@link GhostNameEntityDeconstructionCancelledEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaEntityDeconstructionCancelledEventFilter Online documentation}
-   */
-  export type LuaEntityDeconstructionCancelledEventFilter =
-    | TypeEntityDeconstructionCancelledEventFilter
-    | NameEntityDeconstructionCancelledEventFilter
-    | GhostTypeEntityDeconstructionCancelledEventFilter
-    | GhostNameEntityDeconstructionCancelledEventFilter
-    | OtherEntityDeconstructionCancelledEventFilter
+  export type LuaEntityDiedEventFilter =
+    | TypeEntityDiedEventFilter
+    | NameEntityDiedEventFilter
+    | GhostTypeEntityDiedEventFilter
+    | GhostNameEntityDiedEventFilter
+    | OtherEntityDiedEventFilter
   /**
    * Common attributes to all variants of {@link LuaPlayerBuiltEntityEventFilter}.
    */
@@ -8338,7 +6956,7 @@ declare module "factorio:runtime" {
    * - `"ghost_type"`: {@link GhostTypePlayerBuiltEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePlayerBuiltEntityEventFilter}
    * - `"force"`: {@link ForcePlayerBuiltEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaPlayerBuiltEntityEventFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaPlayerBuiltEntityEventFilter Online documentation}
    */
   export type LuaPlayerBuiltEntityEventFilter =
     | TypePlayerBuiltEntityEventFilter
@@ -8348,9 +6966,9 @@ declare module "factorio:runtime" {
     | ForcePlayerBuiltEntityEventFilter
     | OtherPlayerBuiltEntityEventFilter
   /**
-   * Common attributes to all variants of {@link LuaPlayerMinedEntityEventFilter}.
+   * Common attributes to all variants of {@link LuaEntityMarkedForDeconstructionEventFilter}.
    */
-  export interface BasePlayerMinedEntityEventFilter {
+  export interface BaseEntityMarkedForDeconstructionEventFilter {
     /**
      * The condition to filter on.
      */
@@ -8380,9 +6998,9 @@ declare module "factorio:runtime" {
     readonly invert?: boolean
   }
   /**
-   * `"type"` variant of {@link LuaPlayerMinedEntityEventFilter}.
+   * `"type"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
    */
-  export interface TypePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+  export interface TypeEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "type"
     /**
      * The prototype type.
@@ -8390,9 +7008,9 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * `"name"` variant of {@link LuaPlayerMinedEntityEventFilter}.
+   * `"name"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
    */
-  export interface NamePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+  export interface NameEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "name"
     /**
      * The prototype name.
@@ -8400,9 +7018,10 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * `"ghost_type"` variant of {@link LuaPlayerMinedEntityEventFilter}.
+   * `"ghost_type"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
    */
-  export interface GhostTypePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+  export interface GhostTypeEntityMarkedForDeconstructionEventFilter
+    extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "ghost_type"
     /**
      * The ghost prototype type.
@@ -8410,9 +7029,10 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * `"ghost_name"` variant of {@link LuaPlayerMinedEntityEventFilter}.
+   * `"ghost_name"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
    */
-  export interface GhostNamePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+  export interface GhostNameEntityMarkedForDeconstructionEventFilter
+    extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "ghost_name"
     /**
      * The ghost prototype name.
@@ -8420,9 +7040,9 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * Variants of {@link LuaPlayerMinedEntityEventFilter} with no additional attributes.
+   * Variants of {@link LuaEntityMarkedForDeconstructionEventFilter} with no additional attributes.
    */
-  export interface OtherPlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+  export interface OtherEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter:
       | "ghost"
       | "rail"
@@ -8437,21 +7057,863 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Base attributes: {@link BasePlayerMinedEntityEventFilter}
+   * Base attributes: {@link BaseEntityMarkedForDeconstructionEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypePlayerMinedEntityEventFilter}
-   * - `"name"`: {@link NamePlayerMinedEntityEventFilter}
-   * - `"ghost_type"`: {@link GhostTypePlayerMinedEntityEventFilter}
-   * - `"ghost_name"`: {@link GhostNamePlayerMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaPlayerMinedEntityEventFilter Online documentation}
+   * - `"type"`: {@link TypeEntityMarkedForDeconstructionEventFilter}
+   * - `"name"`: {@link NameEntityMarkedForDeconstructionEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeEntityMarkedForDeconstructionEventFilter}
+   * - `"ghost_name"`: {@link GhostNameEntityMarkedForDeconstructionEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaEntityMarkedForDeconstructionEventFilter Online documentation}
    */
-  export type LuaPlayerMinedEntityEventFilter =
-    | TypePlayerMinedEntityEventFilter
-    | NamePlayerMinedEntityEventFilter
-    | GhostTypePlayerMinedEntityEventFilter
-    | GhostNamePlayerMinedEntityEventFilter
-    | OtherPlayerMinedEntityEventFilter
+  export type LuaEntityMarkedForDeconstructionEventFilter =
+    | TypeEntityMarkedForDeconstructionEventFilter
+    | NameEntityMarkedForDeconstructionEventFilter
+    | GhostTypeEntityMarkedForDeconstructionEventFilter
+    | GhostNameEntityMarkedForDeconstructionEventFilter
+    | OtherEntityMarkedForDeconstructionEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaRobotMinedEntityEventFilter}.
+   */
+  export interface BaseRobotMinedEntityEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaRobotMinedEntityEventFilter}.
+   */
+  export interface TypeRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaRobotMinedEntityEventFilter}.
+   */
+  export interface NameRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaRobotMinedEntityEventFilter}.
+   */
+  export interface GhostTypeRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaRobotMinedEntityEventFilter}.
+   */
+  export interface GhostNameRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaRobotMinedEntityEventFilter} with no additional attributes.
+   */
+  export interface OtherRobotMinedEntityEventFilter extends BaseRobotMinedEntityEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BaseRobotMinedEntityEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeRobotMinedEntityEventFilter}
+   * - `"name"`: {@link NameRobotMinedEntityEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeRobotMinedEntityEventFilter}
+   * - `"ghost_name"`: {@link GhostNameRobotMinedEntityEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaRobotMinedEntityEventFilter Online documentation}
+   */
+  export type LuaRobotMinedEntityEventFilter =
+    | TypeRobotMinedEntityEventFilter
+    | NameRobotMinedEntityEventFilter
+    | GhostTypeRobotMinedEntityEventFilter
+    | GhostNameRobotMinedEntityEventFilter
+    | OtherRobotMinedEntityEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaPreGhostDeconstructedEventFilter}.
+   */
+  export interface BasePreGhostDeconstructedEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
+   */
+  export interface TypePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
+   */
+  export interface NamePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
+   */
+  export interface GhostTypePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaPreGhostDeconstructedEventFilter}.
+   */
+  export interface GhostNamePreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaPreGhostDeconstructedEventFilter} with no additional attributes.
+   */
+  export interface OtherPreGhostDeconstructedEventFilter extends BasePreGhostDeconstructedEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BasePreGhostDeconstructedEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypePreGhostDeconstructedEventFilter}
+   * - `"name"`: {@link NamePreGhostDeconstructedEventFilter}
+   * - `"ghost_type"`: {@link GhostTypePreGhostDeconstructedEventFilter}
+   * - `"ghost_name"`: {@link GhostNamePreGhostDeconstructedEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaPreGhostDeconstructedEventFilter Online documentation}
+   */
+  export type LuaPreGhostDeconstructedEventFilter =
+    | TypePreGhostDeconstructedEventFilter
+    | NamePreGhostDeconstructedEventFilter
+    | GhostTypePreGhostDeconstructedEventFilter
+    | GhostNamePreGhostDeconstructedEventFilter
+    | OtherPreGhostDeconstructedEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaEntityMarkedForUpgradeEventFilter}.
+   */
+  export interface BaseEntityMarkedForUpgradeEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
+   */
+  export interface TypeEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
+   */
+  export interface NameEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
+   */
+  export interface GhostTypeEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaEntityMarkedForUpgradeEventFilter}.
+   */
+  export interface GhostNameEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaEntityMarkedForUpgradeEventFilter} with no additional attributes.
+   */
+  export interface OtherEntityMarkedForUpgradeEventFilter extends BaseEntityMarkedForUpgradeEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BaseEntityMarkedForUpgradeEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeEntityMarkedForUpgradeEventFilter}
+   * - `"name"`: {@link NameEntityMarkedForUpgradeEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeEntityMarkedForUpgradeEventFilter}
+   * - `"ghost_name"`: {@link GhostNameEntityMarkedForUpgradeEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaEntityMarkedForUpgradeEventFilter Online documentation}
+   */
+  export type LuaEntityMarkedForUpgradeEventFilter =
+    | TypeEntityMarkedForUpgradeEventFilter
+    | NameEntityMarkedForUpgradeEventFilter
+    | GhostTypeEntityMarkedForUpgradeEventFilter
+    | GhostNameEntityMarkedForUpgradeEventFilter
+    | OtherEntityMarkedForUpgradeEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaUpgradeCancelledEventFilter}.
+   */
+  export interface BaseUpgradeCancelledEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaUpgradeCancelledEventFilter}.
+   */
+  export interface TypeUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaUpgradeCancelledEventFilter}.
+   */
+  export interface NameUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaUpgradeCancelledEventFilter}.
+   */
+  export interface GhostTypeUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaUpgradeCancelledEventFilter}.
+   */
+  export interface GhostNameUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaUpgradeCancelledEventFilter} with no additional attributes.
+   */
+  export interface OtherUpgradeCancelledEventFilter extends BaseUpgradeCancelledEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BaseUpgradeCancelledEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeUpgradeCancelledEventFilter}
+   * - `"name"`: {@link NameUpgradeCancelledEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeUpgradeCancelledEventFilter}
+   * - `"ghost_name"`: {@link GhostNameUpgradeCancelledEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaUpgradeCancelledEventFilter Online documentation}
+   */
+  export type LuaUpgradeCancelledEventFilter =
+    | TypeUpgradeCancelledEventFilter
+    | NameUpgradeCancelledEventFilter
+    | GhostTypeUpgradeCancelledEventFilter
+    | GhostNameUpgradeCancelledEventFilter
+    | OtherUpgradeCancelledEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaSectorScannedEventFilter}.
+   */
+  export interface BaseSectorScannedEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaSectorScannedEventFilter}.
+   */
+  export interface TypeSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaSectorScannedEventFilter}.
+   */
+  export interface NameSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaSectorScannedEventFilter}.
+   */
+  export interface GhostTypeSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaSectorScannedEventFilter}.
+   */
+  export interface GhostNameSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaSectorScannedEventFilter} with no additional attributes.
+   */
+  export interface OtherSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BaseSectorScannedEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeSectorScannedEventFilter}
+   * - `"name"`: {@link NameSectorScannedEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeSectorScannedEventFilter}
+   * - `"ghost_name"`: {@link GhostNameSectorScannedEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaSectorScannedEventFilter Online documentation}
+   */
+  export type LuaSectorScannedEventFilter =
+    | TypeSectorScannedEventFilter
+    | NameSectorScannedEventFilter
+    | GhostTypeSectorScannedEventFilter
+    | GhostNameSectorScannedEventFilter
+    | OtherSectorScannedEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaPreGhostUpgradedEventFilter}.
+   */
+  export interface BasePreGhostUpgradedEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaPreGhostUpgradedEventFilter}.
+   */
+  export interface TypePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaPreGhostUpgradedEventFilter}.
+   */
+  export interface NamePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaPreGhostUpgradedEventFilter}.
+   */
+  export interface GhostTypePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaPreGhostUpgradedEventFilter}.
+   */
+  export interface GhostNamePreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaPreGhostUpgradedEventFilter} with no additional attributes.
+   */
+  export interface OtherPreGhostUpgradedEventFilter extends BasePreGhostUpgradedEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BasePreGhostUpgradedEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypePreGhostUpgradedEventFilter}
+   * - `"name"`: {@link NamePreGhostUpgradedEventFilter}
+   * - `"ghost_type"`: {@link GhostTypePreGhostUpgradedEventFilter}
+   * - `"ghost_name"`: {@link GhostNamePreGhostUpgradedEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaPreGhostUpgradedEventFilter Online documentation}
+   */
+  export type LuaPreGhostUpgradedEventFilter =
+    | TypePreGhostUpgradedEventFilter
+    | NamePreGhostUpgradedEventFilter
+    | GhostTypePreGhostUpgradedEventFilter
+    | GhostNamePreGhostUpgradedEventFilter
+    | OtherPreGhostUpgradedEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaPreRobotMinedEntityEventFilter}.
+   */
+  export interface BasePreRobotMinedEntityEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
+   */
+  export interface TypePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
+   */
+  export interface NamePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
+   */
+  export interface GhostTypePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaPreRobotMinedEntityEventFilter}.
+   */
+  export interface GhostNamePreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaPreRobotMinedEntityEventFilter} with no additional attributes.
+   */
+  export interface OtherPreRobotMinedEntityEventFilter extends BasePreRobotMinedEntityEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BasePreRobotMinedEntityEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypePreRobotMinedEntityEventFilter}
+   * - `"name"`: {@link NamePreRobotMinedEntityEventFilter}
+   * - `"ghost_type"`: {@link GhostTypePreRobotMinedEntityEventFilter}
+   * - `"ghost_name"`: {@link GhostNamePreRobotMinedEntityEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaPreRobotMinedEntityEventFilter Online documentation}
+   */
+  export type LuaPreRobotMinedEntityEventFilter =
+    | TypePreRobotMinedEntityEventFilter
+    | NamePreRobotMinedEntityEventFilter
+    | GhostTypePreRobotMinedEntityEventFilter
+    | GhostNamePreRobotMinedEntityEventFilter
+    | OtherPreRobotMinedEntityEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaEntityDeconstructionCancelledEventFilter}.
+   */
+  export interface BaseEntityDeconstructionCancelledEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
+   */
+  export interface TypeEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
+   */
+  export interface NameEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
+   */
+  export interface GhostTypeEntityDeconstructionCancelledEventFilter
+    extends BaseEntityDeconstructionCancelledEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
+   */
+  export interface GhostNameEntityDeconstructionCancelledEventFilter
+    extends BaseEntityDeconstructionCancelledEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaEntityDeconstructionCancelledEventFilter} with no additional attributes.
+   */
+  export interface OtherEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BaseEntityDeconstructionCancelledEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeEntityDeconstructionCancelledEventFilter}
+   * - `"name"`: {@link NameEntityDeconstructionCancelledEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeEntityDeconstructionCancelledEventFilter}
+   * - `"ghost_name"`: {@link GhostNameEntityDeconstructionCancelledEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaEntityDeconstructionCancelledEventFilter Online documentation}
+   */
+  export type LuaEntityDeconstructionCancelledEventFilter =
+    | TypeEntityDeconstructionCancelledEventFilter
+    | NameEntityDeconstructionCancelledEventFilter
+    | GhostTypeEntityDeconstructionCancelledEventFilter
+    | GhostNameEntityDeconstructionCancelledEventFilter
+    | OtherEntityDeconstructionCancelledEventFilter
   /**
    * Common attributes to all variants of {@link LuaEntityDamagedEventFilter}.
    */
@@ -8624,7 +8086,7 @@ declare module "factorio:runtime" {
    * - `"final-damage-amount"`: {@link FinalDamageAmountEntityDamagedEventFilter}
    * - `"damage-type"`: {@link DamageTypeEntityDamagedEventFilter}
    * - `"final-health"`: {@link FinalHealthEntityDamagedEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaEntityDamagedEventFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaEntityDamagedEventFilter Online documentation}
    */
   export type LuaEntityDamagedEventFilter =
     | TypeEntityDamagedEventFilter
@@ -8638,7 +8100,7 @@ declare module "factorio:runtime" {
     | OtherEntityDamagedEventFilter
   /**
    * Write form of {@link LuaEntityDamagedEventFilter}, where table-or-array concepts are allowed to take an array form.
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaEntityDamagedEventFilter Online documentation}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaEntityDamagedEventFilter Online documentation}
    */
   export type LuaEntityDamagedEventFilterWrite =
     | TypeEntityDamagedEventFilter
@@ -8651,9 +8113,9 @@ declare module "factorio:runtime" {
     | FinalHealthEntityDamagedEventFilterWrite
     | OtherEntityDamagedEventFilter
   /**
-   * Common attributes to all variants of {@link LuaSectorScannedEventFilter}.
+   * Common attributes to all variants of {@link LuaScriptRaisedTeleportedEventFilter}.
    */
-  export interface BaseSectorScannedEventFilter {
+  export interface BaseScriptRaisedTeleportedEventFilter {
     /**
      * The condition to filter on.
      */
@@ -8683,9 +8145,9 @@ declare module "factorio:runtime" {
     readonly invert?: boolean
   }
   /**
-   * `"type"` variant of {@link LuaSectorScannedEventFilter}.
+   * `"type"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
    */
-  export interface TypeSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+  export interface TypeScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter: "type"
     /**
      * The prototype type.
@@ -8693,9 +8155,9 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * `"name"` variant of {@link LuaSectorScannedEventFilter}.
+   * `"name"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
    */
-  export interface NameSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+  export interface NameScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter: "name"
     /**
      * The prototype name.
@@ -8703,9 +8165,9 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * `"ghost_type"` variant of {@link LuaSectorScannedEventFilter}.
+   * `"ghost_type"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
    */
-  export interface GhostTypeSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+  export interface GhostTypeScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter: "ghost_type"
     /**
      * The ghost prototype type.
@@ -8713,9 +8175,9 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * `"ghost_name"` variant of {@link LuaSectorScannedEventFilter}.
+   * `"ghost_name"` variant of {@link LuaScriptRaisedTeleportedEventFilter}.
    */
-  export interface GhostNameSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+  export interface GhostNameScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter: "ghost_name"
     /**
      * The ghost prototype name.
@@ -8723,9 +8185,9 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * Variants of {@link LuaSectorScannedEventFilter} with no additional attributes.
+   * Variants of {@link LuaScriptRaisedTeleportedEventFilter} with no additional attributes.
    */
-  export interface OtherSectorScannedEventFilter extends BaseSectorScannedEventFilter {
+  export interface OtherScriptRaisedTeleportedEventFilter extends BaseScriptRaisedTeleportedEventFilter {
     readonly filter:
       | "ghost"
       | "rail"
@@ -8740,21 +8202,559 @@ declare module "factorio:runtime" {
       | "circuit-network-connectable"
   }
   /**
-   * Base attributes: {@link BaseSectorScannedEventFilter}
+   * Base attributes: {@link BaseScriptRaisedTeleportedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
-   * - `"type"`: {@link TypeSectorScannedEventFilter}
-   * - `"name"`: {@link NameSectorScannedEventFilter}
-   * - `"ghost_type"`: {@link GhostTypeSectorScannedEventFilter}
-   * - `"ghost_name"`: {@link GhostNameSectorScannedEventFilter}
-   * @see {@link https://lua-api.factorio.com/1.1.109/concepts.html#LuaSectorScannedEventFilter Online documentation}
+   * - `"type"`: {@link TypeScriptRaisedTeleportedEventFilter}
+   * - `"name"`: {@link NameScriptRaisedTeleportedEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeScriptRaisedTeleportedEventFilter}
+   * - `"ghost_name"`: {@link GhostNameScriptRaisedTeleportedEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaScriptRaisedTeleportedEventFilter Online documentation}
    */
-  export type LuaSectorScannedEventFilter =
-    | TypeSectorScannedEventFilter
-    | NameSectorScannedEventFilter
-    | GhostTypeSectorScannedEventFilter
-    | GhostNameSectorScannedEventFilter
-    | OtherSectorScannedEventFilter
+  export type LuaScriptRaisedTeleportedEventFilter =
+    | TypeScriptRaisedTeleportedEventFilter
+    | NameScriptRaisedTeleportedEventFilter
+    | GhostTypeScriptRaisedTeleportedEventFilter
+    | GhostNameScriptRaisedTeleportedEventFilter
+    | OtherScriptRaisedTeleportedEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaEntityClonedEventFilter}.
+   */
+  export interface BaseEntityClonedEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaEntityClonedEventFilter}.
+   */
+  export interface TypeEntityClonedEventFilter extends BaseEntityClonedEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaEntityClonedEventFilter}.
+   */
+  export interface NameEntityClonedEventFilter extends BaseEntityClonedEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaEntityClonedEventFilter}.
+   */
+  export interface GhostTypeEntityClonedEventFilter extends BaseEntityClonedEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaEntityClonedEventFilter}.
+   */
+  export interface GhostNameEntityClonedEventFilter extends BaseEntityClonedEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaEntityClonedEventFilter} with no additional attributes.
+   */
+  export interface OtherEntityClonedEventFilter extends BaseEntityClonedEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BaseEntityClonedEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeEntityClonedEventFilter}
+   * - `"name"`: {@link NameEntityClonedEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeEntityClonedEventFilter}
+   * - `"ghost_name"`: {@link GhostNameEntityClonedEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaEntityClonedEventFilter Online documentation}
+   */
+  export type LuaEntityClonedEventFilter =
+    | TypeEntityClonedEventFilter
+    | NameEntityClonedEventFilter
+    | GhostTypeEntityClonedEventFilter
+    | GhostNameEntityClonedEventFilter
+    | OtherEntityClonedEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaPlayerRepairedEntityEventFilter}.
+   */
+  export interface BasePlayerRepairedEntityEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
+   */
+  export interface TypePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
+   */
+  export interface NamePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
+   */
+  export interface GhostTypePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaPlayerRepairedEntityEventFilter}.
+   */
+  export interface GhostNamePlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaPlayerRepairedEntityEventFilter} with no additional attributes.
+   */
+  export interface OtherPlayerRepairedEntityEventFilter extends BasePlayerRepairedEntityEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BasePlayerRepairedEntityEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypePlayerRepairedEntityEventFilter}
+   * - `"name"`: {@link NamePlayerRepairedEntityEventFilter}
+   * - `"ghost_type"`: {@link GhostTypePlayerRepairedEntityEventFilter}
+   * - `"ghost_name"`: {@link GhostNamePlayerRepairedEntityEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaPlayerRepairedEntityEventFilter Online documentation}
+   */
+  export type LuaPlayerRepairedEntityEventFilter =
+    | TypePlayerRepairedEntityEventFilter
+    | NamePlayerRepairedEntityEventFilter
+    | GhostTypePlayerRepairedEntityEventFilter
+    | GhostNamePlayerRepairedEntityEventFilter
+    | OtherPlayerRepairedEntityEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaRobotBuiltEntityEventFilter}.
+   */
+  export interface BaseRobotBuiltEntityEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+      | "force"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaRobotBuiltEntityEventFilter}.
+   */
+  export interface TypeRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaRobotBuiltEntityEventFilter}.
+   */
+  export interface NameRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaRobotBuiltEntityEventFilter}.
+   */
+  export interface GhostTypeRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaRobotBuiltEntityEventFilter}.
+   */
+  export interface GhostNameRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"force"` variant of {@link LuaRobotBuiltEntityEventFilter}.
+   */
+  export interface ForceRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
+    readonly filter: "force"
+    /**
+     * The entity force
+     */
+    readonly force: string
+  }
+  /**
+   * Variants of {@link LuaRobotBuiltEntityEventFilter} with no additional attributes.
+   */
+  export interface OtherRobotBuiltEntityEventFilter extends BaseRobotBuiltEntityEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BaseRobotBuiltEntityEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypeRobotBuiltEntityEventFilter}
+   * - `"name"`: {@link NameRobotBuiltEntityEventFilter}
+   * - `"ghost_type"`: {@link GhostTypeRobotBuiltEntityEventFilter}
+   * - `"ghost_name"`: {@link GhostNameRobotBuiltEntityEventFilter}
+   * - `"force"`: {@link ForceRobotBuiltEntityEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaRobotBuiltEntityEventFilter Online documentation}
+   */
+  export type LuaRobotBuiltEntityEventFilter =
+    | TypeRobotBuiltEntityEventFilter
+    | NameRobotBuiltEntityEventFilter
+    | GhostTypeRobotBuiltEntityEventFilter
+    | GhostNameRobotBuiltEntityEventFilter
+    | ForceRobotBuiltEntityEventFilter
+    | OtherRobotBuiltEntityEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaPlayerMinedEntityEventFilter}.
+   */
+  export interface BasePlayerMinedEntityEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaPlayerMinedEntityEventFilter}.
+   */
+  export interface TypePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaPlayerMinedEntityEventFilter}.
+   */
+  export interface NamePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaPlayerMinedEntityEventFilter}.
+   */
+  export interface GhostTypePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaPlayerMinedEntityEventFilter}.
+   */
+  export interface GhostNamePlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaPlayerMinedEntityEventFilter} with no additional attributes.
+   */
+  export interface OtherPlayerMinedEntityEventFilter extends BasePlayerMinedEntityEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BasePlayerMinedEntityEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypePlayerMinedEntityEventFilter}
+   * - `"name"`: {@link NamePlayerMinedEntityEventFilter}
+   * - `"ghost_type"`: {@link GhostTypePlayerMinedEntityEventFilter}
+   * - `"ghost_name"`: {@link GhostNamePlayerMinedEntityEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaPlayerMinedEntityEventFilter Online documentation}
+   */
+  export type LuaPlayerMinedEntityEventFilter =
+    | TypePlayerMinedEntityEventFilter
+    | NamePlayerMinedEntityEventFilter
+    | GhostTypePlayerMinedEntityEventFilter
+    | GhostNamePlayerMinedEntityEventFilter
+    | OtherPlayerMinedEntityEventFilter
+  /**
+   * Common attributes to all variants of {@link LuaPrePlayerMinedEntityEventFilter}.
+   */
+  export interface BasePrePlayerMinedEntityEventFilter {
+    /**
+     * The condition to filter on.
+     */
+    readonly filter:
+      | "type"
+      | "name"
+      | "ghost_type"
+      | "ghost_name"
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+    /**
+     * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
+     */
+    readonly mode?: "or" | "and"
+    /**
+     * Inverts the condition. Default is `false`.
+     */
+    readonly invert?: boolean
+  }
+  /**
+   * `"type"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
+   */
+  export interface TypePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
+    readonly filter: "type"
+    /**
+     * The prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"name"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
+   */
+  export interface NamePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
+    readonly filter: "name"
+    /**
+     * The prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * `"ghost_type"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
+   */
+  export interface GhostTypePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
+    readonly filter: "ghost_type"
+    /**
+     * The ghost prototype type.
+     */
+    readonly type: EntityType
+  }
+  /**
+   * `"ghost_name"` variant of {@link LuaPrePlayerMinedEntityEventFilter}.
+   */
+  export interface GhostNamePrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
+    readonly filter: "ghost_name"
+    /**
+     * The ghost prototype name.
+     */
+    readonly name: string
+  }
+  /**
+   * Variants of {@link LuaPrePlayerMinedEntityEventFilter} with no additional attributes.
+   */
+  export interface OtherPrePlayerMinedEntityEventFilter extends BasePrePlayerMinedEntityEventFilter {
+    readonly filter:
+      | "ghost"
+      | "rail"
+      | "rail-signal"
+      | "rolling-stock"
+      | "robot-with-logistics-interface"
+      | "vehicle"
+      | "turret"
+      | "crafting-machine"
+      | "wall-connectable"
+      | "transport-belt-connectable"
+      | "circuit-network-connectable"
+  }
+  /**
+   * Base attributes: {@link BasePrePlayerMinedEntityEventFilter}
+   *
+   * Other attributes may be specified depending on `filter`:
+   * - `"type"`: {@link TypePrePlayerMinedEntityEventFilter}
+   * - `"name"`: {@link NamePrePlayerMinedEntityEventFilter}
+   * - `"ghost_type"`: {@link GhostTypePrePlayerMinedEntityEventFilter}
+   * - `"ghost_name"`: {@link GhostNamePrePlayerMinedEntityEventFilter}
+   * @see {@link https://lua-api.factorio.com/1.1.110/concepts.html#LuaPrePlayerMinedEntityEventFilter Online documentation}
+   */
+  export type LuaPrePlayerMinedEntityEventFilter =
+    | TypePrePlayerMinedEntityEventFilter
+    | NamePrePlayerMinedEntityEventFilter
+    | GhostTypePrePlayerMinedEntityEventFilter
+    | GhostNamePrePlayerMinedEntityEventFilter
+    | OtherPrePlayerMinedEntityEventFilter
   export type StyleValuesArray =
     | readonly [topBottom: int, leftRight: int]
     | readonly [top: int, right: int, bottom: int, left: int]

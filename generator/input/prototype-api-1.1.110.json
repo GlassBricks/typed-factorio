@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "1.1.109",
+  "application_version": "1.1.110",
   "api_version": 5,
   "stage": "prototype",
   "prototypes": [
@@ -4756,7 +4756,7 @@
         {
           "name": "time_before_shading_off",
           "order": 2,
-          "description": "Controls how long the corpse takes to fade, as in how long it takes to get from no transparency to full transparency/removed. This time is ''not'' added to `time_before_removed`, it is instead subtracted from it. So by default, the corpse starts fading about 15 seconds before it gets removed.",
+          "description": "Controls how long the corpse takes to fade, as in how long it takes to get from no transparency to full transparency/removed. This time is *not* added to `time_before_removed`, it is instead subtracted from it. So by default, the corpse starts fading about 15 seconds before it gets removed.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -4787,7 +4787,7 @@
         {
           "name": "allowed_effects",
           "order": 5,
-          "description": "Sets the [modules](prototype:ModulePrototype) and [beacon](prototype:BeaconPrototype) effects that are allowed to be used on this machine.\n\nNote: If the time to complete a recipe is shorter than one tick, only one craft can be completed per tick, but productivity bonus is applied to the non-limited ''completable'' work. For a simple example, if a recipe were to take half a tick, only one recipe would be completed, but twice the productivity bonus would occur. The surplus production from productivity is **not** limited to one craft per tick.",
+          "description": "Sets the [modules](prototype:ModulePrototype) and [beacon](prototype:BeaconPrototype) effects that are allowed to be used on this machine.\n\nNote: If the time to complete a recipe is shorter than one tick, only one craft can be completed per tick, but productivity bonus is applied to the non-limited *completable* work. For a simple example, if a recipe were to take half a tick, only one recipe would be completed, but twice the productivity bonus would occur. The surplus production from productivity is **not** limited to one craft per tick.",
           "override": false,
           "type": "EffectTypeLimitation",
           "optional": true,
@@ -18840,7 +18840,7 @@
         {
           "name": "cyclic",
           "order": 1,
-          "description": "",
+          "description": "If this is false then the smoke expires when the animation has played once.",
           "override": false,
           "type": "bool",
           "optional": true,
@@ -18852,7 +18852,7 @@
         {
           "name": "duration",
           "order": 2,
-          "description": "May not be 0 if cyclic is true.",
+          "description": "May not be 0 if `cyclic` is true. If `cyclic` is false then the smoke will be expire when the animation has played once, even if there would still be duration left.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -19286,8 +19286,15 @@
           "description": "",
           "override": false,
           "type": {
-            "complex_type": "array",
-            "value": "SoundDefinition"
+            "complex_type": "union",
+            "options": [
+              "SoundDefinition",
+              {
+                "complex_type": "array",
+                "value": "SoundDefinition"
+              }
+            ],
+            "full_format": false
           },
           "optional": true
         },
@@ -20645,7 +20652,7 @@
           "order": 7,
           "description": "When set to true, and the technology contains several levels, only the relevant one is displayed in the technology screen.\n\nOnly loaded if neither `normal` nor `expensive` are defined.",
           "examples": [
-            "```\n{\n  type = \"technology\",\n  name = \"physical-projectile-damage-2\",\n  [...]\n  upgrade = \"true\"\n}\n```"
+            "```\n{\n  type = \"technology\",\n  name = \"physical-projectile-damage-2\",\n  [...]\n  upgrade = true\n}\n```"
           ],
           "override": false,
           "type": "bool",
@@ -30412,83 +30419,978 @@
         "options": [
           {
             "complex_type": "type",
-            "value": "PrototypeBase",
-            "description": ""
+            "value": "AccumulatorPrototype",
+            "description": "`'accumulator'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "AchievementPrototype",
+            "description": "`'achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ActiveDefenseEquipmentPrototype",
+            "description": "`'active-defense-equipment'`"
           },
           {
             "complex_type": "type",
             "value": "AmbientSound",
-            "description": ""
+            "description": "`'ambient-sound'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "AmmoCategory",
+            "description": "`'ammo-category'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "AmmoItemPrototype",
+            "description": "`'ammo'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "AmmoTurretPrototype",
+            "description": "`'ammo-turret'`"
           },
           {
             "complex_type": "type",
             "value": "AnimationPrototype",
-            "description": ""
+            "description": "`'animation'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ArithmeticCombinatorPrototype",
+            "description": "`'arithmetic-combinator'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ArmorPrototype",
+            "description": "`'armor'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ArrowPrototype",
+            "description": "`'arrow'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ArtilleryFlarePrototype",
+            "description": "`'artillery-flare'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ArtilleryProjectilePrototype",
+            "description": "`'artillery-projectile'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ArtilleryTurretPrototype",
+            "description": "`'artillery-turret'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ArtilleryWagonPrototype",
+            "description": "`'artillery-wagon'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "AssemblingMachinePrototype",
+            "description": "`'assembling-machine'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "AutoplaceControl",
+            "description": "`'autoplace-control'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BatteryEquipmentPrototype",
+            "description": "`'battery-equipment'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BeaconPrototype",
+            "description": "`'beacon'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BeamPrototype",
+            "description": "`'beam'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BeltImmunityEquipmentPrototype",
+            "description": "`'belt-immunity-equipment'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BlueprintBookPrototype",
+            "description": "`'blueprint-book'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BlueprintItemPrototype",
+            "description": "`'blueprint'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BoilerPrototype",
+            "description": "`'boiler'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BuildEntityAchievementPrototype",
+            "description": "`'build-entity-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "BurnerGeneratorPrototype",
+            "description": "`'burner-generator'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CapsulePrototype",
+            "description": "`'capsule'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CarPrototype",
+            "description": "`'car'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CargoWagonPrototype",
+            "description": "`'cargo-wagon'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CharacterCorpsePrototype",
+            "description": "`'character-corpse'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CharacterPrototype",
+            "description": "`'character'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CliffPrototype",
+            "description": "`'cliff'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CombatRobotCountAchievementPrototype",
+            "description": "`'combat-robot-count'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CombatRobotPrototype",
+            "description": "`'combat-robot'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ConstantCombinatorPrototype",
+            "description": "`'constant-combinator'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ConstructWithRobotsAchievementPrototype",
+            "description": "`'construct-with-robots-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ConstructionRobotPrototype",
+            "description": "`'construction-robot'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ContainerPrototype",
+            "description": "`'container'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CopyPasteToolPrototype",
+            "description": "`'copy-paste-tool'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CorpsePrototype",
+            "description": "`'corpse'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CurvedRailPrototype",
+            "description": "`'curved-rail'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "CustomInputPrototype",
+            "description": "`'custom-input'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DamageType",
+            "description": "`'damage-type'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DeciderCombinatorPrototype",
+            "description": "`'decider-combinator'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DeconstructWithRobotsAchievementPrototype",
+            "description": "`'deconstruct-with-robots-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DeconstructibleTileProxyPrototype",
+            "description": "`'deconstructible-tile-proxy'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DeconstructionItemPrototype",
+            "description": "`'deconstruction-item'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DecorativePrototype",
+            "description": "`'optimized-decorative'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DeliverByRobotsAchievementPrototype",
+            "description": "`'deliver-by-robots-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DontBuildEntityAchievementPrototype",
+            "description": "`'dont-build-entity-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DontCraftManuallyAchievementPrototype",
+            "description": "`'dont-craft-manually-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "DontUseEntityInEnergyProductionAchievementPrototype",
+            "description": "`'dont-use-entity-in-energy-production-achievement'`"
           },
           {
             "complex_type": "type",
             "value": "EditorControllerPrototype",
-            "description": ""
+            "description": "`'editor-controller'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ElectricEnergyInterfacePrototype",
+            "description": "`'electric-energy-interface'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ElectricPolePrototype",
+            "description": "`'electric-pole'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ElectricTurretPrototype",
+            "description": "`'electric-turret'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "EnemySpawnerPrototype",
+            "description": "`'unit-spawner'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "EnergyShieldEquipmentPrototype",
+            "description": "`'energy-shield-equipment'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "EntityGhostPrototype",
+            "description": "`'entity-ghost'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "EntityParticlePrototype",
+            "description": "`'particle'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "EquipmentCategory",
+            "description": "`'equipment-category'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "EquipmentGridPrototype",
+            "description": "`'equipment-grid'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ExplosionPrototype",
+            "description": "`'explosion'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FinishTheGameAchievementPrototype",
+            "description": "`'finish-the-game-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FireFlamePrototype",
+            "description": "`'fire'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FishPrototype",
+            "description": "`'fish'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FlameThrowerExplosionPrototype",
+            "description": "`'flame-thrower-explosion'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FluidPrototype",
+            "description": "`'fluid'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FluidStreamPrototype",
+            "description": "`'stream'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FluidTurretPrototype",
+            "description": "`'fluid-turret'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FluidWagonPrototype",
+            "description": "`'fluid-wagon'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FlyingTextPrototype",
+            "description": "`'flying-text'`"
           },
           {
             "complex_type": "type",
             "value": "FontPrototype",
-            "description": ""
+            "description": "`'font'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FuelCategory",
+            "description": "`'fuel-category'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "FurnacePrototype",
+            "description": "`'furnace'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "GatePrototype",
+            "description": "`'gate'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "GeneratorEquipmentPrototype",
+            "description": "`'generator-equipment'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "GeneratorPrototype",
+            "description": "`'generator'`"
           },
           {
             "complex_type": "type",
             "value": "GodControllerPrototype",
-            "description": ""
+            "description": "`'god-controller'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "GroupAttackAchievementPrototype",
+            "description": "`'group-attack-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "GuiStyle",
+            "description": "`'gui-style'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "GunPrototype",
+            "description": "`'gun'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "HeatInterfacePrototype",
+            "description": "`'heat-interface'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "HeatPipePrototype",
+            "description": "`'heat-pipe'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "HighlightBoxEntityPrototype",
+            "description": "`'highlight-box'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "InfinityContainerPrototype",
+            "description": "`'infinity-container'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "InfinityPipePrototype",
+            "description": "`'infinity-pipe'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "InserterPrototype",
+            "description": "`'inserter'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemEntityPrototype",
+            "description": "`'item-entity'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemGroup",
+            "description": "`'item-group'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemPrototype",
+            "description": "`'item'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemRequestProxyPrototype",
+            "description": "`'item-request-proxy'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemSubGroup",
+            "description": "`'item-subgroup'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemWithEntityDataPrototype",
+            "description": "`'item-with-entity-data'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemWithInventoryPrototype",
+            "description": "`'item-with-inventory'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemWithLabelPrototype",
+            "description": "`'item-with-label'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ItemWithTagsPrototype",
+            "description": "`'item-with-tags'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "KillAchievementPrototype",
+            "description": "`'kill-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LabPrototype",
+            "description": "`'lab'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LampPrototype",
+            "description": "`'lamp'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LandMinePrototype",
+            "description": "`'land-mine'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LeafParticlePrototype",
+            "description": "`'leaf-particle'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LinkedBeltPrototype",
+            "description": "`'linked-belt'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LinkedContainerPrototype",
+            "description": "`'linked-container'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "Loader1x1Prototype",
+            "description": "`'loader-1x1'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "Loader1x2Prototype",
+            "description": "`'loader'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LocomotivePrototype",
+            "description": "`'locomotive'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LogisticContainerPrototype",
+            "description": "`'logistic-container'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "LogisticRobotPrototype",
+            "description": "`'logistic-robot'`"
           },
           {
             "complex_type": "type",
             "value": "MapGenPresets",
-            "description": ""
+            "description": "`'map-gen-presets'`"
           },
           {
             "complex_type": "type",
             "value": "MapSettings",
-            "description": ""
+            "description": "`'map-settings'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "MarketPrototype",
+            "description": "`'market'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "MiningDrillPrototype",
+            "description": "`'mining-drill'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "MiningToolPrototype",
+            "description": "`'mining-tool'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ModuleCategory",
+            "description": "`'module-category'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ModulePrototype",
+            "description": "`'module'`"
           },
           {
             "complex_type": "type",
             "value": "MouseCursor",
-            "description": ""
+            "description": "`'mouse-cursor'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "MovementBonusEquipmentPrototype",
+            "description": "`'movement-bonus-equipment'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "NamedNoiseExpression",
+            "description": "`'noise-expression'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "NightVisionEquipmentPrototype",
+            "description": "`'night-vision-equipment'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "NoiseLayer",
+            "description": "`'noise-layer'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "OffshorePumpPrototype",
+            "description": "`'offshore-pump'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ParticlePrototype",
+            "description": "`'optimized-particle'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ParticleSourcePrototype",
+            "description": "`'particle-source'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "PipePrototype",
+            "description": "`'pipe'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "PipeToGroundPrototype",
+            "description": "`'pipe-to-ground'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "PlayerDamagedAchievementPrototype",
+            "description": "`'player-damaged-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "PlayerPortPrototype",
+            "description": "`'player-port'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "PowerSwitchPrototype",
+            "description": "`'power-switch'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ProduceAchievementPrototype",
+            "description": "`'produce-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ProducePerHourAchievementPrototype",
+            "description": "`'produce-per-hour-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ProgrammableSpeakerPrototype",
+            "description": "`'programmable-speaker'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ProjectilePrototype",
+            "description": "`'projectile'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "PumpPrototype",
+            "description": "`'pump'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RadarPrototype",
+            "description": "`'radar'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RailChainSignalPrototype",
+            "description": "`'rail-chain-signal'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RailPlannerPrototype",
+            "description": "`'rail-planner'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RailRemnantsPrototype",
+            "description": "`'rail-remnants'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RailSignalPrototype",
+            "description": "`'rail-signal'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ReactorPrototype",
+            "description": "`'reactor'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RecipeCategory",
+            "description": "`'recipe-category'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RecipePrototype",
+            "description": "`'recipe'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RepairToolPrototype",
+            "description": "`'repair-tool'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ResearchAchievementPrototype",
+            "description": "`'research-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ResourceCategory",
+            "description": "`'resource-category'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ResourceEntityPrototype",
+            "description": "`'resource'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RoboportEquipmentPrototype",
+            "description": "`'roboport-equipment'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RoboportPrototype",
+            "description": "`'roboport'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RocketSiloPrototype",
+            "description": "`'rocket-silo'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RocketSiloRocketPrototype",
+            "description": "`'rocket-silo-rocket'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "RocketSiloRocketShadowPrototype",
+            "description": "`'rocket-silo-rocket-shadow'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SelectionToolPrototype",
+            "description": "`'selection-tool'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ShortcutPrototype",
+            "description": "`'shortcut'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SimpleEntityPrototype",
+            "description": "`'simple-entity'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SimpleEntityWithForcePrototype",
+            "description": "`'simple-entity-with-force'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SimpleEntityWithOwnerPrototype",
+            "description": "`'simple-entity-with-owner'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SimpleSmokePrototype",
+            "description": "`'smoke'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SmokeWithTriggerPrototype",
+            "description": "`'smoke-with-trigger'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SolarPanelEquipmentPrototype",
+            "description": "`'solar-panel-equipment'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SolarPanelPrototype",
+            "description": "`'solar-panel'`"
           },
           {
             "complex_type": "type",
             "value": "SoundPrototype",
-            "description": ""
+            "description": "`'sound'`"
           },
           {
             "complex_type": "type",
             "value": "SpectatorControllerPrototype",
-            "description": ""
+            "description": "`'spectator-controller'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SpeechBubblePrototype",
+            "description": "`'speech-bubble'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SpiderLegPrototype",
+            "description": "`'spider-leg'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SpiderVehiclePrototype",
+            "description": "`'spider-vehicle'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SpidertronRemotePrototype",
+            "description": "`'spidertron-remote'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "SplitterPrototype",
+            "description": "`'splitter'`"
           },
           {
             "complex_type": "type",
             "value": "SpritePrototype",
-            "description": ""
+            "description": "`'sprite'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "StickerPrototype",
+            "description": "`'sticker'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "StorageTankPrototype",
+            "description": "`'storage-tank'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "StraightRailPrototype",
+            "description": "`'straight-rail'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TechnologyPrototype",
+            "description": "`'technology'`"
           },
           {
             "complex_type": "type",
             "value": "TileEffectDefinition",
-            "description": ""
+            "description": "`'tile-effect'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TileGhostPrototype",
+            "description": "`'tile-ghost'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TilePrototype",
+            "description": "`'tile'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TipsAndTricksItem",
+            "description": "`'tips-and-tricks-item'`"
           },
           {
             "complex_type": "type",
             "value": "TipsAndTricksItemCategory",
-            "description": ""
+            "description": "`'tips-and-tricks-item-category'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ToolPrototype",
+            "description": "`'tool'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TrainPathAchievementPrototype",
+            "description": "`'train-path-achievement'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TrainStopPrototype",
+            "description": "`'train-stop'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TransportBeltPrototype",
+            "description": "`'transport-belt'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TreePrototype",
+            "description": "`'tree'`"
           },
           {
             "complex_type": "type",
             "value": "TriggerTargetType",
-            "description": ""
+            "description": "`'trigger-target-type'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TrivialSmokePrototype",
+            "description": "`'trivial-smoke'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TurretPrototype",
+            "description": "`'turret'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "TutorialDefinition",
+            "description": "`'tutorial'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "UndergroundBeltPrototype",
+            "description": "`'underground-belt'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "UnitPrototype",
+            "description": "`'unit'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "UpgradeItemPrototype",
+            "description": "`'upgrade-item'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "UtilityConstants",
+            "description": "`'utility-constants'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "UtilitySounds",
+            "description": "`'utility-sounds'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "UtilitySprites",
+            "description": "`'utility-sprites'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "VirtualSignalPrototype",
+            "description": "`'virtual-signal'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "WallPrototype",
+            "description": "`'wall'`"
           },
           {
             "complex_type": "type",
             "value": "WindSound",
-            "description": ""
+            "description": "`'wind-sound'`"
           }
         ],
         "full_format": true
@@ -53788,8 +54690,15 @@
           "description": "",
           "override": false,
           "type": {
-            "complex_type": "array",
-            "value": "SoundDefinition"
+            "complex_type": "union",
+            "options": [
+              "SoundDefinition",
+              {
+                "complex_type": "array",
+                "value": "SoundDefinition"
+              }
+            ],
+            "full_format": false
           },
           "optional": true
         },
@@ -57075,7 +57984,7 @@
           "order": 0,
           "description": "When set to true, and the technology contains several levels, only the relevant one is displayed in the technology screen.",
           "examples": [
-            "```\n{\n  type = \"technology\",\n  name = \"physical-projectile-damage-2\",\n  [...]\n  upgrade = \"true\"\n}\n```"
+            "```\n{\n  type = \"technology\",\n  name = \"physical-projectile-damage-2\",\n  [...]\n  upgrade = true\n}\n```"
           ],
           "override": false,
           "type": "bool",
