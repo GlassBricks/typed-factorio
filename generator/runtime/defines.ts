@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Define } from "../FactorioRuntimeApiJson.js"
-import { createConst, createNamespace, Types } from "../genUtil.js"
+import { createConst, createNamespace, escapePropertyName, Types } from "../genUtil.js"
 import { AnyDef } from "../manualDefinitions.js"
 import { byOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
@@ -99,29 +99,30 @@ function generateDefinesDeclaration(
 ): ts.Statement[] {
   let declarations: ts.Statement[]
   const thisPath = parent + (parent ? "." : "") + define.name
-  if (define.values) {
-    if (thisPath === "defines.events") {
-      declarations = generateEventsDefine(context, define)
-    } else {
-      if (existing && existing.kind !== "enum") {
-        throw new Error(`Manual definition for ${thisPath} should be a enum, got ${ts.SyntaxKind[existing.node.kind]}`)
-      }
-      const members = define.values
-        .sort(byOrder)
-        .map((m, i) =>
-          addJsDoc(
-            context,
-            ts.factory.createEnumMember(
-              m.name,
-              existing?.annotations.numericEnum ? ts.factory.createNumericLiteral(i) : undefined,
-            ),
-            m,
-            thisPath + "." + m.name,
-            undefined,
-          ),
-        )
-      declarations = [ts.factory.createEnumDeclaration(undefined, define.name, members)]
+
+  if (thisPath === "defines.events") {
+    declarations = generateEventsDefine(context, define)
+  } else if (thisPath === "defines.prototypes") {
+    declarations = generatePrototypesDefine(context, define)
+  } else if (define.values) {
+    if (existing && existing.kind !== "enum") {
+      throw new Error(`Manual definition for ${thisPath} should be a enum, got ${ts.SyntaxKind[existing.node.kind]}`)
     }
+    const members = define.values
+      .sort(byOrder)
+      .map((m, i) =>
+        addJsDoc(
+          context,
+          ts.factory.createEnumMember(
+            ts.factory.createStringLiteral(m.name),
+            existing?.annotations.numericEnum ? ts.factory.createNumericLiteral(i) : undefined,
+          ),
+          m,
+          thisPath + "." + m.name,
+          undefined,
+        ),
+      )
+    declarations = [ts.factory.createEnumDeclaration(undefined, define.name, members)]
   } else if (define.subkeys) {
     if (existing && existing.kind !== "namespace") {
       throw new Error(
@@ -151,4 +152,36 @@ function createRootDefine(context: RuntimeGenerationContext): Define {
     description: "",
     subkeys: context.apiDocs.defines,
   }
+}
+
+function generatePrototypesDefine(_context: RuntimeGenerationContext, define: Define) {
+  // interface prototypes {
+  //    "member-name": {
+  //      "subclass-name": 0
+  //      ...
+  //    }
+  //    ...
+  // }
+
+  const members = define.subkeys!.sort(byOrder).map((member) => {
+    const subclasses = member.values!.sort(byOrder).map((subclass) =>
+      ts.factory.createPropertySignature(
+        undefined,
+
+        escapePropertyName(subclass.name),
+        undefined,
+        Types.numberLiteral(0),
+      ),
+    )
+    return ts.factory.createPropertySignature(
+      undefined,
+      escapePropertyName(member.name),
+      undefined,
+      ts.factory.createTypeLiteralNode(subclasses),
+    )
+  })
+  const intf = ts.factory.createInterfaceDeclaration(undefined, "prototypes", undefined, undefined, members)
+  // declare const prototypes: prototypes
+  const decl = createConst("prototypes", ts.factory.createTypeReferenceNode("prototypes"))
+  return [intf, decl]
 }

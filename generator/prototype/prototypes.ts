@@ -230,12 +230,6 @@ function addPrototypeMap(
 
   context.currentFile.add(intf)
 
-  // interface PrototypeSubclassMap {
-  //   "rootType": {
-  //     "subType": Interface
-  //   }
-  // }
-
   const rootMembers = rootPrototypes.map((p) => {
     const typeName = classNameToTypeName(p)
     const subTypes = new Set(subclassMap.get(p))
@@ -263,6 +257,14 @@ function addPrototypeMap(
     undefined,
     undefined,
     rootMembers,
+  )
+  addJsDoc(
+    context,
+    rootIntf,
+    {
+      description: "Like [defines.prototypes], but also provides type info to subclasses.",
+    },
+    undefined,
   )
   context.currentFile.add(rootIntf)
 
