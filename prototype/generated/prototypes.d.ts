@@ -493,7 +493,7 @@ declare module "factorio:prototype" {
      *
      * Only loaded if `layers` is not defined.
      *
-     * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error ({@linkplain https://cdn.discordapp.com/attachments/340530709712076801/532315796626472972/unknown.png Example}). Modders can ignore this property.
+     * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
      * @see {@link https://lua-api.factorio.com/1.1.110/prototypes/AnimationPrototype.html#load_in_minimal_mode Online documentation}
      */
     load_in_minimal_mode?: bool
@@ -4830,7 +4830,7 @@ declare module "factorio:prototype" {
     /**
      * **Default:** `max double`
      *
-     * The maximum flying speed of the robot, in tiles/tick. Useful to limit the impact of {@linkplain https://wiki.factorio.com/Worker_robot_speed_(research worker robot speed (research)}).
+     * The maximum flying speed of the robot, including bonuses, in tiles/tick. Useful to limit the impact of {@link WorkerRobotSpeedModifier worker robot speed research}.
      * @see {@link https://lua-api.factorio.com/1.1.110/prototypes/FlyingRobotPrototype.html#max_speed Online documentation}
      */
     max_speed?: double
@@ -7749,7 +7749,7 @@ declare module "factorio:prototype" {
     /**
      * Specifies the kind of prototype this is.
      *
-     * For a list of all types used in vanilla, see {@linkplain https://wiki.factorio.com/Data.raw data.raw}.
+     * For a list of all possible types, see the {@linkplain https://lua-api.factorio.com/1.1.110/prototypes.html prototype overview}.
      * @see {@link https://lua-api.factorio.com/1.1.110/prototypes/PrototypeBase.html#type Online documentation}
      */
     type: keyof PrototypeMap
@@ -9132,6 +9132,10 @@ declare module "factorio:prototype" {
    */
   export interface RobotWithLogisticInterfacePrototype extends FlyingRobotPrototype {
     type: "construction-robot" | "logistic-robot"
+    /**
+     * The robot's cargo carrying capacity. Can be increased by {@link WorkerRobotStorageModifier worker robot cargo size research}.
+     * @see {@link https://lua-api.factorio.com/1.1.110/prototypes/RobotWithLogisticInterfacePrototype.html#max_payload_size Online documentation}
+     */
     max_payload_size: ItemCountType
     cargo_centered: Vector
     /**
@@ -10560,7 +10564,7 @@ declare module "factorio:prototype" {
      *
      * Only loaded if `layers` is not defined.
      *
-     * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error ({@linkplain https://cdn.discordapp.com/attachments/340530709712076801/532315796626472972/unknown.png Example}). Modders can ignore this property.
+     * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
      * @see {@link https://lua-api.factorio.com/1.1.110/prototypes/SpritePrototype.html#load_in_minimal_mode Online documentation}
      */
     load_in_minimal_mode?: bool
@@ -11066,7 +11070,7 @@ declare module "factorio:prototype" {
      */
     icons?: readonly IconData[]
     /**
-     * Path to the icon file. If this and `icon` is not set, the `material_background` in `variants` is used as the icon.
+     * Path to the icon file. If this and `icons` is not set, the `material_background` in `variants` is used as the icon.
      *
      * Only loaded if `icons` is not defined.
      * @see {@link https://lua-api.factorio.com/1.1.110/prototypes/TilePrototype.html#icon Online documentation}

@@ -3391,7 +3391,7 @@ declare module "factorio:runtime" {
      */
     selected_gun_index?: uint
     /**
-     * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.
+     * Energy stored in the entity's energy buffer (energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.
      * @example
      * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
      * game.player.selected.energy = 3000
@@ -3435,7 +3435,7 @@ declare module "factorio:runtime" {
      * {@link https://lua-api.factorio.com/1.1.110/classes/LuaEntity.html#LuaEntity.neighbours > Differs depending on the type of entity:}
      * @see {@link https://lua-api.factorio.com/1.1.110/classes/LuaEntity.html#LuaEntity.neighbours Online documentation}
      */
-    readonly neighbours: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity
+    readonly neighbours?: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity
     /**
      * The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of this entity.
      *
@@ -5027,7 +5027,7 @@ declare module "factorio:runtime" {
      */
     drop_target?: LuaEntity
     /**
-     * Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.
+     * Energy stored in the entity's energy buffer (energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.
      * @example
      * game.player.print("Machine energy: " .. game.player.selected.energy .. "J")
      * game.player.selected.energy = 3000
@@ -5050,7 +5050,7 @@ declare module "factorio:runtime" {
      * {@link https://lua-api.factorio.com/1.1.110/classes/LuaEntity.html#LuaEntity.neighbours > Differs depending on the type of entity:}
      * @see {@link https://lua-api.factorio.com/1.1.110/classes/LuaEntity.html#LuaEntity.neighbours Online documentation}
      */
-    readonly neighbours: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity
+    readonly neighbours?: Record<string, LuaEntity[]> | LuaEntity[][] | LuaEntity
     /**
      * Fluidboxes of this entity.
      * @see {@link https://lua-api.factorio.com/1.1.110/classes/LuaEntity.html#LuaEntity.fluidbox Online documentation}
@@ -12999,7 +12999,7 @@ declare module "factorio:runtime" {
      */
     readonly player?: LuaPlayer
     /**
-     * Get a table of all the players that currently exist. This sparse table allows you to find players by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the array part of the table. Iterating with `ipairs()` will not work at all.
+     * Get a table of all the players that currently exist. This sparse table allows you to find players by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will provide the `index`es as the keys. Iterating with `ipairs()` will not work at all.
      *
      * If only a single player is required, {@link LuaGameScript#get_player LuaGameScript::get_player} should be used instead, as it avoids the unnecessary overhead of passing the whole table to Lua.
      * @see {@link https://lua-api.factorio.com/1.1.110/classes/LuaGameScript.html#LuaGameScript.players Online documentation}
@@ -19002,12 +19002,12 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/1.1.110/classes/LuaModSettingPrototype.html#LuaModSettingPrototype.mod Online documentation}
      */
     readonly mod: string
-    readonly setting_type: string
+    readonly setting_type: "startup" | "runtime-global" | "runtime-per-user"
     /**
      * The default value of this setting.
      * @see {@link https://lua-api.factorio.com/1.1.110/classes/LuaModSettingPrototype.html#LuaModSettingPrototype.default_value Online documentation}
      */
-    readonly default_value: boolean | double | int | string
+    readonly default_value: boolean | double | int | string | Color
     /**
      * The minimum value for this setting. `nil` if this setting type doesn't support a minimum.
      * @see {@link https://lua-api.factorio.com/1.1.110/classes/LuaModSettingPrototype.html#LuaModSettingPrototype.minimum_value Online documentation}
@@ -20746,7 +20746,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -20795,7 +20795,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities. Rich text does not support this option.
+       * If this should be drawn below sprites and entities. Rich text does not support this option. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -20865,7 +20865,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -20919,7 +20919,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -20973,7 +20973,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -21031,7 +21031,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -22040,7 +22040,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -22089,7 +22089,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities. Rich text does not support this option.
+       * If this should be drawn below sprites and entities. Rich text does not support this option. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -22159,7 +22159,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -22213,7 +22213,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -22267,7 +22267,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -22325,7 +22325,7 @@ declare module "factorio:runtime" {
        */
       readonly visible?: boolean
       /**
-       * If this should be drawn below sprites and entities.
+       * If this should be drawn below sprites and entities. Defaults to false.
        */
       readonly draw_on_ground?: boolean
       /**
@@ -23954,7 +23954,7 @@ declare module "factorio:runtime" {
     /**
      * Gets the current per-player settings for the given player, indexed by prototype name. Returns the same structure as {@link LuaPlayer#mod_settings LuaPlayer::mod_settings}. This table becomes invalid if its associated player does.
      *
-     * Even though this attribute is marked as read-only, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
+     * Even though this attribute is a getter, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
      * @example
      * -- Change the value of the "active_lifestyle" setting
      * settings.get_player_settings(player_index)["active_lifestyle"] = {value = true}
@@ -23981,9 +23981,9 @@ declare module "factorio:runtime" {
      */
     readonly global: LuaCustomTable<string, ModSetting>
     /**
-     * The default player mod settings for this map, indexed by prototype name.
+     * The **default** player mod settings for this map, indexed by prototype name. Changing these settings only affects the default settings for future players joining the game.
      *
-     * Even though this attribute is marked as read-only, individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
+     * Individual settings can be changed by overwriting their {@link ModSetting} table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.
      * @see {@link https://lua-api.factorio.com/1.1.110/classes/LuaSettings.html#LuaSettings.player Online documentation}
      */
     readonly player: LuaCustomTable<string, ModSetting>

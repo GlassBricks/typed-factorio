@@ -5549,15 +5549,17 @@ declare module "factorio:prototype" {
     readonly type: "horizontal_scrollbar_style"
   }
   /**
-   * Icon layering follows the following rules:
+   * One layer of an icon. Icon layering follows the following rules:
    *
-   * - The rendering order of the individual icons follows the array order: Later added icons (higher index) are drawn on top of previously added icons (lower index).
+   * - The rendering order of the individual icon layers follows the array order: Later added icon layers (higher index) are drawn on top of previously added icon layers (lower index).
    *
    * - Only the first icon layer will display a shadow.
    *
    * - When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look {@linkplain https://forums.factorio.com/viewtopic.php?p=575844#p575844 undesirable}.
    *
-   * - The final combination of icons will always be resized in GUI based on the first icon layer's size, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.
+   * - When the final icon is displayed with a shadow (e.g. an item on the ground or on a belt when item shadows are turned on), each icon layer will {@linkplain https://forums.factorio.com/84888 cast a shadow} and the shadow is cast on the layer below it.
+   *
+   * - The final icon will always be resized in GUI based on the first icon layer's size, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.
    *
    * - Shift values are based on final size (`icon_size * scale`) of the first icon layer.
    * @example
@@ -5647,13 +5649,17 @@ declare module "factorio:prototype" {
     /**
      * **Default:** `0`
      *
-     * Icons of reduced size will be used at decreased scale.
+     * Icons of reduced size will be used at decreased scale. If an icon doesn't specify custom mipmaps, the game will automatically generate them.
      * @see {@link https://lua-api.factorio.com/1.1.110/types/IconData.html#icon_mipmaps Online documentation}
      */
     icon_mipmaps?: IconMipMapType
   }
   /**
-   * Icons of reduced size will be used at decreased scale. 0 or 1 mipmaps is a single image. The file must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.
+   * Icons of reduced size will be used at decreased scale. 0 or 1 mipmaps is a single image.
+   *
+   * If an icon doesn't specify custom mipmaps, the game will automatically generate {@linkplain https://factorio.com/blog/post/fff-291 icon mipmaps} for it.
+   *
+   * For custom mipmaps, the file must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.
    *
    * See {@linkplain https://factorio.com/blog/post/fff-291 here} for more about the visual effects of icon mipmaps.
    * @see {@link https://lua-api.factorio.com/1.1.110/types/IconMipMapType.html Online documentation}
@@ -10946,7 +10952,7 @@ declare module "factorio:prototype" {
     /**
      * **Default:** `false`
      *
-     * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error ({@linkplain https://cdn.discordapp.com/attachments/340530709712076801/532315796626472972/unknown.png Example}). Modders can ignore this property.
+     * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
      * @see {@link https://lua-api.factorio.com/1.1.110/types/SpriteParameters.html#load_in_minimal_mode Online documentation}
      */
     load_in_minimal_mode?: bool

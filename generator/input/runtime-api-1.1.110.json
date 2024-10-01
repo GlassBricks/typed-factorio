@@ -8617,7 +8617,7 @@
         {
           "name": "energy",
           "order": 37,
-          "description": "Energy stored in the entity (heat in furnace, energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.",
+          "description": "Energy stored in the entity's energy buffer (energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.",
           "examples": [
             "```\ngame.player.print(\"Machine energy: \" .. game.player.selected.energy .. \"J\")\ngame.player.selected.energy = 3000\n```"
           ],
@@ -9263,7 +9263,7 @@
             ],
             "full_format": false
           },
-          "optional": false,
+          "optional": true,
           "read": true,
           "write": false
         },
@@ -20566,7 +20566,7 @@
         {
           "name": "players",
           "order": 2,
-          "description": "Get a table of all the players that currently exist. This sparse table allows you to find players by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will only iterate the array part of the table. Iterating with `ipairs()` will not work at all.\n\nIf only a single player is required, [LuaGameScript::get_player](runtime:LuaGameScript::get_player) should be used instead, as it avoids the unnecessary overhead of passing the whole table to Lua.",
+          "description": "Get a table of all the players that currently exist. This sparse table allows you to find players by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will provide the `index`es as the keys. Iterating with `ipairs()` will not work at all.\n\nIf only a single player is required, [LuaGameScript::get_player](runtime:LuaGameScript::get_player) should be used instead, as it avoids the unnecessary overhead of passing the whole table to Lua.",
           "type": {
             "complex_type": "LuaCustomTable",
             "key": {
@@ -28965,7 +28965,8 @@
               "boolean",
               "double",
               "int",
-              "string"
+              "string",
+              "Color"
             ],
             "full_format": false
           },
@@ -29072,7 +29073,24 @@
           "name": "setting_type",
           "order": 6,
           "description": "",
-          "type": "string",
+          "type": {
+            "complex_type": "union",
+            "options": [
+              {
+                "complex_type": "literal",
+                "value": "startup"
+              },
+              {
+                "complex_type": "literal",
+                "value": "runtime-global"
+              },
+              {
+                "complex_type": "literal",
+                "value": "runtime-per-user"
+              }
+            ],
+            "full_format": false
+          },
           "optional": false,
           "read": true,
           "write": false
@@ -33539,7 +33557,7 @@
             {
               "name": "draw_on_ground",
               "order": 12,
-              "description": "If this should be drawn below sprites and entities.",
+              "description": "If this should be drawn below sprites and entities. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
@@ -33662,7 +33680,7 @@
             {
               "name": "draw_on_ground",
               "order": 11,
-              "description": "If this should be drawn below sprites and entities.",
+              "description": "If this should be drawn below sprites and entities. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
@@ -33940,7 +33958,7 @@
             {
               "name": "draw_on_ground",
               "order": 14,
-              "description": "If this should be drawn below sprites and entities.",
+              "description": "If this should be drawn below sprites and entities. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
@@ -34077,7 +34095,7 @@
             {
               "name": "draw_on_ground",
               "order": 13,
-              "description": "If this should be drawn below sprites and entities.",
+              "description": "If this should be drawn below sprites and entities. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
@@ -34227,7 +34245,7 @@
             {
               "name": "draw_on_ground",
               "order": 12,
-              "description": "If this should be drawn below sprites and entities.",
+              "description": "If this should be drawn below sprites and entities. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
@@ -34540,7 +34558,7 @@
             {
               "name": "draw_on_ground",
               "order": 11,
-              "description": "If this should be drawn below sprites and entities. Rich text does not support this option.",
+              "description": "If this should be drawn below sprites and entities. Rich text does not support this option. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
@@ -37726,7 +37744,7 @@
         {
           "name": "get_player_settings",
           "order": 0,
-          "description": "Gets the current per-player settings for the given player, indexed by prototype name. Returns the same structure as [LuaPlayer::mod_settings](runtime:LuaPlayer::mod_settings). This table becomes invalid if its associated player does.\n\nEven though this attribute is marked as read-only, individual settings can be changed by overwriting their [ModSetting](runtime:ModSetting) table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.",
+          "description": "Gets the current per-player settings for the given player, indexed by prototype name. Returns the same structure as [LuaPlayer::mod_settings](runtime:LuaPlayer::mod_settings). This table becomes invalid if its associated player does.\n\nEven though this attribute is a getter, individual settings can be changed by overwriting their [ModSetting](runtime:ModSetting) table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.",
           "examples": [
             "```\n-- Change the value of the \"active_lifestyle\" setting\nsettings.get_player_settings(player_index)[\"active_lifestyle\"] = {value = true}\n```"
           ],
@@ -37799,7 +37817,7 @@
         {
           "name": "player",
           "order": 2,
-          "description": "The default player mod settings for this map, indexed by prototype name.\n\nEven though this attribute is marked as read-only, individual settings can be changed by overwriting their [ModSetting](runtime:ModSetting) table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.",
+          "description": "The **default** player mod settings for this map, indexed by prototype name. Changing these settings only affects the default settings for future players joining the game.\n\nIndividual settings can be changed by overwriting their [ModSetting](runtime:ModSetting) table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.",
           "type": {
             "complex_type": "LuaCustomTable",
             "key": "string",
@@ -43053,7 +43071,8 @@
                 "complex_type": "union",
                 "options": [
                   "string",
-                  "LuaTilePrototype"
+                  "LuaTilePrototype",
+                  "nil"
                 ],
                 "full_format": false
               },
@@ -53826,7 +53845,7 @@
   "concepts": [
     {
       "name": "AchievementPrototypeFilter",
-      "order": 206,
+      "order": 201,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -54580,7 +54599,7 @@
     },
     {
       "name": "AutoplaceSettings",
-      "order": 0,
+      "order": 8,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -55667,7 +55686,7 @@
     },
     {
       "name": "CliffOrientation",
-      "order": 24,
+      "order": 3,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -56525,7 +56544,7 @@
     },
     {
       "name": "CursorBoxRenderType",
-      "order": 6,
+      "order": 5,
       "description": "One of the following values:",
       "type": {
         "complex_type": "union",
@@ -56666,7 +56685,7 @@
     },
     {
       "name": "DamageTypeFilters",
-      "order": 9,
+      "order": 16,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -56780,7 +56799,7 @@
     },
     {
       "name": "DecorativePrototypeFilter",
-      "order": 201,
+      "order": 202,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57042,7 +57061,7 @@
     },
     {
       "name": "ElemID",
-      "order": 25,
+      "order": 0,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57066,7 +57085,7 @@
     },
     {
       "name": "ElemType",
-      "order": 27,
+      "order": 1,
       "description": "A [string](runtime:string) specifying a type for [choose elem buttons](runtime:LuaGuiElement::elem_type). It's also used by [ElemID](runtime:ElemID) for [LuaGuiElement::elem_tooltip](runtime:LuaGuiElement::elem_tooltip).",
       "type": {
         "complex_type": "union",
@@ -57271,7 +57290,7 @@
     },
     {
       "name": "EntityPrototypeFilter",
-      "order": 202,
+      "order": 203,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57888,7 +57907,7 @@
     },
     {
       "name": "EquipmentPrototypeFilter",
-      "order": 205,
+      "order": 204,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58003,13 +58022,98 @@
     },
     {
       "name": "EventFilter",
-      "order": 20,
+      "order": 27,
       "description": "Used to filter out irrelevant event callbacks in a performant way.\n\nFilters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.",
       "type": {
         "complex_type": "array",
         "value": {
           "complex_type": "union",
           "options": [
+            {
+              "complex_type": "type",
+              "value": "LuaEntityClonedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaEntityDamagedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaEntityDeconstructionCancelledEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaEntityDiedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaEntityMarkedForDeconstructionEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaEntityMarkedForUpgradeEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPlayerBuiltEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPlayerMinedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPlayerRepairedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPostEntityDiedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPreGhostDeconstructedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPreGhostUpgradedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPrePlayerMinedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPreRobotMinedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaRobotBuiltEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaRobotMinedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaScriptRaisedBuiltEventFilter",
+              "description": ""
+            },
             {
               "complex_type": "type",
               "value": "LuaScriptRaisedDestroyEventFilter",
@@ -58022,47 +58126,7 @@
             },
             {
               "complex_type": "type",
-              "value": "LuaScriptRaisedBuiltEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPostEntityDiedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaEntityDiedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPlayerBuiltEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaEntityMarkedForDeconstructionEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaRobotMinedEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPreGhostDeconstructedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaEntityMarkedForUpgradeEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaUpgradeCancelledEventFilter",
+              "value": "LuaScriptRaisedTeleportedEventFilter",
               "description": ""
             },
             {
@@ -58072,52 +58136,7 @@
             },
             {
               "complex_type": "type",
-              "value": "LuaPreGhostUpgradedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPreRobotMinedEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaEntityDeconstructionCancelledEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaEntityDamagedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaScriptRaisedTeleportedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaEntityClonedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPlayerRepairedEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaRobotBuiltEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPlayerMinedEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPrePlayerMinedEntityEventFilter",
+              "value": "LuaUpgradeCancelledEventFilter",
               "description": ""
             }
           ],
@@ -58304,7 +58323,7 @@
     },
     {
       "name": "FluidPrototypeFilter",
-      "order": 207,
+      "order": 200,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58821,7 +58840,7 @@
     },
     {
       "name": "GuiArrowSpecification",
-      "order": 3,
+      "order": 24,
       "description": "Used for specifying where a GUI arrow should point to.",
       "type": {
         "complex_type": "table",
@@ -59543,7 +59562,7 @@
     },
     {
       "name": "ItemPrototypeFilter",
-      "order": 208,
+      "order": 205,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60412,7 +60431,7 @@
     },
     {
       "name": "LuaEntityClonedEventFilter",
-      "order": 227,
+      "order": 210,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60580,7 +60599,7 @@
     },
     {
       "name": "LuaEntityDamagedEventFilter",
-      "order": 225,
+      "order": 211,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60841,7 +60860,7 @@
     },
     {
       "name": "LuaEntityDeconstructionCancelledEventFilter",
-      "order": 224,
+      "order": 212,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61009,7 +61028,7 @@
     },
     {
       "name": "LuaEntityDiedEventFilter",
-      "order": 214,
+      "order": 213,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61177,7 +61196,7 @@
     },
     {
       "name": "LuaEntityMarkedForDeconstructionEventFilter",
-      "order": 216,
+      "order": 214,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61345,7 +61364,7 @@
     },
     {
       "name": "LuaEntityMarkedForUpgradeEventFilter",
-      "order": 219,
+      "order": 215,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61521,7 +61540,7 @@
     },
     {
       "name": "LuaPlayerBuiltEntityEventFilter",
-      "order": 215,
+      "order": 216,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61707,7 +61726,7 @@
     },
     {
       "name": "LuaPlayerMinedEntityEventFilter",
-      "order": 230,
+      "order": 217,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61875,244 +61894,6 @@
     },
     {
       "name": "LuaPlayerRepairedEntityEventFilter",
-      "order": 228,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail-signal"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rolling-stock"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "robot-with-logistics-interface"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "vehicle"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "turret"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "crafting-machine"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "wall-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "transport-belt-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "circuit-network-connectable"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "ghost_name",
-            "order": 3,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The ghost prototype name.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_type",
-            "order": 2,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The ghost prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "order": 1,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The prototype name.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaPostEntityDiedEventFilter",
-      "order": 213,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaPreGhostDeconstructedEventFilter",
       "order": 218,
       "description": "",
       "type": {
@@ -62280,8 +62061,246 @@
       }
     },
     {
+      "name": "LuaPostEntityDiedEventFilter",
+      "order": 219,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
+      "name": "LuaPreGhostDeconstructedEventFilter",
+      "order": 220,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail-signal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rolling-stock"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "robot-with-logistics-interface"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "vehicle"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "turret"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "crafting-machine"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "wall-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "transport-belt-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "circuit-network-connectable"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "ghost_name",
+            "order": 3,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The ghost prototype name.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_type",
+            "order": 2,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The ghost prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The prototype name.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
       "name": "LuaPreGhostUpgradedEventFilter",
-      "order": 222,
+      "order": 221,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -62449,7 +62468,7 @@
     },
     {
       "name": "LuaPrePlayerMinedEntityEventFilter",
-      "order": 231,
+      "order": 222,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -62785,7 +62804,7 @@
     },
     {
       "name": "LuaRobotBuiltEntityEventFilter",
-      "order": 229,
+      "order": 224,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -62971,7 +62990,7 @@
     },
     {
       "name": "LuaRobotMinedEntityEventFilter",
-      "order": 217,
+      "order": 225,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -63139,510 +63158,6 @@
     },
     {
       "name": "LuaScriptRaisedBuiltEventFilter",
-      "order": 212,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail-signal"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rolling-stock"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "robot-with-logistics-interface"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "vehicle"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "turret"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "crafting-machine"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "wall-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "transport-belt-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "circuit-network-connectable"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "ghost_name",
-            "order": 3,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The ghost prototype name.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_type",
-            "order": 2,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The ghost prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "order": 1,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The prototype name.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaScriptRaisedDestroyEventFilter",
-      "order": 210,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail-signal"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rolling-stock"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "robot-with-logistics-interface"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "vehicle"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "turret"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "crafting-machine"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "wall-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "transport-belt-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "circuit-network-connectable"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "ghost_name",
-            "order": 3,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The ghost prototype name.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_type",
-            "order": 2,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The ghost prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "order": 1,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The prototype name.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaScriptRaisedReviveEventFilter",
-      "order": 211,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail-signal"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rolling-stock"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "robot-with-logistics-interface"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "vehicle"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "turret"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "crafting-machine"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "wall-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "transport-belt-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "circuit-network-connectable"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "ghost_name",
-            "order": 3,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The ghost prototype name.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_type",
-            "order": 2,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The ghost prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "order": 1,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The prototype name.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type.",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaScriptRaisedTeleportedEventFilter",
       "order": 226,
       "description": "",
       "type": {
@@ -63810,8 +63325,512 @@
       }
     },
     {
+      "name": "LuaScriptRaisedDestroyEventFilter",
+      "order": 227,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail-signal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rolling-stock"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "robot-with-logistics-interface"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "vehicle"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "turret"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "crafting-machine"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "wall-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "transport-belt-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "circuit-network-connectable"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "ghost_name",
+            "order": 3,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The ghost prototype name.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_type",
+            "order": 2,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The ghost prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The prototype name.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
+      "name": "LuaScriptRaisedReviveEventFilter",
+      "order": 228,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail-signal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rolling-stock"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "robot-with-logistics-interface"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "vehicle"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "turret"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "crafting-machine"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "wall-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "transport-belt-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "circuit-network-connectable"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "ghost_name",
+            "order": 3,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The ghost prototype name.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_type",
+            "order": 2,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The ghost prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The prototype name.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
+      "name": "LuaScriptRaisedTeleportedEventFilter",
+      "order": 229,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail-signal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rolling-stock"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "robot-with-logistics-interface"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "vehicle"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "turret"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "crafting-machine"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "wall-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "transport-belt-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "circuit-network-connectable"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "ghost_name",
+            "order": 3,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The ghost prototype name.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_type",
+            "order": 2,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The ghost prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The prototype name.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type.",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
       "name": "LuaSectorScannedEventFilter",
-      "order": 221,
+      "order": 230,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -63979,7 +63998,7 @@
     },
     {
       "name": "LuaUpgradeCancelledEventFilter",
-      "order": 220,
+      "order": 231,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64676,7 +64695,7 @@
     },
     {
       "name": "MapViewSettings",
-      "order": 5,
+      "order": 6,
       "description": "What is shown in the map view. If a field is not given, that setting will not be changed.",
       "type": {
         "complex_type": "table",
@@ -64821,7 +64840,7 @@
     },
     {
       "name": "ModSettingPrototypeFilter",
-      "order": 200,
+      "order": 206,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64954,7 +64973,7 @@
     },
     {
       "name": "ModifierType",
-      "order": 21,
+      "order": 15,
       "description": "Used by [TechnologyModifier](runtime:TechnologyModifier).",
       "type": {
         "complex_type": "union",
@@ -65946,7 +65965,7 @@
     },
     {
       "name": "PrintSettings",
-      "order": 4,
+      "order": 25,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66254,7 +66273,7 @@
     },
     {
       "name": "PrototypeFilter",
-      "order": 7,
+      "order": 26,
       "description": "Types `\"signal\"` and `\"item-group\"` do not support filters.\n\nFilters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.",
       "type": {
         "complex_type": "array",
@@ -66263,7 +66282,12 @@
           "options": [
             {
               "complex_type": "type",
-              "value": "ModSettingPrototypeFilter",
+              "value": "FluidPrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "AchievementPrototypeFilter",
               "description": ""
             },
             {
@@ -66278,7 +66302,17 @@
             },
             {
               "complex_type": "type",
-              "value": "TechnologyPrototypeFilter",
+              "value": "EquipmentPrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "ItemPrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "ModSettingPrototypeFilter",
               "description": ""
             },
             {
@@ -66288,22 +66322,7 @@
             },
             {
               "complex_type": "type",
-              "value": "EquipmentPrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "AchievementPrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "FluidPrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "ItemPrototypeFilter",
+              "value": "TechnologyPrototypeFilter",
               "description": ""
             },
             {
@@ -66318,7 +66337,7 @@
     },
     {
       "name": "PrototypeFilterMode",
-      "order": 22,
+      "order": 7,
       "description": "One of the following values:",
       "type": {
         "complex_type": "union",
@@ -66371,7 +66390,7 @@
     },
     {
       "name": "RadiusVisualisationSpecification",
-      "order": 23,
+      "order": 4,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66409,7 +66428,7 @@
     },
     {
       "name": "RailEnd",
-      "order": 14,
+      "order": 9,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66439,7 +66458,7 @@
     },
     {
       "name": "RecipePrototypeFilter",
-      "order": 204,
+      "order": 207,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67817,7 +67836,7 @@
     },
     {
       "name": "SwitchState",
-      "order": 26,
+      "order": 2,
       "description": "State of a GUI [switch](runtime:LuaGuiElement::switch_state).",
       "type": {
         "complex_type": "union",
@@ -68078,7 +68097,7 @@
     },
     {
       "name": "TechnologyPrototypeFilter",
-      "order": 203,
+      "order": 208,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68265,7 +68284,7 @@
     },
     {
       "name": "TextAlign",
-      "order": 1,
+      "order": 22,
       "description": "The text is aligned so that the target position is at the given side of the text.\n\nFor example, `\"right\"` aligned text means the right side of the text is at the target position. Or in other words, the target is on the right of the text.",
       "type": {
         "complex_type": "union",
@@ -68573,7 +68592,7 @@
     },
     {
       "name": "TrainPathAllGoalsResult",
-      "order": 19,
+      "order": 14,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68617,7 +68636,7 @@
     },
     {
       "name": "TrainPathAnyGoalResult",
-      "order": 18,
+      "order": 13,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68655,7 +68674,7 @@
     },
     {
       "name": "TrainPathFinderPathResult",
-      "order": 17,
+      "order": 12,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68717,7 +68736,7 @@
     },
     {
       "name": "TrainPathRequestType",
-      "order": 16,
+      "order": 11,
       "description": "A [string](runtime:string) specifying the type of request for [LuaGameScript::request_train_path](runtime:LuaGameScript::request_train_path).",
       "type": {
         "complex_type": "union",
@@ -68823,7 +68842,7 @@
     },
     {
       "name": "TrainStopGoal",
-      "order": 15,
+      "order": 10,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68840,7 +68859,7 @@
     },
     {
       "name": "TriggerDelivery",
-      "order": 10,
+      "order": 17,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68906,7 +68925,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 12,
+      "order": 19,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68965,7 +68984,7 @@
     },
     {
       "name": "TriggerEffectItemType",
-      "order": 11,
+      "order": 18,
       "description": "Used by [TriggerEffectItem](runtime:TriggerEffectItem).",
       "type": {
         "complex_type": "union",
@@ -69076,7 +69095,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 13,
+      "order": 20,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69173,7 +69192,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 8,
+      "order": 21,
       "description": "A set of trigger target masks.",
       "type": {
         "complex_type": "dictionary",
@@ -69415,7 +69434,7 @@
     },
     {
       "name": "VerticalTextAlign",
-      "order": 2,
+      "order": 23,
       "description": "The text is aligned so that the target position is at the given side of the text.\n\nFor example, `\"top\"` aligned text means the top of the text is at the target position. Or in other words, the target is at the top of the text.",
       "type": {
         "complex_type": "union",

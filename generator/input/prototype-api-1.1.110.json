@@ -654,7 +654,7 @@
         {
           "name": "load_in_minimal_mode",
           "order": 22,
-          "description": "Only loaded if `layers` is not defined.\n\nMinimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error ([Example](https://cdn.discordapp.com/attachments/340530709712076801/532315796626472972/unknown.png)). Modders can ignore this property.",
+          "description": "Only loaded if `layers` is not defined.\n\nMinimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.",
           "override": false,
           "type": "bool",
           "optional": true,
@@ -9382,7 +9382,7 @@
         {
           "name": "max_speed",
           "order": 1,
-          "description": "The maximum flying speed of the robot, in tiles/tick. Useful to limit the impact of [worker robot speed (research)](https://wiki.factorio.com/Worker_robot_speed_(research)).",
+          "description": "The maximum flying speed of the robot, including bonuses, in tiles/tick. Useful to limit the impact of [worker robot speed research](prototype:WorkerRobotSpeedModifier).",
           "override": false,
           "type": "double",
           "optional": true,
@@ -14706,7 +14706,7 @@
         {
           "name": "type",
           "order": 0,
-          "description": "Specifies the kind of prototype this is.\n\nFor a list of all types used in vanilla, see [data.raw](https://wiki.factorio.com/Data.raw).",
+          "description": "Specifies the kind of prototype this is.\n\nFor a list of all possible types, see the [prototype overview](prototype:prototypes).",
           "override": false,
           "type": "string",
           "optional": false
@@ -16953,7 +16953,7 @@
         {
           "name": "max_payload_size",
           "order": 0,
-          "description": "",
+          "description": "The robot's cargo carrying capacity. Can be increased by [worker robot cargo size research](prototype:WorkerRobotStorageModifier).",
           "override": false,
           "type": "ItemCountType",
           "optional": false
@@ -19873,7 +19873,7 @@
         {
           "name": "load_in_minimal_mode",
           "order": 25,
-          "description": "Only loaded if `layers` is not defined.\n\nMinimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error ([Example](https://cdn.discordapp.com/attachments/340530709712076801/532315796626472972/unknown.png)). Modders can ignore this property.",
+          "description": "Only loaded if `layers` is not defined.\n\nMinimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.",
           "override": false,
           "type": "bool",
           "optional": true,
@@ -21023,7 +21023,7 @@
         {
           "name": "icon",
           "order": 6,
-          "description": "Path to the icon file. If this and `icon` is not set, the `material_background` in `variants` is used as the icon.\n\nOnly loaded if `icons` is not defined.",
+          "description": "Path to the icon file. If this and `icons` is not set, the `material_background` in `variants` is used as the icon.\n\nOnly loaded if `icons` is not defined.",
           "override": false,
           "type": "FileName",
           "optional": true
@@ -43173,7 +43173,7 @@
     {
       "name": "IconData",
       "order": 184,
-      "description": "Icon layering follows the following rules:\n\n- The rendering order of the individual icons follows the array order: Later added icons (higher index) are drawn on top of previously added icons (lower index).\n\n- Only the first icon layer will display a shadow.\n\n- When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look [undesirable](https://forums.factorio.com/viewtopic.php?p=575844#p575844).\n\n- The final combination of icons will always be resized in GUI based on the first icon layer's size, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.\n\n- Shift values are based on final size (`icon_size * scale`) of the first icon layer.",
+      "description": "One layer of an icon. Icon layering follows the following rules:\n\n- The rendering order of the individual icon layers follows the array order: Later added icon layers (higher index) are drawn on top of previously added icon layers (lower index).\n\n- Only the first icon layer will display a shadow.\n\n- When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look [undesirable](https://forums.factorio.com/viewtopic.php?p=575844#p575844).\n\n- When the final icon is displayed with a shadow (e.g. an item on the ground or on a belt when item shadows are turned on), each icon layer will [cast a shadow](https://forums.factorio.com/84888) and the shadow is cast on the layer below it.\n\n- The final icon will always be resized in GUI based on the first icon layer's size, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.\n\n- Shift values are based on final size (`icon_size * scale`) of the first icon layer.",
       "examples": [
         "```\n-- one icon layer\n{\n  icon = \"__base__/graphics/icons/fluid/heavy-oil.png\",\n  icon_size = 64,\n  scale = 0.5,\n  shift = {4, -8}\n}\n```",
         "```\n-- Layered icon, with size defined outside of layers\nicon_size = 32,\nicons = {\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/empty-barrel.png\"\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-side-mask.png\",\n    tint = { a = 0.75,  b = 0, g = 0, r = 0 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-hoop-top-mask.png\",\n    tint = { a = 0.75, b = 0.5, g = 0.5, r = 0.5 }\n  }\n}\n```",
@@ -43196,7 +43196,7 @@
         {
           "name": "icon_mipmaps",
           "order": 5,
-          "description": "Icons of reduced size will be used at decreased scale.",
+          "description": "Icons of reduced size will be used at decreased scale. If an icon doesn't specify custom mipmaps, the game will automatically generate them.",
           "override": false,
           "type": "IconMipMapType",
           "optional": true,
@@ -43244,7 +43244,7 @@
     {
       "name": "IconMipMapType",
       "order": 185,
-      "description": "Icons of reduced size will be used at decreased scale. 0 or 1 mipmaps is a single image. The file must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.\n\nSee [here](https://factorio.com/blog/post/fff-291) for more about the visual effects of icon mipmaps.",
+      "description": "Icons of reduced size will be used at decreased scale. 0 or 1 mipmaps is a single image.\n\nIf an icon doesn't specify custom mipmaps, the game will automatically generate [icon mipmaps](https://factorio.com/blog/post/fff-291) for it.\n\nFor custom mipmaps, the file must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.\n\nSee [here](https://factorio.com/blog/post/fff-291) for more about the visual effects of icon mipmaps.",
       "abstract": false,
       "inline": false,
       "type": "uint8"
@@ -56137,7 +56137,7 @@
         {
           "name": "load_in_minimal_mode",
           "order": 18,
-          "description": "Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error ([Example](https://cdn.discordapp.com/attachments/340530709712076801/532315796626472972/unknown.png)). Modders can ignore this property.",
+          "description": "Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.",
           "override": false,
           "type": "bool",
           "optional": true,
