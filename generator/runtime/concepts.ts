@@ -86,7 +86,7 @@ function tryGetTableOrArrayConcept(
 
 export function generateConcepts(context: RuntimeGenerationContext): void {
   context.addFile("concepts", ModuleType.Runtime, () => {
-    for (const concept of context.apiDocs.concepts) {
+    for (const concept of context.apiDocs.concepts.sort(byOrder)) {
       generateConcept(context, concept)
     }
     // manually added imports for now
