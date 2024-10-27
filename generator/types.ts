@@ -927,7 +927,7 @@ export function typeToDeclaration(
     return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, heritageClauses, type.members)
   } else {
     if (heritageClauses) {
-      throw new Error("Cannot have heritage clauses on non-interface")
+      console.error("Cannot have heritage clauses on non-interface")
     }
     return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
   }
