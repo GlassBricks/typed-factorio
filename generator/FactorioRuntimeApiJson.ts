@@ -183,10 +183,23 @@ export interface Attribute extends BasicMember {
   visibility?: Expansions[]
   raises?: EventRaised[]
   subclasses?: string[]
-  type: Type
+  // type: Type
   optional: boolean
-  read: boolean
-  write: boolean
+  // read: boolean
+  // write: boolean
+  read_type?: Type
+  write_type?: Type
+}
+
+export function getAttributeType(attribute: Attribute): Type {
+  if (!attribute.read_type && !attribute.write_type) throw new Error("No read/write type for attribute")
+  if (attribute.read_type && attribute.write_type) {
+    if (JSON.stringify(attribute.read_type) !== JSON.stringify(attribute.write_type)) {
+      // throw new Error("Read and write type for attribute are not the same")
+      console.log("Warning: read and write type for attribute are not the same, read_type will be used", attribute)
+    }
+  }
+  return attribute.read_type ?? attribute.write_type!
 }
 
 export interface EventRaised extends BasicMember {

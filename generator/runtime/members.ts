@@ -1,7 +1,7 @@
 import assert from "assert"
 import ts from "typescript"
 import { addJsDoc, processDescription } from "../documentation.js"
-import { Attribute, Method, Parameter } from "../FactorioRuntimeApiJson.js"
+import { Attribute, getAttributeType, Method, Parameter } from "../FactorioRuntimeApiJson.js"
 import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { analyzeType, getUsage, RWUsage } from "../read-write-types.js"
@@ -41,14 +41,14 @@ export function mapAttribute(
     context,
     attribute,
     parent,
-    attribute.type,
+    getAttributeType(attribute),
     getUsage(attribute),
     existing?.some((v) => ts.isPropertySignature(v) && v.type),
   )
 
   if (existing) {
     member = mergeAttributeWithExisting(context, parent, attribute, type, existing)
-  } else if (!attribute.read) {
+  } else if (!attribute.read_type) {
     member = ts.factory.createSetAccessorDeclaration(
       undefined,
       attribute.name,
@@ -65,7 +65,7 @@ export function mapAttribute(
       undefined,
     )
   } else if (type.altWriteType) {
-    assert(attribute.read && attribute.write)
+    assert(attribute.read_type && attribute.write_type)
     const mainType = attribute.optional ? makeNullable(type.mainType) : type.mainType
     const altWriteType = attribute.optional ? makeNullable(type.altWriteType) : type.altWriteType
     member = [
@@ -79,7 +79,7 @@ export function mapAttribute(
     ]
   } else {
     member = ts.factory.createPropertySignature(
-      attribute.write ? undefined : [Modifiers.readonly],
+      attribute.write_type ? undefined : [Modifiers.readonly],
       attribute.name,
       attribute.optional ? Tokens.question : undefined,
       type.mainType,
@@ -116,7 +116,8 @@ function mergeAttributeWithExisting(
     result = []
     for (const element of existing) {
       if (ts.isGetAccessorDeclaration(element)) {
-        if (!attribute.read) context.warning(`Read accessor for non-readable attribute: ${parent}.${attribute.name}`)
+        if (!attribute.read_type)
+          context.warning(`Read accessor for non-readable attribute: ${parent}.${attribute.name}`)
         const newMember = ts.factory.createGetAccessorDeclaration(
           element.modifiers,
           element.name,
@@ -127,7 +128,8 @@ function mergeAttributeWithExisting(
         ts.setEmitFlags(newMember, ts.EmitFlags.NoNestedComments)
         result.push(newMember)
       } else if (ts.isSetAccessorDeclaration(element)) {
-        if (!attribute.write) context.warning(`Write accessor for non-writable attribute: ${parent}.${attribute.name}`)
+        if (!attribute.write_type)
+          context.warning(`Write accessor for non-writable attribute: ${parent}.${attribute.name}`)
         const newMember = ts.factory.createSetAccessorDeclaration(
           element.modifiers,
           element.name,

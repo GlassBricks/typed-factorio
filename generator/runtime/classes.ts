@@ -1,6 +1,14 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
-import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioRuntimeApiJson.js"
+import {
+  Attribute,
+  CallOperator,
+  Class,
+  getAttributeType,
+  IndexOperator,
+  LengthOperator,
+  Method,
+} from "../FactorioRuntimeApiJson.js"
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil.js"
 import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
 import { analyzeMethod, mapAttribute, mapMethod } from "./members.js"
@@ -31,8 +39,9 @@ export function preprocessClasses(context: RuntimeGenerationContext): void {
 }
 
 function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribute) {
-  const rwType = attribute.read && attribute.write ? RWUsage.ReadWrite : attribute.read ? RWUsage.Read : RWUsage.Write
-  analyzeType(context, attribute.type, rwType)
+  const rwType =
+    attribute.read_type && attribute.write_type ? RWUsage.ReadWrite : attribute.read_type ? RWUsage.Read : RWUsage.Write
+  analyzeType(context, getAttributeType(attribute), rwType)
 }
 
 export function generateClasses(context: RuntimeGenerationContext): void {
@@ -187,7 +196,12 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = mapRuntimeType(context, lengthOperator.type, clazz.name + ".length", RWUsage.Read).mainType
+      const type = mapRuntimeType(
+        context,
+        getAttributeType(lengthOperator),
+        clazz.name + ".length",
+        RWUsage.Read,
+      ).mainType
       const lengthProperty = addJsDoc(
         context,
         ts.factory.createPropertySignature(
@@ -296,7 +310,7 @@ function generateClass(
       if (Array.isArray(memberNode) || !ts.isPropertySignature(memberNode)) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} should be a property signature`)
       }
-      const types = tryGetStringEnumType(context, (property.original as Attribute).type, memberNode.type!)
+      const types = tryGetStringEnumType(context, getAttributeType(property.original as Attribute), memberNode.type!)
       if (!types) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} is not a string literal union`)
       }

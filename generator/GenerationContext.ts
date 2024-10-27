@@ -64,7 +64,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   private checkApiDocs() {
     for (const [k, v] of Object.entries({
       application: "factorio",
-      api_version: 5,
+      api_version: 6,
       stage: this.stageName,
     })) {
       if (this.apiDocs[k as keyof AnyApiJson] !== v) {
