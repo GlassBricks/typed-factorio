@@ -134,7 +134,10 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     createTableOrArrayConcept(context, concept, tableOrArray)
     return
   }
-
+  if (conceptUsage === RWUsage.None) {
+    context.warning(`Unknown concept usage for ${concept.name}`)
+    return
+  }
   const conceptType = mapConceptType(
     context,
     concept.type,

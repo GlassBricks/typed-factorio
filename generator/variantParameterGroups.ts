@@ -243,7 +243,8 @@ function getAllVariants(
     }
   }
 
-  throw new Error(`Could not determine values of discriminant property ${name}.${discriminantProperty}`)
+  console.error(`Could not determine values of discriminant property ${name}.${discriminantProperty}`)
+  return {}
 }
 
 export function tryGetStringEnumType(
@@ -263,8 +264,12 @@ export function tryGetStringEnumType(
     return apiType.options.map((o) => (o as LiteralType).value as string)
   }
   if (ts.isTypeReferenceNode(tsType)) {
-    const result = tryGetStringUnionValuesFromConcept(context, tsType.typeName.getText())
-    if (result) return result
+    try {
+      const result = tryGetStringUnionValuesFromConcept(context, tsType.typeName.getText())
+      if (result) return result
+    } catch (err) {
+      console.log((err as Error).message)
+    }
   }
 
   // check for string literal union
