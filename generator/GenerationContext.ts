@@ -22,13 +22,15 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
 
   hasWarnings = false
 
-  public readonly manualDefs = processManualDefinitions(this.manualDefinitionsSource)
+  public readonly manualDefs
   constructor(
     public readonly apiDocs: A,
     public readonly manualDefinitionsSource: ts.SourceFile,
     public readonly checker: ts.TypeChecker,
     public readonly options: Options,
-  ) {}
+  ) {
+    this.manualDefs = processManualDefinitions(this.manualDefinitionsSource)
+  }
 
   abstract get stageName(): string
 
