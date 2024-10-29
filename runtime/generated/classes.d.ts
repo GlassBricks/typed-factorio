@@ -21084,7 +21084,7 @@ declare module "factorio:runtime" {
   /**
    * A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state.
    *
-   * Note this is entirely different from calling {@link libraries.html math.random}() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.
+   * Note this is entirely different from calling {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/libraries.html math.random}() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.
    * @example
    * -- Create a generator and use it to print a random number.
    * storage.generator = game.create_random_generator()

@@ -32,6 +32,9 @@ function mapLink(context: GenerationContext, origLink: string): string | undefin
   if (origLink.match(/^http(s?):\/\//)) {
     return origLink
   }
+  if (origLink.endsWith(".html") && auxiliaryPages.has(origLink.slice(0, -5))) {
+    return `${context.docUrlBase()}auxiliary/${origLink}`
+  }
 
   const match = origLink.match(/(.*?):(.*?)(?:::(.*))?$/)
   if (!match) {
