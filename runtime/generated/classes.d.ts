@@ -12962,7 +12962,8 @@ declare module "factorio:runtime" {
      * This only allows mods to queue research that this force is able to research in the first place. As an example, an already researched technology or one whose prerequisites are not fulfilled will not be queued, but dropped silently instead.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaForce.html#LuaForce.research_queue Online documentation}
      */
-    research_queue: TechnologyID[] | nil
+    get research_queue(): LuaTechnology[] | nil
+    set research_queue(value: readonly TechnologyID[] | nil)
     /**
      * Whether research is enabled for this force, see {@link LuaForce#enable_research LuaForce::enable_research} and {@link LuaForce#disable_research LuaForce::disable_research}.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaForce.html#LuaForce.research_enabled Online documentation}

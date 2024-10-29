@@ -154,18 +154,6 @@ export interface BaseGuiSpec {
   readonly type: GuiElementType
 }
 
-export interface FlowGuiSpec {
-  readonly direction?: "horizontal" | "vertical"
-}
-
-export interface FrameGuiSpec {
-  readonly direction?: "horizontal" | "vertical"
-}
-
-export interface LineGuiSpec {
-  readonly direction?: "horizontal" | "vertical"
-}
-
 export interface SignalID {}
 
 export interface ItemPrototypeFilter {}
@@ -651,25 +639,23 @@ export interface BoundingBoxWrite {
   readonly orientation?: RealOrientation
 }
 
-// /** @readType Fluid */
-// interface FluidIdentification {}
+/** @readType Fluid */
+export interface FluidId {}
 
 /** @readType LuaForce */
-export interface ForceIdentification {}
+export interface ForceId {}
 
 /** @readType LuaTechnology */
-export interface TechnologyIdentification {}
+export interface TechnologyID {}
 
 // /** @readType LuaSurface */
-export interface SurfaceIdentification {}
+// export interface SurfaceIdentification {}
 
 /** @readType LuaPlayer */
 export interface PlayerIdentification {}
 
-/** @readType LuaItemPrototype */
-export interface ItemPrototypeIdentification {}
-
-// Skipped: EntityPrototypeIdentification, ItemStackIdentification
+// This type is not in a "read"/out position
+// export interface ItemStackDefinition {}
 
 export interface InfinityPipeFilter {}
 
@@ -803,7 +789,12 @@ export interface ProgrammableSpeakerCircuitParameters {}
 
 export interface ConstantCombinatorParameters {}
 
+export interface ArithmeticCombinatorParameters {}
+
 /** @addAfter BlueprintEntity */
+/**
+ * WARNING: this type has not yet been updated for factorio 2.0.
+ */
 export interface BlueprintControlBehavior {
   readonly condition?: CircuitCondition
   readonly circuit_condition?: CircuitCondition

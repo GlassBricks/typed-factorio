@@ -61,12 +61,21 @@ declare module "factorio:runtime" {
     | "entity"
     | "technology"
     | "recipe"
-    | "item-group"
     | "fluid"
     | "tile"
+    | "item-group"
     | "virtual-signal"
+    | "shortcut"
     | "achievement"
     | "equipment"
+    | "ammo-category"
+    | "decorative"
+    | "space-connection"
+    | "space-location"
+    | "surface"
+    | "airborne-pollutant"
+    | "asteroid-chunk"
+    | "quality"
     | "file"
     | "utility"
   /**
@@ -81,7 +90,7 @@ declare module "factorio:runtime" {
     | (string & {
         _?: never
       })
-    | `${SpriteType}/${string}`
+    | `${SpriteType}${"/" | "."}${string}`
   /**
    * @example
    * -- Most common collision mask of buildings:
@@ -2901,6 +2910,9 @@ declare module "factorio:runtime" {
     /** Filters of the infinity container. */
     readonly filters?: InfinityInventoryFilter[]
   }
+  /**
+   * WARNING: this type has not yet been updated for factorio 2.0.
+   */
   export interface BlueprintControlBehavior {
     readonly condition?: CircuitCondition
     readonly circuit_condition?: CircuitCondition
@@ -6409,9 +6421,6 @@ declare module "factorio:runtime" {
     readonly "active-provider": LuaLogisticPoint[]
   }
   export interface ModSetting {
-    /**
-     * The value of the mod setting. The type depends on the kind of setting.
-     */
     /**
      * The value of the mod setting. The type depends on the kind of setting.
      */
