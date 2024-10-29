@@ -185,16 +185,13 @@ export type LuaGuiElement = {
   get_slider_maximum()
   /** @subclasses slider */
   set_slider_minimum_maximum()
+
   /** @subclasses slider */
   get_slider_value_step()
-  /** @subclasses slider */
-  get_slider_discrete_slider()
   /** @subclasses slider */
   get_slider_discrete_values()
   /** @subclasses slider */
   set_slider_value_step()
-  /** @subclasses slider */
-  set_slider_discrete_slider()
   /** @subclasses slider */
   set_slider_discrete_values()
   /** @subclasses dropdown */
