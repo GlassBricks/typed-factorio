@@ -379,9 +379,9 @@ declare module "factorio:runtime" {
     /**
      * Register a function to be run on mod initialization.
      *
-     * This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@link runtime:storage storage} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
+     * This is only called when a new save game is created or when a save file is loaded that previously didn't contain the mod. During it, the mod gets the chance to set up initial values that it will use for its lifetime. It has full access to {@link LuaGameScript} and the {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/storage.html storage} table and can change anything about them that it deems appropriate. No other events will be raised for the mod until it has finished this step.
      *
-     * For more context, refer to the {@linkplain https://lua-api.factorio.com/2.0.12/data-lifecycle.html Data Lifecycle} page.
+     * For more context, refer to the {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/data-lifecycle.html Data Lifecycle} page.
      * @param handler The handler for this event. Passing `nil` will unregister it.
      * @example
      * -- Initialize a `players` table in `storage` for later use
@@ -394,7 +394,7 @@ declare module "factorio:runtime" {
     /**
      * Register a function to be run on save load. This is only called for mods that have been part of the save previously, or for players connecting to a running multiplayer session.
      *
-     * It gives the mod the opportunity to rectify potential differences in local state introduced by the save/load cycle. Doing anything other than the following three will lead to desyncs, breaking multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@link runtime:storage storage} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
+     * It gives the mod the opportunity to rectify potential differences in local state introduced by the save/load cycle. Doing anything other than the following three will lead to desyncs, breaking multiplayer and replay functionality. Access to {@link LuaGameScript} is not available. The {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/storage.html storage} table can be accessed and is safe to read from, but not write to, as doing so will lead to an error.
      *
      * The only legitimate uses of this event are these:
      *
@@ -402,11 +402,11 @@ declare module "factorio:runtime" {
      *
      * - Re-setup conditional event handlers, meaning subscribing to an event only when some condition is met to save processing time.
      *
-     * - Create local references to data stored in the {@link runtime:storage storage} table.
+     * - Create local references to data stored in the {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/storage.html storage} table.
      *
-     * For all other purposes, {@link LuaBootstrap#on_init LuaBootstrap::on_init}, {@link LuaBootstrap#on_configuration_changed LuaBootstrap::on_configuration_changed} or {@linkplain https://lua-api.factorio.com/2.0.12/migrations.html migrations} should be used instead.
+     * For all other purposes, {@link LuaBootstrap#on_init LuaBootstrap::on_init}, {@link LuaBootstrap#on_configuration_changed LuaBootstrap::on_configuration_changed} or {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/migrations.html migrations} should be used instead.
      *
-     * For more context, refer to the {@linkplain https://lua-api.factorio.com/2.0.12/data-lifecycle.html Data Lifecycle} page.
+     * For more context, refer to the {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/data-lifecycle.html Data Lifecycle} page.
      * @param handler The handler for this event. Passing `nil` will unregister it.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaBootstrap.html#LuaBootstrap.on_load Online documentation}
      */
@@ -414,9 +414,9 @@ declare module "factorio:runtime" {
     /**
      * Register a function to be run when mod configuration changes.
      *
-     * This is called when the game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, when any prototypes have been added or removed, or when a migration was applied. It allows the mod to make any changes it deems appropriate to both the data structures in its {@link runtime:storage storage} table or to the game state through {@link LuaGameScript}.
+     * This is called when the game version or any mod version changed, when any mod was added or removed, when a startup setting has changed, when any prototypes have been added or removed, or when a migration was applied. It allows the mod to make any changes it deems appropriate to both the data structures in its {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/storage.html storage} table or to the game state through {@link LuaGameScript}.
      *
-     * For more context, refer to the {@linkplain https://lua-api.factorio.com/2.0.12/data-lifecycle.html Data Lifecycle} page.
+     * For more context, refer to the {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/data-lifecycle.html Data Lifecycle} page.
      * @param handler The handler for this event. Passing `nil` will unregister it.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaBootstrap.html#LuaBootstrap.on_configuration_changed Online documentation}
      */
@@ -471,7 +471,7 @@ declare module "factorio:runtime" {
      *
      * `register_metatable()` can not be used in the console, in event listeners or during a `remote.call()`.
      *
-     * The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in {@link runtime:storage storage}.
+     * The metatable first needs to be defined in the mod's root scope, then registered using this method. From then on, it will be properly restored for tables in {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/storage.html storage}.
      *
      * ```
      * local metatable = {
@@ -21115,7 +21115,7 @@ declare module "factorio:runtime" {
   /**
    * A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state.
    *
-   * Note this is entirely different from calling {@linkplain https://lua-api.factorio.com/2.0.12/libraries.html math.random}() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.
+   * Note this is entirely different from calling {@link libraries.html math.random}() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.
    * @example
    * -- Create a generator and use it to print a random number.
    * storage.generator = game.create_random_generator()

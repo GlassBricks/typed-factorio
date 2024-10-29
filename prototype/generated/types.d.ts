@@ -4648,7 +4648,7 @@ declare module "factorio:prototype" {
   /**
    * The data table is read by the game to load all prototypes.
    *
-   * At the end of the prototype stage, the data table is loaded by the game engine and the format of the prototypes is validated. Any extra properties are ignored. See {@linkplain https://lua-api.factorio.com/2.0.12/data-lifecycle.html Data Lifecycle} for more information.
+   * At the end of the prototype stage, the data table is loaded by the game engine and the format of the prototypes is validated. Any extra properties are ignored. See {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/data-lifecycle.html Data Lifecycle} for more information.
    *
    * The data table and its properties are defined in Lua, so their source code can be viewed in {@linkplain https://github.com/wube/factorio-data/blob/master/core/lualib/dataloader.lua dataloader.lua}.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/Data.html Online documentation}
@@ -9251,7 +9251,7 @@ declare module "factorio:prototype" {
    *
    * - **Operator:** See the list below
    *
-   * Identifiers are used to name functions and variables. The built-in functions and variables are documented in the {@link import("factorio:runtime").noise-expressions auxiliary docs}. Mods can define their own noise expressions which can be used as variables and functions. The entry points for this are {@link NamedNoiseFunction} and {@link NamedNoiseExpression} as well as local functions and expressions.
+   * Identifiers are used to name functions and variables. The built-in functions and variables are documented in the {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/noise-expressions.html auxiliary docs}. Mods can define their own noise expressions which can be used as variables and functions. The entry points for this are {@link NamedNoiseFunction} and {@link NamedNoiseExpression} as well as local functions and expressions.
    *
    * All functions accept both named and positional arguments. To differentiate between these function calls, positional arguments start/end with `(`/`)` and named arguments with `{`/`}`, e.g. `clamp(x, -1, 1)` and `clamp{min = -1, max = 1, value = x}` are the same function call. Because of this, positional arguments can't be mixed with named arguments. A function can't have more than 255 parameters.
    *
@@ -12210,7 +12210,7 @@ declare module "factorio:prototype" {
      */
     save?: FileName
     /**
-     * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").libraries here}.
+     * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/libraries.html here}.
      * @see {@link https://lua-api.factorio.com/2.0.12/types/SimulationDefinition.html#init_file Online documentation}
      */
     init_file?: FileName
@@ -12219,12 +12219,12 @@ declare module "factorio:prototype" {
      *
      * Only loaded if `init_file` is not defined.
      *
-     * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").libraries here}.
+     * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/libraries.html here}.
      * @see {@link https://lua-api.factorio.com/2.0.12/types/SimulationDefinition.html#init Online documentation}
      */
     init?: string
     /**
-     * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").libraries here}.
+     * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/libraries.html here}.
      * @see {@link https://lua-api.factorio.com/2.0.12/types/SimulationDefinition.html#update_file Online documentation}
      */
     update_file?: FileName
@@ -12233,7 +12233,7 @@ declare module "factorio:prototype" {
      *
      * Only loaded if `update_file` is not defined.
      *
-     * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@link import("factorio:runtime").libraries here}.
+     * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/libraries.html here}.
      * @see {@link https://lua-api.factorio.com/2.0.12/types/SimulationDefinition.html#update Online documentation}
      */
     update?: string

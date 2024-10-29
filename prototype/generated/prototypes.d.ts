@@ -8167,7 +8167,7 @@ declare module "factorio:prototype" {
    *
    * Alternate expressions can be made available in the map generator GUI by setting their `intended_property` to the name of the property they should override.
    *
-   * Named noise expressions can also be used as {@link import("factorio:runtime").noise-expressions noise variables} e.g. `var("my-noise-expression")`.
+   * Named noise expressions can also be used as {@linkplain https://lua-api.factorio.com/2.0.12/auxiliary/noise-expressions.html noise variables} e.g. `var("my-noise-expression")`.
    * @example
    * {
    *   type = "noise-expression",

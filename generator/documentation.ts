@@ -16,24 +16,21 @@ export interface Documentable extends PrototypeWithExamples {
   default?: string | LiteralType
   deprecated?: boolean
 }
-const pageLinks = new Set([
-  "global",
+
+const auxiliaryPages = new Set([
+  "storage",
   "data-lifecycle",
   "migrations",
-  "classes",
-  "concepts",
-  "events",
-  "defines",
-  "prototypes",
+  "libraries",
+  "prototype-tree",
+  "noise-expressions",
+  "instrument",
 ])
+const otherPages = new Set(["classes", "concepts", "events", "defines", "prototypes"])
 
 function mapLink(context: GenerationContext, origLink: string): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {
     return origLink
-  }
-  // hardcoded exception
-  if (origLink === "libraries.html") {
-    return context.docUrlBase() + "libraries.html"
   }
 
   const match = origLink.match(/(.*?):(.*?)(?:::(.*))?$/)
@@ -43,8 +40,11 @@ function mapLink(context: GenerationContext, origLink: string): string | undefin
   }
   const [, stage, name, member] = match
 
-  if (pageLinks.has(name)) {
-    return context.docUrlBase() + name + ".html"
+  if (auxiliaryPages.has(name)) {
+    return `${context.docUrlBase()}auxiliary/${name}.html`
+  }
+  if (otherPages.has(name)) {
+    return `${context.docUrlBase()}${name}.html`
   }
 
   if (stage !== "runtime" && stage !== "prototype") {

@@ -610,11 +610,8 @@ declare global {
         "only",
       }
     }
-
-    // https://forums.factorio.com/viewtopic.php?f=233&t=118305&p=627607#p627607
     /** @omit */
     enum default_icon_size {}
-
     enum difficulty {
       "easy",
       "normal",
