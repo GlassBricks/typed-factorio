@@ -107,6 +107,7 @@ function generateDefinesDeclaration(
     if (existing && existing.kind !== "enum") {
       throw new Error(`Manual definition for ${thisPath} should be a enum, got ${ts.SyntaxKind[existing.node.kind]}`)
     }
+    if (existing?.annotations.omit) return []
     const members = define.values
       .sort(byOrder)
       .map((m, i) =>

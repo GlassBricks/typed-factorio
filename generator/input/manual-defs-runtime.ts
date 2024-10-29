@@ -7,6 +7,28 @@ import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
 import { PrototypeMap } from "factorio:prototype"
 import { SettingsPrototypeMap } from "factorio:settings"
 
+// See https://forums.factorio.com/viewtopic.php?f=233&t=118305
+/** @omit */
+export interface VirtualSignalID {}
+
+/** @omit */
+export interface LogisticSections {}
+
+/** @omit */
+export interface LogisticSection {}
+
+/** @omit */
+export interface BlueprintLogisticFilter {}
+
+/** @omit */
+export interface BurnerUsageID {}
+
+/** @omit */
+export interface CircuitNetworkSelection {}
+
+/** @omit */
+export interface RaiseEventParameters {}
+
 export interface LuaObject {
   readonly object_name: string
 }
@@ -47,6 +69,10 @@ declare namespace defines {
     const script_raised_teleported: EventId<any>
     const script_raised_set_tiles: EventId<any>
   }
+
+  // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
+  /** @omit */
+  enum default_icon_size {}
 
   /** @numericEnum */
   enum command {}

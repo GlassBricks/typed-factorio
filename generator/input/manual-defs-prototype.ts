@@ -12,7 +12,7 @@ export type uint32 = number
 export type uint64 = number
 
 /** @omit */
-export type DataExtendMethod = unknown
+export interface DataExtendMethod {}
 
 export interface Data {
   raw: {

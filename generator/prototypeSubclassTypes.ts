@@ -1,4 +1,4 @@
-import { RuntimeGenerationContext } from "./runtime/index.js"
+import { RuntimeGenerationContext } from "./runtime"
 import { Type } from "./FactorioRuntimeApiJson.js"
 import { capitalize } from "./genUtil.js"
 import ts from "typescript"

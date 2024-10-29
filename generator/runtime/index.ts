@@ -71,6 +71,15 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   }
 
   preprocessAll(): void {
+    if (this.apiDocs.application_version !== "2.0.12") {
+      const message = `
+Factorio version has been updated from 2.0.12. Manually check for the following before removing this message:
+
+- Check if https://forums.factorio.com/viewtopic.php?f=233&t=118305 is resolved. If so, remove the corresponding @omit annotations from the manual definitions.
+`
+      this.warning(message)
+    }
+
     preprocessGlobalObjects(this)
     preprocessGlobalFunctions(this)
     preprocessDefines(this)
@@ -79,6 +88,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     preprocessConcepts(this)
     preprocessIndexTypes(this)
   }
+
   generateAll(): void {
     generateGlobalObjects(this)
     generateGlobalFunctions(this)
@@ -96,6 +106,7 @@ class ConceptUsageAnalysis {
   conceptReferencedBy
   conceptReadWriteTypes
   tableOrArrayConcepts
+
   constructor(private concepts: Concept[]) {
     this.conceptUsages = new Map<Concept, RWUsage>(this.concepts.map((e) => [e, RWUsage.None]))
 
