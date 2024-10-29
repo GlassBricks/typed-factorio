@@ -2283,7 +2283,7 @@ declare module "factorio:runtime" {
      */
     readonly object_name: "LuaCustomInputPrototype"
   }
-  export type CustomTableIndexer<K extends string | number, V> =
+  export type CustomTableIndexer<K extends string | number, V, IterKey extends string | number = K> =
     /**
      * Access an element of this custom table.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaCustomTable.html#LuaCustomTable.index_operator Online documentation}
@@ -2306,18 +2306,6 @@ declare module "factorio:runtime" {
      */
     readonly object_name: "LuaCustomTable"
   }
-  /**
-   * This type gives:
-   * - a number type, if K includes a number in its union
-   * - K otherwise
-   *
-   * It also preserves number branding.
-   */
-  export type LuaCustomTableIterKey<K> = [number] extends [K extends number ? number : K]
-    ? K extends string
-      ? never
-      : K
-    : K
   /**
    * Lazily evaluated table. For performance reasons, we sometimes return a custom table-like type instead of a native Lua table. This custom type lazily constructs the necessary Lua wrappers of the corresponding C++ objects, therefore preventing their unnecessary construction in some cases.
    *
@@ -2345,9 +2333,11 @@ declare module "factorio:runtime" {
    * for _, p in pairs(game.players) do game.player.print(p.name); end
    * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaCustomTable.html Online documentation}
    */
-  export type LuaCustomTable<K extends string | number, V> = LuaCustomTableMembers &
-    CustomTableIndexer<K, V> &
-    LuaPairsIterable<LuaCustomTableIterKey<K>, V>
+  export type LuaCustomTable<
+    K extends string | number,
+    V,
+    IterKey extends string | number = K,
+  > = LuaCustomTableMembers & CustomTableIndexer<K, V, IterKey> & LuaPairsIterable<IterKey, V>
   /**
    * Prototype of a damage.
    * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaDamagePrototype.html Online documentation}
@@ -13527,7 +13517,7 @@ declare module "factorio:runtime" {
      * If only a single player is required, {@link LuaGameScript#get_player LuaGameScript::get_player} should be used instead, as it avoids the unnecessary overhead of passing the whole table to Lua.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaGameScript.html#LuaGameScript.players Online documentation}
      */
-    readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
+    readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer, PlayerIndex>
     /**
      * The currently active set of map settings. Even though this property is marked as read-only, the members of the dictionary that is returned can be modified mid-game.
      *
@@ -13552,7 +13542,7 @@ declare module "factorio:runtime" {
      * Get a table of all the forces that currently exist. This sparse table allows you to find forces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will provide the `name`s as the keys. Iterating with `ipairs()` will not work at all.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaGameScript.html#LuaGameScript.forces Online documentation}
      */
-    readonly forces: LuaCustomTable<uint | string, LuaForce>
+    readonly forces: LuaCustomTable<ForceIndex | string, LuaSurface, string>
     /**
      * Whether a console command has been used.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaGameScript.html#LuaGameScript.console_command_used Online documentation}
@@ -13606,7 +13596,7 @@ declare module "factorio:runtime" {
      * Get a table of all the surfaces that currently exist. This sparse table allows you to find surfaces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will provide the `name`s as the keys. Iterating with `ipairs()` will not work at all.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaGameScript.html#LuaGameScript.surfaces Online documentation}
      */
-    readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
+    readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface, string>
     readonly planets: LuaCustomTable<string, LuaPlanet>
     /**
      * The players that are currently online.

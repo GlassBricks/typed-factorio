@@ -105,23 +105,9 @@ declare namespace defines {
 
 // -- classes --
 
-/** @addBefore LuaCustomTable */
-/**
- * This type gives:
- * - a number type, if K includes a number in its union
- * - K otherwise
- *
- * It also preserves number branding.
- */
-export type LuaCustomTableIterKey<K> = [number] extends [K extends number ? number : K]
-  ? K extends string
-    ? never
-    : K
-  : K
-
-export type LuaCustomTable<K extends string | number, V> = {
+export type LuaCustomTable<K extends string | number, V, IterKey extends string | number = K> = {
   [P in K]: V
-} & LuaPairsIterable<LuaCustomTableIterKey<K>, V>
+} & LuaPairsIterable<IterKey, V>
 
 export interface LuaLazyLoadedValue<T> {
   get(): T
@@ -527,22 +513,21 @@ export interface LuaSurface {}
 
 export type PlayerIndex = uint
 export type SurfaceIndex = uint
+export type ForceIndex = uint
 
 export interface LuaGameScript {
   get_player(player: PlayerIndex | string): LuaPlayer | nil
 
   get_surface(surface: SurfaceIndex | string): LuaSurface | nil
 
-  readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
-  readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
+  readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer, PlayerIndex>
+  readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface, string>
+  readonly forces: LuaCustomTable<ForceIndex | string, LuaSurface, string>
 
   readonly active_mods: ActiveMods
 }
 
 export interface ModSetting {
-  /**
-   * The value of the mod setting. The type depends on the kind of setting.
-   */
   readonly value: int | double | boolean | string | Color | ColorArray
 }
 
