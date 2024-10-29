@@ -150,157 +150,11 @@ export interface LuaStyle {
 
 export interface GuiElementType {}
 
-export interface BaseGuiSpec {
-  readonly type: GuiElementType
-}
+export interface BaseGuiSpec {}
 
 export interface SignalID {}
 
-export interface ItemPrototypeFilter {}
-
-export interface TilePrototypeFilter {}
-
-export interface EntityPrototypeFilter {}
-
-export interface FluidPrototypeFilter {}
-
-export interface RecipePrototypeFilter {}
-
-export interface DecorativePrototypeFilter {}
-
-export interface AchievementPrototypeFilter {}
-
-export interface EquipmentPrototypeFilter {}
-
-export interface TechnologyPrototypeFilter {}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export type ChooseElemButtonType =
-  | "item"
-  | "tile"
-  | "entity"
-  | "signal"
-  | "fluid"
-  | "recipe"
-  | "decorative"
-  | "item-group"
-  | "achievement"
-  | "equipment"
-  | "technology"
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface ChooseElemButtonFilters {
-  item: ItemPrototypeFilter[]
-  tile: TilePrototypeFilter[]
-  entity: EntityPrototypeFilter[]
-  signal: never
-  fluid: FluidPrototypeFilter[]
-  recipe: RecipePrototypeFilter[]
-  decorative: DecorativePrototypeFilter[]
-  "item-group": never
-  achievement: AchievementPrototypeFilter[]
-  equipment: EquipmentPrototypeFilter[]
-  technology: TechnologyPrototypeFilter[]
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface BaseChooseElemButtonSpec extends BaseGuiSpec {
-  readonly type: "choose-elem-button"
-  /** The type of the button - one of the following values. */
-  readonly elem_type: ChooseElemButtonType
-  /** Filters describing what to show in the selection window. See {@link LuaGuiElement.elem_filters LuaGuiElement::elem_filters}. */
-  readonly elem_filters?: ChooseElemButtonFilters[this["elem_type"]]
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface ItemChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "item"
-  /** If type is `"item"` - the default value for the button. */
-  readonly item?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface TileChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "tile"
-  /** If type is `"tile"` - the default value for the button. */
-  readonly tile?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface EntityChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "entity"
-  /** If type is `"entity"` - the default value for the button. */
-  readonly entity?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface SignalChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "signal"
-  /** If type is `"signal"` - the default value for the button. */
-  readonly signal?: SignalID
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface FluidChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "fluid"
-  /** If type is `"fluid"` - the default value for the button. */
-  readonly fluid?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface RecipeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "recipe"
-  /** If type is `"recipe"` - the default value for the button. */
-  readonly recipe?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface DecorativeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "decorative"
-  /** If type is `"decorative"` - the default value for the button. */
-  readonly decorative?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface ItemGroupChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "item-group"
-  /** If type is `"item-group"` - the default value for the button. */
-  readonly "item-group"?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface AchievementChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "achievement"
-  /** If type is `"achievement"` - the default value for the button. */
-  readonly achievement?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface EquipmentChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "equipment"
-  /** If type is `"equipment"` - the default value for the button. */
-  readonly equipment?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface TechnologyChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "technology"
-  /** If type is `"technology"` - the default value for the button. */
-  readonly technology?: string
-}
-
-export type ChooseElemButtonGuiSpec =
-  | ItemChooseElemButtonSpec
-  | TileChooseElemButtonSpec
-  | EntityChooseElemButtonSpec
-  | SignalChooseElemButtonSpec
-  | FluidChooseElemButtonSpec
-  | RecipeChooseElemButtonSpec
-  | DecorativeChooseElemButtonSpec
-  | ItemGroupChooseElemButtonSpec
-  | AchievementChooseElemButtonSpec
-  | EquipmentChooseElemButtonSpec
-  | TechnologyChooseElemButtonSpec
+export interface ItemIDAndQualityIDPair {}
 
 // stub only
 export interface GuiSpec {
@@ -316,9 +170,14 @@ export type LuaGuiElement = {
   /** @variantsName GuiSpec */
   add<Type extends GuiElementType>(element: GuiSpec & { type: Type }): Extract<LuaGuiElement, { type: Type }>
 
-  readonly elem_type: ChooseElemButtonType
-  // @ts-ignore
-  elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | nil
+  elem_value: // @ts-ignore
+  | (this["elem_type"] extends "signal"
+        ? SignalID
+        : // @ts-ignore
+          this["elem_type"] extends "with-quality"
+          ? ItemIDAndQualityIDPair
+          : string)
+    | nil
 
   /** @subclasses slider */
   get_slider_minimum()
@@ -340,7 +199,7 @@ export type LuaGuiElement = {
   set_slider_discrete_values()
   /** @subclasses dropdown */
   close_dropdown()
-  /** @subclasses flow frame label table empty-widget */
+
   drag_target?: FrameGuiElement
 
   set style(style: LuaStyle | string)
@@ -349,7 +208,7 @@ export type LuaGuiElement = {
 
 export interface FrameGuiElement {}
 
-// nullability, multi-return, different read/write types
+// nullability, overloads, different read/write types
 
 export interface LuaEquipment {}
 

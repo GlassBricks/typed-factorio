@@ -13935,7 +13935,7 @@ declare module "factorio:runtime" {
     /**
      * The initial direction of the flow's layout. Defaults to `"horizontal"`.
      */
-    readonly direction?: "horizontal" | "vertical"
+    readonly direction?: GuiDirection
   }
   /**
    * `"frame"` variant of {@link GuiSpec}.
@@ -13945,7 +13945,7 @@ declare module "factorio:runtime" {
     /**
      * The initial direction of the frame's layout. Defaults to `"horizontal"`.
      */
-    readonly direction?: "horizontal" | "vertical"
+    readonly direction?: GuiDirection
   }
   /**
    * `"table"` variant of {@link GuiSpec}.
@@ -14125,7 +14125,7 @@ declare module "factorio:runtime" {
     /**
      * The initial direction of the line. Defaults to `"horizontal"`.
      */
-    readonly direction?: "horizontal" | "vertical"
+    readonly direction?: GuiDirection
   }
   /**
    * `"list-box"` variant of {@link GuiSpec}.
@@ -14159,108 +14159,80 @@ declare module "factorio:runtime" {
      */
     readonly zoom?: double
   }
-  export type ChooseElemButtonType =
-    | "item"
-    | "tile"
-    | "entity"
-    | "signal"
-    | "fluid"
-    | "recipe"
-    | "decorative"
-    | "item-group"
-    | "achievement"
-    | "equipment"
-    | "technology"
-  export interface ChooseElemButtonFilters {
-    item: ItemPrototypeFilter[]
-    tile: TilePrototypeFilter[]
-    entity: EntityPrototypeFilter[]
-    signal: never
-    fluid: FluidPrototypeFilter[]
-    recipe: RecipePrototypeFilter[]
-    decorative: DecorativePrototypeFilter[]
-    "item-group": never
-    achievement: AchievementPrototypeFilter[]
-    equipment: EquipmentPrototypeFilter[]
-    technology: TechnologyPrototypeFilter[]
-  }
-  export interface BaseChooseElemButtonSpec extends BaseGuiSpec {
-    readonly type: "choose-elem-button"
-    /** The type of the button - one of the following values. */
-    readonly elem_type: ChooseElemButtonType
-    /** Filters describing what to show in the selection window. See {@link LuaGuiElement.elem_filters LuaGuiElement::elem_filters}. */
-    readonly elem_filters?: ChooseElemButtonFilters[this["elem_type"]]
-  }
-  export interface ItemChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "item"
-    /** If type is `"item"` - the default value for the button. */
-    readonly item?: string
-  }
-  export interface TileChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "tile"
-    /** If type is `"tile"` - the default value for the button. */
-    readonly tile?: string
-  }
-  export interface EntityChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "entity"
-    /** If type is `"entity"` - the default value for the button. */
-    readonly entity?: string
-  }
-  export interface SignalChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "signal"
-    /** If type is `"signal"` - the default value for the button. */
-    readonly signal?: SignalID
-  }
-  export interface FluidChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "fluid"
-    /** If type is `"fluid"` - the default value for the button. */
-    readonly fluid?: string
-  }
-  export interface RecipeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "recipe"
-    /** If type is `"recipe"` - the default value for the button. */
-    readonly recipe?: string
-  }
-  export interface DecorativeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "decorative"
-    /** If type is `"decorative"` - the default value for the button. */
-    readonly decorative?: string
-  }
-  export interface ItemGroupChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "item-group"
-    /** If type is `"item-group"` - the default value for the button. */
-    readonly "item-group"?: string
-  }
-  export interface AchievementChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "achievement"
-    /** If type is `"achievement"` - the default value for the button. */
-    readonly achievement?: string
-  }
-  export interface EquipmentChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "equipment"
-    /** If type is `"equipment"` - the default value for the button. */
-    readonly equipment?: string
-  }
-  export interface TechnologyChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-    readonly elem_type: "technology"
-    /** If type is `"technology"` - the default value for the button. */
-    readonly technology?: string
-  }
   /**
    * `"choose-elem-button"` variant of {@link GuiSpec}.
    */
-  export type ChooseElemButtonGuiSpec =
-    | ItemChooseElemButtonSpec
-    | TileChooseElemButtonSpec
-    | EntityChooseElemButtonSpec
-    | SignalChooseElemButtonSpec
-    | FluidChooseElemButtonSpec
-    | RecipeChooseElemButtonSpec
-    | DecorativeChooseElemButtonSpec
-    | ItemGroupChooseElemButtonSpec
-    | AchievementChooseElemButtonSpec
-    | EquipmentChooseElemButtonSpec
-    | TechnologyChooseElemButtonSpec
+  export interface ChooseElemButtonGuiSpec extends BaseGuiSpec {
+    readonly type: "choose-elem-button"
+    /**
+     * The type of the button.
+     */
+    readonly elem_type: ElemType
+    /**
+     * If type is `"item"` - the default value for the button.
+     */
+    readonly item?: string
+    /**
+     * If type is `"tile"` - the default value for the button.
+     */
+    readonly tile?: string
+    /**
+     * If type is `"entity"` - the default value for the button.
+     */
+    readonly entity?: string
+    /**
+     * If type is `"signal"` - the default value for the button.
+     */
+    readonly signal?: SignalID
+    /**
+     * If type is `"fluid"` - the default value for the button.
+     */
+    readonly fluid?: string
+    /**
+     * If type is `"recipe"` - the default value for the button.
+     */
+    readonly recipe?: string
+    /**
+     * If type is `"decorative"` - the default value for the button.
+     */
+    readonly decorative?: string
+    /**
+     * If type is `"item-group"` - the default value for the button.
+     */
+    readonly "item-group"?: string
+    /**
+     * If type is `"achievement"` - the default value for the button.
+     */
+    readonly achievement?: string
+    /**
+     * If type is `"equipment"` - the default value for the button.
+     */
+    readonly equipment?: string
+    /**
+     * If type is `"technology"` - the default value for the button.
+     */
+    readonly technology?: string
+    /**
+     * If type is `"item-with-quality"` - the default value for the button.
+     */
+    readonly "item-with-quality"?: string
+    /**
+     * If type is `"entity-with-quality"` - the default value for the button.
+     */
+    readonly "entity-with-quality"?: string
+    /**
+     * If type is `"recipe-with-quality"` - the default value for the button.
+     */
+    readonly "recipe-with-quality"?: string
+    /**
+     * If type is `"equipment-with-quality"` - the default value for the button.
+     */
+    readonly "equipment-with-quality"?: string
+    /**
+     * Filters describing what to show in the selection window. The applicable filter depends on the `elem_type`.
+     */
+    readonly elem_filters?: PrototypeFilterWrite
+  }
   /**
    * `"text-box"` variant of {@link GuiSpec}.
    */
@@ -15269,7 +15241,7 @@ declare module "factorio:runtime" {
      * _Can only be used if this is choose-elem-button_
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaGuiElement.html#LuaGuiElement.elem_type Online documentation}
      */
-    readonly elem_type: ChooseElemButtonType
+    readonly elem_type: ElemType
     /**
      * The elem value of this choose-elem-button, if any.
      *
@@ -15282,7 +15254,13 @@ declare module "factorio:runtime" {
      * _Can only be used if this is choose-elem-button_
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaGuiElement.html#LuaGuiElement.elem_value Online documentation}
      */
-    elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | nil
+    elem_value:
+      | (this["elem_type"] extends "signal"
+          ? SignalID
+          : this["elem_type"] extends "with-quality"
+            ? ItemIDAndQualityIDPair
+            : string)
+      | nil
     /**
      * The elem filters of this choose-elem-button, if any. The compatible type of filter is determined by `elem_type`.
      *
