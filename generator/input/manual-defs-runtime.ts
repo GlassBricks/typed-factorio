@@ -352,8 +352,6 @@ export interface LuaBootstrap {
   ): void
 
   readonly active_mods: ActiveMods
-
-  get_prototype_history(type: keyof PrototypeMap, name: string)
 }
 
 export interface LuaSurface {}
