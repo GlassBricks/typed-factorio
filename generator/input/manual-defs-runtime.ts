@@ -368,8 +368,6 @@ export interface LuaGameScript {
   readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer, PlayerIndex>
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface, string>
   readonly forces: LuaCustomTable<ForceIndex | string, LuaSurface, string>
-
-  readonly active_mods: ActiveMods
 }
 
 export interface ModSetting {
