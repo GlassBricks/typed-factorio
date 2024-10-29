@@ -46,7 +46,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     } else if (reference.match(/^defines(\.|$)/)) {
       relative_link = "defines.html#" + reference
     } else if (this.concepts.has(reference)) {
-      relative_link = "concepts.html#" + reference
+      relative_link = `concepts/${reference}.html`
     } else if (this.globalObjects.has(reference)) {
       relative_link = "index-runtime.html"
     } else if (this.globalFunctions.has(reference)) {
@@ -57,8 +57,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
         return this.getOnlineDocUrl(className) + "#" + reference
       }
       if (this.concepts.has(className)) {
-        relative_link = "concepts.html#" + reference
-        // concepts.html#Concept.property
+        relative_link = `concepts/${reference}.html`
       } else {
         this.warning(`unknown dot reference ${reference}`)
         relative_link = ""
