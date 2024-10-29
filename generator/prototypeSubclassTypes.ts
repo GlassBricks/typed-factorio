@@ -14,7 +14,11 @@ export const nameToToPrototypeType = {
 
 const toIgnore = ["damage", "get_prototype_history", "GuiAnchor", "Noise"]
 
-export function getTypeAsPrototypeSubtypes(
+/**
+ * For attributes of the `type : string` or `ghost_type : string` form,
+ * try to map to a more specific prototype type, e.g. `EntityType`.
+ */
+export function getSpecificPrototypeTypeForTypeAttribute(
   context: RuntimeGenerationContext,
   sourceName: string,
   member: {

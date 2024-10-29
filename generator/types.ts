@@ -13,7 +13,7 @@ import { assertNever, byOrder } from "./util.js"
 import { RuntimeGenerationContext } from "./runtime"
 import { GenerationContext } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype"
-import { getTypeAsPrototypeSubtypes } from "./prototypeSubclassTypes.js"
+import { getSpecificPrototypeTypeForTypeAttribute } from "./prototypeSubclassTypes.js"
 
 export interface TypeContext {
   contextName?: string
@@ -883,7 +883,7 @@ function tryUsePrototypeSubtype(
   parent: string,
   hasExistingType: boolean = false,
 ): RWType | undefined {
-  const subclassType = getTypeAsPrototypeSubtypes(context, parent, member, hasExistingType, type)
+  const subclassType = getSpecificPrototypeTypeForTypeAttribute(context, parent, member, hasExistingType, type)
   if (subclassType) {
     return { mainType: subclassType }
   }
