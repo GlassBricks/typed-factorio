@@ -621,9 +621,6 @@ export type SoundCategory =
 /** @replace */
 export type SoundPath = (string & { _?: never }) | `${SoundCategory}/${string}`
 
-/** @unionAdd */
-export type CollisionMaskLayer = `layer-${bigint}`
-
 /** @unionReplace type */
 export type RenderLayer = `${bigint}`
 
