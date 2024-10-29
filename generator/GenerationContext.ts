@@ -1,14 +1,14 @@
-import chalk from "chalk"
 import ts from "typescript"
 import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
 import { checkManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
 import * as runtime from "./FactorioRuntimeApiJson.js"
 import * as prototype from "./FactorioPrototypeApiJson.js"
+import chalk from "chalk"
 
 export interface AnyApiJson {
   application: "factorio"
   stage: string
-  api_version: 5
+  api_version: 6
   application_version: string
 }
 
@@ -64,7 +64,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   private checkApiDocs() {
     for (const [k, v] of Object.entries({
       application: "factorio",
-      api_version: 5,
+      api_version: 6,
       stage: this.stageName,
     })) {
       if (this.apiDocs[k as keyof AnyApiJson] !== v) {

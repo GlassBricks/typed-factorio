@@ -25,7 +25,7 @@ export enum ModuleType {
 export class OutputFileBuilderImpl implements OutputFileBuilder {
   private statements: ts.Statement[] = []
   private endStatements: ts.Statement[] = []
-  private imports = new Map<string, Set<string>>()
+  private imports = new Map<ModuleType, Set<string>>()
 
   constructor(
     private manualDefs: ManualDefinitions,

@@ -5,9 +5,9 @@ import { Expansions } from "./FactorioRuntimeApiJson"
 
 export interface FactorioPrototypeApiJson {
   application: "factorio"
-  stage: "prototype"
   application_version: string
-  api_version: 5
+  api_version: 6
+  stage: "prototype"
 
   prototypes: Prototype[]
   types: PrototypeConcept[]

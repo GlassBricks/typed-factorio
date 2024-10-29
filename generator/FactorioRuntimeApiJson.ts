@@ -3,7 +3,7 @@
 export interface FactorioRuntimeApiJson {
   application: "factorio"
   application_version: string
-  api_version: 5
+  api_version: 6
   stage: "runtime"
 
   classes: Class[]
@@ -183,10 +183,9 @@ export interface Attribute extends BasicMember {
   visibility?: Expansions[]
   raises?: EventRaised[]
   subclasses?: string[]
-  type: Type
   optional: boolean
-  read: boolean
-  write: boolean
+  read_type: Type
+  write_type: Type
 }
 
 export interface EventRaised extends BasicMember {
