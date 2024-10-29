@@ -184,8 +184,8 @@ export interface Attribute extends BasicMember {
   raises?: EventRaised[]
   subclasses?: string[]
   optional: boolean
-  read_type: Type
-  write_type: Type
+  read_type?: Type
+  write_type?: Type
 }
 
 export interface EventRaised extends BasicMember {

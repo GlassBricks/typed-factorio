@@ -2,7 +2,7 @@ import assert from "assert"
 import ts from "typescript"
 import { Attribute, Concept, Type } from "./FactorioRuntimeApiJson.js"
 import { assertNever } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime/index.js"
+import { RuntimeGenerationContext } from "./runtime"
 
 export enum RWUsage {
   None = 0,
@@ -11,20 +11,18 @@ export enum RWUsage {
   ReadWrite = Read | Write,
 }
 
-export function getUsage(attribute: Attribute): RWUsage {
-  let usage = RWUsage.None
-  if (attribute.read) {
-    usage |= RWUsage.Read
-  }
-  if (attribute.write) {
-    usage |= RWUsage.Write
-  }
-  return usage
-}
-
 export function analyzeType(context: RuntimeGenerationContext, type: Type, usage: RWUsage): void {
   assert(usage)
   if (typeof type === "string") return analyzeBasicType(type)
+  function analyzeAttribute(a: Attribute) {
+    if (usage === RWUsage.Read) {
+      if (a.read_type) analyzeType(context, a.read_type, usage)
+    } else if (usage === RWUsage.Write) analyzeType(context, a.write_type ?? a.read_type!, usage)
+    else if (usage === RWUsage.ReadWrite) {
+      if (a.read_type) analyzeType(context, a.read_type, usage)
+      if (a.write_type) analyzeType(context, a.write_type, usage)
+    }
+  }
   switch (type.complex_type) {
     case "type":
     case "array":
@@ -40,7 +38,7 @@ export function analyzeType(context: RuntimeGenerationContext, type: Type, usage
     case "function":
       return type.parameters.forEach((p) => analyzeType(context, p, RWUsage.Read))
     case "LuaStruct":
-      return type.attributes.forEach((a) => analyzeType(context, a.type, usage))
+      return type.attributes.forEach(analyzeAttribute)
     case "table": {
       type.parameters.forEach((p) => analyzeType(context, p.type, usage))
       type.variant_parameter_groups?.forEach((group) => {
@@ -101,7 +99,10 @@ export function analyzeConcept(context: RuntimeGenerationContext, concept: Conce
       case "function":
         return // function parameters are always Read, so don't need to record dependencies
       case "LuaStruct":
-        return type.attributes.forEach((a) => analyzeTypeWorker(a.type))
+        return type.attributes.forEach((a) => {
+          if (a.read_type) analyzeTypeWorker(a.read_type)
+          if (a.write_type) analyzeTypeWorker(a.write_type)
+        })
       case "table": {
         type.parameters.forEach((p) => analyzeTypeWorker(p.type))
         type.variant_parameter_groups?.forEach((group) => {

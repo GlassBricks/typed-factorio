@@ -27,26 +27,54 @@ export interface RWType {
   altWriteType?: ts.TypeNode
 }
 
+export interface TypeMemberDescription {
+  description: string
+  name: string
+  optional: boolean
+}
+
+export function mapAttributeType(
+  context: RuntimeGenerationContext,
+  attribute: runtime.Attribute,
+  parentName: string,
+  hasExistingType?: boolean,
+): RWType {
+  if (!attribute.read_type && !attribute.write_type) {
+    throw new Error(`Attribute ${attribute.name} has no read or write type`)
+  }
+  if (
+    attribute.read_type &&
+    attribute.write_type &&
+    JSON.stringify(attribute.read_type) !== JSON.stringify(attribute.write_type)
+  ) {
+    context.warning(`Attribute ${attribute.name} has different read and write types`)
+  }
+  const type = attribute.read_type ?? attribute.write_type!
+  let usage = RWUsage.None
+  if (attribute.read_type) usage |= RWUsage.Read
+  if (attribute.write_type) usage |= RWUsage.Write
+  return mapMemberType(context, attribute, parentName, type, usage, hasExistingType)
+}
+
+/**
+ * May additional transformations to the type based on additional context.
+ */
 export function mapMemberType(
   context: RuntimeGenerationContext,
-  member: {
-    description: string
-    name?: string
-    optional?: boolean
-  },
-  parent: string,
+  member: TypeMemberDescription,
+  parentName: string,
   type: runtime.Type,
   usage: RWUsage,
   hasExistingType?: boolean,
 ): RWType {
   const result =
-    tryUseIndexType(context, member, parent, type) ??
+    tryUseIndexType(context, member, parentName, type) ??
     tryUseStringUnion(member, type) ??
     tryUseFlagValue(context, member, type) ??
-    tryUsePrototypeSubtype(context, member, type, parent, hasExistingType) ??
-    mapRuntimeType(context, type, parent + (member.name ? "." + member.name : ""), usage)
+    tryUsePrototypeSubtype(context, member, type, parentName, hasExistingType) ??
+    mapRuntimeType(context, type, parentName + (member.name ? "." + member.name : ""), usage)
 
-  const isNullable = !member.optional && isNullableFromDescription(context, member, parent)
+  const isNullable = !member.optional && isNullableFromDescription(context, member, parentName)
   return isNullable
     ? {
         mainType: makeNullable(result.mainType),
@@ -787,9 +815,7 @@ export function mapBuiltinType(
 
 function tryUseIndexType(
   context: RuntimeGenerationContext,
-  member: {
-    name?: string
-  },
+  member: TypeMemberDescription,
   parent: string,
   type: runtime.Type,
 ): RWType | undefined {
@@ -807,13 +833,7 @@ function tryUseIndexType(
   }
 }
 
-function tryUseStringUnion(
-  member: {
-    description: string
-    name?: string
-  },
-  type: runtime.Type,
-): RWType | undefined {
+function tryUseStringUnion(member: TypeMemberDescription, type: runtime.Type): RWType | undefined {
   if (type === "string") {
     const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
     if (
@@ -828,22 +848,19 @@ function tryUseStringUnion(
     }
   }
   /*
-              else {
-                if (member.name === "type") {
-                  console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
-                }
-              }
-              */
+                              else {
+                                if (member.name === "type") {
+                                  console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
+                                }
+                              }
+                              */
 
   return undefined
 }
 
 function tryUseFlagValue(
   _context: RuntimeGenerationContext,
-  member: {
-    description: string
-    name?: string
-  },
+  member: TypeMemberDescription,
   type: runtime.Type,
 ): RWType | undefined {
   if (member.name !== "flag" || type !== "string") return undefined
@@ -861,10 +878,7 @@ function tryUseFlagValue(
 
 function tryUsePrototypeSubtype(
   context: RuntimeGenerationContext,
-  member: {
-    description: string
-    name?: string
-  },
+  member: TypeMemberDescription,
   type: runtime.Type,
   parent: string,
   hasExistingType: boolean = false,
@@ -899,9 +913,6 @@ function isNullableFromDescription(
   if (member.description.match(/[`' ]nil/i)) {
     context.warning("May still be nullable: " + member.description)
   }
-  // if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
-  //   console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
-  // }
   return false
 }
 

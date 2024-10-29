@@ -195,6 +195,9 @@ function getPrototypeOverridenAttributes(
 }
 
 function classNameToTypeName(name: string): string {
+  if (name == "Prototype") {
+    return name
+  }
   if (name.endsWith("Prototype")) {
     name = name.slice(0, -"Prototype".length)
   }

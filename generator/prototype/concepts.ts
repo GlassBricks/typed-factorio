@@ -79,7 +79,7 @@ function generateTypeDeclaration(
   const heritageClauses = getConceptHeritageClauses(context, concept)
   const { type, description } = mapPrototypeConcept(context, concept.type, properties, existing)
 
-  const declaration = typeToDeclaration(type, concept.name, heritageClauses)
+  const declaration = typeToDeclaration(context, type, concept.name, heritageClauses)
 
   return { declaration, description }
 }

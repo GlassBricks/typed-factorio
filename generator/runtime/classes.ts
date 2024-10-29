@@ -10,6 +10,7 @@ import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
 import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
+import assert from "assert"
 
 export function preprocessClasses(context: RuntimeGenerationContext): void {
   for (const clazz of context.apiDocs.classes) {
@@ -31,8 +32,12 @@ export function preprocessClasses(context: RuntimeGenerationContext): void {
 }
 
 function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribute) {
-  const rwType = attribute.read && attribute.write ? RWUsage.ReadWrite : attribute.read ? RWUsage.Read : RWUsage.Write
-  analyzeType(context, attribute.type, rwType)
+  if (attribute.read_type) {
+    analyzeType(context, attribute.read_type, RWUsage.Read)
+  }
+  if (attribute.write_type) {
+    analyzeType(context, attribute.write_type, RWUsage.Write)
+  }
 }
 
 export function generateClasses(context: RuntimeGenerationContext): void {
@@ -187,7 +192,8 @@ function generateClass(
     const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
-      const type = mapRuntimeType(context, lengthOperator.type, clazz.name + ".length", RWUsage.Read).mainType
+      assert(lengthOperator.read_type && !lengthOperator.write_type)
+      const type = mapRuntimeType(context, lengthOperator.read_type, clazz.name + ".length", RWUsage.Read).mainType
       const lengthProperty = addJsDoc(
         context,
         ts.factory.createPropertySignature(
@@ -296,7 +302,8 @@ function generateClass(
       if (Array.isArray(memberNode) || !ts.isPropertySignature(memberNode)) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} should be a property signature`)
       }
-      const types = tryGetStringEnumType(context, (property.original as Attribute).type, memberNode.type!)
+      assert(!(property.original as Attribute).write_type)
+      const types = tryGetStringEnumType(context, (property.original as Attribute).read_type!, memberNode.type!)
       if (!types) {
         throw new Error(`Discriminant property ${clazz.name}.${discriminantProperty} is not a string literal union`)
       }

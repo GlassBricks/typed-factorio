@@ -1,6 +1,6 @@
 import ts from "typescript"
 import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
-import { checkManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
+import { checkManualDefinitions, ManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
 import * as runtime from "./FactorioRuntimeApiJson.js"
 import * as prototype from "./FactorioPrototypeApiJson.js"
 

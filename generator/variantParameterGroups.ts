@@ -6,7 +6,7 @@ import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } 
 import { mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./read-write-types.js"
 import { byOrder } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime/index.js"
+import { RuntimeGenerationContext } from "./runtime"
 
 export function createVariantParameterTypes(
   context: RuntimeGenerationContext,
@@ -235,7 +235,8 @@ function getAllVariants(
   }
 
   // check for concept enum
-  const stringEnumType = tryGetStringEnumType(context, apiType, property.member.mainProperty.type!)
+  const tsType = property.member.mainProperty.type
+  const stringEnumType = tsType && tryGetStringEnumType(context, apiType, tsType)
   if (stringEnumType) {
     return {
       variants: new Set<string>(stringEnumType),
@@ -243,7 +244,7 @@ function getAllVariants(
     }
   }
 
-  console.error(`Could not determine values of discriminant property ${name}.${discriminantProperty}`)
+  context.warning(`Could not determine values of discriminant property ${name}.${discriminantProperty}`)
   return {}
 }
 
@@ -265,7 +266,7 @@ export function tryGetStringEnumType(
   }
   if (ts.isTypeReferenceNode(tsType)) {
     try {
-      const result = tryGetStringUnionValuesFromConcept(context, tsType.typeName.getText())
+      const result = tryGetStringUnionValuesFromConcept(context, (tsType.typeName as ts.Identifier).text)
       if (result) return result
     } catch (err) {
       console.log((err as Error).message)
