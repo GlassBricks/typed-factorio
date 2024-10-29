@@ -550,6 +550,7 @@ export interface MapPositionArray {}
 
 export interface Color {}
 
+// more specific type described in Color's description
 export type ColorArray = readonly [r: double, g: double, b: double, a?: double]
 export type ColorModifierArray = readonly [r: double, g: double, b: double, a?: double]
 
@@ -566,10 +567,6 @@ export interface ComparatorString {}
 /** @see ComparatorString */
 export type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
 
-export interface ArithmeticCombinatorParameters {
-  readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
-}
-
 /** @writeType MouseButtonFlagsWrite */
 export interface MouseButtonFlags {}
 
@@ -583,17 +580,26 @@ export type SpriteType =
   | "entity"
   | "technology"
   | "recipe"
-  | "item-group"
   | "fluid"
   | "tile"
+  | "item-group"
   | "virtual-signal"
+  | "shortcut"
   | "achievement"
   | "equipment"
+  | "ammo-category"
+  | "decorative"
+  | "space-connection"
+  | "space-location"
+  | "surface"
+  | "airborne-pollutant"
+  | "asteroid-chunk"
+  | "quality"
   | "file"
   | "utility"
 
 /** @replace */
-export type SpritePath = (string & { _?: never }) | `${SpriteType}/${string}`
+export type SpritePath = (string & { _?: never }) | `${SpriteType}${"/" | "."}${string}`
 
 /** @addBefore SoundPath */
 export type SoundCategory =
