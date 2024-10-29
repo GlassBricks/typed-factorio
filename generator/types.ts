@@ -848,12 +848,12 @@ function tryUseStringUnion(member: TypeMemberDescription, type: runtime.Type): R
     }
   }
   /*
-                              else {
-                                if (member.name === "type") {
-                                  console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
+                                else {
+                                  if (member.name === "type") {
+                                    console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
+                                  }
                                 }
-                              }
-                              */
+                                */
 
   return undefined
 }
@@ -930,6 +930,7 @@ export function makeNullable(typeNode: ts.TypeNode): ts.TypeNode {
   return ts.factory.createUnionTypeNode([...typeNode.types, Types.nil])
 }
 export function typeToDeclaration(
+  context: GenerationContext,
   type: ts.TypeNode,
   name: string,
   heritageClauses?: ts.HeritageClause[],
@@ -938,7 +939,7 @@ export function typeToDeclaration(
     return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, heritageClauses, type.members)
   } else {
     if (heritageClauses) {
-      console.error("Cannot have heritage clauses on non-interface")
+      context.warning("Cannot have heritage clauses on non-interface")
     }
     return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
   }

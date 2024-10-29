@@ -75,7 +75,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   }
 
   warning(...args: unknown[]): void {
-    console.warn(...args)
+    console.error(...args)
     this.hasWarnings = true
   }
 

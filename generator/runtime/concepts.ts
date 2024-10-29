@@ -158,7 +158,7 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     context.currentFile.add(node)
   } else {
     const { mainType, description, altWriteType } = conceptType
-    const mainResult = typeToDeclaration(mainType, concept.name)
+    const mainResult = typeToDeclaration(context, mainType, concept.name)
 
     const writeName = `${concept.name}Write`
     let tags: ts.JSDocTag[] | undefined
@@ -169,7 +169,7 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     context.currentFile.add(mainResult)
 
     if (altWriteType) {
-      const writeResult = typeToDeclaration(altWriteType, writeName)
+      const writeResult = typeToDeclaration(context, altWriteType, writeName)
       addJsDoc(
         context,
         writeResult,
