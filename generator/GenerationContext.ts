@@ -3,7 +3,6 @@ import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from
 import { checkManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
 import * as runtime from "./FactorioRuntimeApiJson.js"
 import * as prototype from "./FactorioPrototypeApiJson.js"
-import chalk from "chalk"
 
 export interface AnyApiJson {
   application: "factorio"
@@ -74,7 +73,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   }
 
   warning(...args: unknown[]): void {
-    console.log(chalk.yellow(...args))
+    console.warn(...args)
     this.hasWarnings = true
   }
 
