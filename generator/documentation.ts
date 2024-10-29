@@ -86,6 +86,7 @@ export function processDescription(
   if (!description) return undefined
   let result = ""
 
+  // Warning: ugly regex ahead
   for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|```((?:(?!```).)*)```)/gs)) {
     let withLinks = text.replace(/\[(?!\[)(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
       if (name === "string" || name === "number" || name === "boolean") {
@@ -101,7 +102,6 @@ export function processDescription(
         return `{@${tag} ${link} ${name}}`
       }
     })
-    // .replace("__1__\n   ", "__1__") // fix for LocalisedString description
     if (normalizeNewlines) {
       withLinks = withLinks.replace(/\n(?!([\n-]))/g, "\n\n")
     }
