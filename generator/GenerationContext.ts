@@ -79,12 +79,6 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
     this.hasWarnings = true
   }
 
-  warnIfHasVisibility(obj: { visibility?: string[] }): void {
-    if (obj.visibility && obj.visibility.length > 1) {
-      this.warning("Visibility not implemented yet")
-    }
-  }
-
   generate(): OutputFile[] {
     this.checkApiDocs()
     this.preprocessAll()

@@ -211,6 +211,10 @@ declare module "factorio:prototype" {
   export interface ActiveTriggerPrototype extends Prototype {
     type: "chain-active-trigger" | "delayed-active-trigger"
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/AgriculturalTowerPrototype.html Online documentation}
+   */
   export interface AgriculturalTowerPrototype extends EntityWithOwnerPrototype {
     type: "agricultural-tower"
     graphics_set?: CraftingMachineGraphicsSet
@@ -807,6 +811,8 @@ declare module "factorio:prototype" {
      */
     inventory_size_bonus?: ItemStackIndex
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/ArmorPrototype.html#provides_flight Online documentation}
      */
@@ -1276,6 +1282,10 @@ declare module "factorio:prototype" {
      */
     hide_from_signal_gui?: bool
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/AsteroidCollectorPrototype.html Online documentation}
+   */
   export interface AsteroidCollectorPrototype extends EntityWithOwnerPrototype {
     type: "asteroid-collector"
     /**
@@ -1429,6 +1439,10 @@ declare module "factorio:prototype" {
      */
     arm_color_gradient?: readonly Color[]
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/AsteroidPrototype.html Online documentation}
+   */
   export interface AsteroidPrototype extends EntityWithOwnerPrototype {
     type: "asteroid"
     /**
@@ -1852,6 +1866,10 @@ declare module "factorio:prototype" {
      */
     radius_color?: Color
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/CaptureRobotPrototype.html Online documentation}
+   */
   export interface CaptureRobotPrototype extends FlyingRobotPrototype {
     type: "capture-robot"
     /**
@@ -1985,6 +2003,10 @@ declare module "factorio:prototype" {
      */
     guns?: readonly ItemID[]
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/CargoBayPrototype.html Online documentation}
+   */
   export interface CargoBayPrototype extends EntityWithOwnerPrototype {
     type: "cargo-bay"
     graphics_set?: CargoBayConnectableGraphicsSet
@@ -4237,6 +4259,10 @@ declare module "factorio:prototype" {
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/EntityPrototype.html#minable Online documentation}
      */
     minable?: MinableProperties
+    /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/EntityPrototype.html#surface_conditions Online documentation}
+     */
     surface_conditions?: readonly SurfaceCondition[]
     /**
      * Used to merge multiple entities into one entry in the deconstruction planner.
@@ -4343,6 +4369,10 @@ declare module "factorio:prototype" {
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/EntityPrototype.html#protected_from_tile_building Online documentation}
      */
     protected_from_tile_building?: bool
+    /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/EntityPrototype.html#heating_energy Online documentation}
+     */
     heating_energy?: Energy
     /**
      * **Default:** `true`
@@ -6406,6 +6436,8 @@ declare module "factorio:prototype" {
      */
     enter_drop_mode_if_held_stack_spoiled?: bool
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * **Default:** `1`
      *
      * This inserter will not create stacks on belt with more than this amount of items. Must be >= 1.
@@ -6665,6 +6697,10 @@ declare module "factorio:prototype" {
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/ItemPrototype.html#burnt_result Online documentation}
      */
     burnt_result?: ItemID
+    /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/ItemPrototype.html#spoil_result Online documentation}
+     */
     spoil_result?: ItemID
     plant_result?: EntityID
     /**
@@ -6686,6 +6722,8 @@ declare module "factorio:prototype" {
      */
     flags?: ItemPrototypeFlags
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/ItemPrototype.html#spoil_ticks Online documentation}
      */
@@ -6770,6 +6808,8 @@ declare module "factorio:prototype" {
      */
     has_random_tint?: bool
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * Only loaded if `spoil_result` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/ItemPrototype.html#spoil_to_trigger_result Online documentation}
      */
@@ -7398,6 +7438,10 @@ declare module "factorio:prototype" {
      */
     collision_box?: BoundingBox
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/LightningAttractorPrototype.html Online documentation}
+   */
   export interface LightningAttractorPrototype extends EntityWithOwnerPrototype {
     type: "lightning-attractor"
     chargable_graphics?: ChargableGraphics
@@ -7420,6 +7464,10 @@ declare module "factorio:prototype" {
      */
     energy_source?: ElectricEnergySource
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/LightningPrototype.html Online documentation}
+   */
   export interface LightningPrototype extends EntityPrototype {
     type: "lightning"
     graphics_set?: LightningGraphicsSet
@@ -7595,6 +7643,8 @@ declare module "factorio:prototype" {
      */
     allow_container_interaction?: bool
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * **Default:** `1`
      *
      * Loader will not create stacks on belt that are larger than this value. Must be >= 1.
@@ -7993,6 +8043,8 @@ declare module "factorio:prototype" {
      */
     shuffle_resources_to_mine?: bool
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/MiningDrillPrototype.html#drops_full_belt_stacks Online documentation}
      */
@@ -8530,6 +8582,8 @@ declare module "factorio:prototype" {
     type: "planet"
     map_seed_offset?: uint32
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/PlanetPrototype.html#entities_require_heating Online documentation}
      */
@@ -8547,6 +8601,10 @@ declare module "factorio:prototype" {
     surface_properties?: Record<string, double>
     lightning_properties?: LightningProperties
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/PlantPrototype.html Online documentation}
+   */
   export interface PlantPrototype extends TreePrototype {
     type: "plant"
     /**
@@ -10080,6 +10138,10 @@ declare module "factorio:prototype" {
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/RecipePrototype.html#allow_quality_message Online documentation}
      */
     allow_quality_message?: LocalisedString
+    /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/RecipePrototype.html#surface_conditions Online documentation}
+     */
     surface_conditions?: readonly SurfaceCondition[]
     /**
      * **Default:** `unset`
@@ -10994,6 +11056,8 @@ declare module "factorio:prototype" {
      */
     cargo_station_parameters: CargoStationParameters
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * **Default:** `false`
      *
      * Enables 'Space Age' functionality for this rocket silo, allowing it to supply space platforms.
@@ -11178,6 +11242,8 @@ declare module "factorio:prototype" {
     door_closing_sound?: InterruptibleSound
   }
   /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   *
    * Entity representing an individual segment in a {@link SegmentedUnitPrototype}
    * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/SegmentPrototype.html Online documentation}
    */
@@ -11251,6 +11317,8 @@ declare module "factorio:prototype" {
     update_effects_while_enraged?: readonly TriggerEffectWithCooldown[]
   }
   /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   *
    * Entity composed of multiple segment entities that trail behind the head.
    * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/SegmentedUnitPrototype.html Online documentation}
    */
@@ -12179,6 +12247,10 @@ declare module "factorio:prototype" {
     starmap_icon_size?: SpriteSizeType
     asteroid_spawn_definitions?: readonly SpaceLocationAsteroidSpawnDefinition[]
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/SpacePlatformHubPrototype.html Online documentation}
+   */
   export interface SpacePlatformHubPrototype extends EntityWithOwnerPrototype {
     type: "space-platform-hub"
     graphics_set?: CargoBayConnectableGraphicsSet
@@ -13250,6 +13322,10 @@ declare module "factorio:prototype" {
      */
     alert_after_time?: uint32
   }
+  /**
+   * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+   * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/ThrusterPrototype.html Online documentation}
+   */
   export interface ThrusterPrototype extends EntityWithOwnerPrototype {
     type: "thruster"
     min_performance: ThrusterPerformancePoint
@@ -13283,11 +13359,15 @@ declare module "factorio:prototype" {
      */
     water?: WaterTileEffectParameters
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * Only loaded, and mandatory if `shader` is `"space"`.
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/TileEffectDefinition.html#space Online documentation}
      */
     space?: SpaceTileEffectParameters
     /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     *
      * Only loaded, and mandatory if `shader` is `"puddle"`.
      * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/TileEffectDefinition.html#puddle Online documentation}
      */

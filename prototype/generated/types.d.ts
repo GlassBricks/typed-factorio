@@ -14285,9 +14285,25 @@ declare module "factorio:prototype" {
      */
     draw_sprite_clouds?: bool
     clouds?: CloudsEffectProperties
+    /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SurfaceRenderParameters.html#fog Online documentation}
+     */
     fog?: FogEffectProperties
+    /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SurfaceRenderParameters.html#terrain_tint_effect Online documentation}
+     */
     terrain_tint_effect?: GlobalTintEffectProperties
+    /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SurfaceRenderParameters.html#space_dust_background Online documentation}
+     */
     space_dust_background?: SpaceDustEffectProperties
+    /**
+     * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SurfaceRenderParameters.html#space_dust_foreground Online documentation}
+     */
     space_dust_foreground?: SpaceDustEffectProperties
   }
   export interface SwitchStyleSpecification extends BaseStyleSpecification {

@@ -24,7 +24,7 @@ export interface PrototypeWithExamples {
 }
 
 export interface Prototype extends BasicMember, PrototypeWithExamples {
-  visibility: Expansions
+  visibility?: Expansions[]
   parent?: string
   abstract: boolean
   typename?: string

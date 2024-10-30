@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { EventRaised } from "./FactorioRuntimeApiJson.js"
+import { EventRaised, Expansions } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { byOrder } from "./util.js"
@@ -15,6 +15,7 @@ export interface Documentable extends PrototypeWithExamples {
   instance_limit?: number
   default?: string | LiteralType
   deprecated?: boolean
+  visibility?: Expansions[]
 }
 
 const auxiliaryPages = new Set([
@@ -181,6 +182,16 @@ function processExample(context: GenerationContext, example: string): string {
   return result.replaceAll("\n", "\n * ")
 }
 
+const expansionComments: Record<Expansions, string> = {
+  space_age:
+    "![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.",
+}
+
+function getCommentForExpansions(element: Documentable): string | undefined {
+  if (!element.visibility || element.visibility.length === 0) return
+  return element.visibility.map((expansion) => expansionComments[expansion]).join("\n\n")
+}
+
 export function createTag(tag: string, comment?: string): ts.JSDocUnknownTag {
   return ts.factory.createJSDocUnknownTag(ts.factory.createIdentifier(tag), comment)
 }
@@ -200,6 +211,7 @@ export function addJsDoc<T extends ts.Node>(
   const onlineDocUrl = onlineReferenceName && context.getOnlineDocUrl(onlineReferenceName)
 
   const comment = [
+    getCommentForExpansions(element),
     getCommentForDefaultValue(element),
     additions.pre && processDescription(context, additions.pre),
     processDescription(context, element.description),
