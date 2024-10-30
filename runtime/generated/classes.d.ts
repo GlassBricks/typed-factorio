@@ -824,7 +824,8 @@ declare module "factorio:runtime" {
      * Writing to this automatically handles correcting {@link LuaBurner#remaining_burning_fuel LuaBurner::remaining_burning_fuel}.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaBurner.html#LuaBurner.currently_burning Online documentation}
      */
-    currently_burning?: ItemIDAndQualityIDPair
+    get currently_burning(): ItemIDAndQualityIDPair | nil
+    set currently_burning(value: ItemWithQualityID | nil)
     /**
      * The fuel categories this burner uses.
      *
@@ -1796,7 +1797,8 @@ declare module "factorio:runtime" {
      * The force of this entity. Reading will always give a {@link LuaForce}, but it is possible to assign either `string`, {@link uint8} or {@link LuaForce} to this attribute to change the force.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaControl.html#LuaControl.force Online documentation}
      */
-    force: LuaForce
+    get force(): LuaForce
+    set force(value: ForceID)
     /**
      * Unique {@link LuaForce#index index} (ID) associated with the force of this entity.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaControl.html#LuaControl.force_index Online documentation}
@@ -1969,7 +1971,8 @@ declare module "factorio:runtime" {
      * Items in the cursor stack will take priority over the cursor ghost.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaControl.html#LuaControl.cursor_ghost Online documentation}
      */
-    cursor_ghost?: ItemIDAndQualityIDPair
+    get cursor_ghost(): ItemIDAndQualityIDPair | nil
+    set cursor_ghost(value: ItemWithQualityID | nil)
     /**
      * The blueprint record in the player's cursor.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaControl.html#LuaControl.cursor_record Online documentation}
@@ -4029,7 +4032,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is CraftingMachine_
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaEntity.html#LuaEntity.result_quality Online documentation}
      */
-    result_quality?: LuaQualityPrototype
+    get result_quality(): LuaQualityPrototype | nil
+    set result_quality(value: QualityID | nil)
     /**
      * The productivity bonus of this entity.
      *
@@ -6027,7 +6031,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is CraftingMachine_
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaEntity.html#LuaEntity.result_quality Online documentation}
      */
-    result_quality?: LuaQualityPrototype
+    get result_quality(): LuaQualityPrototype | nil
+    set result_quality(value: QualityID | nil)
     /**
      * The number of products this machine finished crafting in its lifetime.
      *
@@ -27220,7 +27225,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaSurfacePrototype.html Online documentation}
    */
   export interface LuaSurfacePrototype extends LuaPrototypeBase {
-    readonly surface_properties: LuaTable<SurfacePropertyID, double>
+    readonly surface_properties: Record<string, double>
     /**
      * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
      */

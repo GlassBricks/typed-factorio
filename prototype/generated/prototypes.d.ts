@@ -8544,7 +8544,7 @@ declare module "factorio:prototype" {
      */
     ticks_between_player_effects?: MapTick
     map_gen_settings?: PlanetPrototypeMapGenSettings
-    surface_properties?: Record<SurfacePropertyID, double>
+    surface_properties?: Record<string, double>
     lightning_properties?: LightningProperties
   }
   export interface PlantPrototype extends TreePrototype {
@@ -13071,7 +13071,7 @@ declare module "factorio:prototype" {
   }
   export interface SurfacePrototype extends Prototype {
     type: "surface"
-    surface_properties?: Record<SurfacePropertyID, double>
+    surface_properties?: Record<string, double>
     /**
      * Path to the icon file.
      *

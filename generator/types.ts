@@ -47,7 +47,19 @@ export function mapAttributeType(
     attribute.write_type &&
     JSON.stringify(attribute.read_type) !== JSON.stringify(attribute.write_type)
   ) {
-    context.warning(`Attribute ${attribute.name} has different read and write types`)
+    const readType = mapMemberType(context, attribute, parentName, attribute.read_type, RWUsage.Read, hasExistingType)
+    const writeType = mapMemberType(
+      context,
+      attribute,
+      parentName,
+      attribute.write_type,
+      RWUsage.Write,
+      hasExistingType,
+    )
+    return {
+      mainType: readType.mainType,
+      altWriteType: writeType.mainType,
+    }
   }
   const type = attribute.read_type ?? attribute.write_type!
   let usage = RWUsage.None
@@ -503,7 +515,6 @@ function getIndexableType(context: GenerationContext, type: runtime.Type | proto
       (context instanceof RuntimeGenerationContext && (type.startsWith("defines.") || context.numericTypes.has(type)))
     )
       return IndexType.Basic
-    // if (type === "CollisionMaskLayer") return IndexType.StringUnion
     const innerType = context.tryGetTypeOfReference(type)
     if (innerType) return getIndexableType(context, innerType)
     return IndexType.None
@@ -522,6 +533,11 @@ function getIndexableType(context: GenerationContext, type: runtime.Type | proto
   return IndexType.None
 }
 
+function maybeMapKeyType(type: runtime.Type | prototype.Type) {
+  if (type === "SurfacePropertyID") return "string"
+  return type
+}
+
 function mapDictionaryType(
   context: GenerationContext,
   type: runtime.DictionaryType | prototype.DictionaryType,
@@ -529,9 +545,11 @@ function mapDictionaryType(
   usage: RWUsage,
 ): IntermediateType {
   let recordType = "Record"
-  const indexType = getIndexableType(context, type.key)
+  const apiKeyType = maybeMapKeyType(type.key)
+
+  const indexType = getIndexableType(context, apiKeyType)
   if (indexType === IndexType.None) {
-    context.warning("dictionary key is not indexable: " + JSON.stringify(type.key))
+    context.warning("dictionary key is not indexable: " + JSON.stringify(apiKeyType))
     recordType = "LuaTable"
   }
   // flags
@@ -544,10 +562,10 @@ function mapDictionaryType(
     type.value.value === true
   ) {
     // Record<... true>
-    return makeFlagsType(context, typeContext, type.key as runtime.Type, usage)
+    return makeFlagsType(context, typeContext, apiKeyType as runtime.Type, usage)
   }
 
-  const keyType = mapTypeInternal(context, type.key, undefined, usage)
+  const keyType = mapTypeInternal(context, apiKeyType, undefined, usage)
   const valueType = mapTypeInternal(context, type.value, undefined, usage)
   if (keyType.altWriteType) {
     context.warning("Dictionary type has key with altWriteType: " + JSON.stringify(type))

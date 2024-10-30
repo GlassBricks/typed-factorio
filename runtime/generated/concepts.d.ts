@@ -630,7 +630,17 @@ declare module "factorio:runtime" {
     /**
      * The type of action that was undone or redone.
      */
-    readonly type: string
+    type:
+      | "built-entity"
+      | "removed-entity"
+      | "built-tile"
+      | "removed-tile"
+      | "upgraded-entity"
+      | "upgraded-modules"
+      | "wire-added"
+      | "wire-removed"
+      | "rotated-entity"
+      | "copy-entity-settings"
     /**
      * The tags attached to the undo action, if any.
      */
@@ -640,6 +650,7 @@ declare module "factorio:runtime" {
    * `"built-entity"` variant of {@link UndoRedoAction}.
    */
   export interface BuiltEntityUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "built-entity"
     /**
      * The specification of the built entity.
      */
@@ -649,6 +660,7 @@ declare module "factorio:runtime" {
    * `"removed-entity"` variant of {@link UndoRedoAction}.
    */
   export interface RemovedEntityUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "removed-entity"
     /**
      * The specification of the removed entity.
      */
@@ -670,6 +682,7 @@ declare module "factorio:runtime" {
    * `"built-tile"` variant of {@link UndoRedoAction}.
    */
   export interface BuiltTileUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "built-tile"
     /**
      * The position of the newly built tile.
      */
@@ -691,6 +704,7 @@ declare module "factorio:runtime" {
    * `"removed-tile"` variant of {@link UndoRedoAction}.
    */
   export interface RemovedTileUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "removed-tile"
     /**
      * The position of the removed tile.
      */
@@ -708,6 +722,7 @@ declare module "factorio:runtime" {
    * `"upgraded-entity"` variant of {@link UndoRedoAction}.
    */
   export interface UpgradedEntityUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "upgraded-entity"
     /**
      * The specification of the upgraded entity.
      */
@@ -725,6 +740,7 @@ declare module "factorio:runtime" {
    * `"upgraded-modules"` variant of {@link UndoRedoAction}.
    */
   export interface UpgradedModulesUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "upgraded-modules"
     /**
      * The specification of the upgraded entity.
      */
@@ -738,6 +754,7 @@ declare module "factorio:runtime" {
    * `"wire-added"` variant of {@link UndoRedoAction}.
    */
   export interface WireAddedUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "wire-added"
     readonly a: BlueprintWireEnd
     readonly b: BlueprintWireEnd
   }
@@ -745,6 +762,7 @@ declare module "factorio:runtime" {
    * `"wire-removed"` variant of {@link UndoRedoAction}.
    */
   export interface WireRemovedUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "wire-removed"
     readonly a: BlueprintWireEnd
     readonly b: BlueprintWireEnd
   }
@@ -752,6 +770,7 @@ declare module "factorio:runtime" {
    * `"rotated-entity"` variant of {@link UndoRedoAction}.
    */
   export interface RotatedEntityUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "rotated-entity"
     /**
      * The specification of the rotated entity.
      */
@@ -766,6 +785,7 @@ declare module "factorio:runtime" {
    * `"copy-entity-settings"` variant of {@link UndoRedoAction}.
    */
   export interface CopyEntitySettingsUndoRedoAction extends BaseUndoRedoAction {
+    readonly type: "copy-entity-settings"
     readonly target?: BlueprintEntity
     readonly entity_with_previous_settings?: BlueprintEntity
   }

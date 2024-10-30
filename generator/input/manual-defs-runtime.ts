@@ -511,6 +511,20 @@ export interface SpaceConnectionAsteroidSpawnDefinition {
   type: "asteroid-chunk" | "entity"
 }
 
+export interface BaseUndoRedoAction {
+  type:
+    | "built-entity"
+    | "removed-entity"
+    | "built-tile"
+    | "removed-tile"
+    | "upgraded-entity"
+    | "upgraded-modules"
+    | "wire-added"
+    | "wire-removed"
+    | "rotated-entity"
+    | "copy-entity-settings"
+}
+
 export interface InfinityPipeFilter {}
 
 /** @addProperties */

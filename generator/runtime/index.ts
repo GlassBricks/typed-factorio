@@ -72,10 +72,11 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   preprocessAll(): void {
     if (this.apiDocs.application_version !== "2.0.12") {
       const message = `
-Factorio version has been updated from 2.0.12. Manually check for the following before removing this message:
+Factorio version has been updated from 2.0.12. Manually check for the following, then update this file/check:
 
-- Check if/how https://forums.factorio.com/viewtopic.php?f=233&t=118305 is resolved.
-- Check if SpaceLocationAsteroidSpawnDefinition::type and SpaceConnectionAsteroidSpawnDefinition::type are now more specific strings.
+- if/how https://forums.factorio.com/viewtopic.php?f=233&t=118305 is resolved.
+- if SpaceLocationAsteroidSpawnDefinition::type and SpaceConnectionAsteroidSpawnDefinition::type are now more specific strings.
+- SurfacePropertyID was manually converted to string when used as dictionary key. Check if this is still the case.
 `
       this.warning(message)
     }
