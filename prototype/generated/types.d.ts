@@ -449,21 +449,25 @@ declare module "factorio:prototype" {
     lines_per_file?: uint32
   }
   /**
+   * Struct type for {@link Animation4Way}
+   * @see Animation4Way
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/Animation4Way.html Online documentation}
+   */
+  export interface Animation4WayStruct {
+    north: Animation
+    north_east?: Animation
+    east?: Animation
+    south_east?: Animation
+    south?: Animation
+    south_west?: Animation
+    west?: Animation
+    north_west?: Animation
+  }
+  /**
    * If this is loaded as a single Animation, it applies to all directions. Any direction that is not defined defaults to the north animation.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/Animation4Way.html Online documentation}
    */
-  export type Animation4Way =
-    | {
-        north: Animation
-        north_east?: Animation
-        east?: Animation
-        south_east?: Animation
-        south?: Animation
-        south_west?: Animation
-        west?: Animation
-        north_west?: Animation
-      }
-    | Animation
+  export type Animation4Way = Animation4WayStruct | Animation
   export interface AnimationElement {
     /**
      * **Default:** `"object"`
@@ -645,6 +649,23 @@ declare module "factorio:prototype" {
     lines_per_file?: uint32
   }
   /**
+   * Struct type for {@link AnimationVariations}
+   * @see AnimationVariations
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/AnimationVariations.html Online documentation}
+   */
+  export interface AnimationVariationsStruct {
+    /**
+     * The variations are arranged vertically in the file, one row for each variation.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/AnimationVariations.html#sheet Online documentation}
+     */
+    sheet?: AnimationSheet
+    /**
+     * Only loaded if `sheet` is not defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/AnimationVariations.html#sheets Online documentation}
+     */
+    sheets?: readonly AnimationSheet[]
+  }
+  /**
    * @example
    * -- array of animations
    * animations =
@@ -690,21 +711,7 @@ declare module "factorio:prototype" {
    * }
    * @see {@link https://lua-api.factorio.com/2.0.12/types/AnimationVariations.html Online documentation}
    */
-  export type AnimationVariations =
-    | {
-        /**
-         * The variations are arranged vertically in the file, one row for each variation.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/AnimationVariations.html#sheet Online documentation}
-         */
-        sheet?: AnimationSheet
-        /**
-         * Only loaded if `sheet` is not defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/AnimationVariations.html#sheets Online documentation}
-         */
-        sheets?: readonly AnimationSheet[]
-      }
-    | Animation
-    | readonly Animation[]
+  export type AnimationVariations = AnimationVariationsStruct | Animation | readonly Animation[]
   /**
    * A union of all prototypes. A specific prototype is loaded based on the value of the `type` key.
    *
@@ -2365,6 +2372,20 @@ declare module "factorio:prototype" {
     left_end?: Sprite
   }
   /**
+   * Struct type for {@link BoundingBox}
+   * @see BoundingBox
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/BoundingBox.html Online documentation}
+   */
+  export interface BoundingBoxStruct {
+    left_top: MapPosition
+    right_bottom: MapPosition
+    /**
+     * Unused.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/BoundingBox.html#orientation Online documentation}
+     */
+    orientation?: RealOrientation
+  }
+  /**
    * BoundingBoxes are typically centered around the position of an entity.
    *
    * BoundingBoxes are usually specified with the short-hand notation of passing an array of exactly 2 or 3 items.
@@ -2379,17 +2400,7 @@ declare module "factorio:prototype" {
    * {left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}
    * @see {@link https://lua-api.factorio.com/2.0.12/types/BoundingBox.html Online documentation}
    */
-  export type BoundingBox =
-    | {
-        left_top: MapPosition
-        right_bottom: MapPosition
-        /**
-         * Unused.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/BoundingBox.html#orientation Online documentation}
-         */
-        orientation?: RealOrientation
-      }
-    | readonly [MapPosition, MapPosition]
+  export type BoundingBox = BoundingBoxStruct | readonly [MapPosition, MapPosition]
   /**
    * A cursor box, for use in {@link UtilitySprites}.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/BoxSpecification.html Online documentation}
@@ -3431,6 +3442,41 @@ declare module "factorio:prototype" {
     colliding_with_tiles_only?: bool
   }
   /**
+   * Struct type for {@link Color}
+   * @see Color
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html Online documentation}
+   */
+  export interface ColorStruct {
+    /**
+     * **Default:** `0`
+     *
+     * red value
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html#r Online documentation}
+     */
+    r?: float
+    /**
+     * **Default:** `0`
+     *
+     * green value
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html#g Online documentation}
+     */
+    g?: float
+    /**
+     * **Default:** `0`
+     *
+     * blue value
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html#b Online documentation}
+     */
+    b?: float
+    /**
+     * **Default:** `1`
+     *
+     * alpha value (opacity)
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html#a Online documentation}
+     */
+    a?: float
+  }
+  /**
    * Table of red, green, blue, and alpha float values between 0 and 1. Alternatively, values can be from 0-255, they are interpreted as such if at least one value is `> 1`.
    *
    * Color allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The array items are r, g, b and optionally a, in that order.
@@ -3445,39 +3491,7 @@ declare module "factorio:prototype" {
    * color = {} -- full opacity black
    * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html Online documentation}
    */
-  export type Color =
-    | {
-        /**
-         * **Default:** `0`
-         *
-         * red value
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html#r Online documentation}
-         */
-        r?: float
-        /**
-         * **Default:** `0`
-         *
-         * green value
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html#g Online documentation}
-         */
-        g?: float
-        /**
-         * **Default:** `0`
-         *
-         * blue value
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html#b Online documentation}
-         */
-        b?: float
-        /**
-         * **Default:** `1`
-         *
-         * alpha value (opacity)
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Color.html#a Online documentation}
-         */
-        a?: float
-      }
-    | readonly [float, float, float]
-    | readonly [float, float, float, float]
+  export type Color = ColorStruct | readonly [float, float, float] | readonly [float, float, float, float]
   /**
    * @see UtilityConstants.color_filters
    * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/UtilityConstants.html#color_filters Online documentation}
@@ -3619,16 +3633,20 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.0.12/types/ConsumingType.html Online documentation}
    */
   export type ConsumingType = "none" | "game-only"
-  export type ControlPoint =
-    | {
-        control: float
-        /**
-         * Has to be in range (0.0, 100.0).
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ControlPoint.html#volume_percentage Online documentation}
-         */
-        volume_percentage: float
-      }
-    | readonly [float, float]
+  /**
+   * Struct type for {@link ControlPoint}
+   * @see ControlPoint
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/ControlPoint.html Online documentation}
+   */
+  export interface ControlPointStruct {
+    control: float
+    /**
+     * Has to be in range (0.0, 100.0).
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ControlPoint.html#volume_percentage Online documentation}
+     */
+    volume_percentage: float
+  }
+  export type ControlPoint = ControlPointStruct | readonly [float, float]
   export interface CountBasedTipTrigger {
     /**
      * **Default:** `1`
@@ -4601,6 +4619,25 @@ declare module "factorio:prototype" {
     upper_damage_modifier?: float
   }
   /**
+   * Struct type for {@link DamageTypeFilters}
+   * @see DamageTypeFilters
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/DamageTypeFilters.html Online documentation}
+   */
+  export interface DamageTypeFiltersStruct {
+    /**
+     * The damage types to filter for.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/DamageTypeFilters.html#types Online documentation}
+     */
+    types: DamageTypeID | readonly DamageTypeID[]
+    /**
+     * **Default:** `false`
+     *
+     * Whether this is a whitelist or a blacklist of damage types. Defaults to being a blacklist.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/DamageTypeFilters.html#whitelist Online documentation}
+     */
+    whitelist?: bool
+  }
+  /**
    * @example
    * damage_type_filters = "fire"
    * @example
@@ -4619,23 +4656,7 @@ declare module "factorio:prototype" {
    * }
    * @see {@link https://lua-api.factorio.com/2.0.12/types/DamageTypeFilters.html Online documentation}
    */
-  export type DamageTypeFilters =
-    | {
-        /**
-         * The damage types to filter for.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/DamageTypeFilters.html#types Online documentation}
-         */
-        types: DamageTypeID | readonly DamageTypeID[]
-        /**
-         * **Default:** `false`
-         *
-         * Whether this is a whitelist or a blacklist of damage types. Defaults to being a blacklist.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/DamageTypeFilters.html#whitelist Online documentation}
-         */
-        whitelist?: bool
-      }
-    | DamageTypeID
-    | readonly DamageTypeID[]
+  export type DamageTypeFilters = DamageTypeFiltersStruct | DamageTypeID | readonly DamageTypeID[]
   /**
    * The name of a {@link DamageType}.
    * @example
@@ -5130,16 +5151,307 @@ declare module "factorio:prototype" {
     | "solar"
     | "lamp"
   /**
+   * Struct type for {@link ElementImageSet}
+   * @see ElementImageSet
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSet.html Online documentation}
+   */
+  export interface ElementImageSetStruct {
+    base?: ElementImageSetLayer
+    shadow?: ElementImageSetLayer
+    glow?: ElementImageSetLayer
+  }
+  /**
    * If this is loaded as a single ElementImageSetLayer, it gets used as `base`.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSet.html Online documentation}
    */
-  export type ElementImageSet =
-    | {
-        base?: ElementImageSetLayer
-        shadow?: ElementImageSetLayer
-        glow?: ElementImageSetLayer
-      }
-    | ElementImageSetLayer
+  export type ElementImageSet = ElementImageSetStruct | ElementImageSetLayer
+  /**
+   * Struct type for {@link ElementImageSetLayer}
+   * @see ElementImageSetLayer
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html Online documentation}
+   */
+  export interface ElementImageSetLayerStruct {
+    /**
+     * **Default:** `"inner"`
+     *
+     * Defines whether the border should be drawn inside the widget, which affects the padding and content size of the widget, or outside of the widget which doesn't affect size. The outer draw type is most commonly used for shadows, glows and insets.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#draw_type Online documentation}
+     */
+    draw_type?: "inner" | "outer"
+    /**
+     * **Default:** ``"none"` if this has no other properties, otherwise `"composition"``
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#type Online documentation}
+     */
+    readonly type?: "none" | "composition"
+    /**
+     * **Default:** ``{r=1, g=1, b=1, a=1}``
+     *
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#tint Online documentation}
+     */
+    tint?: Color
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center Online documentation}
+     */
+    center?: Sprite
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left Online documentation}
+     */
+    left?: Sprite
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_top Online documentation}
+     */
+    left_top?: Sprite
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_bottom Online documentation}
+     */
+    left_bottom?: Sprite
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right Online documentation}
+     */
+    right?: Sprite
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_top Online documentation}
+     */
+    right_top?: Sprite
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_bottom Online documentation}
+     */
+    right_bottom?: Sprite
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top Online documentation}
+     */
+    top?: Sprite
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom Online documentation}
+     */
+    bottom?: Sprite
+    /**
+     * If this is a tuple, the first member of the tuple is width and the second is height. Otherwise the size is both width and height.
+     *
+     * Only loaded if `type` is `"composition"`.
+     *
+     * ![In base game, the corner size is 8 and the sides are 1px long and 8px wide.](https://lua-api.factorio.com/2.0.12/static/images/ElementImageSetLayer_base_sizes.png)
+     * @example
+     * {
+     *   -- How an ElementImageSet is loaded which has only one layer, which uses the corner_size shown in the diagram
+     *   base = {position = {0, 17}, corner_size = 8}
+     * }
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#corner_size Online documentation}
+     */
+    corner_size?: uint16 | readonly [uint16, uint16]
+    /**
+     * **Default:** `The `default_tileset` set in GuiStyle`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#filename Online documentation}
+     */
+    filename?: FileName
+    /**
+     * Mandatory if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#position Online documentation}
+     */
+    position?: MapPosition
+    /**
+     * **Default:** `true`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#load_in_minimal_mode Online documentation}
+     */
+    load_in_minimal_mode?: bool
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top_width Online documentation}
+     */
+    top_width?: SpriteSizeType
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom_width Online documentation}
+     */
+    bottom_width?: SpriteSizeType
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_height Online documentation}
+     */
+    left_height?: SpriteSizeType
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_height Online documentation}
+     */
+    right_height?: SpriteSizeType
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center_width Online documentation}
+     */
+    center_width?: SpriteSizeType
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center_height Online documentation}
+     */
+    center_height?: SpriteSizeType
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#scale Online documentation}
+     */
+    scale?: double
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top_border Online documentation}
+     */
+    top_border?: int32
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_border Online documentation}
+     */
+    right_border?: int32
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom_border Online documentation}
+     */
+    bottom_border?: int32
+    /**
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_border Online documentation}
+     */
+    left_border?: int32
+    /**
+     * Sets `top_border`, `right_border`, `bottom_border` and `left_border`.
+     *
+     * Only loaded if `corner_size` is not defined. Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#border Online documentation}
+     */
+    border?: int32
+    /**
+     * **Default:** `true`
+     *
+     * Only loaded if `type` is `"composition"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#stretch_monolith_image_to_size Online documentation}
+     */
+    stretch_monolith_image_to_size?: bool
+    /**
+     * **Default:** `false`
+     *
+     * Tiling is used to make a side (not corner) texture repeat instead of being stretched.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_tiling Online documentation}
+     */
+    left_tiling?: bool
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_tiling Online documentation}
+     */
+    right_tiling?: bool
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top_tiling Online documentation}
+     */
+    top_tiling?: bool
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom_tiling Online documentation}
+     */
+    bottom_tiling?: bool
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center_tiling_vertical Online documentation}
+     */
+    center_tiling_vertical?: bool
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center_tiling_horizontal Online documentation}
+     */
+    center_tiling_horizontal?: bool
+    /**
+     * **Default:** `0`
+     *
+     * Overall tiling is used to make the overall texture repeat instead of being stretched.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_horizontal_size Online documentation}
+     */
+    overall_tiling_horizontal_size?: uint16
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_horizontal_spacing Online documentation}
+     */
+    overall_tiling_horizontal_spacing?: uint16
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_horizontal_padding Online documentation}
+     */
+    overall_tiling_horizontal_padding?: uint16
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_vertical_size Online documentation}
+     */
+    overall_tiling_vertical_size?: uint16
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_vertical_spacing Online documentation}
+     */
+    overall_tiling_vertical_spacing?: uint16
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_vertical_padding Online documentation}
+     */
+    overall_tiling_vertical_padding?: uint16
+    custom_horizontal_tiling_sizes?: readonly uint32[]
+    /**
+     * **Default:** `1`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#opacity Online documentation}
+     */
+    opacity?: double
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#background_blur Online documentation}
+     */
+    background_blur?: bool
+    /**
+     * **Default:** ``4` if `background_blur` is `true``
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#background_blur_sigma Online documentation}
+     */
+    background_blur_sigma?: float
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top_outer_border_shift Online documentation}
+     */
+    top_outer_border_shift?: int32
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom_outer_border_shift Online documentation}
+     */
+    bottom_outer_border_shift?: int32
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_outer_border_shift Online documentation}
+     */
+    right_outer_border_shift?: int32
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_outer_border_shift Online documentation}
+     */
+    left_outer_border_shift?: int32
+  }
   /**
    * If this is loaded as a Sprite, it gets used as `center`.
    *
@@ -5148,290 +5460,7 @@ declare module "factorio:prototype" {
    * ![How the sprites are stretched when using a composition type element image set layer.](https://lua-api.factorio.com/2.0.12/static/images/ElementImageSetLayer_stretching.png)
    * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html Online documentation}
    */
-  export type ElementImageSetLayer =
-    | {
-        /**
-         * **Default:** `"inner"`
-         *
-         * Defines whether the border should be drawn inside the widget, which affects the padding and content size of the widget, or outside of the widget which doesn't affect size. The outer draw type is most commonly used for shadows, glows and insets.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#draw_type Online documentation}
-         */
-        draw_type?: "inner" | "outer"
-        /**
-         * **Default:** ``"none"` if this has no other properties, otherwise `"composition"``
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#type Online documentation}
-         */
-        readonly type?: "none" | "composition"
-        /**
-         * **Default:** ``{r=1, g=1, b=1, a=1}``
-         *
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#tint Online documentation}
-         */
-        tint?: Color
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center Online documentation}
-         */
-        center?: Sprite
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left Online documentation}
-         */
-        left?: Sprite
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_top Online documentation}
-         */
-        left_top?: Sprite
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_bottom Online documentation}
-         */
-        left_bottom?: Sprite
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right Online documentation}
-         */
-        right?: Sprite
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_top Online documentation}
-         */
-        right_top?: Sprite
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_bottom Online documentation}
-         */
-        right_bottom?: Sprite
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top Online documentation}
-         */
-        top?: Sprite
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom Online documentation}
-         */
-        bottom?: Sprite
-        /**
-         * If this is a tuple, the first member of the tuple is width and the second is height. Otherwise the size is both width and height.
-         *
-         * Only loaded if `type` is `"composition"`.
-         *
-         * ![In base game, the corner size is 8 and the sides are 1px long and 8px wide.](https://lua-api.factorio.com/2.0.12/static/images/ElementImageSetLayer_base_sizes.png)
-         * @example
-         * {
-         *   -- How an ElementImageSet is loaded which has only one layer, which uses the corner_size shown in the diagram
-         *   base = {position = {0, 17}, corner_size = 8}
-         * }
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#corner_size Online documentation}
-         */
-        corner_size?: uint16 | readonly [uint16, uint16]
-        /**
-         * **Default:** `The `default_tileset` set in GuiStyle`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#filename Online documentation}
-         */
-        filename?: FileName
-        /**
-         * Mandatory if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#position Online documentation}
-         */
-        position?: MapPosition
-        /**
-         * **Default:** `true`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#load_in_minimal_mode Online documentation}
-         */
-        load_in_minimal_mode?: bool
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top_width Online documentation}
-         */
-        top_width?: SpriteSizeType
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom_width Online documentation}
-         */
-        bottom_width?: SpriteSizeType
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_height Online documentation}
-         */
-        left_height?: SpriteSizeType
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_height Online documentation}
-         */
-        right_height?: SpriteSizeType
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center_width Online documentation}
-         */
-        center_width?: SpriteSizeType
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center_height Online documentation}
-         */
-        center_height?: SpriteSizeType
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#scale Online documentation}
-         */
-        scale?: double
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top_border Online documentation}
-         */
-        top_border?: int32
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_border Online documentation}
-         */
-        right_border?: int32
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom_border Online documentation}
-         */
-        bottom_border?: int32
-        /**
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_border Online documentation}
-         */
-        left_border?: int32
-        /**
-         * Sets `top_border`, `right_border`, `bottom_border` and `left_border`.
-         *
-         * Only loaded if `corner_size` is not defined. Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#border Online documentation}
-         */
-        border?: int32
-        /**
-         * **Default:** `true`
-         *
-         * Only loaded if `type` is `"composition"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#stretch_monolith_image_to_size Online documentation}
-         */
-        stretch_monolith_image_to_size?: bool
-        /**
-         * **Default:** `false`
-         *
-         * Tiling is used to make a side (not corner) texture repeat instead of being stretched.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_tiling Online documentation}
-         */
-        left_tiling?: bool
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_tiling Online documentation}
-         */
-        right_tiling?: bool
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top_tiling Online documentation}
-         */
-        top_tiling?: bool
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom_tiling Online documentation}
-         */
-        bottom_tiling?: bool
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center_tiling_vertical Online documentation}
-         */
-        center_tiling_vertical?: bool
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#center_tiling_horizontal Online documentation}
-         */
-        center_tiling_horizontal?: bool
-        /**
-         * **Default:** `0`
-         *
-         * Overall tiling is used to make the overall texture repeat instead of being stretched.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_horizontal_size Online documentation}
-         */
-        overall_tiling_horizontal_size?: uint16
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_horizontal_spacing Online documentation}
-         */
-        overall_tiling_horizontal_spacing?: uint16
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_horizontal_padding Online documentation}
-         */
-        overall_tiling_horizontal_padding?: uint16
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_vertical_size Online documentation}
-         */
-        overall_tiling_vertical_size?: uint16
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_vertical_spacing Online documentation}
-         */
-        overall_tiling_vertical_spacing?: uint16
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#overall_tiling_vertical_padding Online documentation}
-         */
-        overall_tiling_vertical_padding?: uint16
-        custom_horizontal_tiling_sizes?: readonly uint32[]
-        /**
-         * **Default:** `1`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#opacity Online documentation}
-         */
-        opacity?: double
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#background_blur Online documentation}
-         */
-        background_blur?: bool
-        /**
-         * **Default:** ``4` if `background_blur` is `true``
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#background_blur_sigma Online documentation}
-         */
-        background_blur_sigma?: float
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#top_outer_border_shift Online documentation}
-         */
-        top_outer_border_shift?: int32
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#bottom_outer_border_shift Online documentation}
-         */
-        bottom_outer_border_shift?: int32
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#right_outer_border_shift Online documentation}
-         */
-        right_outer_border_shift?: int32
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ElementImageSetLayer.html#left_outer_border_shift Online documentation}
-         */
-        left_outer_border_shift?: int32
-      }
-    | Sprite
+  export type ElementImageSetLayer = ElementImageSetLayerStruct | Sprite
   export interface EmptyWidgetStyleSpecification extends BaseStyleSpecification {
     readonly type: "empty_widget_style"
     graphical_set?: ElementImageSet
@@ -5602,17 +5631,21 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.0.12/types/EntityID.html Online documentation}
    */
   export type EntityID = string
-  export type EntityIDFilter =
-    | {
-        name: EntityID
-        quality?: QualityID
-        /**
-         * Only loaded if `quality` is defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/EntityIDFilter.html#comparator Online documentation}
-         */
-        comparator?: ComparatorString
-      }
-    | EntityID
+  /**
+   * Struct type for {@link EntityIDFilter}
+   * @see EntityIDFilter
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/EntityIDFilter.html Online documentation}
+   */
+  export interface EntityIDFilterStruct {
+    name: EntityID
+    quality?: QualityID
+    /**
+     * Only loaded if `quality` is defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/EntityIDFilter.html#comparator Online documentation}
+     */
+    comparator?: ComparatorString
+  }
+  export type EntityIDFilter = EntityIDFilterStruct | EntityID
   /**
    * An array containing the following values.
    *
@@ -5907,18 +5940,26 @@ declare module "factorio:prototype" {
      */
     points?: readonly (readonly uint32[])[]
   }
-  export type ExplosionDefinition =
-    | EntityID
-    | {
-        name: EntityID
-        offset?: Vector
-      }
-  export type Fade =
-    | {
-        from?: ControlPoint
-        to?: ControlPoint
-      }
-    | AttenuationType
+  /**
+   * Struct type for {@link ExplosionDefinition}
+   * @see ExplosionDefinition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/ExplosionDefinition.html Online documentation}
+   */
+  export interface ExplosionDefinitionStruct {
+    name: EntityID
+    offset?: Vector
+  }
+  export type ExplosionDefinition = EntityID | ExplosionDefinitionStruct
+  /**
+   * Struct type for {@link Fade}
+   * @see Fade
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/Fade.html Online documentation}
+   */
+  export interface FadeStruct extends Attenuation {
+    from?: ControlPoint
+    to?: ControlPoint
+  }
+  export type Fade = FadeStruct | AttenuationType
   export interface Fades {
     /**
      * At least one of `fade_in`and `fade_out` needs to be defined.
@@ -7292,17 +7333,21 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.0.12/types/ItemID.html Online documentation}
    */
   export type ItemID = string
-  export type ItemIDFilter =
-    | {
-        name: ItemID
-        quality?: QualityID
-        /**
-         * Only loaded if `quality` is defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/ItemIDFilter.html#comparator Online documentation}
-         */
-        comparator?: ComparatorString
-      }
-    | ItemID
+  /**
+   * Struct type for {@link ItemIDFilter}
+   * @see ItemIDFilter
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/ItemIDFilter.html Online documentation}
+   */
+  export interface ItemIDFilterStruct {
+    name: ItemID
+    quality?: QualityID
+    /**
+     * Only loaded if `quality` is defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/ItemIDFilter.html#comparator Online documentation}
+     */
+    comparator?: ComparatorString
+  }
+  export type ItemIDFilter = ItemIDFilterStruct | ItemID
   /**
    * An item ingredient definition.
    * @example
@@ -7530,17 +7575,104 @@ declare module "factorio:prototype" {
      */
     use_icon_overlay_constant?: bool
   }
-  export type LayeredSound =
-    | {
-        layers: readonly Sound[]
-      }
-    | Sound
-  export type LayeredSprite =
-    | {
-        render_layer: RenderLayer
-      }
-    | readonly LayeredSprite[]
+  /**
+   * Struct type for {@link LayeredSound}
+   * @see LayeredSound
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/LayeredSound.html Online documentation}
+   */
+  export interface LayeredSoundStruct {
+    layers: readonly Sound[]
+  }
+  export type LayeredSound = LayeredSoundStruct | Sound
+  /**
+   * Struct type for {@link LayeredSprite}
+   * @see LayeredSprite
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/LayeredSprite.html Online documentation}
+   */
+  export interface LayeredSpriteStruct extends Sprite {
+    render_layer: RenderLayer
+  }
+  export type LayeredSprite = LayeredSpriteStruct | readonly LayeredSprite[]
   export type LayeredSpriteVariations = readonly LayeredSprite[]
+  /**
+   * Struct type for {@link LightDefinition}
+   * @see LightDefinition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html Online documentation}
+   */
+  export interface LightDefinitionStruct {
+    /**
+     * **Default:** `"basic"`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#type Online documentation}
+     */
+    readonly type?: "basic" | "oriented"
+    /**
+     * Only loaded, and mandatory if `type` is `"oriented"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#picture Online documentation}
+     */
+    picture?: Sprite
+    /**
+     * **Default:** `0`
+     *
+     * Only loaded if `type` is `"oriented"`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#rotation_shift Online documentation}
+     */
+    rotation_shift?: RealOrientation
+    /**
+     * Brightness of the light in the range `[0, 1]`, where `0` is no light and `1` is the maximum light.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#intensity Online documentation}
+     */
+    intensity: float
+    /**
+     * The radius of the light in tiles. Note that the light gets darker near the edges, so the effective size of the light will appear to be smaller.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#size Online documentation}
+     */
+    size: float
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#source_orientation_offset Online documentation}
+     */
+    source_orientation_offset?: RealOrientation
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#add_perspective Online documentation}
+     */
+    add_perspective?: bool
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#flicker_interval Online documentation}
+     */
+    flicker_interval?: uint8
+    /**
+     * **Default:** `1`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#flicker_min_modifier Online documentation}
+     */
+    flicker_min_modifier?: float
+    /**
+     * **Default:** `Value of `flicker_min_modifier``
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#flicker_max_modifier Online documentation}
+     */
+    flicker_max_modifier?: float
+    /**
+     * **Default:** `false`
+     *
+     * Offsets tick used to calculate flicker by position hash. Useful to desynchronize flickering of multiple stationary lights.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#offset_flicker Online documentation}
+     */
+    offset_flicker?: bool
+    shift?: Vector
+    /**
+     * **Default:** ``{r=1, g=1, b=1}``
+     *
+     * Color of the light.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#color Online documentation}
+     */
+    color?: Color
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#minimum_darkness Online documentation}
+     */
+    minimum_darkness?: float
+  }
   /**
    * Specifies a light source. This is loaded either as a single light source or as an array of light sources.
    * @example
@@ -7588,80 +7720,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html Online documentation}
    */
   export type LightDefinition =
-    | {
-        /**
-         * **Default:** `"basic"`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#type Online documentation}
-         */
-        readonly type?: "basic" | "oriented"
-        /**
-         * Only loaded, and mandatory if `type` is `"oriented"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#picture Online documentation}
-         */
-        picture?: Sprite
-        /**
-         * **Default:** `0`
-         *
-         * Only loaded if `type` is `"oriented"`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#rotation_shift Online documentation}
-         */
-        rotation_shift?: RealOrientation
-        /**
-         * Brightness of the light in the range `[0, 1]`, where `0` is no light and `1` is the maximum light.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#intensity Online documentation}
-         */
-        intensity: float
-        /**
-         * The radius of the light in tiles. Note that the light gets darker near the edges, so the effective size of the light will appear to be smaller.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#size Online documentation}
-         */
-        size: float
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#source_orientation_offset Online documentation}
-         */
-        source_orientation_offset?: RealOrientation
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#add_perspective Online documentation}
-         */
-        add_perspective?: bool
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#flicker_interval Online documentation}
-         */
-        flicker_interval?: uint8
-        /**
-         * **Default:** `1`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#flicker_min_modifier Online documentation}
-         */
-        flicker_min_modifier?: float
-        /**
-         * **Default:** `Value of `flicker_min_modifier``
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#flicker_max_modifier Online documentation}
-         */
-        flicker_max_modifier?: float
-        /**
-         * **Default:** `false`
-         *
-         * Offsets tick used to calculate flicker by position hash. Useful to desynchronize flickering of multiple stationary lights.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#offset_flicker Online documentation}
-         */
-        offset_flicker?: bool
-        shift?: Vector
-        /**
-         * **Default:** ``{r=1, g=1, b=1}``
-         *
-         * Color of the light.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#color Online documentation}
-         */
-        color?: Color
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/LightDefinition.html#minimum_darkness Online documentation}
-         */
-        minimum_darkness?: float
-      }
+    | LightDefinitionStruct
     | readonly {
         /**
          * **Default:** `"basic"`
@@ -8746,6 +8805,15 @@ declare module "factorio:prototype" {
     direction: MapPosition
   }
   /**
+   * Struct type for {@link MapPosition}
+   * @see MapPosition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/MapPosition.html Online documentation}
+   */
+  export interface MapPositionStruct {
+    x: double
+    y: double
+  }
+  /**
    * Coordinates of a tile in a map. Positive x goes towards east, positive y goes towards south, and x is the first dimension in the array format.
    *
    * The coordinates are stored as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.
@@ -8758,12 +8826,7 @@ declare module "factorio:prototype" {
    * {1.625, 2.375}
    * @see {@link https://lua-api.factorio.com/2.0.12/types/MapPosition.html Online documentation}
    */
-  export type MapPosition =
-    | {
-        x: double
-        y: double
-      }
-    | readonly [double, double]
+  export type MapPosition = MapPositionStruct | readonly [double, double]
   /**
    * `math.huge` represents the maximum possible tick.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/MapTick.html Online documentation}
@@ -9632,11 +9695,15 @@ declare module "factorio:prototype" {
      */
     performance_to_activity_rate?: double
   }
-  export type PersistentWorldAmbientSoundDefinition =
-    | {
-        sound: Sound
-      }
-    | Sound
+  /**
+   * Struct type for {@link PersistentWorldAmbientSoundDefinition}
+   * @see PersistentWorldAmbientSoundDefinition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/PersistentWorldAmbientSoundDefinition.html Online documentation}
+   */
+  export interface PersistentWorldAmbientSoundDefinitionStruct {
+    sound: Sound
+  }
+  export type PersistentWorldAmbientSoundDefinition = PersistentWorldAmbientSoundDefinitionStruct | Sound
   export interface PersistentWorldAmbientSoundsDefinition {
     /**
      * Mandatory if `crossfade` is defined.
@@ -11611,23 +11678,27 @@ declare module "factorio:prototype" {
     stripes?: readonly Stripe[]
   }
   /**
+   * Struct type for {@link RotatedAnimation8Way}
+   * @see RotatedAnimation8Way
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/RotatedAnimation8Way.html Online documentation}
+   */
+  export interface RotatedAnimation8WayStruct {
+    north: RotatedAnimation
+    north_east?: RotatedAnimation
+    east?: RotatedAnimation
+    south_east?: RotatedAnimation
+    south?: RotatedAnimation
+    south_west?: RotatedAnimation
+    west?: RotatedAnimation
+    north_west?: RotatedAnimation
+  }
+  /**
    * A map of rotated animations for all 8 directions of the entity. If this is loaded as a single RotatedAnimation, it applies to all directions.
    *
    * Any direction that is not defined defaults to the rotated animation of the opposite direction. If that is also not defined, it defaults to the north rotated animation.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/RotatedAnimation8Way.html Online documentation}
    */
-  export type RotatedAnimation8Way =
-    | {
-        north: RotatedAnimation
-        north_east?: RotatedAnimation
-        east?: RotatedAnimation
-        south_east?: RotatedAnimation
-        south?: RotatedAnimation
-        south_west?: RotatedAnimation
-        west?: RotatedAnimation
-        north_west?: RotatedAnimation
-      }
-    | RotatedAnimation
+  export type RotatedAnimation8Way = RotatedAnimation8WayStruct | RotatedAnimation
   export type RotatedAnimationVariations = RotatedAnimation | readonly RotatedAnimation[]
   /**
    * Specifies series of sprites used to visualize different rotations of the object.
@@ -12014,21 +12085,25 @@ declare module "factorio:prototype" {
         | "entity-ghost"
         | "tile-ghost"
       )[]
-  export type SemiPersistentWorldAmbientSoundDefinition =
-    | {
-        sound: Sound
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SemiPersistentWorldAmbientSoundDefinition.html#delay_mean_seconds Online documentation}
-         */
-        delay_mean_seconds?: float
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SemiPersistentWorldAmbientSoundDefinition.html#delay_variance_seconds Online documentation}
-         */
-        delay_variance_seconds?: float
-      }
-    | Sound
+  /**
+   * Struct type for {@link SemiPersistentWorldAmbientSoundDefinition}
+   * @see SemiPersistentWorldAmbientSoundDefinition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/SemiPersistentWorldAmbientSoundDefinition.html Online documentation}
+   */
+  export interface SemiPersistentWorldAmbientSoundDefinitionStruct {
+    sound: Sound
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SemiPersistentWorldAmbientSoundDefinition.html#delay_mean_seconds Online documentation}
+     */
+    delay_mean_seconds?: float
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SemiPersistentWorldAmbientSoundDefinition.html#delay_variance_seconds Online documentation}
+     */
+    delay_variance_seconds?: float
+  }
+  export type SemiPersistentWorldAmbientSoundDefinition = SemiPersistentWorldAmbientSoundDefinitionStruct | Sound
   export interface SendItemToOrbitTechnologyTrigger {
     readonly type: "send-item-to-orbit"
     item: ItemIDFilter
@@ -12168,6 +12243,15 @@ declare module "factorio:prototype" {
     name: VirtualSignalID | ItemID | FluidID | RecipeID | EntityID | SpaceLocationID | AsteroidChunkID | QualityID
   }
   /**
+   * Struct type for {@link SimpleBoundingBox}
+   * @see SimpleBoundingBox
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/SimpleBoundingBox.html Online documentation}
+   */
+  export interface SimpleBoundingBoxStruct {
+    left_top: MapPosition
+    right_bottom: MapPosition
+  }
+  /**
    * An axis aligned bounding box.
    *
    * SimpleBoundingBoxes are usually specified with the short-hand notation of passing an array of exactly 2 numbers. The first position is left_top, the second position is right_bottom.
@@ -12180,12 +12264,7 @@ declare module "factorio:prototype" {
    * {left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}
    * @see {@link https://lua-api.factorio.com/2.0.12/types/SimpleBoundingBox.html Online documentation}
    */
-  export type SimpleBoundingBox =
-    | {
-        left_top: MapPosition
-        right_bottom: MapPosition
-      }
-    | readonly [MapPosition, MapPosition]
+  export type SimpleBoundingBox = SimpleBoundingBoxStruct | readonly [MapPosition, MapPosition]
   export interface SimpleModifier extends BaseModifier {
     /**
      * Modification value, which will be added to the variable it modifies.
@@ -12584,6 +12663,119 @@ declare module "factorio:prototype" {
     vertical_speed_slowdown?: float
   }
   /**
+   * Struct type for {@link Sound}
+   * @see Sound
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html Online documentation}
+   */
+  export interface SoundStruct {
+    category?: SoundType
+    /**
+     * **Default:** `127`
+     *
+     * Sounds with higher priority will replace a sound with lower priority if the maximum sounds limit is reached.
+     *
+     * 0 is the highest priority, 255 is the lowest priority.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#priority Online documentation}
+     */
+    priority?: uint8
+    aggregation?: AggregationSpecification
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#allow_random_repeat Online documentation}
+     */
+    allow_random_repeat?: bool
+    /**
+     * **Default:** `1`
+     *
+     * Modifies how far a sound can be heard. Must be between `0` and `1` inclusive.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#audible_distance_modifier Online documentation}
+     */
+    audible_distance_modifier?: double
+    game_controller_vibration_data?: GameControllerVibrationData
+    advanced_volume_control?: AdvancedVolumeControl
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#speed_smoothing_window_size Online documentation}
+     */
+    speed_smoothing_window_size?: uint32
+    variations?: SoundDefinition | readonly SoundDefinition[]
+    /**
+     * Supported sound file formats are `.ogg` (Vorbis) and `.wav`.
+     *
+     * Only loaded, and mandatory if `variations` is not defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#filename Online documentation}
+     */
+    filename?: FileName
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `variations` is not defined.
+     *
+     * This sets both min and max volumes.
+     *
+     * Must be `>= 0`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#volume Online documentation}
+     */
+    volume?: float
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `variations` and `volume` are not defined.
+     *
+     * Must be `>= 0`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#min_volume Online documentation}
+     */
+    min_volume?: float
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `variations` is not defined.
+     *
+     * Only loaded if `min_volume` is defined.
+     *
+     * Must be `>= min_volume`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#max_volume Online documentation}
+     */
+    max_volume?: float
+    /**
+     * Only loaded if `variations` is not defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#preload Online documentation}
+     */
+    preload?: bool
+    /**
+     * **Default:** `1`
+     *
+     * Speed must be `>= 1 / 64`. This sets both min and max speeds.
+     *
+     * Only loaded if `variations` is not defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#speed Online documentation}
+     */
+    speed?: float
+    /**
+     * **Default:** `1`
+     *
+     * Must be `>= 1 / 64`.
+     *
+     * Only loaded if both `variations` and `speed` are not defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#min_speed Online documentation}
+     */
+    min_speed?: float
+    /**
+     * **Default:** `1`
+     *
+     * Must be `>= min_speed`.
+     *
+     * Only loaded if `variations` is not defined. Only loaded, and mandatory if `min_speed` is defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#max_speed Online documentation}
+     */
+    max_speed?: float
+    /**
+     * Only loaded if `variations` is not defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#modifiers Online documentation}
+     */
+    modifiers?: SoundModifier | readonly SoundModifier[]
+  }
+  /**
    * @example
    * {
    *   filename = "__base__/sound/ambient/world-ambience-3.ogg",
@@ -12591,116 +12783,7 @@ declare module "factorio:prototype" {
    * }
    * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html Online documentation}
    */
-  export type Sound =
-    | {
-        category?: SoundType
-        /**
-         * **Default:** `127`
-         *
-         * Sounds with higher priority will replace a sound with lower priority if the maximum sounds limit is reached.
-         *
-         * 0 is the highest priority, 255 is the lowest priority.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#priority Online documentation}
-         */
-        priority?: uint8
-        aggregation?: AggregationSpecification
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#allow_random_repeat Online documentation}
-         */
-        allow_random_repeat?: bool
-        /**
-         * **Default:** `1`
-         *
-         * Modifies how far a sound can be heard. Must be between `0` and `1` inclusive.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#audible_distance_modifier Online documentation}
-         */
-        audible_distance_modifier?: double
-        game_controller_vibration_data?: GameControllerVibrationData
-        advanced_volume_control?: AdvancedVolumeControl
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#speed_smoothing_window_size Online documentation}
-         */
-        speed_smoothing_window_size?: uint32
-        variations?: SoundDefinition | readonly SoundDefinition[]
-        /**
-         * Supported sound file formats are `.ogg` (Vorbis) and `.wav`.
-         *
-         * Only loaded, and mandatory if `variations` is not defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#filename Online documentation}
-         */
-        filename?: FileName
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `variations` is not defined.
-         *
-         * This sets both min and max volumes.
-         *
-         * Must be `>= 0`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#volume Online documentation}
-         */
-        volume?: float
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `variations` and `volume` are not defined.
-         *
-         * Must be `>= 0`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#min_volume Online documentation}
-         */
-        min_volume?: float
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `variations` is not defined.
-         *
-         * Only loaded if `min_volume` is defined.
-         *
-         * Must be `>= min_volume`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#max_volume Online documentation}
-         */
-        max_volume?: float
-        /**
-         * Only loaded if `variations` is not defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#preload Online documentation}
-         */
-        preload?: bool
-        /**
-         * **Default:** `1`
-         *
-         * Speed must be `>= 1 / 64`. This sets both min and max speeds.
-         *
-         * Only loaded if `variations` is not defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#speed Online documentation}
-         */
-        speed?: float
-        /**
-         * **Default:** `1`
-         *
-         * Must be `>= 1 / 64`.
-         *
-         * Only loaded if both `variations` and `speed` are not defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#min_speed Online documentation}
-         */
-        min_speed?: float
-        /**
-         * **Default:** `1`
-         *
-         * Must be `>= min_speed`.
-         *
-         * Only loaded if `variations` is not defined. Only loaded, and mandatory if `min_speed` is defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#max_speed Online documentation}
-         */
-        max_speed?: float
-        /**
-         * Only loaded if `variations` is not defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sound.html#modifiers Online documentation}
-         */
-        modifiers?: SoundModifier | readonly SoundModifier[]
-      }
-    | readonly SoundDefinition[]
+  export type Sound = SoundStruct | readonly SoundDefinition[]
   export interface SoundAccent {
     sound?: Sound
     /**
@@ -12715,69 +12798,73 @@ declare module "factorio:prototype" {
     audible_distance_modifier?: float
     play_for_working_visualisations?: readonly string[]
   }
-  export type SoundDefinition =
-    | {
-        /**
-         * Supported sound file formats are `.ogg` (Vorbis) and `.wav`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#filename Online documentation}
-         */
-        filename: FileName
-        /**
-         * **Default:** `1`
-         *
-         * This sets both min and max volumes.
-         *
-         * Must be `>= 0`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#volume Online documentation}
-         */
-        volume?: float
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `volume` is not defined.
-         *
-         * Must be `>= 0`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#min_volume Online documentation}
-         */
-        min_volume?: float
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `min_volume` is defined.
-         *
-         * Must be `>= min_volume`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#max_volume Online documentation}
-         */
-        max_volume?: float
-        preload?: bool
-        /**
-         * **Default:** `1`
-         *
-         * Speed must be `>= 1 / 64`. This sets both min and max speeds.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#speed Online documentation}
-         */
-        speed?: float
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded if `speed` is not defined.
-         *
-         * Must be `>= 1 / 64`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#min_speed Online documentation}
-         */
-        min_speed?: float
-        /**
-         * **Default:** `1`
-         *
-         * Only loaded, and mandatory, if `min_speed` is defined.
-         *
-         * Must be `>= min_speed`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#max_speed Online documentation}
-         */
-        max_speed?: float
-        modifiers?: SoundModifier | readonly SoundModifier[]
-      }
-    | FileName
+  /**
+   * Struct type for {@link SoundDefinition}
+   * @see SoundDefinition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html Online documentation}
+   */
+  export interface SoundDefinitionStruct {
+    /**
+     * Supported sound file formats are `.ogg` (Vorbis) and `.wav`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#filename Online documentation}
+     */
+    filename: FileName
+    /**
+     * **Default:** `1`
+     *
+     * This sets both min and max volumes.
+     *
+     * Must be `>= 0`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#volume Online documentation}
+     */
+    volume?: float
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `volume` is not defined.
+     *
+     * Must be `>= 0`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#min_volume Online documentation}
+     */
+    min_volume?: float
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `min_volume` is defined.
+     *
+     * Must be `>= min_volume`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#max_volume Online documentation}
+     */
+    max_volume?: float
+    preload?: bool
+    /**
+     * **Default:** `1`
+     *
+     * Speed must be `>= 1 / 64`. This sets both min and max speeds.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#speed Online documentation}
+     */
+    speed?: float
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded if `speed` is not defined.
+     *
+     * Must be `>= 1 / 64`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#min_speed Online documentation}
+     */
+    min_speed?: float
+    /**
+     * **Default:** `1`
+     *
+     * Only loaded, and mandatory, if `min_speed` is defined.
+     *
+     * Must be `>= min_speed`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SoundDefinition.html#max_speed Online documentation}
+     */
+    max_speed?: float
+    modifiers?: SoundModifier | readonly SoundModifier[]
+  }
+  export type SoundDefinition = SoundDefinitionStruct | FileName
   export interface SoundModifier {
     readonly type: SoundModifierType
     volume_multiplier: float
@@ -12822,20 +12909,26 @@ declare module "factorio:prototype" {
     | "weapon"
     | "explosion"
     | "enemy"
+  /**
+   * Struct type for {@link SpaceConnectionAsteroidSpawnDefinition}
+   * @see SpaceConnectionAsteroidSpawnDefinition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/SpaceConnectionAsteroidSpawnDefinition.html Online documentation}
+   */
+  export interface SpaceConnectionAsteroidSpawnDefinitionStruct {
+    /**
+     * **Default:** `"entity"`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SpaceConnectionAsteroidSpawnDefinition.html#type Online documentation}
+     */
+    readonly type?: "entity" | "asteroid-chunk"
+    /**
+     * The type this is loaded as depends on `type`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SpaceConnectionAsteroidSpawnDefinition.html#asteroid Online documentation}
+     */
+    asteroid: EntityID | AsteroidChunkID
+    spawn_points: readonly SpaceConnectionAsteroidSpawnPoint[]
+  }
   export type SpaceConnectionAsteroidSpawnDefinition =
-    | {
-        /**
-         * **Default:** `"entity"`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SpaceConnectionAsteroidSpawnDefinition.html#type Online documentation}
-         */
-        readonly type?: "entity" | "asteroid-chunk"
-        /**
-         * The type this is loaded as depends on `type`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SpaceConnectionAsteroidSpawnDefinition.html#asteroid Online documentation}
-         */
-        asteroid: EntityID | AsteroidChunkID
-        spawn_points: readonly SpaceConnectionAsteroidSpawnPoint[]
-      }
+    | SpaceConnectionAsteroidSpawnDefinitionStruct
     | readonly [EntityID, readonly SpaceConnectionAsteroidSpawnPoint[]]
   export interface SpaceConnectionAsteroidSpawnPoint extends AsteroidSpawnPoint {
     distance: double
@@ -12978,21 +13071,25 @@ declare module "factorio:prototype" {
     star_saturations?: float
   }
   /**
+   * Struct type for {@link SpawnPoint}
+   * @see SpawnPoint
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/SpawnPoint.html Online documentation}
+   */
+  export interface SpawnPointStruct {
+    evolution_factor: double
+    /**
+     * Must be `>= 0`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/SpawnPoint.html#spawn_weight Online documentation}
+     */
+    spawn_weight: double
+  }
+  /**
    * The definition of a evolution and probability weights for a {@link UnitSpawnDefinition spawnable unit} for a {@link EnemySpawnerPrototype}.
    *
    * It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the evolution factor and the second is the spawn weight.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/SpawnPoint.html Online documentation}
    */
-  export type SpawnPoint =
-    | {
-        evolution_factor: double
-        /**
-         * Must be `>= 0`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/SpawnPoint.html#spawn_weight Online documentation}
-         */
-        spawn_weight: double
-      }
-    | readonly [double, double]
+  export type SpawnPoint = SpawnPointStruct | readonly [double, double]
   export interface SpeechBubbleStyleSpecification extends BaseStyleSpecification {
     readonly type: "speech_bubble_style"
     frame_style?: FrameStyleSpecification
@@ -13354,6 +13451,45 @@ declare module "factorio:prototype" {
     north_north_west?: Sprite
   }
   /**
+   * Struct type for {@link Sprite4Way}
+   * @see Sprite4Way
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html Online documentation}
+   */
+  export interface Sprite4WayStruct {
+    sheets?: readonly SpriteNWaySheet[]
+    /**
+     * Only loaded if `sheets` is not defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#sheet Online documentation}
+     */
+    sheet?: SpriteNWaySheet
+    /**
+     * Only loaded if both `sheets` and `sheet` are not defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#north Online documentation}
+     */
+    north?: Sprite
+    /**
+     * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+     *
+     * Only loaded if `north` is defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#east Online documentation}
+     */
+    east?: Sprite
+    /**
+     * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+     *
+     * Only loaded if `north` is defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#south Online documentation}
+     */
+    south?: Sprite
+    /**
+     * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
+     *
+     * Only loaded if `north` is defined.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#west Online documentation}
+     */
+    west?: Sprite
+  }
+  /**
    * Sprites for the 4 major directions of the entity. If this is loaded as a single Sprite, it applies to all directions.
    *
    * This struct is either loaded as `sheets` or `sheet` or a map of one sprite per direction. For per direction sprites, the sprites are loaded via `north`, `east`, `south` and `west`.
@@ -13399,42 +13535,7 @@ declare module "factorio:prototype" {
    * }
    * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html Online documentation}
    */
-  export type Sprite4Way =
-    | {
-        sheets?: readonly SpriteNWaySheet[]
-        /**
-         * Only loaded if `sheets` is not defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#sheet Online documentation}
-         */
-        sheet?: SpriteNWaySheet
-        /**
-         * Only loaded if both `sheets` and `sheet` are not defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#north Online documentation}
-         */
-        north?: Sprite
-        /**
-         * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-         *
-         * Only loaded if `north` is defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#east Online documentation}
-         */
-        east?: Sprite
-        /**
-         * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-         *
-         * Only loaded if `north` is defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#south Online documentation}
-         */
-        south?: Sprite
-        /**
-         * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-         *
-         * Only loaded if `north` is defined.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/Sprite4Way.html#west Online documentation}
-         */
-        west?: Sprite
-      }
-    | Sprite
+  export type Sprite4Way = Sprite4WayStruct | Sprite
   /**
    * An array containing the following values.
    *
@@ -13830,6 +13931,14 @@ declare module "factorio:prototype" {
    */
   export type SpriteUsageSurfaceHint = "any" | "nauvis" | "vulcanus" | "gleba" | "fulgora" | "aquilo" | "space"
   /**
+   * Struct type for {@link SpriteVariations}
+   * @see SpriteVariations
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/SpriteVariations.html Online documentation}
+   */
+  export interface SpriteVariationsStruct {
+    sheet: SpriteSheet
+  }
+  /**
    * @example
    * -- array of sprites
    * pictures =
@@ -13854,12 +13963,7 @@ declare module "factorio:prototype" {
    * }
    * @see {@link https://lua-api.factorio.com/2.0.12/types/SpriteVariations.html Online documentation}
    */
-  export type SpriteVariations =
-    | {
-        sheet: SpriteSheet
-      }
-    | SpriteSheet
-    | readonly Sprite[]
+  export type SpriteVariations = SpriteVariationsStruct | SpriteSheet | readonly Sprite[]
   export interface StackTransferTipTrigger extends CountBasedTipTrigger {
     readonly type: "stack-transfer"
     /**
@@ -14600,13 +14704,17 @@ declare module "factorio:prototype" {
      */
     flame_effect_offset?: float
   }
-  export type ThrusterPerformancePoint =
-    | {
-        fluid_volume: double
-        fluid_usage: FluidAmount
-        effectivity: double
-      }
-    | readonly [double, double, double]
+  /**
+   * Struct type for {@link ThrusterPerformancePoint}
+   * @see ThrusterPerformancePoint
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/ThrusterPerformancePoint.html Online documentation}
+   */
+  export interface ThrusterPerformancePointStruct {
+    fluid_volume: double
+    fluid_usage: FluidAmount
+    effectivity: double
+  }
+  export type ThrusterPerformancePoint = ThrusterPerformancePointStruct | readonly [double, double, double]
   /**
    * @see FireFlamePrototype.burnt_patch_alpha_variations
    * @see {@link https://lua-api.factorio.com/2.0.12/prototypes/FireFlamePrototype.html#burnt_patch_alpha_variations Online documentation}
@@ -14704,15 +14812,19 @@ declare module "factorio:prototype" {
     weights?: readonly double[]
   }
   /**
+   * Struct type for {@link TilePosition}
+   * @see TilePosition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/TilePosition.html Online documentation}
+   */
+  export interface TilePositionStruct {
+    x: int32
+    y: int32
+  }
+  /**
    * Coordinates of a tile on a map where each integer `x`/`y` represents a different tile. This uses the same format as {@link MapPosition}, except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/TilePosition.html Online documentation}
    */
-  export type TilePosition =
-    | {
-        x: int32
-        y: int32
-      }
-    | readonly [int32, int32]
+  export type TilePosition = TilePositionStruct | readonly [int32, int32]
   /**
    * ## Union members
    * - `"zero"`: 64 layers. Used for tile sprites above background (e.g. transitions to out-of-map).
@@ -16349,22 +16461,26 @@ declare module "factorio:prototype" {
     attacking_falloff?: float
   }
   /**
+   * Struct type for {@link TurretSpecialEffectCenter}
+   * @see TurretSpecialEffectCenter
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/TurretSpecialEffectCenter.html Online documentation}
+   */
+  export interface TurretSpecialEffectCenterStruct {
+    default?: Vector
+    north?: Vector
+    north_east?: Vector
+    east?: Vector
+    south_east?: Vector
+    south?: Vector
+    south_west?: Vector
+    west?: Vector
+    north_west?: Vector
+  }
+  /**
    * If this is loaded as a single Vector, it is used for all directions.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/TurretSpecialEffectCenter.html Online documentation}
    */
-  export type TurretSpecialEffectCenter =
-    | {
-        default?: Vector
-        north?: Vector
-        north_east?: Vector
-        east?: Vector
-        south_east?: Vector
-        south?: Vector
-        south_west?: Vector
-        west?: Vector
-        north_west?: Vector
-      }
-    | Vector
+  export type TurretSpecialEffectCenter = TurretSpecialEffectCenterStruct | Vector
   /**
    * ## Union members
    * - `"folded"`
@@ -16528,27 +16644,31 @@ declare module "factorio:prototype" {
     max_unit_group_size: uint32
   }
   /**
+   * Struct type for {@link UnitSpawnDefinition}
+   * @see UnitSpawnDefinition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/UnitSpawnDefinition.html Online documentation}
+   */
+  export interface UnitSpawnDefinitionStruct {
+    unit: EntityID
+    /**
+     * Array of evolution and probability info, with the following conditions:
+     *
+     * - The `evolution_factor` must be ascending from entry to entry.
+     *
+     * - The last entry's weight will be used when the `evolution_factor` is larger than the last entry.
+     *
+     * - Weights are linearly interpolated between entries.
+     *
+     * - Individual weights are scaled linearly so that the cumulative weight is `1`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/UnitSpawnDefinition.html#spawn_points Online documentation}
+     */
+    spawn_points: readonly SpawnPoint[]
+  }
+  /**
    * It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the unit and the second is the spawn points.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/UnitSpawnDefinition.html Online documentation}
    */
-  export type UnitSpawnDefinition =
-    | {
-        unit: EntityID
-        /**
-         * Array of evolution and probability info, with the following conditions:
-         *
-         * - The `evolution_factor` must be ascending from entry to entry.
-         *
-         * - The last entry's weight will be used when the `evolution_factor` is larger than the last entry.
-         *
-         * - Weights are linearly interpolated between entries.
-         *
-         * - Individual weights are scaled linearly so that the cumulative weight is `1`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/UnitSpawnDefinition.html#spawn_points Online documentation}
-         */
-        spawn_points: readonly SpawnPoint[]
-      }
-    | readonly [EntityID, readonly SpawnPoint[]]
+  export type UnitSpawnDefinition = UnitSpawnDefinitionStruct | readonly [EntityID, readonly SpawnPoint[]]
   export interface UnlockQualityModifier extends BaseModifier {
     readonly type: "unlock-quality"
     /**
@@ -16951,6 +17071,15 @@ declare module "factorio:prototype" {
     alignment_samples?: uint32
   }
   /**
+   * Struct type for {@link Vector}
+   * @see Vector
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/Vector.html Online documentation}
+   */
+  export interface VectorStruct {
+    x: double
+    y: double
+  }
+  /**
    * A vector is a two-element array or dictionary containing the x and y components. Positive x goes east, positive y goes south.
    * @example
    * shift = {0, 12}
@@ -16960,31 +17089,34 @@ declare module "factorio:prototype" {
    * vector = {x = 2.3, y = 3.4}
    * @see {@link https://lua-api.factorio.com/2.0.12/types/Vector.html Online documentation}
    */
-  export type Vector =
-    | {
-        x: double
-        y: double
-      }
-    | readonly [double, double]
+  export type Vector = VectorStruct | readonly [double, double]
+  /**
+   * Struct type for {@link Vector3D}
+   * @see Vector3D
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/Vector3D.html Online documentation}
+   */
+  export interface Vector3DStruct {
+    x: float
+    y: float
+    z: float
+  }
   /**
    * If this is specified as a three-element array then the array items are x, y and z, in that order.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/Vector3D.html Online documentation}
    */
-  export type Vector3D =
-    | {
-        x: float
-        y: float
-        z: float
-      }
-    | readonly [float, float, float]
-  export type Vector4f =
-    | {
-        x: float
-        y: float
-        z: float
-        w: float
-      }
-    | readonly [float, float, float, float]
+  export type Vector3D = Vector3DStruct | readonly [float, float, float]
+  /**
+   * Struct type for {@link Vector4f}
+   * @see Vector4f
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/Vector4f.html Online documentation}
+   */
+  export interface Vector4fStruct {
+    x: float
+    y: float
+    z: float
+    w: float
+  }
+  export type Vector4f = Vector4fStruct | readonly [float, float, float, float]
   /**
    * @see AnimatedVector.rotations
    * @see {@link https://lua-api.factorio.com/2.0.12/types/AnimatedVector.html#rotations Online documentation}
@@ -17206,6 +17338,62 @@ declare module "factorio:prototype" {
     use_icon_overlay_constant?: bool
   }
   /**
+   * Struct type for {@link WorkingSound}
+   * @see WorkingSound
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html Online documentation}
+   */
+  export interface WorkingSoundStruct extends MainSound {
+    /**
+     * If this property is defined, all properties inherited from MainSound (and not overridden here) are ignored.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#main_sounds Online documentation}
+     */
+    main_sounds?: MainSound | readonly MainSound[]
+    /**
+     * **Default:** `1`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#apparent_volume Online documentation}
+     */
+    apparent_volume?: float
+    max_sounds_per_type?: uint8
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#extra_sounds_ignore_limit Online documentation}
+     */
+    extra_sounds_ignore_limit?: bool
+    /**
+     * **Default:** `false`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#persistent Online documentation}
+     */
+    persistent?: bool
+    /**
+     * **Default:** `true`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#use_doppler_shift Online documentation}
+     */
+    use_doppler_shift?: bool
+    /**
+     * **Default:** `1`
+     *
+     * Modifies how far a sound can be heard. Can only be 1 or lower, has to be a positive number.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#audible_distance_modifier Online documentation}
+     */
+    audible_distance_modifier?: double
+    /**
+     * The sound to be played when the entity is idle. Might not work with all entities that use working_sound.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#idle_sound Online documentation}
+     */
+    idle_sound?: Sound
+    /**
+     * Might not work with all entities that use working_sound.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#activate_sound Online documentation}
+     */
+    activate_sound?: Sound
+    /**
+     * Might not work with all entities that use working_sound.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#deactivate_sound Online documentation}
+     */
+    deactivate_sound?: Sound
+    sound_accents?: SoundAccent | readonly SoundAccent[]
+  }
+  /**
    * This type is used to produce sound from in-game entities when they are working/idle.
    * @example
    * -- refinery
@@ -17226,59 +17414,7 @@ declare module "factorio:prototype" {
    * }
    * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html Online documentation}
    */
-  export type WorkingSound =
-    | {
-        /**
-         * If this property is defined, all properties inherited from MainSound (and not overridden here) are ignored.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#main_sounds Online documentation}
-         */
-        main_sounds?: MainSound | readonly MainSound[]
-        /**
-         * **Default:** `1`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#apparent_volume Online documentation}
-         */
-        apparent_volume?: float
-        max_sounds_per_type?: uint8
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#extra_sounds_ignore_limit Online documentation}
-         */
-        extra_sounds_ignore_limit?: bool
-        /**
-         * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#persistent Online documentation}
-         */
-        persistent?: bool
-        /**
-         * **Default:** `true`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#use_doppler_shift Online documentation}
-         */
-        use_doppler_shift?: bool
-        /**
-         * **Default:** `1`
-         *
-         * Modifies how far a sound can be heard. Can only be 1 or lower, has to be a positive number.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#audible_distance_modifier Online documentation}
-         */
-        audible_distance_modifier?: double
-        /**
-         * The sound to be played when the entity is idle. Might not work with all entities that use working_sound.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#idle_sound Online documentation}
-         */
-        idle_sound?: Sound
-        /**
-         * Might not work with all entities that use working_sound.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#activate_sound Online documentation}
-         */
-        activate_sound?: Sound
-        /**
-         * Might not work with all entities that use working_sound.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingSound.html#deactivate_sound Online documentation}
-         */
-        deactivate_sound?: Sound
-        sound_accents?: SoundAccent | readonly SoundAccent[]
-      }
-    | Sound
+  export type WorkingSound = WorkingSoundStruct | Sound
   /**
    * Used by crafting machines to display different graphics when the machine is running.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/WorkingVisualisation.html Online documentation}
@@ -17484,38 +17620,42 @@ declare module "factorio:prototype" {
      */
     status_colors?: StatusColors
   }
-  export type WorldAmbientSoundDefinition =
-    | {
-        sound?: Sound
-        /**
-         * **Default:** `10`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#radius Online documentation}
-         */
-        radius?: double
-        /**
-         * **Default:** `5`
-         *
-         * Has to be less than or equal to `max_entity_count`.
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#min_entity_count Online documentation}
-         */
-        min_entity_count?: uint32
-        /**
-         * **Default:** `15`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#max_entity_count Online documentation}
-         */
-        max_entity_count?: uint32
-        /**
-         * **Default:** `0.2`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#entity_to_sound_ratio Online documentation}
-         */
-        entity_to_sound_ratio?: float
-        /**
-         * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#average_pause_seconds Online documentation}
-         */
-        average_pause_seconds?: double
-      }
-    | Sound
+  /**
+   * Struct type for {@link WorldAmbientSoundDefinition}
+   * @see WorldAmbientSoundDefinition
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html Online documentation}
+   */
+  export interface WorldAmbientSoundDefinitionStruct {
+    sound?: Sound
+    /**
+     * **Default:** `10`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#radius Online documentation}
+     */
+    radius?: double
+    /**
+     * **Default:** `5`
+     *
+     * Has to be less than or equal to `max_entity_count`.
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#min_entity_count Online documentation}
+     */
+    min_entity_count?: uint32
+    /**
+     * **Default:** `15`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#max_entity_count Online documentation}
+     */
+    max_entity_count?: uint32
+    /**
+     * **Default:** `0.2`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#entity_to_sound_ratio Online documentation}
+     */
+    entity_to_sound_ratio?: float
+    /**
+     * **Default:** `0`
+     * @see {@link https://lua-api.factorio.com/2.0.12/types/WorldAmbientSoundDefinition.html#average_pause_seconds Online documentation}
+     */
+    average_pause_seconds?: double
+  }
+  export type WorldAmbientSoundDefinition = WorldAmbientSoundDefinitionStruct | Sound
   /**
    * A variable type which can have one of two values: `true` or `false`. Wikipedia has a {@linkplain https://en.wikipedia.org/wiki/Boolean comprehensive article} on Booleans.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/bool.html Online documentation}

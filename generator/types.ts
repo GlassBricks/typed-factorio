@@ -14,7 +14,7 @@ import { RuntimeGenerationContext } from "./runtime"
 import { GenerationContext } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype"
 import { getSpecificPrototypeTypeForTypeAttribute } from "./prototypeSubclassTypes.js"
-import { PrototypeConcept } from "./FactorioPrototypeApiJson.js"
+import { mapProperty } from "./prototype/properties"
 
 export interface TypeContext {
   contextName?: string
@@ -138,24 +138,31 @@ export function mapPrototypeType(
 
 export function mapPrototypeConcept(
   context: PrototypeGenerationContext,
-  type: prototype.Type,
-  prototypeProperties: ts.TypeElement[] | undefined,
-  existingDef: InterfaceDef | TypeAliasDef | undefined,
+  concept: prototype.PrototypeConcept,
 ): {
   type: ts.TypeNode
-  description?: string
+  innerStructType: ts.TypeNode | undefined
+  description: string | undefined
 } {
+  const type = concept.type
+  const existingDef = context.manualDefs.getDeclaration(concept.name)
+  const properties = concept.properties
+    ?.sort(byOrder)
+    .flatMap((p) => mapProperty(context, p, concept.name, existingDef))
+
   const iType = mapTypeInternal(
     context,
     type,
     {
-      existingDef,
-      prototypeConceptProperties: prototypeProperties,
+      existingDef: existingDef,
+      contextName: concept.name,
+      prototypeConceptProperties: properties,
     },
     RWUsage.Write,
   )
   return {
     type: iType.mainType,
+    innerStructType: iType.innerStructType,
     description: iType.description,
   }
 }
@@ -167,6 +174,8 @@ function assertIsRuntimeGenerationContext(context: GenerationContext): asserts c
 interface IntermediateType {
   mainType: ts.TypeNode
   altWriteType?: ts.TypeNode
+  isStructType?: true
+  innerStructType?: ts.TypeNode
   description?: string
   asString: string | undefined
 }
@@ -377,6 +386,22 @@ function mapUnionType(
     context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
   }
 
+  const innerStructTypeIndex = types.findIndex((t) => t.isStructType)
+  let innerStructType: ts.TypeNode | undefined
+  if (innerStructTypeIndex !== -1) {
+    const innerStruct = types[innerStructTypeIndex]
+    innerStructType = innerStruct.mainType
+    if (innerStruct.altWriteType || innerStruct.description) {
+      context.warning("Can't handle altWriteType or description for inner struct type: " + JSON.stringify(type))
+    }
+    if (!typeContext?.contextName) context.warning("Cannot find context name for inner struct type")
+    else
+      types[innerStructTypeIndex] = {
+        mainType: ts.factory.createTypeReferenceNode(typeContext.contextName + "Struct"),
+        asString: undefined,
+      }
+  }
+
   let altType: ts.TypeNode[] | undefined
 
   if (usage === RWUsage.ReadWrite && types.some((t) => t.altWriteType)) {
@@ -405,6 +430,7 @@ function mapUnionType(
     mainType: makeUnion(typeNodes),
     altWriteType: altType && makeUnion(altType),
     description,
+    innerStructType,
     asString: undefined,
   }
 }
@@ -795,6 +821,7 @@ function mapPrototypeStructType(context: GenerationContext, typeContext: TypeCon
   const properties = typeContext.prototypeConceptProperties
   return {
     mainType: ts.factory.createTypeLiteralNode(properties),
+    isStructType: true,
     asString: undefined,
   }
 }

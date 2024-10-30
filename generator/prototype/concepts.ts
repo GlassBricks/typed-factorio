@@ -3,10 +3,10 @@ import { ModuleType } from "../OutputFile.js"
 import { Property, PrototypeConcept, Type } from "../FactorioPrototypeApiJson.js"
 import { addJsDoc, createTag } from "../documentation.js"
 import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
-import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
+import { getHeritageClauses, getOverridenAttributes } from "./properties.js"
 import { assertNever, byOrder } from "../util.js"
 import ts from "typescript"
-import { copyExistingDeclaration, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
+import { copyExistingDeclaration } from "../manualDefinitions.js"
 import { generateBuiltinType } from "../builtin"
 
 export function maybeRecordInlineConceptReference(
@@ -70,19 +70,21 @@ export function generateTypes(context: PrototypeGenerationContext): void {
   })
 }
 
-function generateTypeDeclaration(
-  concept: PrototypeConcept,
-  context: PrototypeGenerationContext,
-  existing: InterfaceDef | TypeAliasDef | undefined,
-) {
-  const properties = concept.properties?.sort(byOrder).flatMap((p) => mapProperty(context, p, concept.name, existing))
-
+function generateTypeDeclaration(concept: PrototypeConcept, context: PrototypeGenerationContext) {
   const heritageClauses = getConceptHeritageClauses(context, concept)
-  const { type, description } = mapPrototypeConcept(context, concept.type, properties, existing)
+  const { type, description, innerStructType } = mapPrototypeConcept(context, concept)
 
-  const declaration = typeToDeclaration(context, type, concept.name, heritageClauses)
+  const innerStructDeclaration =
+    innerStructType && typeToDeclaration(context, innerStructType, concept.name + "Struct", heritageClauses)
 
-  return { declaration, description }
+  const declaration = typeToDeclaration(
+    context,
+    type,
+    concept.name,
+    innerStructDeclaration ? undefined : heritageClauses,
+  )
+
+  return { declaration, description, innerStructDeclaration }
 }
 function generateType(context: PrototypeGenerationContext, concept: PrototypeConcept): void {
   if (concept.type === "builtin") {
@@ -92,11 +94,12 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
   const existing = context.manualDefs.getDeclaration(concept.name)
 
   let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
+  let innerStructDeclaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration | undefined
   let description: string | undefined
   if (existing?.annotations.replace) {
     declaration = copyExistingDeclaration(existing.node)
   } else {
-    ;({ declaration, description } = generateTypeDeclaration(concept, context, existing))
+    ;({ declaration, description, innerStructDeclaration } = generateTypeDeclaration(concept, context))
   }
 
   let tags: ts.JSDocTag[] | undefined
@@ -112,11 +115,25 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
     }
   }
 
+  if (innerStructDeclaration) {
+    addJsDoc(
+      context,
+      innerStructDeclaration,
+      {
+        description: `Struct type for [${concept.name}](prototype:${concept.name})`,
+      },
+      onlineReferenceName,
+      {
+        tags: [createTag("see", concept.name)],
+      },
+    )
+    context.currentFile.add(innerStructDeclaration)
+  }
+
   addJsDoc(context, declaration, concept, onlineReferenceName, {
     post: description,
     tags,
   })
-
   context.currentFile.add(declaration)
 }
 
