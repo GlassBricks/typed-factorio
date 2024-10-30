@@ -16,7 +16,7 @@ export interface DataExtendMethod {}
 
 export interface Data {
   raw: {
-    readonly [Type in keyof PrototypeMap]: {
+    readonly [Type in PrototypeType]: {
       readonly [Name in string]?: PrototypeMap[Type]
     }
   }
@@ -34,9 +34,10 @@ export type CollisionMaskLayer = `layer-${bigint}`
 export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
 
 interface PrototypeMap {}
+type PrototypeType = any
 
 interface PrototypeBase {
-  type: keyof PrototypeMap
+  type: PrototypeType
 }
 
 interface FluidBox {}
