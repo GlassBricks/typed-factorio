@@ -2952,10 +2952,7 @@ declare module "factorio:runtime" {
     readonly train_stopped_signal?: SignalID
     readonly read_from_train?: boolean
     readonly send_to_train?: boolean
-    readonly circuit_mode_of_operation?:
-      | defines.control_behavior.inserter.circuit_mode_of_operation
-      | defines.control_behavior.logistic_container.circuit_mode_of_operation
-      | defines.control_behavior.lamp.circuit_mode_of_operation
+    readonly circuit_mode_of_operation?: number
     readonly circuit_read_hand_contents?: boolean
     readonly circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
     readonly circuit_set_stack_size?: boolean
