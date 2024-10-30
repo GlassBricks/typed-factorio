@@ -226,6 +226,7 @@ declare global {
       "turret_out_of_ammo",
       "unclaimed_cargo",
     }
+
     /**
      * AI command exit status. See {@link LuaEntity#set_command LuaEntity::set_command}
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.behavior_result Online documentation}
@@ -236,6 +237,7 @@ declare global {
       "success",
       "deleted",
     }
+
     enum build_check_type {
       "script",
       "manual",
@@ -244,11 +246,13 @@ declare global {
       "blueprint_ghost",
       "ghost_revive",
     }
+
     enum build_mode {
       "normal",
       "forced",
       "superforced",
     }
+
     /**
      * State of a chain signal.
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.chain_signal_state Online documentation}
@@ -259,6 +263,7 @@ declare global {
       "partially_open",
       "none_open",
     }
+
     enum chunk_generated_status {
       "nothing",
       "custom_tiles",
@@ -267,6 +272,7 @@ declare global {
       "tiles",
       "entities",
     }
+
     /**
      * Command given to units describing what they should do.
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.command Online documentation}
@@ -318,6 +324,7 @@ declare global {
        */
       "build_base" = 8,
     }
+
     /**
      * How commands are joined together in a compound command (see {@link defines.command.compound}).
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.compound_command Online documentation}
@@ -339,6 +346,7 @@ declare global {
        */
       "return_last",
     }
+
     namespace control_behavior {
       namespace inserter {
         enum hand_read_mode {
@@ -394,6 +402,7 @@ declare global {
           "set_requests",
         }
       }
+
       enum type {
         /**
          * {@link LuaContainerControlBehavior}
@@ -557,6 +566,7 @@ declare global {
         "agricultural_tower",
       }
     }
+
     enum controllers {
       /**
        * Can't interact with the world, can only observe. Used in the multiplayer waiting-to-respawn screen.
@@ -594,15 +604,18 @@ declare global {
        */
       "remote",
     }
+
     namespace deconstruction_item {
       enum entity_filter_mode {
         "whitelist",
         "blacklist",
       }
+
       enum tile_filter_mode {
         "whitelist",
         "blacklist",
       }
+
       enum tile_selection_mode {
         "normal",
         "always",
@@ -610,14 +623,17 @@ declare global {
         "only",
       }
     }
+
     // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
     /** @omit */
     enum default_icon_size {}
+
     enum difficulty {
       "easy",
       "normal",
       "hard",
     }
+
     enum direction {
       "north" = 0,
       "northnortheast" = 1,
@@ -636,6 +652,7 @@ declare global {
       "northwest" = 14,
       "northnorthwest" = 15,
     }
+
     enum disconnect_reason {
       "quit",
       "dropped",
@@ -649,6 +666,7 @@ declare global {
       "banned",
       "switching_servers",
     }
+
     enum distraction {
       /**
        * Perform command even if someone attacks the unit.
@@ -671,6 +689,7 @@ declare global {
        */
       "by_damage",
     }
+
     enum entity_status {
       "working",
       "normal",
@@ -959,11 +978,13 @@ declare global {
        */
       "recipe_not_researched",
     }
+
     enum entity_status_diode {
       "green",
       "red",
       "yellow",
     }
+
     /**
      * See the {@linkplain https://lua-api.factorio.com/2.0.12/events.html events page} for more info on what events contain and when they get raised.
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.events Online documentation}
@@ -1771,6 +1792,7 @@ declare global {
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.events Online documentation}
      */
     type events = (typeof events)[keyof typeof events]
+
     enum flow_precision_index {
       "five_seconds",
       "one_minute",
@@ -1781,6 +1803,7 @@ declare global {
       "two_hundred_fifty_hours",
       "one_thousand_hours",
     }
+
     enum game_controller_interaction {
       /**
        * Game controller will always hover this element regardless of type or state.
@@ -1798,6 +1821,7 @@ declare global {
        */
       "normal",
     }
+
     enum group_state {
       "gathering",
       "moving",
@@ -1807,6 +1831,7 @@ declare global {
       "pathfinding",
       "wander_in_group",
     }
+
     enum gui_type {
       "achievement",
       "blueprint_library",
@@ -1829,6 +1854,7 @@ declare global {
       "tile",
       "trains",
     }
+
     enum input_action {
       "activate_interrupt",
       "activate_paste",
@@ -2098,10 +2124,12 @@ declare global {
       "wire_dragging",
       "write_to_console",
     }
+
     enum input_method {
       "keyboard_and_mouse",
       "game_controller",
     }
+
     enum inventory {
       "fuel",
       "burnt_result",
@@ -2155,6 +2183,7 @@ declare global {
       "cargo_landing_pad_main",
       "cargo_landing_pad_trash",
     }
+
     enum logistic_member_index {
       "logistic_container",
       "vehicle_storage",
@@ -2164,6 +2193,7 @@ declare global {
       "generic_on_off_behavior",
       "spidertron_requester",
     }
+
     enum logistic_mode {
       "none",
       "active_provider",
@@ -2172,6 +2202,7 @@ declare global {
       "passive_provider",
       "buffer",
     }
+
     enum logistic_section_type {
       "manual",
       "circuit_controlled",
@@ -2186,18 +2217,21 @@ declare global {
        */
       "request_missing_materials_controlled",
     }
+
     enum mouse_button_type {
       "none",
       "left",
       "right",
       "middle",
     }
+
     enum moving_state {
       "stale",
       "moving",
       "adaptive",
       "stuck",
     }
+
     enum print_skip {
       /**
        * Print will not be skipped.
@@ -2215,11 +2249,13 @@ declare global {
        */
       "if_visible",
     }
+
     enum print_sound {
       "always",
       "never",
       "use_player_settings",
     }
+
     /**
      * This define describes all top-level prototypes and their associated subtypes. It is organized as a lookup table, meaning the values of all the defines is `0`. As an example, `defines.prototypes['entity']` looks like `{furnace=0, inserter=0, container=0, ...}`.
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.prototypes Online documentation}
@@ -2609,31 +2645,37 @@ declare global {
         "virtual-signal": 0
       }
     }
+
     /**
      * This define describes all top-level prototypes and their associated subtypes. It is organized as a lookup table, meaning the values of all the defines is `0`. As an example, `defines.prototypes['entity']` looks like `{furnace=0, inserter=0, container=0, ...}`.
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.prototypes Online documentation}
      */
     const prototypes: prototypes
+
     enum rail_connection_direction {
       "left",
       "straight",
       "right",
       "none",
     }
+
     enum rail_direction {
       "front",
       "back",
     }
+
     enum rail_layer {
       "ground",
       "elevated",
     }
+
     enum relative_gui_position {
       "top",
       "bottom",
       "left",
       "right",
     }
+
     enum relative_gui_type {
       "accumulator_gui",
       "achievement_gui",
@@ -2710,16 +2752,19 @@ declare global {
       "upgrade_item_gui",
       "wall_gui",
     }
+
     enum render_mode {
       "game",
       "chart",
       "chart_zoomed_in",
     }
+
     enum rich_text_setting {
       "enabled",
       "disabled",
       "highlight",
     }
+
     namespace riding {
       enum acceleration {
         "nothing",
@@ -2727,12 +2772,14 @@ declare global {
         "braking",
         "reversing",
       }
+
       enum direction {
         "left",
         "straight",
         "right",
       }
     }
+
     enum robot_order_type {
       /**
        * Construct a ghost.
@@ -2780,6 +2827,7 @@ declare global {
        */
       "pickup_items",
     }
+
     /**
      * The various parts of the launch sequence of the rocket silo.
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.rocket_silo_status Online documentation}
@@ -2861,17 +2909,20 @@ declare global {
        */
       "launch_started",
     }
+
     enum selection_mode {
       "select",
       "alt_select",
       "reverse_select",
       "alt_reverse_select",
     }
+
     enum shooting {
       "not_shooting",
       "shooting_enemies",
       "shooting_selected",
     }
+
     /**
      * State of an ordinary rail signal.
      * @see {@link https://lua-api.factorio.com/2.0.12/defines.html#defines.signal_state Online documentation}
@@ -2898,6 +2949,7 @@ declare global {
        */
       "reserved_by_circuit_network",
     }
+
     enum space_platform_state {
       /**
        * Waiting for a starter pack.
@@ -2940,6 +2992,7 @@ declare global {
        */
       "waiting_at_station",
     }
+
     enum target_type {
       "entity",
       "equipment",
@@ -2958,8 +3011,9 @@ declare global {
       "train",
       "commandable",
       "custom_chart_tag",
-      "gui_element",
+      gui_element,
     }
+
     enum train_state {
       /**
        * Normal state -- following the path.
@@ -3012,6 +3066,7 @@ declare global {
        */
       "destination_full",
     }
+
     enum transport_line {
       "left_line",
       "right_line",
@@ -3024,6 +3079,7 @@ declare global {
       "secondary_left_split_line",
       "secondary_right_split_line",
     }
+
     enum wire_connector_id {
       "circuit_red",
       "circuit_green",
@@ -3035,8 +3091,9 @@ declare global {
       "power_switch_left_copper",
       "power_switch_right_copper",
     }
+
     enum wire_origin {
-      "player",
+      player,
       "script",
       "radars",
     }

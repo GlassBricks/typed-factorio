@@ -50,7 +50,7 @@ declare namespace defines {
     enum technology_difficulty {}
   }
 
-  enum circuit_connector_id {}
+  enum wire_connector_id {}
 
   enum gui_type {}
 
@@ -586,8 +586,8 @@ export interface BlueprintEntity {
 export interface BlueprintConnectionData {
   /** ID of the entity this connection is connected with. */
   entity_id: uint
-  /** The circuit connector id of the entity this connection is connected to, see {@link defines.circuit_connector_id} */
-  circuit_id?: defines.circuit_connector_id
+  /** The circuit connector id of the entity this connection is connected to. */
+  circuit_id?: defines.wire_connector_id
 }
 
 /** @addAfter BlueprintEntity */
