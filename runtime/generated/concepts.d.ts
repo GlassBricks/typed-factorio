@@ -153,7 +153,7 @@ declare module "factorio:runtime" {
     readonly ghost_type?: string | readonly string[]
     readonly direction?: defines.direction | readonly defines.direction[]
     readonly collision_mask?: CollisionLayerID | readonly CollisionLayerID[] | Record<CollisionLayerID, true>
-    readonly force?: ForceSet
+    readonly force?: ForceSetWrite
     readonly to_be_deconstructed?: boolean
     readonly to_be_upgraded?: boolean
     readonly limit?: uint
@@ -194,7 +194,7 @@ declare module "factorio:runtime" {
      */
     readonly to_be_deconstructed?: boolean
     readonly collision_mask?: CollisionLayerID | readonly CollisionLayerID[] | Record<CollisionLayerID, true>
-    readonly force?: ForceSet
+    readonly force?: ForceSetWrite
     /**
      * If the filters should be inverted.
      */
@@ -2550,11 +2550,17 @@ declare module "factorio:runtime" {
    * Set of forces. Can be specified in one of two ways.
    *
    * ## Union members
-   * - {@link ForceID}[]: Array of many forces.
-   * - {@link ForceID}: A single force.
+   * - LuaForce[]: Array of many forces.
+   * - LuaForce: A single force.
+   * @see ForceSetWrite
    * @see {@link https://lua-api.factorio.com/2.0.12/concepts/ForceSet.html Online documentation}
    */
-  export type ForceSet = ForceID[] | ForceID
+  export type ForceSet = LuaForce[] | LuaForce
+  /**
+   * Write form of {@link ForceSet}, where table-or-array concepts are allowed to take an array form.
+   * @see {@link https://lua-api.factorio.com/2.0.12/concepts/ForceSet.html Online documentation}
+   */
+  export type ForceSetWrite = readonly ForceID[] | ForceID
   /**
    * A decorative prototype may be specified in one of two ways.
    *
@@ -2936,7 +2942,6 @@ declare module "factorio:runtime" {
   export interface BlueprintControlBehavior {
     readonly condition?: CircuitCondition
     readonly circuit_condition?: CircuitCondition
-    readonly filters?: ConstantCombinatorParameters[]
     readonly is_on?: boolean
     readonly arithmetic_conditions?: ArithmeticCombinatorParameters
     readonly decider_conditions?: DeciderCombinatorParameters

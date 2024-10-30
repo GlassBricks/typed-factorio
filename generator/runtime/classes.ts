@@ -223,7 +223,7 @@ function generateClass(
     const allAttributes = new Set(clazz.attributes.map((x) => x.name).concat(clazz.methods.map((x) => x.name)))
     for (const name of Object.keys(existing.members)) {
       if (!allAttributes.has(name)) {
-        context.warning(`Attribute ${name} is not defined in class ${clazz.name}`, clazz.name)
+        context.warning(`Attribute ${name} is not defined in class ${clazz.name}`)
       }
     }
   }

@@ -250,10 +250,6 @@ export interface LuaGroup {
   readonly type: "item-group" | "item-subgroup"
 }
 
-export interface LuaModSettingPrototype {
-  readonly type: keyof SettingsPrototypeMap
-}
-
 export interface LuaItemStack {}
 
 export interface LuaPlayer {
@@ -471,10 +467,6 @@ export interface SmokeSource {
   readonly west_position?: MapPosition
 }
 
-export interface FluidBoxConnection {
-  readonly positions: MapPosition[]
-}
-
 /** @writeType BoundingBoxWrite BoundingBoxArray */
 export interface BoundingBox {}
 
@@ -488,11 +480,11 @@ export interface BoundingBoxWrite {
   readonly orientation?: RealOrientation
 }
 
-/** @readType Fluid */
-export interface FluidId {}
+// /** @readType Fluid */
+// export interface FluidID {}
 
 /** @readType LuaForce */
-export interface ForceId {}
+export interface ForceID {}
 
 /** @readType LuaTechnology */
 export interface TechnologyID {}
@@ -659,8 +651,6 @@ export interface DeciderCombinatorParameters {}
 
 export interface ProgrammableSpeakerCircuitParameters {}
 
-export interface ConstantCombinatorParameters {}
-
 export interface ArithmeticCombinatorParameters {}
 
 /** @addAfter BlueprintEntity */
@@ -670,7 +660,6 @@ export interface ArithmeticCombinatorParameters {}
 export interface BlueprintControlBehavior {
   readonly condition?: CircuitCondition
   readonly circuit_condition?: CircuitCondition
-  readonly filters?: ConstantCombinatorParameters[]
   readonly is_on?: boolean
   readonly arithmetic_conditions?: ArithmeticCombinatorParameters
   readonly decider_conditions?: DeciderCombinatorParameters

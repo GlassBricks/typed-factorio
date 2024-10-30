@@ -4622,7 +4622,8 @@ declare module "factorio:runtime" {
      * Reading will always give an array of {@link LuaForce}
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaEntity.html#LuaEntity.render_to_forces Online documentation}
      */
-    render_to_forces?: ForceSet
+    get render_to_forces(): ForceSet | nil
+    set render_to_forces(value: ForceSetWrite | nil)
     /**
      * The rail target of this pump, if any.
      *
@@ -5798,7 +5799,8 @@ declare module "factorio:runtime" {
      * Reading will always give an array of {@link LuaForce}
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaEntity.html#LuaEntity.render_to_forces Online documentation}
      */
-    render_to_forces?: ForceSet
+    get render_to_forces(): ForceSet | nil
+    set render_to_forces(value: ForceSetWrite | nil)
     /**
      * Returns the id of the electric network that this entity is connected to, if any.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaEntity.html#LuaEntity.electric_network_id Online documentation}
@@ -22442,7 +22444,8 @@ declare module "factorio:runtime" {
      * Forces for which this object is rendered or `nil` if visible to all forces. Writing nil or empty array will make object to be visible to all forces.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaRenderObject.html#LuaRenderObject.forces Online documentation}
      */
-    forces?: LuaForce[] | ForceSet
+    get forces(): LuaForce[] | ForceSet | nil
+    set forces(value: LuaForce[] | ForceSetWrite | nil)
     /**
      * Players for which this object is visible or `nil` if visible to all players.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaRenderObject.html#LuaRenderObject.players Online documentation}
@@ -22791,7 +22794,8 @@ declare module "factorio:runtime" {
      * Forces for which this object is rendered or `nil` if visible to all forces. Writing nil or empty array will make object to be visible to all forces.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaRenderObject.html#LuaRenderObject.forces Online documentation}
      */
-    forces?: LuaForce[] | ForceSet
+    get forces(): LuaForce[] | ForceSet | nil
+    set forces(value: LuaForce[] | ForceSetWrite | nil)
     /**
      * Players for which this object is visible or `nil` if visible to all players.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaRenderObject.html#LuaRenderObject.players Online documentation}
@@ -23473,7 +23477,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
@@ -23517,7 +23521,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
@@ -23582,7 +23586,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
@@ -23627,7 +23631,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
@@ -23676,7 +23680,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
@@ -23725,7 +23729,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
@@ -23796,7 +23800,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
@@ -23854,7 +23858,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
@@ -23926,7 +23930,7 @@ declare module "factorio:runtime" {
       /**
        * The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.
        */
-      readonly forces?: ForceSet
+      readonly forces?: ForceSetWrite
       /**
        * The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.
        */
