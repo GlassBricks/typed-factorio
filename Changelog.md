@@ -1,3 +1,11 @@
+# v3.0.0
+
+- Updated to factorio 2.0!! SPAAACE!!
+- Simplified types for ChooseElemButtonSpec; it is no longer a discriminated union for each subtype.
+- Iteration key type for `LuaCustomTable`s are now accurate.
+
+The major version has been bumped to reflect breaking changes in the API. However, the way the api is accessed has not changed.
+
 # v2.14.0
 
 - Updated to a newer revision of factorio version 1.1.110

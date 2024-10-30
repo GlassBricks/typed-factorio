@@ -3,10 +3,11 @@ import { ModuleType } from "../OutputFile.js"
 import { Property, PrototypeConcept, Type } from "../FactorioPrototypeApiJson.js"
 import { addJsDoc, createTag } from "../documentation.js"
 import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
-import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
+import { getHeritageClauses, getOverridenAttributes } from "./properties.js"
 import { assertNever, byOrder } from "../util.js"
 import ts from "typescript"
-import { copyExistingDeclaration, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
+import { copyExistingDeclaration } from "../manualDefinitions.js"
+import { generateBuiltinType } from "../builtin"
 
 export function maybeRecordInlineConceptReference(
   context: PrototypeGenerationContext,
@@ -54,10 +55,22 @@ export function maybeRecordInlineConceptReference(
 }
 
 export function preprocessTypes(context: PrototypeGenerationContext): void {
-  for (const type of context.apiDocs.types) {
-    context.references.set(type.name, type.name)
+  for (const concept of context.apiDocs.types) {
+    context.references.set(concept.name, concept.name)
 
-    type.properties?.forEach((p) => maybeRecordInlineConceptReference(context, type.name, p))
+    if (concept.properties) {
+      for (const property of concept.properties) {
+        maybeRecordInlineConceptReference(context, concept.name, property)
+      }
+      const type = concept.type
+      if (
+        typeof type === "object" &&
+        type.complex_type === "union" &&
+        type.options.some((x) => typeof x === "object" && x.complex_type === "struct")
+      ) {
+        context.hasInnerStructType.add(concept.name)
+      }
+    }
   }
 }
 
@@ -69,19 +82,21 @@ export function generateTypes(context: PrototypeGenerationContext): void {
   })
 }
 
-function generateTypeDeclaration(
-  concept: PrototypeConcept,
-  context: PrototypeGenerationContext,
-  existing: InterfaceDef | TypeAliasDef | undefined,
-) {
-  const properties = concept.properties?.sort(byOrder).flatMap((p) => mapProperty(context, p, concept.name, existing))
-
+function generateTypeDeclaration(concept: PrototypeConcept, context: PrototypeGenerationContext) {
   const heritageClauses = getConceptHeritageClauses(context, concept)
-  const { type, description } = mapPrototypeConcept(context, concept.type, properties, existing)
+  const { type, description, innerStructType } = mapPrototypeConcept(context, concept)
 
-  const declaration = typeToDeclaration(type, concept.name, heritageClauses)
+  const innerStructDeclaration =
+    innerStructType && typeToDeclaration(context, innerStructType, concept.name + "Struct", heritageClauses)
 
-  return { declaration, description }
+  const declaration = typeToDeclaration(
+    context,
+    type,
+    concept.name,
+    innerStructDeclaration ? undefined : heritageClauses,
+  )
+
+  return { declaration, description, innerStructDeclaration }
 }
 function generateType(context: PrototypeGenerationContext, concept: PrototypeConcept): void {
   if (concept.type === "builtin") {
@@ -91,11 +106,16 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
   const existing = context.manualDefs.getDeclaration(concept.name)
 
   let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
+  let innerStructDeclaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration | undefined
   let description: string | undefined
   if (existing?.annotations.replace) {
     declaration = copyExistingDeclaration(existing.node)
   } else {
-    ;({ declaration, description } = generateTypeDeclaration(concept, context, existing))
+    ;({ declaration, description, innerStructDeclaration } = generateTypeDeclaration(concept, context))
+  }
+
+  if (!!innerStructDeclaration !== context.hasInnerStructType.has(concept.name)) {
+    context.warning(`Inconsistency in having inner struct type for ${concept.name}`)
   }
 
   let tags: ts.JSDocTag[] | undefined
@@ -111,36 +131,39 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
     }
   }
 
+  if (innerStructDeclaration) {
+    addJsDoc(
+      context,
+      innerStructDeclaration,
+      {
+        description: `Struct type for [${concept.name}](prototype:${concept.name})`,
+      },
+      onlineReferenceName,
+      {
+        tags: [createTag("see", concept.name)],
+      },
+    )
+    context.currentFile.add(innerStructDeclaration)
+  }
+
   addJsDoc(context, declaration, concept, onlineReferenceName, {
     post: description,
     tags,
   })
-
   context.currentFile.add(declaration)
-}
-
-function generateBuiltinType(context: PrototypeGenerationContext, concept: PrototypeConcept) {
-  const name = concept.name
-  if (name === "string" || name === "number" || name === "boolean") return
-  const existing = context.manualDefs.getDeclaration(name)
-  if (!existing) {
-    context.warning(`No existing definition for builtin ${name}`)
-    return
-  }
-  if (existing.annotations.omit) return
-  context.currentFile.add(addJsDoc(context, existing.node, concept, name, undefined))
 }
 
 function getConceptHeritageClauses(
   context: PrototypeGenerationContext,
   concept: PrototypeConcept,
 ): ts.HeritageClause[] | undefined {
-  if (!concept.parent) return
+  const parentConceptName = concept.parent
+  if (!parentConceptName) return
   const overridenAttributes = getOverridenAttributes(context, concept, context.types, context.conceptProperties)
 
-  const parentConcept = context.types.get(concept.parent)
+  const parentConcept = context.types.get(parentConceptName)
   if (!parentConcept) {
-    context.warning("Unknown parent concept: " + concept.parent)
+    context.warning("Unknown parent concept: " + parentConceptName)
     return
   }
   const overridesType =
@@ -149,5 +172,7 @@ function getConceptHeritageClauses(
     overridenAttributes.push("type")
   }
 
-  return getHeritageClauses(concept.parent, overridenAttributes)
+  const usedName = context.hasInnerStructType.has(parentConceptName) ? parentConceptName + "Struct" : parentConceptName
+
+  return getHeritageClauses(usedName, overridenAttributes)
 }

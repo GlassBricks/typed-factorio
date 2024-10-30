@@ -2,8 +2,16 @@
   "compilerOptions": {
     "strict": true,
     "noImplicitAny": false,
-    "lib": ["esnext"],
-    "types": ["lua-types/5.2", "@typescript-to-lua/language-extensions"]
+    "lib": [
+      "esnext"
+    ],
+    "types": [
+      "lua-types/5.2",
+      "@typescript-to-lua/language-extensions"
+    ]
   },
-  "include": ["**/*.ts", "../../common/types.d.ts"]
+  "include": [
+    "**/*.ts",
+    "../../common/types.d.ts"
+  ]
 }

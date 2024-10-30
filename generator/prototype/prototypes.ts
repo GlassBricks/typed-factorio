@@ -4,7 +4,7 @@ import { byOrder } from "../util.js"
 import { Prototype } from "../FactorioPrototypeApiJson.js"
 import ts from "typescript"
 import { addJsDoc, createTag } from "../documentation.js"
-import { addFakeJSDoc, capitalize, Modifiers, Types } from "../genUtil.js"
+import { addFakeJSDoc, Modifiers, toPascalCase, Types } from "../genUtil.js"
 import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
 import { maybeRecordInlineConceptReference } from "./concepts.js"
 import { mapPrototypeType } from "../types.js"
@@ -21,6 +21,7 @@ export function preprocessPrototypes(context: PrototypeGenerationContext): void 
     }
   }
   context.references.set("PrototypeMap", "PrototypeMap")
+  context.references.set("PrototypeType", "PrototypeType")
 }
 
 export function generatePrototypes(context: PrototypeGenerationContext): void {
@@ -29,7 +30,7 @@ export function generatePrototypes(context: PrototypeGenerationContext): void {
     for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
       generatePrototype(context, prototype, subclassMap)
     }
-    addPrototypeMap(context, subclassMap, rootPrototypes)
+    addPrototypeMapDefinitions(context, subclassMap, rootPrototypes)
     // manually added imports for now
     context.currentFile.addImport("common", "CustomInputName")
   })
@@ -44,10 +45,11 @@ function getSubclassMap(context: PrototypeGenerationContext): {
   for (const prototype of context.apiDocs.prototypes) {
     subclassMap.set(prototype.name, [])
   }
-  for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
+  for (const prototype of context.apiDocs.prototypes) {
     if (
       prototype.name !== "PrototypeBase" &&
-      (prototype.parent === undefined || prototype.parent === "PrototypeBase")
+      prototype.name !== "Prototype" &&
+      (prototype.parent === undefined || prototype.parent === "PrototypeBase" || prototype.parent === "Prototype")
     ) {
       rootPrototypes.push(prototype.name)
     }
@@ -67,10 +69,6 @@ function generatePrototype(
   prototype: Prototype,
   subclassMap: Map<string, string[]>,
 ): void {
-  if (prototype.visibility) {
-    context.warning("Visibility not yet implemented")
-  }
-
   const existing = context.manualDefs.getInterface(prototype.name)
   const members = getMembers(context, prototype, existing, subclassMap)
   const heritageClauses = getPrototypeHeritageClauses(prototype, context)
@@ -194,7 +192,7 @@ function getPrototypeOverridenAttributes(
   return getOverridenAttributes(context, prototype, context.prototypes, context.prototypeProperties)
 }
 
-function classNameToTypeName(name: string): string {
+function prototypeClassNameToTypeName(name: string): string {
   if (name.endsWith("Prototype")) {
     name = name.slice(0, -"Prototype".length)
   }
@@ -202,7 +200,7 @@ function classNameToTypeName(name: string): string {
   return name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()
 }
 
-function addPrototypeMap(
+function addPrototypeMapDefinitions(
   context: PrototypeGenerationContext,
   subclassMap: Map<string, string[]>,
   rootPrototypes: string[],
@@ -250,17 +248,34 @@ function addPrototypeMap(
   )
   context.currentFile.add(typeAlias)
 
+  // typealias PrototypeType = keyof PrototypeMap
+  const prototypeTypeAlias = ts.factory.createTypeAliasDeclaration(
+    [Modifiers.export],
+    "PrototypeType",
+    undefined,
+    ts.factory.createTypeOperatorNode(ts.SyntaxKind.KeyOfKeyword, ts.factory.createTypeReferenceNode("PrototypeMap")),
+  )
+  addJsDoc(
+    context,
+    prototypeTypeAlias,
+    {
+      description: "All prototype types.",
+    },
+    undefined,
+  )
+  context.currentFile.add(prototypeTypeAlias)
+
   // type <entity>Type = keyof defines.prototypes["entity"]
-  for (const prototype of rootPrototypes) {
-    const subTypes = subclassMap.get(prototype)
+  for (const rootPrototype of rootPrototypes) {
+    const subTypes = subclassMap.get(rootPrototype)
     if (!subTypes || subTypes.length <= 1) continue
-    const typeName = classNameToTypeName(prototype)
+    const typeName = prototypeClassNameToTypeName(rootPrototype)
     if (!Object.values<string>(nameToToPrototypeType).includes(typeName)) {
-      context.warning(`Root prototype ${prototype} is not in prototypeBaseClasses`)
+      context.warning(`Root prototype ${rootPrototype} is not in prototypeBaseClasses`)
     }
     const typeAlias = ts.factory.createTypeAliasDeclaration(
       [Modifiers.export],
-      capitalize(typeName) + "Type",
+      toPascalCase(typeName) + "Type",
       undefined,
       ts.factory.createTypeOperatorNode(
         ts.SyntaxKind.KeyOfKeyword,

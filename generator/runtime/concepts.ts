@@ -10,6 +10,7 @@ import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 import { copyExistingDeclaration } from "../manualDefinitions.js"
+import { generateBuiltinType } from "../builtin"
 
 /**
  * Should be last to preprocess
@@ -134,7 +135,13 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     createTableOrArrayConcept(context, concept, tableOrArray)
     return
   }
-
+  if (conceptUsage === RWUsage.None) {
+    context.warning(`Unknown concept usage for ${concept.name}`)
+    return
+  }
+  if (typeof concept.type === "object" && concept.type.complex_type === "builtin") {
+    return generateBuiltinType(context, concept)
+  }
   const conceptType = mapConceptType(
     context,
     concept.type,
@@ -145,39 +152,29 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     conceptUsage,
   )
   if (!conceptType) {
-    assert(typeof concept.type === "object" && concept.type.complex_type === "builtin")
     return
   }
-  if ("builtinType" in conceptType) {
-    assert(typeof concept.type === "object" && concept.type.complex_type === "builtin")
-    const node = copyExistingDeclaration(conceptType.builtinType)
-    addJsDoc(context, node, concept, concept.name)
-    context.currentFile.add(node)
-  } else {
-    const { mainType, description, altWriteType } = conceptType
-    const mainResult = typeToDeclaration(mainType, concept.name)
+  const { mainType, description, altWriteType } = conceptType
+  const mainResult = typeToDeclaration(context, mainType, concept.name)
+  const writeName = `${concept.name}Write`
+  let tags: ts.JSDocTag[] | undefined
+  if (altWriteType) {
+    tags = [createSeeTag(writeName)]
+  }
+  addJsDoc(context, mainResult, concept, concept.name, { tags, post: description })
+  context.currentFile.add(mainResult)
+  if (altWriteType) {
+    const writeResult = typeToDeclaration(context, altWriteType, writeName)
+    addJsDoc(
+      context,
+      writeResult,
+      {
+        description: getWriteDescription(concept),
+      },
+      concept.name,
+    )
 
-    const writeName = `${concept.name}Write`
-    let tags: ts.JSDocTag[] | undefined
-    if (altWriteType) {
-      tags = [createSeeTag(writeName)]
-    }
-    addJsDoc(context, mainResult, concept, concept.name, { tags, post: description })
-    context.currentFile.add(mainResult)
-
-    if (altWriteType) {
-      const writeResult = typeToDeclaration(altWriteType, writeName)
-      addJsDoc(
-        context,
-        writeResult,
-        {
-          description: getWriteDescription(concept),
-        },
-        concept.name,
-      )
-
-      context.currentFile.add(writeResult)
-    }
+    context.currentFile.add(writeResult)
   }
 }
 

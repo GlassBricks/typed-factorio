@@ -6,7 +6,7 @@ import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } 
 import { mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./read-write-types.js"
 import { byOrder } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime/index.js"
+import { RuntimeGenerationContext } from "./runtime"
 
 export function createVariantParameterTypes(
   context: RuntimeGenerationContext,
@@ -235,7 +235,8 @@ function getAllVariants(
   }
 
   // check for concept enum
-  const stringEnumType = tryGetStringEnumType(context, apiType, property.member.mainProperty.type!)
+  const tsType = property.member.mainProperty.type
+  const stringEnumType = tsType && tryGetStringEnumType(context, apiType, tsType)
   if (stringEnumType) {
     return {
       variants: new Set<string>(stringEnumType),
@@ -243,7 +244,8 @@ function getAllVariants(
     }
   }
 
-  throw new Error(`Could not determine values of discriminant property ${name}.${discriminantProperty}`)
+  context.warning(`Could not determine values of discriminant property ${name}.${discriminantProperty}`)
+  return {}
 }
 
 export function tryGetStringEnumType(
@@ -255,6 +257,19 @@ export function tryGetStringEnumType(
     const result = tryGetStringUnionValuesFromConcept(context, apiType)
     if (result) return result
   }
+
+  if (ts.isTypeReferenceNode(tsType)) {
+    try {
+      const result = tryGetStringUnionValuesFromConcept(context, (tsType.typeName as ts.Identifier).text)
+      if (result) return result
+    } catch (err) {
+      console.log((err as Error).message)
+    }
+  }
+
+  // check for string literal union
+  const fromTsType = tryGetStringUnionValuesFromTsType(context, tsType)
+  if (fromTsType) return fromTsType
   if (
     typeof apiType === "object" &&
     apiType.complex_type === "union" &&
@@ -262,13 +277,6 @@ export function tryGetStringEnumType(
   ) {
     return apiType.options.map((o) => (o as LiteralType).value as string)
   }
-  if (ts.isTypeReferenceNode(tsType)) {
-    const result = tryGetStringUnionValuesFromConcept(context, tsType.typeName.getText())
-    if (result) return result
-  }
-
-  // check for string literal union
-  return tryGetStringUnionValuesFromTsType(context, tsType)
 }
 
 function tryGetStringUnionValuesFromConcept(

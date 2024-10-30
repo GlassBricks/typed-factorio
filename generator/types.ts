@@ -13,7 +13,8 @@ import { assertNever, byOrder } from "./util.js"
 import { RuntimeGenerationContext } from "./runtime"
 import { GenerationContext } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype"
-import { getTypeAsPrototypeSubtypes } from "./prototypeSubclassTypes.js"
+import { getSpecificPrototypeTypeForTypeAttribute } from "./prototypeSubclassTypes.js"
+import { mapProperty } from "./prototype/properties"
 
 export interface TypeContext {
   contextName?: string
@@ -27,26 +28,64 @@ export interface RWType {
   altWriteType?: ts.TypeNode
 }
 
+export interface TypeMemberDescription {
+  description: string
+  name: string
+  optional: boolean
+}
+
+export function mapAttributeType(
+  context: RuntimeGenerationContext,
+  attribute: runtime.Attribute,
+  parentName: string,
+  hasExistingType?: boolean,
+): RWType {
+  if (!attribute.read_type && !attribute.write_type) {
+    throw new Error(`Attribute ${attribute.name} has no read or write type`)
+  }
+  if (
+    attribute.read_type &&
+    attribute.write_type &&
+    JSON.stringify(attribute.read_type) !== JSON.stringify(attribute.write_type)
+  ) {
+    const readType = mapMemberType(context, attribute, parentName, attribute.read_type, RWUsage.Read, hasExistingType)
+    const writeType = mapMemberType(
+      context,
+      attribute,
+      parentName,
+      attribute.write_type,
+      RWUsage.Write,
+      hasExistingType,
+    )
+    return {
+      mainType: readType.mainType,
+      altWriteType: writeType.mainType,
+    }
+  }
+  const type = attribute.read_type ?? attribute.write_type!
+  let usage = RWUsage.None
+  if (attribute.read_type) usage |= RWUsage.Read
+  if (attribute.write_type) usage |= RWUsage.Write
+  return mapMemberType(context, attribute, parentName, type, usage, hasExistingType)
+}
+
+/** May apply transformations to the type based on additional context. */
 export function mapMemberType(
   context: RuntimeGenerationContext,
-  member: {
-    description: string
-    name?: string
-    optional?: boolean
-  },
-  parent: string,
+  member: TypeMemberDescription,
+  parentName: string,
   type: runtime.Type,
   usage: RWUsage,
   hasExistingType?: boolean,
 ): RWType {
   const result =
-    tryUseIndexType(context, member, parent, type) ??
+    tryUseIndexType(context, member, parentName, type) ??
     tryUseStringUnion(member, type) ??
     tryUseFlagValue(context, member, type) ??
-    tryUsePrototypeSubtype(context, member, type, parent, hasExistingType) ??
-    mapRuntimeType(context, type, parent + (member.name ? "." + member.name : ""), usage)
+    tryUsePrototypeSubtype(context, member, type, parentName, hasExistingType) ??
+    mapRuntimeType(context, type, parentName + (member.name ? "." + member.name : ""), usage)
 
-  const isNullable = !member.optional && isNullableFromDescription(context, member, parent)
+  const isNullable = !member.optional && isNullableFromDescription(context, member, parentName)
   return isNullable
     ? {
         mainType: makeNullable(result.mainType),
@@ -79,9 +118,6 @@ export function mapConceptType(
       altWriteType?: ts.TypeNode
       description?: string
     }
-  | {
-      builtinType: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
-    }
   | undefined {
   return mapTypeInternalAny(context, type, typeContext, usage)
 }
@@ -102,24 +138,31 @@ export function mapPrototypeType(
 
 export function mapPrototypeConcept(
   context: PrototypeGenerationContext,
-  type: prototype.Type,
-  prototypeProperties: ts.TypeElement[] | undefined,
-  existingDef: InterfaceDef | TypeAliasDef | undefined,
+  concept: prototype.PrototypeConcept,
 ): {
   type: ts.TypeNode
-  description?: string
+  innerStructType: ts.TypeNode | undefined
+  description: string | undefined
 } {
+  const type = concept.type
+  const existingDef = context.manualDefs.getDeclaration(concept.name)
+  const properties = concept.properties
+    ?.sort(byOrder)
+    .flatMap((p) => mapProperty(context, p, concept.name, existingDef))
+
   const iType = mapTypeInternal(
     context,
     type,
     {
-      existingDef,
-      prototypeConceptProperties: prototypeProperties,
+      existingDef: existingDef,
+      contextName: concept.name,
+      prototypeConceptProperties: properties,
     },
     RWUsage.Write,
   )
   return {
     type: iType.mainType,
+    innerStructType: iType.innerStructType,
     description: iType.description,
   }
 }
@@ -131,6 +174,8 @@ function assertIsRuntimeGenerationContext(context: GenerationContext): asserts c
 interface IntermediateType {
   mainType: ts.TypeNode
   altWriteType?: ts.TypeNode
+  isStructType?: true
+  innerStructType?: ts.TypeNode
   description?: string
   asString: string | undefined
 }
@@ -140,12 +185,7 @@ function mapTypeInternalAny(
   type: runtime.Type | prototype.Type,
   typeContext: TypeContext | undefined,
   usage: RWUsage,
-):
-  | IntermediateType
-  | {
-      builtinType: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
-    }
-  | undefined {
+): IntermediateType | undefined {
   // assert(usage !== RWUsage.None)
   if (typeof type === "string") return mapBasicType(context, type, typeContext, usage)
   switch (type.complex_type) {
@@ -173,15 +213,8 @@ function mapTypeInternalAny(
       return mapTupleType(context, type, typeContext, usage)
     case "struct":
       return mapPrototypeStructType(context, typeContext)
-    case "builtin": {
-      const node = mapBuiltinType(context, type, typeContext)
-      if (!node) return undefined
-      return {
-        mainType: undefined!,
-        builtinType: node,
-        asString: undefined,
-      }
-    }
+    case "builtin":
+      throw new Error("Should be handled elsewhere")
     default:
       assertNever(type)
   }
@@ -194,9 +227,6 @@ function mapTypeInternal(
 ): IntermediateType {
   const result = mapTypeInternalAny(context, type, typeContext, usage)
   if (!result) throw new Error("Result expected for type: " + JSON.stringify(type))
-  if ("builtinType" in result) {
-    throw new Error("Builtin type not expected: " + JSON.stringify(type))
-  }
   return result
 }
 
@@ -356,6 +386,22 @@ function mapUnionType(
     context.warning("Union type with no full format has elements with description: " + JSON.stringify(type))
   }
 
+  const innerStructTypeIndex = types.findIndex((t) => t.isStructType)
+  let innerStructType: ts.TypeNode | undefined
+  if (innerStructTypeIndex !== -1) {
+    const innerStruct = types[innerStructTypeIndex]
+    innerStructType = innerStruct.mainType
+    if (innerStruct.altWriteType || innerStruct.description) {
+      context.warning("Can't handle altWriteType or description for inner struct type: " + JSON.stringify(type))
+    }
+    if (!typeContext?.contextName) context.warning("Cannot find context name for inner struct type")
+    else
+      types[innerStructTypeIndex] = {
+        mainType: ts.factory.createTypeReferenceNode(typeContext.contextName + "Struct"),
+        asString: undefined,
+      }
+  }
+
   let altType: ts.TypeNode[] | undefined
 
   if (usage === RWUsage.ReadWrite && types.some((t) => t.altWriteType)) {
@@ -384,6 +430,7 @@ function mapUnionType(
     mainType: makeUnion(typeNodes),
     altWriteType: altType && makeUnion(altType),
     description,
+    innerStructType,
     asString: undefined,
   }
 }
@@ -458,7 +505,8 @@ function mapArrayType(
   return {
     mainType,
     altWriteType,
-    asString: "unionArray" in type ? elementType.asString : undefined,
+    asString:
+      "unionArray" in type ? elementType.asString : elementType.asString ? elementType.asString + "[]" : undefined,
     description: elementType.description,
   }
 }
@@ -477,7 +525,6 @@ function getIndexableType(context: GenerationContext, type: runtime.Type | proto
       (context instanceof RuntimeGenerationContext && (type.startsWith("defines.") || context.numericTypes.has(type)))
     )
       return IndexType.Basic
-    // if (type === "CollisionMaskLayer") return IndexType.StringUnion
     const innerType = context.tryGetTypeOfReference(type)
     if (innerType) return getIndexableType(context, innerType)
     return IndexType.None
@@ -496,6 +543,11 @@ function getIndexableType(context: GenerationContext, type: runtime.Type | proto
   return IndexType.None
 }
 
+function maybeMapKeyType(type: runtime.Type | prototype.Type) {
+  if (type === "SurfacePropertyID") return "string"
+  return type
+}
+
 function mapDictionaryType(
   context: GenerationContext,
   type: runtime.DictionaryType | prototype.DictionaryType,
@@ -503,9 +555,11 @@ function mapDictionaryType(
   usage: RWUsage,
 ): IntermediateType {
   let recordType = "Record"
-  const indexType = getIndexableType(context, type.key)
+  const apiKeyType = maybeMapKeyType(type.key)
+
+  const indexType = getIndexableType(context, apiKeyType)
   if (indexType === IndexType.None) {
-    context.warning("dictionary key is not indexable: " + JSON.stringify(type.key))
+    context.warning("dictionary key is not indexable: " + JSON.stringify(apiKeyType))
     recordType = "LuaTable"
   }
   // flags
@@ -518,10 +572,10 @@ function mapDictionaryType(
     type.value.value === true
   ) {
     // Record<... true>
-    return makeFlagsType(context, typeContext, type.key as runtime.Type, usage)
+    return makeFlagsType(context, typeContext, apiKeyType as runtime.Type, usage)
   }
 
-  const keyType = mapTypeInternal(context, type.key, undefined, usage)
+  const keyType = mapTypeInternal(context, apiKeyType, undefined, usage)
   const valueType = mapTypeInternal(context, type.value, undefined, usage)
   if (keyType.altWriteType) {
     context.warning("Dictionary type has key with altWriteType: " + JSON.stringify(type))
@@ -744,16 +798,18 @@ function mapTupleType(
     if (type.description) {
       context.warning("Unknown description for tuple member: " + type.description)
     }
-    return type.mainType
+    return type
   })
 
-  const result = ts.factory.createTypeOperatorNode(
+  const mainType = ts.factory.createTypeOperatorNode(
     ts.SyntaxKind.ReadonlyKeyword,
-    ts.factory.createTupleTypeNode(values),
+    ts.factory.createTupleTypeNode(values.map((v) => v.mainType)),
   )
+  const asString = values.every((v) => v.asString) ? `[${values.map((v) => v.asString).join(", ")}]` : undefined
+
   return {
-    mainType: result,
-    asString: undefined,
+    mainType,
+    asString,
   }
 }
 
@@ -765,31 +821,14 @@ function mapPrototypeStructType(context: GenerationContext, typeContext: TypeCon
   const properties = typeContext.prototypeConceptProperties
   return {
     mainType: ts.factory.createTypeLiteralNode(properties),
+    isStructType: true,
     asString: undefined,
   }
 }
 
-export function mapBuiltinType(
-  context: GenerationContext,
-  _builtin: runtime.BuiltinType,
-  typeContext: TypeContext | undefined,
-): ts.TypeAliasDeclaration | ts.InterfaceDeclaration | undefined {
-  if (!typeContext) throw new Error("TypeContext is required for builtin type")
-  const name = typeContext.contextName
-  if (name === "boolean" || name === "string" || name === "number") return
-  const existing = typeContext.existingDef
-  if (!existing) {
-    context.warning(`No existing definition for builtin ${name}`)
-    return undefined
-  }
-  return existing.node
-}
-
 function tryUseIndexType(
   context: RuntimeGenerationContext,
-  member: {
-    name?: string
-  },
+  member: TypeMemberDescription,
   parent: string,
   type: runtime.Type,
 ): RWType | undefined {
@@ -807,43 +846,25 @@ function tryUseIndexType(
   }
 }
 
-function tryUseStringUnion(
-  member: {
-    description: string
-    name?: string
-  },
-  type: runtime.Type,
-): RWType | undefined {
-  if (type === "string") {
-    const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
-    if (
-      (matches.size >= 2 && !member.description.match(/e\.g\. /i)) ||
-      (matches.size === 1 &&
-        (member.description.match(/One of `"[a-zA-Z-_]+?"`/) ||
-          member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
-    ) {
-      return {
-        mainType: ts.factory.createUnionTypeNode(Array.from(matches, Types.stringLiteral)),
-      }
+function tryUseStringUnion(member: TypeMemberDescription, type: runtime.Type): RWType | undefined {
+  if (type !== "string") {
+    return
+  }
+  const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
+  if (
+    (matches.size >= 2 && !member.description.match(/e\.g\. /i)) ||
+    (matches.size === 1 &&
+      (member.description.match(/One of `"[a-zA-Z-_]+?"`/) || member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
+  ) {
+    return {
+      mainType: ts.factory.createUnionTypeNode(Array.from(matches, Types.stringLiteral)),
     }
   }
-  /*
-              else {
-                if (member.name === "type") {
-                  console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
-                }
-              }
-              */
-
-  return undefined
 }
 
 function tryUseFlagValue(
   _context: RuntimeGenerationContext,
-  member: {
-    description: string
-    name?: string
-  },
+  member: TypeMemberDescription,
   type: runtime.Type,
 ): RWType | undefined {
   if (member.name !== "flag" || type !== "string") return undefined
@@ -861,15 +882,12 @@ function tryUseFlagValue(
 
 function tryUsePrototypeSubtype(
   context: RuntimeGenerationContext,
-  member: {
-    description: string
-    name?: string
-  },
+  member: TypeMemberDescription,
   type: runtime.Type,
   parent: string,
   hasExistingType: boolean = false,
 ): RWType | undefined {
-  const subclassType = getTypeAsPrototypeSubtypes(context, parent, member, hasExistingType, type)
+  const subclassType = getSpecificPrototypeTypeForTypeAttribute(context, parent, member, hasExistingType, type)
   if (subclassType) {
     return { mainType: subclassType }
   }
@@ -884,7 +902,7 @@ function isNullableFromDescription(
   parent: string,
 ): boolean {
   const nullableRegex =
-    /(passing|returns?|or|be|possibly|otherwise|else|writing|set(ting)?(( this)?|( the name)?)( to)?) [`']?nil[`']?|`?nil`? (if|when|otherwise|erases)/i
+    /(specify|passing|returns?|or|be|possibly|otherwise|else|writing|set(ting)?(( this)?|( the name)?)( to)?) [`']?nil[`']?|`?nil`? (if|when|otherwise|erases)/i
   const nullable = member.description.match(nullableRegex)
   if (nullable) {
     if (!member.description.match(/[`' ]nil/i)) {
@@ -899,9 +917,6 @@ function isNullableFromDescription(
   if (member.description.match(/[`' ]nil/i)) {
     context.warning("May still be nullable: " + member.description)
   }
-  // if ((member as WithNotes).notes?.some((note) => note.match(nullableRegex))) {
-  //   console.log(chalk.blueBright("Possibly nullable from note: ", (member as WithNotes).notes))
-  // }
   return false
 }
 
@@ -919,6 +934,7 @@ export function makeNullable(typeNode: ts.TypeNode): ts.TypeNode {
   return ts.factory.createUnionTypeNode([...typeNode.types, Types.nil])
 }
 export function typeToDeclaration(
+  context: GenerationContext,
   type: ts.TypeNode,
   name: string,
   heritageClauses?: ts.HeritageClause[],
@@ -927,7 +943,7 @@ export function typeToDeclaration(
     return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, heritageClauses, type.members)
   } else {
     if (heritageClauses) {
-      throw new Error("Cannot have heritage clauses on non-interface")
+      context.warning("Cannot have heritage clauses on non-interface")
     }
     return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
   }

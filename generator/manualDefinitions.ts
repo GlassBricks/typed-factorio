@@ -142,6 +142,7 @@ export class ManualDefinitions {
       return def
     }
   }
+
   getTypeAlias(name: string): TypeAliasDef | undefined {
     const def = this.map.get(name)
     if (def) {
@@ -149,6 +150,7 @@ export class ManualDefinitions {
       return def
     }
   }
+
   getDeclaration(name: string): InterfaceDef | TypeAliasDef | undefined {
     const def = this.map.get(name)
     if (def) {
@@ -156,6 +158,7 @@ export class ManualDefinitions {
       return def
     }
   }
+
   getNamespace(name: string): NamespaceDef | undefined {
     const def = this.map.get(name)
     if (def) {
@@ -163,6 +166,7 @@ export class ManualDefinitions {
       return def
     }
   }
+
   get<T extends string>(name: string, ...expectedTypes: T[]): Extract<AnyDef, { kind: T }> | undefined {
     const def = this.map.get(name)
     if (def) {

@@ -46,7 +46,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     } else if (reference.match(/^defines(\.|$)/)) {
       relative_link = "defines.html#" + reference
     } else if (this.concepts.has(reference)) {
-      relative_link = "concepts.html#" + reference
+      relative_link = `concepts/${reference}.html`
     } else if (this.globalObjects.has(reference)) {
       relative_link = "index-runtime.html"
     } else if (this.globalFunctions.has(reference)) {
@@ -57,8 +57,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
         return this.getOnlineDocUrl(className) + "#" + reference
       }
       if (this.concepts.has(className)) {
-        relative_link = "concepts.html#" + reference
-        // concepts.html#Concept.property
+        relative_link = `concepts/${reference}.html`
       } else {
         this.warning(`unknown dot reference ${reference}`)
         relative_link = ""
@@ -71,6 +70,21 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   }
 
   preprocessAll(): void {
+    if (this.apiDocs.application_version !== "2.0.12") {
+      const message = `
+Factorio version has been updated from 2.0.12. Manually check for the following, then update this file/check:
+
+Manual definitions:
+- if/how https://forums.factorio.com/viewtopic.php?f=233&t=118305 is resolved.
+- if SpaceLocationAsteroidSpawnDefinition::type and SpaceConnectionAsteroidSpawnDefinition::type are now more specific strings.
+- If LuaPostEntityDiedEventFilter has changed.
+
+Hardcoded things:
+- SurfacePropertyID was manually converted to string when used as dictionary key. Check if this is still the case.
+`
+      this.warning(message)
+    }
+
     preprocessGlobalObjects(this)
     preprocessGlobalFunctions(this)
     preprocessDefines(this)
@@ -79,6 +93,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     preprocessConcepts(this)
     preprocessIndexTypes(this)
   }
+
   generateAll(): void {
     generateGlobalObjects(this)
     generateGlobalFunctions(this)
@@ -91,12 +106,20 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
 }
 
 class ConceptUsageAnalysis {
-  constructor(private concepts: Concept[]) {}
-  conceptUsages = new Map<Concept, RWUsage>(this.concepts.map((e) => [e, RWUsage.None]))
-  conceptUsagesToPropagate = new Map<Concept, RWUsage>()
-  conceptReferencedBy = new Map<Concept, Set<Concept>>(this.concepts.map((e) => [e, new Set()]))
-  // empty object = has separate read/write types, but not yet known form (may use default)
-  conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
+  conceptUsages
+  conceptUsagesToPropagate
+  conceptReferencedBy
+  conceptReadWriteTypes
+  tableOrArrayConcepts
 
-  tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TupleType }>()
+  constructor(private concepts: Concept[]) {
+    this.conceptUsages = new Map<Concept, RWUsage>(this.concepts.map((e) => [e, RWUsage.None]))
+
+    this.conceptUsagesToPropagate = new Map<Concept, RWUsage>()
+    this.conceptReferencedBy = new Map<Concept, Set<Concept>>(this.concepts.map((e) => [e, new Set()]))
+    // empty object = has separate read/write types, but not yet known form (may use default)
+    this.conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
+
+    this.tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TupleType }>()
+  }
 }

@@ -1,5 +1,5 @@
 import ts from "typescript"
-import { EventRaised } from "./FactorioRuntimeApiJson.js"
+import { EventRaised, Expansions } from "./FactorioRuntimeApiJson.js"
 import { getMappedEventName } from "./runtime/events.js"
 import { addFakeJSDoc } from "./genUtil.js"
 import { byOrder } from "./util.js"
@@ -15,25 +15,26 @@ export interface Documentable extends PrototypeWithExamples {
   instance_limit?: number
   default?: string | LiteralType
   deprecated?: boolean
+  visibility?: Expansions[]
 }
-const pageLinks = new Set([
-  "global",
+
+const auxiliaryPages = new Set([
+  "storage",
   "data-lifecycle",
   "migrations",
-  "classes",
-  "concepts",
-  "events",
-  "defines",
-  "prototypes",
+  "libraries",
+  "prototype-tree",
+  "noise-expressions",
+  "instrument",
 ])
+const otherPages = new Set(["classes", "concepts", "events", "defines", "prototypes"])
 
 function mapLink(context: GenerationContext, origLink: string): string | undefined {
   if (origLink.match(/^http(s?):\/\//)) {
     return origLink
   }
-  // hardcoded exception
-  if (origLink === "libraries.html") {
-    return context.docUrlBase() + "libraries.html"
+  if (origLink.endsWith(".html") && auxiliaryPages.has(origLink.slice(0, -5))) {
+    return `${context.docUrlBase()}auxiliary/${origLink}`
   }
 
   const match = origLink.match(/(.*?):(.*?)(?:::(.*))?$/)
@@ -43,8 +44,11 @@ function mapLink(context: GenerationContext, origLink: string): string | undefin
   }
   const [, stage, name, member] = match
 
-  if (pageLinks.has(name)) {
-    return context.docUrlBase() + name + ".html"
+  if (auxiliaryPages.has(name)) {
+    return `${context.docUrlBase()}auxiliary/${name}.html`
+  }
+  if (otherPages.has(name)) {
+    return `${context.docUrlBase()}${name}.html`
   }
 
   if (stage !== "runtime" && stage !== "prototype") {
@@ -86,6 +90,7 @@ export function processDescription(
   if (!description) return undefined
   let result = ""
 
+  // Warning: ugly regex ahead
   for (const [, text, codeBlock] of description.matchAll(/((?:(?!```).)*)(?:$|```((?:(?!```).)*)```)/gs)) {
     let withLinks = text.replace(/\[(?!\[)(.+?)]\((.+?)\)/g, (_, name: string, origLink: string) => {
       if (name === "string" || name === "number" || name === "boolean") {
@@ -101,7 +106,6 @@ export function processDescription(
         return `{@${tag} ${link} ${name}}`
       }
     })
-    // .replace("__1__\n   ", "__1__") // fix for LocalisedString description
     if (normalizeNewlines) {
       withLinks = withLinks.replace(/\n(?!([\n-]))/g, "\n\n")
     }
@@ -113,14 +117,14 @@ export function processDescription(
   return result
 }
 
-function getDefaultComment(element: Documentable): string | undefined {
+function getCommentForDefaultValue(element: Documentable): string | undefined {
   const defaultValue = element.default
   if (defaultValue === undefined) return
   const defaultAsStr = typeof defaultValue === "string" ? defaultValue : JSON.stringify(defaultValue.value)
   return `**Default:** \`${defaultAsStr}\``
 }
 
-function getRaisesComment(context: GenerationContext, raises: EventRaised[] | undefined): string | undefined {
+function getCommentForEventRaised(context: GenerationContext, raises: EventRaised[] | undefined): string | undefined {
   if (!raises || raises.length === 0) return
   let result = "## Raised events\n"
   for (const event of raises.sort(byOrder)) {
@@ -135,7 +139,7 @@ function getRaisesComment(context: GenerationContext, raises: EventRaised[] | un
   return result
 }
 
-function getSubclassesComment(subclasses: string[] | undefined): string | undefined {
+function getCommentForSubclasses(subclasses: string[] | undefined): string | undefined {
   if (!subclasses || subclasses.length === 0) return
   return `_Can only be used if this is ${
     subclasses.length === 1
@@ -144,12 +148,12 @@ function getSubclassesComment(subclasses: string[] | undefined): string | undefi
   }_`
 }
 
-function getInstanceLimitComment(instanceLimit: number | undefined): string | undefined {
+function getCommentForInstanceLimit(instanceLimit: number | undefined): string | undefined {
   if (!instanceLimit) return
   return `_Prototype limited to **${instanceLimit}** total instances_`
 }
 
-function getListsComment(element: Documentable, onlineReference: string | undefined): string | undefined {
+function getCommentForDocLists(element: Documentable, onlineReference: string | undefined): string | undefined {
   if (!element.lists) return
   assert(onlineReference)
   return element.lists
@@ -161,7 +165,7 @@ function getListsComment(element: Documentable, onlineReference: string | undefi
     .join("\n\n")
 }
 
-function getImages(context: GenerationContext, element: Documentable): string | undefined {
+function getCommentForDocImages(context: GenerationContext, element: Documentable): string | undefined {
   if (!element.images) return
   return element.images
     .map((image) => {
@@ -176,6 +180,16 @@ function processExample(context: GenerationContext, example: string): string {
   const [, header, codeBlock] = example.match(/^(.*?)(?:$|\n?```\n((?:(?!```).)*)```)/s)!
   const result = processDescription(context, header + "\n" + codeBlock.trim(), false)!
   return result.replaceAll("\n", "\n * ")
+}
+
+const expansionComments: Record<Expansions, string> = {
+  space_age:
+    "![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.",
+}
+
+function getCommentForExpansions(element: Documentable): string | undefined {
+  if (!element.visibility || element.visibility.length === 0) return
+  return element.visibility.map((expansion) => expansionComments[expansion]).join("\n\n")
 }
 
 export function createTag(tag: string, comment?: string): ts.JSDocUnknownTag {
@@ -197,15 +211,16 @@ export function addJsDoc<T extends ts.Node>(
   const onlineDocUrl = onlineReferenceName && context.getOnlineDocUrl(onlineReferenceName)
 
   const comment = [
-    getDefaultComment(element),
+    getCommentForExpansions(element),
+    getCommentForDefaultValue(element),
     additions.pre && processDescription(context, additions.pre),
     processDescription(context, element.description),
     additions.post && processDescription(context, additions.post),
-    getRaisesComment(context, element.raises),
-    getSubclassesComment(element.subclasses),
-    getInstanceLimitComment(element.instance_limit),
-    getListsComment(element, onlineDocUrl),
-    getImages(context, element),
+    getCommentForEventRaised(context, element.raises),
+    getCommentForSubclasses(element.subclasses),
+    getCommentForInstanceLimit(element.instance_limit),
+    getCommentForDocLists(element, onlineDocUrl),
+    getCommentForDocImages(context, element),
   ]
     .filter((x) => x)
     .join("\n\n")

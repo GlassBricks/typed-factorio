@@ -1,4 +1,4 @@
-import { RuntimeGenerationContext } from "./runtime/index.js"
+import { RuntimeGenerationContext } from "./runtime"
 import { Type } from "./FactorioRuntimeApiJson.js"
 import { capitalize } from "./genUtil.js"
 import ts from "typescript"
@@ -10,11 +10,18 @@ export const nameToToPrototypeType = {
   equipment: "equipment",
   item: "item",
   EventFilter: "entity",
+  get_history: "prototype",
+  _unused1: "space-location",
+  _unused2: "active-trigger",
 } as const
 
-const toIgnore = ["damage", "get_prototype_history", "GuiAnchor", "Noise"]
+const toIgnore = ["damage", "get_prototype_history", "GuiAnchor", "Noise", "LuaPrototypeBase"]
 
-export function getTypeAsPrototypeSubtypes(
+/**
+ * For attributes of the `type : string` or `ghost_type : string` form,
+ * try to map to a more specific prototype type, e.g. `EntityType`.
+ */
+export function getSpecificPrototypeTypeForTypeAttribute(
   context: RuntimeGenerationContext,
   sourceName: string,
   member: {
@@ -39,7 +46,7 @@ export function getTypeAsPrototypeSubtypes(
   }
 
   for (const [searchString, name] of Object.entries(nameToToPrototypeType)) {
-    if (!thisName.includes(capitalize(searchString))) {
+    if (!(thisName.includes(capitalize(searchString)) || thisName === searchString)) {
       continue
     }
     const importName = capitalize(name) + "Type"

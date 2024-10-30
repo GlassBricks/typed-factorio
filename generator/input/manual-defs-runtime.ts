@@ -4,8 +4,28 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
-import { PrototypeMap } from "factorio:prototype"
-import { SettingsPrototypeMap } from "factorio:settings"
+
+// See https://forums.factorio.com/viewtopic.php?f=233&t=118305
+/** @omit */
+export interface VirtualSignalID {}
+
+/** @omit */
+export interface LogisticSections {}
+
+/** @omit */
+export interface LogisticSection {}
+
+/** @omit */
+export interface BlueprintLogisticFilter {}
+
+/** @omit */
+export interface BurnerUsageID {}
+
+/** @omit */
+export interface CircuitNetworkSelection {}
+
+/** @omit */
+export interface RaiseEventParameters {}
 
 export interface LuaObject {
   readonly object_name: string
@@ -29,7 +49,7 @@ declare namespace defines {
     enum technology_difficulty {}
   }
 
-  enum circuit_connector_id {}
+  enum wire_connector_id {}
 
   enum gui_type {}
 
@@ -48,6 +68,10 @@ declare namespace defines {
     const script_raised_set_tiles: EventId<any>
   }
 
+  // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
+  /** @omit */
+  enum default_icon_size {}
+
   /** @numericEnum */
   enum command {}
 
@@ -64,38 +88,18 @@ declare namespace defines {
       enum content_read_mode {}
     }
     namespace inserter {
-      enum circuit_mode_of_operation {}
-
       enum hand_read_mode {}
     }
-    namespace logistic_container {
-      enum circuit_mode_of_operation {}
-    }
-    namespace lamp {
-      enum circuit_mode_of_operation {}
-    }
+    namespace logistic_container {}
+    namespace lamp {}
   }
 }
 
 // -- classes --
 
-/** @addBefore LuaCustomTable */
-/**
- * This type gives:
- * - a number type, if K includes a number in its union
- * - K otherwise
- *
- * It also preserves number branding.
- */
-export type LuaCustomTableIterKey<K> = [number] extends [K extends number ? number : K]
-  ? K extends string
-    ? never
-    : K
-  : K
-
-export type LuaCustomTable<K extends string | number, V> = {
+export type LuaCustomTable<K extends string | number, V, IterKey extends string | number = K> = {
   [P in K]: V
-} & LuaPairsIterable<LuaCustomTableIterKey<K>, V>
+} & LuaPairsIterable<IterKey, V>
 
 export interface LuaLazyLoadedValue<T> {
   get(): T
@@ -138,169 +142,11 @@ export interface LuaStyle {
 
 export interface GuiElementType {}
 
-export interface BaseGuiSpec {
-  readonly type: GuiElementType
-}
-
-export interface FlowGuiSpec {
-  readonly direction?: "horizontal" | "vertical"
-}
-
-export interface FrameGuiSpec {
-  readonly direction?: "horizontal" | "vertical"
-}
-
-export interface LineGuiSpec {
-  readonly direction?: "horizontal" | "vertical"
-}
+export interface BaseGuiSpec {}
 
 export interface SignalID {}
 
-export interface ItemPrototypeFilter {}
-
-export interface TilePrototypeFilter {}
-
-export interface EntityPrototypeFilter {}
-
-export interface FluidPrototypeFilter {}
-
-export interface RecipePrototypeFilter {}
-
-export interface DecorativePrototypeFilter {}
-
-export interface AchievementPrototypeFilter {}
-
-export interface EquipmentPrototypeFilter {}
-
-export interface TechnologyPrototypeFilter {}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export type ChooseElemButtonType =
-  | "item"
-  | "tile"
-  | "entity"
-  | "signal"
-  | "fluid"
-  | "recipe"
-  | "decorative"
-  | "item-group"
-  | "achievement"
-  | "equipment"
-  | "technology"
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface ChooseElemButtonFilters {
-  item: ItemPrototypeFilter[]
-  tile: TilePrototypeFilter[]
-  entity: EntityPrototypeFilter[]
-  signal: never
-  fluid: FluidPrototypeFilter[]
-  recipe: RecipePrototypeFilter[]
-  decorative: DecorativePrototypeFilter[]
-  "item-group": never
-  achievement: AchievementPrototypeFilter[]
-  equipment: EquipmentPrototypeFilter[]
-  technology: TechnologyPrototypeFilter[]
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface BaseChooseElemButtonSpec extends BaseGuiSpec {
-  readonly type: "choose-elem-button"
-  /** The type of the button - one of the following values. */
-  readonly elem_type: ChooseElemButtonType
-  /** Filters describing what to show in the selection window. See {@link LuaGuiElement.elem_filters LuaGuiElement::elem_filters}. */
-  readonly elem_filters?: ChooseElemButtonFilters[this["elem_type"]]
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface ItemChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "item"
-  /** If type is `"item"` - the default value for the button. */
-  readonly item?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface TileChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "tile"
-  /** If type is `"tile"` - the default value for the button. */
-  readonly tile?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface EntityChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "entity"
-  /** If type is `"entity"` - the default value for the button. */
-  readonly entity?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface SignalChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "signal"
-  /** If type is `"signal"` - the default value for the button. */
-  readonly signal?: SignalID
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface FluidChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "fluid"
-  /** If type is `"fluid"` - the default value for the button. */
-  readonly fluid?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface RecipeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "recipe"
-  /** If type is `"recipe"` - the default value for the button. */
-  readonly recipe?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface DecorativeChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "decorative"
-  /** If type is `"decorative"` - the default value for the button. */
-  readonly decorative?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface ItemGroupChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "item-group"
-  /** If type is `"item-group"` - the default value for the button. */
-  readonly "item-group"?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface AchievementChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "achievement"
-  /** If type is `"achievement"` - the default value for the button. */
-  readonly achievement?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface EquipmentChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "equipment"
-  /** If type is `"equipment"` - the default value for the button. */
-  readonly equipment?: string
-}
-
-/** @addBefore ChooseElemButtonGuiSpec */
-export interface TechnologyChooseElemButtonSpec extends BaseChooseElemButtonSpec {
-  readonly elem_type: "technology"
-  /** If type is `"technology"` - the default value for the button. */
-  readonly technology?: string
-}
-
-export type ChooseElemButtonGuiSpec =
-  | ItemChooseElemButtonSpec
-  | TileChooseElemButtonSpec
-  | EntityChooseElemButtonSpec
-  | SignalChooseElemButtonSpec
-  | FluidChooseElemButtonSpec
-  | RecipeChooseElemButtonSpec
-  | DecorativeChooseElemButtonSpec
-  | ItemGroupChooseElemButtonSpec
-  | AchievementChooseElemButtonSpec
-  | EquipmentChooseElemButtonSpec
-  | TechnologyChooseElemButtonSpec
+export interface ItemIDAndQualityIDPair {}
 
 // stub only
 export interface GuiSpec {
@@ -316,9 +162,14 @@ export type LuaGuiElement = {
   /** @variantsName GuiSpec */
   add<Type extends GuiElementType>(element: GuiSpec & { type: Type }): Extract<LuaGuiElement, { type: Type }>
 
-  readonly elem_type: ChooseElemButtonType
-  // @ts-ignore
-  elem_value: (this["elem_type"] extends "signal" ? SignalID : string) | nil
+  elem_value: // @ts-ignore
+  | (this["elem_type"] extends "signal"
+        ? SignalID
+        : // @ts-ignore
+          this["elem_type"] extends "with-quality"
+          ? ItemIDAndQualityIDPair
+          : string)
+    | nil
 
   /** @subclasses slider */
   get_slider_minimum()
@@ -326,21 +177,18 @@ export type LuaGuiElement = {
   get_slider_maximum()
   /** @subclasses slider */
   set_slider_minimum_maximum()
+
   /** @subclasses slider */
   get_slider_value_step()
-  /** @subclasses slider */
-  get_slider_discrete_slider()
   /** @subclasses slider */
   get_slider_discrete_values()
   /** @subclasses slider */
   set_slider_value_step()
   /** @subclasses slider */
-  set_slider_discrete_slider()
-  /** @subclasses slider */
   set_slider_discrete_values()
   /** @subclasses dropdown */
   close_dropdown()
-  /** @subclasses flow frame label table empty-widget */
+
   drag_target?: FrameGuiElement
 
   set style(style: LuaStyle | string)
@@ -348,8 +196,6 @@ export type LuaGuiElement = {
 }
 
 export interface FrameGuiElement {}
-
-// nullability, multi-return, different read/write types
 
 export interface LuaEquipment {}
 
@@ -395,10 +241,6 @@ export interface LuaEntity {
 
 export interface LuaGroup {
   readonly type: "item-group" | "item-subgroup"
-}
-
-export interface LuaModSettingPrototype {
-  readonly type: keyof SettingsPrototypeMap
 }
 
 export interface LuaItemStack {}
@@ -493,30 +335,25 @@ export interface LuaBootstrap {
   ): void
 
   readonly active_mods: ActiveMods
-
-  get_prototype_history(type: keyof PrototypeMap, name: string)
 }
 
 export interface LuaSurface {}
 
 export type PlayerIndex = uint
 export type SurfaceIndex = uint
+export type ForceIndex = uint
 
 export interface LuaGameScript {
   get_player(player: PlayerIndex | string): LuaPlayer | nil
 
   get_surface(surface: SurfaceIndex | string): LuaSurface | nil
 
-  readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer>
-  readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface>
-
-  readonly active_mods: ActiveMods
+  readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer, PlayerIndex>
+  readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface, string>
+  readonly forces: LuaCustomTable<ForceIndex | string, LuaSurface, string>
 }
 
 export interface ModSetting {
-  /**
-   * The value of the mod setting. The type depends on the kind of setting.
-   */
   readonly value: int | double | boolean | string | Color | ColorArray
 }
 
@@ -539,6 +376,7 @@ export interface MapPositionArray {}
 
 export interface Color {}
 
+// more specific type described in Color's description
 export type ColorArray = readonly [r: double, g: double, b: double, a?: double]
 export type ColorModifierArray = readonly [r: double, g: double, b: double, a?: double]
 
@@ -555,10 +393,6 @@ export interface ComparatorString {}
 /** @see ComparatorString */
 export type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
 
-export interface ArithmeticCombinatorParameters {
-  readonly operation?: "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
-}
-
 /** @writeType MouseButtonFlagsWrite */
 export interface MouseButtonFlags {}
 
@@ -572,17 +406,26 @@ export type SpriteType =
   | "entity"
   | "technology"
   | "recipe"
-  | "item-group"
   | "fluid"
   | "tile"
+  | "item-group"
   | "virtual-signal"
+  | "shortcut"
   | "achievement"
   | "equipment"
+  | "ammo-category"
+  | "decorative"
+  | "space-connection"
+  | "space-location"
+  | "surface"
+  | "airborne-pollutant"
+  | "asteroid-chunk"
+  | "quality"
   | "file"
   | "utility"
 
 /** @replace */
-export type SpritePath = (string & { _?: never }) | `${SpriteType}/${string}`
+export type SpritePath = (string & { _?: never }) | `${SpriteType}${"/" | "."}${string}`
 
 /** @addBefore SoundPath */
 export type SoundCategory =
@@ -604,9 +447,6 @@ export type SoundCategory =
 /** @replace */
 export type SoundPath = (string & { _?: never }) | `${SoundCategory}/${string}`
 
-/** @unionAdd */
-export type CollisionMaskLayer = `layer-${bigint}`
-
 /** @unionReplace type */
 export type RenderLayer = `${bigint}`
 
@@ -618,10 +458,6 @@ export interface SmokeSource {
   readonly east_position?: MapPosition
   readonly south_position?: MapPosition
   readonly west_position?: MapPosition
-}
-
-export interface FluidBoxConnection {
-  readonly positions: MapPosition[]
 }
 
 /** @writeType BoundingBoxWrite BoundingBoxArray */
@@ -638,24 +474,45 @@ export interface BoundingBoxWrite {
 }
 
 // /** @readType Fluid */
-// interface FluidIdentification {}
+// export interface FluidID {}
 
 /** @readType LuaForce */
-export interface ForceIdentification {}
+export interface ForceID {}
 
 /** @readType LuaTechnology */
-export interface TechnologyIdentification {}
+export interface TechnologyID {}
 
 // /** @readType LuaSurface */
-export interface SurfaceIdentification {}
+// export interface SurfaceIdentification {}
 
 /** @readType LuaPlayer */
 export interface PlayerIdentification {}
 
-/** @readType LuaItemPrototype */
-export interface ItemPrototypeIdentification {}
+export interface SpaceLocationAsteroidSpawnDefinition {
+  type: "asteroid-chunk" | "entity"
+}
 
-// Skipped: EntityPrototypeIdentification, ItemStackIdentification
+export interface SpaceConnectionAsteroidSpawnDefinition {
+  type: "asteroid-chunk" | "entity"
+}
+
+export interface BasePostEntityDiedEventFilter {
+  filter: "ghost" | "type"
+}
+
+export interface BaseUndoRedoAction {
+  type:
+    | "built-entity"
+    | "removed-entity"
+    | "built-tile"
+    | "removed-tile"
+    | "upgraded-entity"
+    | "upgraded-modules"
+    | "wire-added"
+    | "wire-removed"
+    | "rotated-entity"
+    | "copy-entity-settings"
+}
 
 export interface InfinityPipeFilter {}
 
@@ -718,8 +575,8 @@ export interface BlueprintEntity {
 export interface BlueprintConnectionData {
   /** ID of the entity this connection is connected with. */
   entity_id: uint
-  /** The circuit connector id of the entity this connection is connected to, see {@link defines.circuit_connector_id} */
-  circuit_id?: defines.circuit_connector_id
+  /** The circuit connector id of the entity this connection is connected to. */
+  circuit_id?: defines.wire_connector_id
 }
 
 /** @addAfter BlueprintEntity */
@@ -787,13 +644,15 @@ export interface DeciderCombinatorParameters {}
 
 export interface ProgrammableSpeakerCircuitParameters {}
 
-export interface ConstantCombinatorParameters {}
+export interface ArithmeticCombinatorParameters {}
 
 /** @addAfter BlueprintEntity */
+/**
+ * WARNING: this type has not yet been updated for factorio 2.0.
+ */
 export interface BlueprintControlBehavior {
   readonly condition?: CircuitCondition
   readonly circuit_condition?: CircuitCondition
-  readonly filters?: ConstantCombinatorParameters[]
   readonly is_on?: boolean
   readonly arithmetic_conditions?: ArithmeticCombinatorParameters
   readonly decider_conditions?: DeciderCombinatorParameters
@@ -804,10 +663,7 @@ export interface BlueprintControlBehavior {
   readonly train_stopped_signal?: SignalID
   readonly read_from_train?: boolean
   readonly send_to_train?: boolean
-  readonly circuit_mode_of_operation?:
-    | defines.control_behavior.inserter.circuit_mode_of_operation
-    | defines.control_behavior.logistic_container.circuit_mode_of_operation
-    | defines.control_behavior.lamp.circuit_mode_of_operation
+  readonly circuit_mode_of_operation?: number
   readonly circuit_read_hand_contents?: boolean
   readonly circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
   readonly circuit_set_stack_size?: boolean

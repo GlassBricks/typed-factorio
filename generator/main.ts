@@ -1,5 +1,5 @@
 import * as console from "console"
-import * as fs from "fs/promises"
+import * as fs from "fs"
 import * as path from "path"
 import * as prettier from "prettier"
 import ts from "typescript"
@@ -16,7 +16,7 @@ const srcDir = path.resolve(__dirname, "./input")
 const noFormat = process.argv.includes("--no-format")
 const noLink = process.argv.includes("--no-link")
 
-const srcFiles = await fs.readdir(srcDir)
+const srcFiles = fs.readdirSync(srcDir)
 function getApiJsonFileName(stage: string) {
   let version: string | undefined
   let jsonFile: string | undefined
@@ -36,10 +36,10 @@ function getApiJsonFileName(stage: string) {
   return jsonFile
 }
 
-async function getApiJson<C extends AnyApiJson>(stage: string) {
+function getApiJson<C extends AnyApiJson>(stage: string) {
   const json = getApiJsonFileName(stage)
 
-  const apiJson = JSON.parse(await fs.readFile(path.join(srcDir, json), "utf-8")) as C
+  const apiJson = JSON.parse(fs.readFileSync(path.join(srcDir, json), "utf-8")) as C
   const jsonVersion = apiJson.application_version
   if (apiJson.stage !== stage) {
     throw new Error(`Expected stage ${stage}, got ${apiJson.stage}`)
@@ -93,13 +93,14 @@ async function writeFiles(fileResults: Map<string, string>) {
     }
     const fileName = path.join(outDir, name)
     // make sure the directory exists
-    await fs.mkdir(path.dirname(fileName), { recursive: true })
-    await fs.writeFile(fileName, printContent)
+    fs.mkdirSync(path.dirname(fileName), { recursive: true })
+    fs.writeFileSync(fileName, printContent)
   }
 }
 const options: Options = {
   noLink,
 }
+
 async function doGeneration<C extends AnyApiJson>(
   stage: C["stage"],
   manualDefsFile: string,
@@ -111,7 +112,7 @@ async function doGeneration<C extends AnyApiJson>(
   ) => GenerationContext<C>,
 ) {
   console.log(`${stage}: reading files`)
-  const apiJson = await getApiJson<C>(stage)
+  const apiJson = getApiJson<C>(stage)
   const { typeChecker, manualDefines } = getManualDefsFile(manualDefsFile)
 
   console.log(`${stage}: generating files`)
@@ -123,10 +124,9 @@ async function doGeneration<C extends AnyApiJson>(
   return genContext.hasWarnings
 }
 
-const runtimeHasWarnings = doGeneration("runtime", "manual-defs-runtime.ts", RuntimeGenerationContext)
-const prototypesHasWarnings = doGeneration("prototype", "manual-defs-prototype.ts", PrototypeGenerationContext)
+const runtimeHasWarnings = await doGeneration("runtime", "manual-defs-runtime.ts", RuntimeGenerationContext)
+const prototypesHasWarnings = await doGeneration("prototype", "manual-defs-prototype.ts", PrototypeGenerationContext)
 
-const hasWarnings = (await runtimeHasWarnings) || (await prototypesHasWarnings)
-if (hasWarnings) {
+if (runtimeHasWarnings || prototypesHasWarnings) {
   process.exit(1)
 }

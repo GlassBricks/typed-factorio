@@ -1,4 +1,3 @@
-import chalk from "chalk"
 import ts from "typescript"
 import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
 import { checkManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
@@ -8,7 +7,7 @@ import * as prototype from "./FactorioPrototypeApiJson.js"
 export interface AnyApiJson {
   application: "factorio"
   stage: string
-  api_version: 5
+  api_version: 6
   application_version: string
 }
 
@@ -22,13 +21,16 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
 
   hasWarnings = false
 
-  public readonly manualDefs = processManualDefinitions(this.manualDefinitionsSource)
+  public readonly manualDefs
+
   constructor(
     public readonly apiDocs: A,
     public readonly manualDefinitionsSource: ts.SourceFile,
     public readonly checker: ts.TypeChecker,
     public readonly options: Options,
-  ) {}
+  ) {
+    this.manualDefs = processManualDefinitions(this.manualDefinitionsSource)
+  }
 
   abstract get stageName(): string
 
@@ -59,12 +61,13 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   }
 
   protected abstract preprocessAll(): void
+
   protected abstract generateAll(): void
 
   private checkApiDocs() {
     for (const [k, v] of Object.entries({
       application: "factorio",
-      api_version: 5,
+      api_version: 6,
       stage: this.stageName,
     })) {
       if (this.apiDocs[k as keyof AnyApiJson] !== v) {
@@ -74,14 +77,8 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   }
 
   warning(...args: unknown[]): void {
-    console.log(chalk.yellow(...args))
+    console.error(...args)
     this.hasWarnings = true
-  }
-
-  warnIfHasVisibility(obj: { visibility?: string[] }): void {
-    if (obj.visibility && obj.visibility.length > 1) {
-      this.warning("Visibility not implemented yet")
-    }
   }
 
   generate(): OutputFile[] {

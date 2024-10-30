@@ -5,18 +5,20 @@ import { Expansions } from "./FactorioRuntimeApiJson"
 
 export interface FactorioPrototypeApiJson {
   application: "factorio"
-  stage: "prototype"
   application_version: string
-  api_version: 5
+  api_version: 6
+  stage: "prototype"
 
   prototypes: Prototype[]
   types: PrototypeConcept[]
 }
+
 export interface BasicMember {
   name: string
   order: number
   readonly description: string
 }
+
 export interface PrototypeWithExamples {
   lists?: string[]
   examples?: string[]
@@ -24,7 +26,7 @@ export interface PrototypeWithExamples {
 }
 
 export interface Prototype extends BasicMember, PrototypeWithExamples {
-  visibility: Expansions
+  visibility?: Expansions[]
   parent?: string
   abstract: boolean
   typename?: string
@@ -56,6 +58,7 @@ export interface ArrayType {
   complex_type: "array"
   value: Type
 }
+
 export interface DictionaryType {
   complex_type: "dictionary"
   key: Type
