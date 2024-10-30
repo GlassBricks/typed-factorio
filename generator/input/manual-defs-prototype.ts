@@ -28,9 +28,6 @@ export interface Data {
   extend<P extends AnyPrototype>(prototypes: readonly P[]): void
 }
 
-/** @unionAdd */
-export type CollisionMaskLayer = `layer-${bigint}`
-
 /** @replace */
 export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
 

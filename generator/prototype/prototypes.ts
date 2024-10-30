@@ -4,7 +4,7 @@ import { byOrder } from "../util.js"
 import { Prototype } from "../FactorioPrototypeApiJson.js"
 import ts from "typescript"
 import { addJsDoc, createTag } from "../documentation.js"
-import { addFakeJSDoc, capitalize, Modifiers, toPascalCase, Types } from "../genUtil.js"
+import { addFakeJSDoc, Modifiers, toPascalCase, Types } from "../genUtil.js"
 import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./properties.js"
 import { maybeRecordInlineConceptReference } from "./concepts.js"
 import { mapPrototypeType } from "../types.js"
@@ -21,6 +21,7 @@ export function preprocessPrototypes(context: PrototypeGenerationContext): void 
     }
   }
   context.references.set("PrototypeMap", "PrototypeMap")
+  context.references.set("PrototypeType", "PrototypeType")
 }
 
 export function generatePrototypes(context: PrototypeGenerationContext): void {
