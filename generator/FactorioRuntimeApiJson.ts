@@ -27,6 +27,7 @@ export interface BasicMember extends BasicObject {
 }
 
 export type Expansions = "space_age"
+
 export interface Class extends BasicMember {
   visibility?: Expansions[]
   parent: string
@@ -170,10 +171,12 @@ export interface Method extends BasicMember, WithVariantParameterGroups {
 
   return_values: Omit<Parameter, "name">[]
 }
+
 export interface VariadicParameter {
   type?: Type
   description: string
 }
+
 export interface MethodFormat {
   takes_table: boolean
   table_optional?: boolean

@@ -12,11 +12,13 @@ export interface FactorioPrototypeApiJson {
   prototypes: Prototype[]
   types: PrototypeConcept[]
 }
+
 export interface BasicMember {
   name: string
   order: number
   readonly description: string
 }
+
 export interface PrototypeWithExamples {
   lists?: string[]
   examples?: string[]
@@ -56,6 +58,7 @@ export interface ArrayType {
   complex_type: "array"
   value: Type
 }
+
 export interface DictionaryType {
   complex_type: "dictionary"
   key: Type

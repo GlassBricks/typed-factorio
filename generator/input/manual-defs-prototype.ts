@@ -32,6 +32,7 @@ export interface Data {
 export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
 
 interface PrototypeMap {}
+
 type PrototypeType = keyof PrototypeMap
 
 interface PrototypeBase {

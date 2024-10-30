@@ -1,6 +1,6 @@
 import ts from "typescript"
 import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
-import { checkManualDefinitions, ManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
+import { checkManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
 import * as runtime from "./FactorioRuntimeApiJson.js"
 import * as prototype from "./FactorioPrototypeApiJson.js"
 
@@ -22,6 +22,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   hasWarnings = false
 
   public readonly manualDefs
+
   constructor(
     public readonly apiDocs: A,
     public readonly manualDefinitionsSource: ts.SourceFile,
@@ -60,6 +61,7 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   }
 
   protected abstract preprocessAll(): void
+
   protected abstract generateAll(): void
 
   private checkApiDocs() {

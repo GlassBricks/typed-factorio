@@ -4,7 +4,6 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
-import { SettingsPrototypeMap } from "factorio:settings"
 
 // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
 /** @omit */

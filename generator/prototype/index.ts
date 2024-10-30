@@ -40,6 +40,7 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
 
     return this.docUrlBase() + relative_link
   }
+
   preprocessAll(): void {
     preprocessPrototypes(this)
     preprocessTypes(this)
