@@ -55,10 +55,22 @@ export function maybeRecordInlineConceptReference(
 }
 
 export function preprocessTypes(context: PrototypeGenerationContext): void {
-  for (const type of context.apiDocs.types) {
-    context.references.set(type.name, type.name)
+  for (const concept of context.apiDocs.types) {
+    context.references.set(concept.name, concept.name)
 
-    type.properties?.forEach((p) => maybeRecordInlineConceptReference(context, type.name, p))
+    if (concept.properties) {
+      for (const property of concept.properties) {
+        maybeRecordInlineConceptReference(context, concept.name, property)
+      }
+      const type = concept.type
+      if (
+        typeof type === "object" &&
+        type.complex_type === "union" &&
+        type.options.some((x) => typeof x === "object" && x.complex_type === "struct")
+      ) {
+        context.hasInnerStructType.add(concept.name)
+      }
+    }
   }
 }
 
@@ -102,6 +114,10 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
     ;({ declaration, description, innerStructDeclaration } = generateTypeDeclaration(concept, context))
   }
 
+  if (!!innerStructDeclaration !== context.hasInnerStructType.has(concept.name)) {
+    context.warning(`Inconsistency in having inner struct type for ${concept.name}`)
+  }
+
   let tags: ts.JSDocTag[] | undefined
   let onlineReferenceName = concept.name
 
@@ -141,12 +157,13 @@ function getConceptHeritageClauses(
   context: PrototypeGenerationContext,
   concept: PrototypeConcept,
 ): ts.HeritageClause[] | undefined {
-  if (!concept.parent) return
+  const parentConceptName = concept.parent
+  if (!parentConceptName) return
   const overridenAttributes = getOverridenAttributes(context, concept, context.types, context.conceptProperties)
 
-  const parentConcept = context.types.get(concept.parent)
+  const parentConcept = context.types.get(parentConceptName)
   if (!parentConcept) {
-    context.warning("Unknown parent concept: " + concept.parent)
+    context.warning("Unknown parent concept: " + parentConceptName)
     return
   }
   const overridesType =
@@ -155,5 +172,7 @@ function getConceptHeritageClauses(
     overridenAttributes.push("type")
   }
 
-  return getHeritageClauses(concept.parent, overridenAttributes)
+  const usedName = context.hasInnerStructType.has(parentConceptName) ? parentConceptName + "Struct" : parentConceptName
+
+  return getHeritageClauses(usedName, overridenAttributes)
 }

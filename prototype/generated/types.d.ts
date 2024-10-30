@@ -9718,7 +9718,7 @@ declare module "factorio:prototype" {
     crossfade?: PersistentWorldAmbientSoundsDefinitionCrossfade
     semi_persistent?: SemiPersistentWorldAmbientSoundDefinition | readonly SemiPersistentWorldAmbientSoundDefinition[]
   }
-  export interface PersistentWorldAmbientSoundsDefinitionCrossfade extends Fade {
+  export interface PersistentWorldAmbientSoundsDefinitionCrossfade extends FadeStruct {
     order: readonly ["wind" | "base_ambience", "wind" | "base_ambience"]
   }
   export interface PipeConnectionDefinition {

@@ -17,6 +17,7 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
   )
 
   inlineConceptReferences = new Map<string, string>()
+  hasInnerStructType = new Set<string>()
 
   tryGetTypeOfReference(reference: string): Type | undefined {
     return this.types.get(reference)?.type
