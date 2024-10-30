@@ -107,14 +107,15 @@ const foo = util.copy(bar)
 
 If you wish to see types for more lualib modules, feel free to open an issue or pull request.
 
-### The `global` table
+### The `storage` table
 
-The `global` table (in the runtime stage) can have any shape, so it is not defined here. Instead, you can define it yourself:
+The `storage` table (in the runtime stage) can have any shape, so it is not defined here. Instead, you can define it yourself:
 
-- Add `declare const global: <Your type>` in a `.d.ts` file included in your project, to apply it project-wide.
-- Add `declare const global: {...}` to each file where needed. This way, you can define only properties that each file specifically uses.
+- Add `declare const storage: <Your type>` in a `.d.ts` file. Make sure this file is included by your tsconfig!
+- Add `declare global { const storage: <Your type> }` in a `.ts` file included in your project.
+- Add `declare const storage: {...}` to each file where needed. This way, you can define only properties that each file specifically uses.
 
-## Using multiple stages in the same project
+## Using multiple loading stages in the same project
 
 Every Factorio loading stage declares different global variables.
 To add types for multiple Factorio stages, you have a few options:
