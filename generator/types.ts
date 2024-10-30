@@ -496,7 +496,8 @@ function mapArrayType(
   return {
     mainType,
     altWriteType,
-    asString: "unionArray" in type ? elementType.asString : undefined,
+    asString:
+      "unionArray" in type ? elementType.asString : elementType.asString ? elementType.asString + "[]" : undefined,
     description: elementType.description,
   }
 }
@@ -788,16 +789,18 @@ function mapTupleType(
     if (type.description) {
       context.warning("Unknown description for tuple member: " + type.description)
     }
-    return type.mainType
+    return type
   })
 
-  const result = ts.factory.createTypeOperatorNode(
+  const mainType = ts.factory.createTypeOperatorNode(
     ts.SyntaxKind.ReadonlyKeyword,
-    ts.factory.createTupleTypeNode(values),
+    ts.factory.createTupleTypeNode(values.map((v) => v.mainType)),
   )
+  const asString = values.every((v) => v.asString) ? `[${values.map((v) => v.asString).join(", ")}]` : undefined
+
   return {
-    mainType: result,
-    asString: undefined,
+    mainType,
+    asString,
   }
 }
 

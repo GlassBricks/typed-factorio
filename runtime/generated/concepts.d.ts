@@ -2550,7 +2550,7 @@ declare module "factorio:runtime" {
    * Set of forces. Can be specified in one of two ways.
    *
    * ## Union members
-   * - undefined: Array of many forces.
+   * - {@link ForceID}[]: Array of many forces.
    * - {@link ForceID}: A single force.
    * @see {@link https://lua-api.factorio.com/2.0.12/concepts/ForceSet.html Online documentation}
    */
@@ -2888,8 +2888,8 @@ declare module "factorio:runtime" {
   export interface BlueprintConnectionData {
     /** ID of the entity this connection is connected with. */
     entity_id: uint
-    /** The circuit connector id of the entity this connection is connected to, see {@link defines.circuit_connector_id} */
-    circuit_id?: defines.circuit_connector_id
+    /** The circuit connector id of the entity this connection is connected to. */
+    circuit_id?: defines.wire_connector_id
   }
   /**
    * The actual point where a wire is connected to. Contains information about where it is connected to.

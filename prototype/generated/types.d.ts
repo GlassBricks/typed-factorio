@@ -11188,7 +11188,7 @@ declare module "factorio:prototype" {
    * The maximum cannot be less than the minimum.
    *
    * ## Union members
-   * - undefined: First number is the minimum, second is the maximum.
+   * - [{@link uint8}, {@link uint8}]: First number is the minimum, second is the maximum.
    * - {@link uint8}: The same minimum and maximum.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/RandomRange.html Online documentation}
    */
