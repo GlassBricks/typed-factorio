@@ -1,10 +1,15 @@
+# v3.0.1
+
+- Added definition for the "feature_flags" global.
+
 # v3.0.0
 
 - Updated to factorio 2.0!! SPAAACE!!
 - Simplified types for ChooseElemButtonSpec; it is no longer a discriminated union for each subtype.
 - Iteration key type for `LuaCustomTable`s are now accurate.
 
-The major version has been bumped to reflect breaking changes in the API. However, the way the api is accessed has not changed.
+The major version has been bumped to reflect breaking changes in the API. However, the way the api is accessed has not
+changed.
 
 # v2.14.0
 
@@ -35,9 +40,12 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 
 # 2.8.0
 
-- The `type` attribute of prototype classes now includes all subclasses of that prototype. For instance, `EntityPrototype.type` includes `"accumulator"`, `"assembling-machine"`, etc.
-- Added `AchievmentType`, `EntityType`, `EquipmentType`, and `ItemType` types, which lists all typenames for the specific prototype type.
-- In runtime types, the values for `type` and `ghost_type` attributes are specified to be specific prototype typenames when possible. For instance, `LuaEntity.type` now has type `EntityType` instead of `string`.
+- The `type` attribute of prototype classes now includes all subclasses of that prototype. For instance,
+  `EntityPrototype.type` includes `"accumulator"`, `"assembling-machine"`, etc.
+- Added `AchievmentType`, `EntityType`, `EquipmentType`, and `ItemType` types, which lists all typenames for the
+  specific prototype type.
+- In runtime types, the values for `type` and `ghost_type` attributes are specified to be specific prototype typenames
+  when possible. For instance, `LuaEntity.type` now has type `EntityType` instead of `string`.
 
 - Updated to factorio version 1.1.104
 
@@ -52,9 +60,11 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 
 # v2.6.0
 
-- Added feature `CustomInputNames`. By extending this interface, this allows optionally type-checking custom input names.
+- Added feature `CustomInputNames`. By extending this interface, this allows optionally type-checking custom input
+  names.
   For more details, see the README, or the documentation on `CustomInputNames` (in the `factorio:common` module).
-- Removed `readonly` property from prototype `type` fields. This may be useful when copying another prototype for a sub-prototype.
+- Removed `readonly` property from prototype `type` fields. This may be useful when copying another prototype for a
+  sub-prototype.
 - Updated to factorio version 1.1.101
 
 # v2.5.0
@@ -89,8 +99,9 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 
 ## Breaking changes
 
-- With the addition of prototype stage types, types are no longer global. Instead, types are divided into the "virtual" modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`.
-  - The `defines` and `serpent` namespaces are still global.
+- With the addition of prototype stage types, types are no longer global. Instead, types are divided into the "virtual"
+  modules `"factorio:settings"`, `"factorio:prototype"`, and `"factorio:runtime"`.
+    - The `defines` and `serpent` namespaces are still global.
 - The placeholder types for the data and settings stage have been removed; see the README for how to add the full types.
 - The "strict index types" option is now always applied (no longer an opt-in feature).
 - The deprecated `Read` types have been removed.
@@ -189,10 +200,11 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 
 ### BREAKING
 
-- Read-only forms of concepts (the most common form used) is now specified with just the name; forms with a `Read` or `Table` suffix have been removed.
+- Read-only forms of concepts (the most common form used) is now specified with just the name; forms with a `Read` or
+  `Table` suffix have been removed.
 - Write forms are now specified as either a union of table and array forms, or with a `Write` suffix for concepts.
-  - For table-or-array concepts: `MapPositionRead` -> `MapPosition`, `MapPosition` -> `MapPosition | PositionArray`
-  - For table concepts: `ScriptAreaRead` -> `ScriptArea`, `ScriptArea` -> `ScriptAreaWrite`
+    - For table-or-array concepts: `MapPositionRead` -> `MapPosition`, `MapPosition` -> `MapPosition | PositionArray`
+    - For table concepts: `ScriptAreaRead` -> `ScriptArea`, `ScriptArea` -> `ScriptAreaWrite`
 - The minimum TSTL version has been increased to v1.6.1 (A bug with documentation comments was fixed in that version).
 
 ### Other
@@ -235,13 +247,15 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 
 # v1.0.0
 
-- This project now has all features that were originally planned, and can now guarantee reasonable backwards compatibility for future releases.
+- This project now has all features that were originally planned, and can now guarantee reasonable backwards
+  compatibility for future releases.
 - Updated to factorio version 1.1.57
 
 # v0.20.0
 
 - Updated to factorio version 1.1.56
-- This is an **opt-in** feature: Some numeric types which represent indices/number,e.g. player_index, entity_number, are now branded numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. See the README for more info.
+- This is an **opt-in** feature: Some numeric types which represent indices/number,e.g. player_index, entity_number, are
+  now branded numbers with their own type, e.g. `PlayerIndex` and `EntityNumber`. See the README for more info.
 - Added custom-index-template.d.ts to assist trying out custom changes to types in a project.
 
 # v0.19.0
@@ -252,7 +266,8 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 
 ## Changes
 
-- `Position`, `PositionArray`, and `PositionTable` have been replaced by `MapPosition`, `MapPositionArray`, and `MapPositionTable` respectively. These are now deprecated and may be removed in a future version.
+- `Position`, `PositionArray`, and `PositionTable` have been replaced by `MapPosition`, `MapPositionArray`, and
+  `MapPositionTable` respectively. These are now deprecated and may be removed in a future version.
 
 # v0.18.1
 
@@ -273,16 +288,20 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 
 # v0.16.0
 
-- `LuaCustomTable` can be iterated on in a for-of loop directly (without using `pairs`). This requires TSTL v1.3.0 or later.
+- `LuaCustomTable` can be iterated on in a for-of loop directly (without using `pairs`). This requires TSTL v1.3.0 or
+  later.
 - TSTL dependency minimum version is now v1.3.0.
 
 # v0.15.0
 
 - Table or array concepts are now declared in table form wherever it is an "read" position.
-  - This works with setter overloading for applicable properties: `player.color.x; player.color = [1, 1, 1]` is now valid!
-  - This also applies to concepts/complex types which contain table_or_array properties.
-- Some concepts now also have a special form where it is known to be in a "read" position, where all table_or_array concepts are declared in table form. These concepts are suffixed with "Read", e.g. `ScriptAreaRead`.
-- Arrays which are known to be in a "write" only form (e.g. method parameters) now are marked readonly. This means you can now pass readonly arrays to these methods.
+    - This works with setter overloading for applicable properties: `player.color.x; player.color = [1, 1, 1]` is now
+      valid!
+    - This also applies to concepts/complex types which contain table_or_array properties.
+- Some concepts now also have a special form where it is known to be in a "read" position, where all table_or_array
+  concepts are declared in table form. These concepts are suffixed with "Read", e.g. `ScriptAreaRead`.
+- Arrays which are known to be in a "write" only form (e.g. method parameters) now are marked readonly. This means you
+  can now pass readonly arrays to these methods.
 - `MapPosition` is now a table or array concept.
 - Classes with subclasses are now declared with all properties, instead of an intersection of subclasses (reversion)
 - Subclass specializations added for some missing classes
@@ -293,20 +312,22 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 
 # v0.14.0
 
-- LuaStyle size, margin/padding setters now have more specific array types. These array types are `SizeArray` and `StyleValuesArray` for size and margin/padding, respectively.
+- LuaStyle size, margin/padding setters now have more specific array types. These array types are `SizeArray` and
+  `StyleValuesArray` for size and margin/padding, respectively.
 - `@noSelf` annotation is now only present when necessary.
 - For classes with subclasses:
-  - The original class name (e.g. `LuaItemStack`) still contains attributes of all subclasses (same as before).
-  - There is now a `Base` type (e.g. `BaseItemStack`) which only includes attributes common to all subclasses.
-  - There is a separate type definition for each subclass, e.g. `BlueprintItem`. Note that one instance may still belong to multiple subclasses (the subclasses are not mutually exclusive).
-  - The above two can be optionally used for stricter types.
+    - The original class name (e.g. `LuaItemStack`) still contains attributes of all subclasses (same as before).
+    - There is now a `Base` type (e.g. `BaseItemStack`) which only includes attributes common to all subclasses.
+    - There is a separate type definition for each subclass, e.g. `BlueprintItem`. Note that one instance may still
+      belong to multiple subclasses (the subclasses are not mutually exclusive).
+    - The above two can be optionally used for stricter types.
 
 # v0.13.2
 
 - Fix: resize_to_sprite property should not be on subclass sprite-button
 - Fix: ChooseElemButtonSpec filters should be named elem_filters
 - Switch back to `/latest` api docs link
-  - New version of web api docs is now active
+    - New version of web api docs is now active
 
 # v0.13.0
 
@@ -342,7 +363,7 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 # v0.7.3
 
 - Update to factorio version 1.1.42
-  - No api changes, but improvements to descriptions
+    - No api changes, but improvements to descriptions
 
 # v0.7.2
 
@@ -365,7 +386,8 @@ The major version has been bumped to reflect breaking changes in the API. Howeve
 # v0.5.0
 
 - Updated to factorio version 1.1.39
-- Documentation links now point to the new API docs website. More info here: https://forums.factorio.com/viewtopic.php?f=34&t=99797
+- Documentation links now point to the new API docs website. More info
+  here: https://forums.factorio.com/viewtopic.php?f=34&t=99797
 
 # v0.4.1
 

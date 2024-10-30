@@ -28,7 +28,7 @@ Example:
 ```
 
 The stages used will select the global variables defined.
-You can include multiple stages, but there are some caveats. See [Using multiple stages in the same project](#using-multiple-stages-in-the-same-project) for more info.
+You can include multiple stages, but there are some caveats. See [Using multiple stages in the same project](#using-multiple-loading-stages-in-the-same-project) for more info.
 
 ## Usage notes
 
@@ -124,17 +124,19 @@ To add types for multiple Factorio stages, you have a few options:
 2. Add _only_ the runtime stage, then manually declare other global variables in files that use them. There are types in `"factorio:common"` to allow this:
    ```ts
    // -- For the prototype stage --
-   import { PrototypeData, ActiveMods } from "factorio:common"
+   import { PrototypeData, ActiveMods, FeatureFlags } from "factorio:common"
    declare const data: PrototypeData
    declare const mods: ActiveMods
+   declare const feature_flags: FeatureFlags
    // The `settings` global variable is already declared in the runtime stage.
    // However, in the prototype stage _only_ `settings.startup` are available.
    ```
    ```ts
    // -- For the settings stage --
-   import { SettingsData, ActiveMods } from "factorio:common"
+   import { SettingsData, ActiveMods, FeatureFlags } from "factorio:common"
    declare const data: SettingsData
    declare const mods: ActiveMods
+   declare const feature_flags: FeatureFlags
    ```
 3. Use a separate `tsconfig.json` for each stage. In each `tsconfig.json`, add only files in that stage to the `"include"` field, e.g. `include: ["src/control.ts"]` for the runtime stage. However, this means you need to run `tstl` separately for each stage, and files shared by multiple stages will be compiled multiple times.
 

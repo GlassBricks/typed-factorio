@@ -1,6 +1,6 @@
 /** @noResolution */
 declare module "factorio:common" {
-  import { ModSetting } from "factorio:runtime"
+  import { ModSetting, LuaBootstrap } from "factorio:runtime"
   import { Data } from "factorio:prototype"
   import { SettingsPrototypeMap } from "factorio:settings"
   /**
@@ -47,6 +47,8 @@ declare module "factorio:common" {
   export interface ActiveMods {
     readonly [modName: string]: VersionString | undefined
   }
+
+  export type FeatureFlags = LuaBootstrap["feature_flags"]
 
   /**
    * Represents the `data` global variable for the prototype stage.
