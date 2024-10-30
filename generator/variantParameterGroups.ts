@@ -257,13 +257,7 @@ export function tryGetStringEnumType(
     const result = tryGetStringUnionValuesFromConcept(context, apiType)
     if (result) return result
   }
-  if (
-    typeof apiType === "object" &&
-    apiType.complex_type === "union" &&
-    apiType.options.every((o) => typeof o === "object" && o.complex_type === "literal" && typeof o.value === "string")
-  ) {
-    return apiType.options.map((o) => (o as LiteralType).value as string)
-  }
+
   if (ts.isTypeReferenceNode(tsType)) {
     try {
       const result = tryGetStringUnionValuesFromConcept(context, (tsType.typeName as ts.Identifier).text)
@@ -274,7 +268,15 @@ export function tryGetStringEnumType(
   }
 
   // check for string literal union
-  return tryGetStringUnionValuesFromTsType(context, tsType)
+  const fromTsType = tryGetStringUnionValuesFromTsType(context, tsType)
+  if (fromTsType) return fromTsType
+  if (
+    typeof apiType === "object" &&
+    apiType.complex_type === "union" &&
+    apiType.options.every((o) => typeof o === "object" && o.complex_type === "literal" && typeof o.value === "string")
+  ) {
+    return apiType.options.map((o) => (o as LiteralType).value as string)
+  }
 }
 
 function tryGetStringUnionValuesFromConcept(

@@ -511,6 +511,10 @@ export interface SpaceConnectionAsteroidSpawnDefinition {
   type: "asteroid-chunk" | "entity"
 }
 
+export interface BasePostEntityDiedEventFilter {
+  filter: "ghost" | "type"
+}
+
 export interface BaseUndoRedoAction {
   type:
     | "built-entity"

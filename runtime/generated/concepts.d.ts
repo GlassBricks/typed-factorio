@@ -10414,7 +10414,7 @@ declare module "factorio:runtime" {
     /**
      * The condition to filter on.
      */
-    readonly filter: "ghost"
+    filter: "ghost" | "type"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
