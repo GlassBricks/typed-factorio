@@ -10,8 +10,9 @@ export const nameToToPrototypeType = {
   equipment: "equipment",
   item: "item",
   EventFilter: "entity",
-  Prototype: "prototype",
   get_history: "prototype",
+  _unused1: "space-location",
+  _unused2: "active-trigger",
 } as const
 
 const toIgnore = ["damage", "get_prototype_history", "GuiAnchor", "Noise", "LuaPrototypeBase"]
