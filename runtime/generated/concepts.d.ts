@@ -4851,7 +4851,7 @@ declare module "factorio:runtime" {
     /**
      * `asteroid-chunk` or `entity`
      */
-    readonly type: string
+    type: "asteroid-chunk" | "entity"
     /**
      * The asteroid chunk or entity name.
      */
@@ -4868,7 +4868,7 @@ declare module "factorio:runtime" {
     /**
      * `asteroid-chunk` or `entity`
      */
-    readonly type: string
+    type: "asteroid-chunk" | "entity"
     /**
      * The asteroid chunk or entity name.
      */

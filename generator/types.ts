@@ -56,9 +56,7 @@ export function mapAttributeType(
   return mapMemberType(context, attribute, parentName, type, usage, hasExistingType)
 }
 
-/**
- * May additional transformations to the type based on additional context.
- */
+/** May apply transformations to the type based on additional context. */
 export function mapMemberType(
   context: RuntimeGenerationContext,
   member: TypeMemberDescription,
@@ -834,28 +832,19 @@ function tryUseIndexType(
 }
 
 function tryUseStringUnion(member: TypeMemberDescription, type: runtime.Type): RWType | undefined {
-  if (type === "string") {
-    const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
-    if (
-      (matches.size >= 2 && !member.description.match(/e\.g\. /i)) ||
-      (matches.size === 1 &&
-        (member.description.match(/One of `"[a-zA-Z-_]+?"`/) ||
-          member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
-    ) {
-      return {
-        mainType: ts.factory.createUnionTypeNode(Array.from(matches, Types.stringLiteral)),
-      }
+  if (type !== "string") {
+    return
+  }
+  const matches = new Set(Array.from(member.description.matchAll(/['"]([a-zA-Z-_]+?)['"]/g), (match) => match[1]))
+  if (
+    (matches.size >= 2 && !member.description.match(/e\.g\. /i)) ||
+    (matches.size === 1 &&
+      (member.description.match(/One of `"[a-zA-Z-_]+?"`/) || member.description.match(/Can only be `"[a-zA-Z-_]+?"`/)))
+  ) {
+    return {
+      mainType: ts.factory.createUnionTypeNode(Array.from(matches, Types.stringLiteral)),
     }
   }
-  /*
-                                else {
-                                  if (member.name === "type") {
-                                    console.log(chalk.blueBright(`Possibly enum type, from ${parent}.${member.name}`))
-                                  }
-                                }
-                                */
-
-  return undefined
 }
 
 function tryUseFlagValue(

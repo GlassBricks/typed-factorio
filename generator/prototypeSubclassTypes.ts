@@ -10,9 +10,11 @@ export const nameToToPrototypeType = {
   equipment: "equipment",
   item: "item",
   EventFilter: "entity",
+  Prototype: "prototype",
+  get_history: "prototype",
 } as const
 
-const toIgnore = ["damage", "get_prototype_history", "GuiAnchor", "Noise"]
+const toIgnore = ["damage", "get_prototype_history", "GuiAnchor", "Noise", "LuaPrototypeBase"]
 
 /**
  * For attributes of the `type : string` or `ghost_type : string` form,
@@ -43,7 +45,7 @@ export function getSpecificPrototypeTypeForTypeAttribute(
   }
 
   for (const [searchString, name] of Object.entries(nameToToPrototypeType)) {
-    if (!thisName.includes(capitalize(searchString))) {
+    if (!(thisName.includes(capitalize(searchString)) || thisName === searchString)) {
       continue
     }
     const importName = capitalize(name) + "Type"

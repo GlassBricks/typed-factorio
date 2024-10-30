@@ -2,7 +2,7 @@
 
 /** @noSelfInFile */
 
-import type { EntityType, EquipmentType, ItemType, PrototypeMap } from "factorio:prototype"
+import type { EntityType, EquipmentType, ItemType, PrototypeMap, PrototypeType } from "factorio:prototype"
 
 import type { ActiveMods, CustomInputName } from "factorio:common"
 
@@ -2479,7 +2479,7 @@ declare module "factorio:runtime" {
      * @param message The message definition for the specified index. Specify `nil` to remove the message.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaDisplayPanelControlBehavior.html#LuaDisplayPanelControlBehavior.set_message Online documentation}
      */
-    set_message(index: uint, message: DisplayPanelMessageDefinitionWrite): void
+    set_message(index: uint, message: DisplayPanelMessageDefinitionWrite | nil): void
     /**
      * The full list of configured messages.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaDisplayPanelControlBehavior.html#LuaDisplayPanelControlBehavior.messages Online documentation}
@@ -20491,7 +20491,7 @@ declare module "factorio:runtime" {
      * Type of this prototype.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaPrototypeBase.html#LuaPrototypeBase.type Online documentation}
      */
-    readonly type: string
+    readonly type: PrototypeType
     /**
      * Name of this prototype.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaPrototypeBase.html#LuaPrototypeBase.name Online documentation}
@@ -20616,7 +20616,7 @@ declare module "factorio:runtime" {
      * Gets the prototype history for the given type and name.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaPrototypes.html#LuaPrototypes.get_history Online documentation}
      */
-    get_history(type: string, name: string): PrototypeHistory
+    get_history(type: PrototypeType, name: string): PrototypeHistory
     /**
      * A dictionary containing every LuaFontPrototype indexed by `name`.
      * @see {@link https://lua-api.factorio.com/2.0.12/classes/LuaPrototypes.html#LuaPrototypes.font Online documentation}

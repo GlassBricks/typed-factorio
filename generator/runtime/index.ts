@@ -74,7 +74,8 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
       const message = `
 Factorio version has been updated from 2.0.12. Manually check for the following before removing this message:
 
-- Check if https://forums.factorio.com/viewtopic.php?f=233&t=118305 is resolved. If so, remove the corresponding @omit annotations from the manual definitions.
+- Check if/how https://forums.factorio.com/viewtopic.php?f=233&t=118305 is resolved.
+- Check if SpaceLocationAsteroidSpawnDefinition::type and SpaceConnectionAsteroidSpawnDefinition::type are now more specific strings.
 `
       this.warning(message)
     }

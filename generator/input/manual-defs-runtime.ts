@@ -4,7 +4,6 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
-import { PrototypeMap } from "factorio:prototype"
 import { SettingsPrototypeMap } from "factorio:settings"
 
 // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
@@ -204,8 +203,6 @@ export type LuaGuiElement = {
 }
 
 export interface FrameGuiElement {}
-
-// nullability, overloads, different read/write types
 
 export interface LuaEquipment {}
 
@@ -506,8 +503,13 @@ export interface TechnologyID {}
 /** @readType LuaPlayer */
 export interface PlayerIdentification {}
 
-// This type is not in a "read"/out position
-// export interface ItemStackDefinition {}
+export interface SpaceLocationAsteroidSpawnDefinition {
+  type: "asteroid-chunk" | "entity"
+}
+
+export interface SpaceConnectionAsteroidSpawnDefinition {
+  type: "asteroid-chunk" | "entity"
+}
 
 export interface InfinityPipeFilter {}
 
