@@ -17536,6 +17536,11 @@ declare module "factorio:prototype" {
    */
   export type int32 = number
   /**
+   * 64 bit signed integer.
+   * @see {@link https://lua-api.factorio.com/2.0.12/types/int64.html Online documentation}
+   */
+  export type int64 = number
+  /**
    * 8 bit signed integer. Ranges from `-128` to `127`, or `[-2^7, 2^7-1]`.
    * @see {@link https://lua-api.factorio.com/2.0.12/types/int8.html Online documentation}
    */

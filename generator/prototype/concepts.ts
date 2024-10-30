@@ -7,6 +7,7 @@ import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./prope
 import { assertNever, byOrder } from "../util.js"
 import ts from "typescript"
 import { copyExistingDeclaration, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
+import { generateBuiltinType } from "../builtin"
 
 export function maybeRecordInlineConceptReference(
   context: PrototypeGenerationContext,
@@ -117,18 +118,6 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
   })
 
   context.currentFile.add(declaration)
-}
-
-function generateBuiltinType(context: PrototypeGenerationContext, concept: PrototypeConcept) {
-  const name = concept.name
-  if (name === "string" || name === "number" || name === "boolean") return
-  const existing = context.manualDefs.getDeclaration(name)
-  if (!existing) {
-    context.warning(`No existing definition for builtin ${name}`)
-    return
-  }
-  if (existing.annotations.omit) return
-  context.currentFile.add(addJsDoc(context, existing.node, concept, name, undefined))
 }
 
 function getConceptHeritageClauses(

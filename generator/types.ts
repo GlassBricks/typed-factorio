@@ -14,6 +14,7 @@ import { RuntimeGenerationContext } from "./runtime"
 import { GenerationContext } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype"
 import { getSpecificPrototypeTypeForTypeAttribute } from "./prototypeSubclassTypes.js"
+import { PrototypeConcept } from "./FactorioPrototypeApiJson.js"
 
 export interface TypeContext {
   contextName?: string
@@ -117,9 +118,6 @@ export function mapConceptType(
       altWriteType?: ts.TypeNode
       description?: string
     }
-  | {
-      builtinType: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
-    }
   | undefined {
   return mapTypeInternalAny(context, type, typeContext, usage)
 }
@@ -178,12 +176,7 @@ function mapTypeInternalAny(
   type: runtime.Type | prototype.Type,
   typeContext: TypeContext | undefined,
   usage: RWUsage,
-):
-  | IntermediateType
-  | {
-      builtinType: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
-    }
-  | undefined {
+): IntermediateType | undefined {
   // assert(usage !== RWUsage.None)
   if (typeof type === "string") return mapBasicType(context, type, typeContext, usage)
   switch (type.complex_type) {
@@ -211,15 +204,8 @@ function mapTypeInternalAny(
       return mapTupleType(context, type, typeContext, usage)
     case "struct":
       return mapPrototypeStructType(context, typeContext)
-    case "builtin": {
-      const node = mapBuiltinType(context, type, typeContext)
-      if (!node) return undefined
-      return {
-        mainType: undefined!,
-        builtinType: node,
-        asString: undefined,
-      }
-    }
+    case "builtin":
+      throw new Error("Should be handled elsewhere")
     default:
       assertNever(type)
   }
@@ -232,9 +218,6 @@ function mapTypeInternal(
 ): IntermediateType {
   const result = mapTypeInternalAny(context, type, typeContext, usage)
   if (!result) throw new Error("Result expected for type: " + JSON.stringify(type))
-  if ("builtinType" in result) {
-    throw new Error("Builtin type not expected: " + JSON.stringify(type))
-  }
   return result
 }
 
@@ -814,22 +797,6 @@ function mapPrototypeStructType(context: GenerationContext, typeContext: TypeCon
     mainType: ts.factory.createTypeLiteralNode(properties),
     asString: undefined,
   }
-}
-
-export function mapBuiltinType(
-  context: GenerationContext,
-  _builtin: runtime.BuiltinType,
-  typeContext: TypeContext | undefined,
-): ts.TypeAliasDeclaration | ts.InterfaceDeclaration | undefined {
-  if (!typeContext) throw new Error("TypeContext is required for builtin type")
-  const name = typeContext.contextName
-  if (name === "boolean" || name === "string" || name === "number") return
-  const existing = typeContext.existingDef
-  if (!existing) {
-    context.warning(`No existing definition for builtin ${name}`)
-    return undefined
-  }
-  return existing.node
 }
 
 function tryUseIndexType(
