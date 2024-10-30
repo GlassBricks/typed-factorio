@@ -2,11 +2,9 @@
 
 /** @noSelfInFile */
 
-import type { EntityType, EquipmentType, ItemType, PrototypeMap, PrototypeType } from "factorio:prototype"
+import type { EntityType, EquipmentType, ItemType, PrototypeType } from "factorio:prototype"
 
 import type { ActiveMods, CustomInputName } from "factorio:common"
-
-import type { SettingsPrototypeMap } from "factorio:settings"
 
 /**
  * @noResolution
