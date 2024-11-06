@@ -1,4 +1,4 @@
-# v3.1.0
+# v3.1.1
 
 - Updated to factorio version 2.0.15
 - Defines enum values are no longer string escaped when not necessary.
