@@ -1,3 +1,7 @@
+# v3.1.0
+
+- Updated to factorio version 2.0.15
+
 # v3.0.1
 
 - Added definition for the "feature_flags" global.

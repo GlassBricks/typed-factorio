@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.12",
+  "application_version": "2.0.15",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -282,7 +282,10 @@
           "name": "module",
           "order": 27,
           "description": "",
-          "read_type": "LuaItemPrototype",
+          "read_type": {
+            "complex_type": "array",
+            "value": "string"
+          },
           "optional": true
         },
         {
@@ -768,43 +771,36 @@
       "methods": [],
       "attributes": [
         {
-          "name": "collision_box",
-          "order": 0,
-          "description": "",
-          "read_type": "BoundingBox",
-          "optional": false
-        },
-        {
           "name": "hide_from_signal_gui",
-          "order": 2,
+          "order": 1,
           "description": "",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "item_signal_alias",
-          "order": 3,
+          "order": 2,
           "description": "",
           "read_type": "LuaItemPrototype",
           "optional": true
         },
         {
           "name": "mineable_properties",
-          "order": 1,
+          "order": 0,
           "description": "",
           "read_type": "MineableProperties",
           "optional": false
         },
         {
           "name": "object_name",
-          "order": 5,
+          "order": 4,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "valid",
-          "order": 4,
+          "order": 3,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -8533,7 +8529,7 @@
         },
         {
           "name": "ai_settings",
-          "order": 141,
+          "order": 142,
           "description": "The ai settings of this unit.",
           "subclasses": [
             "Unit",
@@ -8555,7 +8551,7 @@
         },
         {
           "name": "allow_dispatching_robots",
-          "order": 151,
+          "order": 152,
           "description": "Whether this character's personal roboports are allowed to dispatch robots.",
           "subclasses": [
             "Character"
@@ -8566,7 +8562,7 @@
         },
         {
           "name": "always_on",
-          "order": 192,
+          "order": 193,
           "description": "If the lamp is always on when not driven by control behavior.",
           "subclasses": [
             "Lamp"
@@ -8588,7 +8584,7 @@
         },
         {
           "name": "armed",
-          "order": 134,
+          "order": 135,
           "description": "Whether this land mine is armed.",
           "subclasses": [
             "LandMine"
@@ -8598,7 +8594,7 @@
         },
         {
           "name": "artillery_auto_targeting",
-          "order": 193,
+          "order": 194,
           "description": "If this artillery auto-targets enemies.",
           "subclasses": [
             "ArtilleryWagon",
@@ -8635,7 +8631,7 @@
         },
         {
           "name": "autopilot_destination",
-          "order": 159,
+          "order": 160,
           "description": "Destination of this spidertron's autopilot, if any. Writing `nil` clears all destinations.",
           "subclasses": [
             "SpiderVehicle"
@@ -8646,7 +8642,7 @@
         },
         {
           "name": "autopilot_destinations",
-          "order": 160,
+          "order": 161,
           "description": "The queued destination positions of spidertron's autopilot.",
           "subclasses": [
             "SpiderVehicle"
@@ -8717,7 +8713,7 @@
         },
         {
           "name": "belt_shape",
-          "order": 187,
+          "order": 188,
           "description": "Gives what is the current shape of a transport-belt.\n\nCan also be used on entity ghost if it contains transport-belt.",
           "subclasses": [
             "TransportBelt"
@@ -8800,7 +8796,7 @@
         },
         {
           "name": "cargo_pod",
-          "order": 195,
+          "order": 196,
           "description": "Gets the cargo pod attached to this rocket silo rocket if one exists.",
           "subclasses": [
             "RocketSiloRocket"
@@ -8871,7 +8867,7 @@
         },
         {
           "name": "combat_robot_owner",
-          "order": 166,
+          "order": 167,
           "description": "The owner of this combat robot, if any.",
           "subclasses": [
             "CombatRobot"
@@ -8890,14 +8886,14 @@
         },
         {
           "name": "commandable",
-          "order": 189,
+          "order": 190,
           "description": "Returns a LuaCommandable for this entity or nil if entity is not commandable.",
           "read_type": "LuaCommandable",
           "optional": true
         },
         {
           "name": "connected_rail",
-          "order": 136,
+          "order": 137,
           "description": "The rail entity this train stop is connected to, if any.",
           "subclasses": [
             "TrainStop"
@@ -8907,7 +8903,7 @@
         },
         {
           "name": "connected_rail_direction",
-          "order": 137,
+          "order": 138,
           "description": "Rail direction to which this train stop is binding. This returns a value even when no rails are present.",
           "subclasses": [
             "TrainStop"
@@ -8935,7 +8931,7 @@
         },
         {
           "name": "copy_color_from_train_stop",
-          "order": 183,
+          "order": 184,
           "description": "If this RollingStock has 'copy color from train stop' enabled.",
           "subclasses": [
             "RollingStock"
@@ -8946,7 +8942,7 @@
         },
         {
           "name": "corpse_expires",
-          "order": 155,
+          "order": 156,
           "description": "Whether this corpse will ever fade away.",
           "subclasses": [
             "Corpse"
@@ -8957,7 +8953,7 @@
         },
         {
           "name": "corpse_immune_to_entity_placement",
-          "order": 156,
+          "order": 157,
           "description": "If true, corpse won't be destroyed when entities are placed over it. If false, whether corpse will be removed or not depends on value of [CorpsePrototype::remove_on_entity_placement](prototype:CorpsePrototype::remove_on_entity_placement).",
           "subclasses": [
             "Corpse"
@@ -8989,7 +8985,7 @@
         },
         {
           "name": "crane_destination",
-          "order": 179,
+          "order": 180,
           "description": "Destination of the crane of this entity. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -9000,7 +8996,7 @@
         },
         {
           "name": "crane_destination_3d",
-          "order": 180,
+          "order": 181,
           "description": "Destination of the crane of this entity in 3D. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -9011,7 +9007,7 @@
         },
         {
           "name": "crane_grappler_destination",
-          "order": 181,
+          "order": 182,
           "description": "Will set destination for the grappler of crane of this entity. The crane grappler will start moving to reach the destination, but the rest of the arm will remain stationary. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -9021,7 +9017,7 @@
         },
         {
           "name": "crane_grappler_destination_3d",
-          "order": 182,
+          "order": 183,
           "description": "Will set destination in 3D for the grappler of crane of this entity. The crane grappler will start moving to reach the destination, but the rest of the arm will remain stationary. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -9031,7 +9027,7 @@
         },
         {
           "name": "custom_status",
-          "order": 145,
+          "order": 146,
           "description": "A custom status for this entity that will be displayed in the GUI.",
           "read_type": "CustomEntityStatus",
           "write_type": "CustomEntityStatus",
@@ -9066,7 +9062,7 @@
         },
         {
           "name": "draw_data",
-          "order": 185,
+          "order": 186,
           "description": "Gives a draw data of the given entity if it supports such data.",
           "subclasses": [
             "RollingStock"
@@ -9158,7 +9154,7 @@
         },
         {
           "name": "electric_network_id",
-          "order": 150,
+          "order": 151,
           "description": "Returns the id of the electric network that this entity is connected to, if any.",
           "read_type": "uint",
           "optional": true
@@ -9175,7 +9171,7 @@
         },
         {
           "name": "enable_logistics_while_moving",
-          "order": 146,
+          "order": 147,
           "description": "Whether equipment grid logistics are enabled while this vehicle is moving.",
           "subclasses": [
             "Vehicle"
@@ -9197,7 +9193,7 @@
         },
         {
           "name": "energy_generated_last_tick",
-          "order": 152,
+          "order": 153,
           "description": "How much energy this generator generated in the last tick.",
           "subclasses": [
             "Generator"
@@ -9238,14 +9234,14 @@
         },
         {
           "name": "fluids_count",
-          "order": 190,
+          "order": 191,
           "description": "Returns count of fluid storages. This includes fluid storages provided by FluidBoxes but also covers other fluid storages like FluidTurret's internal buffer and FluidWagon's fluid since they are not FluidBox and cannot be exposed through [LuaFluidBox](runtime:LuaFluidBox).",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "follow_offset",
-          "order": 169,
+          "order": 170,
           "description": "The follow offset of this spidertron, if any entity is being followed. This is randomized each time the follow entity is set.",
           "subclasses": [
             "SpiderVehicle"
@@ -9256,7 +9252,7 @@
         },
         {
           "name": "follow_target",
-          "order": 168,
+          "order": 169,
           "description": "The follow target of this spidertron, if any.",
           "subclasses": [
             "SpiderVehicle"
@@ -9348,7 +9344,7 @@
         },
         {
           "name": "gps_tag",
-          "order": 188,
+          "order": 189,
           "description": "Returns a [rich text](https://wiki.factorio.com/Rich_text) string containing this entity's position and surface name as a gps tag. [Printing](runtime:LuaGameScript::print) it will ping the location of the entity.",
           "examples": [
             "```\n-- called on a LuaEntity on the default surface it returns:\nentity.gps_tag -- => \"[gps=-4,-9]\"\n\n-- called on a LuaEntity on \"custom-surface\" it returns:\ndifferent_entity.gps_tag -- => \"[gps=1,-5,custom-surface]\"\n```"
@@ -9401,7 +9397,7 @@
         },
         {
           "name": "highlight_box_blink_interval",
-          "order": 143,
+          "order": 144,
           "description": "The blink interval of this highlight box entity. `0` indicates no blink.",
           "subclasses": [
             "HighlightBox"
@@ -9412,7 +9408,7 @@
         },
         {
           "name": "highlight_box_type",
-          "order": 142,
+          "order": 143,
           "description": "The highlight box type of this highlight box entity.",
           "subclasses": [
             "HighlightBox"
@@ -9538,21 +9534,21 @@
         },
         {
           "name": "is_entity_with_health",
-          "order": 165,
+          "order": 166,
           "description": "If this entity is EntityWithHealth",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_entity_with_owner",
-          "order": 164,
+          "order": 165,
           "description": "If this entity is EntityWithOwner",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_headed_to_trains_front",
-          "order": 184,
+          "order": 185,
           "description": "If the rolling stock is facing train's front.",
           "subclasses": [
             "RollingStock"
@@ -9562,7 +9558,7 @@
         },
         {
           "name": "is_military_target",
-          "order": 163,
+          "order": 164,
           "description": "Whether this entity is a MilitaryTarget. Can be written to if [LuaEntityPrototype::allow_run_time_change_of_is_military_target](runtime:LuaEntityPrototype::allow_run_time_change_of_is_military_target) returns `true`.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -9618,7 +9614,7 @@
         },
         {
           "name": "link_id",
-          "order": 167,
+          "order": 168,
           "description": "The link ID this linked container is using.",
           "subclasses": [
             "LinkedContainer"
@@ -9629,7 +9625,7 @@
         },
         {
           "name": "linked_belt_neighbour",
-          "order": 171,
+          "order": 172,
           "description": "Neighbour to which this linked belt is connected to, if any.\n\nCan also be used on entity ghost if it contains linked-belt.\n\nMay return entity ghost which contains linked belt to which connection is made.",
           "subclasses": [
             "LinkedBelt"
@@ -9639,7 +9635,7 @@
         },
         {
           "name": "linked_belt_type",
-          "order": 170,
+          "order": 171,
           "description": "Type of linked belt. Changing type will also flip direction so the belt is out of the same side.\n\nCan only be changed when linked belt is disconnected (has no neighbour set).\n\nCan also be used on entity ghost if it contains linked-belt.",
           "subclasses": [
             "LinkedBelt"
@@ -9682,6 +9678,51 @@
             "Loader"
           ],
           "read_type": "LuaEntity",
+          "optional": true
+        },
+        {
+          "name": "loader_filter_mode",
+          "order": 131,
+          "description": "The filter mode for this loader. `nil` if this loader does not support filters.",
+          "subclasses": [
+            "Loader"
+          ],
+          "read_type": {
+            "complex_type": "union",
+            "options": [
+              {
+                "complex_type": "literal",
+                "value": "none"
+              },
+              {
+                "complex_type": "literal",
+                "value": "whitelist"
+              },
+              {
+                "complex_type": "literal",
+                "value": "blacklist"
+              }
+            ],
+            "full_format": false
+          },
+          "write_type": {
+            "complex_type": "union",
+            "options": [
+              {
+                "complex_type": "literal",
+                "value": "none"
+              },
+              {
+                "complex_type": "literal",
+                "value": "whitelist"
+              },
+              {
+                "complex_type": "literal",
+                "value": "blacklist"
+              }
+            ],
+            "full_format": false
+          },
           "optional": true
         },
         {
@@ -9753,7 +9794,7 @@
         {
           "name": "max_health",
           "order": 15,
-          "description": "Max health of this entity. Quality of entity is taken into account.",
+          "description": "Max health of this entity.",
           "read_type": "float",
           "optional": false
         },
@@ -9767,7 +9808,7 @@
         },
         {
           "name": "mining_drill_filter_mode",
-          "order": 131,
+          "order": 132,
           "description": "The filter mode for this mining drill. `nil` if this mining drill doesn't have filters.",
           "subclasses": [
             "MiningDrill"
@@ -9837,7 +9878,7 @@
         },
         {
           "name": "name_tag",
-          "order": 175,
+          "order": 176,
           "description": "Name tag of this entity. Returns `nil` if entity has no name tag. When name tag is already used by other entity, the name will be removed from the other entity. Entity name tags can also be set in the entity \"extra settings\" GUI in the map editor.",
           "read_type": "string",
           "write_type": "string",
@@ -9845,7 +9886,7 @@
         },
         {
           "name": "neighbour_bonus",
-          "order": 140,
+          "order": 141,
           "description": "The current total neighbour bonus of this reactor.",
           "subclasses": [
             "Reactor"
@@ -9886,7 +9927,7 @@
         },
         {
           "name": "object_name",
-          "order": 198,
+          "order": 199,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -10002,7 +10043,7 @@
         },
         {
           "name": "procession_tick",
-          "order": 196,
+          "order": 197,
           "description": "how far into the current procession the cargo pod is.",
           "subclasses": [
             "CargoPod"
@@ -10048,7 +10089,7 @@
         },
         {
           "name": "pump_rail_target",
-          "order": 149,
+          "order": 150,
           "description": "The rail target of this pump, if any.",
           "subclasses": [
             "Pump"
@@ -10058,14 +10099,14 @@
         },
         {
           "name": "quality",
-          "order": 172,
+          "order": 173,
           "description": "The quality of this entity.\n\nNot all entities support quality and will give the \"normal\" quality back if they don't.",
           "read_type": "LuaQualityPrototype",
           "optional": false
         },
         {
           "name": "radar_scan_progress",
-          "order": 174,
+          "order": 175,
           "description": "The current radar scan progress, as a number in range `[0, 1]`.",
           "subclasses": [
             "Radar"
@@ -10075,7 +10116,7 @@
         },
         {
           "name": "rail_layer",
-          "order": 173,
+          "order": 174,
           "description": "Gets rail layer of a given signal",
           "subclasses": [
             "RailSignal",
@@ -10086,7 +10127,7 @@
         },
         {
           "name": "recipe_locked",
-          "order": 135,
+          "order": 136,
           "description": "When locked; the recipe in this assembling machine can't be changed by the player.",
           "subclasses": [
             "AssemblingMachine"
@@ -10133,7 +10174,7 @@
         },
         {
           "name": "render_player",
-          "order": 147,
+          "order": 148,
           "description": "The player that this `simple-entity-with-owner`, `simple-entity-with-force`, or `highlight-box` is visible to. `nil` when this entity is rendered for all players.\n\nReading this property will return a [LuaPlayer](runtime:LuaPlayer), while [PlayerIdentification](runtime:PlayerIdentification) can be used when writing.",
           "read_type": {
             "complex_type": "union",
@@ -10155,7 +10196,7 @@
         },
         {
           "name": "render_to_forces",
-          "order": 148,
+          "order": 149,
           "description": "The forces that this `simple-entity-with-owner` or `simple-entity-with-force` is visible to. `nil` or an empty array when this entity is rendered for all forces.\n\nReading will always give an array of [LuaForce](runtime:LuaForce)",
           "read_type": "ForceSet",
           "write_type": "ForceSet",
@@ -10163,7 +10204,7 @@
         },
         {
           "name": "request_from_buffers",
-          "order": 154,
+          "order": 155,
           "description": "Whether this requester chest is set to also request from buffer chests.\n\nUseable only on entities that have requester slots.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -10182,7 +10223,7 @@
         },
         {
           "name": "robot_order_queue",
-          "order": 194,
+          "order": 195,
           "description": "Get the current queue of robot orders.",
           "subclasses": [
             "ConstructionRobot",
@@ -10207,7 +10248,7 @@
         },
         {
           "name": "rocket_silo_status",
-          "order": 176,
+          "order": 177,
           "description": "The status of this rocket silo entity.",
           "subclasses": [
             "RocketSilo"
@@ -10327,7 +10368,7 @@
         },
         {
           "name": "splitter_input_priority",
-          "order": 132,
+          "order": 133,
           "description": "The input priority for this splitter.",
           "subclasses": [
             "Splitter"
@@ -10372,7 +10413,7 @@
         },
         {
           "name": "splitter_output_priority",
-          "order": 133,
+          "order": 134,
           "description": "The output priority for this splitter.",
           "subclasses": [
             "Splitter"
@@ -10427,7 +10468,7 @@
         },
         {
           "name": "status",
-          "order": 144,
+          "order": 145,
           "description": "The status of this entity, if any.\n\nThis is always the actual status of the entity, even if [LuaEntity::custom_status](runtime:LuaEntity::custom_status) is set.",
           "read_type": "defines.entity_status",
           "optional": true
@@ -10486,7 +10527,7 @@
         },
         {
           "name": "storage_filter",
-          "order": 153,
+          "order": 154,
           "description": "The storage filter for this logistic storage container.\n\nUseable only on logistic containers with the `\"storage\"` [logistic_mode](runtime:LuaEntityPrototype::logistic_mode).",
           "read_type": "LuaItemPrototype",
           "write_type": "LuaItemPrototype",
@@ -10501,7 +10542,7 @@
         },
         {
           "name": "tags",
-          "order": 157,
+          "order": 158,
           "description": "The tags associated with this entity ghost. `nil` if this is not an entity ghost.",
           "read_type": "Tags",
           "write_type": "Tags",
@@ -10517,7 +10558,7 @@
         },
         {
           "name": "tick_grown",
-          "order": 191,
+          "order": 192,
           "description": "The tick when this plant is fully grown.",
           "subclasses": [
             "Plant"
@@ -10550,14 +10591,14 @@
         },
         {
           "name": "tile_height",
-          "order": 178,
+          "order": 179,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "tile_width",
-          "order": 177,
+          "order": 178,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.",
           "read_type": "uint",
           "optional": false
@@ -10578,7 +10619,7 @@
         },
         {
           "name": "time_to_next_effect",
-          "order": 158,
+          "order": 159,
           "description": "The ticks until the next trigger effect of this smoke-with-trigger.",
           "subclasses": [
             "SmokeWithTrigger"
@@ -10589,7 +10630,7 @@
         },
         {
           "name": "timeout",
-          "order": 139,
+          "order": 140,
           "description": "The timeout that's left on this landmine in ticks. It describes the time between the landmine being placed and it being armed.",
           "subclasses": [
             "LandMine"
@@ -10629,7 +10670,7 @@
         },
         {
           "name": "train_stop_priority",
-          "order": 186,
+          "order": 187,
           "description": "Priority of this train stop.",
           "subclasses": [
             "TrainStop"
@@ -10640,7 +10681,7 @@
         },
         {
           "name": "trains_count",
-          "order": 161,
+          "order": 162,
           "description": "Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint.\n\nTrain may be included multiple times when braking distance covers this train stop multiple times.\n\nValue may be read even when train stop has no control behavior.",
           "subclasses": [
             "TrainStop"
@@ -10650,7 +10691,7 @@
         },
         {
           "name": "trains_in_block",
-          "order": 138,
+          "order": 139,
           "description": "The number of trains in this rail block for this rail entity.",
           "subclasses": [
             "Rail"
@@ -10660,7 +10701,7 @@
         },
         {
           "name": "trains_limit",
-          "order": 162,
+          "order": 163,
           "description": "Amount of trains above which no new trains will be sent to this train stop. Writing nil will disable the limit (will set a maximum possible value).\n\nWhen a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it.",
           "subclasses": [
             "TrainStop"
@@ -10772,7 +10813,7 @@
         },
         {
           "name": "valid",
-          "order": 197,
+          "order": 198,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -11203,7 +11244,7 @@
       "attributes": [
         {
           "name": "absorptions_to_join_attack",
-          "order": 157,
+          "order": 158,
           "description": "A table of pollutions amounts that has to be absorbed by the unit's spawner before the unit will leave the spawner and attack the source of the pollution, indexed by the name of each absorbed pollution type.",
           "subclasses": [
             "SpiderUnit",
@@ -11218,7 +11259,7 @@
         },
         {
           "name": "active_energy_usage",
-          "order": 192,
+          "order": 193,
           "description": "The active energy usage of this rocket silo or combinator prototype.",
           "subclasses": [
             "RocketSilo",
@@ -11239,7 +11280,7 @@
         },
         {
           "name": "affected_by_tiles",
-          "order": 163,
+          "order": 164,
           "description": "Whether this unit prototype is affected by tile walking speed modifiers.",
           "subclasses": [
             "Unit"
@@ -11259,14 +11300,14 @@
         },
         {
           "name": "alert_icon_scale",
-          "order": 167,
+          "order": 168,
           "description": "The alert icon scale of this entity prototype.",
           "read_type": "float",
           "optional": false
         },
         {
           "name": "alert_icon_shift",
-          "order": 166,
+          "order": 167,
           "description": "The alert icon shift of this entity prototype.",
           "read_type": "Vector",
           "optional": false
@@ -11293,7 +11334,7 @@
         },
         {
           "name": "allow_access_to_all_forces",
-          "order": 170,
+          "order": 171,
           "description": "Whether this market allows access to all forces or just friendly ones.",
           "subclasses": [
             "Market"
@@ -11330,7 +11371,7 @@
         },
         {
           "name": "allow_passengers",
-          "order": 173,
+          "order": 174,
           "description": "Whether this vehicle allows passengers.",
           "subclasses": [
             "Vehicle"
@@ -11340,7 +11381,7 @@
         },
         {
           "name": "allow_run_time_change_of_is_military_target",
-          "order": 181,
+          "order": 182,
           "description": "True if this entity-with-owner's is_military_target can be changed run-time (on the entity, not on the prototype itself)",
           "subclasses": [
             "EntityWithOwner"
@@ -11375,7 +11416,7 @@
         },
         {
           "name": "always_on",
-          "order": 144,
+          "order": 145,
           "description": "Whether the lamp is always on (except when out of power or turned off by the circuit network).",
           "subclasses": [
             "Lamp"
@@ -11395,7 +11436,7 @@
         },
         {
           "name": "animation_speed_coefficient",
-          "order": 189,
+          "order": 190,
           "description": "The animation speed coefficient of this belt connectable prototype.",
           "subclasses": [
             "BeltConnectable"
@@ -11422,7 +11463,7 @@
         },
         {
           "name": "automated_ammo_count",
-          "order": 140,
+          "order": 141,
           "description": "The amount of ammo that inserters automatically insert into this ammo-turret or artillery-turret.",
           "subclasses": [
             "ArtilleryTurret",
@@ -11433,7 +11474,7 @@
         },
         {
           "name": "automatic_weapon_cycling",
-          "order": 186,
+          "order": 187,
           "description": "Whether this spider vehicle prototype automatically cycles weapons.",
           "subclasses": [
             "SpiderVehicle"
@@ -11543,7 +11584,7 @@
         },
         {
           "name": "build_distance",
-          "order": 210,
+          "order": 211,
           "description": "",
           "subclasses": [
             "Character"
@@ -11587,7 +11628,7 @@
         },
         {
           "name": "call_for_help_radius",
-          "order": 147,
+          "order": 148,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -11597,7 +11638,7 @@
         },
         {
           "name": "can_open_gates",
-          "order": 162,
+          "order": 163,
           "description": "Whether this unit prototype can open gates.",
           "subclasses": [
             "Unit"
@@ -11607,7 +11648,7 @@
         },
         {
           "name": "chain_shooting_cooldown_modifier",
-          "order": 187,
+          "order": 188,
           "description": "The chain shooting cooldown modifier of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -11617,7 +11658,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 222,
+          "order": 223,
           "description": "",
           "subclasses": [
             "Character"
@@ -11627,7 +11668,7 @@
         },
         {
           "name": "chunk_exploration_radius",
-          "order": 188,
+          "order": 189,
           "description": "The chunk exploration radius of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -11637,7 +11678,7 @@
         },
         {
           "name": "cliff_explosive_prototype",
-          "order": 153,
+          "order": 154,
           "description": "The item prototype name used to destroy this cliff.",
           "subclasses": [
             "Cliff"
@@ -11689,7 +11730,7 @@
         },
         {
           "name": "connection_distance",
-          "order": 200,
+          "order": 201,
           "description": "",
           "subclasses": [
             "RollingStock"
@@ -11886,7 +11927,7 @@
         },
         {
           "name": "damage_hit_tint",
-          "order": 221,
+          "order": 222,
           "description": "",
           "subclasses": [
             "Character"
@@ -11896,7 +11937,7 @@
         },
         {
           "name": "darkness_for_all_lamps_off",
-          "order": 143,
+          "order": 144,
           "description": "Value between 0 and 1 darkness where all lamps of this lamp prototype are off.",
           "subclasses": [
             "Lamp"
@@ -11906,7 +11947,7 @@
         },
         {
           "name": "darkness_for_all_lamps_on",
-          "order": 142,
+          "order": 143,
           "description": "Value between 0 and 1 darkness where all lamps of this lamp prototype are on.",
           "subclasses": [
             "Lamp"
@@ -11926,7 +11967,7 @@
         },
         {
           "name": "distraction_cooldown",
-          "order": 164,
+          "order": 165,
           "description": "The distraction cooldown of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -11984,7 +12025,7 @@
         },
         {
           "name": "drop_item_distance",
-          "order": 211,
+          "order": 212,
           "description": "",
           "subclasses": [
             "Character"
@@ -11994,7 +12035,7 @@
         },
         {
           "name": "dying_speed",
-          "order": 191,
+          "order": 192,
           "description": "The dying time of this corpse prototype.",
           "subclasses": [
             "Corpse"
@@ -12004,7 +12045,7 @@
         },
         {
           "name": "effect_receiver",
-          "order": 169,
+          "order": 170,
           "description": "Effect receiver prototype of this crafting machine, lab, or mining drill.",
           "subclasses": [
             "CraftingMachine",
@@ -12099,7 +12140,7 @@
         },
         {
           "name": "enter_vehicle_distance",
-          "order": 216,
+          "order": 217,
           "description": "",
           "subclasses": [
             "Character"
@@ -12250,14 +12291,14 @@
         },
         {
           "name": "grid_prototype",
-          "order": 174,
+          "order": 175,
           "description": "The equipment grid prototype for this entity, if any.",
           "read_type": "LuaEquipmentGridPrototype",
           "optional": true
         },
         {
           "name": "growth_grid_tile_size",
-          "order": 205,
+          "order": 206,
           "description": "",
           "subclasses": [
             "AgriculturalTower"
@@ -12267,7 +12308,7 @@
         },
         {
           "name": "growth_ticks",
-          "order": 203,
+          "order": 204,
           "description": "",
           "subclasses": [
             "Plant"
@@ -12288,7 +12329,7 @@
         },
         {
           "name": "harvest_emissions",
-          "order": 204,
+          "order": 205,
           "description": "A table of pollutants that this plant will release when it is harvested.",
           "subclasses": [
             "Plant"
@@ -12302,7 +12343,7 @@
         },
         {
           "name": "has_belt_immunity",
-          "order": 155,
+          "order": 156,
           "description": "Whether this unit, car, or character prototype has belt immunity.",
           "subclasses": [
             "Unit",
@@ -12335,7 +12376,7 @@
         },
         {
           "name": "height",
-          "order": 183,
+          "order": 184,
           "description": "The height of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -12422,7 +12463,7 @@
         },
         {
           "name": "inserter_stack_size_bonus",
-          "order": 177,
+          "order": 178,
           "description": "The built-in stack size bonus of this inserter prototype.",
           "subclasses": [
             "Inserter"
@@ -12473,7 +12514,7 @@
         },
         {
           "name": "is_building",
-          "order": 139,
+          "order": 140,
           "description": "",
           "lists": [
             "These are the objects that are considered buildings:\n\n- AccumulatorPrototype\n- ArtilleryTurretPrototype\n- BeaconPrototype\n- BoilerPrototype\n- BurnerGeneratorPrototype\n- CombinatorPrototype → ArithmeticCombinator, DeciderCombinator\n- ConstantCombinatorPrototype\n- ContainerPrototype → LogisticContainer, InfinityContainer\n- CraftingMachinePrototype → AssemblingMachine, RocketSilo, Furnace\n- ElectricEnergyInterfacePrototype\n- ElectricPolePrototype\n- EnemySpawnerPrototype\n- GatePrototype\n- GeneratorPrototype\n- HeatInterfacePrototype\n- HeatPipePrototype\n- InserterPrototype\n- LabPrototype\n- LampPrototype\n- LinkedContainerPrototype\n- MarketPrototype\n- MiningDrillPrototype\n- OffshorePumpPrototype\n- PipePrototype → InfinityPipe\n- PipeToGroundPrototype\n- PowerSwitchPrototype\n- ProgrammableSpeakerPrototype\n- PumpPrototype\n- RadarPrototype\n- RailPrototype → CurvedRail, StraightRail\n- RailSignalBasePrototype → RailChainSignal, RailSignal\n- ReactorPrototype\n- RoboportPrototype\n- SimpleEntityPrototype\n- SimpleEntityWithOwnerPrototype → SimpleEntityWithForce\n- SolarPanelPrototype\n- StorageTankPrototype\n- TrainStopPrototype\n- TransportBeltConnectablePrototype → LinkedBelt, Loader1x1, Loader1x2, Splitter, TransportBelt, UndergroundBelt\n- TurretPrototype → AmmoTurret, ElectricTurret, FluidTurret\n- WallPrototype"
@@ -12483,14 +12524,14 @@
         },
         {
           "name": "is_entity_with_owner",
-          "order": 179,
+          "order": 180,
           "description": "True if this is entity-with-owner",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_military_target",
-          "order": 180,
+          "order": 181,
           "description": "True if this entity-with-owner is military target",
           "subclasses": [
             "EntityWithOwner"
@@ -12500,7 +12541,7 @@
         },
         {
           "name": "item_pickup_distance",
-          "order": 214,
+          "order": 215,
           "description": "",
           "subclasses": [
             "Character"
@@ -12520,7 +12561,7 @@
         },
         {
           "name": "joint_distance",
-          "order": 201,
+          "order": 202,
           "description": "",
           "subclasses": [
             "RollingStock"
@@ -12530,7 +12571,7 @@
         },
         {
           "name": "lab_inputs",
-          "order": 168,
+          "order": 169,
           "description": "The item prototype names that are the inputs of this lab prototype.",
           "subclasses": [
             "Lab"
@@ -12543,7 +12584,7 @@
         },
         {
           "name": "lamp_energy_usage",
-          "order": 193,
+          "order": 194,
           "description": "The lamp energy usage of this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -12612,7 +12653,7 @@
         },
         {
           "name": "logistic_parameters",
-          "order": 182,
+          "order": 183,
           "description": "The logistic parameters for this roboport.",
           "subclasses": [
             "Roboport"
@@ -12761,7 +12802,7 @@
         },
         {
           "name": "loot_pickup_distance",
-          "order": 215,
+          "order": 216,
           "description": "",
           "subclasses": [
             "Character"
@@ -12771,7 +12812,7 @@
         },
         {
           "name": "manual_range_modifier",
-          "order": 190,
+          "order": 191,
           "description": "The manual range modifier for this artillery turret or wagon prototype.",
           "subclasses": [
             "ArtilleryWagon",
@@ -12796,7 +12837,7 @@
         },
         {
           "name": "max_count_of_owned_units",
-          "order": 148,
+          "order": 149,
           "description": "Count of enemies this spawner can sustain.",
           "subclasses": [
             "Spawner"
@@ -12806,7 +12847,7 @@
         },
         {
           "name": "max_darkness_to_spawn",
-          "order": 146,
+          "order": 147,
           "description": "The maximum darkness at which this unit spawner can spawn entities.",
           "subclasses": [
             "Spawner"
@@ -12816,7 +12857,7 @@
         },
         {
           "name": "max_friends_around_to_spawn",
-          "order": 149,
+          "order": 150,
           "description": "How many friendly units are required within the spawning_radius of this spawner for it to stop producing more units.",
           "subclasses": [
             "Spawner"
@@ -12857,7 +12898,7 @@
         },
         {
           "name": "max_pursue_distance",
-          "order": 159,
+          "order": 160,
           "description": "The maximum pursue distance of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -12868,7 +12909,7 @@
         },
         {
           "name": "max_speed",
-          "order": 141,
+          "order": 142,
           "description": "The max speed of this projectile or flying robot prototype.",
           "subclasses": [
             "Projectile",
@@ -12900,7 +12941,7 @@
         },
         {
           "name": "maximum_corner_sliding_distance",
-          "order": 209,
+          "order": 210,
           "description": "",
           "subclasses": [
             "Character"
@@ -12920,7 +12961,7 @@
         },
         {
           "name": "min_darkness_to_spawn",
-          "order": 145,
+          "order": 146,
           "description": "The minimum darkness at which this unit spawner can spawn entities.",
           "subclasses": [
             "Spawner"
@@ -12930,7 +12971,7 @@
         },
         {
           "name": "min_pursue_time",
-          "order": 158,
+          "order": 159,
           "description": "The minimum pursue time of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -12996,7 +13037,7 @@
         },
         {
           "name": "move_while_shooting",
-          "order": 161,
+          "order": 162,
           "description": "Whether this unit prototype can move while shooting.",
           "subclasses": [
             "Unit"
@@ -13033,10 +13074,20 @@
         },
         {
           "name": "object_name",
-          "order": 224,
+          "order": 225,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
+        },
+        {
+          "name": "per_lane_filters",
+          "order": 139,
+          "description": "",
+          "subclasses": [
+            "Loader"
+          ],
+          "read_type": "boolean",
+          "optional": true
         },
         {
           "name": "profile",
@@ -13053,7 +13104,7 @@
         },
         {
           "name": "protected_from_tile_building",
-          "order": 178,
+          "order": 179,
           "description": "True if this entity prototype should be included during tile collision checks with [LuaTilePrototype::check_collision_with_entities](runtime:LuaTilePrototype::check_collision_with_entities) enabled.",
           "read_type": "boolean",
           "optional": false
@@ -13071,7 +13122,7 @@
         },
         {
           "name": "radar_range",
-          "order": 160,
+          "order": 161,
           "description": "The radar range of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13082,21 +13133,21 @@
         },
         {
           "name": "radius",
-          "order": 152,
+          "order": 153,
           "description": "The radius of this entity prototype.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "radius_visualisation_specification",
-          "order": 202,
+          "order": 203,
           "description": "",
           "read_type": "RadiusVisualisationSpecification",
           "optional": true
         },
         {
           "name": "reach_distance",
-          "order": 212,
+          "order": 213,
           "description": "",
           "subclasses": [
             "Character"
@@ -13106,7 +13157,7 @@
         },
         {
           "name": "reach_resource_distance",
-          "order": 213,
+          "order": 214,
           "description": "",
           "subclasses": [
             "Character"
@@ -13116,7 +13167,7 @@
         },
         {
           "name": "related_underground_belt",
-          "order": 176,
+          "order": 177,
           "description": "",
           "subclasses": [
             "TransportBelt"
@@ -13136,7 +13187,7 @@
         },
         {
           "name": "remove_decoratives",
-          "order": 175,
+          "order": 176,
           "description": "Whether this entity should remove decoratives that collide with it when this entity is built.",
           "read_type": {
             "complex_type": "union",
@@ -13222,7 +13273,7 @@
         },
         {
           "name": "respawn_time",
-          "order": 220,
+          "order": 221,
           "description": "",
           "subclasses": [
             "Character"
@@ -13255,7 +13306,7 @@
         },
         {
           "name": "rocket_entity_prototype",
-          "order": 154,
+          "order": 155,
           "description": "The rocket entity prototype associated with this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -13295,7 +13346,7 @@
         },
         {
           "name": "running_speed",
-          "order": 208,
+          "order": 209,
           "description": "The movement speed of this character prototype.",
           "subclasses": [
             "Character"
@@ -13378,7 +13429,7 @@
         },
         {
           "name": "spawn_decoration",
-          "order": 198,
+          "order": 199,
           "description": "",
           "subclasses": [
             "Spawner",
@@ -13392,7 +13443,7 @@
         },
         {
           "name": "spawn_decorations_on_expansion",
-          "order": 199,
+          "order": 200,
           "description": "",
           "subclasses": [
             "Spawner",
@@ -13403,7 +13454,7 @@
         },
         {
           "name": "spawning_radius",
-          "order": 150,
+          "order": 151,
           "description": "How far from the spawner can the units be spawned.",
           "subclasses": [
             "Spawner"
@@ -13413,7 +13464,7 @@
         },
         {
           "name": "spawning_spacing",
-          "order": 151,
+          "order": 152,
           "description": "What spaces should be between the spawned units.",
           "subclasses": [
             "Spawner"
@@ -13423,7 +13474,7 @@
         },
         {
           "name": "spawning_time_modifier",
-          "order": 165,
+          "order": 166,
           "description": "The spawning time modifier of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13463,14 +13514,14 @@
         },
         {
           "name": "supports_direction",
-          "order": 171,
+          "order": 172,
           "description": "Whether this entity prototype could possibly ever be rotated.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "surface_conditions",
-          "order": 207,
+          "order": 208,
           "description": "The surface conditions required to build this entity.",
           "read_type": {
             "complex_type": "array",
@@ -13500,7 +13551,7 @@
         },
         {
           "name": "terrain_friction_modifier",
-          "order": 172,
+          "order": 173,
           "description": "The terrain friction modifier for this vehicle.",
           "subclasses": [
             "Vehicle"
@@ -13510,26 +13561,6 @@
         },
         {
           "name": "ticks_to_keep_aiming_direction",
-          "order": 218,
-          "description": "",
-          "subclasses": [
-            "Character"
-          ],
-          "read_type": "uint",
-          "optional": true
-        },
-        {
-          "name": "ticks_to_keep_gun",
-          "order": 217,
-          "description": "",
-          "subclasses": [
-            "Character"
-          ],
-          "read_type": "uint",
-          "optional": true
-        },
-        {
-          "name": "ticks_to_stay_in_combat",
           "order": 219,
           "description": "",
           "subclasses": [
@@ -13539,15 +13570,35 @@
           "optional": true
         },
         {
+          "name": "ticks_to_keep_gun",
+          "order": 218,
+          "description": "",
+          "subclasses": [
+            "Character"
+          ],
+          "read_type": "uint",
+          "optional": true
+        },
+        {
+          "name": "ticks_to_stay_in_combat",
+          "order": 220,
+          "description": "",
+          "subclasses": [
+            "Character"
+          ],
+          "read_type": "uint",
+          "optional": true
+        },
+        {
           "name": "tile_height",
-          "order": 196,
+          "order": 197,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "tile_width",
-          "order": 195,
+          "order": 196,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)",
           "read_type": "uint",
           "optional": false
@@ -13571,7 +13622,7 @@
         },
         {
           "name": "torso_bob_speed",
-          "order": 185,
+          "order": 186,
           "description": "The torso bob speed of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13582,7 +13633,7 @@
         },
         {
           "name": "torso_rotation_speed",
-          "order": 184,
+          "order": 185,
           "description": "The torso rotation speed of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13644,7 +13695,7 @@
         },
         {
           "name": "use_exact_mode",
-          "order": 194,
+          "order": 195,
           "description": "Whether this logistic container prototype uses exact mode",
           "subclasses": [
             "LogisticContainer"
@@ -13654,14 +13705,14 @@
         },
         {
           "name": "valid",
-          "order": 223,
+          "order": 224,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "vector_to_place_result",
-          "order": 206,
+          "order": 207,
           "description": "",
           "subclasses": [
             "MiningDrill",
@@ -13672,7 +13723,7 @@
         },
         {
           "name": "vertical_selection_shift",
-          "order": 197,
+          "order": 198,
           "description": "Vertical selection shift used by rolling stocks. It affects selection box vertical position but is also used to shift rolling stock graphics along the rails to fine tune train's look.",
           "subclasses": [
             "RollingStock"
@@ -13682,7 +13733,7 @@
         },
         {
           "name": "vision_distance",
-          "order": 156,
+          "order": 157,
           "description": "The vision distance of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -16283,7 +16334,7 @@
               "name": "starter_pack",
               "order": 2,
               "description": "The starter pack required to build the platform.",
-              "type": "ItemID",
+              "type": "ItemWithQualityID",
               "optional": false
             }
           ],
@@ -25033,7 +25084,7 @@
     {
       "name": "LuaItemPrototype",
       "order": 64,
-      "description": "Prototype of an item. For example, an item prototype can be obtained from [LuaGameScript::item_prototypes](runtime:LuaGameScript::item_prototypes) by its name: `prototypes.item[\"iron-plate\"]`.",
+      "description": "Prototype of an item. For example, an item prototype can be obtained from [LuaPrototypes::item](runtime:LuaPrototypes::item) by its name: `prototypes.item[\"iron-plate\"]`.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
       "methods": [
@@ -30280,7 +30331,7 @@
       "attributes": [
         {
           "name": "admin",
-          "order": 21,
+          "order": 22,
           "description": "`true` if the player is an admin.\n\nTrying to change player admin status from the console when you aren't an admin does nothing.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30288,28 +30339,28 @@
         },
         {
           "name": "afk_time",
-          "order": 23,
+          "order": 24,
           "description": "How many ticks since the last action of this player.",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "auto_sort_main_inventory",
-          "order": 41,
+          "order": 42,
           "description": "If the main inventory will be auto sorted.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "blueprint_to_setup",
-          "order": 33,
+          "order": 34,
           "description": "The item stack containing a blueprint to be setup.",
           "read_type": "LuaItemStack",
           "optional": false
         },
         {
           "name": "blueprints",
-          "order": 34,
+          "order": 35,
           "description": "Records contained in the player's blueprint library.",
           "read_type": {
             "complex_type": "array",
@@ -30319,7 +30370,7 @@
         },
         {
           "name": "centered_on",
-          "order": 13,
+          "order": 14,
           "description": "The entity being centered on in remote view.\n\nWhen writing, the player will be switched to remote view (if not already in it) and centered on the given entity.",
           "read_type": "LuaEntity",
           "write_type": "LuaEntity",
@@ -30335,7 +30386,7 @@
         },
         {
           "name": "chat_color",
-          "order": 17,
+          "order": 18,
           "description": "The color used when this player talks in game.",
           "read_type": "Color",
           "write_type": "Color",
@@ -30343,7 +30394,7 @@
         },
         {
           "name": "color",
-          "order": 16,
+          "order": 17,
           "description": "The color associated with the player. This will be used to tint the player's character as well as their buildings and vehicles.",
           "read_type": "Color",
           "write_type": "Color",
@@ -30351,7 +30402,7 @@
         },
         {
           "name": "connected",
-          "order": 20,
+          "order": 21,
           "description": "`true` if the player is currently connected to the game.",
           "read_type": "boolean",
           "optional": false
@@ -30365,7 +30416,7 @@
         },
         {
           "name": "cursor_stack_temporary",
-          "order": 43,
+          "order": 44,
           "description": "Returns true if the current item stack in cursor will be destroyed after clearing the cursor. Manually putting it into inventory still preserves the item. If the cursor stack is not one of the supported types (blueprint, blueprint-book, deconstruction-planner, upgrade-planner), write operation will be silently ignored.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30380,42 +30431,42 @@
         },
         {
           "name": "display_density_scale",
-          "order": 31,
+          "order": 32,
           "description": "The display density scale for this player. The display density scale is the factor of [LuaPlayer::display_scale](runtime:LuaPlayer::display_scale) that is determined by the physical DPI of the screen that Factorio is running on. In most cases, the default value is 1. If the player is playing on a high-density display, this value may be 2 or greater.\n\nDuring [on_player_created](runtime:on_player_created), this attribute will always return a scale of `1`. To get the actual scale, listen to the [on_player_display_density_scale_changed](runtime:on_player_display_density_scale_changed) event raised shortly afterwards.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "display_resolution",
-          "order": 29,
+          "order": 30,
           "description": "The display resolution for this player.\n\nDuring [on_player_created](runtime:on_player_created), this attribute will always return a resolution of `{width=1920, height=1080}`. To get the actual resolution, listen to the [on_player_display_resolution_changed](runtime:on_player_display_resolution_changed) event raised shortly afterwards.",
           "read_type": "DisplayResolution",
           "optional": false
         },
         {
           "name": "display_scale",
-          "order": 30,
+          "order": 31,
           "description": "The display scale for this player.\n\nDuring [on_player_created](runtime:on_player_created), this attribute will always return a scale of `1`. To get the actual scale, listen to the [on_player_display_scale_changed](runtime:on_player_display_scale_changed) event raised shortly afterwards.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "drag_target",
-          "order": 45,
+          "order": 46,
           "description": "The wire drag target for this player, if any.",
           "read_type": "DragTarget",
           "optional": true
         },
         {
           "name": "entity_copy_source",
-          "order": 22,
+          "order": 23,
           "description": "The source entity used during entity settings copy-paste, if any.",
           "read_type": "LuaEntity",
           "optional": true
         },
         {
           "name": "game_view_settings",
-          "order": 14,
+          "order": 15,
           "description": "The player's game view settings.",
           "read_type": "GameViewSettings",
           "write_type": "GameViewSettings",
@@ -30430,7 +30481,7 @@
         },
         {
           "name": "hand_location",
-          "order": 42,
+          "order": 43,
           "description": "The original location of the item in the cursor, marked with a hand. `nil` if the cursor stack is empty. When writing, the specified inventory slot must be empty and the cursor stack must not be empty.",
           "read_type": "ItemStackLocation",
           "write_type": "ItemStackLocation",
@@ -30445,7 +30496,7 @@
         },
         {
           "name": "infinity_inventory_filters",
-          "order": 40,
+          "order": 41,
           "description": "The filters for this map editor infinity inventory settings.",
           "read_type": {
             "complex_type": "array",
@@ -30459,35 +30510,35 @@
         },
         {
           "name": "input_method",
-          "order": 36,
+          "order": 37,
           "description": "The input method of the player, mouse and keyboard or game controller",
           "read_type": "defines.input_method",
           "optional": false
         },
         {
           "name": "last_online",
-          "order": 25,
+          "order": 26,
           "description": "At what tick this player was last online.",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "locale",
-          "order": 32,
+          "order": 33,
           "description": "The active locale for this player.\n\nDuring [on_player_created](runtime:on_player_created), this attribute will be `en`. To get the actual value, listen to the [on_player_locale_changed](runtime:on_player_locale_changed) event raised shortly afterwards.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "map_view_settings",
-          "order": 46,
+          "order": 47,
           "description": "The player's map view settings. To write to this, use a table containing the fields that should be changed.",
           "write_type": "MapViewSettings",
           "optional": false
         },
         {
           "name": "minimap_enabled",
-          "order": 15,
+          "order": 16,
           "description": "`true` if the minimap is visible.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30495,7 +30546,7 @@
         },
         {
           "name": "mod_settings",
-          "order": 27,
+          "order": 28,
           "description": "The current per-player settings for the this player, indexed by prototype name. Returns the same structure as [LuaSettings::get_player_settings](runtime:LuaSettings::get_player_settings). This table becomes invalid if its associated player does.\n\nEven though this attribute is marked as read-only, individual settings can be changed by overwriting their [ModSetting](runtime:ModSetting) table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.",
           "examples": [
             "```\n-- Change the value of the \"active_lifestyle\" setting\nplayer.mod_settings[\"active_lifestyle\"] = {value = true}\n```"
@@ -30509,21 +30560,21 @@
         },
         {
           "name": "name",
-          "order": 18,
+          "order": 19,
           "description": "The player's username.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "object_name",
-          "order": 48,
+          "order": 49,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "online_time",
-          "order": 24,
+          "order": 25,
           "description": "How many ticks did this player spend playing this save (all sessions combined).",
           "read_type": "uint",
           "optional": false
@@ -30537,11 +30588,18 @@
         },
         {
           "name": "permission_group",
-          "order": 26,
+          "order": 27,
           "description": "The permission group this player is part of, if any.",
           "read_type": "LuaPermissionGroup",
           "write_type": "LuaPermissionGroup",
           "optional": true
+        },
+        {
+          "name": "physical_controller_type",
+          "order": 10,
+          "description": "The player's \"physical\" controller. When a player is in the remote controller, this specifies the controller they will return to. When the player is not in the remote controller, this is equivalent to [LuaPlayer::controller_type](runtime:LuaPlayer::controller_type).",
+          "read_type": "defines.controllers",
+          "optional": false
         },
         {
           "name": "physical_position",
@@ -30573,7 +30631,7 @@
         },
         {
           "name": "remove_unfiltered_items",
-          "order": 39,
+          "order": 40,
           "description": "If items not included in this map editor infinity inventory filters should be removed.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30581,14 +30639,14 @@
         },
         {
           "name": "render_mode",
-          "order": 35,
+          "order": 36,
           "description": "The render mode of the player, like map or zoom to world. The render mode can be set using [LuaPlayer::open_map](runtime:LuaPlayer::open_map), [LuaPlayer::zoom_to_world](runtime:LuaPlayer::zoom_to_world) and [LuaPlayer::close_map](runtime:LuaPlayer::close_map).",
           "read_type": "defines.render_mode",
           "optional": false
         },
         {
           "name": "show_on_map",
-          "order": 38,
+          "order": 39,
           "description": "If `true`, circle and name of given player is rendered on the map/chart.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30596,7 +30654,7 @@
         },
         {
           "name": "spectator",
-          "order": 37,
+          "order": 38,
           "description": "If `true`, zoom-to-world noise effect will be disabled and environmental sounds will be based on zoom-to-world view instead of position of player's character.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30604,7 +30662,7 @@
         },
         {
           "name": "spidertron_remote_selection",
-          "order": 11,
+          "order": 12,
           "description": "All SpiderVehicles currently selected by the player, if they are holding a spidertron remote.",
           "read_type": {
             "complex_type": "array",
@@ -30618,14 +30676,14 @@
         },
         {
           "name": "stashed_controller_type",
-          "order": 10,
+          "order": 11,
           "description": "The stashed controller type, if any. This is mainly useful when a player is in the map editor.",
           "read_type": "defines.controllers",
           "optional": true
         },
         {
           "name": "tag",
-          "order": 19,
+          "order": 20,
           "description": "The tag that is shown after the player in chat, on the map and above multiplayer selection rectangles.",
           "read_type": "string",
           "write_type": "string",
@@ -30633,7 +30691,7 @@
         },
         {
           "name": "ticks_to_respawn",
-          "order": 28,
+          "order": 29,
           "description": "The number of ticks until this player will respawn. `nil` if this player is not waiting to respawn.\n\nSet to `nil` to immediately respawn the player.\n\nSet to any positive value to trigger the respawn state for this player.",
           "read_type": "uint",
           "write_type": "uint",
@@ -30641,21 +30699,21 @@
         },
         {
           "name": "undo_redo_stack",
-          "order": 44,
+          "order": 45,
           "description": "The undo and redo stack for this player.",
           "read_type": "LuaUndoRedoStack",
           "optional": false
         },
         {
           "name": "valid",
-          "order": 47,
+          "order": 48,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "zoom",
-          "order": 12,
+          "order": 13,
           "description": "The player's zoom-level.",
           "write_type": "double",
           "optional": false
@@ -31915,56 +31973,63 @@
       "attributes": [
         {
           "name": "beacon_power_usage_multiplier",
-          "order": 4,
-          "description": "",
-          "read_type": "float",
-          "optional": false
-        },
-        {
-          "name": "draw_sprite_by_default",
-          "order": 3,
-          "description": "",
-          "read_type": "boolean",
-          "optional": false
-        },
-        {
-          "name": "level",
-          "order": 0,
-          "description": "Level basically specifies the stat-increasing value of this quality level",
-          "read_type": "uint",
-          "optional": false
-        },
-        {
-          "name": "mining_drill_resource_drain_multiplier",
           "order": 5,
           "description": "",
           "read_type": "float",
           "optional": false
         },
         {
-          "name": "next",
+          "name": "color",
+          "order": 0,
+          "description": "The color of the prototype",
+          "read_type": "Color",
+          "optional": false
+        },
+        {
+          "name": "draw_sprite_by_default",
+          "order": 4,
+          "description": "",
+          "read_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "level",
           "order": 1,
+          "description": "Level basically specifies the stat-increasing value of this quality level",
+          "read_type": "uint",
+          "optional": false
+        },
+        {
+          "name": "mining_drill_resource_drain_multiplier",
+          "order": 6,
+          "description": "",
+          "read_type": "float",
+          "optional": false
+        },
+        {
+          "name": "next",
+          "order": 2,
           "description": "The next higher level of the quality",
           "read_type": "LuaQualityPrototype",
           "optional": false
         },
         {
           "name": "next_probability",
-          "order": 2,
+          "order": 3,
           "description": "The probability multiplier of getting the next level of quality",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "object_name",
-          "order": 7,
+          "order": 8,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "valid",
-          "order": 6,
+          "order": 7,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -36753,7 +36818,7 @@
       "attributes": [
         {
           "name": "active_quickbars",
-          "order": 9,
+          "order": 10,
           "description": "",
           "write_type": "uint8",
           "optional": false
@@ -36812,7 +36877,7 @@
         },
         {
           "name": "gui_tooltip_interval",
-          "order": 8,
+          "order": 9,
           "description": "",
           "write_type": "double",
           "optional": false
@@ -36826,14 +36891,21 @@
         },
         {
           "name": "object_name",
-          "order": 11,
+          "order": 12,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
+          "name": "smart_belt_building",
+          "order": 8,
+          "description": "",
+          "write_type": "boolean",
+          "optional": true
+        },
+        {
           "name": "valid",
-          "order": 10,
+          "order": 11,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -37343,6 +37415,7 @@
           "order": 1,
           "description": "The name of this space platform.",
           "read_type": "string",
+          "write_type": "string",
           "optional": false
         },
         {
@@ -37386,7 +37459,7 @@
           "name": "starter_pack",
           "order": 5,
           "description": "The starter pack used to create this space platform.",
-          "read_type": "LuaItemPrototype",
+          "read_type": "ItemIDAndQualityIDPair",
           "optional": false
         },
         {
@@ -41753,6 +41826,13 @@
               "description": "How much pollution to add.",
               "type": "double",
               "optional": false
+            },
+            {
+              "name": "prototype",
+              "order": 2,
+              "description": "The entity prototype to attribute the pollution change to in statistics. If not defined, the pollution change will not show up in statistics.",
+              "type": "EntityID",
+              "optional": true
             },
             {
               "name": "source",
@@ -51990,14 +52070,21 @@
       "data": [
         {
           "name": "name",
-          "order": 0,
+          "order": 1,
           "description": "Identifier of the event",
           "type": "defines.events",
           "optional": false
         },
         {
+          "name": "player_won",
+          "order": 0,
+          "description": "If a player won",
+          "type": "boolean",
+          "optional": false
+        },
+        {
           "name": "tick",
-          "order": 1,
+          "order": 2,
           "description": "Tick the event was generated.",
           "type": "uint",
           "optional": false
@@ -58253,7 +58340,7 @@
           {
             "name": "name",
             "order": 0,
-            "description": "For use within nested filters such as the `place-result` filter of array[[ItemPrototypeFilter](runtime:ItemPrototypeFilter)].\n\nTo get a specific prototype by name, see [LuaGameScript::entity_prototypes](runtime:LuaGameScript::entity_prototypes).",
+            "description": "For use within nested filters such as the `place-result` filter of array[[ItemPrototypeFilter](runtime:ItemPrototypeFilter)].\n\nTo get a specific prototype by name, see [LuaPrototypes::entity](runtime:LuaPrototypes::entity).",
             "parameters": [
               {
                 "name": "name",
@@ -59561,7 +59648,7 @@
           {
             "name": "name",
             "order": 0,
-            "description": "For use within nested filters such as the `has-product-fluid` filter of array[[RecipePrototypeFilter](runtime:RecipePrototypeFilter)].\n\nTo get a specific prototype by name, see [LuaGameScript::fluid_prototypes](runtime:LuaGameScript::fluid_prototypes).",
+            "description": "For use within nested filters such as the `has-product-fluid` filter of array[[RecipePrototypeFilter](runtime:RecipePrototypeFilter)].\n\nTo get a specific prototype by name, see [LuaPrototypes::fluid](runtime:LuaPrototypes::fluid).",
             "parameters": [
               {
                 "name": "name",
@@ -61225,7 +61312,7 @@
           {
             "name": "name",
             "order": 4,
-            "description": "For use within nested filters such as the `has-product-item` filter of array[[RecipePrototypeFilter](runtime:RecipePrototypeFilter)].\n\nTo get a specific prototype by name, see [LuaGameScript::item_prototypes](runtime:LuaGameScript::item_prototypes).",
+            "description": "For use within nested filters such as the `has-product-item` filter of array[[RecipePrototypeFilter](runtime:RecipePrototypeFilter)].\n\nTo get a specific prototype by name, see [LuaPrototypes::item](runtime:LuaPrototypes::item).",
             "parameters": [
               {
                 "name": "name",
@@ -68887,15 +68974,39 @@
         "complex_type": "table",
         "parameters": [
           {
+            "name": "connection_type",
+            "order": 0,
+            "description": "",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "normal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "underground"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "linked"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
             "name": "direction",
-            "order": 3,
+            "order": 4,
             "description": "",
             "type": "defines.direction",
             "optional": false
           },
           {
             "name": "flow_direction",
-            "order": 2,
+            "order": 3,
             "description": "",
             "type": {
               "complex_type": "union",
@@ -68918,15 +69029,22 @@
             "optional": false
           },
           {
+            "name": "linked_connection_id",
+            "order": 5,
+            "description": "Only supplied if `connection_type` is `\"linked\"`.",
+            "type": "uint32",
+            "optional": true
+          },
+          {
             "name": "max_underground_distance",
-            "order": 1,
+            "order": 2,
             "description": "The maximum tile distance this underground connection can connect.",
             "type": "uint",
             "optional": true
           },
           {
             "name": "positions",
-            "order": 0,
+            "order": 1,
             "description": "The 4 cardinal direction connection points for this pipe.",
             "type": {
               "complex_type": "array",
@@ -78918,123 +79036,128 @@
           "description": ""
         },
         {
-          "name": "switch_mining_drill_filter_mode_state",
+          "name": "switch_loader_filter_mode",
           "order": 243,
           "description": ""
         },
         {
-          "name": "switch_power_switch_state",
+          "name": "switch_mining_drill_filter_mode_state",
           "order": 244,
           "description": ""
         },
         {
-          "name": "take_equipment",
+          "name": "switch_power_switch_state",
           "order": 245,
           "description": ""
         },
         {
-          "name": "toggle_artillery_auto_targeting",
+          "name": "take_equipment",
           "order": 246,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_entity_filter_mode",
+          "name": "toggle_artillery_auto_targeting",
           "order": 247,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_tile_filter_mode",
+          "name": "toggle_deconstruction_item_entity_filter_mode",
           "order": 248,
           "description": ""
         },
         {
-          "name": "toggle_driving",
+          "name": "toggle_deconstruction_item_tile_filter_mode",
           "order": 249,
           "description": ""
         },
         {
-          "name": "toggle_enable_vehicle_logistics_while_moving",
+          "name": "toggle_driving",
           "order": 250,
           "description": ""
         },
         {
-          "name": "toggle_entity_logistic_requests",
+          "name": "toggle_enable_vehicle_logistics_while_moving",
           "order": 251,
           "description": ""
         },
         {
-          "name": "toggle_equipment_movement_bonus",
+          "name": "toggle_entity_logistic_requests",
           "order": 252,
           "description": ""
         },
         {
-          "name": "toggle_map_editor",
+          "name": "toggle_equipment_movement_bonus",
           "order": 253,
           "description": ""
         },
         {
-          "name": "toggle_personal_logistic_requests",
+          "name": "toggle_map_editor",
           "order": 254,
           "description": ""
         },
         {
-          "name": "toggle_personal_roboport",
+          "name": "toggle_personal_logistic_requests",
           "order": 255,
           "description": ""
         },
         {
-          "name": "toggle_selected_entity",
+          "name": "toggle_personal_roboport",
           "order": 256,
           "description": ""
         },
         {
-          "name": "toggle_show_entity_info",
+          "name": "toggle_selected_entity",
           "order": 257,
           "description": ""
         },
         {
-          "name": "translate_string",
+          "name": "toggle_show_entity_info",
           "order": 258,
           "description": ""
         },
         {
-          "name": "trash_not_requested_items",
+          "name": "translate_string",
           "order": 259,
           "description": ""
         },
         {
-          "name": "undo",
+          "name": "trash_not_requested_items",
           "order": 260,
           "description": ""
         },
         {
-          "name": "upgrade",
+          "name": "undo",
           "order": 261,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_item",
+          "name": "upgrade",
           "order": 262,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_record",
+          "name": "upgrade_opened_blueprint_by_item",
           "order": 263,
           "description": ""
         },
         {
-          "name": "use_item",
+          "name": "upgrade_opened_blueprint_by_record",
           "order": 264,
           "description": ""
         },
         {
-          "name": "wire_dragging",
+          "name": "use_item",
           "order": 265,
           "description": ""
         },
         {
-          "name": "write_to_console",
+          "name": "wire_dragging",
           "order": 266,
+          "description": ""
+        },
+        {
+          "name": "write_to_console",
+          "order": 267,
           "description": ""
         }
       ]
@@ -82046,6 +82169,11 @@
           "name": "on_the_path",
           "order": 3,
           "description": "Following the path."
+        },
+        {
+          "name": "paused",
+          "order": 8,
+          "description": "Paused."
         },
         {
           "name": "starter_pack_on_the_way",
