@@ -39,7 +39,7 @@ jobs:
       - name: Get current version
         run: echo "FACTORIO_VERSION=$(npx tsx ./scripts/get-current-version.ts )" >> $GITHUB_ENV
       - run: npm run clean
-      - run: npm run generate
+      - run: npm run generate || echo "Failed to generate, still creating PR"
       - run: npm run new-version-changelog
       - run: npm version minor --no-git-tag-version
       - id: create-token
