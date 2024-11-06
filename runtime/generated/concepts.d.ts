@@ -1096,7 +1096,7 @@ declare module "factorio:runtime" {
     /**
      * Only supplied if `connection_type` is `"linked"`.
      */
-    readonly linked_connection_id?: uint32
+    linked_connection_id: uint
   }
   /**
    * The name of a {@link LuaCollisionLayerPrototype}.

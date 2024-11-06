@@ -339,6 +339,10 @@ export interface LuaBootstrap {
 
 export interface LuaSurface {}
 
+export interface PipeConnectionDefinition {
+  linked_connection_id: uint
+}
+
 export type PlayerIndex = uint
 export type SurfaceIndex = uint
 export type ForceIndex = uint
