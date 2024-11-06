@@ -114,7 +114,7 @@ function generateDefinesDeclaration(
         addJsDoc(
           context,
           ts.factory.createEnumMember(
-            ts.factory.createStringLiteral(m.name),
+            escapePropertyName(m.name),
             existing?.annotations.numericEnum ? ts.factory.createNumericLiteral(i) : undefined,
           ),
           m,
