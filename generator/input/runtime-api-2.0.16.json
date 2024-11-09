@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.15",
+  "application_version": "2.0.16",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -6499,6 +6499,23 @@
                 ],
                 "full_format": false
               },
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "get_logistic_sections",
+          "order": 124,
+          "description": "Gives logistic sections of this entity if it uses logistic sections.",
+          "parameters": [],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "",
+              "type": "LuaLogisticSections",
               "optional": true
             }
           ]
@@ -18339,7 +18356,7 @@
         },
         {
           "name": "ban_player",
-          "order": 29,
+          "order": 28,
           "description": "Bans the given player from this multiplayer game. Does nothing if this is a single player game of if the player running this isn't an admin.",
           "raises": [
             {
@@ -18431,7 +18448,7 @@
         },
         {
           "name": "create_inventory",
-          "order": 39,
+          "order": 38,
           "description": "Creates an inventory that is not owned by any game object.\n\nIt can be resized later with [LuaInventory::resize](runtime:LuaInventory::resize).\n\nMake sure to destroy it when you are done with it using [LuaInventory::destroy](runtime:LuaInventory::destroy).",
           "parameters": [
             {
@@ -18463,7 +18480,7 @@
         },
         {
           "name": "create_profiler",
-          "order": 38,
+          "order": 37,
           "description": "Creates a [LuaProfiler](runtime:LuaProfiler), which is used for measuring script performance.\n\nLuaProfiler cannot be serialized.",
           "parameters": [
             {
@@ -18488,7 +18505,7 @@
         },
         {
           "name": "create_random_generator",
-          "order": 26,
+          "order": 25,
           "description": "Creates a deterministic standalone random generator with the given seed or if a seed is not provided the initial map seed is used.\n\n*Make sure* you actually want to use this over math.random(...) as this provides entirely different functionality over math.random(...).",
           "parameters": [
             {
@@ -18604,16 +18621,6 @@
           "return_values": []
         },
         {
-          "name": "enable_tip_triggers_in_custom_scenarios",
-          "order": 24,
-          "description": "Enables tip triggers in custom scenarios, that unlock new tips and show notices about unlocked tips.",
-          "parameters": [],
-          "format": {
-            "takes_table": false
-          },
-          "return_values": []
-        },
-        {
           "name": "force_crc",
           "order": 16,
           "description": "Force a CRC check. Tells all peers to calculate their current CRC, which are then compared to each other. If a mismatch is detected, the game desyncs and some peers are forced to reconnect.",
@@ -18650,7 +18657,7 @@
         },
         {
           "name": "get_entity_by_unit_number",
-          "order": 44,
+          "order": 43,
           "description": "Returns entity with a specified unit number or nil if entity with such number was not found or prototype does not have [EntityPrototypeFlags::get-by-unit-number](prototype:EntityPrototypeFlags::get_by_unit_number) flag set.",
           "parameters": [
             {
@@ -18675,7 +18682,7 @@
         },
         {
           "name": "get_map_exchange_string",
-          "order": 35,
+          "order": 34,
           "description": "Gets the map exchange string for the map generation settings that were used to create this map.",
           "parameters": [],
           "format": {
@@ -18692,7 +18699,7 @@
         },
         {
           "name": "get_player",
-          "order": 36,
+          "order": 35,
           "description": "Gets the given player or returns `nil` if no player is found.",
           "parameters": [
             {
@@ -18724,7 +18731,7 @@
         },
         {
           "name": "get_pollution_statistics",
-          "order": 42,
+          "order": 41,
           "description": "The pollution statistics for this the given surface.",
           "parameters": [
             {
@@ -18749,7 +18756,7 @@
         },
         {
           "name": "get_script_inventories",
-          "order": 40,
+          "order": 39,
           "description": "Gets the inventories created through [LuaGameScript::create_inventory](runtime:LuaGameScript::create_inventory).\n\nInventories created through console commands will be owned by `\"core\"`.",
           "parameters": [
             {
@@ -18781,7 +18788,7 @@
         },
         {
           "name": "get_surface",
-          "order": 37,
+          "order": 36,
           "description": "Gets the given surface or returns `nil` if no surface is found.\n\nThis is a shortcut for [LuaGameScript::surfaces](runtime:LuaGameScript::surfaces).",
           "parameters": [
             {
@@ -18813,7 +18820,7 @@
         },
         {
           "name": "get_vehicles",
-          "order": 43,
+          "order": 42,
           "description": "Returns vehicles in game",
           "parameters": [
             {
@@ -18904,7 +18911,7 @@
         },
         {
           "name": "is_multiplayer",
-          "order": 34,
+          "order": 33,
           "description": "Whether the save is loaded as a multiplayer map.",
           "parameters": [],
           "format": {
@@ -18921,7 +18928,7 @@
         },
         {
           "name": "kick_player",
-          "order": 28,
+          "order": 27,
           "description": "Kicks the given player from this multiplayer game. Does nothing if this is a single player game or if the player running this isn't an admin.",
           "raises": [
             {
@@ -19003,7 +19010,7 @@
         },
         {
           "name": "mute_player",
-          "order": 32,
+          "order": 31,
           "description": "Mutes the given player. Does nothing if the player running this isn't an admin.",
           "raises": [
             {
@@ -19037,7 +19044,7 @@
         },
         {
           "name": "play_sound",
-          "order": 27,
+          "order": 26,
           "description": "Play a sound for every player in the game.\n\nThe sound is not played if its location is not [charted](runtime:LuaForce::chart) for that player.",
           "parameters": [
             {
@@ -19077,7 +19084,7 @@
         },
         {
           "name": "print",
-          "order": 25,
+          "order": 24,
           "description": "Print text to the chat console all players.\n\nBy default, messages that are identical to a message sent in the last 60 ticks are not printed again.",
           "parameters": [
             {
@@ -19102,7 +19109,7 @@
         },
         {
           "name": "purge_player",
-          "order": 31,
+          "order": 30,
           "description": "Purges the given players messages from the game. Does nothing if the player running this isn't an admin.",
           "raises": [
             {
@@ -19224,7 +19231,7 @@
         },
         {
           "name": "reset_time_played",
-          "order": 41,
+          "order": 40,
           "description": "Resets the amount of time played for this map.",
           "parameters": [],
           "format": {
@@ -19464,7 +19471,7 @@
           "parameters": [
             {
               "name": "allow_in_replay",
-              "order": 12,
+              "order": 14,
               "description": "Whether to save the screenshot even during replay playback. Defaults to `false`.",
               "type": "boolean",
               "optional": true
@@ -19485,15 +19492,29 @@
             },
             {
               "name": "daytime",
-              "order": 13,
+              "order": 15,
               "description": "Overrides the current surface daytime for the duration of screenshot rendering.",
               "type": "double",
               "optional": true
             },
             {
               "name": "force_render",
-              "order": 15,
+              "order": 17,
               "description": "Screenshot requests are processed in between game update and render. The game may skip rendering (ie. drop frames) if the previous frame has not finished rendering or the game simulation starts to fall below 60 updates per second. If `force_render` is set to `true`, the game won't drop frames and process the screenshot request at the end of the update in which the request was created. This is not honored on multiplayer clients that are catching up to server. Defaults to `false`.",
+              "type": "boolean",
+              "optional": true
+            },
+            {
+              "name": "hide_clouds",
+              "order": 11,
+              "description": "If `true` cloud shadows on ground won't be rendered. Defaults to `false`.",
+              "type": "boolean",
+              "optional": true
+            },
+            {
+              "name": "hide_fog",
+              "order": 12,
+              "description": "If `true` fog effect and foreground space dust effect won't be rendered. Defaults to `false`.",
               "type": "boolean",
               "optional": true
             },
@@ -19520,7 +19541,7 @@
             },
             {
               "name": "quality",
-              "order": 11,
+              "order": 13,
               "description": "The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.",
               "type": "int",
               "optional": true
@@ -19562,7 +19583,7 @@
             },
             {
               "name": "water_tick",
-              "order": 14,
+              "order": 16,
               "description": "Overrides the tick of water animation, if animated water is enabled.",
               "type": "uint",
               "optional": true
@@ -19630,7 +19651,7 @@
         },
         {
           "name": "unban_player",
-          "order": 30,
+          "order": 29,
           "description": "Unbans the given player from this multiplayer game. Does nothing if this is a single player game of if the player running this isn't an admin.",
           "raises": [
             {
@@ -19671,7 +19692,7 @@
         },
         {
           "name": "unmute_player",
-          "order": 33,
+          "order": 32,
           "description": "Unmutes the given player. Does nothing if the player running this isn't an admin.",
           "raises": [
             {
@@ -19705,6 +19726,14 @@
         }
       ],
       "attributes": [
+        {
+          "name": "allow_tip_activation",
+          "order": 28,
+          "description": "If the tips are allowed to be activated in this scenario, it is false by default.\n\nCan't be modified in a simulation (menu screen, tips and tricks simulation, factoriopedia simulation etc.)",
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
         {
           "name": "autosave_enabled",
           "order": 23,
@@ -23914,7 +23943,7 @@
             {
               "name": "always_include_tiles",
               "order": 3,
-              "description": "When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area.",
+              "description": "When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
@@ -25628,7 +25657,7 @@
         },
         {
           "name": "durability_description_value",
-          "order": 57,
+          "order": 58,
           "description": "The durability message value used when displaying the durability of this tool.",
           "subclasses": [
             "ToolItem"
@@ -25654,6 +25683,16 @@
             "Armor"
           ],
           "read_type": "LuaEquipmentGridPrototype",
+          "optional": true
+        },
+        {
+          "name": "factoriopedia_durability_description_key",
+          "order": 57,
+          "description": "The durability message key used when displaying the durability of this tool in Factoriopedia.",
+          "subclasses": [
+            "ToolItem"
+          ],
+          "read_type": "string",
           "optional": true
         },
         {
@@ -25748,7 +25787,7 @@
         },
         {
           "name": "infinite",
-          "order": 58,
+          "order": 59,
           "description": "If this tool item has infinite durability.",
           "subclasses": [
             "ToolItem"
@@ -25854,7 +25893,7 @@
         },
         {
           "name": "object_name",
-          "order": 60,
+          "order": 61,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -26044,7 +26083,7 @@
         },
         {
           "name": "valid",
-          "order": 59,
+          "order": 60,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -27907,8 +27946,125 @@
       "operators": []
     },
     {
-      "name": "LuaMiningDrillControlBehavior",
+      "name": "LuaLogisticSections",
       "order": 74,
+      "description": "Logistic sections of an entity.",
+      "abstract": false,
+      "methods": [
+        {
+          "name": "add_section",
+          "order": 0,
+          "description": "Adds a new logistic section if possible.",
+          "parameters": [
+            {
+              "name": "group",
+              "order": 0,
+              "description": "The group to assign this section to.",
+              "type": "string",
+              "optional": true
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "Logistic section if added.",
+              "type": "LuaLogisticSection",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "get_section",
+          "order": 2,
+          "description": "Gets section on the selected index, if it exists.",
+          "parameters": [
+            {
+              "name": "section_index",
+              "order": 0,
+              "description": "Index of the section.",
+              "type": "uint",
+              "optional": false
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "",
+              "type": "LuaLogisticSection",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "remove_section",
+          "order": 1,
+          "description": "Removes the given logistic section if possible. Removal may fail if the section index is out of range or the section is not [manual](runtime:LuaLogisticSection::is_manual).",
+          "parameters": [
+            {
+              "name": "section_index",
+              "order": 0,
+              "description": "Index of the section.",
+              "type": "uint",
+              "optional": false
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "Whether section was removed.",
+              "type": "boolean",
+              "optional": false
+            }
+          ]
+        }
+      ],
+      "attributes": [
+        {
+          "name": "object_name",
+          "order": 3,
+          "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
+          "read_type": "string",
+          "optional": false
+        },
+        {
+          "name": "sections",
+          "order": 0,
+          "description": "All logistic sections of this entity.",
+          "read_type": {
+            "complex_type": "array",
+            "value": "LuaLogisticSection"
+          },
+          "optional": false
+        },
+        {
+          "name": "sections_count",
+          "order": 1,
+          "description": "Amount of logistic sections this entity has.",
+          "read_type": "uint",
+          "optional": false
+        },
+        {
+          "name": "valid",
+          "order": 2,
+          "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
+          "read_type": "boolean",
+          "optional": false
+        }
+      ],
+      "operators": []
+    },
+    {
+      "name": "LuaMiningDrillControlBehavior",
+      "order": 75,
       "description": "Control behavior for mining drills.",
       "parent": "LuaGenericOnOffControlBehavior",
       "abstract": false,
@@ -27959,7 +28115,7 @@
     },
     {
       "name": "LuaModSettingPrototype",
-      "order": 75,
+      "order": 76,
       "description": "Prototype of a mod setting.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -28098,7 +28254,7 @@
     },
     {
       "name": "LuaModuleCategoryPrototype",
-      "order": 76,
+      "order": 77,
       "description": "Prototype of a module category.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -28123,7 +28279,7 @@
     },
     {
       "name": "LuaNamedNoiseExpression",
-      "order": 77,
+      "order": 78,
       "description": "Prototype of a named noise expression.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -28162,7 +28318,7 @@
     },
     {
       "name": "LuaNamedNoiseFunction",
-      "order": 78,
+      "order": 79,
       "description": "Prototype of a named noise function.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -28194,7 +28350,7 @@
     },
     {
       "name": "LuaParticlePrototype",
-      "order": 79,
+      "order": 80,
       "description": "Prototype of an optimized particle.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -28303,7 +28459,7 @@
     },
     {
       "name": "LuaPermissionGroup",
-      "order": 80,
+      "order": 81,
       "description": "A permission group that defines what players in this group are allowed to do.",
       "abstract": false,
       "methods": [
@@ -28477,7 +28633,7 @@
     },
     {
       "name": "LuaPermissionGroups",
-      "order": 81,
+      "order": 82,
       "description": "All permission groups.",
       "abstract": false,
       "methods": [
@@ -28569,7 +28725,7 @@
     },
     {
       "name": "LuaPlanet",
-      "order": 82,
+      "order": 83,
       "description": "The runtime values of a planet",
       "abstract": false,
       "methods": [
@@ -28660,7 +28816,7 @@
     },
     {
       "name": "LuaPlayer",
-      "order": 83,
+      "order": 84,
       "description": "A player in the game. Pay attention that a player may or may not have a character, which is the [LuaEntity](runtime:LuaEntity) of the little guy running around the world doing things.",
       "parent": "LuaControl",
       "abstract": false,
@@ -30723,7 +30879,7 @@
     },
     {
       "name": "LuaProcessionLayerInheritanceGroupPrototype",
-      "order": 84,
+      "order": 85,
       "description": "Prototype of a procession inheritance group which synchronizes offsets between procession steps.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -30748,7 +30904,7 @@
     },
     {
       "name": "LuaProcessionPrototype",
-      "order": 85,
+      "order": 86,
       "description": "Prototype of a procession.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -30773,7 +30929,7 @@
     },
     {
       "name": "LuaProfiler",
-      "order": 86,
+      "order": 87,
       "description": "An object used to measure script performance.\n\nSince performance is non-deterministic, these objects don't allow reading the raw time values from Lua. They can be used anywhere a [LocalisedString](runtime:LocalisedString) is used, except for [LuaGuiElement::add](runtime:LuaGuiElement::add)'s LocalisedString arguments, [LuaSurface::create_entity](runtime:LuaSurface::create_entity)'s `text` argument, and [LuaEntity::add_market_item](runtime:LuaEntity::add_market_item).",
       "abstract": false,
       "methods": [
@@ -30864,7 +31020,7 @@
     },
     {
       "name": "LuaProgrammableSpeakerControlBehavior",
-      "order": 87,
+      "order": 88,
       "description": "Control behavior for programmable speakers.",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -30905,7 +31061,7 @@
     },
     {
       "name": "LuaPrototypeBase",
-      "order": 88,
+      "order": 89,
       "description": "Base for all prototype classes.",
       "abstract": true,
       "methods": [],
@@ -30985,7 +31141,7 @@
     },
     {
       "name": "LuaPrototypes",
-      "order": 89,
+      "order": 90,
       "description": "Provides read-only access to prototypes. It is accessible through the global object named `prototypes`.",
       "abstract": false,
       "methods": [
@@ -31932,7 +32088,7 @@
     },
     {
       "name": "LuaPumpControlBehavior",
-      "order": 90,
+      "order": 91,
       "description": "Control behavior for pumps.",
       "parent": "LuaGenericOnOffControlBehavior",
       "abstract": false,
@@ -31965,7 +32121,7 @@
     },
     {
       "name": "LuaQualityPrototype",
-      "order": 91,
+      "order": 92,
       "description": "Prototype of a quality.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -32039,7 +32195,7 @@
     },
     {
       "name": "LuaRCON",
-      "order": 92,
+      "order": 93,
       "description": "An interface to send messages to the calling RCON interface through the global object named `rcon`.",
       "abstract": false,
       "methods": [
@@ -32075,7 +32231,7 @@
     },
     {
       "name": "LuaRadarControlBehavior",
-      "order": 93,
+      "order": 94,
       "description": "Control behavior for radars",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -32100,7 +32256,7 @@
     },
     {
       "name": "LuaRailEnd",
-      "order": 94,
+      "order": 95,
       "description": "Utility object that binds to a rail entity and rail_direction to allow easier traversal over rails",
       "abstract": false,
       "methods": [
@@ -32281,7 +32437,7 @@
     },
     {
       "name": "LuaRailPath",
-      "order": 95,
+      "order": 96,
       "description": "A rail path.",
       "abstract": false,
       "methods": [],
@@ -32351,7 +32507,7 @@
     },
     {
       "name": "LuaRailSignalBaseControlBehavior",
-      "order": 96,
+      "order": 97,
       "description": "Control behavior for rail signals and rail chain signals.",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -32432,7 +32588,7 @@
     },
     {
       "name": "LuaRandomGenerator",
-      "order": 97,
+      "order": 98,
       "description": "A deterministic random generator independent from the core games random generator that can be seeded and re-seeded at will. This random generator can be saved and loaded and will maintain its state.\n\nNote this is entirely different from calling [math.random](libraries.html)() and you should be sure you actually want to use this over calling `math.random()`. If you aren't sure if you need to use this over calling `math.random()` then you probably don't need to use this.",
       "examples": [
         "```\n-- Create a generator and use it to print a random number.\nstorage.generator = game.create_random_generator()\ngame.player.print(storage.generator())\n```"
@@ -32511,7 +32667,7 @@
     },
     {
       "name": "LuaReactorControlBehavior",
-      "order": 98,
+      "order": 99,
       "description": "Control behavior for Reactor",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -32560,7 +32716,7 @@
     },
     {
       "name": "LuaRecipe",
-      "order": 99,
+      "order": 100,
       "description": "A crafting recipe. Recipes belong to forces (see [LuaForce](runtime:LuaForce)) because some recipes are unlocked by research, and researches are per-force.",
       "abstract": false,
       "methods": [
@@ -32722,7 +32878,7 @@
     },
     {
       "name": "LuaRecipeCategoryPrototype",
-      "order": 100,
+      "order": 101,
       "description": "Prototype of a recipe category.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -32747,7 +32903,7 @@
     },
     {
       "name": "LuaRecipePrototype",
-      "order": 101,
+      "order": 102,
       "description": "A crafting recipe prototype.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -33034,7 +33190,7 @@
     },
     {
       "name": "LuaRecord",
-      "order": 102,
+      "order": 103,
       "description": "A reference to a record in the blueprint library. Records in the \"my blueprints\" shelf are read-only, but records in the \"game blueprints\" shelf are read/write.",
       "abstract": false,
       "methods": [
@@ -33226,7 +33382,7 @@
             {
               "name": "always_include_tiles",
               "order": 3,
-              "description": "When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area.",
+              "description": "When true, blueprintable tiles are always included in the blueprint. When false they're only included if no entities exist in the setup area. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
@@ -34094,7 +34250,7 @@
     },
     {
       "name": "LuaRemote",
-      "order": 103,
+      "order": 104,
       "description": "Registry of interfaces between scripts. An interface is simply a dictionary mapping names to functions. A script or mod can then register an interface with [LuaRemote](runtime:LuaRemote), after that any script can call the registered functions, provided it knows the interface name and the desired function name. An instance of LuaRemote is available through the global object named `remote`.",
       "examples": [
         "```\n-- Will register a remote interface containing two functions. Later, it will call these functions through `remote`.\nremote.add_interface(\"human interactor\",\n  {\n    hello = function() game.player.print(\"Hi!\") end,\n    bye = function(name) game.player.print(\"Bye \" .. name) end\n  })\n-- Some time later, possibly in a different mod...\nremote.call(\"human interactor\", \"hello\")\nremote.call(\"human interactor\", \"bye\", \"dear reader\")\n```"
@@ -34229,7 +34385,7 @@
     },
     {
       "name": "LuaRenderObject",
-      "order": 104,
+      "order": 105,
       "description": "Reference to a single LuaRendering object.",
       "abstract": false,
       "methods": [
@@ -34948,7 +35104,7 @@
     },
     {
       "name": "LuaRendering",
-      "order": 105,
+      "order": 106,
       "description": "Allows rendering of geometric shapes, text and sprites in the game world through the global object named `rendering`. Each render object is identified by an id that is universally unique for the lifetime of a whole game.\n\nIf an entity target of an object is destroyed or changes surface, then the object is also destroyed.",
       "abstract": false,
       "methods": [
@@ -36152,7 +36308,7 @@
     },
     {
       "name": "LuaResourceCategoryPrototype",
-      "order": 106,
+      "order": 107,
       "description": "Prototype of a resource category.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -36177,7 +36333,7 @@
     },
     {
       "name": "LuaRoboportControlBehavior",
-      "order": 107,
+      "order": 108,
       "description": "Control behavior for roboports.",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -36266,7 +36422,7 @@
     },
     {
       "name": "LuaRocketSiloControlBehavior",
-      "order": 108,
+      "order": 109,
       "description": "Control behavior for rocket silos.",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -36299,7 +36455,7 @@
     },
     {
       "name": "LuaSelectorCombinatorControlBehavior",
-      "order": 109,
+      "order": 110,
       "description": "Control behavior for selector combinators.",
       "parent": "LuaCombinatorControlBehavior",
       "abstract": false,
@@ -36332,7 +36488,7 @@
     },
     {
       "name": "LuaSettings",
-      "order": 110,
+      "order": 111,
       "description": "Object containing mod settings of three distinct types: `startup`, `global`, and `player`. An instance of LuaSettings is available through the global object named `settings`.",
       "abstract": false,
       "methods": [
@@ -36415,7 +36571,7 @@
     },
     {
       "name": "LuaShortcutPrototype",
-      "order": 111,
+      "order": 112,
       "description": "Prototype of a shortcut.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -36475,7 +36631,7 @@
     },
     {
       "name": "LuaSimulation",
-      "order": 112,
+      "order": 113,
       "description": "Functions for use during simulations. This object cannot be saved, and cannot be used outside of a simulation.\n\nThe simulation object instance can be obtained from [LuaGameScript::simulation](runtime:LuaGameScript::simulation).",
       "abstract": false,
       "methods": [
@@ -36915,7 +37071,7 @@
     },
     {
       "name": "LuaSpaceConnectionPrototype",
-      "order": 113,
+      "order": 114,
       "description": "Prototype of a space connection.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -36971,7 +37127,7 @@
     },
     {
       "name": "LuaSpaceLocationPrototype",
-      "order": 114,
+      "order": 115,
       "description": "Prototype of a space location, such as a planet.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -37104,7 +37260,7 @@
     },
     {
       "name": "LuaSpacePlatform",
-      "order": 115,
+      "order": 116,
       "description": "A space platform.",
       "abstract": false,
       "methods": [
@@ -37495,7 +37651,7 @@
     },
     {
       "name": "LuaSpacePlatformHubControlBehavior",
-      "order": 116,
+      "order": 117,
       "description": "Control behavior for space platform hubs",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -37584,7 +37740,7 @@
     },
     {
       "name": "LuaStorageTankControlBehavior",
-      "order": 117,
+      "order": 118,
       "description": "Control behavior for storage tanks.",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -37617,7 +37773,7 @@
     },
     {
       "name": "LuaStyle",
-      "order": 118,
+      "order": 119,
       "description": "Style of a GUI element. All of the attributes listed here may be `nil` if not available for a particular GUI element.",
       "abstract": false,
       "methods": [],
@@ -38415,7 +38571,7 @@
     },
     {
       "name": "LuaSurface",
-      "order": 119,
+      "order": 120,
       "description": "A \"domain\" of the world. Surfaces can only be created and deleted through the API. Surfaces are uniquely identified by their name. Every game contains at least the surface \"nauvis\".",
       "abstract": false,
       "methods": [
@@ -42749,7 +42905,7 @@
     },
     {
       "name": "LuaSurfacePropertyPrototype",
-      "order": 120,
+      "order": 121,
       "description": "Prototype of a surface property.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -42795,7 +42951,7 @@
     },
     {
       "name": "LuaSurfacePrototype",
-      "order": 121,
+      "order": 122,
       "description": "Prototype of a surface.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -42831,7 +42987,7 @@
     },
     {
       "name": "LuaTechnology",
-      "order": 122,
+      "order": 123,
       "description": "One research item.",
       "abstract": false,
       "methods": [
@@ -43018,7 +43174,7 @@
     },
     {
       "name": "LuaTechnologyPrototype",
-      "order": 123,
+      "order": 124,
       "description": "A Technology prototype.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -43169,7 +43325,7 @@
     },
     {
       "name": "LuaTile",
-      "order": 124,
+      "order": 125,
       "description": "A single \"square\" on the map.",
       "abstract": false,
       "methods": [
@@ -43417,7 +43573,7 @@
     },
     {
       "name": "LuaTilePrototype",
-      "order": 125,
+      "order": 126,
       "description": "Prototype of a tile.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -43717,7 +43873,7 @@
     },
     {
       "name": "LuaTrain",
-      "order": 126,
+      "order": 127,
       "description": "A train. Trains are a sequence of connected rolling stocks -- locomotives and wagons.",
       "abstract": false,
       "methods": [
@@ -44270,7 +44426,7 @@
     },
     {
       "name": "LuaTrainManager",
-      "order": 127,
+      "order": 128,
       "description": "The train manager manages all the train in the game. LuaTrainManager allows to perform some direct queries to the train manager.\n\nThere is always exactly one train manager instance in a game, it can be obtained from [LuaGameScript::train_manager](runtime:LuaGameScript::train_manager). This object is always valid and is equal to any other instance of LuaTrainManager from this game.",
       "abstract": false,
       "methods": [
@@ -44484,7 +44640,7 @@
     },
     {
       "name": "LuaTrainStopControlBehavior",
-      "order": 128,
+      "order": 129,
       "description": "Control behavior for train stops.",
       "parent": "LuaGenericOnOffControlBehavior",
       "abstract": false,
@@ -44589,7 +44745,7 @@
     },
     {
       "name": "LuaTransportBeltControlBehavior",
-      "order": 129,
+      "order": 130,
       "description": "Control behavior for transport belts.",
       "parent": "LuaGenericOnOffControlBehavior",
       "abstract": false,
@@ -44630,7 +44786,7 @@
     },
     {
       "name": "LuaTransportLine",
-      "order": 130,
+      "order": 131,
       "description": "One line on a transport belt.",
       "abstract": false,
       "methods": [
@@ -44967,7 +45123,7 @@
     },
     {
       "name": "LuaTrivialSmokePrototype",
-      "order": 131,
+      "order": 132,
       "description": "Prototype of a trivial smoke.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -45090,7 +45246,7 @@
     },
     {
       "name": "LuaTurretControlBehavior",
-      "order": 132,
+      "order": 133,
       "description": "Control behavior for turrets.",
       "parent": "LuaGenericOnOffControlBehavior",
       "abstract": false,
@@ -45147,7 +45303,7 @@
     },
     {
       "name": "LuaUndoRedoStack",
-      "order": 133,
+      "order": 134,
       "description": "The undo queue for a player. The term `item_index` refers to the index of an undo item in the queue, while `action_index` refers to the index of one of the individual actions that make up an undo item.",
       "abstract": false,
       "methods": [
@@ -45653,7 +45809,7 @@
     },
     {
       "name": "LuaVirtualSignalPrototype",
-      "order": 134,
+      "order": 135,
       "description": "Prototype of a virtual signal.",
       "parent": "LuaPrototypeBase",
       "abstract": false,
@@ -45685,7 +45841,7 @@
     },
     {
       "name": "LuaVoidEnergySourcePrototype",
-      "order": 135,
+      "order": 136,
       "description": "Prototype of a void energy source.",
       "abstract": false,
       "methods": [],
@@ -45734,7 +45890,7 @@
     },
     {
       "name": "LuaWallControlBehavior",
-      "order": 136,
+      "order": 137,
       "description": "Control behavior for walls.",
       "parent": "LuaControlBehavior",
       "abstract": false,
@@ -45791,7 +45947,7 @@
     },
     {
       "name": "LuaWireConnector",
-      "order": 137,
+      "order": 138,
       "description": "A wire connector of a given entity. Allows to find wires, add or remove wires and do some basic operations specific to those connectors.",
       "abstract": false,
       "methods": [

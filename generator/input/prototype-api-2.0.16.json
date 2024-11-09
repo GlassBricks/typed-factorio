@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.15",
+  "application_version": "2.0.16",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -43830,7 +43830,15 @@
         },
         {
           "name": "chart_construction_robot_color",
-          "order": 40,
+          "order": 41,
+          "description": "",
+          "override": false,
+          "type": "Color",
+          "optional": false
+        },
+        {
+          "name": "chart_deconstruct_active_color",
+          "order": 32,
           "description": "",
           "override": false,
           "type": "Color",
@@ -43846,7 +43854,7 @@
         },
         {
           "name": "chart_delivery_to_me_logistic_robot_color",
-          "order": 43,
+          "order": 44,
           "description": "",
           "override": false,
           "type": "Color",
@@ -43854,7 +43862,7 @@
         },
         {
           "name": "chart_logistic_robot_color",
-          "order": 39,
+          "order": 40,
           "description": "",
           "override": false,
           "type": "Color",
@@ -43862,14 +43870,6 @@
         },
         {
           "name": "chart_mobile_construction_robot_color",
-          "order": 41,
-          "description": "",
-          "override": false,
-          "type": "Color",
-          "optional": false
-        },
-        {
-          "name": "chart_personal_construction_robot_color",
           "order": 42,
           "description": "",
           "override": false,
@@ -43877,8 +43877,16 @@
           "optional": false
         },
         {
+          "name": "chart_personal_construction_robot_color",
+          "order": 43,
+          "description": "",
+          "override": false,
+          "type": "Color",
+          "optional": false
+        },
+        {
           "name": "chart_player_circle_size",
-          "order": 32,
+          "order": 33,
           "description": "",
           "override": false,
           "type": "float",
@@ -43926,7 +43934,7 @@
         },
         {
           "name": "custom_tag_max_scale",
-          "order": 46,
+          "order": 47,
           "description": "",
           "override": false,
           "type": "float",
@@ -43938,7 +43946,7 @@
         },
         {
           "name": "custom_tag_scale",
-          "order": 45,
+          "order": 46,
           "description": "",
           "override": false,
           "type": "float",
@@ -43950,7 +43958,7 @@
         },
         {
           "name": "custom_tag_selected_overlay_tint",
-          "order": 47,
+          "order": 48,
           "description": "",
           "override": false,
           "type": "Color",
@@ -43958,7 +43966,7 @@
         },
         {
           "name": "default_color_by_type",
-          "order": 34,
+          "order": 35,
           "description": "The strings are entity types.",
           "override": false,
           "type": {
@@ -43994,7 +44002,7 @@
         },
         {
           "name": "default_friendly_color_by_type",
-          "order": 33,
+          "order": 34,
           "description": "The strings are entity types.",
           "override": false,
           "type": {
@@ -44062,7 +44070,7 @@
         },
         {
           "name": "explosion_visualization_duration",
-          "order": 35,
+          "order": 36,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -44134,7 +44142,7 @@
         },
         {
           "name": "train_current_path_outline_color",
-          "order": 38,
+          "order": 39,
           "description": "",
           "override": false,
           "type": "Color",
@@ -44142,7 +44150,7 @@
         },
         {
           "name": "train_path_color",
-          "order": 36,
+          "order": 37,
           "description": "",
           "override": false,
           "type": "Color",
@@ -44150,7 +44158,7 @@
         },
         {
           "name": "train_preview_path_outline_color",
-          "order": 37,
+          "order": 38,
           "description": "",
           "override": false,
           "type": "Color",
@@ -44206,7 +44214,7 @@
         },
         {
           "name": "zoom_threshold_to_draw_spider_path",
-          "order": 44,
+          "order": 45,
           "description": "",
           "override": false,
           "type": "double",
@@ -82192,7 +82200,7 @@
         },
         {
           "name": "animation",
-          "order": 25,
+          "order": 30,
           "description": "",
           "override": false,
           "type": "Animation",
@@ -82282,7 +82290,7 @@
         },
         {
           "name": "draw_in_states",
-          "order": 26,
+          "order": 31,
           "description": "Only loaded if [WorkingVisualisations::states](prototype:WorkingVisualisations::states) is defined in the WorkingVisualisations that loads this.",
           "override": false,
           "type": {
@@ -82293,7 +82301,7 @@
         },
         {
           "name": "draw_when_state_filter_matches",
-          "order": 27,
+          "order": 32,
           "description": "Only loaded if [WorkingVisualisations::states](prototype:WorkingVisualisations::states) is defined in the WorkingVisualisations that loads this.",
           "override": false,
           "type": "bool",
@@ -82309,6 +82317,14 @@
           "description": "",
           "override": false,
           "type": "Animation",
+          "optional": true
+        },
+        {
+          "name": "east_fog_mask",
+          "order": 26,
+          "description": "If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.",
+          "override": false,
+          "type": "FogMaskShapeDefinition",
           "optional": true
         },
         {
@@ -82355,7 +82371,7 @@
         },
         {
           "name": "enabled_by_name",
-          "order": 28,
+          "order": 33,
           "description": "",
           "override": false,
           "type": "bool",
@@ -82367,7 +82383,7 @@
         },
         {
           "name": "enabled_in_animated_shift_during_transition",
-          "order": 31,
+          "order": 36,
           "description": "",
           "override": false,
           "type": "bool",
@@ -82379,7 +82395,7 @@
         },
         {
           "name": "enabled_in_animated_shift_during_waypoint_stop",
-          "order": 30,
+          "order": 35,
           "description": "",
           "override": false,
           "type": "bool",
@@ -82402,8 +82418,16 @@
           }
         },
         {
+          "name": "fog_mask",
+          "order": 29,
+          "description": "Loaded only if at least one of north_fog_mask, east_fog_mask, south_fog_mask, west_fog_mask is not specified.\n\nIf defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.",
+          "override": false,
+          "type": "FogMaskShapeDefinition",
+          "optional": true
+        },
+        {
           "name": "frame_based_on_shift_animation_progress",
-          "order": 32,
+          "order": 37,
           "description": "",
           "override": false,
           "type": "bool",
@@ -82435,7 +82459,7 @@
         },
         {
           "name": "name",
-          "order": 29,
+          "order": 34,
           "description": "",
           "override": false,
           "type": "string",
@@ -82451,6 +82475,14 @@
           "description": "",
           "override": false,
           "type": "Animation",
+          "optional": true
+        },
+        {
+          "name": "north_fog_mask",
+          "order": 25,
+          "description": "If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.",
+          "override": false,
+          "type": "FogMaskShapeDefinition",
           "optional": true
         },
         {
@@ -82484,7 +82516,7 @@
         },
         {
           "name": "scorch_mark_fade_in_frames",
-          "order": 35,
+          "order": 40,
           "description": "Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`.",
           "override": false,
           "type": "uint8",
@@ -82492,7 +82524,7 @@
         },
         {
           "name": "scorch_mark_fade_out_duration",
-          "order": 33,
+          "order": 38,
           "description": "Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`. Cannot be larger than `scorch_mark_lifetime`.",
           "override": false,
           "type": "uint16",
@@ -82500,7 +82532,7 @@
         },
         {
           "name": "scorch_mark_lifetime",
-          "order": 34,
+          "order": 39,
           "description": "Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`.",
           "override": false,
           "type": "uint16",
@@ -82520,6 +82552,14 @@
           "description": "",
           "override": false,
           "type": "Animation",
+          "optional": true
+        },
+        {
+          "name": "south_fog_mask",
+          "order": 27,
+          "description": "If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.",
+          "override": false,
+          "type": "FogMaskShapeDefinition",
           "optional": true
         },
         {
@@ -82557,6 +82597,14 @@
           "description": "",
           "override": false,
           "type": "Animation",
+          "optional": true
+        },
+        {
+          "name": "west_fog_mask",
+          "order": 28,
+          "description": "If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.",
+          "override": false,
+          "type": "FogMaskShapeDefinition",
           "optional": true
         },
         {
