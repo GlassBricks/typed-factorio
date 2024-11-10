@@ -13571,7 +13571,7 @@ declare module "factorio:runtime" {
      * Get a table of all the forces that currently exist. This sparse table allows you to find forces by indexing it with either their `name` or `index`. Iterating this table with `pairs()` will provide the `name`s as the keys. Iterating with `ipairs()` will not work at all.
      * @see {@link https://lua-api.factorio.com/2.0.15/classes/LuaGameScript.html#LuaGameScript.forces Online documentation}
      */
-    readonly forces: LuaCustomTable<ForceIndex | string, LuaSurface, string>
+    readonly forces: LuaCustomTable<ForceIndex | string, LuaForce, string>
     /**
      * Whether a console command has been used.
      * @see {@link https://lua-api.factorio.com/2.0.15/classes/LuaGameScript.html#LuaGameScript.console_command_used Online documentation}
