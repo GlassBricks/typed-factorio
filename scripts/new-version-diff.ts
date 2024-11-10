@@ -25,7 +25,7 @@ function commit(message: string) {
 }
 commit("Run generator without link")
 
-run("npm run download-latest-json-apis")
+run("npm run download-latest-api-jsons")
 run("npm run generate -- --no-link")
 const newFactorioVersion = getCurrentFactorioVersion()
 commit(`Diff for factorio version ${newFactorioVersion}`)
