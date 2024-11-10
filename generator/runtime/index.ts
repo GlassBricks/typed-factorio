@@ -70,7 +70,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   }
 
   preprocessAll(): void {
-    const lastVersion = "2.0.15"
+    const lastVersion = "2.0.16"
     if (this.apiDocs.application_version !== lastVersion) {
       const message = `
 Factorio version has been updated from ${lastVersion}. Manually check for the following, then update this file/check:
