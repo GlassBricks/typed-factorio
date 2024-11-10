@@ -339,6 +339,8 @@ export interface LuaBootstrap {
 
 export interface LuaSurface {}
 
+export interface LuaForce {}
+
 export interface PipeConnectionDefinition {
   linked_connection_id: uint
 }
@@ -354,7 +356,7 @@ export interface LuaGameScript {
 
   readonly players: LuaCustomTable<PlayerIndex | string, LuaPlayer, PlayerIndex>
   readonly surfaces: LuaCustomTable<SurfaceIndex | string, LuaSurface, string>
-  readonly forces: LuaCustomTable<ForceIndex | string, LuaSurface, string>
+  readonly forces: LuaCustomTable<ForceIndex | string, LuaForce, string>
 }
 
 export interface ModSetting {
