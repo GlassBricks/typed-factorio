@@ -1,6 +1,7 @@
 # v3.2.0
 
 - Updated to factorio version 2.0.16
+- Fix game.forces to be LuaForce instead of LuaSurface (#46). Thanks @nmalaguti!
 
 # v3.1.1
 
