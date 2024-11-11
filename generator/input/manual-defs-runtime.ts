@@ -203,6 +203,8 @@ export interface LuaEquipmentGrid {}
 
 export interface LuaTechnology {}
 
+export interface CraftingQueueItem {}
+
 export interface LuaControl {
   set opened(
     value:
@@ -230,6 +232,8 @@ export interface LuaControl {
 
   /** @overload */
   teleport(x: number, y?: number): boolean
+
+  readonly crafting_queue?: CraftingQueueItem[]
 }
 
 export interface LuaLogisticPoint {}
@@ -246,7 +250,7 @@ export interface LuaGroup {
 export interface LuaItemStack {}
 
 export interface LuaPlayer {
-  readonly cutscene_character: LuaEntity | nil
+  readonly cutscene_character?: LuaEntity
 }
 
 // other

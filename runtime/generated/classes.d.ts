@@ -1987,7 +1987,7 @@ declare module "factorio:runtime" {
      * The current crafting queue items.
      * @see {@link https://lua-api.factorio.com/2.0.16/classes/LuaControl.html#LuaControl.crafting_queue Online documentation}
      */
-    readonly crafting_queue: CraftingQueueItem[]
+    readonly crafting_queue?: CraftingQueueItem[]
     /**
      * The current combat robots following the character.
      *
@@ -20266,7 +20266,7 @@ declare module "factorio:runtime" {
      * When in a cutscene; the character this player would be using once the cutscene is over, if any. Returns `nil` when the player is disconnected (see {@link LuaPlayer#connected LuaPlayer::connected}).
      * @see {@link https://lua-api.factorio.com/2.0.16/classes/LuaPlayer.html#LuaPlayer.cutscene_character Online documentation}
      */
-    readonly cutscene_character: LuaEntity | nil
+    readonly cutscene_character?: LuaEntity
     /**
      * This player's index in {@link LuaGameScript#players LuaGameScript::players} (unique ID). It is assigned when a player is created, and remains so (even when the player is not {@link LuaPlayer#connected connected}) until the player is irreversibly {@link OnPlayerRemovedEvent removed}. Indexes of removed players can be reused.
      * @see {@link https://lua-api.factorio.com/2.0.16/classes/LuaPlayer.html#LuaPlayer.index Online documentation}
