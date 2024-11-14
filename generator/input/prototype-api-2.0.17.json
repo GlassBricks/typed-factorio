@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.16",
+  "application_version": "2.0.17",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -19674,7 +19674,7 @@
     {
       "name": "ResourceEntityPrototype",
       "order": 205,
-      "description": "A mineable/gatherable entity. Its [collision_mask](prototype:EntityPrototype::collision_mask) must contain \"resource-layer\" if it should be minable with a [MiningDrillPrototype](prototype:MiningDrillPrototype).",
+      "description": "A mineable/gatherable entity.",
       "examples": [
         "```\n{\n  type = \"resource\",\n  name = \"crude-oil\",\n  icon = \"__base__/graphics/icons/crude-oil.png\",\n  icon_size = 32,\n  flags = {\"placeable-neutral\"},\n  category = \"basic-fluid\",\n  order=\"a-b-a\",\n  infinite = true,\n  highlight = true,\n  minimum = 60000,\n  normal = 300000,\n  infinite_depletion_amount = 10,\n  resource_patch_search_radius = 12,\n  tree_removal_probability = 0.7,\n  tree_removal_max_distance = 32 * 32,\n  minable =\n  {\n    mining_time = 1,\n    results =\n    {\n      {\n        type = \"fluid\",\n        name = \"crude-oil\",\n        amount_min = 10,\n        amount_max = 10,\n        probability = 1\n      }\n    }\n  },\n  collision_box = {{ -1.4, -1.4}, {1.4, 1.4}},\n  selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},\n  autoplace = resource_autoplace.resource_autoplace_settings{\n    name = \"crude-oil\",\n    order = \"c\", -- Other resources are \"b\"; oil won't get placed if something else is already there.\n    base_density = 8.2,\n    base_spots_per_km2 = 1.8,\n    random_probability = 1/48,\n    random_spot_size_minimum = 1,\n    random_spot_size_maximum = 1, -- don't randomize spot size\n    additional_richness = 220000, -- this increases the total everywhere, so base_density needs to be decreased to compensate\n    has_starting_area_placement = false,\n    resource_index = resource_autoplace.resource_indexes[\"crude-oil\"],\n    regular_rq_factor_multiplier = 1\n  },\n  stage_counts = {0},\n  stages =\n  {\n    sheet =\n    {\n      filename = \"__base__/graphics/entity/crude-oil/crude-oil.png\",\n      priority = \"extra-high\",\n      width = 75,\n      height = 61,\n      frame_count = 4,\n      variation_count = 1\n    }\n  },\n  map_color = {r=0.78, g=0.2, b=0.77},\n  map_grid = false\n}\n```"
       ],
@@ -66266,7 +66266,7 @@
           },
           {
             "complex_type": "literal",
-            "value": "above-inserter",
+            "value": "above-inserters",
             "description": ""
           },
           {

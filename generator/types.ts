@@ -1,5 +1,5 @@
 import assert from "assert"
-import ts, { TypeNode } from "typescript"
+import ts from "typescript"
 import { addJsDoc } from "./documentation.js"
 
 import type * as prototype from "./FactorioPrototypeApiJson.js"
@@ -273,7 +273,6 @@ function mapConceptRwType(
   }
 }
 
-// possibly prefixes with namespace, if needed
 function createTypeNode(context: GenerationContext, typeName: string) {
   context.currentFile.addImport(context.stageName, typeName)
 
@@ -295,6 +294,10 @@ function mapBasicType(
     if (rwType) {
       return mapConceptRwType(context, rwType, usage)
     }
+  }
+  // Dear factorio devs: Lua is not C++...
+  if (type === "bool") {
+    type = "boolean"
   }
 
   const typeName = context.references.get(type)
@@ -434,19 +437,12 @@ function mapUnionType(
     asString: undefined,
   }
 }
-
 function makeUnion(types: ts.TypeNode[]): ts.TypeNode {
-  const dedupedTypes = new Set<string | TypeNode>()
+  const dedupedTypes = new Map<string, ts.TypeNode>()
   for (const type of types) {
-    if (ts.isTypeReferenceNode(type) && ts.isIdentifier(type.typeName) && !type.typeArguments?.length) {
-      dedupedTypes.add(type.typeName.text)
-    } else {
-      dedupedTypes.add(type)
-    }
+    dedupedTypes.set(printNode(type), type)
   }
-  const typesArray = Array.from(dedupedTypes, (t) =>
-    typeof t === "string" ? ts.factory.createTypeReferenceNode(t) : t,
-  )
+  const typesArray = Array.from(dedupedTypes.values())
   if (typesArray.length === 1) return typesArray[0]
   return ts.factory.createUnionTypeNode(typesArray)
 }

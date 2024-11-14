@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.16",
+  "application_version": "2.0.17",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -3506,6 +3506,31 @@
               "optional": false
             }
           ]
+        },
+        {
+          "name": "set_driving",
+          "order": 28,
+          "description": "Sets if this characer or player is driving. Returns if the player or character is still driving.",
+          "parameters": [
+            {
+              "name": "driving",
+              "order": 0,
+              "description": "True for enter-vehicle, false for leave.",
+              "type": "bool",
+              "optional": false
+            },
+            {
+              "name": "force",
+              "order": 1,
+              "description": "If true, the player will be ejected and left at the position of the car if normal \"leave\" is not possible.",
+              "type": "bool",
+              "optional": true
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": []
         },
         {
           "name": "set_gui_arrow",
@@ -19797,7 +19822,7 @@
         {
           "name": "difficulty_settings",
           "order": 4,
-          "description": "The currently active set of difficulty settings. Even though this property is marked as read-only, the members of the dictionary that is returned can be modified mid-game. This is however not recommended as different difficulties can have differing technology and recipe trees, which can cause problems for players.",
+          "description": "The currently active set of difficulty settings. Even though this property is marked as read-only, the members of the dictionary that is returned can be modified mid-game.",
           "examples": [
             "```\n-- This will set the technology price multiplier to 12.\ngame.difficulty_settings.technology_price_multiplier = 12\n```"
           ],
@@ -70749,7 +70774,7 @@
           },
           {
             "complex_type": "literal",
-            "value": "above-inserter",
+            "value": "above-inserters",
             "description": "130"
           },
           {

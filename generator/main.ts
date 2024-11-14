@@ -111,11 +111,11 @@ async function doGeneration<C extends AnyApiJson>(
     option: Options,
   ) => GenerationContext<C>,
 ) {
-  console.log(`${stage}: reading files`)
+  console.log(`${stage}: reading input files`)
   const apiJson = getApiJson<C>(stage)
   const { typeChecker, manualDefines } = getManualDefsFile(manualDefsFile)
 
-  console.log(`${stage}: generating files`)
+  console.log(`${stage}: generating`)
   const genContext = new cls(apiJson, manualDefines, typeChecker, options)
   const files = generateFiles(genContext)
 
