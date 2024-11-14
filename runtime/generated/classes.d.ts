@@ -1776,7 +1776,7 @@ declare module "factorio:runtime" {
      * @param force If true, the player will be ejected and left at the position of the car if normal "leave" is not possible.
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaControl.html#LuaControl.set_driving Online documentation}
      */
-    set_driving(driving: bool, force?: bool): void
+    set_driving(driving: boolean, force?: boolean): void
     /**
      * The surface this entity is currently on.
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaControl.html#LuaControl.surface Online documentation}

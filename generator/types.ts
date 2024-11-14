@@ -273,7 +273,6 @@ function mapConceptRwType(
   }
 }
 
-// possibly prefixes with namespace, if needed
 function createTypeNode(context: GenerationContext, typeName: string) {
   context.currentFile.addImport(context.stageName, typeName)
 
@@ -295,6 +294,10 @@ function mapBasicType(
     if (rwType) {
       return mapConceptRwType(context, rwType, usage)
     }
+  }
+  // Dear factorio devs: Lua is not C++...
+  if (type === "bool") {
+    type = "boolean"
   }
 
   const typeName = context.references.get(type)

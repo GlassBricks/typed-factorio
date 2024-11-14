@@ -89,12 +89,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AccumulatorPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AccumulatorPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     /**
      * The name of the signal that is the default for when an accumulator is connected to the circuit network.
@@ -183,7 +183,7 @@ declare module "factorio:prototype" {
      * If this is set to `false`, it is not possible to complete the achievement on the peaceful difficulty setting or when the enemy base generation settings have been changed.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AchievementPrototype.html#allowed_without_fight Online documentation}
      */
-    allowed_without_fight?: bool
+    allowed_without_fight?: boolean
   }
   export interface AchievementPrototypeWithCondition extends AchievementPrototype {
     type:
@@ -201,7 +201,7 @@ declare module "factorio:prototype" {
    */
   export interface ActiveDefenseEquipmentPrototype extends EquipmentPrototype {
     type: "active-defense-equipment"
-    automatic: bool
+    automatic: boolean
     attack_parameters: AttackParameters
   }
   /**
@@ -271,24 +271,24 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AgriculturalTowerPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AgriculturalTowerPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
   }
   export interface AirbornePollutantPrototype extends Prototype {
     type: "airborne-pollutant"
     chart_color: Color
     icon: Sprite
-    affects_evolution: bool
+    affects_evolution: boolean
     /**
      * If true, large amounts of this pollution will cause water tiles to turn a sickly green.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AirbornePollutantPrototype.html#affects_water_tint Online documentation}
      */
-    affects_water_tint: bool
+    affects_water_tint: boolean
   }
   /**
    * This prototype is used to make sound while playing the game. This includes the game's {@linkplain https://store.steampowered.com/app/436090/Factorio__Soundtrack/ music}, composed by Daniel James Taylor.
@@ -413,7 +413,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AmmoItemPrototype.html#shoot_protected Online documentation}
      */
-    shoot_protected?: bool
+    shoot_protected?: boolean
   }
   /**
    * A turret that consumes {@link AmmoItemPrototype ammo items}.
@@ -433,7 +433,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AmmoTurretPrototype.html#prepare_with_no_ammo Online documentation}
      */
-    prepare_with_no_ammo?: bool
+    prepare_with_no_ammo?: boolean
   }
   /**
    * Specifies an animation that can be used with {@link import("factorio:runtime").LuaRendering#draw_animation LuaRendering::draw_animation} at runtime.
@@ -535,14 +535,14 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#rotate_shift Online documentation}
      */
-    rotate_shift?: bool
+    rotate_shift?: boolean
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#apply_special_effect Online documentation}
      */
-    apply_special_effect?: bool
+    apply_special_effect?: boolean
     /**
      * **Default:** `1`
      *
@@ -560,7 +560,7 @@ declare module "factorio:prototype" {
      * Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_glow` and `draw_as_light`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#draw_as_shadow Online documentation}
      */
-    draw_as_shadow?: bool
+    draw_as_shadow?: boolean
     /**
      * **Default:** `false`
      *
@@ -571,7 +571,7 @@ declare module "factorio:prototype" {
      * Draws first as a normal sprite, then again as a light layer. See {@linkplain https://forums.factorio.com/91682}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#draw_as_glow Online documentation}
      */
-    draw_as_glow?: bool
+    draw_as_glow?: boolean
     /**
      * **Default:** `false`
      *
@@ -580,7 +580,7 @@ declare module "factorio:prototype" {
      * Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#draw_as_light Online documentation}
      */
-    draw_as_light?: bool
+    draw_as_light?: boolean
     /**
      * **Default:** `0`
      *
@@ -598,21 +598,21 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#apply_runtime_tint Online documentation}
      */
-    apply_runtime_tint?: bool
+    apply_runtime_tint?: boolean
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#tint_as_overlay Online documentation}
      */
-    tint_as_overlay?: bool
+    tint_as_overlay?: boolean
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#invert_colors Online documentation}
      */
-    invert_colors?: bool
+    invert_colors?: boolean
     /**
      * **Default:** ``{r=1, g=1, b=1, a=1}``
      *
@@ -635,7 +635,7 @@ declare module "factorio:prototype" {
      * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#load_in_minimal_mode Online documentation}
      */
-    load_in_minimal_mode?: bool
+    load_in_minimal_mode?: boolean
     /**
      * **Default:** `true`
      *
@@ -644,7 +644,7 @@ declare module "factorio:prototype" {
      * Whether alpha should be pre-multiplied.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#premul_alpha Online documentation}
      */
-    premul_alpha?: bool
+    premul_alpha?: boolean
     /**
      * **Default:** `false`
      *
@@ -653,7 +653,7 @@ declare module "factorio:prototype" {
      * If `true`, the sprite may be downsampled to half its size on load even when 'Sprite quality' graphics setting is set to 'High'. Whether downsampling happens depends on detected hardware and other graphics settings.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#allow_forced_downscale Online documentation}
      */
-    allow_forced_downscale?: bool
+    allow_forced_downscale?: boolean
     /**
      * **Default:** `false`
      *
@@ -662,7 +662,7 @@ declare module "factorio:prototype" {
      * Unused.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AnimationPrototype.html#generate_sdf Online documentation}
      */
-    generate_sdf?: bool
+    generate_sdf?: boolean
     /**
      * **Default:** `"any"`
      *
@@ -825,7 +825,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArmorPrototype.html#provides_flight Online documentation}
      */
-    provides_flight?: bool
+    provides_flight?: boolean
     collision_box?: BoundingBox
     drawing_box?: BoundingBox
     /**
@@ -879,7 +879,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArrowPrototype.html#blinking Online documentation}
      */
-    blinking?: bool
+    blinking?: boolean
   }
   /**
    * The entity spawned by the {@linkplain https://wiki.factorio.com/Artillery_targeting_remote artillery targeting remote}.
@@ -972,7 +972,7 @@ declare module "factorio:prototype" {
    */
   export interface ArtilleryProjectilePrototype extends EntityPrototype {
     type: "artillery-projectile"
-    reveal_map: bool
+    reveal_map: boolean
     picture?: Sprite
     shadow?: Sprite
     chart_picture?: Sprite
@@ -989,7 +989,7 @@ declare module "factorio:prototype" {
      * Whether the picture of the projectile is rotated to match the direction of travel.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArtilleryProjectilePrototype.html#rotatable Online documentation}
      */
-    rotatable?: bool
+    rotatable?: boolean
     map_color: Color
     /**
      * **Default:** `Empty = `{{0, 0}, {0, 0}}``
@@ -1033,12 +1033,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArtilleryTurretPrototype.html#alert_when_attacking Online documentation}
      */
-    alert_when_attacking?: bool
+    alert_when_attacking?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArtilleryTurretPrototype.html#disable_automatic_firing Online documentation}
      */
-    disable_automatic_firing?: bool
+    disable_automatic_firing?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArtilleryTurretPrototype.html#base_picture_secondary_draw_order Online documentation}
@@ -1082,12 +1082,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArtilleryTurretPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArtilleryTurretPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     cannon_barrel_recoil_shiftings?: readonly Vector3D[]
     /**
@@ -1106,7 +1106,7 @@ declare module "factorio:prototype" {
      * Whether this prototype should be a high priority target for enemy forces. See {@linkplain https://wiki.factorio.com/Military_units_and_structures Military units and structures}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArtilleryTurretPrototype.html#is_military_target Online documentation}
      */
-    is_military_target?: bool
+    is_military_target?: boolean
   }
   /**
    * An {@linkplain https://wiki.factorio.com/Artillery_wagon artillery wagon}.
@@ -1139,7 +1139,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ArtilleryWagonPrototype.html#disable_automatic_firing Online documentation}
      */
-    disable_automatic_firing?: bool
+    disable_automatic_firing?: boolean
     cannon_base_pictures?: RollingStockRotatedSlopedGraphics
     /**
      * **Default:** `0`
@@ -1219,19 +1219,19 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AssemblingMachinePrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AssemblingMachinePrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     default_recipe_finished_signal?: SignalIDConnector
     default_working_signal?: SignalIDConnector
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AssemblingMachinePrototype.html#enable_logistic_control_behavior Online documentation}
      */
-    enable_logistic_control_behavior?: bool
+    enable_logistic_control_behavior?: boolean
     /**
      * **Default:** `255`
      *
@@ -1251,12 +1251,12 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AssemblingMachinePrototype.html#fluid_boxes_off_when_no_fluid_recipe Online documentation}
      */
-    fluid_boxes_off_when_no_fluid_recipe?: bool
+    fluid_boxes_off_when_no_fluid_recipe?: boolean
     /**
      * Defaults to true if fixed_recipe is not given.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AssemblingMachinePrototype.html#disabled_when_recipe_not_researched Online documentation}
      */
-    disabled_when_recipe_not_researched?: bool
+    disabled_when_recipe_not_researched?: boolean
   }
   export interface AsteroidChunkPrototype extends Prototype {
     type: "asteroid-chunk"
@@ -1288,7 +1288,7 @@ declare module "factorio:prototype" {
      * **Default:** `unset`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AsteroidChunkPrototype.html#hide_from_signal_gui Online documentation}
      */
-    hide_from_signal_gui?: bool
+    hide_from_signal_gui?: boolean
   }
   /**
    * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
@@ -1423,12 +1423,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AsteroidCollectorPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AsteroidCollectorPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     radius_visualisation_picture?: Sprite
     /**
      * Must be positive.
@@ -1486,14 +1486,14 @@ declare module "factorio:prototype" {
      * If the autoplace control is used to generate ores, you probably want this to be true.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AutoplaceControl.html#richness Online documentation}
      */
-    richness?: bool
+    richness?: boolean
     /**
      * **Default:** `true`
      *
      * Whether there is an "enable" checkbox for the autoplace control in the map generator GUI. If this is false, the autoplace control cannot be disabled from the GUI.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/AutoplaceControl.html#can_be_disabled Online documentation}
      */
-    can_be_disabled?: bool
+    can_be_disabled?: boolean
   }
   /**
    * Used by {@linkplain https://wiki.factorio.com/Personal_battery personal battery}.
@@ -1612,14 +1612,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BeamPrototype.html#random_target_offset Online documentation}
      */
-    random_target_offset?: bool
+    random_target_offset?: boolean
     /**
      * **Default:** `false`
      *
      * Whether this beams should trigger its action every `damage_interval`. If false, the action is instead triggered when its owner triggers shooting.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BeamPrototype.html#action_triggered_automatically Online documentation}
      */
-    action_triggered_automatically?: bool
+    action_triggered_automatically?: boolean
     graphics_set: BeamGraphicsSet
   }
   /**
@@ -1658,7 +1658,7 @@ declare module "factorio:prototype" {
      * If the item will draw its label when held in the cursor in place of the item count.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BlueprintBookPrototype.html#draw_label_for_cursor_render Online documentation}
      */
-    draw_label_for_cursor_render?: bool
+    draw_label_for_cursor_render?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Blueprint blueprint}.
@@ -1679,7 +1679,7 @@ declare module "factorio:prototype" {
      * Whether the item will draw its label when held in the cursor in place of the item count.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BlueprintItemPrototype.html#draw_label_for_cursor_render Online documentation}
      */
-    draw_label_for_cursor_render?: bool
+    draw_label_for_cursor_render?: boolean
     /**
      * The {@link SelectionModeData#mode SelectionModeData::mode} is hardcoded to `"blueprint"`.
      *
@@ -1700,7 +1700,7 @@ declare module "factorio:prototype" {
      * This property is hardcoded to `false`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BlueprintItemPrototype.html#always_include_tiles Online documentation}
      */
-    always_include_tiles?: bool
+    always_include_tiles?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Boiler boiler}. It heats fluid and optionally outputs it as a different fluid.
@@ -1748,14 +1748,14 @@ declare module "factorio:prototype" {
      * If this is set to false, `fire_glow` alpha is always 1 instead of being controlled by the light intensity of the energy source.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BoilerPrototype.html#fire_glow_flicker_enabled Online documentation}
      */
-    fire_glow_flicker_enabled?: bool
+    fire_glow_flicker_enabled?: boolean
     /**
      * **Default:** `false`
      *
      * If this is set to false, `fire` alpha is always 1 instead of being controlled by the light intensity of the energy source.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BoilerPrototype.html#fire_flicker_enabled Online documentation}
      */
-    fire_flicker_enabled?: bool
+    fire_flicker_enabled?: boolean
     /**
      * **Default:** `"heat-fluid-inside"`
      *
@@ -1792,7 +1792,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BuildEntityAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game?: bool
+    limited_to_one_game?: boolean
     /**
      * **Default:** ``math.huge``
      *
@@ -1840,7 +1840,7 @@ declare module "factorio:prototype" {
      * Whether the `idle_animation` should also play when the generator is active.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BurnerGeneratorPrototype.html#always_draw_idle_animation Online documentation}
      */
-    always_draw_idle_animation?: bool
+    always_draw_idle_animation?: boolean
     /**
      * Affects animation speed.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/BurnerGeneratorPrototype.html#perceived_performance Online documentation}
@@ -1937,42 +1937,42 @@ declare module "factorio:prototype" {
      * If this car prototype uses tank controls to drive.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CarPrototype.html#tank_driving Online documentation}
      */
-    tank_driving?: bool
+    tank_driving?: boolean
     /**
      * **Default:** `false`
      *
      * If this car prototype keeps the trunk inventory sorted.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CarPrototype.html#auto_sort_inventory Online documentation}
      */
-    auto_sort_inventory?: bool
+    auto_sort_inventory?: boolean
     /**
      * **Default:** `false`
      *
      * If this car is immune to movement by belts.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CarPrototype.html#has_belt_immunity Online documentation}
      */
-    has_belt_immunity?: bool
+    has_belt_immunity?: boolean
     /**
      * **Default:** `false`
      *
      * If this car gets damaged by driving over/against {@link TreePrototype trees}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CarPrototype.html#immune_to_tree_impacts Online documentation}
      */
-    immune_to_tree_impacts?: bool
+    immune_to_tree_impacts?: boolean
     /**
      * **Default:** `false`
      *
      * If this car gets damaged by driving over/against {@link SimpleEntityPrototype#count_as_rock_for_filtered_deconstruction rocks}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CarPrototype.html#immune_to_rock_impacts Online documentation}
      */
-    immune_to_rock_impacts?: bool
+    immune_to_rock_impacts?: boolean
     /**
      * **Default:** `true`
      *
      * If this car gets damaged by driving against {@link CliffPrototype cliffs}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CarPrototype.html#immune_to_cliff_impacts Online documentation}
      */
-    immune_to_cliff_impacts?: bool
+    immune_to_cliff_impacts?: boolean
     /**
      * **Default:** `0.01`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CarPrototype.html#turret_rotation_speed Online documentation}
@@ -2057,12 +2057,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CargoLandingPadPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CargoLandingPadPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     cargo_station_parameters: CargoStationParameters
     /**
@@ -2341,7 +2341,7 @@ declare module "factorio:prototype" {
      * Whether this character is moved by belts when standing on them.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CharacterPrototype.html#has_belt_immunity Online documentation}
      */
-    has_belt_immunity?: bool
+    has_belt_immunity?: boolean
     /**
      * Name of the character corpse that is spawned when this character dies.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CharacterPrototype.html#character_corpse Online documentation}
@@ -2396,7 +2396,7 @@ declare module "factorio:prototype" {
      * Whether this prototype should be a high priority target for enemy forces. See {@linkplain https://wiki.factorio.com/Military_units_and_structures Military units and structures}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CharacterPrototype.html#is_military_target Online documentation}
      */
-    is_military_target?: bool
+    is_military_target?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Cliff cliff}.
@@ -2480,7 +2480,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CombatRobotPrototype.html#follows_player Online documentation}
      */
-    follows_player?: bool
+    follows_player?: boolean
     light?: LightDefinition
   }
   /**
@@ -2537,12 +2537,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CombinatorPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CombinatorPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     /**
      * Emissions cannot be larger than zero, combinators cannot produce pollution.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CombinatorPrototype.html#emissions_per_second Online documentation}
@@ -2588,12 +2588,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ConstantCombinatorPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ConstantCombinatorPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
   }
   /**
    * This prototype is used for receiving an achievement when the player constructs enough entities with construction robots.
@@ -2605,7 +2605,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ConstructWithRobotsAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game: bool
+    limited_to_one_game: boolean
     /**
      * **Default:** `0`
      *
@@ -2619,7 +2619,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ConstructWithRobotsAchievementPrototype.html#more_than_manually Online documentation}
      */
-    more_than_manually?: bool
+    more_than_manually?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Construction_robot construction robot}.
@@ -2683,12 +2683,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ContainerPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ContainerPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     /**
      * **Default:** `"normal"`
@@ -2706,7 +2706,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CopyPasteToolPrototype.html#cuts Online documentation}
      */
-    cuts?: bool
+    cuts?: boolean
     /**
      * Count of items of the same name that can be stored in one inventory slot. Must be 1 when the `"not-stackable"` flag is set.
      * @example
@@ -2720,7 +2720,7 @@ declare module "factorio:prototype" {
      * This property is hardcoded to `false`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CopyPasteToolPrototype.html#always_include_tiles Online documentation}
      */
-    always_include_tiles?: bool
+    always_include_tiles?: boolean
     /**
      * The filters are parsed, but then ignored and forced to be empty.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CopyPasteToolPrototype.html#select Online documentation}
@@ -2772,17 +2772,17 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CorpsePrototype.html#expires Online documentation}
      */
-    expires?: bool
+    expires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CorpsePrototype.html#remove_on_entity_placement Online documentation}
      */
-    remove_on_entity_placement?: bool
+    remove_on_entity_placement?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CorpsePrototype.html#remove_on_tile_placement Online documentation}
      */
-    remove_on_tile_placement?: bool
+    remove_on_tile_placement?: boolean
     /**
      * **Default:** `"corpse"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CorpsePrototype.html#final_render_layer Online documentation}
@@ -2822,12 +2822,12 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CorpsePrototype.html#use_tile_color_for_ground_patch_tint Online documentation}
      */
-    use_tile_color_for_ground_patch_tint?: bool
+    use_tile_color_for_ground_patch_tint?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CorpsePrototype.html#use_decay_layer Online documentation}
      */
-    use_decay_layer?: bool
+    use_decay_layer?: boolean
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CorpsePrototype.html#underwater_layer_offset Online documentation}
@@ -2971,45 +2971,45 @@ declare module "factorio:prototype" {
      * Whether the "alt-mode icon" should be drawn at all.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CraftingMachinePrototype.html#show_recipe_icon Online documentation}
      */
-    show_recipe_icon?: bool
+    show_recipe_icon?: boolean
     /**
      * **Default:** `true`
      *
      * Controls whether the ingredients of an in-progress recipe are destroyed when mining the machine/changing the recipe. If set to true, the ingredients do not get destroyed. This affects only the ingredients of the recipe that is currently in progress, so those that visually have already been consumed while their resulting product has not yet been produced.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CraftingMachinePrototype.html#return_ingredients_on_change Online documentation}
      */
-    return_ingredients_on_change?: bool
+    return_ingredients_on_change?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the "alt-mode icon" should have a black background.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CraftingMachinePrototype.html#draw_entity_info_icon_background Online documentation}
      */
-    draw_entity_info_icon_background?: bool
+    draw_entity_info_icon_background?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the speed of the animation and working visualization should be based on the machine's speed (boosted or slowed by modules).
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CraftingMachinePrototype.html#match_animation_speed_to_activity Online documentation}
      */
-    match_animation_speed_to_activity?: bool
+    match_animation_speed_to_activity?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the recipe icon should be shown on the map.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CraftingMachinePrototype.html#show_recipe_icon_on_map Online documentation}
      */
-    show_recipe_icon_on_map?: bool
+    show_recipe_icon_on_map?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CraftingMachinePrototype.html#fast_transfer_modules_into_module_slots_only Online documentation}
      */
-    fast_transfer_modules_into_module_slots_only?: bool
+    fast_transfer_modules_into_module_slots_only?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CraftingMachinePrototype.html#ignore_output_full Online documentation}
      */
-    ignore_output_full?: bool
+    ignore_output_full?: boolean
     graphics_set?: CraftingMachineGraphicsSet
     graphics_set_flipped?: CraftingMachineGraphicsSet
     /**
@@ -3156,17 +3156,17 @@ declare module "factorio:prototype" {
      * If this custom input is enabled. Disabled custom inputs exist but are not used by the game. If disabled, no event is raised when the input is used.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CustomInputPrototype.html#enabled Online documentation}
      */
-    enabled?: bool
+    enabled?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CustomInputPrototype.html#enabled_while_spectating Online documentation}
      */
-    enabled_while_spectating?: bool
+    enabled_while_spectating?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CustomInputPrototype.html#enabled_while_in_cutscene Online documentation}
      */
-    enabled_while_in_cutscene?: bool
+    enabled_while_in_cutscene?: boolean
     /**
      * **Default:** `false`
      *
@@ -3175,7 +3175,7 @@ declare module "factorio:prototype" {
      * This will also return an item in the cursor such as copper-wire or rail-planner, if nothing is beneath the cursor.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CustomInputPrototype.html#include_selected_prototype Online documentation}
      */
-    include_selected_prototype?: bool
+    include_selected_prototype?: boolean
     /**
      * The item will be created when this input is pressed and action is set to "spawn-item". The item must have the {@link ItemPrototypeFlags#spawnable spawnable} flag set.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CustomInputPrototype.html#item_to_spawn Online documentation}
@@ -3199,7 +3199,7 @@ declare module "factorio:prototype" {
      * If `true`, when the shortcut is activated, the modifiers used for this shortcut can't be re-used to press something else until unpressed. The example where this is useful is ALT+A to activate spidertron remote, where ALT is consumed, so pressing right mouse button before the ALT is unpressed will not trigger pin creation (ALT + right mouse button), but send the selected unit instead.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/CustomInputPrototype.html#block_modifiers Online documentation}
      */
-    block_modifiers?: bool
+    block_modifiers?: boolean
   }
   /**
    * A damage type. This is used in the {@linkplain https://wiki.factorio.com/Damage damage system}. {@linkplain https://wiki.factorio.com/Damage#Damage_types A list of built-in damage types can be found here}.
@@ -3291,7 +3291,7 @@ declare module "factorio:prototype" {
      * This property is hardcoded to `false`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DeconstructionItemPrototype.html#always_include_tiles Online documentation}
      */
-    always_include_tiles?: bool
+    always_include_tiles?: boolean
   }
   /**
    * Simple decorative purpose objects on the map, they have no health and some of them are removed when the player builds over. Usually used for grass patches, roots, small plants etc.
@@ -3332,7 +3332,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DecorativePrototype.html#grows_through_rail_path Online documentation}
      */
-    grows_through_rail_path?: bool
+    grows_through_rail_path?: boolean
     /**
      * **Default:** `0`
      *
@@ -3407,7 +3407,7 @@ declare module "factorio:prototype" {
      * If true, the delayed trigger is cancelled if the source entity is destroyed.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DelayedActiveTriggerPrototype.html#cancel_when_source_is_destroyed Online documentation}
      */
-    cancel_when_source_is_destroyed?: bool
+    cancel_when_source_is_destroyed?: boolean
   }
   /**
    * This prototype is used for receiving an achievement, when the player requests and receives enough items using logistic robots.
@@ -3489,7 +3489,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DepleteResourceAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game?: bool
+    limited_to_one_game?: boolean
   }
   export interface DestroyCliffAchievementPrototype extends AchievementPrototype {
     type: "destroy-cliff-achievement"
@@ -3504,7 +3504,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DestroyCliffAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game?: bool
+    limited_to_one_game?: boolean
   }
   /**
    * A display panel prototype to provide a prototype for display panels.
@@ -3550,12 +3550,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DisplayPanelPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DisplayPanelPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: readonly [
       CircuitConnectorDefinition,
       CircuitConnectorDefinition,
@@ -3665,7 +3665,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DontUseEntityInEnergyProductionAchievementPrototype.html#last_hour_only Online documentation}
      */
-    last_hour_only?: bool
+    last_hour_only?: boolean
     /**
      * **Default:** `"0J"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/DontUseEntityInEnergyProductionAchievementPrototype.html#minimum_energy_produced Online documentation}
@@ -3695,24 +3695,24 @@ declare module "factorio:prototype" {
     item_pickup_distance: double
     loot_pickup_distance: double
     mining_speed: double
-    enable_flash_light: bool
-    adjust_speed_based_off_zoom: bool
-    render_as_day: bool
-    instant_blueprint_building: bool
-    instant_deconstruction: bool
-    instant_upgrading: bool
-    instant_rail_planner: bool
-    show_status_icons: bool
-    show_hidden_entities: bool
-    show_entity_tags: bool
-    show_entity_health_bars: bool
-    show_additional_entity_info_gui: bool
-    generate_neighbor_chunks: bool
-    fill_built_entity_energy_buffers: bool
-    show_character_tab_in_controller_gui: bool
-    show_infinity_filters_in_controller_gui: bool
-    placed_corpses_never_expire: bool
-    ignore_surface_conditions: bool
+    enable_flash_light: boolean
+    adjust_speed_based_off_zoom: boolean
+    render_as_day: boolean
+    instant_blueprint_building: boolean
+    instant_deconstruction: boolean
+    instant_upgrading: boolean
+    instant_rail_planner: boolean
+    show_status_icons: boolean
+    show_hidden_entities: boolean
+    show_entity_tags: boolean
+    show_entity_health_bars: boolean
+    show_additional_entity_info_gui: boolean
+    generate_neighbor_chunks: boolean
+    fill_built_entity_energy_buffers: boolean
+    show_character_tab_in_controller_gui: boolean
+    show_infinity_filters_in_controller_gui: boolean
+    placed_corpses_never_expire: boolean
+    ignore_surface_conditions: boolean
   }
   /**
    * Entity with electric energy source with that can have some of its values changed runtime. Useful for modding in energy consumers/producers.
@@ -3746,7 +3746,7 @@ declare module "factorio:prototype" {
      * Whether the electric energy interface animation always runs instead of being scaled to activity.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ElectricEnergyInterfacePrototype.html#continuous_animation Online documentation}
      */
-    continuous_animation?: bool
+    continuous_animation?: boolean
     /**
      * **Default:** `"object"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ElectricEnergyInterfacePrototype.html#render_layer Online documentation}
@@ -3777,7 +3777,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ElectricEnergyInterfacePrototype.html#allow_copy_paste Online documentation}
      */
-    allow_copy_paste?: bool
+    allow_copy_paste?: boolean
   }
   /**
    * An electric pole - part of the {@linkplain https://wiki.factorio.com/Electric_system electric system}.
@@ -3813,12 +3813,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ElectricPolePrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ElectricPolePrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     /**
      * Drawn when the electric pole is connected to an electric network.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ElectricPolePrototype.html#light Online documentation}
@@ -3828,7 +3828,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ElectricPolePrototype.html#track_coverage_during_build_by_moving Online documentation}
      */
-    track_coverage_during_build_by_moving?: bool
+    track_coverage_during_build_by_moving?: boolean
     /**
      * **Default:** `5`
      *
@@ -3944,7 +3944,7 @@ declare module "factorio:prototype" {
      * Whether `spawn_decoration` should be spawned when enemies {@linkplain https://wiki.factorio.com/Enemies#Expansions expand}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EnemySpawnerPrototype.html#spawn_decorations_on_expansion Online documentation}
      */
-    spawn_decorations_on_expansion?: bool
+    spawn_decorations_on_expansion?: boolean
     /**
      * Decoratives to be created when the spawner is created by the {@linkplain https://wiki.factorio.com/Map_generator map generator}. Placed when enemies expand if `spawn_decorations_on_expansion` is set to true.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EnemySpawnerPrototype.html#spawn_decoration Online documentation}
@@ -4376,7 +4376,7 @@ declare module "factorio:prototype" {
      * When this is true, this entity prototype should be included during tile collision checks with tiles that have {@link TilePrototype#check_collision_with_entities TilePrototype::check_collision_with_entities} set to true.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityPrototype.html#protected_from_tile_building Online documentation}
      */
-    protected_from_tile_building?: bool
+    protected_from_tile_building?: boolean
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityPrototype.html#heating_energy Online documentation}
@@ -4386,12 +4386,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityPrototype.html#allow_copy_paste Online documentation}
      */
-    allow_copy_paste?: bool
+    allow_copy_paste?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityPrototype.html#selectable_in_game Online documentation}
      */
-    selectable_in_game?: bool
+    selectable_in_game?: boolean
     /**
      * Item that when placed creates this entity. Determines which item is picked when "Q" (smart pipette) is used on this entity. Determines which item and item amount is needed in a blueprint of this entity and to revive a ghost of this entity.
      *
@@ -4688,24 +4688,24 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityWithHealthPrototype.html#alert_when_damaged Online documentation}
      */
-    alert_when_damaged?: bool
+    alert_when_damaged?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the resistances of this entity should be hidden in the entity tooltip.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityWithHealthPrototype.html#hide_resistances Online documentation}
      */
-    hide_resistances?: bool
+    hide_resistances?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityWithHealthPrototype.html#create_ghost_on_death Online documentation}
      */
-    create_ghost_on_death?: bool
+    create_ghost_on_death?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityWithHealthPrototype.html#random_corpse_variation Online documentation}
      */
-    random_corpse_variation?: bool
+    random_corpse_variation?: boolean
     /**
      * **Default:** `"lower-object"`
      *
@@ -4847,14 +4847,14 @@ declare module "factorio:prototype" {
      * Whether this prototype should be a high priority target for enemy forces. See {@linkplain https://wiki.factorio.com/Military_units_and_structures Military units and structures}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityWithOwnerPrototype.html#is_military_target Online documentation}
      */
-    is_military_target?: bool
+    is_military_target?: boolean
     /**
      * **Default:** `false`
      *
      * If this is true, this entity's `is_military_target` property can be changed during runtime (on the entity, not on the prototype itself).
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EntityWithOwnerPrototype.html#allow_run_time_change_of_is_military_target Online documentation}
      */
-    allow_run_time_change_of_is_military_target?: bool
+    allow_run_time_change_of_is_military_target?: boolean
     /**
      * **Default:** `Calculated based on bounding box`
      *
@@ -4897,7 +4897,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EquipArmorAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game?: bool
+    limited_to_one_game?: boolean
   }
   /**
    * Defines a category to be available to {@link EquipmentPrototype equipment} and {@link EquipmentGridPrototype equipment grids}.
@@ -4956,7 +4956,7 @@ declare module "factorio:prototype" {
      * Whether this locked from user interaction which means that the user cannot put equipment into or take equipment from this equipment grid.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/EquipmentGridPrototype.html#locked Online documentation}
      */
-    locked?: bool
+    locked?: boolean
   }
   /**
    * Abstract base of all equipment modules. Equipment modules can be inserted into {@link EquipmentGridPrototype equipment grids}.
@@ -5052,22 +5052,22 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ExplosionPrototype.html#rotate Online documentation}
      */
-    rotate?: bool
+    rotate?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ExplosionPrototype.html#beam Online documentation}
      */
-    beam?: bool
+    beam?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ExplosionPrototype.html#correct_rotation Online documentation}
      */
-    correct_rotation?: bool
+    correct_rotation?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ExplosionPrototype.html#scale_animation_speed Online documentation}
      */
-    scale_animation_speed?: bool
+    scale_animation_speed?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ExplosionPrototype.html#fade_in_duration Online documentation}
@@ -5236,12 +5236,12 @@ declare module "factorio:prototype" {
      * For example, spitters use alternate behavior, flamethrower flames don't.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FireFlamePrototype.html#uses_alternative_behavior Online documentation}
      */
-    uses_alternative_behavior?: bool
+    uses_alternative_behavior?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FireFlamePrototype.html#limit_overlapping_particles Online documentation}
      */
-    limit_overlapping_particles?: bool
+    limit_overlapping_particles?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FireFlamePrototype.html#tree_dying_factor Online documentation}
@@ -5517,7 +5517,7 @@ declare module "factorio:prototype" {
      * This property is not read by the game engine itself, but the base mod's data-updates.lua file. This means it is discarded by the game engine after loading finishes.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FluidPrototype.html#auto_barrel Online documentation}
      */
-    auto_barrel?: bool
+    auto_barrel?: boolean
   }
   /**
    * Used for example for the handheld flamethrower.
@@ -5644,12 +5644,12 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FluidStreamPrototype.html#oriented_particle Online documentation}
      */
-    oriented_particle?: bool
+    oriented_particle?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FluidStreamPrototype.html#shadow_scale_enabled Online documentation}
      */
-    shadow_scale_enabled?: bool
+    shadow_scale_enabled?: boolean
   }
   /**
    * A turret that uses {@link FluidPrototype fluid} as ammunition.
@@ -5791,7 +5791,7 @@ declare module "factorio:prototype" {
      * Whether this prototype should be a high priority target for enemy forces. See {@linkplain https://wiki.factorio.com/Military_units_and_structures Military units and structures}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FlyingRobotPrototype.html#is_military_target Online documentation}
      */
-    is_military_target?: bool
+    is_military_target?: boolean
   }
   /**
    * Fonts are used in all GUIs in the game.
@@ -5832,12 +5832,12 @@ declare module "factorio:prototype" {
      * Whether the font has a border.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FontPrototype.html#border Online documentation}
      */
-    border?: bool
+    border?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FontPrototype.html#filtered Online documentation}
      */
-    filtered?: bool
+    filtered?: boolean
     /**
      * The color of the border, if enabled.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FontPrototype.html#border_color Online documentation}
@@ -5967,7 +5967,7 @@ declare module "factorio:prototype" {
      * If set to true, only North and East direction will be buildable.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FusionReactorPrototype.html#two_direction_only Online documentation}
      */
-    two_direction_only?: bool
+    two_direction_only?: boolean
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/FusionReactorPrototype.html#neighbour_bonus Online documentation}
@@ -6095,7 +6095,7 @@ declare module "factorio:prototype" {
      * If set to true, the available power output is based on the {@link FluidPrototype#fuel_value FluidPrototype::fuel_value}. Otherwise, the available power output will be based on the fluid temperature.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/GeneratorPrototype.html#burns_fluid Online documentation}
      */
-    burns_fluid?: bool
+    burns_fluid?: boolean
     /**
      * **Default:** `false`
      *
@@ -6106,7 +6106,7 @@ declare module "factorio:prototype" {
      * If scale_fluid_usage is false, the generator consumes the full `fluid_usage_per_tick` and any of the extra energy in the fluid (in the form of higher temperature) is wasted. The {@linkplain https://wiki.factorio.com/Steam_engine steam engine} exhibits this behavior when fed steam from {@linkplain https://wiki.factorio.com/Heat_exchanger heat exchangers}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/GeneratorPrototype.html#scale_fluid_usage Online documentation}
      */
-    scale_fluid_usage?: bool
+    scale_fluid_usage?: boolean
     /**
      * **Default:** `true`
      *
@@ -6117,7 +6117,7 @@ declare module "factorio:prototype" {
      * In these cases, this property determines whether the fluid should be destroyed, meaning that the fluid is consumed at the rate of `fluid_usage_per_tick`, without producing any power.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/GeneratorPrototype.html#destroy_non_fuel_fluid Online documentation}
      */
-    destroy_non_fuel_fluid?: bool
+    destroy_non_fuel_fluid?: boolean
     /**
      * Affects animation speed.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/GeneratorPrototype.html#perceived_performance Online documentation}
@@ -6311,7 +6311,7 @@ declare module "factorio:prototype" {
    */
   export interface InfinityContainerPrototype extends Omit<LogisticContainerPrototype, "logistic_mode"> {
     type: "infinity-container"
-    erase_contents_when_mined: bool
+    erase_contents_when_mined: boolean
     /**
      * **Default:** `"all"`
      *
@@ -6332,7 +6332,7 @@ declare module "factorio:prototype" {
      * ![](https://lua-api.factorio.com/2.0.17/static/images/too-far-from-roboport-icon.png)
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InfinityContainerPrototype.html#render_not_in_network_icon Online documentation}
      */
-    render_not_in_network_icon?: bool
+    render_not_in_network_icon?: boolean
     /**
      * The number of slots in this container. May not be zero.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InfinityContainerPrototype.html#inventory_size Online documentation}
@@ -6393,56 +6393,56 @@ declare module "factorio:prototype" {
      * Whether this inserter is considered a bulk inserter. Relevant for determining how {@linkplain https://wiki.factorio.com/Inserter_capacity_bonus_(research inserter capacity bonus (research)}) applies to the inserter.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#bulk Online documentation}
      */
-    bulk?: bool
+    bulk?: boolean
     /**
      * **Default:** `false`
      *
      * Whether pickup and insert position can be set run-time.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#allow_custom_vectors Online documentation}
      */
-    allow_custom_vectors?: bool
+    allow_custom_vectors?: boolean
     /**
      * **Default:** `false`
      *
      * Whether this burner inserter can fuel itself from the fuel inventory of the entity it is picking up items from.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#allow_burner_leech Online documentation}
      */
-    allow_burner_leech?: bool
+    allow_burner_leech?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the item that the inserter is holding should be drawn.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#draw_held_item Online documentation}
      */
-    draw_held_item?: bool
+    draw_held_item?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the inserter should be able to fish {@linkplain https://wiki.factorio.com/Raw_fish fish}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#use_easter_egg Online documentation}
      */
-    use_easter_egg?: bool
+    use_easter_egg?: boolean
     /**
      * **Default:** `false`
      *
      * If drop target is belt, inserter may grab less so that it does not drop partial stacks unless it is forced to drop partial.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#grab_less_to_match_belt_stack Online documentation}
      */
-    grab_less_to_match_belt_stack?: bool
+    grab_less_to_match_belt_stack?: boolean
     /**
      * **Default:** `false`
      *
      * Inserter will wait until its hand is full.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#wait_for_full_hand Online documentation}
      */
-    wait_for_full_hand?: bool
+    wait_for_full_hand?: boolean
     /**
      * **Default:** `false`
      *
      * If inserter waits for full hand it could become stuck when item in hand changed because of spoiling. If this flag is set then inserter will start dropping held stack even if it was waiting for full hand.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#enter_drop_mode_if_held_stack_spoiled Online documentation}
      */
-    enter_drop_mode_if_held_stack_spoiled?: bool
+    enter_drop_mode_if_held_stack_spoiled?: boolean
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
      *
@@ -6477,12 +6477,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     default_stack_control_input_signal?: SignalIDConnector
     /**
      * **Default:** `true`
@@ -6490,14 +6490,14 @@ declare module "factorio:prototype" {
      * Whether the yellow arrow that indicates the drop point of the inserter and the line that indicates the pickup position should be drawn.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#draw_inserter_arrow Online documentation}
      */
-    draw_inserter_arrow?: bool
+    draw_inserter_arrow?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the inserter hand should move to the items it picks up from belts, leading to item chasing behaviour. If this is off, the inserter hand will stay in the center of the belt and any items picked up from the edges of the belt "teleport" to the inserter hand.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/InserterPrototype.html#chases_belt_items Online documentation}
      */
-    chases_belt_items?: bool
+    chases_belt_items?: boolean
     /**
      * **Default:** `0`
      *
@@ -6814,7 +6814,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ItemPrototype.html#has_random_tint Online documentation}
      */
-    has_random_tint?: bool
+    has_random_tint?: boolean
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
      *
@@ -6859,7 +6859,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ItemRequestProxyPrototype.html#use_target_entity_alert_icon_shift Online documentation}
      */
-    use_target_entity_alert_icon_shift?: bool
+    use_target_entity_alert_icon_shift?: boolean
   }
   /**
    * An item subgroup. Item subgroups are the rows in the recipe list in the player's inventory GUI. The subgroup of a prototype also determines its item {@link ItemGroup#group group} (tab in the recipe list).
@@ -7020,7 +7020,7 @@ declare module "factorio:prototype" {
      * If the item will draw its label when held in the cursor in place of the item count.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ItemWithLabelPrototype.html#draw_label_for_cursor_render Online documentation}
      */
-    draw_label_for_cursor_render?: bool
+    draw_label_for_cursor_render?: boolean
   }
   /**
    * Item type that can store any basic arbitrary Lua data, see {@link import("factorio:runtime").LuaItemStack#tags LuaItemStack::tags}.
@@ -7080,7 +7080,7 @@ declare module "factorio:prototype" {
      * in_vehicle = true
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/KillAchievementPrototype.html#in_vehicle Online documentation}
      */
-    in_vehicle?: bool
+    in_vehicle?: boolean
     /**
      * **Default:** `false`
      *
@@ -7089,7 +7089,7 @@ declare module "factorio:prototype" {
      * personally = true
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/KillAchievementPrototype.html#personally Online documentation}
      */
-    personally?: bool
+    personally?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Lab lab}. It consumes {@link ToolPrototype science packs} to research {@link TechnologyPrototype technologies}.
@@ -7144,7 +7144,7 @@ declare module "factorio:prototype" {
      * Whether the {@link QualityPrototype#science_pack_drain_multiplier QualityPrototype::science_pack_drain_multiplier} of the quality of the science pack should be considered by the lab.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LabPrototype.html#uses_quality_drain_modifier Online documentation}
      */
-    uses_quality_drain_modifier?: bool
+    uses_quality_drain_modifier?: boolean
     /**
      * **Default:** `100`
      *
@@ -7294,12 +7294,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LampPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LampPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     /**
      * **Default:** `0`
@@ -7331,7 +7331,7 @@ declare module "factorio:prototype" {
      * Whether the lamp should always be on.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LampPrototype.html#always_on Online documentation}
      */
-    always_on?: bool
+    always_on?: boolean
     signal_to_color_mapping?: readonly SignalColorMapping[]
     /**
      * **Default:** `"additive"`
@@ -7380,7 +7380,7 @@ declare module "factorio:prototype" {
      * Force the landmine to kill itself when exploding.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LandMinePrototype.html#force_die_on_attack Online documentation}
      */
-    force_die_on_attack?: bool
+    force_die_on_attack?: boolean
     /**
      * **Default:** `"enemy"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LandMinePrototype.html#trigger_force Online documentation}
@@ -7399,7 +7399,7 @@ declare module "factorio:prototype" {
      * Whether this prototype should be a high priority target for enemy forces. See {@linkplain https://wiki.factorio.com/Military_units_and_structures Military units and structures}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LandMinePrototype.html#is_military_target Online documentation}
      */
-    is_military_target?: bool
+    is_military_target?: boolean
   }
   export interface LaneSplitterPrototype extends TransportBeltConnectablePrototype {
     type: "lane-splitter"
@@ -7526,17 +7526,17 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LinkedBeltPrototype.html#allow_clone_connection Online documentation}
      */
-    allow_clone_connection?: bool
+    allow_clone_connection?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LinkedBeltPrototype.html#allow_blueprint_connection Online documentation}
      */
-    allow_blueprint_connection?: bool
+    allow_blueprint_connection?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LinkedBeltPrototype.html#allow_side_loading Online documentation}
      */
-    allow_side_loading?: bool
+    allow_side_loading?: boolean
   }
   /**
    * A container that shares its inventory with containers with the same {@link import("factorio:runtime").LuaEntity#link_id link_id}, which can be set via the GUI. The link IDs are per prototype and force, so only containers with the **same ID**, **same prototype name** and **same force** will share inventories.
@@ -7575,12 +7575,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LinkedContainerPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LinkedContainerPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
   }
   /**
@@ -7642,21 +7642,21 @@ declare module "factorio:prototype" {
      * Whether this loader can load and unload {@link RollingStockPrototype}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LoaderPrototype.html#allow_rail_interaction Online documentation}
      */
-    allow_rail_interaction?: bool
+    allow_rail_interaction?: boolean
     /**
      * **Default:** `true`
      *
      * Whether this loader can load and unload stationary inventories such as containers and crafting machines.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LoaderPrototype.html#allow_container_interaction Online documentation}
      */
-    allow_container_interaction?: bool
+    allow_container_interaction?: boolean
     /**
      * **Default:** `false`
      *
      * If filters are per lane. Can only be set to true if filter_count is equal to 2.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LoaderPrototype.html#per_lane_filters Online documentation}
      */
-    per_lane_filters?: bool
+    per_lane_filters?: boolean
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
      *
@@ -7692,12 +7692,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LoaderPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LoaderPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     /**
      * First the four cardinal directions for `direction_out`, followed by the four directions for `direction_in`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LoaderPrototype.html#circuit_connector Online documentation}
@@ -7764,7 +7764,7 @@ declare module "factorio:prototype" {
      * ![](https://lua-api.factorio.com/2.0.17/static/images/too-far-from-roboport-icon.png)
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LogisticContainerPrototype.html#render_not_in_network_icon Online documentation}
      */
-    render_not_in_network_icon?: bool
+    render_not_in_network_icon?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LogisticContainerPrototype.html#opened_duration Online documentation}
@@ -7786,7 +7786,7 @@ declare module "factorio:prototype" {
      * Whether logistic robots have to deliver the exact amount of items requested to this logistic container instead of over-delivering (within their cargo size).
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LogisticContainerPrototype.html#use_exact_mode Online documentation}
      */
-    use_exact_mode?: bool
+    use_exact_mode?: boolean
     /**
      * Played when a robot brings/takes items from this container. Ignored if `animation` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/LogisticContainerPrototype.html#animation_sound Online documentation}
@@ -7942,7 +7942,7 @@ declare module "factorio:prototype" {
      * Whether all forces are allowed to open this market.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/MarketPrototype.html#allow_access_to_all_forces Online documentation}
      */
-    allow_access_to_all_forces?: bool
+    allow_access_to_all_forces?: boolean
   }
   /**
    * A mining drill for automatically extracting resources from {@link ResourceEntityPrototype resource entities}. This prototype type is used by {@linkplain https://wiki.factorio.com/Burner_mining_drill burner mining drill}, {@linkplain https://wiki.factorio.com/Electric_mining_drill electric mining drill} and {@linkplain https://wiki.factorio.com/Pumpjack pumpjack} in vanilla.
@@ -8036,12 +8036,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/MiningDrillPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/MiningDrillPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     /**
      * **Default:** `"lower-object"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/MiningDrillPrototype.html#base_render_layer Online documentation}
@@ -8056,14 +8056,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/MiningDrillPrototype.html#shuffle_resources_to_mine Online documentation}
      */
-    shuffle_resources_to_mine?: bool
+    shuffle_resources_to_mine?: boolean
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
      *
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/MiningDrillPrototype.html#drops_full_belt_stacks Online documentation}
      */
-    drops_full_belt_stacks?: bool
+    drops_full_belt_stacks?: boolean
     moving_sound?: InterruptibleSound
     drilling_sound?: InterruptibleSound
     /**
@@ -8129,7 +8129,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ModulePrototype.html#requires_beacon_alt_mode Online documentation}
      */
-    requires_beacon_alt_mode?: bool
+    requires_beacon_alt_mode?: boolean
     /**
      * Chooses with what art style the module is shown inside {@link BeaconPrototype beacons}. See {@link BeaconModuleVisualizations#art_style BeaconModuleVisualizations::art_style}. Vanilla uses `"vanilla"` here.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ModulePrototype.html#art_style Online documentation}
@@ -8166,7 +8166,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ModuleTransferAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game?: bool
+    limited_to_one_game?: boolean
   }
   /**
    * Used by {@link SelectionToolPrototype#mouse_cursor SelectionToolPrototype::mouse_cursor}.
@@ -8384,14 +8384,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/OffshorePumpPrototype.html#remove_on_tile_collision Online documentation}
      */
-    remove_on_tile_collision?: bool
+    remove_on_tile_collision?: boolean
     /**
      * **Default:** `true`
      *
      * If false, the offshore pump will not show fluid present (visually) before there is an output connected. The pump will also animate yet not show fluid when the fluid is 100% extracted (e.g. such as with a pump).
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/OffshorePumpPrototype.html#always_draw_fluid Online documentation}
      */
-    always_draw_fluid?: bool
+    always_draw_fluid?: boolean
     /**
      * **Default:** `0`
      *
@@ -8403,12 +8403,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/OffshorePumpPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/OffshorePumpPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: readonly [
       CircuitConnectorDefinition,
       CircuitConnectorDefinition,
@@ -8441,7 +8441,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ParticlePrototype.html#draw_shadow_when_on_ground Online documentation}
      */
-    draw_shadow_when_on_ground?: bool
+    draw_shadow_when_on_ground?: boolean
     regular_trigger_effect?: TriggerEffect
     ended_in_water_trigger_effect?: TriggerEffect
     ended_on_ground_trigger_effect?: TriggerEffect
@@ -8573,7 +8573,7 @@ declare module "factorio:prototype" {
      * Causes fluid icon to always be drawn, ignoring the usual pair requirement.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PipeToGroundPrototype.html#draw_fluid_icon_override Online documentation}
      */
-    draw_fluid_icon_override?: bool
+    draw_fluid_icon_override?: boolean
   }
   export interface PlaceEquipmentAchievementPrototype extends AchievementPrototype {
     type: "place-equipment-achievement"
@@ -8591,7 +8591,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PlaceEquipmentAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game?: bool
+    limited_to_one_game?: boolean
   }
   export interface PlanetPrototype extends SpaceLocationPrototype {
     type: "planet"
@@ -8602,7 +8602,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PlanetPrototype.html#entities_require_heating Online documentation}
      */
-    entities_require_heating?: bool
+    entities_require_heating?: boolean
     pollutant_type?: AirbornePollutantID
     persistent_ambient_sounds?: PersistentWorldAmbientSoundsDefinition
     surface_render_parameters?: SurfaceRenderParameters
@@ -8653,7 +8653,7 @@ declare module "factorio:prototype" {
      * should_survive = true
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PlayerDamagedAchievementPrototype.html#should_survive Online documentation}
      */
-    should_survive: bool
+    should_survive: boolean
     /**
      * **Default:** `""`
      *
@@ -8701,12 +8701,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PowerSwitchPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PowerSwitchPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
   }
   /**
    * Helps {@link ProcessionLayer ProcessionLayers} pass properties between subsequent transitions if they belong to the same group.
@@ -8769,7 +8769,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProduceAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game: bool
+    limited_to_one_game: boolean
     /**
      * Mandatory if `fluid_product` is not defined.
      *
@@ -8854,12 +8854,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProgrammableSpeakerPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProgrammableSpeakerPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
   }
   /**
@@ -8880,26 +8880,26 @@ declare module "factorio:prototype" {
      * Whether the animation of the projectile is rotated to match the direction of travel.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProjectilePrototype.html#rotatable Online documentation}
      */
-    rotatable?: bool
+    rotatable?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProjectilePrototype.html#enable_drawing_with_mask Online documentation}
      */
-    enable_drawing_with_mask?: bool
+    enable_drawing_with_mask?: boolean
     /**
      * **Default:** `false`
      *
      * Setting this to true can be used to disable projectile homing behaviour.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProjectilePrototype.html#direction_only Online documentation}
      */
-    direction_only?: bool
+    direction_only?: boolean
     /**
      * **Default:** `false`
      *
      * When true the entity is hit at the position on its collision box the projectile first collides with. When false the entity is hit at its own position.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProjectilePrototype.html#hit_at_collision_position Online documentation}
      */
-    hit_at_collision_position?: bool
+    hit_at_collision_position?: boolean
     /**
      * **Default:** `"all"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProjectilePrototype.html#force_condition Online documentation}
@@ -8957,7 +8957,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ProjectilePrototype.html#turning_speed_increases_exponentially_with_projectile_speed Online documentation}
      */
-    turning_speed_increases_exponentially_with_projectile_speed?: bool
+    turning_speed_increases_exponentially_with_projectile_speed?: boolean
     shadow?: RotatedAnimationVariations
   }
   export interface Prototype extends PrototypeBase {
@@ -9251,19 +9251,19 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PrototypeBase.html#hidden Online documentation}
      */
-    hidden?: bool
+    hidden?: boolean
     /**
      * **Default:** `Value of `hidden``
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PrototypeBase.html#hidden_in_factoriopedia Online documentation}
      */
-    hidden_in_factoriopedia?: bool
+    hidden_in_factoriopedia?: boolean
     /**
      * **Default:** `false`
      *
      * Whether the prototype is a special type which can be used to parametrize blueprints and doesn't have other function.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PrototypeBase.html#parameter Online documentation}
      */
-    parameter?: bool
+    parameter?: boolean
     /**
      * The simulation shown when looking at this prototype in the Factoriopedia GUI.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PrototypeBase.html#factoriopedia_simulation Online documentation}
@@ -9328,12 +9328,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PumpPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/PumpPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: readonly [
       CircuitConnectorDefinition,
       CircuitConnectorDefinition,
@@ -9355,7 +9355,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/QualityPrototype.html#draw_sprite_by_default Online documentation}
      */
-    draw_sprite_by_default?: bool
+    draw_sprite_by_default?: boolean
     color: Color
     /**
      * Requires Space Age to use level greater than `0`.
@@ -9477,12 +9477,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RadarPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RadarPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     radius_minimap_visualisation_color?: Color
     /**
@@ -9496,12 +9496,12 @@ declare module "factorio:prototype" {
      * If set to true, radars on the same surface will connect to other radars on the same surface using hidden wires with {@link defines.wire_origin.radars radar} origin.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RadarPrototype.html#connects_to_other_radars Online documentation}
      */
-    connects_to_other_radars?: bool
+    connects_to_other_radars?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RadarPrototype.html#reset_orientation_when_frozen Online documentation}
      */
-    reset_orientation_when_frozen?: bool
+    reset_orientation_when_frozen?: boolean
     /**
      * **Default:** `0.9`
      *
@@ -9522,7 +9522,7 @@ declare module "factorio:prototype" {
      * Whether this prototype should be a high priority target for enemy forces. See {@linkplain https://wiki.factorio.com/Military_units_and_structures Military units and structures}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RadarPrototype.html#is_military_target Online documentation}
      */
-    is_military_target?: bool
+    is_military_target?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Rail_chain_signal rail chain signal}.
@@ -9600,7 +9600,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RailPrototype.html#removes_soft_decoratives Online documentation}
      */
-    removes_soft_decoratives?: bool
+    removes_soft_decoratives?: boolean
     /**
      * **Default:** `2`
      *
@@ -9683,12 +9683,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RailSignalBasePrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RailSignalBasePrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     default_red_output_signal?: SignalIDConnector
     default_orange_output_signal?: SignalIDConnector
     default_green_output_signal?: SignalIDConnector
@@ -9740,7 +9740,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RailSupportPrototype.html#not_buildable_if_no_rails Online documentation}
      */
-    not_buildable_if_no_rails?: bool
+    not_buildable_if_no_rails?: boolean
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RailSupportPrototype.html#snap_to_spots_distance Online documentation}
@@ -9828,14 +9828,14 @@ declare module "factorio:prototype" {
      * When this is true, the reactor will stop consuming fuel/energy when the temperature has reached the maximum.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ReactorPrototype.html#scale_energy_usage Online documentation}
      */
-    scale_energy_usage?: bool
+    scale_energy_usage?: boolean
     /**
      * **Default:** `false`
      *
      * Whether the reactor should use {@link ItemPrototype#fuel_glow_color fuel_glow_color} from the fuel item prototype as light color and tint for `working_light_picture`. {@linkplain https://forums.factorio.com/71121 Forum post.}
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ReactorPrototype.html#use_fuel_glow_color Online documentation}
      */
-    use_fuel_glow_color?: bool
+    use_fuel_glow_color?: boolean
     /**
      * **Default:** ``{1, 1, 1, 1} (white)``
      *
@@ -9854,12 +9854,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ReactorPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ReactorPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     default_temperature_signal?: SignalIDConnector
   }
@@ -10043,7 +10043,7 @@ declare module "factorio:prototype" {
      * Whether the recipe is allowed to have the extra inserter overload bonus applied (4 * stack inserter stack size).
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_inserter_overload Online documentation}
      */
-    allow_inserter_overload?: bool
+    allow_inserter_overload?: boolean
     /**
      * **Default:** `true`
      *
@@ -10052,82 +10052,82 @@ declare module "factorio:prototype" {
      * If a recipe is unlocked via technology, this should be set to `false`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#enabled Online documentation}
      */
-    enabled?: bool
+    enabled?: boolean
     /**
      * **Default:** `false`
      *
      * Hides the recipe from item/fluid production statistics.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#hide_from_stats Online documentation}
      */
-    hide_from_stats?: bool
+    hide_from_stats?: boolean
     /**
      * **Default:** `false`
      *
      * Hides the recipe from the player's crafting screen. The recipe will still show up for selection in machines.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#hide_from_player_crafting Online documentation}
      */
-    hide_from_player_crafting?: bool
+    hide_from_player_crafting?: boolean
     /**
      * **Default:** `true`
      *
      * Whether this recipe is allowed to be broken down for the recipe tooltip "Total raw" calculations.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_decomposition Online documentation}
      */
-    allow_decomposition?: bool
+    allow_decomposition?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the recipe can be used as an intermediate recipe in hand-crafting.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_as_intermediate Online documentation}
      */
-    allow_as_intermediate?: bool
+    allow_as_intermediate?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the recipe is allowed to use intermediate recipes when hand-crafting.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_intermediates Online documentation}
      */
-    allow_intermediates?: bool
+    allow_intermediates?: boolean
     /**
      * **Default:** `false`
      *
      * Whether the "Made in: <Machine>" part of the tool-tip should always be present, and not only when the recipe can't be hand-crafted.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#always_show_made_in Online documentation}
      */
-    always_show_made_in?: bool
+    always_show_made_in?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the recipe name should have the product amount in front of it. E.g. "2x Transport belt".
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#show_amount_in_title Online documentation}
      */
-    show_amount_in_title?: bool
+    show_amount_in_title?: boolean
     /**
      * **Default:** `false`
      *
      * Whether the products are always shown in the recipe tooltip.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#always_show_products Online documentation}
      */
-    always_show_products?: bool
+    always_show_products?: boolean
     /**
      * **Default:** `true`
      *
      * Whether enabling this recipe unlocks its item products to show in selection lists (item filters, logistic requests, etc.).
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#unlock_results Online documentation}
      */
-    unlock_results?: bool
+    unlock_results?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#preserve_products_in_machine_output Online documentation}
      */
-    preserve_products_in_machine_output?: bool
+    preserve_products_in_machine_output?: boolean
     /**
      * **Default:** `false`
      *
      * When set to true, the recipe will always produce fresh (non-spoiled) item even when the ingredients are spoiled.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#result_is_always_fresh Online documentation}
      */
-    result_is_always_fresh?: bool
+    result_is_always_fresh?: boolean
     /**
      * **Default:** ``{"item-limitation.consumption-effect"}``
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_consumption_message Online documentation}
@@ -10162,32 +10162,32 @@ declare module "factorio:prototype" {
      * **Default:** `unset`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#hide_from_signal_gui Online documentation}
      */
-    hide_from_signal_gui?: bool
+    hide_from_signal_gui?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_consumption Online documentation}
      */
-    allow_consumption?: bool
+    allow_consumption?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_speed Online documentation}
      */
-    allow_speed?: bool
+    allow_speed?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_productivity Online documentation}
      */
-    allow_productivity?: bool
+    allow_productivity?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_pollution Online documentation}
      */
-    allow_pollution?: bool
+    allow_pollution?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RecipePrototype.html#allow_quality Online documentation}
      */
-    allow_quality?: bool
+    allow_quality?: boolean
     /**
      * **Default:** `All module categories are allowed`
      *
@@ -10255,7 +10255,7 @@ declare module "factorio:prototype" {
      * research_all = true
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ResearchAchievementPrototype.html#research_all Online documentation}
      */
-    research_all?: bool
+    research_all?: boolean
   }
   export interface ResearchWithSciencePackAchievementPrototype extends AchievementPrototype {
     type: "research-with-science-pack-achievement"
@@ -10361,33 +10361,33 @@ declare module "factorio:prototype" {
      * If the ore is infinitely minable, or if it will eventually run out of resource.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ResourceEntityPrototype.html#infinite Online documentation}
      */
-    infinite?: bool
+    infinite?: boolean
     /**
      * **Default:** `false`
      *
      * If the resource should be highlighted when holding a mining drill that can mine it (holding a pumpjack highlights crude-oil in the base game).
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ResourceEntityPrototype.html#highlight Online documentation}
      */
-    highlight?: bool
+    highlight?: boolean
     /**
      * **Default:** `true`
      *
      * Whether there should be a slight offset to graphics of the resource. Used to make patches a little less uniform in appearance.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ResourceEntityPrototype.html#randomize_visual_position Online documentation}
      */
-    randomize_visual_position?: bool
+    randomize_visual_position?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the resource should have a grid pattern on the map instead of a solid map color.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ResourceEntityPrototype.html#map_grid Online documentation}
      */
-    map_grid?: bool
+    map_grid?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ResourceEntityPrototype.html#draw_stateless_visualisation_under_building Online documentation}
      */
-    draw_stateless_visualisation_under_building?: bool
+    draw_stateless_visualisation_under_building?: boolean
     /**
      * **Default:** `0`
      *
@@ -10550,12 +10550,12 @@ declare module "factorio:prototype" {
      * Unused, as roboport equipment does not have a logistic radius that could be drawn.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportEquipmentPrototype.html#draw_logistic_radius_visualization Online documentation}
      */
-    draw_logistic_radius_visualization?: bool
+    draw_logistic_radius_visualization?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportEquipmentPrototype.html#draw_construction_radius_visualization Online documentation}
      */
-    draw_construction_radius_visualization?: bool
+    draw_construction_radius_visualization?: boolean
     /**
      * The light emitted when charging a robot.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportEquipmentPrototype.html#recharging_light Online documentation}
@@ -10572,7 +10572,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportEquipmentPrototype.html#charging_station_count_affected_by_quality Online documentation}
      */
-    charging_station_count_affected_by_quality?: bool
+    charging_station_count_affected_by_quality?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportEquipmentPrototype.html#charging_distance Online documentation}
@@ -10607,7 +10607,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportEquipmentPrototype.html#robots_shrink_when_entering_and_exiting Online documentation}
      */
-    robots_shrink_when_entering_and_exiting?: bool
+    robots_shrink_when_entering_and_exiting?: boolean
     /**
      * The offsets from the center of the roboport at which robots will charge. Only used if `charging_station_count` is equal to 0.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportEquipmentPrototype.html#charging_offsets Online documentation}
@@ -10736,12 +10736,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     max_logistic_slots?: LogisticFilterIndex
     /**
@@ -10760,12 +10760,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#draw_logistic_radius_visualization Online documentation}
      */
-    draw_logistic_radius_visualization?: bool
+    draw_logistic_radius_visualization?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#draw_construction_radius_visualization Online documentation}
      */
-    draw_construction_radius_visualization?: bool
+    draw_construction_radius_visualization?: boolean
     /**
      * The light emitted when charging a robot.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#recharging_light Online documentation}
@@ -10782,7 +10782,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#charging_station_count_affected_by_quality Online documentation}
      */
-    charging_station_count_affected_by_quality?: bool
+    charging_station_count_affected_by_quality?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#charging_distance Online documentation}
@@ -10817,7 +10817,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#robots_shrink_when_entering_and_exiting Online documentation}
      */
-    robots_shrink_when_entering_and_exiting?: bool
+    robots_shrink_when_entering_and_exiting?: boolean
     /**
      * The offsets from the center of the roboport at which robots will charge. Only used if `charging_station_count` is equal to 0.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RoboportPrototype.html#charging_offsets Online documentation}
@@ -10871,7 +10871,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RobotWithLogisticInterfacePrototype.html#draw_cargo Online documentation}
      */
-    draw_cargo?: bool
+    draw_cargo?: boolean
     charging_sound?: InterruptibleSound
   }
   /**
@@ -10987,7 +10987,7 @@ declare module "factorio:prototype" {
      * ![](https://lua-api.factorio.com/2.0.17/static/images/too-far-from-roboport-icon.png)
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RocketSiloPrototype.html#render_not_in_network_icon Online documentation}
      */
-    render_not_in_network_icon?: bool
+    render_not_in_network_icon?: boolean
     /**
      * **Default:** `Value of `rocket_parts_required``
      *
@@ -11078,7 +11078,7 @@ declare module "factorio:prototype" {
      * Enables 'Space Age' functionality for this rocket silo, allowing it to supply space platforms.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RocketSiloPrototype.html#launch_to_space_platforms Online documentation}
      */
-    launch_to_space_platforms?: bool
+    launch_to_space_platforms?: boolean
   }
   /**
    * The rocket inside the rocket silo.
@@ -11217,17 +11217,17 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RollingStockPrototype.html#allow_manual_color Online documentation}
      */
-    allow_manual_color?: bool
+    allow_manual_color?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RollingStockPrototype.html#allow_robot_dispatch_in_automatic_mode Online documentation}
      */
-    allow_robot_dispatch_in_automatic_mode?: bool
+    allow_robot_dispatch_in_automatic_mode?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RollingStockPrototype.html#default_copy_color_from_train_stop Online documentation}
      */
-    default_copy_color_from_train_stop?: bool
+    default_copy_color_from_train_stop?: boolean
     /**
      * Defaults to the mask from {@link UtilityConstants#default_collision_masks UtilityConstants::default_collision_masks} when indexed by  `type .. "/transition"`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/RollingStockPrototype.html#transition_collision_mask Online documentation}
@@ -11466,7 +11466,7 @@ declare module "factorio:prototype" {
      * If tiles should be included in the selection regardless of entities also being in the selection. This is a visual only setting.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SelectionToolPrototype.html#always_include_tiles Online documentation}
      */
-    always_include_tiles?: bool
+    always_include_tiles?: boolean
     /**
      * **Default:** `"selection-tool-cursor"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SelectionToolPrototype.html#mouse_cursor Online documentation}
@@ -11476,7 +11476,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SelectionToolPrototype.html#skip_fog_of_war Online documentation}
      */
-    skip_fog_of_war?: bool
+    skip_fog_of_war?: boolean
   }
   export interface SelectorCombinatorPrototype extends CombinatorPrototype {
     type: "selector-combinator"
@@ -11610,14 +11610,14 @@ declare module "factorio:prototype" {
      * If `true`, the shortcut will not be available until its `technology_to_unlock` is researched, even if it was already researched in a different game.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ShortcutPrototype.html#unavailable_until_unlocked Online documentation}
      */
-    unavailable_until_unlocked?: bool
+    unavailable_until_unlocked?: boolean
     /**
      * **Default:** `false`
      *
      * Must be enabled for the Factorio API to be able to set the toggled state on the shortcut button, see {@link import("factorio:runtime").LuaPlayer#set_shortcut_toggled LuaPlayer::set_shortcut_toggled}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ShortcutPrototype.html#toggleable Online documentation}
      */
-    toggleable?: bool
+    toggleable?: boolean
     /**
      * **Default:** `""`
      *
@@ -11650,7 +11650,7 @@ declare module "factorio:prototype" {
      * Whether this entity should be treated as a rock for the purpose of deconstruction and for {@link CarPrototype#immune_to_rock_impacts CarPrototype::immune_to_rock_impacts}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityPrototype.html#count_as_rock_for_filtered_deconstruction Online documentation}
      */
-    count_as_rock_for_filtered_deconstruction?: bool
+    count_as_rock_for_filtered_deconstruction?: boolean
     /**
      * **Default:** `"object"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityPrototype.html#render_layer Online documentation}
@@ -11667,14 +11667,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityPrototype.html#random_animation_offset Online documentation}
      */
-    random_animation_offset?: bool
+    random_animation_offset?: boolean
     /**
      * **Default:** `true`
      *
      * Whether a random graphics variation is chosen when placing the entity/creating it via script/creating it via map generation. If this is `false`, the entity will use the first variation instead of a random one.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityPrototype.html#random_variation_on_create Online documentation}
      */
-    random_variation_on_create?: bool
+    random_variation_on_create?: boolean
     /**
      * Takes priority over `picture` and `animations`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityPrototype.html#pictures Online documentation}
@@ -11710,7 +11710,7 @@ declare module "factorio:prototype" {
      * Whether this prototype should be a high priority target for enemy forces. See {@linkplain https://wiki.factorio.com/Military_units_and_structures Military units and structures}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityWithForcePrototype.html#is_military_target Online documentation}
      */
-    is_military_target?: bool
+    is_military_target?: boolean
   }
   /**
    * Has a force, but unlike {@link SimpleEntityWithForcePrototype} it is only attacked if the biters get stuck on it (or if {@link EntityWithOwnerPrototype#is_military_target EntityWithOwnerPrototype::is_military_target} set to true to make the two entity types equivalent).
@@ -11736,14 +11736,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityWithOwnerPrototype.html#random_animation_offset Online documentation}
      */
-    random_animation_offset?: bool
+    random_animation_offset?: boolean
     /**
      * **Default:** `true`
      *
      * Whether a random graphics variation is chosen when placing the entity/creating it via script/creating it via map generation. If this is false, the entity will use the first variation instead of a random one.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityWithOwnerPrototype.html#random_variation_on_create Online documentation}
      */
-    random_variation_on_create?: bool
+    random_variation_on_create?: boolean
     /**
      * Takes priority over `picture` and `animations`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SimpleEntityWithOwnerPrototype.html#pictures Online documentation}
@@ -11787,7 +11787,7 @@ declare module "factorio:prototype" {
      * If this is false then the smoke expires when the animation has played once.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SmokePrototype.html#cyclic Online documentation}
      */
-    cyclic?: bool
+    cyclic?: boolean
     /**
      * **Default:** `0`
      *
@@ -11835,12 +11835,12 @@ declare module "factorio:prototype" {
      * Smoke always moves randomly unless `movement_slow_down_factor` is 0. If `affected_by_wind` is true, the smoke will also be moved by wind.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SmokePrototype.html#affected_by_wind Online documentation}
      */
-    affected_by_wind?: bool
+    affected_by_wind?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SmokePrototype.html#show_when_smoke_off Online documentation}
      */
-    show_when_smoke_off?: bool
+    show_when_smoke_off?: boolean
     /**
      * **Default:** `"smoke"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SmokePrototype.html#render_layer Online documentation}
@@ -11913,14 +11913,14 @@ declare module "factorio:prototype" {
      * If true, causes the smoke to move with the target entity if one is specified.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SmokeWithTriggerPrototype.html#attach_to_target Online documentation}
      */
-    attach_to_target?: bool
+    attach_to_target?: boolean
     /**
      * **Default:** `false`
      *
      * If true, the smoke will immediately start fading away when the entity it is attached to is destroyed. If it was never attached to an entity in the first place, then the smoke will fade away immediately after being created.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SmokeWithTriggerPrototype.html#fade_when_attachment_is_destroyed Online documentation}
      */
-    fade_when_attachment_is_destroyed?: bool
+    fade_when_attachment_is_destroyed?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Portable_solar_panel portable solar panel}.
@@ -11991,7 +11991,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SoundPrototype.html#allow_random_repeat Online documentation}
      */
-    allow_random_repeat?: bool
+    allow_random_repeat?: boolean
     /**
      * **Default:** `1`
      *
@@ -12049,7 +12049,7 @@ declare module "factorio:prototype" {
      * Only loaded if `variations` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SoundPrototype.html#preload Online documentation}
      */
-    preload?: bool
+    preload?: boolean
     /**
      * **Default:** `1`
      *
@@ -12097,7 +12097,7 @@ declare module "factorio:prototype" {
      * When false, a platform must go through {@link SpaceConnectionPrototype#from from} location and travel in {@link SpaceConnectionPrototype#to to} direction. When true, a platform must go through `to` location and travel in `from` direction.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpaceConnectionDistanceTraveledAchievementPrototype.html#reversed Online documentation}
      */
-    reversed: bool
+    reversed: boolean
   }
   export interface SpaceConnectionPrototype extends Prototype {
     type: "space-connection"
@@ -12181,7 +12181,7 @@ declare module "factorio:prototype" {
      * If `false`, an orbital ring will not be drawn for this location.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpaceLocationPrototype.html#draw_orbit Online documentation}
      */
-    draw_orbit?: bool
+    draw_orbit?: boolean
     /**
      * **Default:** `1`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpaceLocationPrototype.html#solar_power_in_space Online documentation}
@@ -12200,12 +12200,12 @@ declare module "factorio:prototype" {
      * When set to true, it means that this connection offers fly condition rather than wait condition at the destination
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpaceLocationPrototype.html#fly_condition Online documentation}
      */
-    fly_condition?: bool
+    fly_condition?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpaceLocationPrototype.html#auto_save_on_first_trip Online documentation}
      */
-    auto_save_on_first_trip?: bool
+    auto_save_on_first_trip?: boolean
     procession_graphic_catalogue?: ProcessionGraphicCatalogue
     procession_audio_catalogue?: ProcessionAudioCatalogue
     /**
@@ -12288,12 +12288,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpacePlatformHubPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpacePlatformHubPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     default_speed_signal?: SignalIDConnector
     default_damage_taken_signal?: SignalIDConnector
@@ -12324,7 +12324,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpacePlatformStarterPackPrototype.html#create_electric_network Online documentation}
      */
-    create_electric_network?: bool
+    create_electric_network?: boolean
     tiles?: readonly SpacePlatformTileDefinition[]
     /**
      * The quality of the items will match the quality of the starter pack.
@@ -12516,7 +12516,7 @@ declare module "factorio:prototype" {
     height: float
     chunk_exploration_radius: uint32
     movement_energy_consumption: Energy
-    automatic_weapon_cycling: bool
+    automatic_weapon_cycling: boolean
     /**
      * This is applied whenever the spider shoots (manual and automatic targeting), `automatic_weapon_cycling` is true and the next gun in line (which is then selected) has ammo. When all of the above is the case, the chain_shooting_cooldown_modifier is a multiplier on the remaining shooting cooldown: `cooldown = (remaining_cooldown × chain_shooting_cooldown_modifier)`.
      *
@@ -12723,14 +12723,14 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#rotate_shift Online documentation}
      */
-    rotate_shift?: bool
+    rotate_shift?: boolean
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#apply_special_effect Online documentation}
      */
-    apply_special_effect?: bool
+    apply_special_effect?: boolean
     /**
      * **Default:** `1`
      *
@@ -12748,7 +12748,7 @@ declare module "factorio:prototype" {
      * Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_glow` and `draw_as_light`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#draw_as_shadow Online documentation}
      */
-    draw_as_shadow?: bool
+    draw_as_shadow?: boolean
     /**
      * **Default:** `false`
      *
@@ -12759,7 +12759,7 @@ declare module "factorio:prototype" {
      * Draws first as a normal sprite, then again as a light layer. See {@linkplain https://forums.factorio.com/91682}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#draw_as_glow Online documentation}
      */
-    draw_as_glow?: bool
+    draw_as_glow?: boolean
     /**
      * **Default:** `false`
      *
@@ -12768,7 +12768,7 @@ declare module "factorio:prototype" {
      * Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#draw_as_light Online documentation}
      */
-    draw_as_light?: bool
+    draw_as_light?: boolean
     /**
      * **Default:** `0`
      *
@@ -12784,21 +12784,21 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#apply_runtime_tint Online documentation}
      */
-    apply_runtime_tint?: bool
+    apply_runtime_tint?: boolean
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#tint_as_overlay Online documentation}
      */
-    tint_as_overlay?: bool
+    tint_as_overlay?: boolean
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#invert_colors Online documentation}
      */
-    invert_colors?: bool
+    invert_colors?: boolean
     /**
      * **Default:** ``{r=1, g=1, b=1, a=1}``
      *
@@ -12821,7 +12821,7 @@ declare module "factorio:prototype" {
      * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#load_in_minimal_mode Online documentation}
      */
-    load_in_minimal_mode?: bool
+    load_in_minimal_mode?: boolean
     /**
      * **Default:** `true`
      *
@@ -12830,7 +12830,7 @@ declare module "factorio:prototype" {
      * Whether alpha should be pre-multiplied.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#premul_alpha Online documentation}
      */
-    premul_alpha?: bool
+    premul_alpha?: boolean
     /**
      * **Default:** `false`
      *
@@ -12839,7 +12839,7 @@ declare module "factorio:prototype" {
      * If `true`, the sprite may be downsampled to half its size on load even when 'Sprite quality' graphics setting is set to 'High'. Whether downsampling happens depends on detected hardware and other graphics settings.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#allow_forced_downscale Online documentation}
      */
-    allow_forced_downscale?: bool
+    allow_forced_downscale?: boolean
     /**
      * **Default:** `false`
      *
@@ -12848,7 +12848,7 @@ declare module "factorio:prototype" {
      * Unused.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SpritePrototype.html#generate_sdf Online documentation}
      */
-    generate_sdf?: bool
+    generate_sdf?: boolean
     /**
      * **Default:** `"any"`
      *
@@ -12921,7 +12921,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StickerPrototype.html#single_particle Online documentation}
      */
-    single_particle?: bool
+    single_particle?: boolean
     /**
      * Applied every `damage_interval` ticks, so may not necessarily be "per tick".
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StickerPrototype.html#damage_per_tick Online documentation}
@@ -12981,7 +12981,7 @@ declare module "factorio:prototype" {
      * If true, causes the target entity to become "grounded", disabling flight. This only applies to Character entities wearing mech armor.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StickerPrototype.html#ground_target Online documentation}
      */
-    ground_target?: bool
+    ground_target?: boolean
     /**
      * **Default:** `1`
      *
@@ -13067,14 +13067,14 @@ declare module "factorio:prototype" {
      * The `hidden` property of stickers is hardcoded to `true`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StickerPrototype.html#hidden Online documentation}
      */
-    hidden?: bool
+    hidden?: boolean
     /**
      * **Default:** `Value of `hidden``
      *
      * The `hidden_in_factoriopedia` property of stickers is hardcoded to `true`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StickerPrototype.html#hidden_in_factoriopedia Online documentation}
      */
-    hidden_in_factoriopedia?: bool
+    hidden_in_factoriopedia?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Storage_tank storage tank}.
@@ -13105,14 +13105,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StorageTankPrototype.html#two_direction_only Online documentation}
      */
-    two_direction_only?: bool
+    two_direction_only?: boolean
     /**
      * **Default:** `true`
      *
      * Whether the "alt-mode icon" should be drawn at all.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StorageTankPrototype.html#show_fluid_icon Online documentation}
      */
-    show_fluid_icon?: bool
+    show_fluid_icon?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StorageTankPrototype.html#circuit_wire_max_distance Online documentation}
@@ -13122,12 +13122,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StorageTankPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/StorageTankPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: readonly [
       CircuitConnectorDefinition,
       CircuitConnectorDefinition,
@@ -13163,7 +13163,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/SurfacePropertyPrototype.html#is_time Online documentation}
      */
-    is_time?: bool
+    is_time?: boolean
   }
   export interface SurfacePrototype extends Prototype {
     type: "surface"
@@ -13257,38 +13257,38 @@ declare module "factorio:prototype" {
      * }
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TechnologyPrototype.html#upgrade Online documentation}
      */
-    upgrade?: bool
+    upgrade?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TechnologyPrototype.html#enabled Online documentation}
      */
-    enabled?: bool
+    enabled?: boolean
     /**
      * **Default:** `false`
      *
      * Whether the technology should be shown in the technology tree GUI when "Show only essential technologies" is enabled.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TechnologyPrototype.html#essential Online documentation}
      */
-    essential?: bool
+    essential?: boolean
     /**
      * **Default:** `false`
      *
      * Controls whether the technology is shown in the tech GUI when it is not `enabled`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TechnologyPrototype.html#visible_when_disabled Online documentation}
      */
-    visible_when_disabled?: bool
+    visible_when_disabled?: boolean
     /**
      * **Default:** `false`
      *
      * Controls whether the technology cost ignores the tech cost multiplier set in the {@link DifficultySettings}. E.g. `4` for the default expensive difficulty.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TechnologyPrototype.html#ignore_tech_cost_multiplier Online documentation}
      */
-    ignore_tech_cost_multiplier?: bool
+    ignore_tech_cost_multiplier?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TechnologyPrototype.html#allows_productivity Online documentation}
      */
-    allows_productivity?: bool
+    allows_productivity?: boolean
     /**
      * Mandatory if `unit` is not defined.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TechnologyPrototype.html#research_trigger Online documentation}
@@ -13334,7 +13334,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TemporaryContainerPrototype.html#destroy_on_empty Online documentation}
      */
-    destroy_on_empty?: bool
+    destroy_on_empty?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TemporaryContainerPrototype.html#time_to_live Online documentation}
@@ -13473,7 +13473,7 @@ declare module "factorio:prototype" {
      * For surfaces that use {@link SurfaceRenderParameters#fog fog effect} of type `gleba`, this property determines whether given tile should contribute to fog intensity on a chunk or not.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#lowland_fog Online documentation}
      */
-    lowland_fog?: bool
+    lowland_fog?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#transition_overlay_layer_offset Online documentation}
@@ -13538,7 +13538,7 @@ declare module "factorio:prototype" {
      * Whether the tile needs tile correction logic applied when it's generated in the world, to prevent graphical artifacts. The tile correction logic disallows 1-wide stripes of the tile, see {@linkplain https://factorio.com/blog/post/fff-346 Friday Facts #346}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#needs_correction Online documentation}
      */
-    needs_correction?: bool
+    needs_correction?: boolean
     /**
      * If you want the tile to not be mineable, don't specify the minable property. Only non-mineable tiles become hidden tiles when placing mineable tiles on top of them.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#minable Online documentation}
@@ -13550,29 +13550,29 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#can_be_part_of_blueprint Online documentation}
      */
-    can_be_part_of_blueprint?: bool
+    can_be_part_of_blueprint?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#is_foundation Online documentation}
      */
-    is_foundation?: bool
+    is_foundation?: boolean
     /**
      * **Default:** `false`
      *
      * If items dropped on this tile are destroyed.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#destroys_dropped_items Online documentation}
      */
-    destroys_dropped_items?: bool
+    destroys_dropped_items?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#allows_being_covered Online documentation}
      */
-    allows_being_covered?: bool
+    allows_being_covered?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#searchable Online documentation}
      */
-    searchable?: bool
+    searchable?: boolean
     /**
      * **Default:** `0`
      *
@@ -13616,7 +13616,7 @@ declare module "factorio:prototype" {
      * If set to true, the game will check for collisions with entities before building or mining the tile. If entities are in the way it is not possible to mine/build the tile.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#check_collision_with_entities Online documentation}
      */
-    check_collision_with_entities?: bool
+    check_collision_with_entities?: boolean
     /**
      * Used by the {@linkplain https://wiki.factorio.com/Pollution pollution} shader.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#effect_color_secondary Online documentation}
@@ -13626,7 +13626,7 @@ declare module "factorio:prototype" {
      * **Default:** `true if `effect_color` alpha equals 1`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#effect_is_opaque Online documentation}
      */
-    effect_is_opaque?: bool
+    effect_is_opaque?: boolean
     /**
      * Extra transitions.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TilePrototype.html#transitions Online documentation}
@@ -13678,7 +13678,7 @@ declare module "factorio:prototype" {
      * Whether the tip title on the left in the tips and tricks GUI should use the "title_tip_item" style (semi bold font).
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TipsAndTricksItem.html#is_title Online documentation}
      */
-    is_title?: bool
+    is_title?: boolean
     /**
      * Condition for when the tip notification should be shown to the player.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TipsAndTricksItem.html#trigger Online documentation}
@@ -13798,7 +13798,7 @@ declare module "factorio:prototype" {
      * Whether this tool has infinite durability. If this is false, `durability` must be specified.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/ToolPrototype.html#infinite Online documentation}
      */
-    infinite?: bool
+    infinite?: boolean
   }
   /**
    * This prototype is used for receiving an achievement when the player has a specified train path length.
@@ -13837,18 +13837,18 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TrainStopPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TrainStopPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     color?: Color
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TrainStopPrototype.html#chart_name Online documentation}
      */
-    chart_name?: bool
+    chart_name?: boolean
     light1?: TrainStopLight
     light2?: TrainStopLight
     /**
@@ -13923,12 +13923,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TransportBeltPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TransportBeltPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     /**
      * Set of 7 {@link CircuitConnectorDefinition circuit connector definitions} in order: X, H, V, SE, SW, NE and NW.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TransportBeltPrototype.html#circuit_connector Online documentation}
@@ -14054,19 +14054,19 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TrivialSmokePrototype.html#cyclic Online documentation}
      */
-    cyclic?: bool
+    cyclic?: boolean
     /**
      * **Default:** `true`
      *
      * Smoke always moves randomly unless `movement_slow_down_factor` is 0. If `affected_by_wind` is true, the smoke will also be moved by wind.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TrivialSmokePrototype.html#affected_by_wind Online documentation}
      */
-    affected_by_wind?: bool
+    affected_by_wind?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TrivialSmokePrototype.html#show_when_smoke_off Online documentation}
      */
-    show_when_smoke_off?: bool
+    show_when_smoke_off?: boolean
     /**
      * **Default:** `"smoke"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TrivialSmokePrototype.html#render_layer Online documentation}
@@ -14100,34 +14100,34 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#shoot_in_prepare_state Online documentation}
      */
-    shoot_in_prepare_state?: bool
+    shoot_in_prepare_state?: boolean
     /**
      * **Default:** `false`
      *
      * When `false` turret will enter `starting_attack` state without checking its ammo or energy levels. {@link FluidTurretPrototype} forces this to `true`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#start_attacking_only_when_can_shoot Online documentation}
      */
-    start_attacking_only_when_can_shoot?: bool
+    start_attacking_only_when_can_shoot?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#turret_base_has_direction Online documentation}
      */
-    turret_base_has_direction?: bool
+    turret_base_has_direction?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#random_animation_offset Online documentation}
      */
-    random_animation_offset?: bool
+    random_animation_offset?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#attack_from_start_frame Online documentation}
      */
-    attack_from_start_frame?: bool
+    attack_from_start_frame?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#allow_turning_when_starting_attack Online documentation}
      */
-    allow_turning_when_starting_attack?: bool
+    allow_turning_when_starting_attack?: boolean
     /**
      * **Default:** `0`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#gun_animation_secondary_draw_order Online documentation}
@@ -14406,24 +14406,24 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#alert_when_attacking Online documentation}
      */
-    alert_when_attacking?: bool
+    alert_when_attacking?: boolean
     /**
      * **Default:** `false`
      *
      * Whether `spawn_decoration` should be spawned when this turret is created through {@linkplain https://wiki.factorio.com/Enemies#Expansions enemy expansion}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#spawn_decorations_on_expansion Online documentation}
      */
-    spawn_decorations_on_expansion?: bool
+    spawn_decorations_on_expansion?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#folded_animation_is_stateless Online documentation}
      */
-    folded_animation_is_stateless?: bool
+    folded_animation_is_stateless?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#unfolds_before_dying Online documentation}
      */
-    unfolds_before_dying?: bool
+    unfolds_before_dying?: boolean
     /**
      * Decoratives to be created when the spawner is created by the {@linkplain https://wiki.factorio.com/Map_generator map generator}. Placed when enemies expand if `spawn_decorations_on_expansion` is set to true.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#spawn_decoration Online documentation}
@@ -14436,7 +14436,7 @@ declare module "factorio:prototype" {
      * Whether this prototype should be a high priority target for enemy forces. See {@linkplain https://wiki.factorio.com/Military_units_and_structures Military units and structures}.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#is_military_target Online documentation}
      */
-    is_military_target?: bool
+    is_military_target?: boolean
     /**
      * **Default:** `0`
      *
@@ -14448,12 +14448,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     /**
      * Set of {@link CircuitConnectorDefinition circuit connector definitions} for all directions used by this turret. Required amount of elements is based on other prototype values: 8 elements if building-direction-8-way flag is set, or 16 elements if building-direction-16-way flag is set, or 4 elements if turret_base_has_direction is set to true, or 1 element.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/TurretPrototype.html#circuit_connector Online documentation}
@@ -14560,7 +14560,7 @@ declare module "factorio:prototype" {
      * If the unit is immune to movement by belts.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UnitPrototype.html#has_belt_immunity Online documentation}
      */
-    has_belt_immunity?: bool
+    has_belt_immunity?: boolean
     /**
      * **Default:** `50`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UnitPrototype.html#max_pursue_distance Online documentation}
@@ -14576,17 +14576,17 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UnitPrototype.html#move_while_shooting Online documentation}
      */
-    move_while_shooting?: bool
+    move_while_shooting?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UnitPrototype.html#can_open_gates Online documentation}
      */
-    can_open_gates?: bool
+    can_open_gates?: boolean
     /**
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UnitPrototype.html#affected_by_tiles Online documentation}
      */
-    affected_by_tiles?: bool
+    affected_by_tiles?: boolean
     /**
      * **Default:** `"object"`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UnitPrototype.html#render_layer Online documentation}
@@ -14640,7 +14640,7 @@ declare module "factorio:prototype" {
      * If the item will draw its label when held in the cursor in place of the item count.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UpgradeItemPrototype.html#draw_label_for_cursor_render Online documentation}
      */
-    draw_label_for_cursor_render?: bool
+    draw_label_for_cursor_render?: boolean
     /**
      * The {@link SelectionModeData#mode SelectionModeData::mode} is hardcoded to `"upgrade"`.
      *
@@ -14661,7 +14661,7 @@ declare module "factorio:prototype" {
      * This property is hardcoded to `false`.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UpgradeItemPrototype.html#always_include_tiles Online documentation}
      */
-    always_include_tiles?: bool
+    always_include_tiles?: boolean
   }
   /**
    * This prototype is used for receiving an achievement when the player produces energy by entity.
@@ -14718,7 +14718,7 @@ declare module "factorio:prototype" {
      * If this is false, the player carries over their statistics from this achievement through all their saves.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/UseItemAchievementPrototype.html#limited_to_one_game Online documentation}
      */
-    limited_to_one_game?: bool
+    limited_to_one_game?: boolean
   }
   /**
    * Constants used by the game that are not specific to certain prototypes. See {@linkplain https://github.com/wube/factorio-data/blob/master/core/prototypes/utility-constants.lua utility-constants.lua} for the values used by the base game.
@@ -14766,7 +14766,7 @@ declare module "factorio:prototype" {
     logistic_gui_selected_network_highlight_tint: Color
     chart_search_highlight: Color
     selected_chart_search_highlight: Color
-    zoom_to_world_can_use_nightvision: bool
+    zoom_to_world_can_use_nightvision: boolean
     zoom_to_world_effect_strength: float
     max_logistic_filter_count: LogisticFilterIndex
     max_terrain_building_size: uint8
@@ -14962,7 +14962,7 @@ declare module "factorio:prototype" {
     ghost_layer: CollisionLayerID
     train_pushed_by_player_max_speed: double
     train_pushed_by_player_max_acceleration: double
-    train_pushed_by_player_ignores_friction: bool
+    train_pushed_by_player_ignores_friction: boolean
     freezing_temperature: double
     train_on_elevated_rail_shadow_shift_multiplier: Vector
     /**
@@ -15773,7 +15773,7 @@ declare module "factorio:prototype" {
      * Determines whether this vehicle accepts passengers. This includes both drivers and gunners, if applicable.
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/VehiclePrototype.html#allow_passengers Online documentation}
      */
-    allow_passengers?: bool
+    allow_passengers?: boolean
     /**
      * **Default:** `""`
      *
@@ -15785,7 +15785,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/VehiclePrototype.html#allow_remote_driving Online documentation}
      */
-    allow_remote_driving?: bool
+    allow_remote_driving?: boolean
   }
   /**
    * A {@linkplain https://wiki.factorio.com/Circuit_network#Virtual_signals virtual signal}.
@@ -15843,12 +15843,12 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/WallPrototype.html#draw_copper_wires Online documentation}
      */
-    draw_copper_wires?: bool
+    draw_copper_wires?: boolean
     /**
      * **Default:** `true`
      * @see {@link https://lua-api.factorio.com/2.0.17/prototypes/WallPrototype.html#draw_circuit_wires Online documentation}
      */
-    draw_circuit_wires?: bool
+    draw_circuit_wires?: boolean
     circuit_connector?: CircuitConnectorDefinition
     default_output_signal?: SignalIDConnector
     wall_diode_green?: Sprite4Way
