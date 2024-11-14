@@ -4,13 +4,13 @@ import { addJsDoc, createSeeTag } from "../documentation.js"
 import { Concept, TableType, TupleType } from "../FactorioRuntimeApiJson.js"
 import { Modifiers } from "../genUtil.js"
 import { analyzeConcept, finalizeConceptUsageAnalysis, RWUsage, setReadWriteType } from "../read-write-types.js"
-import { mapConceptType, mapRuntimeType, typeToDeclaration } from "../types.js"
+import { getInnerType, mapConceptType, mapRuntimeType, typeToDeclaration } from "../types.js"
 import { byOrder } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { ModuleType } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 import { copyExistingDeclaration } from "../manualDefinitions.js"
-import { generateBuiltinType } from "../builtin"
+import { generateBuiltinType } from "../builtin.js"
 
 /**
  * Should be last to preprocess
@@ -56,6 +56,23 @@ export function preprocessConcepts(context: RuntimeGenerationContext): void {
         write: writeType ?? concept.name,
       })
     }
+
+    if (usage === RWUsage.ReadWrite) {
+      const idReadType = findLuaPrototypeIdReadType(concept)
+      if (idReadType) {
+        setReadWriteType(context, concept, {
+          read: idReadType,
+          write: concept.name,
+        })
+      }
+    }
+  }
+}
+
+function findLuaPrototypeIdReadType(concept: Concept): string | undefined {
+  if (concept.name.match(/[a-z]ID$/) && typeof concept.type === "object" && concept.type.complex_type === "union") {
+    const option = concept.type.options.map(getInnerType).find((o) => typeof o === "string" && o.match(/^Lua[A-Z].+$/))
+    return option as string | undefined
   }
 }
 
@@ -179,7 +196,7 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
 }
 
 function getWriteDescription(concept: Concept): string {
-  return `Write form of {@link ${concept.name}}, where table-or-array concepts are allowed to take an array form.`
+  return `Write form of {@link ${concept.name}}, where some properties allow additional values as input compared to the read form.`
 }
 
 function createTableOrArrayConcept(

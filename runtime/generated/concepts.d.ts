@@ -551,7 +551,7 @@ declare module "factorio:runtime" {
     | LuaEntityDiedEventFilter[]
     | LuaPreRobotMinedEntityEventFilter[]
   /**
-   * Write form of {@link EventFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link EventFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/EventFilter.html Online documentation}
    */
   export type EventFilterWrite =
@@ -1168,7 +1168,7 @@ declare module "factorio:runtime" {
     | SpaceLocationPrototypeFilter[]
     | FluidPrototypeFilter[]
   /**
-   * Write form of {@link PrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link PrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/PrototypeFilter.html Online documentation}
    */
   export type PrototypeFilterWrite =
@@ -1203,7 +1203,7 @@ declare module "factorio:runtime" {
     readonly condition: CircuitConditionDefinition
   }
   /**
-   * Write form of {@link DisplayPanelMessageDefinition}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link DisplayPanelMessageDefinition}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/DisplayPanelMessageDefinition.html Online documentation}
    */
   export interface DisplayPanelMessageDefinitionWrite {
@@ -1970,6 +1970,7 @@ declare module "factorio:runtime" {
     | "none-to-north"
   /**
    * Defines an item type that a blueprint entity will request.
+   * @see BlueprintInsertPlanWrite
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintInsertPlan.html Online documentation}
    */
   export interface BlueprintInsertPlan {
@@ -1977,6 +1978,20 @@ declare module "factorio:runtime" {
      * The prototype name and quality of the item to request.
      */
     readonly id: ItemIDAndQualityIDPair
+    /**
+     * Describes the inventories to insert these items into.
+     */
+    readonly items: ItemInventoryPositions
+  }
+  /**
+   * Write form of {@link BlueprintInsertPlan}, where some properties allow additional values as input compared to the read form.
+   * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintInsertPlan.html Online documentation}
+   */
+  export interface BlueprintInsertPlanWrite {
+    /**
+     * The prototype name and quality of the item to request.
+     */
+    readonly id: ItemIDAndQualityIDPairWrite
     /**
      * Describes the inventories to insert these items into.
      */
@@ -2020,11 +2035,11 @@ declare module "factorio:runtime" {
         /**
          * The item.
          */
-        readonly name?: ItemID
+        readonly name?: LuaItemPrototype
         /**
          * The quality.
          */
-        readonly quality?: QualityID
+        readonly quality?: LuaQualityPrototype
         /**
          * The quality comparison type.
          */
@@ -2032,7 +2047,7 @@ declare module "factorio:runtime" {
       }
     | string
   /**
-   * Write form of {@link ItemFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link ItemFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ItemFilter.html Online documentation}
    */
   export type ItemFilterWrite =
@@ -2075,7 +2090,7 @@ declare module "factorio:runtime" {
     readonly temporary?: boolean
   }
   /**
-   * Write form of {@link ScheduleRecord}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link ScheduleRecord}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ScheduleRecord.html Online documentation}
    */
   export interface ScheduleRecordWrite {
@@ -2200,7 +2215,7 @@ declare module "factorio:runtime" {
     readonly records: ScheduleRecord[]
   }
   /**
-   * Write form of {@link TrainSchedule}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link TrainSchedule}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/TrainSchedule.html Online documentation}
    */
   export interface TrainScheduleWrite {
@@ -2222,7 +2237,7 @@ declare module "factorio:runtime" {
     readonly records: ScheduleRecord[]
   }
   /**
-   * Write form of {@link PlatformSchedule}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link PlatformSchedule}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/PlatformSchedule.html Online documentation}
    */
   export interface PlatformScheduleWrite {
@@ -2246,11 +2261,11 @@ declare module "factorio:runtime" {
     /**
      * Recipe prototype.
      */
-    readonly name: RecipeID
+    readonly name: LuaRecipePrototype
     /**
      * Quality prototype.
      */
-    readonly quality: QualityID
+    readonly quality: LuaQualityPrototype
   }
   export interface WorkerRobotOrder {
     /**
@@ -2334,15 +2349,30 @@ declare module "factorio:runtime" {
    * - {@link LuaItemStack}: The item stack. Both prototype and quality of the item stack will be used.
    * - {@link LuaItemPrototype}: The item prototype. Normal quality will be used.
    * - `string`: The prototype name. Normal quality will be used.
-   * - {@link ItemIDAndQualityIDPair}: A table of entity prototype and quality.
+   * - ItemIDAndQualityIDPairWrite: A table of entity prototype and quality.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ItemWithQualityID.html Online documentation}
    */
-  export type ItemWithQualityID = LuaItemStack | LuaItemPrototype | string | ItemIDAndQualityIDPair
+  export type ItemWithQualityID = LuaItemStack | LuaItemPrototype | string | ItemIDAndQualityIDPairWrite
   /**
    * An item prototype with optional quality specification.
+   * @see ItemIDAndQualityIDPairWrite
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ItemIDAndQualityIDPair.html Online documentation}
    */
   export interface ItemIDAndQualityIDPair {
+    /**
+     * Item prototype. Returns `LuaItemPrototype` when read.
+     */
+    readonly name: LuaItemPrototype
+    /**
+     * Quality prototype. Normal quality will be used if not specified. Returns `LuaQualityPrototype` when read.
+     */
+    readonly quality?: LuaQualityPrototype
+  }
+  /**
+   * Write form of {@link ItemIDAndQualityIDPair}, where some properties allow additional values as input compared to the read form.
+   * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ItemIDAndQualityIDPair.html Online documentation}
+   */
+  export interface ItemIDAndQualityIDPairWrite {
     /**
      * Item prototype. Returns `LuaItemPrototype` when read.
      */
@@ -2562,7 +2592,7 @@ declare module "factorio:runtime" {
    */
   export type ForceSet = LuaForce[] | LuaForce
   /**
-   * Write form of {@link ForceSet}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link ForceSet}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ForceSet.html Online documentation}
    */
   export type ForceSetWrite = readonly ForceID[] | ForceID
@@ -2611,7 +2641,7 @@ declare module "factorio:runtime" {
         /**
          * The prototype name of the signal's quality. `nil` for any quality.
          */
-        readonly quality?: QualityID
+        readonly quality?: LuaQualityPrototype
         /**
          * The comparator for quality. `nil` if any quality.
          */
@@ -2619,7 +2649,7 @@ declare module "factorio:runtime" {
       }
     | string
   /**
-   * Write form of {@link SignalFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link SignalFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/SignalFilter.html Online documentation}
    */
   export type SignalFilterWrite =
@@ -2666,10 +2696,10 @@ declare module "factorio:runtime" {
     /**
      * The space location to import from.
      */
-    readonly import_from?: SpaceLocationID
+    readonly import_from?: LuaSpaceLocationPrototype
   }
   /**
-   * Write form of {@link LogisticFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link LogisticFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/LogisticFilter.html Online documentation}
    */
   export interface LogisticFilterWrite {
@@ -2736,7 +2766,7 @@ declare module "factorio:runtime" {
    */
   export type ScriptRenderTarget = LuaEntity | MapPosition | ScriptRenderTargetTable
   /**
-   * Write form of {@link ScriptRenderTarget}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link ScriptRenderTarget}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ScriptRenderTarget.html Online documentation}
    */
   export type ScriptRenderTargetWrite = LuaEntity | (MapPosition | MapPositionArray) | ScriptRenderTargetTableWrite
@@ -2756,7 +2786,7 @@ declare module "factorio:runtime" {
     readonly position?: MapPosition
   }
   /**
-   * Write form of {@link ScriptRenderTargetTable}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link ScriptRenderTargetTable}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ScriptRenderTargetTable.html Online documentation}
    */
   export interface ScriptRenderTargetTableWrite {
@@ -2982,7 +3012,7 @@ declare module "factorio:runtime" {
     readonly circuit_parameters?: ProgrammableSpeakerCircuitParameters
   }
   /**
-   * Write form of {@link BlueprintEntity}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link BlueprintEntity}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintEntity.html Online documentation}
    */
   export interface BlueprintEntityWrite {
@@ -3017,7 +3047,7 @@ declare module "factorio:runtime" {
     /**
      * The items that the entity will request when revived, if any.
      */
-    readonly items?: BlueprintInsertPlan[]
+    readonly items?: readonly BlueprintInsertPlanWrite[]
     /**
      * The entity tags of the entity, if there are any.
      */
@@ -3303,7 +3333,7 @@ declare module "factorio:runtime" {
     readonly richness: float
   }
   /**
-   * Write form of {@link CliffPlacementSettings}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link CliffPlacementSettings}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/CliffPlacementSettings.html Online documentation}
    */
   export interface CliffPlacementSettingsWrite {
@@ -3347,7 +3377,7 @@ declare module "factorio:runtime" {
     readonly settings?: Record<string, AutoplaceControl>
   }
   /**
-   * Write form of {@link AutoplaceSettings}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link AutoplaceSettings}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/AutoplaceSettings.html Online documentation}
    */
   export interface AutoplaceSettingsWrite {
@@ -3437,7 +3467,7 @@ declare module "factorio:runtime" {
     readonly territory_settings: TerritorySettings
   }
   /**
-   * Write form of {@link MapGenSettings}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link MapGenSettings}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/MapGenSettings.html Online documentation}
    */
   export interface MapGenSettingsWrite {
@@ -3929,7 +3959,7 @@ declare module "factorio:runtime" {
     readonly allows_unloading?: boolean
   }
   /**
-   * Write form of {@link BlueprintScheduleRecord}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link BlueprintScheduleRecord}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintScheduleRecord.html Online documentation}
    */
   export interface BlueprintScheduleRecordWrite {
@@ -3956,7 +3986,7 @@ declare module "factorio:runtime" {
     readonly inside_interrupt: boolean
   }
   /**
-   * Write form of {@link BlueprintScheduleInterrupt}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link BlueprintScheduleInterrupt}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintScheduleInterrupt.html Online documentation}
    */
   export interface BlueprintScheduleInterruptWrite {
@@ -3975,7 +4005,7 @@ declare module "factorio:runtime" {
     readonly interrupts?: BlueprintScheduleInterrupt[]
   }
   /**
-   * Write form of {@link BlueprintSchedule}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link BlueprintSchedule}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintSchedule.html Online documentation}
    */
   export interface BlueprintScheduleWrite {
@@ -4015,7 +4045,7 @@ declare module "factorio:runtime" {
     readonly damage?: uint
   }
   /**
-   * Write form of {@link WaitCondition}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link WaitCondition}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/WaitCondition.html Online documentation}
    */
   export interface WaitConditionWrite {
@@ -4031,7 +4061,7 @@ declare module "factorio:runtime" {
     /**
      * This is a CircuitCondition and only present when `type` is `"item_count"`, `"circuit"`, `"fluid_count"`, `"fuel_item_count_all"`, or `"fuel_item_count_any"`, and a circuit condition is configured. This is a ItemIDAndQualityIDPair and only present when `type` is `"request_satisfied"` or `"request_not_satisfied"`
      */
-    readonly condition?: CircuitConditionWrite | ItemIDAndQualityIDPair
+    readonly condition?: CircuitConditionWrite | ItemIDAndQualityIDPairWrite
     /**
      * Name of the space location. Only present when `type` is "`any_planet_import_zero`" and a planet is configured.
      */
@@ -4693,7 +4723,7 @@ declare module "factorio:runtime" {
     readonly id: uint
   }
   /**
-   * Write form of {@link ScriptArea}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link ScriptArea}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ScriptArea.html Online documentation}
    */
   export interface ScriptAreaWrite {
@@ -4714,7 +4744,7 @@ declare module "factorio:runtime" {
     readonly id: uint
   }
   /**
-   * Write form of {@link ScriptPosition}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link ScriptPosition}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ScriptPosition.html Online documentation}
    */
   export interface ScriptPositionWrite {
@@ -4915,7 +4945,7 @@ declare module "factorio:runtime" {
     readonly movement: Vector
   }
   /**
-   * Write form of {@link AsteroidChunk}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link AsteroidChunk}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/AsteroidChunk.html Online documentation}
    */
   export interface AsteroidChunkWrite {
@@ -5080,7 +5110,7 @@ declare module "factorio:runtime" {
     readonly name: string
   }
   /**
-   * Write form of {@link Tile}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link Tile}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/Tile.html Online documentation}
    */
   export interface TileWrite {
@@ -5406,7 +5436,7 @@ declare module "factorio:runtime" {
     readonly richness: float
   }
   /**
-   * Write form of {@link AutoplaceControl}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link AutoplaceControl}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/AutoplaceControl.html Online documentation}
    */
   export interface AutoplaceControlWrite {
@@ -5494,7 +5524,7 @@ declare module "factorio:runtime" {
     readonly comparator?: ComparatorStringRead
   }
   /**
-   * Write form of {@link UpgradeMapperSource}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link UpgradeMapperSource}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/UpgradeMapperSource.html Online documentation}
    */
   export interface UpgradeMapperSourceWrite {
@@ -5711,7 +5741,7 @@ declare module "factorio:runtime" {
     readonly constant?: int
   }
   /**
-   * Write form of {@link CircuitCondition}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link CircuitCondition}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/CircuitCondition.html Online documentation}
    */
   export interface CircuitConditionWrite {
@@ -5747,7 +5777,7 @@ declare module "factorio:runtime" {
     readonly fulfilled?: boolean
   }
   /**
-   * Write form of {@link CircuitConditionDefinition}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link CircuitConditionDefinition}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/CircuitConditionDefinition.html Online documentation}
    */
   export interface CircuitConditionDefinitionWrite {
@@ -5797,7 +5827,7 @@ declare module "factorio:runtime" {
     /**
      * The quality level of the items.
      */
-    readonly quality: QualityID
+    readonly quality: LuaQualityPrototype
   }
   export interface BaseCommand {
     /**
@@ -6050,7 +6080,7 @@ declare module "factorio:runtime" {
     | FleeCommand
     | BuildBaseCommand
   /**
-   * Write form of {@link Command}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link Command}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/Command.html Online documentation}
    */
   export type CommandWrite =
@@ -7045,7 +7075,7 @@ declare module "factorio:runtime" {
     | AbsorptionsPerSecondTilePrototypeFilter
     | OtherTilePrototypeFilter
   /**
-   * Write form of {@link TilePrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link TilePrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/TilePrototypeFilter.html Online documentation}
    */
   export type TilePrototypeFilterWrite =
@@ -7366,7 +7396,7 @@ declare module "factorio:runtime" {
     | OverloadMultiplierRecipePrototypeFilter
     | OtherRecipePrototypeFilter
   /**
-   * Write form of {@link RecipePrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link RecipePrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/RecipePrototypeFilter.html Online documentation}
    */
   export type RecipePrototypeFilterWrite =
@@ -7552,7 +7582,7 @@ declare module "factorio:runtime" {
     | TimeTechnologyPrototypeFilter
     | OtherTechnologyPrototypeFilter
   /**
-   * Write form of {@link TechnologyPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link TechnologyPrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/TechnologyPrototypeFilter.html Online documentation}
    */
   export type TechnologyPrototypeFilterWrite =
@@ -7889,7 +7919,7 @@ declare module "factorio:runtime" {
     | FuelEmissionsMultiplierItemPrototypeFilter
     | OtherItemPrototypeFilter
   /**
-   * Write form of {@link ItemPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link ItemPrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ItemPrototypeFilter.html Online documentation}
    */
   export type ItemPrototypeFilterWrite =
@@ -8190,7 +8220,7 @@ declare module "factorio:runtime" {
     | CraftingCategoryEntityPrototypeFilter
     | OtherEntityPrototypeFilter
   /**
-   * Write form of {@link EntityPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link EntityPrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/EntityPrototypeFilter.html Online documentation}
    */
   export type EntityPrototypeFilterWrite =
@@ -8268,7 +8298,7 @@ declare module "factorio:runtime" {
     | SolarPowerInSpaceSpaceLocationPrototypeFilter
     | OtherSpaceLocationPrototypeFilter
   /**
-   * Write form of {@link SpaceLocationPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link SpaceLocationPrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/SpaceLocationPrototypeFilter.html Online documentation}
    */
   export type SpaceLocationPrototypeFilterWrite =
@@ -8470,7 +8500,7 @@ declare module "factorio:runtime" {
     | GasTemperatureFluidPrototypeFilter
     | OtherFluidPrototypeFilter
   /**
-   * Write form of {@link FluidPrototypeFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link FluidPrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/FluidPrototypeFilter.html Online documentation}
    */
   export type FluidPrototypeFilterWrite =
@@ -10852,7 +10882,7 @@ declare module "factorio:runtime" {
     | FinalHealthEntityDamagedEventFilter
     | OtherEntityDamagedEventFilter
   /**
-   * Write form of {@link LuaEntityDamagedEventFilter}, where table-or-array concepts are allowed to take an array form.
+   * Write form of {@link LuaEntityDamagedEventFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/LuaEntityDamagedEventFilter.html Online documentation}
    */
   export type LuaEntityDamagedEventFilterWrite =

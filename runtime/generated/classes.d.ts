@@ -4109,14 +4109,16 @@ declare module "factorio:runtime" {
      * _Can only be used if this is EntityGhost or ItemRequestProxy_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaEntity.html#LuaEntity.insert_plan Online documentation}
      */
-    insert_plan: BlueprintInsertPlan[]
+    get insert_plan(): BlueprintInsertPlan[]
+    set insert_plan(value: readonly BlueprintInsertPlanWrite[])
     /**
      * The removal plan for this item request proxy.
      *
      * _Can only be used if this is ItemRequestProxy_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaEntity.html#LuaEntity.removal_plan Online documentation}
      */
-    removal_plan: BlueprintInsertPlan[]
+    get removal_plan(): BlueprintInsertPlan[]
+    set removal_plan(value: readonly BlueprintInsertPlanWrite[])
     /**
      * The player connected to this character, if any.
      *
@@ -5953,7 +5955,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is EntityGhost or ItemRequestProxy_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaEntity.html#LuaEntity.insert_plan Online documentation}
      */
-    insert_plan: BlueprintInsertPlan[]
+    get insert_plan(): BlueprintInsertPlan[]
+    set insert_plan(value: readonly BlueprintInsertPlanWrite[])
     /**
      * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link import("factorio:prototype").EntityWithOwnerPrototype EntityWithOwnerPrototype} that was destroyed to create this ghost. If it was created by other means, or if the inner entity does not support unit numbers, this property is `nil`.
      *
@@ -7380,14 +7383,16 @@ declare module "factorio:runtime" {
      * _Can only be used if this is EntityGhost or ItemRequestProxy_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaEntity.html#LuaEntity.insert_plan Online documentation}
      */
-    insert_plan: BlueprintInsertPlan[]
+    get insert_plan(): BlueprintInsertPlan[]
+    set insert_plan(value: readonly BlueprintInsertPlanWrite[])
     /**
      * The removal plan for this item request proxy.
      *
      * _Can only be used if this is ItemRequestProxy_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaEntity.html#LuaEntity.removal_plan Online documentation}
      */
-    removal_plan: BlueprintInsertPlan[]
+    get removal_plan(): BlueprintInsertPlan[]
+    set removal_plan(value: readonly BlueprintInsertPlanWrite[])
     /**
      * The target entity for this item-request-proxy, if any.
      *
@@ -13007,7 +13012,7 @@ declare module "factorio:runtime" {
      * This only allows mods to queue research that this force is able to research in the first place. As an example, an already researched technology or one whose prerequisites are not fulfilled will not be queued, but dropped silently instead.
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaForce.html#LuaForce.research_queue Online documentation}
      */
-    get research_queue(): LuaTechnology[] | nil
+    get research_queue(): LuaTechnologyPrototype[] | nil
     set research_queue(value: readonly TechnologyID[] | nil)
     /**
      * Whether research is enabled for this force, see {@link LuaForce#enable_research LuaForce::enable_research} and {@link LuaForce#disable_research LuaForce::disable_research}.
@@ -16737,7 +16742,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is DeconstructionItem_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaItemCommon.html#LuaItemCommon.tile_filters Online documentation}
      */
-    tile_filters: TileID[]
+    get tile_filters(): LuaTilePrototype[]
+    set tile_filters(value: readonly TileID[])
     /**
      * The blacklist/whitelist entity filter mode for this deconstruction item.
      *
@@ -17273,7 +17279,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is DeconstructionItem_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaItemCommon.html#LuaItemCommon.tile_filters Online documentation}
      */
-    tile_filters: TileID[]
+    get tile_filters(): LuaTilePrototype[]
+    set tile_filters(value: readonly TileID[])
     /**
      * The blacklist/whitelist entity filter mode for this deconstruction item.
      *
@@ -21927,7 +21934,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is DeconstructionRecord_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaRecord.html#LuaRecord.tile_filters Online documentation}
      */
-    tile_filters: TileID[]
+    get tile_filters(): LuaTilePrototype[]
+    set tile_filters(value: readonly TileID[])
     /**
      * The blacklist/whitelist entity filter mode for this deconstruction planner,.
      *
@@ -22348,7 +22356,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is DeconstructionRecord_
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaRecord.html#LuaRecord.tile_filters Online documentation}
      */
-    tile_filters: TileID[]
+    get tile_filters(): LuaTilePrototype[]
+    set tile_filters(value: readonly TileID[])
     /**
      * The blacklist/whitelist entity filter mode for this deconstruction planner,.
      *
@@ -25716,11 +25725,11 @@ declare module "factorio:runtime" {
     /**
      * The stacks of items to be delivered to target entity from logistic network.
      */
-    readonly modules: readonly BlueprintInsertPlan[]
+    readonly modules: readonly BlueprintInsertPlanWrite[]
     /**
      * Specification of items to be removed from the target entity by the logistic network.
      */
-    readonly removal_plan?: readonly BlueprintInsertPlan[]
+    readonly removal_plan?: readonly BlueprintInsertPlanWrite[]
   }
   /**
    * `"rolling-stock"` variant of {@link SurfaceCreateEntity}.

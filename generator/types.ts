@@ -10,11 +10,11 @@ import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
 import { mapAttribute, mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./read-write-types.js"
 import { assertNever, byOrder } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime"
+import { RuntimeGenerationContext } from "./runtime/index.js"
 import { GenerationContext } from "./GenerationContext.js"
-import { PrototypeGenerationContext } from "./prototype"
+import { PrototypeGenerationContext } from "./prototype/index.js"
 import { getSpecificPrototypeTypeForTypeAttribute } from "./prototypeSubclassTypes.js"
-import { mapProperty } from "./prototype/properties"
+import { mapProperty } from "./prototype/properties.js"
 
 export interface TypeContext {
   contextName?: string
@@ -943,4 +943,11 @@ export function typeToDeclaration(
     }
     return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
   }
+}
+
+export function getInnerType(type: runtime.Type): runtime.Type {
+  if (typeof type === "object" && type.complex_type === "type") {
+    return getInnerType(type.value)
+  }
+  return type
 }
