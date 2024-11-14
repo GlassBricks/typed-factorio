@@ -22567,7 +22567,7 @@ declare module "factorio:runtime" {
      * Players for which this object is visible or `nil` if visible to all players.
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaRenderObject.html#LuaRenderObject.players Online documentation}
      */
-    get players(): LuaPlayer[] | LuaPlayer[] | nil
+    get players(): LuaPlayer[] | nil
     set players(value: LuaPlayer[] | readonly PlayerIdentification[] | nil)
     /**
      * If this object is rendered to anyone at all.
@@ -22917,7 +22917,7 @@ declare module "factorio:runtime" {
      * Players for which this object is visible or `nil` if visible to all players.
      * @see {@link https://lua-api.factorio.com/2.0.17/classes/LuaRenderObject.html#LuaRenderObject.players Online documentation}
      */
-    get players(): LuaPlayer[] | LuaPlayer[] | nil
+    get players(): LuaPlayer[] | nil
     set players(value: LuaPlayer[] | readonly PlayerIdentification[] | nil)
     /**
      * If this object is rendered to anyone at all.
