@@ -1,3 +1,7 @@
+# v3.4.0
+
+- Added different write-types for FluidID, ItemID, etc., and types that include them.
+
 # v3.3.1
 
 - Updated to factorio version 2.0.17
