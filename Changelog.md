@@ -1,6 +1,8 @@
-# v3.3.0
+# v3.3.1
 
 - Updated to factorio version 2.0.17
+- Fix LuaControl.crafting_queue to be potentially undefined (#47). Thanks @nmalaguti!
+- Deduplicated types in union types.
 
 # v3.2.0
 
