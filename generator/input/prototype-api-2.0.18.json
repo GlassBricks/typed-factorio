@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.17",
+  "application_version": "2.0.18",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -4716,7 +4716,7 @@
         {
           "name": "grounded_landing_search_radius",
           "order": 26,
-          "description": "The search radius for a non-colliding position to move the player to if they are grounded mid-flight.  Must be >= 0.",
+          "description": "The search radius for a non-colliding position to move the player to if they are grounded mid-flight. Must be >= 0.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -5687,7 +5687,7 @@
       "properties": [
         {
           "name": "circuit_connector",
-          "order": 6,
+          "order": 7,
           "description": "",
           "override": false,
           "type": "CircuitConnectorDefinition",
@@ -5695,7 +5695,7 @@
         },
         {
           "name": "circuit_wire_max_distance",
-          "order": 3,
+          "order": 4,
           "description": "The maximum circuit wire distance for this container.",
           "override": false,
           "type": "double",
@@ -5707,7 +5707,7 @@
         },
         {
           "name": "default_status",
-          "order": 7,
+          "order": 8,
           "description": "",
           "override": false,
           "type": "EntityStatus",
@@ -5719,7 +5719,7 @@
         },
         {
           "name": "draw_circuit_wires",
-          "order": 5,
+          "order": 6,
           "description": "",
           "override": false,
           "type": "bool",
@@ -5731,7 +5731,7 @@
         },
         {
           "name": "draw_copper_wires",
-          "order": 4,
+          "order": 5,
           "description": "",
           "override": false,
           "type": "bool",
@@ -5751,7 +5751,7 @@
         },
         {
           "name": "inventory_type",
-          "order": 2,
+          "order": 3,
           "description": "Whether the inventory of this container can be filtered (like cargo wagons) or not.",
           "override": false,
           "type": {
@@ -5780,11 +5780,23 @@
         },
         {
           "name": "picture",
-          "order": 1,
+          "order": 2,
           "description": "The picture displayed for this entity.",
           "override": false,
           "type": "Sprite",
           "optional": true
+        },
+        {
+          "name": "quality_affects_inventory_size",
+          "order": 1,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
         }
       ]
     },
@@ -13393,6 +13405,18 @@
           "default": {
             "complex_type": "literal",
             "value": "not-sendable"
+          }
+        },
+        {
+          "name": "spoil_level",
+          "order": 39,
+          "description": "Used by Inserters with spoil priority. Item with higher spoil level is considered more spoiled than item with lower spoil level regardless of progress of spoiling",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
           }
         },
         {
@@ -30032,6 +30056,14 @@
           "description": "",
           "override": false,
           "type": "float",
+          "optional": false
+        },
+        {
+          "name": "time_to_show_full_health_bar",
+          "order": 170,
+          "description": "The number of ticks to show a segmented unit's health bar after fully regenerating.",
+          "override": false,
+          "type": "MapTick",
           "optional": false
         },
         {
