@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.17",
+  "application_version": "2.0.19",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -567,15 +567,22 @@
           "optional": false
         },
         {
+          "name": "localised_name_with_amount_key",
+          "order": 2,
+          "description": "",
+          "read_type": "string",
+          "optional": false
+        },
+        {
           "name": "object_name",
-          "order": 3,
+          "order": 4,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "valid",
-          "order": 2,
+          "order": 3,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -6717,7 +6724,7 @@
         {
           "name": "get_priority_target",
           "order": 100,
-          "description": "Get the entity ID name at the specified position in the turret's priority list.",
+          "description": "Get the entity ID at the specified position in the turret's priority list.",
           "parameters": [
             {
               "name": "index",
@@ -6733,9 +6740,9 @@
           "return_values": [
             {
               "order": 0,
-              "description": "The name of the entity prototype.",
-              "type": "string",
-              "optional": false
+              "description": "",
+              "type": "LuaEntityPrototype",
+              "optional": true
             }
           ]
         },
@@ -10402,7 +10409,8 @@
           "order": 129,
           "description": "The filter for this splitter, if any is set.",
           "subclasses": [
-            "Splitter"
+            "Splitter",
+            "LaneSplitter"
           ],
           "read_type": "ItemFilter",
           "write_type": "ItemFilter",
@@ -10413,7 +10421,8 @@
           "order": 133,
           "description": "The input priority for this splitter.",
           "subclasses": [
-            "Splitter"
+            "Splitter",
+            "LaneSplitter"
           ],
           "read_type": {
             "complex_type": "union",
@@ -10458,7 +10467,8 @@
           "order": 134,
           "description": "The output priority for this splitter.",
           "subclasses": [
-            "Splitter"
+            "Splitter",
+            "LaneSplitter"
           ],
           "read_type": {
             "complex_type": "union",
@@ -10976,6 +10986,13 @@
               "description": "",
               "type": "defines.inventory",
               "optional": false
+            },
+            {
+              "name": "quality",
+              "order": 1,
+              "description": "",
+              "type": "QualityID",
+              "optional": true
             }
           ],
           "format": {
@@ -13813,14 +13830,14 @@
       "attributes": [
         {
           "name": "burner",
-          "order": 16,
+          "order": 17,
           "description": "The burner energy source for this equipment, if any.",
           "read_type": "LuaBurner",
           "optional": true
         },
         {
           "name": "energy",
-          "order": 12,
+          "order": 13,
           "description": "Current available energy.",
           "read_type": "double",
           "write_type": "double",
@@ -13828,7 +13845,7 @@
         },
         {
           "name": "generator_power",
-          "order": 11,
+          "order": 12,
           "description": "Energy generated per tick.",
           "read_type": "double",
           "optional": false
@@ -13845,7 +13862,7 @@
         },
         {
           "name": "ghost_prototype",
-          "order": 15,
+          "order": 16,
           "description": "The prototype of the equipment contained in this ghost.",
           "subclasses": [
             "Ghost"
@@ -13864,8 +13881,15 @@
           "optional": false
         },
         {
+          "name": "inventory_bonus",
+          "order": 10,
+          "description": "Inventory size bonus.",
+          "read_type": "uint",
+          "optional": false
+        },
+        {
           "name": "max_energy",
-          "order": 13,
+          "order": 14,
           "description": "Maximum amount of energy that can be stored in this equipment.",
           "read_type": "double",
           "optional": false
@@ -13886,7 +13910,7 @@
         },
         {
           "name": "movement_bonus",
-          "order": 10,
+          "order": 11,
           "description": "Movement speed bonus.",
           "read_type": "double",
           "optional": false
@@ -13900,7 +13924,7 @@
         },
         {
           "name": "object_name",
-          "order": 19,
+          "order": 20,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -13914,7 +13938,7 @@
         },
         {
           "name": "prototype",
-          "order": 14,
+          "order": 15,
           "description": "",
           "read_type": "LuaEquipmentPrototype",
           "optional": false
@@ -13961,7 +13985,7 @@
         },
         {
           "name": "to_be_removed",
-          "order": 17,
+          "order": 18,
           "description": "If this equipment is marked to be removed.",
           "read_type": "boolean",
           "optional": false
@@ -13975,7 +13999,7 @@
         },
         {
           "name": "valid",
-          "order": 18,
+          "order": 19,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -14441,7 +14465,7 @@
         },
         {
           "name": "entity_owner",
-          "order": 11,
+          "order": 13,
           "description": "The entity that this equipment grid is owned by (in some inventory or item stack.)\n\nIf the owning entity is a character owned by some player and the player is disconnected this will return `nil`.",
           "read_type": "LuaEntity",
           "optional": true
@@ -14465,10 +14489,17 @@
         },
         {
           "name": "inhibit_movement_bonus",
-          "order": 9,
+          "order": 11,
           "description": "Whether this grid's equipment movement bonus is active.",
           "read_type": "boolean",
           "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "inventory_bonus",
+          "order": 9,
+          "description": "The total amount of inventory bonus this equipment grid gives.",
+          "read_type": "uint",
           "optional": false
         },
         {
@@ -14486,15 +14517,22 @@
           "optional": false
         },
         {
+          "name": "movement_bonus",
+          "order": 10,
+          "description": "The total amount of movement bonus this equipment grid gives.\n\nReturns `0` if [LuaEquipmentGrid::inhibit_movement_bonus](runtime:LuaEquipmentGrid::inhibit_movement_bonus) is `false`.",
+          "read_type": "double",
+          "optional": false
+        },
+        {
           "name": "object_name",
-          "order": 14,
+          "order": 16,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "player_owner",
-          "order": 12,
+          "order": 14,
           "description": "The player that this equipment grid is owned by (in some inventory or item stack.)",
           "read_type": "LuaPlayer",
           "optional": true
@@ -14515,14 +14553,14 @@
         },
         {
           "name": "unique_id",
-          "order": 10,
+          "order": 12,
           "description": "Unique identifier of this equipment grid.",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "valid",
-          "order": 13,
+          "order": 15,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -14626,8 +14664,36 @@
           ]
         },
         {
-          "name": "get_movement_bonus",
+          "name": "get_inventory_bonus",
           "order": 2,
+          "description": "",
+          "subclasses": [
+            "InventoryBonusEquipment"
+          ],
+          "parameters": [
+            {
+              "name": "quality",
+              "order": 0,
+              "description": "",
+              "type": "QualityID",
+              "optional": true
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "",
+              "type": "uint",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "name": "get_movement_bonus",
+          "order": 3,
           "description": "",
           "subclasses": [
             "MovementBonusEquipment"
@@ -37626,7 +37692,7 @@
           "order": 3,
           "description": "The space location this space platform is stopped at or `nil`.",
           "read_type": "LuaSpaceLocationPrototype",
-          "optional": false
+          "optional": true
         },
         {
           "name": "speed",
@@ -42466,7 +42532,7 @@
         {
           "name": "set_tiles",
           "order": 23,
-          "description": "Set tiles at specified locations. Can automatically correct the edges around modified tiles.\n\nPlacing a [mineable](runtime:LuaTilePrototype::mineable_properties) tile on top of a non-mineable or [foundation](runtime:LuaTilePrototype::is_foundation) one will turn the latter into the [LuaTile::hidden_tile](runtime:LuaTile::hidden_tile) for that tile. Placing a mineable tile on a mineable one or a non-mineable tile on a non-mineable one or a foundation tile on a foundation one will not modify the hidden tile. This restriction can however be circumvented by using [LuaSurface::set_hidden_tile](runtime:LuaSurface::set_hidden_tile). Placing a non-foundation tile on top of a foundation one when there already exists a hidden tile will push hidden tile to [double hidden](runtime:LuaTile::double_hidden_tile), and foundation tile will turn into hidden.\n\nIt is recommended to call this method once for all the tiles you want to change rather than calling it individually for every tile. As the tile correction is used after every step, calling it one by one could cause the tile correction logic to redo some of the changes. Also, many small API calls are generally more performance intensive than one big one.",
+          "description": "Set tiles at specified locations. Can automatically correct the edges around modified tiles.\n\nPlacing a [mineable](runtime:LuaTilePrototype::mineable_properties) tile on top of a non-mineable or [foundation](runtime:LuaTilePrototype::is_foundation) one will turn the latter into the [LuaTile::hidden_tile](runtime:LuaTile::hidden_tile) for that tile. Placing a mineable non-foundation tile on a mineable non-foundation one or a mineable foundation tile on a mineable foundation one will not modify the hidden tile. This restriction can however be circumvented by using [LuaSurface::set_hidden_tile](runtime:LuaSurface::set_hidden_tile). Placing a non-foundation tile on top of a foundation one when there already exists a hidden tile will push hidden tile to [double hidden](runtime:LuaTile::double_hidden_tile), and foundation tile will turn into hidden. Placing a mineable foundation tile over a mineable non-foundation tile with hidden mineable foundation tile, the hidden tile will be replaced by previously double hidden tile and double hidden tile will be erased. Placing a non-mineable tile will erase hidden and double hidden tiles.\n\nIt is recommended to call this method once for all the tiles you want to change rather than calling it individually for every tile. As the tile correction is used after every step, calling it one by one could cause the tile correction logic to redo some of the changes. Also, many small API calls are generally more performance intensive than one big one.",
           "raises": [
             {
               "name": "script_raised_set_tiles",
