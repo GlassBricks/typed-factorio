@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.17",
+  "application_version": "2.0.21",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -485,7 +485,7 @@
     {
       "name": "AirbornePollutantPrototype",
       "order": 6,
-      "description": "",
+      "description": "A type of pollution that can spread throughout the chunks of a map.",
       "parent": "Prototype",
       "abstract": false,
       "typename": "airborne-pollutant",
@@ -493,7 +493,7 @@
       "properties": [
         {
           "name": "affects_evolution",
-          "order": 2,
+          "order": 3,
           "description": "",
           "override": false,
           "type": "bool",
@@ -501,7 +501,7 @@
         },
         {
           "name": "affects_water_tint",
-          "order": 3,
+          "order": 4,
           "description": "If true, large amounts of this pollution will cause water tiles to turn a sickly green.",
           "override": false,
           "type": "bool",
@@ -509,7 +509,7 @@
         },
         {
           "name": "chart_color",
-          "order": 0,
+          "order": 1,
           "description": "",
           "override": false,
           "type": "Color",
@@ -517,11 +517,23 @@
         },
         {
           "name": "icon",
-          "order": 1,
+          "order": 2,
           "description": "",
           "override": false,
           "type": "Sprite",
           "optional": false
+        },
+        {
+          "name": "localised_name_with_amount",
+          "order": 0,
+          "description": "The translated plural string key to use when displaying this pollution's name with an amount. See [Tutorial:Localisation](https://wiki.factorio.com/Tutorial:Localisation).",
+          "override": false,
+          "type": "string",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": "airborne-pollutant-name-with-amount.<name>"
+          }
         }
       ]
     },
@@ -4716,7 +4728,7 @@
         {
           "name": "grounded_landing_search_radius",
           "order": 26,
-          "description": "The search radius for a non-colliding position to move the player to if they are grounded mid-flight.  Must be >= 0.",
+          "description": "The search radius for a non-colliding position to move the player to if they are grounded mid-flight. Must be >= 0.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -5687,7 +5699,7 @@
       "properties": [
         {
           "name": "circuit_connector",
-          "order": 6,
+          "order": 7,
           "description": "",
           "override": false,
           "type": "CircuitConnectorDefinition",
@@ -5695,7 +5707,7 @@
         },
         {
           "name": "circuit_wire_max_distance",
-          "order": 3,
+          "order": 4,
           "description": "The maximum circuit wire distance for this container.",
           "override": false,
           "type": "double",
@@ -5707,7 +5719,7 @@
         },
         {
           "name": "default_status",
-          "order": 7,
+          "order": 8,
           "description": "",
           "override": false,
           "type": "EntityStatus",
@@ -5719,7 +5731,7 @@
         },
         {
           "name": "draw_circuit_wires",
-          "order": 5,
+          "order": 6,
           "description": "",
           "override": false,
           "type": "bool",
@@ -5731,7 +5743,7 @@
         },
         {
           "name": "draw_copper_wires",
-          "order": 4,
+          "order": 5,
           "description": "",
           "override": false,
           "type": "bool",
@@ -5751,7 +5763,7 @@
         },
         {
           "name": "inventory_type",
-          "order": 2,
+          "order": 3,
           "description": "Whether the inventory of this container can be filtered (like cargo wagons) or not.",
           "override": false,
           "type": {
@@ -5780,11 +5792,23 @@
         },
         {
           "name": "picture",
-          "order": 1,
+          "order": 2,
           "description": "The picture displayed for this entity.",
           "override": false,
           "type": "Sprite",
           "optional": true
+        },
+        {
+          "name": "quality_affects_inventory_size",
+          "order": 1,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
         }
       ]
     },
@@ -12210,7 +12234,7 @@
       "custom_properties": {
         "description": "Styles are defined as uniquely named [StyleSpecification](prototype:StyleSpecification) properties of the prototype.\n\nStyles with certain names are mandatory, as they are used by the base game GUI. A list is found below.",
         "lists": [
-          "Mandatory styles:\n\n- \"confirm_button\"\n- \"confirm_button_without_tooltip\"\n- \"confirm_double_arrow_button\"\n- \"tips_and_tricks_notification_button\"\n- \"red_confirm_button\"\n- \"red_back_button\"\n- \"red_button\"\n- \"green_button\"\n- \"tool_button_red\"\n- \"tool_button\"\n- \"tool_button_without_padding\"\n- \"tool_button_green\"\n- \"tool_button_blue\"\n- \"tool_button_flush_fluid\"\n- \"mini_button\"\n- \"mini_button_aligned_to_text_vertically\"\n- \"mini_button_aligned_to_text_vertically_when_centered\"\n- \"mini_tool_button_red\"\n- \"highlighted_tool_button\"\n- \"confirm_in_load_game_button\"\n- \"back_button\"\n- \"forward_button\"\n- \"menu_button\"\n- \"menu_button_continue\"\n- \"side_menu_button\"\n- \"dialog_button\"\n- \"control_settings_button\"\n- \"control_settings_section_button\"\n- \"quick_bar_page_button\"\n- \"slot_button\"\n- \"slot_button_in_shallow_frame\"\n- \"yellow_slot_button\"\n- \"red_slot_button\"\n- \"slot_sized_button\"\n- \"compact_slot_sized_button\"\n- \"slot_sized_button_blue\"\n- \"slot_sized_button_red\"\n- \"slot_sized_button_green\"\n- \"shortcut_bar_button\"\n- \"shortcut_bar_button_blue\"\n- \"shortcut_bar_button_red\"\n- \"shortcut_bar_button_green\"\n- \"shortcut_bar_button_small\"\n- \"shortcut_bar_button_small_green\"\n- \"shortcut_bar_button_small_red\"\n- \"shortcut_bar_button_small_blue\"\n- \"compact_slot\"\n- \"slot\"\n- \"red_slot\"\n- \"yellow_slot\"\n- \"green_slot\"\n- \"blue_slot\"\n- \"inventory_slot\"\n- \"filter_inventory_slot\"\n- \"closed_inventory_slot\"\n- \"red_inventory_slot\"\n- \"yellow_inventory_slot\"\n- \"filter_group_button_tab_slightly_larger\"\n- \"blueprint_record_slot_button\"\n- \"blueprint_record_selection_button\"\n- \"compact_red_slot\"\n- \"inventory_limit_slot_button\"\n- \"working_weapon_button\"\n- \"not_working_weapon_button\"\n- \"transparent_slot\"\n- \"universe_frame\"\n- \"universe_widget\"\n- \"universe_connection_button\"\n- \"universe_platform_button\"\n- \"frame_action_button\"\n- \"train_schedule_action_button\"\n- \"train_schedule_delete_button\"\n- \"train_schedule_collapse_button\"\n- \"shortcut_bar_expand_button\"\n- \"open_armor_button\"\n- \"item_and_count_select_confirm\"\n- \"tool_bar_open_button\"\n- \"map_view_add_button\"\n- \"tool_equip_ammo_slot\"\n- \"choose_chat_icon_button\"\n- \"choose_chat_icon_in_textbox_button\"\n- \"decider_combinator_signal_select_button\"\n- \"decider_combinator_fulfilled_signal_select_button\"\n- \"tool_equip_equipment_image\"\n- \"clickable_empty_technology_slot\"\n- \"disabled_technology_slot\"\n- \"disabled_index_technology_slot\"\n- \"researched_technology_slot\"\n- \"available_technology_slot\"\n- \"conditionally_available_technology_slot\"\n- \"unavailable_technology_slot\"\n- \"disabled_preview_technology_slot\"\n- \"disabled_preview_index_technology_slot\"\n- \"researched_preview_technology_slot\"\n- \"available_preview_technology_slot\"\n- \"conditionally_available_preview_technology_slot\"\n- \"unavailable_preview_technology_slot\"\n- \"omitted_technology_slot\"\n- \"crafting_queue_slot\"\n- \"promised_crafting_queue_slot\"\n- \"image_tab_slot\"\n- \"image_tab_selected_slot\"\n- \"red_circuit_network_content_slot\"\n- \"green_circuit_network_content_slot\"\n- \"drop_target_button\"\n- \"locomotive_minimap_button\"\n- \"browse_games_gui_toggle_favorite_on_button\"\n- \"browse_games_gui_toggle_favorite_off_button\"\n- \"research_queue_cancel_button\"\n- \"research_queue_move_button\"\n- \"new_game_header_list_box_item\"\n- \"list_box_item\"\n- \"train_status_button\"\n- \"station_train_status_button\"\n- \"title_tip_item\"\n- \"default_permission_group_list_box_item\"\n- \"target_station_in_schedule_in_train_view_list_box_item\"\n- \"no_path_station_in_schedule_in_train_view_list_box_item\"\n- \"not_accessible_station_in_station_selection\"\n- \"partially_accessible_station_in_station_selection\"\n- \"other_settings_gui_button\"\n- \"map_generator_preview_button\"\n- \"map_generator_close_preview_button\"\n- \"map_generator_confirm_button\"\n- \"train_schedule_comparison_type_button\"\n- \"train_schedule_add_wait_condition_button\"\n- \"train_schedule_add_station_button\"\n- \"train_schedule_add_interrupt_station_button\"\n- \"train_schedule_item_select_button\"\n- \"train_schedule_fulfilled_item_select_button\"\n- \"train_schedule_fulfilled_delete_button\"\n- \"train_schedule_temporary_station_delete_button\"\n- \"train_schedule_condition_time_selection_button\"\n- \"entity_variation_button\"\n- \"tile_variation_button\"\n- \"cancel_close_button\"\n- \"close_button\"\n- \"mods_filter_exclude_button\"\n- \"wide_list_box\"\n- \"wide_list_box_in_shallow_frame\"\n- \"wide_list_box_under_subheader\"\n- \"wide_list_box_in_shallow_frame_under_subheader\"\n- \"list_box_under_subheader\"\n- \"campaigns_list_box\"\n- \"campaign_levels_list_box\"\n- \"custom_games_list_box\"\n- \"train_station_list_box\"\n- \"floating_train_station_list_box\"\n- \"schedule_in_train_view_list_box\"\n- \"permissions_groups_list_box\"\n- \"permissions_players_list_box\"\n- \"naked_list_box\"\n- \"locale_dropdown\"\n- \"game_controller_icons_dropdown\"\n- \"circuit_condition_comparator_dropdown\"\n- \"train_schedule_circuit_condition_comparator_dropdown\"\n- \"changelog_textbox\"\n- \"console_input_textfield\"\n- \"invalid_value_textfield\"\n- \"highlighted_value_textfield\"\n- \"mod_startup_settings_mismatch_notice_box\"\n- \"notice_scroll_pane\"\n- \"pins_scroll_pane\"\n- \"notice_textbox\"\n- \"long_number_textfield\"\n- \"big_notice_textbox\"\n- \"small_notice_textbox\"\n- \"search_popup_textfield\"\n- \"other_settings_gui_textbox\"\n- \"short_number_textfield\"\n- \"invalid_value_short_number_textfield\"\n- \"very_short_number_textfield\"\n- \"slider_value_textfield\"\n- \"wide_slider_value_textfield\"\n- \"stretchable_textfield\"\n- \"editor_lua_textbox\"\n- \"edit_blueprint_description_textbox\"\n- \"non_draggable_frame\"\n- \"invisible_frame\"\n- \"frame_with_even_paddings\"\n- \"no_header_filler_frame\"\n- \"map_details_frame\"\n- \"bordered_frame\"\n- \"inside_deep_frame\"\n- \"tab_deep_frame_in_entity_frame\"\n- \"deep_frame_in_shallow_frame_for_description\"\n- \"inside_shallow_frame\"\n- \"shallow_frame_in_shallow_frame\"\n- \"inside_shallow_frame_with_padding\"\n- \"inside_shallow_frame_with_padding_and_vertical_spacing\"\n- \"deep_frame_in_shallow_frame\"\n- \"deep_frame_in_tabbed_pane\"\n- \"slot_button_deep_frame\"\n- \"inventory_frame\"\n- \"quick_panel_slot_button_deep_frame\"\n- \"filter_frame\"\n- \"train_inventory_frame\"\n- \"tooltip_frame\"\n- \"tooltip_description_frame\"\n- \"blueprint_tooltip_description_frame\"\n- \"goal_frame\"\n- \"goal_inner_frame\"\n- \"shortcut_bar_window_frame\"\n- \"quick_bar_inner_panel\"\n- \"tool_equip_inner_panel\"\n- \"shortcut_bar_inner_panel\"\n- \"subfooter_frame\"\n- \"subfooter_frame_with_left_edge\"\n- \"tips_and_tricks_info_frame\"\n- \"tips_and_tricks_info_frame_small_screen\"\n- \"tips_and_tricks_subfooter\"\n- \"right_container_frame\"\n- \"minimap_frame\"\n- \"side_menu_frame\"\n- \"achievement_frame\"\n- \"completed_achievement_frame\"\n- \"tips_and_tricks_frame\"\n- \"failed_achievement_frame\"\n- \"achievement_notification_frame\"\n- \"tips_and_tricks_notification_frame\"\n- \"subheader_frame\"\n- \"repeated_subheader_frame\"\n- \"subheader_frame_with_text_on_the_right\"\n- \"negative_subheader_frame\"\n- \"slot_group_frame\"\n- \"inside_shallow_frame_packed\"\n- \"slot_window_frame\"\n- \"quick_bar_slot_window_frame\"\n- \"technology_card_frame\"\n- \"research_progress_inner_frame_inactive\"\n- \"research_progress_inner_frame_active\"\n- \"shallow_frame\"\n- \"control_settings_section_frame\"\n- \"technology_gui_outer_frame\"\n- \"technology_gui_left_frame\"\n- \"technology_graph_title_frame\"\n- \"train_schedule_station_frame\"\n- \"train_schedule_station_in_interrupt_frame\"\n- \"train_schedule_temporary_station_frame\"\n- \"train_schedule_condition_frame\"\n- \"blueprint_parameter_frame\"\n- \"train_schedule_fullfilled_condition_frame\"\n- \"train_schedule_comparison_type_frame\"\n- \"train_schedule_comparison_type_frame_indented\"\n- \"train_schedule_comparison_type_frame_extra_indented\"\n- \"sync_mods_default_status_frame\"\n- \"sync_mods_downloading_status_frame\"\n- \"tooltip_title_frame_light\"\n- \"tooltip_panel_background\"\n- \"number_input_frame\"\n- \"neutral_message_frame\"\n- \"negative_message_frame\"\n- \"positive_message_frame\"\n- \"shortcut_selection_row\"\n- \"frame_tabbed_pane_corner\"\n- \"frame_tabbed_pane_frame_header\"\n- \"tabbed_pane_frame\"\n- \"frame_without_left_side\"\n- \"frame_without_left_and_right_side\"\n- \"character_gui_left_side\"\n- \"search_popup_frame\"\n- \"bonus_card_frame\"\n- \"empty_bonus_card_frame\"\n- \"inset_frame_container_frame\"\n- \"chart_search_result_frame\"\n- \"pins_frame\"\n- \"current_research_info_button\"\n- \"current_research_info_image\"\n- \"current_research_info_percent_label\"\n- \"blueprint_book_edit_frame\"\n- \"main_progressbar_frame\"\n- \"editor_mode_selection_frame\"\n- \"editor_inner_frame\"\n- \"new_game_subfooter\"\n- \"entity_frame\"\n- \"entity_button_frame\"\n- \"train_with_minimap_frame\"\n- \"lab_technology_frame\"\n- \"lab_technology_frame_empty\"\n- \"right_side_frame\"\n- \"decider_combinator_frame\"\n- \"decider_combinator_condition_frame\"\n- \"decider_combinator_fulfilled_condition_frame\"\n- \"frame_around_top\"\n- \"frame_around_bottom\"\n- \"frame_around_left\"\n- \"frame_around_right\"\n- \"frame_around_center\"\n- \"packed_horizontal_flow\"\n- \"compact_horizontal_flow\"\n- \"dialog_buttons_horizontal_flow\"\n- \"player_input_horizontal_flow\"\n- \"inset_frame_container_horizontal_flow\"\n- \"inset_frame_container_horizontal_flow_in_tabbed_pane\"\n- \"train_schedule_mode_switch_horizontal_flow\"\n- \"horizontal_flow_with_extra_right_margin\"\n- \"relative_gui_top_flow\"\n- \"relative_gui_bottom_flow\"\n- \"two_module_spacing_horizontal_flow\"\n- \"relative_gui_left_flow\"\n- \"relative_gui_right_flow\"\n- \"packed_vertical_flow\"\n- \"padded_vertical_flow\"\n- \"quickbar_holder_flow\"\n- \"inset_frame_container_vertical_flow\"\n- \"two_module_spacing_vertical_flow\"\n- \"new_game_difficulty_vertical_flow\"\n- \"crafting_queue_flow\"\n- \"table_with_selection\"\n- \"players_table\"\n- \"mods_explore_results_table\"\n- \"bordered_table\"\n- \"compact_slot_table\"\n- \"slot_table\"\n- \"browse_games_table\"\n- \"browse_games_on_lan_table\"\n- \"inset_frame_container_table\"\n- \"map_generator_frequency_table\"\n- \"player_input_table\"\n- \"graphics_settings_table\"\n- \"control_settings_bordered_table\"\n- \"sync_mods_table\"\n- \"removed_content_table\"\n- \"finished_game_table\"\n- \"filter_slot_table\"\n- \"editor_mode_selection_table\"\n- \"splitter_settings_table\"\n- \"trains_widget_table\"\n- \"undelete_space_platforms_table\"\n- \"wide_activity_bar\"\n- \"production_progressbar\"\n- \"burning_progressbar\"\n- \"health_progressbar\"\n- \"vehicle_health_progressbar\"\n- \"mining_progressbar\"\n- \"shield_progressbar\"\n- \"bonus_progressbar\"\n- \"battery_progressbar\"\n- \"electric_satisfaction_progressbar\"\n- \"electric_satisfaction_statistics_progressbar\"\n- \"electric_statistics_progressbar\"\n- \"electric_satisfaction_in_description_progressbar\"\n- \"item_spoilage_in_description_progress_bar\"\n- \"thick_progressbar\"\n- \"disk_usage_progressbar\"\n- \"achievement_progressbar\"\n- \"achievement_card_progressbar\"\n- \"heat_progressbar\"\n- \"rocket_weight_used_progress_bar\"\n- \"caption_checkbox\"\n- \"subheader_caption_checkbox\"\n- \"black_checkbox\"\n- \"caption_radiobutton\"\n- \"frame_title\"\n- \"caption_label\"\n- \"semibold_caption_label\"\n- \"semibold_label\"\n- \"bold_label\"\n- \"green_label\"\n- \"bold_black_label\"\n- \"bold_green_label\"\n- \"red_label\"\n- \"bold_red_label\"\n- \"electric_usage_label\"\n- \"count_label\"\n- \"recipe_count_line_label\"\n- \"tooltip_label\"\n- \"tooltip_title_label\"\n- \"subheader_label\"\n- \"subheader_caption_label\"\n- \"subheader_semibold_label\"\n- \"subheader_right_aligned_label\"\n- \"heading_2_label\"\n- \"achievement_unlocked_title_label\"\n- \"achievement_locked_title_label\"\n- \"achievement_failed_title_label\"\n- \"achievement_failed_description_label\"\n- \"achievement_failed_reason_label\"\n- \"tips_and_tricks_title_label\"\n- \"steam_friend_label\"\n- \"frame_subheading_label\"\n- \"orange_label\"\n- \"bold_orange_label\"\n- \"grey_label\"\n- \"bold_grey_label\"\n- \"tooltip_heading_label\"\n- \"tooltip_heading_label_category\"\n- \"squashable_label\"\n- \"black_label\"\n- \"black_squashable_label\"\n- \"black_label_with_left_padding\"\n- \"black_squashable_label_with_left_padding\"\n- \"black_clickable_label\"\n- \"black_clickable_squashable_label\"\n- \"color_picker_label\"\n- \"tooltip_item_label\"\n- \"clickable_label\"\n- \"clickable_squashable_label\"\n- \"label_with_left_padding\"\n- \"squashable_label_with_left_padding\"\n- \"train_schedule_unavailable_stop_label\"\n- \"train_schedule_non_existent_stop_label\"\n- \"hyperlink_label\"\n- \"info_label\"\n- \"control_input_shortcut_label\"\n- \"main_menu_version_label\"\n- \"label_under_widget\"\n- \"finished_game_label\"\n- \"train_stop_subheader\"\n- \"inventory_frame_title_style\"\n- \"mods_filter_hit_count_label\"\n- \"inside_shallow_frame_with_padding_line\"\n- \"blurry_panel_horizontal_line\"\n- \"dark_line\"\n- \"tooltip_category_line\"\n- \"tooltip_horizontal_line\"\n- \"lab_progress_and_slot_divider\"\n- \"lab_progress_and_slot_divider_empty\"\n- \"scroll_pane_in_shallow_frame\"\n- \"trains_scroll_pane\"\n- \"trains_scroll_pane_with_side_margin\"\n- \"stations_scroll_pane\"\n- \"stations_scroll_pane_small_screen\"\n- \"tab_scroll_pane\"\n- \"technology_list_scroll_pane\"\n- \"statistics_scroll_pane\"\n- \"blurry_scroll_pane\"\n- \"map_preview_scroll_pane\"\n- \"tab_shallow_scroll_pane\"\n- \"featured_technology_description_scroll_pane\"\n- \"scroll_pane_under_subheader\"\n- \"train_schedule_scroll_pane\"\n- \"train_interrupts_scroll_pane\"\n- \"mods_scroll_pane\"\n- \"stations_trains_scroll_pane\"\n- \"entity_frame_scroll_pane\"\n- \"shallow_scroll_pane\"\n- \"shallow_slots_scroll_pane\"\n- \"deep_scroll_pane\"\n- \"deep_slots_scroll_pane\"\n- \"achievement_slots_scroll_pane\"\n- \"logistic_sections_scroll_pane\"\n- \"character_crafting_queue_scroll_pane\"\n- \"logistic_gui_items_scroll_pane\"\n- \"shortcut_bar_selection_scroll_pane\"\n- \"naked_scroll_pane\"\n- \"horizontally_limited_equipment_grid_scroll_pane\"\n- \"text_holding_scroll_pane\"\n- \"factoriopedia_contents_scroll_pane\"\n- \"factoriopedia_icon_grid_scroll_pane\"\n- \"decider_combinator_conditions_scroll_pane\"\n- \"decider_combinator_outputs_scroll_pane\"\n- \"achievement_image\"\n- \"map_info_image\"\n- \"new_game_info_image\"\n- \"mod_thumbnail_image\"\n- \"mod_explore_thumbnail_image\"\n- \"mod_updates_status_image\"\n- \"install_mod_status_image\"\n- \"mod_attribute_image\"\n- \"tips_and_tricks_image\"\n- \"logistics_diode\"\n- \"status_image\"\n- \"achievement_warning_image\"\n- \"mods_sorting_image\"\n- \"recipe_tooltip_horizontal_image\"\n- \"tips_and_tricks_simulation\"\n- \"entity_button_base\"\n- \"undo_camera\"\n- \"tooltip_camera\"\n- \"wide_entity_button\"\n- \"draggable_space_in_train_schedule\"\n- \"draggable_space_in_temporary_train_station\"\n- \"fulfilled_draggable_space_in_train_schedule\"\n- \"color_indicator\"\n- \"minimap_widget_under_subheader\"\n- \"blueprint_preview\"\n- \"entity_frame_filler\"\n- \"tool_bar_empty_slot\"\n- \"research_queue_active_glow_dark\"\n- \"research_queue_active_glow_light\"\n- \"research_queue_active_glow_outer\"\n- \"notched_slider\"\n- \"map_generator_notched_slider\"\n- \"map_generator_13_notch_slider\"\n- \"map_generator_notched_slider_wide\"\n- \"red_slider\"\n- \"green_slider\"\n- \"blue_slider\"\n- \"other_settings_slider\"\n- \"notched_double_slider\"\n- \"blueprint_drop_slot_button\"\n- \"blueprint_icon_preview\"\n- \"draggable_space\"\n- \"draggable_space_in_shortcut_list\"\n- \"filter_tabbed_pane\"\n- \"frame_tabbed_pane\"\n- \"quick_panel_tabbed_pane\"\n- \"tabbed_pane_with_no_side_padding\"\n- \"tabbed_pane_with_extra_padding\"\n- \"frame_tab\"\n- \"filter_group_tab\"\n- \"slightly_smaller_tab\"\n- \"filter_group_slot_tab\"\n- \"production_graph\"\n- \"research_info_tooltip_graph\""
+          "Mandatory styles:\n\n- \"confirm_button\"\n- \"confirm_button_without_tooltip\"\n- \"confirm_double_arrow_button\"\n- \"tips_and_tricks_notification_button\"\n- \"red_confirm_button\"\n- \"red_back_button\"\n- \"red_button\"\n- \"green_button\"\n- \"tool_button_red\"\n- \"tool_button\"\n- \"tool_button_without_padding\"\n- \"tool_button_green\"\n- \"tool_button_blue\"\n- \"tool_button_flush_fluid\"\n- \"mini_button\"\n- \"mini_button_aligned_to_text_vertically\"\n- \"mini_button_aligned_to_text_vertically_when_centered\"\n- \"mini_tool_button_red\"\n- \"highlighted_tool_button\"\n- \"confirm_in_load_game_button\"\n- \"back_button\"\n- \"forward_button\"\n- \"menu_button\"\n- \"menu_button_continue\"\n- \"side_menu_button\"\n- \"dialog_button\"\n- \"control_settings_button\"\n- \"control_settings_section_button\"\n- \"quick_bar_page_button\"\n- \"slot_button\"\n- \"slot_button_in_shallow_frame\"\n- \"yellow_slot_button\"\n- \"red_slot_button\"\n- \"slot_sized_button\"\n- \"compact_slot_sized_button\"\n- \"slot_sized_button_blue\"\n- \"slot_sized_button_red\"\n- \"slot_sized_button_green\"\n- \"shortcut_bar_button\"\n- \"shortcut_bar_button_blue\"\n- \"shortcut_bar_button_red\"\n- \"shortcut_bar_button_green\"\n- \"shortcut_bar_button_small\"\n- \"shortcut_bar_button_small_green\"\n- \"shortcut_bar_button_small_red\"\n- \"shortcut_bar_button_small_blue\"\n- \"compact_slot\"\n- \"slot\"\n- \"red_slot\"\n- \"yellow_slot\"\n- \"green_slot\"\n- \"blue_slot\"\n- \"inventory_slot\"\n- \"filter_inventory_slot\"\n- \"closed_inventory_slot\"\n- \"red_inventory_slot\"\n- \"yellow_inventory_slot\"\n- \"filter_group_button_tab_slightly_larger\"\n- \"blueprint_record_slot_button\"\n- \"blueprint_record_selection_button\"\n- \"compact_red_slot\"\n- \"inventory_limit_slot_button\"\n- \"working_weapon_button\"\n- \"not_working_weapon_button\"\n- \"transparent_slot\"\n- \"universe_frame\"\n- \"universe_widget\"\n- \"universe_connection_button\"\n- \"universe_platform_button\"\n- \"frame_action_button\"\n- \"train_schedule_action_button\"\n- \"train_schedule_delete_button\"\n- \"train_schedule_collapse_button\"\n- \"shortcut_bar_expand_button\"\n- \"open_armor_button\"\n- \"item_and_count_select_confirm\"\n- \"tool_bar_open_button\"\n- \"map_view_add_button\"\n- \"tool_equip_ammo_slot\"\n- \"choose_chat_icon_button\"\n- \"choose_chat_icon_in_textbox_button\"\n- \"decider_combinator_signal_select_button\"\n- \"decider_combinator_fulfilled_signal_select_button\"\n- \"tool_equip_equipment_image\"\n- \"clickable_empty_technology_slot\"\n- \"disabled_technology_slot\"\n- \"disabled_index_technology_slot\"\n- \"researched_technology_slot\"\n- \"available_technology_slot\"\n- \"conditionally_available_technology_slot\"\n- \"unavailable_technology_slot\"\n- \"disabled_preview_technology_slot\"\n- \"disabled_preview_index_technology_slot\"\n- \"researched_preview_technology_slot\"\n- \"available_preview_technology_slot\"\n- \"conditionally_available_preview_technology_slot\"\n- \"unavailable_preview_technology_slot\"\n- \"omitted_technology_slot\"\n- \"crafting_queue_slot\"\n- \"promised_crafting_queue_slot\"\n- \"image_tab_slot\"\n- \"image_tab_selected_slot\"\n- \"red_circuit_network_content_slot\"\n- \"green_circuit_network_content_slot\"\n- \"drop_target_button\"\n- \"locomotive_minimap_button\"\n- \"browse_games_gui_toggle_favorite_on_button\"\n- \"browse_games_gui_toggle_favorite_off_button\"\n- \"research_queue_cancel_button\"\n- \"new_game_header_list_box_item\"\n- \"list_box_item\"\n- \"train_status_button\"\n- \"station_train_status_button\"\n- \"title_tip_item\"\n- \"default_permission_group_list_box_item\"\n- \"target_station_in_schedule_in_train_view_list_box_item\"\n- \"no_path_station_in_schedule_in_train_view_list_box_item\"\n- \"not_accessible_station_in_station_selection\"\n- \"partially_accessible_station_in_station_selection\"\n- \"other_settings_gui_button\"\n- \"map_generator_preview_button\"\n- \"map_generator_close_preview_button\"\n- \"map_generator_confirm_button\"\n- \"train_schedule_comparison_type_button\"\n- \"train_schedule_add_wait_condition_button\"\n- \"train_schedule_add_station_button\"\n- \"train_schedule_add_interrupt_station_button\"\n- \"train_schedule_item_select_button\"\n- \"train_schedule_fulfilled_item_select_button\"\n- \"train_schedule_fulfilled_delete_button\"\n- \"train_schedule_temporary_station_delete_button\"\n- \"train_schedule_condition_time_selection_button\"\n- \"entity_variation_button\"\n- \"tile_variation_button\"\n- \"cancel_close_button\"\n- \"close_button\"\n- \"mods_filter_exclude_button\"\n- \"wide_list_box\"\n- \"wide_list_box_in_shallow_frame\"\n- \"wide_list_box_under_subheader\"\n- \"wide_list_box_in_shallow_frame_under_subheader\"\n- \"list_box_under_subheader\"\n- \"campaigns_list_box\"\n- \"campaign_levels_list_box\"\n- \"custom_games_list_box\"\n- \"train_station_list_box\"\n- \"floating_train_station_list_box\"\n- \"schedule_in_train_view_list_box\"\n- \"permissions_groups_list_box\"\n- \"permissions_players_list_box\"\n- \"naked_list_box\"\n- \"locale_dropdown\"\n- \"game_controller_icons_dropdown\"\n- \"circuit_condition_comparator_dropdown\"\n- \"train_schedule_circuit_condition_comparator_dropdown\"\n- \"changelog_textbox\"\n- \"console_input_textfield\"\n- \"invalid_value_textfield\"\n- \"highlighted_value_textfield\"\n- \"mod_startup_settings_mismatch_notice_box\"\n- \"notice_scroll_pane\"\n- \"pins_scroll_pane\"\n- \"notice_textbox\"\n- \"long_number_textfield\"\n- \"big_notice_textbox\"\n- \"small_notice_textbox\"\n- \"search_popup_textfield\"\n- \"other_settings_gui_textbox\"\n- \"short_number_textfield\"\n- \"invalid_value_short_number_textfield\"\n- \"very_short_number_textfield\"\n- \"slider_value_textfield\"\n- \"wide_slider_value_textfield\"\n- \"stretchable_textfield\"\n- \"editor_lua_textbox\"\n- \"edit_blueprint_description_textbox\"\n- \"non_draggable_frame\"\n- \"invisible_frame\"\n- \"frame_with_even_paddings\"\n- \"no_header_filler_frame\"\n- \"map_details_frame\"\n- \"bordered_frame\"\n- \"inside_deep_frame\"\n- \"tab_deep_frame_in_entity_frame\"\n- \"deep_frame_in_shallow_frame_for_description\"\n- \"deep_frame_in_shallow_frame_for_description_with_fixed_width\"\n- \"inside_shallow_frame\"\n- \"shallow_frame_in_shallow_frame\"\n- \"inside_shallow_frame_with_padding\"\n- \"inside_shallow_frame_with_padding_and_vertical_spacing\"\n- \"deep_frame_in_shallow_frame\"\n- \"deep_frame_in_tabbed_pane\"\n- \"slot_button_deep_frame\"\n- \"inventory_frame\"\n- \"quick_panel_slot_button_deep_frame\"\n- \"filter_frame\"\n- \"train_inventory_frame\"\n- \"tooltip_frame\"\n- \"tooltip_description_frame\"\n- \"blueprint_tooltip_description_frame\"\n- \"goal_frame\"\n- \"goal_inner_frame\"\n- \"shortcut_bar_window_frame\"\n- \"quick_bar_inner_panel\"\n- \"tool_equip_inner_panel\"\n- \"shortcut_bar_inner_panel\"\n- \"subfooter_frame\"\n- \"subfooter_frame_with_left_edge\"\n- \"tips_and_tricks_info_frame\"\n- \"tips_and_tricks_info_frame_small_screen\"\n- \"tips_and_tricks_subfooter\"\n- \"right_container_frame\"\n- \"minimap_frame\"\n- \"side_menu_frame\"\n- \"achievement_frame\"\n- \"completed_achievement_frame\"\n- \"tips_and_tricks_frame\"\n- \"failed_achievement_frame\"\n- \"achievement_notification_frame\"\n- \"tips_and_tricks_notification_frame\"\n- \"subheader_frame\"\n- \"repeated_subheader_frame\"\n- \"subheader_frame_with_text_on_the_right\"\n- \"negative_subheader_frame\"\n- \"slot_group_frame\"\n- \"inside_shallow_frame_packed\"\n- \"slot_window_frame\"\n- \"quick_bar_slot_window_frame\"\n- \"technology_card_frame\"\n- \"research_progress_inner_frame_inactive\"\n- \"research_progress_inner_frame_active\"\n- \"shallow_frame\"\n- \"control_settings_section_frame\"\n- \"technology_gui_outer_frame\"\n- \"technology_gui_left_frame\"\n- \"technology_graph_title_frame\"\n- \"train_schedule_station_frame\"\n- \"train_schedule_station_in_interrupt_frame\"\n- \"train_schedule_temporary_station_frame\"\n- \"train_schedule_condition_frame\"\n- \"blueprint_parameter_frame\"\n- \"train_schedule_fullfilled_condition_frame\"\n- \"train_schedule_comparison_type_frame\"\n- \"train_schedule_comparison_type_frame_indented\"\n- \"train_schedule_comparison_type_frame_extra_indented\"\n- \"sync_mods_default_status_frame\"\n- \"sync_mods_downloading_status_frame\"\n- \"tooltip_title_frame_light\"\n- \"tooltip_panel_background\"\n- \"number_input_frame\"\n- \"neutral_message_frame\"\n- \"negative_message_frame\"\n- \"positive_message_frame\"\n- \"shortcut_selection_row\"\n- \"frame_tabbed_pane_corner\"\n- \"frame_tabbed_pane_frame_header\"\n- \"tabbed_pane_frame\"\n- \"frame_without_left_side\"\n- \"frame_without_left_and_right_side\"\n- \"character_gui_left_side\"\n- \"search_popup_frame\"\n- \"bonus_card_frame\"\n- \"empty_bonus_card_frame\"\n- \"inset_frame_container_frame\"\n- \"chart_search_result_frame\"\n- \"pins_frame\"\n- \"current_research_info_button\"\n- \"current_research_info_image\"\n- \"current_research_info_percent_label\"\n- \"blueprint_book_edit_frame\"\n- \"main_progressbar_frame\"\n- \"editor_mode_selection_frame\"\n- \"editor_inner_frame\"\n- \"new_game_subfooter\"\n- \"entity_frame\"\n- \"entity_button_frame\"\n- \"train_with_minimap_frame\"\n- \"lab_technology_frame\"\n- \"lab_technology_frame_empty\"\n- \"right_side_frame\"\n- \"decider_combinator_frame\"\n- \"decider_combinator_condition_frame\"\n- \"decider_combinator_fulfilled_condition_frame\"\n- \"frame_around_top\"\n- \"frame_around_bottom\"\n- \"frame_around_left\"\n- \"frame_around_right\"\n- \"frame_around_center\"\n- \"packed_horizontal_flow\"\n- \"compact_horizontal_flow\"\n- \"dialog_buttons_horizontal_flow\"\n- \"player_input_horizontal_flow\"\n- \"inset_frame_container_horizontal_flow\"\n- \"inset_frame_container_horizontal_flow_in_tabbed_pane\"\n- \"train_schedule_mode_switch_horizontal_flow\"\n- \"horizontal_flow_with_extra_right_margin\"\n- \"relative_gui_top_flow\"\n- \"relative_gui_bottom_flow\"\n- \"two_module_spacing_horizontal_flow\"\n- \"relative_gui_left_flow\"\n- \"relative_gui_right_flow\"\n- \"packed_vertical_flow\"\n- \"padded_vertical_flow\"\n- \"quickbar_holder_flow\"\n- \"inset_frame_container_vertical_flow\"\n- \"two_module_spacing_vertical_flow\"\n- \"new_game_difficulty_vertical_flow\"\n- \"crafting_queue_flow\"\n- \"table_with_selection\"\n- \"players_table\"\n- \"mods_explore_results_table\"\n- \"bordered_table\"\n- \"compact_slot_table\"\n- \"slot_table\"\n- \"browse_games_table\"\n- \"browse_games_on_lan_table\"\n- \"inset_frame_container_table\"\n- \"map_generator_frequency_table\"\n- \"player_input_table\"\n- \"graphics_settings_table\"\n- \"control_settings_bordered_table\"\n- \"sync_mods_table\"\n- \"removed_content_table\"\n- \"finished_game_table\"\n- \"filter_slot_table\"\n- \"editor_mode_selection_table\"\n- \"splitter_settings_table\"\n- \"trains_widget_table\"\n- \"undelete_space_platforms_table\"\n- \"research_queue_table\"\n- \"wide_activity_bar\"\n- \"production_progressbar\"\n- \"burning_progressbar\"\n- \"health_progressbar\"\n- \"vehicle_health_progressbar\"\n- \"mining_progressbar\"\n- \"shield_progressbar\"\n- \"bonus_progressbar\"\n- \"battery_progressbar\"\n- \"electric_satisfaction_progressbar\"\n- \"electric_satisfaction_statistics_progressbar\"\n- \"electric_statistics_progressbar\"\n- \"electric_satisfaction_in_description_progressbar\"\n- \"item_spoilage_in_description_progress_bar\"\n- \"thick_progressbar\"\n- \"disk_usage_progressbar\"\n- \"achievement_progressbar\"\n- \"achievement_card_progressbar\"\n- \"heat_progressbar\"\n- \"rocket_weight_used_progress_bar\"\n- \"caption_checkbox\"\n- \"subheader_caption_checkbox\"\n- \"black_checkbox\"\n- \"caption_radiobutton\"\n- \"frame_title\"\n- \"caption_label\"\n- \"semibold_caption_label\"\n- \"semibold_label\"\n- \"bold_label\"\n- \"green_label\"\n- \"bold_black_label\"\n- \"bold_green_label\"\n- \"red_label\"\n- \"bold_red_label\"\n- \"electric_usage_label\"\n- \"count_label\"\n- \"recipe_count_line_label\"\n- \"tooltip_label\"\n- \"tooltip_title_label\"\n- \"subheader_label\"\n- \"subheader_caption_label\"\n- \"subheader_semibold_label\"\n- \"subheader_right_aligned_label\"\n- \"heading_2_label\"\n- \"achievement_unlocked_title_label\"\n- \"achievement_locked_title_label\"\n- \"achievement_failed_title_label\"\n- \"achievement_failed_description_label\"\n- \"achievement_failed_reason_label\"\n- \"tips_and_tricks_title_label\"\n- \"steam_friend_label\"\n- \"frame_subheading_label\"\n- \"orange_label\"\n- \"bold_orange_label\"\n- \"grey_label\"\n- \"bold_grey_label\"\n- \"tooltip_heading_label\"\n- \"tooltip_heading_label_category\"\n- \"squashable_label\"\n- \"black_label\"\n- \"black_squashable_label\"\n- \"black_label_with_left_padding\"\n- \"black_squashable_label_with_left_padding\"\n- \"black_clickable_label\"\n- \"black_clickable_squashable_label\"\n- \"color_picker_label\"\n- \"tooltip_item_label\"\n- \"clickable_label\"\n- \"clickable_squashable_label\"\n- \"label_with_left_padding\"\n- \"squashable_label_with_left_padding\"\n- \"train_schedule_unavailable_stop_label\"\n- \"train_schedule_non_existent_stop_label\"\n- \"hyperlink_label\"\n- \"info_label\"\n- \"control_input_shortcut_label\"\n- \"main_menu_version_label\"\n- \"label_under_widget\"\n- \"finished_game_label\"\n- \"train_stop_subheader\"\n- \"inventory_frame_title_style\"\n- \"mods_filter_hit_count_label\"\n- \"inside_shallow_frame_with_padding_line\"\n- \"blurry_panel_horizontal_line\"\n- \"dark_line\"\n- \"tooltip_category_line\"\n- \"tooltip_horizontal_line\"\n- \"lab_progress_and_slot_divider\"\n- \"lab_progress_and_slot_divider_empty\"\n- \"scroll_pane_in_shallow_frame\"\n- \"trains_scroll_pane\"\n- \"trains_scroll_pane_with_side_margin\"\n- \"stations_scroll_pane\"\n- \"stations_scroll_pane_small_screen\"\n- \"tab_scroll_pane\"\n- \"technology_list_scroll_pane\"\n- \"statistics_scroll_pane\"\n- \"blurry_scroll_pane\"\n- \"map_preview_scroll_pane\"\n- \"tab_shallow_scroll_pane\"\n- \"featured_technology_description_scroll_pane\"\n- \"scroll_pane_under_subheader\"\n- \"train_schedule_scroll_pane\"\n- \"train_interrupts_scroll_pane\"\n- \"mods_scroll_pane\"\n- \"stations_trains_scroll_pane\"\n- \"entity_frame_scroll_pane\"\n- \"shallow_scroll_pane\"\n- \"shallow_slots_scroll_pane\"\n- \"deep_scroll_pane\"\n- \"deep_slots_scroll_pane\"\n- \"achievement_slots_scroll_pane\"\n- \"logistic_sections_scroll_pane\"\n- \"character_crafting_queue_scroll_pane\"\n- \"logistic_gui_items_scroll_pane\"\n- \"shortcut_bar_selection_scroll_pane\"\n- \"naked_scroll_pane\"\n- \"horizontally_limited_equipment_grid_scroll_pane\"\n- \"text_holding_scroll_pane\"\n- \"factoriopedia_contents_scroll_pane\"\n- \"factoriopedia_icon_grid_scroll_pane\"\n- \"decider_combinator_conditions_scroll_pane\"\n- \"decider_combinator_outputs_scroll_pane\"\n- \"achievement_image\"\n- \"map_info_image\"\n- \"new_game_info_image\"\n- \"mod_thumbnail_image\"\n- \"mod_explore_thumbnail_image\"\n- \"mod_updates_status_image\"\n- \"install_mod_status_image\"\n- \"mod_attribute_image\"\n- \"tips_and_tricks_image\"\n- \"logistics_diode\"\n- \"status_image\"\n- \"achievement_warning_image\"\n- \"mods_sorting_image\"\n- \"recipe_tooltip_horizontal_image\"\n- \"tips_and_tricks_simulation\"\n- \"entity_button_base\"\n- \"undo_camera\"\n- \"tooltip_camera\"\n- \"wide_entity_button\"\n- \"draggable_space_in_train_schedule\"\n- \"draggable_space_in_temporary_train_station\"\n- \"fulfilled_draggable_space_in_train_schedule\"\n- \"color_indicator\"\n- \"minimap_widget_under_subheader\"\n- \"blueprint_preview\"\n- \"entity_frame_filler\"\n- \"tool_bar_empty_slot\"\n- \"research_queue_drag_handle\"\n- \"research_queue_active_glow_dark\"\n- \"research_queue_active_glow_light\"\n- \"research_queue_active_glow_outer\"\n- \"notched_slider\"\n- \"map_generator_notched_slider\"\n- \"map_generator_13_notch_slider\"\n- \"map_generator_notched_slider_wide\"\n- \"red_slider\"\n- \"green_slider\"\n- \"blue_slider\"\n- \"other_settings_slider\"\n- \"notched_double_slider\"\n- \"blueprint_drop_slot_button\"\n- \"blueprint_icon_preview\"\n- \"draggable_space\"\n- \"draggable_space_in_shortcut_list\"\n- \"filter_tabbed_pane\"\n- \"frame_tabbed_pane\"\n- \"quick_panel_tabbed_pane\"\n- \"tabbed_pane_with_no_side_padding\"\n- \"tabbed_pane_with_extra_padding\"\n- \"frame_tab\"\n- \"filter_group_tab\"\n- \"slightly_smaller_tab\"\n- \"filter_group_slot_tab\"\n- \"production_graph\"\n- \"research_info_tooltip_graph\""
         ],
         "examples": [
           "```\n-- Adding a custom frame_style-type style\ndata.raw[\"gui-style\"][\"default\"][\"custom_style_for_a_frame\"] =\n{\n  type = \"frame_style\",\n  parent = \"frame\",\n  use_header_filler = false,\n  drag_by_title = false\n}\n```"
@@ -13393,6 +13417,18 @@
           "default": {
             "complex_type": "literal",
             "value": "not-sendable"
+          }
+        },
+        {
+          "name": "spoil_level",
+          "order": 39,
+          "description": "Used by Inserters with spoil priority. Item with higher spoil level is considered more spoiled than item with lower spoil level regardless of progress of spoiling",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
           }
         },
         {
@@ -17287,7 +17323,7 @@
         },
         {
           "name": "fluid_product",
-          "order": 4,
+          "order": 3,
           "description": "Mandatory if `item_product` is not defined.\n\nThis will tell the achievement what fluid the player needs to craft, to get the achievement.",
           "examples": [
             "```\nfluid_product = \"heavy-oil\"\n```"
@@ -17304,7 +17340,7 @@
             "```\nitem_product = \"pistol\"\n```"
           ],
           "override": false,
-          "type": "ItemID",
+          "type": "ItemIDFilter",
           "optional": true
         },
         {
@@ -17314,15 +17350,6 @@
           "override": false,
           "type": "bool",
           "optional": false
-        },
-        {
-          "name": "quality",
-          "order": 3,
-          "description": "",
-          "override": false,
-          "type": "QualityID",
-          "optional": true,
-          "default": "All qualities"
         }
       ]
     },
@@ -17365,7 +17392,7 @@
             "```\nitem_product = \"landfill\"\n```"
           ],
           "override": false,
-          "type": "ItemID",
+          "type": "ItemIDFilter",
           "optional": true
         }
       ]
@@ -21385,7 +21412,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": -5.5
+            "value": -6
           }
         },
         {
@@ -24438,7 +24465,7 @@
       "properties": [
         {
           "name": "automatic_weapon_cycling",
-          "order": 7,
+          "order": 6,
           "description": "",
           "override": false,
           "type": "bool",
@@ -24446,18 +24473,10 @@
         },
         {
           "name": "chain_shooting_cooldown_modifier",
-          "order": 8,
+          "order": 7,
           "description": "This is applied whenever the spider shoots (manual and automatic targeting), `automatic_weapon_cycling` is true and the next gun in line (which is then selected) has ammo. When all of the above is the case, the chain_shooting_cooldown_modifier is a multiplier on the remaining shooting cooldown: `cooldown = (remaining_cooldown × chain_shooting_cooldown_modifier)`.\n\nchain_shooting_cooldown_modifier is intended to be in the range of 0 to 1. This means that setting chain_shooting_cooldown_modifier to 0 reduces the remaining shooting cooldown to 0 while a chain_shooting_cooldown_modifier of 1 does not affect the remaining shooting cooldown at all.",
           "override": false,
           "type": "float",
-          "optional": false
-        },
-        {
-          "name": "chunk_exploration_radius",
-          "order": 5,
-          "description": "",
-          "override": false,
-          "type": "uint32",
           "optional": false
         },
         {
@@ -24485,7 +24504,7 @@
         },
         {
           "name": "guns",
-          "order": 12,
+          "order": 11,
           "description": "The guns this spider vehicle uses.",
           "override": false,
           "type": {
@@ -24512,7 +24531,7 @@
         },
         {
           "name": "movement_energy_consumption",
-          "order": 6,
+          "order": 5,
           "description": "",
           "override": false,
           "type": "Energy",
@@ -24528,7 +24547,7 @@
         },
         {
           "name": "torso_bob_speed",
-          "order": 10,
+          "order": 9,
           "description": "Cannot be negative.",
           "override": false,
           "type": "float",
@@ -24540,7 +24559,7 @@
         },
         {
           "name": "torso_rotation_speed",
-          "order": 9,
+          "order": 8,
           "description": "The orientation of the torso of the spider affects the shooting direction and the drawing of the graphics and lights.",
           "override": false,
           "type": "float",
@@ -24552,7 +24571,7 @@
         },
         {
           "name": "trash_inventory_size",
-          "order": 11,
+          "order": 10,
           "description": "If set to 0 then the spider will not have a Logistics tab.",
           "override": false,
           "type": "ItemStackIndex",
@@ -29335,7 +29354,7 @@
         },
         {
           "name": "environment_sounds_transition_fade_in_ticks",
-          "order": 169,
+          "order": 166,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -29829,30 +29848,6 @@
           "optional": false
         },
         {
-          "name": "music_transition_fade_in_ticks",
-          "order": 168,
-          "description": "",
-          "override": false,
-          "type": "uint32",
-          "optional": false
-        },
-        {
-          "name": "music_transition_fade_out_ticks",
-          "order": 166,
-          "description": "",
-          "override": false,
-          "type": "uint32",
-          "optional": false
-        },
-        {
-          "name": "music_transition_pause_ticks",
-          "order": 167,
-          "description": "",
-          "override": false,
-          "type": "uint32",
-          "optional": false
-        },
-        {
           "name": "player_colors",
           "order": 49,
           "description": "The table with `name = \"default\"` must exist and be the first member of the array.",
@@ -30032,6 +30027,14 @@
           "description": "",
           "override": false,
           "type": "float",
+          "optional": false
+        },
+        {
+          "name": "time_to_show_full_health_bar",
+          "order": 167,
+          "description": "The number of ticks to show a segmented unit's health bar after fully regenerating.",
+          "override": false,
+          "type": "MapTick",
           "optional": false
         },
         {
@@ -35490,7 +35493,7 @@
         },
         {
           "name": "allow_remote_driving",
-          "order": 14,
+          "order": 15,
           "description": "",
           "override": false,
           "type": "bool",
@@ -35515,6 +35518,18 @@
             "full_format": false
           },
           "optional": false
+        },
+        {
+          "name": "chunk_exploration_radius",
+          "order": 14,
+          "description": "",
+          "override": false,
+          "type": "uint32",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
         },
         {
           "name": "crash_trigger",
@@ -46503,7 +46518,7 @@
       "properties": [
         {
           "name": "count",
-          "order": 3,
+          "order": 2,
           "description": "",
           "override": false,
           "type": "ItemCountType",
@@ -46518,16 +46533,8 @@
           "order": 1,
           "description": "",
           "override": false,
-          "type": "ItemID",
+          "type": "ItemIDFilter",
           "optional": false
-        },
-        {
-          "name": "item_quality",
-          "order": 2,
-          "description": "",
-          "override": false,
-          "type": "QualityID",
-          "optional": true
         },
         {
           "name": "type",
@@ -59524,7 +59531,7 @@
       "properties": [
         {
           "name": "count",
-          "order": 6,
+          "order": 7,
           "description": "Only loaded if `results` is not defined.\n\nHow many of result are dropped.",
           "override": false,
           "type": "uint16",
@@ -59536,7 +59543,7 @@
         },
         {
           "name": "fluid_amount",
-          "order": 3,
+          "order": 4,
           "description": "The amount of fluid that is used up when this object is mined. If this is > 0, this object cannot be mined by hand.",
           "override": false,
           "type": "FluidAmount",
@@ -59547,8 +59554,16 @@
           }
         },
         {
+          "name": "include_in_show_counts",
+          "order": 1,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true
+        },
+        {
           "name": "mining_particle",
-          "order": 4,
+          "order": 5,
           "description": "Name of a [ParticlePrototype](prototype:ParticlePrototype). Which set of particles to use.",
           "override": false,
           "type": "ParticleID",
@@ -59564,7 +59579,7 @@
         },
         {
           "name": "mining_trigger",
-          "order": 7,
+          "order": 8,
           "description": "",
           "override": false,
           "type": "Trigger",
@@ -59572,7 +59587,7 @@
         },
         {
           "name": "required_fluid",
-          "order": 5,
+          "order": 6,
           "description": "Name of a [FluidPrototype](prototype:FluidPrototype). The fluid that is used up when this object is mined.",
           "override": false,
           "type": "FluidID",
@@ -59580,7 +59595,7 @@
         },
         {
           "name": "result",
-          "order": 2,
+          "order": 3,
           "description": "Only loaded if `results` is not defined.\n\nWhich item is dropped when this is mined. Cannot be empty. If you want the entity to not be minable, don't specify the minable properties, if you want it to be minable with no result item, don't specify the result at all.",
           "override": false,
           "type": "ItemID",
@@ -59588,7 +59603,7 @@
         },
         {
           "name": "results",
-          "order": 1,
+          "order": 2,
           "description": "The items that are returned when this object is mined.",
           "override": false,
           "type": {
@@ -70502,8 +70517,36 @@
       ]
     },
     {
-      "name": "SpawnPoint",
+      "name": "SpacingItem",
       "order": 514,
+      "description": "",
+      "abstract": false,
+      "inline": false,
+      "type": {
+        "complex_type": "struct"
+      },
+      "properties": [
+        {
+          "name": "index",
+          "order": 0,
+          "description": "The index of the row or column after which to insert `spacing`.",
+          "override": false,
+          "type": "uint32_t",
+          "optional": false
+        },
+        {
+          "name": "spacing",
+          "order": 1,
+          "description": "The spacing in scaled pixels between columns `column` and `column + 1`.",
+          "override": false,
+          "type": "int32_t",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "SpawnPoint",
+      "order": 515,
       "description": "The definition of a evolution and probability weights for a [spawnable unit](prototype:UnitSpawnDefinition) for a [EnemySpawnerPrototype](prototype:EnemySpawnerPrototype).\n\nIt can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the evolution factor and the second is the spawn weight.",
       "abstract": false,
       "inline": false,
@@ -70544,7 +70587,7 @@
     },
     {
       "name": "SpeechBubbleStyleSpecification",
-      "order": 515,
+      "order": 516,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -70616,7 +70659,7 @@
     },
     {
       "name": "SpiderEngineSpecification",
-      "order": 516,
+      "order": 517,
       "description": "Used by [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -70658,7 +70701,7 @@
     },
     {
       "name": "SpiderLegGraphicsSet",
-      "order": 517,
+      "order": 518,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -70774,7 +70817,7 @@
     },
     {
       "name": "SpiderLegPart",
-      "order": 518,
+      "order": 519,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70894,7 +70937,7 @@
     },
     {
       "name": "SpiderLegSpecification",
-      "order": 519,
+      "order": 520,
       "description": "Used by [SpiderEngineSpecification](prototype:SpiderEngineSpecification) for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -70954,7 +70997,7 @@
     },
     {
       "name": "SpiderLegTriggerEffect",
-      "order": 520,
+      "order": 521,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70982,7 +71025,7 @@
     },
     {
       "name": "SpiderTorsoGraphicsSet",
-      "order": 521,
+      "order": 522,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71050,7 +71093,7 @@
     },
     {
       "name": "SpiderVehicleGraphicsSet",
-      "order": 522,
+      "order": 523,
       "description": "Used to specify the graphics for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "parent": "SpiderTorsoGraphicsSet",
       "abstract": false,
@@ -71161,7 +71204,7 @@
     },
     {
       "name": "SpoilToTriggerResult",
-      "order": 523,
+      "order": 524,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71189,7 +71232,7 @@
     },
     {
       "name": "Sprite",
-      "order": 524,
+      "order": 525,
       "description": "Specifies one picture that can be used in the game.\n\nWhen there is more than one sprite or [Animation](prototype:Animation) frame with the same source file and dimensions/position in the game, they all share the same memory.",
       "examples": [
         "```\n-- simple sprite\npicture_set_enemy =\n{\n  filename = \"__base__/graphics/entity/land-mine/land-mine-set-enemy.png\",\n  priority = \"medium\",\n  width = 32,\n  height = 32\n}\n```",
@@ -71249,7 +71292,7 @@
     },
     {
       "name": "Sprite16Way",
-      "order": 525,
+      "order": 526,
       "description": "A map of sprites for all 16 directions of the entity.",
       "abstract": false,
       "inline": false,
@@ -71408,7 +71451,7 @@
     },
     {
       "name": "Sprite4Way",
-      "order": 526,
+      "order": 527,
       "description": "Sprites for the 4 major directions of the entity. If this is loaded as a single Sprite, it applies to all directions.\n\nThis struct is either loaded as `sheets` or `sheet` or a map of one sprite per direction. For per direction sprites, the sprites are loaded via `north`, `east`, `south` and `west`.",
       "examples": [
         "```\n-- separate sprites per direction\n{\n  north =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-N.png\",\n    priority = \"extra-high\",\n    width = 71,\n    height = 38,\n    shift = util.by_pixel(2.25, 13.5),\n    scale = 0.5\n  },\n  east =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-E.png\",\n    priority = \"extra-high\",\n    width = 42,\n    height = 76,\n    shift = util.by_pixel(-24.5, 1),\n    scale = 0.5\n  },\n  south =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-S.png\",\n    priority = \"extra-high\",\n    width = 88,\n    height = 61,\n    shift = util.by_pixel(0, -31.25),\n    scale = 0.5\n  },\n  west =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-W.png\",\n    priority = \"extra-high\",\n    width = 39,\n    height = 73,\n    shift = util.by_pixel(25.75, 1.25),\n    scale = 0.5\n  }\n}\n```"
@@ -71481,7 +71524,7 @@
     },
     {
       "name": "SpriteFlags",
-      "order": 527,
+      "order": 528,
       "description": "An array containing the following values.",
       "examples": [
         "```\nflags = { \"linear-minification\", \"linear-magnification\" }\n```"
@@ -71665,7 +71708,7 @@
     },
     {
       "name": "SpriteNWaySheet",
-      "order": 528,
+      "order": 529,
       "description": "",
       "examples": [
         "```\nsheet =\n{\n  filename = \"__base__/graphics/entity/burner-inserter/burner-inserter-platform.png\",\n  priority = \"extra-high\",\n  width = 105,\n  height = 79,\n  shift = util.by_pixel(1.5, 7.5-1),\n  scale = 0.5\n}\n```"
@@ -71702,7 +71745,7 @@
     },
     {
       "name": "SpriteParameters",
-      "order": 529,
+      "order": 530,
       "description": "",
       "parent": "SpriteSource",
       "abstract": true,
@@ -71927,7 +71970,7 @@
     },
     {
       "name": "SpritePriority",
-      "order": 530,
+      "order": 531,
       "description": "This sets the \"caching priority\" of a sprite, so deciding priority of it being included in VRAM instead of streaming it and is therefore a purely technical value. See [here](https://forums.factorio.com/viewtopic.php?p=437380#p437380) and [here](https://www.factorio.com/blog/post/fff-264). The possible values are listed below.",
       "abstract": false,
       "inline": false,
@@ -71975,7 +72018,7 @@
     },
     {
       "name": "SpriteSheet",
-      "order": 531,
+      "order": 532,
       "description": "",
       "parent": "SpriteParameters",
       "abstract": false,
@@ -72075,7 +72118,7 @@
     },
     {
       "name": "SpriteSizeType",
-      "order": 532,
+      "order": 533,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72083,7 +72126,7 @@
     },
     {
       "name": "SpriteSource",
-      "order": 533,
+      "order": 534,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -72214,7 +72257,7 @@
     },
     {
       "name": "SpriteUsageHint",
-      "order": 534,
+      "order": 535,
       "description": "Provides hint to sprite atlas system, so it can pack sprites that are related to each other to the same sprite atlas.",
       "abstract": false,
       "inline": false,
@@ -72297,7 +72340,7 @@
     },
     {
       "name": "SpriteUsageSurfaceHint",
-      "order": 535,
+      "order": 536,
       "description": "Provides hint to sprite atlas system, so it can try to put sprites that are intended to be used at the same locations to the same sprite atlas.",
       "abstract": false,
       "inline": false,
@@ -72345,7 +72388,7 @@
     },
     {
       "name": "SpriteVariations",
-      "order": 536,
+      "order": 537,
       "description": "",
       "examples": [
         "```\n-- array of sprites\npictures =\n{\n  {size = 64, filename = \"__base__/graphics/icons/coal.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-1.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-2.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-3.png\", scale = 0.5, mipmap_count = 4}\n}\n```",
@@ -72380,7 +72423,7 @@
     },
     {
       "name": "StackTransferTipTrigger",
-      "order": 537,
+      "order": 538,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -72433,7 +72476,7 @@
     },
     {
       "name": "StateSteeringSettings",
-      "order": 538,
+      "order": 539,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72477,7 +72520,7 @@
     },
     {
       "name": "StatelessVisualisation",
-      "order": 539,
+      "order": 540,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72815,7 +72858,7 @@
     },
     {
       "name": "StatelessVisualisations",
-      "order": 540,
+      "order": 541,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72833,7 +72876,7 @@
     },
     {
       "name": "StatusColors",
-      "order": 541,
+      "order": 542,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72917,7 +72960,7 @@
     },
     {
       "name": "SteeringSettings",
-      "order": 542,
+      "order": 543,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -72945,7 +72988,7 @@
     },
     {
       "name": "StorageTankPictures",
-      "order": 543,
+      "order": 544,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -73005,7 +73048,7 @@
     },
     {
       "name": "StreamAttackParameters",
-      "order": 544,
+      "order": 545,
       "description": "",
       "parent": "BaseAttackParameters",
       "abstract": false,
@@ -73087,7 +73130,7 @@
     },
     {
       "name": "StreamFluidProperties",
-      "order": 545,
+      "order": 546,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -73119,7 +73162,7 @@
     },
     {
       "name": "StreamTriggerDelivery",
-      "order": 546,
+      "order": 547,
       "description": "",
       "parent": "TriggerDeliveryItem",
       "abstract": false,
@@ -73159,7 +73202,7 @@
     },
     {
       "name": "StretchRule",
-      "order": 547,
+      "order": 548,
       "description": "Sets whether a GUI element can be stretched or squashed.",
       "abstract": false,
       "inline": false,
@@ -73192,7 +73235,7 @@
     },
     {
       "name": "Stripe",
-      "order": 548,
+      "order": 549,
       "description": "Used as an alternative way to specify animations.",
       "abstract": false,
       "inline": false,
@@ -73252,7 +73295,7 @@
     },
     {
       "name": "StyleSpecification",
-      "order": 549,
+      "order": 550,
       "description": "Loaded as one of the [BaseStyleSpecification](prototype:BaseStyleSpecification) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -73420,7 +73463,7 @@
     },
     {
       "name": "StyleWithClickableGraphicalSetSpecification",
-      "order": 550,
+      "order": 551,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": true,
@@ -73505,7 +73548,7 @@
     },
     {
       "name": "SurfaceCondition",
-      "order": 551,
+      "order": 552,
       "description": "Requires Space Age to use.",
       "abstract": false,
       "inline": false,
@@ -73543,7 +73586,7 @@
     },
     {
       "name": "SurfaceID",
-      "order": 552,
+      "order": 553,
       "description": "The name of a [SurfacePrototype](prototype:SurfacePrototype).",
       "examples": [
         "```\n\"space-platform\"\n```"
@@ -73554,7 +73597,7 @@
     },
     {
       "name": "SurfacePropertyID",
-      "order": 553,
+      "order": 554,
       "description": "The name of a [SurfacePropertyPrototype](prototype:SurfacePropertyPrototype).",
       "examples": [
         "```\n\"solar-power\"\n```",
@@ -73566,7 +73609,7 @@
     },
     {
       "name": "SurfaceRenderParameters",
-      "order": 554,
+      "order": 555,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -73662,7 +73705,7 @@
     },
     {
       "name": "SwitchStyleSpecification",
-      "order": 555,
+      "order": 556,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -73758,7 +73801,7 @@
     },
     {
       "name": "TabStyleSpecification",
-      "order": 556,
+      "order": 557,
       "description": "",
       "parent": "StyleWithClickableGraphicalSetSpecification",
       "abstract": false,
@@ -73934,7 +73977,7 @@
     },
     {
       "name": "TabbedPaneStyleSpecification",
-      "order": 557,
+      "order": 558,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -73982,7 +74025,7 @@
     },
     {
       "name": "TableStyleSpecification",
-      "order": 558,
+      "order": 559,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -74121,7 +74164,17 @@
           "order": 1,
           "description": "",
           "override": false,
-          "type": "int32",
+          "type": {
+            "complex_type": "union",
+            "options": [
+              "int32",
+              {
+                "complex_type": "array",
+                "value": "SpacingItem"
+              }
+            ],
+            "full_format": false
+          },
           "optional": true
         },
         {
@@ -74244,7 +74297,17 @@
           "order": 2,
           "description": "",
           "override": false,
-          "type": "int32",
+          "type": {
+            "complex_type": "union",
+            "options": [
+              "int32",
+              {
+                "complex_type": "array",
+                "value": "SpacingItem"
+              }
+            ],
+            "full_format": false
+          },
           "optional": true
         },
         {
@@ -74259,7 +74322,7 @@
     },
     {
       "name": "TechnologyID",
-      "order": 559,
+      "order": 560,
       "description": "The name of a [TechnologyPrototype](prototype:TechnologyPrototype).",
       "examples": [
         "```\n\"automated-rail-transportation\"\n```",
@@ -74271,7 +74334,7 @@
     },
     {
       "name": "TechnologySlotStyleSpecification",
-      "order": 560,
+      "order": 561,
       "description": "",
       "parent": "ButtonStyleSpecification",
       "abstract": false,
@@ -74318,6 +74381,14 @@
           "description": "",
           "override": false,
           "type": "ElementImageSet",
+          "optional": true
+        },
+        {
+          "name": "drag_handle_style",
+          "order": 34,
+          "description": "",
+          "override": false,
+          "type": "EmptyWidgetStyle",
           "optional": true
         },
         {
@@ -74559,7 +74630,7 @@
     },
     {
       "name": "TechnologyTrigger",
-      "order": 561,
+      "order": 562,
       "description": "Loaded as one of the technology triggers, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -74607,7 +74678,7 @@
     },
     {
       "name": "TechnologyUnit",
-      "order": 562,
+      "order": 563,
       "description": "Either `count` or `count_formula` must be defined, never both.",
       "examples": [
         "```\nunit =\n{\n  count_formula = \"2^(L-6)*1000\",\n  ingredients =\n  {\n    {\"automation-science-pack\", 1},\n    {\"logistic-science-pack\", 1},\n    {\"chemical-science-pack\", 1},\n    {\"production-science-pack\", 1},\n    {\"utility-science-pack\", 1},\n    {\"space-science-pack\", 1}\n  },\n  time = 60\n}\n```"
@@ -74660,7 +74731,7 @@
     },
     {
       "name": "TerritorySettings",
-      "order": 563,
+      "order": 564,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -74712,7 +74783,7 @@
     },
     {
       "name": "TextBoxStyleSpecification",
-      "order": 564,
+      "order": 565,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -74856,7 +74927,7 @@
     },
     {
       "name": "ThrowCapsuleAction",
-      "order": 565,
+      "order": 566,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -74899,7 +74970,7 @@
     },
     {
       "name": "ThrusterGraphicsSet",
-      "order": 566,
+      "order": 567,
       "description": "",
       "parent": "WorkingVisualisations",
       "abstract": false,
@@ -74984,7 +75055,7 @@
     },
     {
       "name": "ThrusterPerformancePoint",
-      "order": 567,
+      "order": 568,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75034,7 +75105,7 @@
     },
     {
       "name": "TileAndAlpha",
-      "order": 568,
+      "order": 569,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -75062,7 +75133,7 @@
     },
     {
       "name": "TileBasedParticleTints",
-      "order": 569,
+      "order": 570,
       "description": "Used for particles created with [apply_tile_tint](prototype:CreateParticleTriggerEffectItem::apply_tile_tint) defined.",
       "abstract": false,
       "inline": false,
@@ -75092,7 +75163,7 @@
     },
     {
       "name": "TileBuildSound",
-      "order": 570,
+      "order": 571,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -75136,7 +75207,7 @@
     },
     {
       "name": "TileBuildabilityRule",
-      "order": 571,
+      "order": 572,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75186,7 +75257,7 @@
     },
     {
       "name": "TileEffectDefinitionID",
-      "order": 572,
+      "order": 573,
       "description": "The name of an [TileEffectDefinition](prototype:TileEffectDefinition).",
       "examples": [
         "```\n\"water\"\n```"
@@ -75197,7 +75268,7 @@
     },
     {
       "name": "TileID",
-      "order": 573,
+      "order": 574,
       "description": "The name of a [TilePrototype](prototype:TilePrototype).",
       "examples": [
         "```\n\"grass-2\"\n```",
@@ -75209,7 +75280,7 @@
     },
     {
       "name": "TileIDRestriction",
-      "order": 574,
+      "order": 575,
       "description": "Name of an allowed tile, or a list of two tile names for entities allowed on transitions.",
       "abstract": false,
       "inline": true,
@@ -75230,7 +75301,7 @@
     },
     {
       "name": "TileLightPictures",
-      "order": 575,
+      "order": 576,
       "description": "",
       "parent": "TileSpriteLayout",
       "abstract": false,
@@ -75251,7 +75322,7 @@
     },
     {
       "name": "TileMainPictures",
-      "order": 576,
+      "order": 577,
       "description": "",
       "parent": "TileSpriteLayout",
       "abstract": false,
@@ -75295,7 +75366,7 @@
     },
     {
       "name": "TilePosition",
-      "order": 577,
+      "order": 578,
       "description": "Coordinates of a tile on a map where each integer `x`/`y` represents a different tile. This uses the same format as [MapPosition](prototype:MapPosition), except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.",
       "abstract": false,
       "inline": false,
@@ -75336,7 +75407,7 @@
     },
     {
       "name": "TileRenderLayer",
-      "order": 578,
+      "order": 579,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75379,7 +75450,7 @@
     },
     {
       "name": "TileSpriteLayout",
-      "order": 579,
+      "order": 580,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -75459,7 +75530,7 @@
     },
     {
       "name": "TileSpriteLayoutVariant",
-      "order": 580,
+      "order": 581,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75535,7 +75606,7 @@
     },
     {
       "name": "TileTransitionSpritesheetLayout",
-      "order": 581,
+      "order": 582,
       "description": "The properties from the parent TileSpriteLayoutVariant provide defaults for the TileTransitionVariantLayouts.\n\nThe `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the corresponding properties in the TileTransitionVariantLayouts. They are used when the TileTransitionVariantLayouts have the same layout. See the example below.",
       "examples": [
         "```\n-- all the layers use the same layout, at different offsets inside the spritesheet\nlayout =\n{\n  scale = 0.5,\n  inner_corner_count = 8,\n  outer_corner_count = 8,\n  o_transition_count = 1,\n  outer_corner_x = 576,\n  u_transition_x = 1728,\n\n  overlay = { y_offset = 0 },  -- 0 is default, but by defining overlay property, we enable the layer\n  mask = { y_offset = 512 },\n  background = { y_offset = 1024 }\n}\n```"
@@ -75895,7 +75966,7 @@
     },
     {
       "name": "TileTransitionVariantLayout",
-      "order": 582,
+      "order": 583,
       "description": "The properties from the parent TileSpriteLayoutVariant provide defaults for the properties defined here.\n\nThe `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the properties inside the specific variant. They are used to specify select values for the variant without creating the table for the variant.\n\nThese various ways to define the variants are also shown in the examples below.",
       "examples": [
         "```\n-- longest version, using TileSpriteLayoutVariant tables for each variant\n{\n  inner_corner =\n  {\n    scale = 0.5,\n    count = 8,\n  },\n  outer_corner =\n  {\n  \tscale = 0.5,\n  \tcount = 8,\n  \tx = 576\n  },\n  u_transition  =\n  {\n  \tscale = 0.5,\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
@@ -76273,7 +76344,7 @@
     },
     {
       "name": "TileTransitions",
-      "order": 583,
+      "order": 584,
       "description": "Used for [TilePrototype](prototype:TilePrototype) graphics.\n\nUse `layout` with `spritesheet` to define all the tile layers inside the `layout` property. The `*_enabled`, `*_layout` and `*_spritesheet` properties can be used to override specific layers of a reused layout.",
       "abstract": false,
       "inline": false,
@@ -76712,7 +76783,7 @@
     },
     {
       "name": "TileTransitionsBetweenTransitions",
-      "order": 584,
+      "order": 585,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -76741,7 +76812,7 @@
     },
     {
       "name": "TileTransitionsToTiles",
-      "order": 585,
+      "order": 586,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -76773,7 +76844,7 @@
     },
     {
       "name": "TileTransitionsVariants",
-      "order": 586,
+      "order": 587,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76867,7 +76938,7 @@
     },
     {
       "name": "TimeElapsedTipTrigger",
-      "order": 587,
+      "order": 588,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76898,7 +76969,7 @@
     },
     {
       "name": "TimeSinceLastTipActivationTipTrigger",
-      "order": 588,
+      "order": 589,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76929,7 +77000,7 @@
     },
     {
       "name": "TintProcessionBezierControlPoint",
-      "order": 589,
+      "order": 590,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -76997,7 +77068,7 @@
     },
     {
       "name": "TintProcessionLayer",
-      "order": 590,
+      "order": 591,
       "description": "Fullscreen overlay which blends gradient from top to bottom edge of the screen using [premultiplied alpha blending](prototype:BlendMode::normal).",
       "abstract": false,
       "inline": false,
@@ -77043,7 +77114,7 @@
     },
     {
       "name": "TipStatus",
-      "order": 591,
+      "order": 592,
       "description": "This is used by [TipsAndTricksItem](prototype:TipsAndTricksItem) for the initial starting status. One of the following values:",
       "abstract": false,
       "inline": false,
@@ -77096,7 +77167,7 @@
     },
     {
       "name": "TipTrigger",
-      "order": 592,
+      "order": 593,
       "description": "Loaded as one of the tip triggers, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -77354,7 +77425,7 @@
     },
     {
       "name": "ToggleRailLayerTipTrigger",
-      "order": 593,
+      "order": 594,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -77378,7 +77449,7 @@
     },
     {
       "name": "ToggleShowEntityInfoTipTrigger",
-      "order": 594,
+      "order": 595,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -77402,7 +77473,7 @@
     },
     {
       "name": "TrainBrakingForceBonusModifier",
-      "order": 595,
+      "order": 596,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -77450,7 +77521,7 @@
     },
     {
       "name": "TrainPathFinderConstants",
-      "order": 596,
+      "order": 597,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -77558,7 +77629,7 @@
     },
     {
       "name": "TrainStopDrawingBoxes",
-      "order": 597,
+      "order": 598,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -77602,7 +77673,7 @@
     },
     {
       "name": "TrainStopLight",
-      "order": 598,
+      "order": 599,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77638,7 +77709,7 @@
     },
     {
       "name": "TrainVisualizationConstants",
-      "order": 599,
+      "order": 600,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77714,7 +77785,7 @@
     },
     {
       "name": "TransitionApplication",
-      "order": 600,
+      "order": 601,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77762,7 +77833,7 @@
     },
     {
       "name": "TransportBeltAnimationSet",
-      "order": 601,
+      "order": 602,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -78101,7 +78172,7 @@
     },
     {
       "name": "TransportBeltAnimationSetWithCorners",
-      "order": 602,
+      "order": 603,
       "description": "",
       "parent": "TransportBeltAnimationSet",
       "abstract": false,
@@ -78306,7 +78377,7 @@
     },
     {
       "name": "TransportBeltConnectorFrame",
-      "order": 603,
+      "order": 604,
       "description": "Used to define the graphics for the (in vanilla) yellow frame that is used when a [TransportBeltPrototype](prototype:TransportBeltPrototype) is connected to the circuit network.",
       "abstract": false,
       "inline": false,
@@ -78510,7 +78581,7 @@
     },
     {
       "name": "TreeVariation",
-      "order": 604,
+      "order": 605,
       "description": "Tree has number of \"dying\" stages, which is deduced from frame count of `shadow` if shadow is defined, otherwise from frame count of `trunk`. Frame count of `leaves` has to be one less than deduced number stages, as last stage is always assumed to be leafless.",
       "abstract": false,
       "inline": false,
@@ -78614,7 +78685,7 @@
     },
     {
       "name": "Trigger",
-      "order": 605,
+      "order": 606,
       "description": "Loaded as one of the [TriggerItem](prototype:TriggerItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -78682,7 +78753,7 @@
     },
     {
       "name": "TriggerDelivery",
-      "order": 606,
+      "order": 607,
       "description": "Loaded as one of the [TriggerDeliveryItem](prototype:TriggerDeliveryItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -78730,7 +78801,7 @@
     },
     {
       "name": "TriggerDeliveryItem",
-      "order": 607,
+      "order": 608,
       "description": "The abstract base of all [TriggerDeliveries](prototype:TriggerDelivery).",
       "abstract": true,
       "inline": false,
@@ -78758,7 +78829,7 @@
     },
     {
       "name": "TriggerEffect",
-      "order": 608,
+      "order": 609,
       "description": "Loaded as one of the [TriggerEffectItem](prototype:TriggerEffectItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -79006,7 +79077,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 609,
+      "order": 610,
       "description": "The abstract base of all [TriggerEffects](prototype:TriggerEffect).",
       "abstract": true,
       "inline": false,
@@ -79086,7 +79157,7 @@
     },
     {
       "name": "TriggerEffectWithCooldown",
-      "order": 610,
+      "order": 611,
       "description": "A [TriggerEffect](prototype:TriggerEffect) with cooldown conditions, used to limit the frequency of trigger effects that would otherwise fire every single tick. If multiple cooldown conditions are defined, then all cooldowns must be satisfied before the effect can be triggered.",
       "abstract": false,
       "inline": false,
@@ -79154,7 +79225,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 611,
+      "order": 612,
       "description": "The abstract base of all [Triggers](prototype:Trigger).",
       "abstract": true,
       "inline": false,
@@ -79256,7 +79327,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 612,
+      "order": 613,
       "description": "An array of names of [TriggerTargetType](prototype:TriggerTargetType). See [Design discussion: Trigger target type](https://forums.factorio.com/71657) and [Blacklist for prototypes turrets shouldn't attack](https://forums.factorio.com/86164).",
       "abstract": false,
       "inline": false,
@@ -79267,7 +79338,7 @@
     },
     {
       "name": "TrivialSmokeID",
-      "order": 613,
+      "order": 614,
       "description": "The name of a [TrivialSmokePrototype](prototype:TrivialSmokePrototype).",
       "examples": [
         "```\n\"smoke-building\"\n```",
@@ -79279,7 +79350,7 @@
     },
     {
       "name": "TurretAttackModifier",
-      "order": 614,
+      "order": 615,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -79343,7 +79414,7 @@
     },
     {
       "name": "TurretBaseVisualisation",
-      "order": 615,
+      "order": 616,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79470,7 +79541,7 @@
     },
     {
       "name": "TurretGraphicsSet",
-      "order": 616,
+      "order": 617,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79500,7 +79571,7 @@
     },
     {
       "name": "TurretSpecialEffect",
-      "order": 617,
+      "order": 618,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79587,7 +79658,7 @@
     },
     {
       "name": "TurretSpecialEffectCenter",
-      "order": 618,
+      "order": 619,
       "description": "If this is loaded as a single Vector, it is used for all directions.",
       "abstract": false,
       "inline": false,
@@ -79678,7 +79749,7 @@
     },
     {
       "name": "TurretState",
-      "order": 619,
+      "order": 620,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79731,7 +79802,7 @@
     },
     {
       "name": "UndergroundBeltStructure",
-      "order": 620,
+      "order": 621,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -79807,7 +79878,7 @@
     },
     {
       "name": "UnitAISettings",
-      "order": 621,
+      "order": 622,
       "description": "Used by [UnitPrototype](prototype:UnitPrototype) and [SpiderUnitPrototype](prototype:SpiderUnitPrototype).",
       "abstract": false,
       "inline": false,
@@ -79875,7 +79946,7 @@
     },
     {
       "name": "UnitAlternativeFrameSequence",
-      "order": 622,
+      "order": 623,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79993,7 +80064,7 @@
     },
     {
       "name": "UnitGroupSettings",
-      "order": 623,
+      "order": 624,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80109,7 +80180,7 @@
     },
     {
       "name": "UnitSpawnDefinition",
-      "order": 624,
+      "order": 625,
       "description": "It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the unit and the second is the spawn points.",
       "abstract": false,
       "inline": false,
@@ -80156,7 +80227,7 @@
     },
     {
       "name": "UnlockQualityModifier",
-      "order": 625,
+      "order": 626,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -80200,7 +80271,7 @@
     },
     {
       "name": "UnlockRecipeModifier",
-      "order": 626,
+      "order": 627,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -80244,7 +80315,7 @@
     },
     {
       "name": "UnlockRecipeTipTrigger",
-      "order": 627,
+      "order": 628,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80275,7 +80346,7 @@
     },
     {
       "name": "UnlockSpaceLocationModifier",
-      "order": 628,
+      "order": 629,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -80319,7 +80390,7 @@
     },
     {
       "name": "UseConfirmTipTrigger",
-      "order": 629,
+      "order": 630,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -80343,7 +80414,7 @@
     },
     {
       "name": "UseOnSelfCapsuleAction",
-      "order": 630,
+      "order": 631,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80386,7 +80457,7 @@
     },
     {
       "name": "UsePipetteTipTrigger",
-      "order": 631,
+      "order": 632,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -80410,7 +80481,7 @@
     },
     {
       "name": "UseRailPlannerTipTrigger",
-      "order": 632,
+      "order": 633,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -80442,7 +80513,7 @@
     },
     {
       "name": "VariableAmbientSoundCompositionMode",
-      "order": 633,
+      "order": 634,
       "description": "Defines how are individual samples selected and played after each other.",
       "abstract": false,
       "inline": false,
@@ -80475,7 +80546,7 @@
     },
     {
       "name": "VariableAmbientSoundLayer",
-      "order": 634,
+      "order": 635,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80610,7 +80681,7 @@
     },
     {
       "name": "VariableAmbientSoundLayerSample",
-      "order": 635,
+      "order": 636,
       "description": "First property is the name of a layer.\n\nSecond property is the sample index.",
       "abstract": false,
       "inline": false,
@@ -80624,7 +80695,7 @@
     },
     {
       "name": "VariableAmbientSoundLayerStateProperties",
-      "order": 636,
+      "order": 637,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80719,7 +80790,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateConditions",
-      "order": 637,
+      "order": 638,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80755,7 +80826,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateItem",
-      "order": 638,
+      "order": 639,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80783,7 +80854,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateTrigger",
-      "order": 639,
+      "order": 640,
       "description": "Defines how a transition to next state is triggered.",
       "abstract": false,
       "inline": false,
@@ -80806,7 +80877,7 @@
     },
     {
       "name": "VariableAmbientSoundState",
-      "order": 640,
+      "order": 641,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80919,7 +80990,7 @@
     },
     {
       "name": "VariableAmbientSoundStateType",
-      "order": 641,
+      "order": 642,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80952,7 +81023,7 @@
     },
     {
       "name": "VariableAmbientSoundVariableSound",
-      "order": 642,
+      "order": 643,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81014,7 +81085,7 @@
     },
     {
       "name": "Vector",
-      "order": 643,
+      "order": 644,
       "description": "A vector is a two-element array or dictionary containing the x and y components. Positive x goes east, positive y goes south.",
       "examples": [
         "```\nshift = {0, 12}\n```",
@@ -81060,7 +81131,7 @@
     },
     {
       "name": "Vector3D",
-      "order": 644,
+      "order": 645,
       "description": "If this is specified as a three-element array then the array items are x, y and z, in that order.",
       "abstract": false,
       "inline": false,
@@ -81110,7 +81181,7 @@
     },
     {
       "name": "Vector4f",
-      "order": 645,
+      "order": 646,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81169,7 +81240,7 @@
     },
     {
       "name": "VectorRotation",
-      "order": 646,
+      "order": 647,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -81200,7 +81271,7 @@
     },
     {
       "name": "VehicleLogisticsModifier",
-      "order": 647,
+      "order": 648,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -81236,7 +81307,7 @@
     },
     {
       "name": "VerticalAlign",
-      "order": 648,
+      "order": 649,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81264,7 +81335,7 @@
     },
     {
       "name": "VerticalFlowStyleSpecification",
-      "order": 649,
+      "order": 650,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -81296,7 +81367,7 @@
     },
     {
       "name": "VerticalScrollBarStyleSpecification",
-      "order": 650,
+      "order": 651,
       "description": "",
       "parent": "ScrollBarStyleSpecification",
       "abstract": false,
@@ -81320,7 +81391,7 @@
     },
     {
       "name": "VirtualSignalID",
-      "order": 651,
+      "order": 652,
       "description": "The name of a [VirtualSignalPrototype](prototype:VirtualSignalPrototype).",
       "examples": [
         "```\n\"signal-red\"\n```",
@@ -81332,7 +81403,7 @@
     },
     {
       "name": "VisualState",
-      "order": 652,
+      "order": 653,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81384,7 +81455,7 @@
     },
     {
       "name": "VoidEnergySource",
-      "order": 653,
+      "order": 654,
       "description": "Void energy sources provide unlimited free energy.",
       "examples": [
         "```\nenergy_source = {type = \"void\"}\n```"
@@ -81411,7 +81482,7 @@
     },
     {
       "name": "WallPictures",
-      "order": 654,
+      "order": 655,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -81511,7 +81582,7 @@
     },
     {
       "name": "WaterReflectionDefinition",
-      "order": 655,
+      "order": 656,
       "description": "Entity water reflection. [Currently only renders](https://forums.factorio.com/100703) for [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype).",
       "abstract": false,
       "inline": false,
@@ -81555,7 +81626,7 @@
     },
     {
       "name": "WaterTileEffectParameters",
-      "order": 656,
+      "order": 657,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81786,7 +81857,7 @@
     },
     {
       "name": "Weight",
-      "order": 657,
+      "order": 658,
       "description": "Weight of an object. The weight is stored as a fixed-size 64 bit integer, with 16 bits reserved for decimal precision, meaning the smallest value step is `1/2^16`.",
       "abstract": false,
       "inline": false,
@@ -81794,7 +81865,7 @@
     },
     {
       "name": "WireConnectionPoint",
-      "order": 658,
+      "order": 659,
       "description": "Definition of a point where circuit network wires can be connected to an entity.",
       "abstract": false,
       "inline": false,
@@ -81822,7 +81893,7 @@
     },
     {
       "name": "WirePosition",
-      "order": 659,
+      "order": 660,
       "description": "Used by [WireConnectionPoint](prototype:WireConnectionPoint).",
       "abstract": false,
       "inline": false,
@@ -81858,7 +81929,7 @@
     },
     {
       "name": "WorkerRobotBatteryModifier",
-      "order": 660,
+      "order": 661,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -81906,7 +81977,7 @@
     },
     {
       "name": "WorkerRobotSpeedModifier",
-      "order": 661,
+      "order": 662,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -81954,7 +82025,7 @@
     },
     {
       "name": "WorkerRobotStorageModifier",
-      "order": 662,
+      "order": 663,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -82002,7 +82073,7 @@
     },
     {
       "name": "WorkingSound",
-      "order": 663,
+      "order": 664,
       "description": "This type is used to produce sound from in-game entities when they are working/idle.",
       "examples": [
         "```\n-- refinery\nworking_sound =\n{\n  sound = { filename = \"__base__/sound/oil-refinery.ogg\" },\n  idle_sound = { filename = \"__base__/sound/idle1.ogg\", volume = 0.6 },\n  apparent_volume = 2.5,\n}\n```",
@@ -82154,7 +82225,7 @@
     },
     {
       "name": "WorkingVisualisation",
-      "order": 664,
+      "order": 665,
       "description": "Used by crafting machines to display different graphics when the machine is running.",
       "abstract": false,
       "inline": false,
@@ -82628,7 +82699,7 @@
     },
     {
       "name": "WorkingVisualisations",
-      "order": 665,
+      "order": 666,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -82746,7 +82817,7 @@
     },
     {
       "name": "WorldAmbientSoundDefinition",
-      "order": 666,
+      "order": 667,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -82833,7 +82904,7 @@
     },
     {
       "name": "bool",
-      "order": 667,
+      "order": 668,
       "description": "A variable type which can have one of two values: `true` or `false`. Wikipedia has a [comprehensive article](https://en.wikipedia.org/wiki/Boolean) on Booleans.",
       "abstract": false,
       "inline": false,
@@ -82841,7 +82912,7 @@
     },
     {
       "name": "double",
-      "order": 668,
+      "order": 669,
       "description": "Format uses a dot as its decimal delimiter. Doubles are stored in the [double precision](http://en.wikipedia.org/wiki/Double-precision_floating-point_format) floating point format.\n\nMay not be [NaN](https://en.wikipedia.org/wiki/NaN).",
       "examples": [
         "```\n7.5\n6\n```"
@@ -82852,7 +82923,7 @@
     },
     {
       "name": "float",
-      "order": 669,
+      "order": 670,
       "description": "Format uses a dot as its decimal delimiter. Floats are stored in the [single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) floating point format.\n\nMay not be [NaN](https://en.wikipedia.org/wiki/NaN).",
       "examples": [
         "```\n7.5\n6\n```"
@@ -82863,7 +82934,7 @@
     },
     {
       "name": "int16",
-      "order": 670,
+      "order": 671,
       "description": "16 bit signed integer. Ranges from `-32 768` to `32 767`, or `[-2^15, 2^15-1]`.",
       "abstract": false,
       "inline": false,
@@ -82871,7 +82942,7 @@
     },
     {
       "name": "int32",
-      "order": 671,
+      "order": 672,
       "description": "32 bit signed integer. Ranges from `-2 147 483 648` to `2 147 483 647`, or `[-2^31, 2^31-1]`.",
       "abstract": false,
       "inline": false,
@@ -82879,7 +82950,7 @@
     },
     {
       "name": "int64",
-      "order": 672,
+      "order": 673,
       "description": "64 bit signed integer.",
       "abstract": false,
       "inline": false,
@@ -82887,7 +82958,7 @@
     },
     {
       "name": "int8",
-      "order": 673,
+      "order": 674,
       "description": "8 bit signed integer. Ranges from `-128` to `127`, or `[-2^7, 2^7-1]`.",
       "abstract": false,
       "inline": false,
@@ -82895,7 +82966,7 @@
     },
     {
       "name": "string",
-      "order": 674,
+      "order": 675,
       "description": "Strings are enclosed in double-quotes.",
       "examples": [
         "```\n\"Hello, world!\"\n```"
@@ -82906,7 +82977,7 @@
     },
     {
       "name": "uint16",
-      "order": 675,
+      "order": 676,
       "description": "16 bit unsigned integer. Ranges from `0` to `65 535`, or `[0, 2^16-1]`.",
       "abstract": false,
       "inline": false,
@@ -82914,7 +82985,7 @@
     },
     {
       "name": "uint32",
-      "order": 676,
+      "order": 677,
       "description": "32 bit unsigned integer. Ranges from `0` to `4 294 967 295`, or `[0, 2^32-1]`.",
       "abstract": false,
       "inline": false,
@@ -82922,7 +82993,7 @@
     },
     {
       "name": "uint64",
-      "order": 677,
+      "order": 678,
       "description": "64 bit unsigned integer.",
       "abstract": false,
       "inline": false,
@@ -82930,7 +83001,7 @@
     },
     {
       "name": "uint8",
-      "order": 678,
+      "order": 679,
       "description": "8 bit unsigned integer. Ranges from `0` to `255`, or `[0, 2^8-1]`.",
       "abstract": false,
       "inline": false,

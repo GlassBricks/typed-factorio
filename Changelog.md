@@ -1,3 +1,8 @@
+# v3.5.0
+
+- Updated to factorio version 2.0.21
+- Updated type of BlueprintEntity for Factorio v2.0! Special thanks to thedoh for helping out.
+
 # v3.4.0
 
 - Added different write-types for FluidID, ItemID, etc., and types that include them.
