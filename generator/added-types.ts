@@ -55,7 +55,7 @@ export function manualDefToRuntimeConcept(context: RuntimeGenerationContext, man
       },
       order: 0,
       description: getDescriptionFromJsDoc(manualDef.node),
-      manuallyAddedFrom: manualDef,
+      manuallyAdded: true,
     }
   } else if (manualDef.kind === "type") {
     return {
@@ -63,7 +63,7 @@ export function manualDefToRuntimeConcept(context: RuntimeGenerationContext, man
       type: getTypeFromTsType(manualDef.node.type),
       order: 0,
       description: getDescriptionFromJsDoc(manualDef.node),
-      manuallyAddedFrom: manualDef,
+      manuallyAdded: true,
     }
   } else {
     error("Unsupported manual definition kind")
@@ -98,6 +98,7 @@ function typeElemsToParameters(entries: readonly TypeElement[], startIndex: numb
       type: getTypeFromTsType(element.type),
       optional: element.questionToken !== undefined,
       description: getDescriptionFromJsDoc(element),
+      manuallyAdded: true,
     }
   })
 }

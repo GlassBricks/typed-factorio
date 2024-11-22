@@ -8,16 +8,6 @@ import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
 // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
 /** @omit */
 export interface VirtualSignalID {}
-
-/** @omit */
-export interface LogisticSections {}
-
-/** @omit */
-export interface LogisticSection {}
-
-/** @omit */
-export interface BlueprintLogisticFilter {}
-
 /** @omit */
 export interface BurnerUsageID {}
 
@@ -30,6 +20,10 @@ export interface RaiseEventParameters {}
 export interface LuaObject {
   readonly object_name: string
 }
+
+export interface LogisticSections {}
+export interface LogisticSection {}
+export interface BlueprintLogisticFilter {}
 
 export type double = number
 export type float = number
@@ -90,8 +84,21 @@ declare namespace defines {
     namespace inserter {
       enum hand_read_mode {}
     }
-    namespace logistic_container {}
-    namespace lamp {}
+    namespace logistic_container {
+      enum exclusive_mode {}
+    }
+    namespace lamp {
+      enum color_mode {}
+    }
+    namespace roboport {
+      enum read_items_mode {}
+    }
+    namespace cargo_landing_pad {
+      enum exclusive_mode {}
+    }
+    namespace rocket_silo {
+      enum read_mode {}
+    }
   }
 }
 
@@ -513,6 +520,9 @@ export interface TechnologyID {}
 // /** @readType LuaSurface */
 // export interface SurfaceIdentification {}
 
+export interface EntityID {}
+export interface QualityID {}
+
 /** @readType LuaPlayer */
 export interface PlayerIdentification {}
 
@@ -544,76 +554,154 @@ export interface BaseUndoRedoAction {
 
 export interface InfinityPipeFilter {}
 
+export interface InfinityInventoryFilter {}
+
+export interface EquipmentPosition {}
+
+export interface DisplayPanelMessageDefinition {}
+
+export interface VehicleAutomaticTargetingParameters {}
+
+export interface BlueprintSchedule {}
+
+/** @addTo concepts after BlueprintEntity */
+export interface BlueprintRequestFilters extends LogisticSections {
+  /** False if disabled in a vehicle. */
+  enabled?: boolean
+  request_from_buffers?: boolean
+}
+
+/** @addTo concepts after BlueprintEntity */
+export interface BlueprintEquipment {
+  equipment: ItemIDAndQualityIDPair
+  position: EquipmentPosition
+}
+
 /** @addProperties */
 export interface BlueprintEntity {
-  /** Orientation of the cargo wagon or locomotive, value 0 to 1 */
-  readonly orientation?: RealOrientation
-  /** Copper wire connections, array of entity_numbers */
-  readonly neighbours?: uint[]
-  /** Name of the recipe prototype this assembling machine is set to. */
-  readonly recipe?: string
-  /** Used by {@link https://wiki.factorio.com/Prototype/Container Prototype/Container}. The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
-  readonly bar?: uint16
-  /** Cargo wagon inventory configuration */
-  readonly inventory?: BlueprintInventory
-  /** Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
-  readonly infinity_settings?: BlueprintInfinitySettings | InfinityPipeFilter
+  /** Used by assembling machines. Name of the recipe prototype */
+  recipe?: string
+  /** Used by assembling machines; quality of the recipe. */
+  recipe_quality?: QualityID
+
+  /** Used by containers (chests). The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
+  bar?: uint16
+
+  /** Cargo wagon or filtered container inventory configuration, for item filters and bar. */
+  inventory?: BlueprintInventory
+
+  /** Used by Infinity containers and infinity pipes. */
+  infinity_settings?: InfinityContainerFilter | InfinityPipeFilter
+
+  /** Used by heat interfaces. */
+  mode?: "at-least" | "at-most" | "exactly" | "add" | "remove"
+  /** Used by heat interfaces. */
+  temperature?: uint
+
   /** Type of the underground belt or loader. Either "input" or "output". */
-  readonly type?: "input" | "output"
+  type?: "input" | "output"
+
   /** Input priority of the splitter. Either "right" or "left", "none" is omitted. */
-  readonly input_priority?: "right" | "left"
+  input_priority?: "right" | "left"
   /** Output priority of the splitter. Either "right" or "left", "none" is omitted. */
-  readonly output_priority?: "right" | "left"
-  /** Filter of the splitter. Name of the item prototype the filter is set to. */
-  readonly filter?: string
-  /** Filters of the filter inserter or loader. Array of {@link InventoryFilter} objects. */
-  readonly filters?: InventoryFilter[]
-  /** Filter mode of the filter inserter. Either "whitelist" or "blacklist". */
-  readonly filter_mode?: "whitelist" | "blacklist"
+  output_priority?: "right" | "left"
+  /** Filter of the splitter. */
+  filter?: BlueprintLogisticFilter
+
+  /** Filters of the filter inserter or loader. */
+  filters?: BlueprintLogisticFilter[]
+  /** Filter mode of the filter inserter. */
+  filter_mode?: "whitelist" | "blacklist"
   /** The stack size the inserter is set to. */
-  readonly override_stack_size?: uint8
+  override_stack_size?: uint8
   /** The drop position the inserter is set to. */
-  readonly drop_position?: MapPosition
+  drop_position?: MapPosition
   /** The pickup position the inserter is set to. */
-  readonly pickup_position?: MapPosition
-  /** Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}. */
-  readonly request_filters?: LogisticFilter[]
-  /** Whether this requester chest can request from buffer chests. */
-  readonly request_from_buffers?: boolean
-  /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-  readonly parameters?: ProgrammableSpeakerParameters
-  /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-  readonly alert_parameters?: ProgrammableSpeakerAlertParameters
-  /** Used by the rocket silo, whether auto launch is enabled. */
-  readonly auto_launch?: boolean
+  pickup_position?: MapPosition
+  /** Spoiled priority of an inserter. "spoiled-first" or "fresh-first", "none" is omitted. */
+  spoil_priority?: "spoiled-first" | "fresh-first"
+
+  /** Used by all entities with logistics sections, except for combinators. */
+  request_filters?: BlueprintRequestFilters
+
+  /** Used by programmable speakers. */
+  parameters?: ProgrammableSpeakerParameters
+  /** Used by programmable speakers. */
+  alert_parameters?: ProgrammableSpeakerAlertParameters
+
+  /** Used by rocket silos. I have no idea what this is. */
+  transitional_request_index?: uint
+
   /** Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}. */
-  readonly variation?: uint8
-  /** Color of the {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce}, {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}, or train station. */
-  readonly color?: Color
+  variation?: uint8
+
+  /** Color of the entity. Used by SimpleEntityWithForce, SimpleEntityWithOwner, train stations, locomotives, and vehicles. */
+  color?: Color
+
   /** The name of the train station. */
-  readonly station?: string
+  station?: string
+  /** The train limit of a train stop. */
+  manual_trains_limit?: uint
+  /** The priority of the train station. */
+  priority?: uint8
+
+  /** Orientation of the cargo wagon or locomotive, value from 0 to 1 */
+  orientation?: RealOrientation
+
+  /** If this locomotive copies its color from the train stop. Default true. */
+  copy_color_from_train_stop?: boolean
+
+  /** Used by spidertons. */
+  vehicle_automatic_targeting_parameters: VehicleAutomaticTargetingParameters
+  /** Used by vehicles. */
+  driver_is_main_gunner?: boolean
+  /** Used by vehicles. */
+  selected_gun_index?: uint
+  /** Used to vehicles and rolling stock. */
+  enable_logistics_while_moving?: boolean
+
+  /** Equipment grid. Note that [items] requests also needs to be set for bots to insert into the grid. */
+  grid?: BlueprintEquipment[]
+
+  artillery_auto_targeting?: boolean
+
+  /** Combinator description. */
+  player_description?: string
+
+  /** Used by display panels. */
+  always_show?: boolean
+  /** Used by display panels. */
+  show_in_chart?: boolean
+  /** Display panel icon. */
+  icon?: SignalID
+  /** Display panel text. */
+  text?: string
+
+  /** Turret configuration. */
+  "ignore-unprioritised"?: boolean
+  /** Turret configuration. */
+  "priority-list"?: {
+    index: uint
+    entity_id: EntityID
+  }[]
 }
 
 /** @addTo concepts after BlueprintEntity */
 export interface BlueprintInventory {
-  readonly filters?: InventoryFilter[]
+  filters?: BlueprintLogisticFilter[]
   /** The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
-  readonly bar?: uint16
+  bar?: uint16
 }
 
 /** @addTo concepts after BlueprintEntity */
-export interface BlueprintInfinitySettings {
+export interface InfinityContainerFilter {
   /** Whether the "remove unfiltered items" checkbox is checked. */
-  readonly remove_unfiltered_items: boolean
+  remove_unfiltered_items: boolean
   /** Filters of the infinity container. */
-  readonly filters?: InfinityInventoryFilter[]
+  filters?: InfinityInventoryFilter[]
 }
 
-export interface InventoryFilter {}
-
 export interface LogisticFilter {}
-
-export interface InfinityInventoryFilter {}
 
 export interface ProgrammableSpeakerParameters {}
 
@@ -629,44 +717,184 @@ export interface ProgrammableSpeakerCircuitParameters {}
 
 export interface ArithmeticCombinatorParameters {}
 
+export interface SelectorCombinatorParameters {}
+
 /** @addTo concepts after BlueprintEntity */
-/**
- * WARNING: this type has not yet been updated for factorio 2.0.
- */
 export interface BlueprintControlBehavior {
-  readonly condition?: CircuitCondition
-  readonly circuit_condition?: CircuitCondition
-  readonly is_on?: boolean
-  readonly arithmetic_conditions?: ArithmeticCombinatorParameters
-  readonly decider_conditions?: DeciderCombinatorParameters
-  readonly circuit_enable_disable?: boolean
-  readonly circuit_read_resources?: boolean
-  readonly circuit_resource_read_mode?: defines.control_behavior.mining_drill.resource_read_mode
-  readonly read_stopped_train?: boolean
-  readonly train_stopped_signal?: SignalID
-  readonly read_from_train?: boolean
-  readonly send_to_train?: boolean
-  readonly circuit_mode_of_operation?: number
-  readonly circuit_read_hand_contents?: boolean
-  readonly circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
-  readonly circuit_set_stack_size?: boolean
-  readonly stack_control_input_signal?: SignalID
-  readonly use_colors?: boolean
-  readonly read_robot_stats?: boolean
-  readonly read_logistics?: boolean
-  readonly available_logistic_output_signal?: boolean
-  readonly total_logistic_output_signal?: boolean
-  readonly available_construction_output_signal?: boolean
-  readonly total_construction_output_signal?: boolean
-  readonly circuit_contents_read_mode?: defines.control_behavior.transport_belt.content_read_mode
-  readonly output_signal?: SignalID
-  readonly circuit_close_signal?: boolean
-  readonly circuit_read_signal?: boolean
-  readonly red_output_signal?: SignalID
-  readonly orange_output_signal?: SignalID
-  readonly green_output_signal?: SignalID
-  readonly blue_output_signal?: SignalID
-  readonly circuit_open_gate?: boolean
-  readonly circuit_read_sensor?: boolean
-  readonly circuit_parameters?: ProgrammableSpeakerCircuitParameters
+  /**
+   * If this entity is enabled/disabled by the circuit network.
+   * Does **not** apply to logistic containers, see instead {@link circuit_condition_enabled}.
+   *
+   * Corresponds to {@link LuaGenericOnOffControlBehavior.circuit_enable_disable}
+   */
+  circuit_enabled?: boolean
+  /** Applies to any entity that can be enabled/disabled by the circuit network. */
+  circuit_condition?: CircuitCondition
+  /** Corresponds to {@link LuaGenericOnOffControlBehavior.connect_to_logistic_network}. */
+  connect_to_logistic_network?: boolean
+  /** Corresponds to {@link LuaGenericOnOffControlBehavior.logistic_condition}. */
+  logistic_condition?: CircuitCondition
+
+  /**
+   * If this entity with inventory reads its contents to the circuit network. Default true.
+   * Does not apply to asteroid collectors, see {@link circuit_read_contents}.
+   */
+  read_contents?: boolean
+
+  /** If an **asteroid collector** reads its contents to the circuit network. Default false.*/
+  circuit_read_contents?: boolean
+
+  /** On a turret, if the ammo is read by the circuit network. Default true. */
+  read_ammo?: boolean
+  /** Used by turrets. */
+  set_priority_list?: boolean
+  /** Used by turrets. */
+  set_ignore_unlisted_targets?: boolean
+  /** Used by turrets. */
+  ignore_unlisted_targets_condition?: CircuitCondition
+
+  circuit_mode_of_operation?:
+    | defines.control_behavior.logistic_container.exclusive_mode
+    | defines.control_behavior.cargo_landing_pad.exclusive_mode
+
+  /**
+   * If this **logistics container** is enabled/disabled by the circuit network.
+   * For other machines, see {@link circuit_enabled}.
+   */
+  circuit_condition_enabled?: boolean
+
+  /** Accumulator or gate output signal. */
+  output_signal?: SignalID
+
+  /** If the accumulator sends its charge to the circuit network. Default true. */
+  read_charge?: boolean
+
+  /** Used by walls connected to gates. */
+  circuit_open_gate?: boolean
+  /** Used by walls connected to gates. The signal is defined by {@link output_signal}. */
+  circuit_read_sensor?: boolean
+
+  /** If this inserter or belt is read by the circuit network. */
+  circuit_read_hand_contents?: boolean
+  /** For reading contents of an inserter. */
+  circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
+  /** For reading contents of a belt. */
+  circuit_contents_read_mode?: defines.control_behavior.transport_belt.content_read_mode
+
+  /** If this inserter, loader, or asteroid collector has its filters set by the circuit network. */
+  circuit_set_filters?: boolean
+
+  /** If this pump should set its only filter from the circuit network */
+  set_filter?: boolean
+
+  /** If this loader pulses its transfers to the circuit network. */
+  circuit_read_transfers?: boolean
+
+  /** If this inserter has its stack size set by the circuit network. */
+  circuit_set_stack_size?: boolean
+  stack_control_input_signal?: SignalID
+
+  /** Used by assembling machines. */
+  set_recipe?: boolean
+  read_ingredients?: boolean
+  read_recipe_finished?: boolean
+  read_recipe_finished_signal?: SignalID
+  read_working?: boolean
+  read_working_signal?: SignalID
+
+  /** If this mining drill reads its resources to the circuit network. */
+  circuit_read_resources?: boolean
+  circuit_resource_read_mode?: defines.control_behavior.mining_drill.resource_read_mode
+
+  /** Used by constant combinators. */
+  is_on?: boolean
+  /** Used by constant combinators. */
+  sections?: LogisticSections
+
+  arithmetic_conditions?: ArithmeticCombinatorParameters
+  decider_conditions?: DeciderCombinatorParameters
+
+  // selector combinator parameters are inlined, for some reason
+  /** Used by selector combinators. */
+  index_signal?: SignalID
+  /** Used by selector combinators. */
+  index_constant?: uint
+  /** Used by selector combinators. */
+  count_signal?: SignalID
+  /** Used by selector combinators. When not specified, defaults to "select". */
+  operation?: "select" | "count" | "random"
+  /** Used by selector combinators. */
+  select_max?: boolean
+
+  /** Applies to train stop. Default true. */
+  send_to_train?: boolean
+  read_from_train?: boolean
+
+  set_trains_limit?: boolean
+  trains_limit_signal?: SignalID
+
+  read_stopped_train?: boolean
+  train_stopped_signal?: SignalID
+
+  read_trains_count?: boolean
+  trains_count_signal?: SignalID
+
+  set_priority?: boolean
+  priority_signal?: SignalID
+
+  /** Used by lamps. */
+  use_colors?: boolean
+  color_mode?: defines.control_behavior.lamp.color_mode
+  /** Used by **lamps**. For rail signals, see {@link red_output_signal}. */
+  red_signal?: SignalID
+  /** Used by **lamps**. For rail signals, see {@link green_output_signal}. */
+  green_signal?: SignalID
+  /** Used by **lamps**. For rail signals, see {@link orange_output_signal}. */
+  blue_signal?: SignalID
+  /** Used by lamps. */
+  rgb_signal?: SignalID
+
+  /** Used by roboports. */
+  read_items_mode?: defines.control_behavior.roboport.read_items_mode | defines.control_behavior.rocket_silo.read_mode
+  read_robot_stats?: boolean
+  available_logistic_output_signal?: SignalID
+  total_logistic_output_signal?: SignalID
+  available_construction_output_signal?: SignalID
+  total_construction_output_signal?: SignalID
+  roboport_count_output_signal?: SignalID
+
+  /** Used by train signals. */
+  circuit_close_signal?: boolean
+  /** Used by train signals. */
+  circuit_read_signal?: boolean
+  /** Used by **train signals**. For lamps, seed {@link red_signal}. */
+  red_output_signal?: SignalID
+  /** used by train signals. */
+  orange_output_signal?: SignalID
+  /** Used by **train signals**. For lamps, seed {@link green_signal}. */
+  green_output_signal?: SignalID
+  /** Used by **train signals**. For lamps, seed {@link blue_signal}. */
+  blue_output_signal?: SignalID
+
+  /** Used by programmable speakers. */
+  circuit_parameters?: ProgrammableSpeakerCircuitParameters
+
+  /** Display panel configuration. */
+  parameters?: DisplayPanelMessageDefinition
+
+  /** If this reads the fuel contents of this reactor. */
+  read_burner_fuel?: boolean
+
+  /** If this reads the temperature of this reactor. */
+  read_temperature?: boolean
+  temperature_signal?: SignalID
+
+  /** Used by space platform hub. */
+  send_to_platform?: boolean
+  read_moving_from?: boolean
+  read_moving_to?: boolean
+  read_speed?: boolean
+  speed_signal?: SignalID
+  read_damage_taken?: boolean
+  damage_taken_signal?: SignalID
 }

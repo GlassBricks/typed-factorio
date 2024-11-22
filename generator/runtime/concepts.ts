@@ -42,7 +42,7 @@ function createVariantParameterConcept(
   }
 }
 function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
-  const existing = context.manualDefs.getDeclaration(concept.name)
+  const manualDef = context.manualDefs.getDeclaration(concept.name)
   const conceptUsage = context.conceptUsageAnalysis.usages.get(concept)
   if (!conceptUsage) {
     context.warning(`Unknown concept usage for ${concept.name}`)
@@ -70,9 +70,8 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     concept.type,
     {
       contextName: concept.name,
-      // if manually added, don't re-interpret the existing member types.
-      existingDef: concept.manuallyAddedFrom !== undefined ? undefined : existing,
-      dontExpandReadWriteTypes: concept.manuallyAddedFrom !== undefined,
+      existingDef: manualDef,
+      dontExpandReadWriteTypes: concept.manuallyAdded,
     },
     conceptUsage,
   )
@@ -87,13 +86,13 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     tags = [createSeeTag(writeName)]
   }
 
-  if (existing?.node && ts.isTypeAliasDeclaration(existing.node) && existing.node.typeParameters) {
+  if (manualDef?.node && ts.isTypeAliasDeclaration(manualDef.node) && manualDef.node.typeParameters) {
     assert(ts.isTypeAliasDeclaration(mainResult))
     mainResult = ts.factory.updateTypeAliasDeclaration(
       mainResult,
       mainResult.modifiers,
       mainResult.name,
-      existing.node.typeParameters,
+      manualDef.node.typeParameters,
       mainResult.type,
     )
   }

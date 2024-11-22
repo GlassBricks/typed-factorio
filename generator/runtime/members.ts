@@ -171,7 +171,7 @@ export function mapParameterToProperty(
   existingContainer?: InterfaceDef | TypeAliasDef,
 ): { mainProperty: ts.PropertySignature; altWriteProperty?: ts.PropertySignature } {
   const existingProperty = existingContainer?.members[parameter.name]?.[0]
-  if (existingProperty) {
+  if (existingProperty && !parameter.manuallyAdded) {
     if (!ts.isPropertySignature(existingProperty)) {
       throw new Error(
         `Manual define for ${parent}.${parameter.name} should be a property signature, got ${

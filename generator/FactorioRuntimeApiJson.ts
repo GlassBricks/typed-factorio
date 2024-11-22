@@ -1,7 +1,5 @@
 // runtime stage
 // https://lua-api.factorio.com/1.1.108/auxiliary/json-docs-runtime.html
-import { DeclarationDef } from "./ManualDefinitions"
-
 export interface FactorioRuntimeApiJson {
   application: "factorio"
   application_version: string
@@ -21,7 +19,7 @@ export interface BasicObject {
   order: number
   description: string
 
-  manuallyAddedFrom?: DeclarationDef
+  manuallyAdded?: boolean
 }
 
 export interface BasicMember extends BasicObject {
