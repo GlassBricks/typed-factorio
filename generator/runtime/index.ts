@@ -4,13 +4,11 @@ import {
   Define,
   Event,
   FactorioRuntimeApiJson,
-  TableType,
-  TupleType,
+  Method,
+  Parameter,
   Type,
 } from "../FactorioRuntimeApiJson.js"
-import { RWUsage } from "../read-write-types.js"
-import ts from "typescript"
-import { GenerationContext } from "../GenerationContext.js"
+import { associateByName, GenerationContext } from "../GenerationContext.js"
 import { generateGlobalFunctions, preprocessGlobalFunctions } from "./others.js"
 import { generateDefines, preprocessDefines } from "./defines.js"
 import { generateEvents, preprocessEvents } from "./events.js"
@@ -18,20 +16,25 @@ import { generateClasses, preprocessClasses } from "./classes.js"
 import { generateConcepts, preprocessConcepts } from "./concepts.js"
 import { generateIndexTypesFile, preprocessIndexTypes } from "./index-types.js"
 import { generateGlobalObjects, preprocessGlobalObjects } from "./global-objects.js"
+import { FactorioModule } from "../OutputFile"
+import { addPropertiesToConcept, manualDefToRuntimeConcept, preprocessTypesWithManualDefs } from "../added-types"
+import { ConceptUsageAnalysis, finalizeConceptUsageAnalysis } from "./concept-usage-analysis"
+import { byOrder } from "../util"
 
 export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeApiJson> {
-  stageName = "runtime"
+  stageName = FactorioModule.Runtime
 
-  defines = new Map<string, Define>()
-  events = new Map<string, Event>(this.apiDocs.events.map((e) => [e.name, e]))
-  classes = new Map<string, Class>(this.apiDocs.classes.map((e) => [e.name, e]))
-  concepts = new Map<string, Concept>(this.apiDocs.concepts.map((e) => [e.name, e]))
-  globalObjects = new Set<string>(this.apiDocs.global_objects.map((e) => e.name))
-  globalFunctions = new Set<string>(this.apiDocs.global_functions.map((e) => e.name))
+  defines = new Map<string, Define>() // set by preprocessDefines
+  rootDefines: Define[] = this.apiDocs.defines.sort(byOrder)
+  events!: Map<string, Event>
+  classes!: Map<string, Class>
+  concepts!: Map<string, Concept>
+  globalObjects!: Map<string, Parameter>
+  globalFunctions!: Map<string, Method>
 
   numericTypes = new Set<string>()
 
-  conceptUsageAnalysis = new ConceptUsageAnalysis(this.apiDocs.concepts)
+  conceptUsageAnalysis!: ConceptUsageAnalysis
 
   tryGetTypeOfReference(reference: string): Type | undefined {
     return this.concepts.get(reference)?.type
@@ -69,7 +72,42 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     return this.docUrlBase() + relative_link
   }
 
-  preprocessAll(): void {
+  generateAll(): void {
+    this.manualCheckMessage()
+    this.events = associateByName(preprocessTypesWithManualDefs(this, this.apiDocs.events, "events"))
+    this.classes = associateByName(preprocessTypesWithManualDefs(this, this.apiDocs.classes, "classes"))
+    const concepts = preprocessTypesWithManualDefs(
+      this,
+      this.apiDocs.concepts,
+      "concepts",
+      manualDefToRuntimeConcept,
+      addPropertiesToConcept,
+    )
+    this.concepts = associateByName(concepts)
+    this.globalObjects = associateByName(this.apiDocs.global_objects)
+    this.globalFunctions = associateByName(this.apiDocs.global_functions)
+
+    this.conceptUsageAnalysis = new ConceptUsageAnalysis(concepts)
+
+    preprocessGlobalObjects(this)
+    preprocessGlobalFunctions(this)
+    preprocessDefines(this)
+    preprocessEvents(this)
+    preprocessClasses(this)
+    preprocessIndexTypes(this)
+    preprocessConcepts(this)
+    finalizeConceptUsageAnalysis(this)
+
+    generateGlobalObjects(this)
+    generateGlobalFunctions(this)
+    generateDefines(this)
+    generateEvents(this)
+    generateClasses(this)
+    generateConcepts(this)
+    generateIndexTypesFile(this)
+  }
+
+  private manualCheckMessage() {
     const lastVersion = "2.0.17"
     if (this.apiDocs.application_version !== lastVersion) {
       const message = `
@@ -83,42 +121,5 @@ Manual definitions:
 `
       this.warning(message)
     }
-
-    preprocessGlobalObjects(this)
-    preprocessGlobalFunctions(this)
-    preprocessDefines(this)
-    preprocessEvents(this)
-    preprocessClasses(this)
-    preprocessConcepts(this)
-    preprocessIndexTypes(this)
-  }
-
-  generateAll(): void {
-    generateGlobalObjects(this)
-    generateGlobalFunctions(this)
-    generateDefines(this)
-    generateEvents(this)
-    generateClasses(this)
-    generateConcepts(this)
-    generateIndexTypesFile(this)
-  }
-}
-
-class ConceptUsageAnalysis {
-  conceptUsages
-  conceptUsagesToPropagate
-  conceptReferencedBy
-  conceptReadWriteTypes
-  tableOrArrayConcepts
-
-  constructor(private concepts: Concept[]) {
-    this.conceptUsages = new Map<Concept, RWUsage>(this.concepts.map((e) => [e, RWUsage.None]))
-
-    this.conceptUsagesToPropagate = new Map<Concept, RWUsage>()
-    this.conceptReferencedBy = new Map<Concept, Set<Concept>>(this.concepts.map((e) => [e, new Set()]))
-    // empty object = has separate read/write types, but not yet known form (may use default)
-    this.conceptReadWriteTypes = new Map<Concept, { read: string | ts.TypeNode; write: string | ts.TypeNode }>()
-
-    this.tableOrArrayConcepts = new Map<Concept, { table: TableType; array: TupleType }>()
   }
 }

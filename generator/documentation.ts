@@ -55,8 +55,8 @@ function mapLink(context: GenerationContext, origLink: string): string | undefin
     context.warning(`unknown doc link stage: ${origLink}`)
   }
 
-  const typeName: string | undefined = name.startsWith("defines") ? name : context.references.get(name)
-  if (stage === context.stageName && !typeName) {
+  const typeName: string | undefined = name.startsWith("defines") ? name : context.tsToFactorioType.get(name)
+  if (stage === (context.stageName as string) && !typeName) {
     context.warning(`unresolved doc reference: ${origLink}`)
     return undefined
   }
@@ -76,7 +76,7 @@ function mapLink(context: GenerationContext, origLink: string): string | undefin
   }
 
   // if still has reference of same name, don't use import
-  if (!typeName && stage !== context.stageName) {
+  if (!typeName && stage !== (context.stageName as string)) {
     return `import("factorio:${stage}").${name}${fieldRef}`
   }
   return typeName + fieldRef

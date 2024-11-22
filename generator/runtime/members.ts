@@ -3,27 +3,27 @@ import ts from "typescript"
 import { addJsDoc, processDescription } from "../documentation.js"
 import { Attribute, Method, Parameter } from "../FactorioRuntimeApiJson.js"
 import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil.js"
-import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
-import { analyzeType, RWUsage } from "../read-write-types.js"
-import { makeNullable, mapAttributeType, mapMemberType, mapRuntimeType, RWType } from "../types.js"
+import { getAnnotations, InterfaceDef, TypeAliasDef } from "../ManualDefinitions"
+import { makeNullable, mapAttributeType, mapMemberType, mapRuntimeType, RWType, RWUsage } from "../types.js"
 import { byOrder, getFirst } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
 import { RuntimeGenerationContext } from "./index.js"
+import { recordUsage } from "./concept-usage-analysis"
 
 export function analyzeMethod(context: RuntimeGenerationContext, method: Method): void {
   for (const parameter of method.parameters) {
-    analyzeType(context, parameter.type, RWUsage.Write)
+    recordUsage(context, parameter.type, RWUsage.Write)
   }
   if (method.variant_parameter_groups) {
     for (const parameter of method.variant_parameter_groups.flatMap((x) => x.parameters)) {
-      analyzeType(context, parameter.type, RWUsage.Write)
+      recordUsage(context, parameter.type, RWUsage.Write)
     }
   }
   if (method.variadic_parameter?.type) {
-    analyzeType(context, method.variadic_parameter.type, RWUsage.Write)
+    recordUsage(context, method.variadic_parameter.type, RWUsage.Write)
   }
   for (const returnValue of method.return_values) {
-    analyzeType(context, returnValue.type, RWUsage.Read)
+    recordUsage(context, returnValue.type, RWUsage.Read)
   }
 }
 

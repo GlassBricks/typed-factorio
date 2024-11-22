@@ -3,112 +3,27 @@ import ts from "typescript"
 import { addJsDoc, createSeeTag } from "../documentation.js"
 import { Concept, TableType, TupleType } from "../FactorioRuntimeApiJson.js"
 import { Modifiers } from "../genUtil.js"
-import { analyzeConcept, finalizeConceptUsageAnalysis, RWUsage, setReadWriteType } from "../read-write-types.js"
-import { getInnerType, mapConceptType, mapRuntimeType, typeToDeclaration } from "../types.js"
-import { byOrder } from "../util.js"
+import { mapConceptType, mapRuntimeType, RWUsage, typeToDeclaration } from "../types.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
-import { ModuleType } from "../OutputFile.js"
+import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
-import { copyExistingDeclaration } from "../manualDefinitions.js"
 import { generateBuiltinType } from "../builtin.js"
+import { analyzeConcept } from "./concept-usage-analysis"
 
-/**
- * Should be last to preprocess
- * @param context
- */
 export function preprocessConcepts(context: RuntimeGenerationContext): void {
-  const concepts = context.apiDocs.concepts
-  concepts.sort(byOrder)
-
-  for (const concept of concepts) {
-    context.references.set(concept.name, concept.name)
-    const existing = context.manualDefs.getDeclaration(concept.name)
-    if (!existing?.annotations.omit) analyzeConcept(context, concept)
-  }
-  finalizeConceptUsageAnalysis(context)
-
-  for (const concept of concepts) {
-    const existing = context.manualDefs.getDeclaration(concept.name)
-    if (existing?.annotations.omit) continue
-    const usage = context.conceptUsageAnalysis.conceptUsages.get(concept)
-    if (usage === RWUsage.None) {
-      context.warning(`Unknown concept usage for ${concept.name}`)
-    }
-
-    if (existing?.annotations.replace) continue
-    const tableOrArray = tryGetTableOrArrayConcept(context, concept)
-    if (tableOrArray) {
-      context.conceptUsageAnalysis.tableOrArrayConcepts.set(concept, tableOrArray)
-      const readName = concept.name
-      // const writeName = `${concept.name} | ${concept.name}Array`
-      const writeName = ts.factory.createUnionTypeNode([
-        ts.factory.createTypeReferenceNode(concept.name),
-        ts.factory.createTypeReferenceNode(`${concept.name}Array`),
-      ])
-      setReadWriteType(context, concept, { read: readName, write: writeName })
-    }
-
-    const readType = stringsToType(existing?.annotations.readType)
-    const writeType = stringsToType(existing?.annotations.writeType)
-    if (readType || writeType) {
-      setReadWriteType(context, concept, {
-        read: readType ?? concept.name,
-        write: writeType ?? concept.name,
-      })
-    }
-
-    if (usage === RWUsage.ReadWrite) {
-      const idReadType = findLuaPrototypeIdReadType(concept)
-      if (idReadType) {
-        setReadWriteType(context, concept, {
-          read: idReadType,
-          write: concept.name,
-        })
-      }
-    }
-  }
-}
-
-function findLuaPrototypeIdReadType(concept: Concept): string | undefined {
-  if (concept.name.match(/[a-z]ID$/) && typeof concept.type === "object" && concept.type.complex_type === "union") {
-    const option = concept.type.options.map(getInnerType).find((o) => typeof o === "string" && o.match(/^Lua[A-Z].+$/))
-    return option as string | undefined
-  }
-}
-
-function stringsToType(types: string[] | undefined) {
-  if (!types) return undefined
-  if (types.length === 1) return ts.factory.createTypeReferenceNode(types[0])
-  return ts.factory.createUnionTypeNode(types.map((t) => ts.factory.createTypeReferenceNode(t)))
-}
-
-function tryGetTableOrArrayConcept(
-  _context: RuntimeGenerationContext,
-  concept: Concept,
-):
-  | {
-      table: TableType
-      array: TupleType
-    }
-  | undefined {
-  const type = concept.type
-  if (typeof type === "string" || type.complex_type !== "union" || type.options.length !== 2) return undefined
-  const tableType = type.options.find((o) => typeof o !== "string" && o.complex_type === "table")
-  const arrayType = type.options.find((o) => typeof o !== "string" && o.complex_type === "tuple")
-  if (!tableType || !arrayType) return undefined
-  return {
-    table: tableType as TableType,
-    array: arrayType as TupleType,
+  for (const concept of context.concepts.values()) {
+    context.tsToFactorioType.set(concept.name, concept.name)
+    analyzeConcept(context, concept)
   }
 }
 
 export function generateConcepts(context: RuntimeGenerationContext): void {
-  context.addFile("concepts", ModuleType.Runtime, () => {
-    for (const concept of context.apiDocs.concepts.sort(byOrder)) {
+  context.addFile("concepts", FactorioModule.Runtime, () => {
+    for (const concept of context.concepts.values()) {
       generateConcept(context, concept)
     }
     // manually added imports for now
-    context.currentFile.addImport("common", "VersionString")
+    context.currentFile.addImport(FactorioModule.Common, "VersionString")
   })
 }
 
@@ -128,16 +43,11 @@ function createVariantParameterConcept(
 }
 function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
   const existing = context.manualDefs.getDeclaration(concept.name)
-
-  if (existing?.annotations.omit) return
-  if (existing?.annotations.replace) {
-    const node = copyExistingDeclaration(existing.node)
-    addJsDoc(context, node, concept, concept.name)
-    context.currentFile.add(node)
+  const conceptUsage = context.conceptUsageAnalysis.usages.get(concept)
+  if (!conceptUsage) {
+    context.warning(`Unknown concept usage for ${concept.name}`)
     return
   }
-
-  const conceptUsage = context.conceptUsageAnalysis.conceptUsages.get(concept)!
   if (
     typeof concept.type !== "string" &&
     concept.type.complex_type === "table" &&
@@ -152,10 +62,6 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     createTableOrArrayConcept(context, concept, tableOrArray)
     return
   }
-  if (conceptUsage === RWUsage.None) {
-    context.warning(`Unknown concept usage for ${concept.name}`)
-    return
-  }
   if (typeof concept.type === "object" && concept.type.complex_type === "builtin") {
     return generateBuiltinType(context, concept)
   }
@@ -164,7 +70,9 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     concept.type,
     {
       contextName: concept.name,
-      existingDef: existing,
+      // if manually added, don't re-interpret the existing member types.
+      existingDef: concept.manuallyAddedFrom !== undefined ? undefined : existing,
+      dontExpandReadWriteTypes: concept.manuallyAddedFrom !== undefined,
     },
     conceptUsage,
   )
@@ -172,12 +80,24 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     return
   }
   const { mainType, description, altWriteType } = conceptType
-  const mainResult = typeToDeclaration(context, mainType, concept.name)
+  let mainResult = typeToDeclaration(context, mainType, concept.name)
   const writeName = `${concept.name}Write`
   let tags: ts.JSDocTag[] | undefined
   if (altWriteType) {
     tags = [createSeeTag(writeName)]
   }
+
+  if (existing?.node && ts.isTypeAliasDeclaration(existing.node) && existing.node.typeParameters) {
+    assert(ts.isTypeAliasDeclaration(mainResult))
+    mainResult = ts.factory.updateTypeAliasDeclaration(
+      mainResult,
+      mainResult.modifiers,
+      mainResult.name,
+      existing.node.typeParameters,
+      mainResult.type,
+    )
+  }
+
   addJsDoc(context, mainResult, concept, concept.name, { tags, post: description })
   context.currentFile.add(mainResult)
   if (altWriteType) {
@@ -239,5 +159,5 @@ function createTableOrArrayConcept(
   addJsDoc(context, conceptArray, { description: arrayDescription }, name, { tags: [createSeeTag(name)] })
   context.currentFile.add(conceptArray)
 
-  context.references.set(arrayName, name)
+  context.tsToFactorioType.set(arrayName, name)
 }

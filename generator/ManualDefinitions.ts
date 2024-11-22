@@ -1,8 +1,5 @@
 import ts from "typescript"
-import { addFakeJSDoc, Modifiers } from "./genUtil.js"
-import { GenerationContext } from "./GenerationContext.js" // preprocessed TS AST easier to use
-
-// preprocessed TS AST easier to use
+import { GenerationContext } from "./GenerationContext.js"
 
 export interface BaseDef {
   readonly kind: string
@@ -13,10 +10,7 @@ export interface BaseDef {
 // noinspection JSUnusedGlobalSymbols
 export enum AnnotationKind {
   AddTo = "addTo",
-  AddBefore = "addBefore",
-  AddAfter = "addAfter",
   Omit = "omit",
-  Ignore = "ignore",
 
   NumericEnum = "numericEnum",
 
@@ -33,6 +27,8 @@ export enum AnnotationKind {
 
   ReadType = "readType",
   WriteType = "writeType",
+  References = "references",
+  Usage = "usage",
 
   Overload = "overload",
 }
@@ -80,98 +76,86 @@ export interface EnumDef extends BaseDef {
 export type RootDef = InterfaceDef | TypeAliasDef | NamespaceDef
 export type NamespaceDefMember = NamespaceDef | ConstDef | EnumDef
 export type AnyDef = InterfaceDef | TypeAliasDef | NamespaceDef | ConstDef | EnumDef
+export type DeclarationDef = InterfaceDef | TypeAliasDef
+
+interface AddedTypes {
+  addBefore: Record<string, DeclarationDef[]>
+  addAfter: Record<string, DeclarationDef[]>
+  addAtEnd: DeclarationDef[]
+}
+
+function expectType<T extends string>(def: AnyDef, ...kinds: T[]): asserts def is Extract<AnyDef, { kind: T }> {
+  if (!kinds.includes(def.kind as T)) {
+    throw new Error(`Expected ${kinds.join(" or ")} for ${def.name} but found ${def.kind}`)
+  }
+}
 
 export class ManualDefinitions {
-  addBefore = new Map<string, ts.Statement[]>()
-  addAfter = new Map<string, ts.Statement[]>()
-  addTo = new Map<string, ts.Statement[]>()
+  private addedTypes: ReadonlyMap<string, AddedTypes>
+  private handledAddedTypes = new Set<string>()
 
-  constructor(
-    readonly map: Map<string, RootDef>,
-    manualDefsSource: ts.SourceFile,
-  ) {
-    for (const def of this.map.values()) {
-      const addBefore = def.annotations.addBefore?.[0]
-      const addAfter = def.annotations.addAfter?.[0]
-      const addTo = def.annotations.addTo?.[0]
-      const node = def.node
-      if (addBefore) {
-        if (addTo || addAfter)
-          throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
-
-        if (!this.addBefore.has(addBefore)) {
-          this.addBefore.set(addBefore, [])
-        }
-        this.addBefore.get(addBefore)!.push(node)
-      }
-      if (addAfter) {
-        if (addTo || addBefore)
-          throw new Error(`Can only specify one of addBefore, addAfter, addTo for ${node.name.text}`)
-
-        if (!this.addAfter.has(addAfter)) {
-          this.addAfter.set(addAfter, [])
-        }
-        this.addAfter.get(addAfter)!.push(node)
-      }
-      if (addTo) {
-        if (!this.addTo.has(addTo)) {
-          this.addTo.set(addTo, [])
-        }
-        this.addTo.get(addTo)!.push(node)
-      }
-      if (addBefore || addTo || addAfter) {
-        ts.setEmitFlags(node, ts.EmitFlags.NoLeadingComments)
-        const docs = node.jsDoc!
-        if (docs.length > 1) {
-          addFakeJSDoc(node, docs[docs.length - 1], manualDefsSource)
-        }
-      }
-    }
+  constructor(readonly defs: Map<string, RootDef>) {
+    this.addedTypes = ManualDefinitions.getAddedTypes(defs)
   }
 
-  private expectType<T extends string>(def: AnyDef, ...kinds: T[]): asserts def is Extract<AnyDef, { kind: T }> {
-    if (!kinds.includes(def.kind as T)) {
-      throw new Error(`Expected ${kinds.join(" or ")} for ${def.name} but found ${def.kind}`)
+  private static getAddedTypes(defs: Map<string, RootDef>): Map<string, AddedTypes> {
+    const result = new Map<string, AddedTypes>()
+    for (const def of defs.values()) {
+      const addTo = def.annotations.addTo
+      if (!addTo) continue
+      expectType(def, "interface", "type")
+      const [file, beforeAfter, name] = addTo
+      if (!result.has(file)) {
+        result.set(file, { addBefore: {}, addAfter: {}, addAtEnd: [] })
+      }
+      const addedTypes = result.get(file)!
+      if (beforeAfter === undefined) {
+        addedTypes.addAtEnd.push(def)
+      } else if (beforeAfter === "before") {
+        ;(addedTypes.addBefore[name] ??= []).push(def)
+      } else if (beforeAfter === "after") {
+        ;(addedTypes.addAfter[name] ??= []).push(def)
+      } else {
+        throw new Error("Invalid add annotation value  : " + beforeAfter)
+      }
+    }
+    return result
+  }
+
+  get<T extends string>(name: string, ...expectedTypes: T[]): Extract<AnyDef, { kind: T }> | undefined {
+    const def = this.defs.get(name)
+    if (def) {
+      expectType(def, ...expectedTypes)
+      return def
     }
   }
 
   getInterface(name: string): InterfaceDef | undefined {
-    const def = this.map.get(name)
-    if (def) {
-      this.expectType(def, "interface")
-      return def
-    }
+    return this.get(name, "interface")
   }
 
-  getTypeAlias(name: string): TypeAliasDef | undefined {
-    const def = this.map.get(name)
-    if (def) {
-      this.expectType(def, "type")
-      return def
-    }
-  }
-
-  getDeclaration(name: string): InterfaceDef | TypeAliasDef | undefined {
-    const def = this.map.get(name)
-    if (def) {
-      this.expectType(def, "interface", "type")
-      return def
-    }
+  getDeclaration(name: string): DeclarationDef | undefined {
+    return this.get(name, "interface", "type")
   }
 
   getNamespace(name: string): NamespaceDef | undefined {
-    const def = this.map.get(name)
-    if (def) {
-      this.expectType(def, "namespace")
-      return def
-    }
+    return this.get(name, "namespace")
   }
 
-  get<T extends string>(name: string, ...expectedTypes: T[]): Extract<AnyDef, { kind: T }> | undefined {
-    const def = this.map.get(name)
-    if (def) {
-      this.expectType(def, ...expectedTypes)
-      return def
+  takeAddedTypes(file: string): AddedTypes | undefined {
+    const addedTypes = this.addedTypes.get(file)
+    if (!addedTypes) {
+      return undefined
+    }
+    this.handledAddedTypes.add(file)
+    return addedTypes
+  }
+
+  checkAllAddedTypes(context: GenerationContext): void {
+    for (const name of this.addedTypes.keys()) {
+      if (!this.handledAddedTypes.has(name)) {
+        context.warning("Could not find existing file", name, "to add to")
+      }
     }
   }
 }
@@ -187,7 +171,7 @@ export function processManualDefinitions(file: ts.SourceFile): ManualDefinitions
       result.set(def.name, def)
     }
   }
-  return new ManualDefinitions(result, file)
+  return new ManualDefinitions(result)
 }
 
 function createDef(node: ts.Statement): AnyDef | undefined {
@@ -311,42 +295,13 @@ export function getAnnotations(node: ts.JSDocContainer): AnnotationMap {
 }
 
 export function checkManualDefinitions(context: GenerationContext): void {
-  const typeNames = new Set(context.references.values())
-  for (const [name, def] of context.manualDefs.map.entries()) {
-    const hasAdd = def.annotations.addBefore || def.annotations.addAfter || def.annotations.addTo
-    const isExisting = typeNames.has(name) || context.references.has(name) || "ignore" in def.annotations
-    if (!!hasAdd === isExisting) {
-      context.warning(
-        `Manually defined declaration ${isExisting ? "matches" : "does not match"} existing statement, but ${
-          hasAdd ? "has" : "does not have"
-        } add annotation:`,
-        name,
-      )
+  const typeNames = new Set(context.tsToFactorioType.values())
+  for (const [name, def] of context.manualDefs.defs.entries()) {
+    if (def.annotations.omit) continue
+    const isExisting = typeNames.has(name) || context.tsToFactorioType.has(name)
+    if (!isExisting) {
+      context.warning(`Manual definition for ${def.kind} ${name} is not used, and does not have add annotation.`)
     }
   }
-  for (const name of context.manualDefs.addBefore.keys()) {
-    context.warning("Could not find existing statement", name, "to add before")
-  }
-
-  for (const name of context.manualDefs.addAfter.keys()) {
-    context.warning("Could not find existing statement", name, "to add after")
-  }
-
-  for (const name of context.manualDefs.addTo.keys()) {
-    context.warning("Could not find existing file", name, "to add to")
-  }
-}
-
-export function copyExistingDeclaration<T extends ts.TypeAliasDeclaration | ts.InterfaceDeclaration>(node: T): T {
-  if (ts.isTypeAliasDeclaration(node)) {
-    return ts.factory.createTypeAliasDeclaration([Modifiers.export], node.name, node.typeParameters, node.type) as T
-  } else {
-    return ts.factory.createInterfaceDeclaration(
-      [Modifiers.export],
-      node.name,
-      node.typeParameters,
-      node.heritageClauses,
-      node.members,
-    ) as T
-  }
+  context.manualDefs.checkAllAddedTypes(context)
 }

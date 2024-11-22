@@ -1,22 +1,21 @@
 import { RuntimeGenerationContext } from "./index.js"
-import { analyzeType, RWUsage } from "../read-write-types.js"
-import { ModuleType } from "../OutputFile.js"
-import { byOrder } from "../util.js"
+import { FactorioModule } from "../OutputFile.js"
 import { createComment, createConst } from "../genUtil.js"
-import { mapRuntimeType } from "../types.js"
+import { mapRuntimeType, RWUsage } from "../types.js"
 import { addJsDoc } from "../documentation.js"
 import assert from "assert"
 import { Parameter } from "../FactorioRuntimeApiJson"
+import { recordUsage } from "./concept-usage-analysis"
 
 export function preprocessGlobalObjects(context: RuntimeGenerationContext): void {
-  for (const globalObject of context.apiDocs.global_objects) {
-    context.references.set(globalObject.name, globalObject.name)
-    analyzeType(context, globalObject.type, RWUsage.Read)
+  for (const globalObject of context.globalObjects.values()) {
+    context.tsToFactorioType.set(globalObject.name, globalObject.name)
+    recordUsage(context, globalObject.type, RWUsage.Read)
   }
 }
 export function generateGlobalObjects(context: RuntimeGenerationContext): void {
-  context.addFile("global-objects", ModuleType.Global, () => {
-    for (const globalObject of context.apiDocs.global_objects.sort(byOrder)) {
+  context.addFile("global-objects", FactorioModule.Global, () => {
+    for (const globalObject of context.globalObjects.values()) {
       if (globalObject.name === "settings") {
         handleSettingsGlobal(context, globalObject)
         continue

@@ -2,12 +2,14 @@ import { FactorioPrototypeApiJson, Property, Prototype, PrototypeConcept, Type }
 import { GenerationContext } from "../GenerationContext.js"
 import { generatePrototypes, preprocessPrototypes } from "./prototypes.js"
 import { generateTypes, preprocessTypes } from "./concepts.js"
+import { FactorioModule } from "../OutputFile"
+import { manualDefToPrototypeConcept, preprocessTypesWithManualDefs } from "../added-types"
 
 export class PrototypeGenerationContext extends GenerationContext<FactorioPrototypeApiJson> {
-  stageName = "prototype"
+  stageName = FactorioModule.Prototype
 
-  prototypes = new Map<string, Prototype>(this.apiDocs.prototypes.map((e) => [e.name, e]))
-  types = new Map<string, PrototypeConcept>(this.apiDocs.types.map((e) => [e.name, e]))
+  prototypes!: Map<string, Prototype>
+  types!: Map<string, PrototypeConcept>
 
   prototypeProperties = new Map<string, Map<string, Property>>(
     this.apiDocs.prototypes.map((e) => [e.name, new Map(e.properties.map((p) => [p.name, p]))]),
@@ -41,12 +43,14 @@ export class PrototypeGenerationContext extends GenerationContext<FactorioProtot
     return this.docUrlBase() + relative_link
   }
 
-  preprocessAll(): void {
+  generateAll(): void {
+    const prototypes = preprocessTypesWithManualDefs(this, this.apiDocs.prototypes, "prototypes")
+    const types = preprocessTypesWithManualDefs(this, this.apiDocs.types, "types", manualDefToPrototypeConcept)
+    this.prototypes = new Map(prototypes.map((e) => [e.name, e]))
+    this.types = new Map(types.map((e) => [e.name, e]))
+
     preprocessPrototypes(this)
     preprocessTypes(this)
-  }
-
-  generateAll(): void {
     generatePrototypes(this)
     generateTypes(this)
   }

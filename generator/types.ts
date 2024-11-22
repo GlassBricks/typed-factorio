@@ -4,23 +4,31 @@ import { addJsDoc } from "./documentation.js"
 
 import type * as prototype from "./FactorioPrototypeApiJson.js"
 import type * as runtime from "./FactorioRuntimeApiJson.js"
+import { Type } from "./FactorioRuntimeApiJson.js"
 import { IndexTypes } from "./runtime/index-types.js"
 import { escapePropertyName, indent, Modifiers, printNode, Tokens, Types } from "./genUtil.js"
-import { InterfaceDef, TypeAliasDef } from "./manualDefinitions.js"
+import { InterfaceDef, TypeAliasDef } from "./ManualDefinitions"
 import { mapAttribute, mapParameterToProperty } from "./runtime/members.js"
-import { RWUsage } from "./read-write-types.js"
 import { assertNever, byOrder } from "./util.js"
-import { RuntimeGenerationContext } from "./runtime/index.js"
+import { RuntimeGenerationContext } from "./runtime"
 import { GenerationContext } from "./GenerationContext.js"
-import { PrototypeGenerationContext } from "./prototype/index.js"
-import { getSpecificPrototypeTypeForTypeAttribute } from "./prototypeSubclassTypes.js"
+import { PrototypeGenerationContext } from "./prototype"
+import { getSpecificPrototypeTypeForTypeAttribute } from "./runtime/prototype-subclass-types"
 import { mapProperty } from "./prototype/properties.js"
 
 export interface TypeContext {
   contextName?: string
   existingDef?: InterfaceDef | TypeAliasDef
+  dontExpandReadWriteTypes?: boolean
 
   prototypeConceptProperties?: ts.TypeElement[]
+}
+
+export enum RWUsage {
+  None = 0,
+  Read = 1 << 0,
+  Write = 1 << 1,
+  ReadWrite = Read | Write,
 }
 
 export interface RWType {
@@ -232,42 +240,36 @@ function mapTypeInternal(
 
 function mapConceptRwType(
   context: RuntimeGenerationContext,
-  rwType: {
-    read: string | ts.TypeNode
-    write: string | ts.TypeNode
-  },
+  rwType: { read: Type; write: Type },
   usage: RWUsage,
 ): IntermediateType {
   assert(usage)
 
-  function getTypeNode(value: string | ts.TypeNode): ts.TypeNode {
-    if (typeof value === "string") {
-      return createTypeNode(context, value)
-    }
-    return value
-  }
-
-  function toString(value: string | ts.TypeNode): string {
-    return typeof value === "string" ? value : printNode(value)
+  function doMapType(type: Type, usage: RWUsage) {
+    return mapTypeInternal(
+      context,
+      type,
+      {
+        dontExpandReadWriteTypes: true,
+      },
+      usage,
+    )
   }
 
   switch (usage) {
-    case RWUsage.ReadWrite:
+    case RWUsage.ReadWrite: {
+      const mainType = doMapType(rwType.read, RWUsage.Read)
+      const altWriteType = doMapType(rwType.write, RWUsage.Write)
       return {
-        mainType: getTypeNode(rwType.read),
-        altWriteType: getTypeNode(rwType.write),
-        asString: toString(rwType.read),
+        mainType: mainType.mainType,
+        altWriteType: altWriteType.mainType,
+        asString: mainType.asString,
       }
+    }
     case RWUsage.Read:
-      return {
-        mainType: getTypeNode(rwType.read),
-        asString: toString(rwType.read),
-      }
+      return doMapType(rwType.read, RWUsage.Read)
     case RWUsage.Write:
-      return {
-        mainType: getTypeNode(rwType.write),
-        asString: toString(rwType.write),
-      }
+      return doMapType(rwType.write, RWUsage.Write)
     default:
       assertNever(usage)
   }
@@ -277,6 +279,14 @@ function createTypeNode(context: GenerationContext, typeName: string) {
   context.currentFile.addImport(context.stageName, typeName)
 
   return ts.factory.createTypeReferenceNode(typeName)
+}
+
+function createBasicType(context: GenerationContext, name: string) {
+  const typeName = context.tsToFactorioType.get(name)
+  return {
+    mainType: createTypeNode(context, name),
+    asString: typeName ? `[${typeName}](${context.stageName}:${name})` : `\`${name}\``,
+  }
 }
 
 function mapBasicType(
@@ -289,22 +299,20 @@ function mapBasicType(
     // hard-coded ish for now
     const usingIndex = tryUseIndexTypeFromBasicType(context, type, typeContext)
     if (usingIndex) return usingIndex
-    const concept = context.concepts.get(type)
-    const rwType = concept && context.conceptUsageAnalysis.conceptReadWriteTypes.get(concept)
-    if (rwType) {
-      return mapConceptRwType(context, rwType, usage)
+
+    if (!typeContext?.dontExpandReadWriteTypes) {
+      const concept = context.concepts.get(type)
+      const rwType = concept && context.conceptUsageAnalysis.readWriteTypeNames.get(concept)
+      if (rwType) {
+        return mapConceptRwType(context, rwType, usage)
+      }
     }
   }
   // Dear factorio devs: Lua is not C++...
   if (type === "bool") {
     type = "boolean"
   }
-
-  const typeName = context.references.get(type)
-  return {
-    mainType: createTypeNode(context, type),
-    asString: typeName ? `[${typeName}](runtime:${type})` : `\`${type}\``,
-  }
+  return createBasicType(context, type)
 }
 
 function tryUseIndexTypeFromBasicType(
@@ -759,17 +767,6 @@ function mapTableType(
   const parameters = type.parameters
     .sort(byOrder)
     .map((p) => mapParameterToProperty(context, p, typeContext.contextName!, usage, existingDef))
-
-  const parameterNames = new Set(type.parameters.map((p) => p.name))
-  if (existingDef?.annotations.addProperties) {
-    for (const [name, elements] of Object.entries(existingDef.members)) {
-      if (parameterNames.has(name)) continue
-      assert(elements?.length === 1)
-      const first = elements[0]
-      assert(ts.isPropertySignature(first))
-      parameters.push({ mainProperty: first })
-    }
-  }
 
   const mainType = ts.factory.createTypeLiteralNode(parameters.map((p) => p.mainProperty))
   let altWriteType: ts.TypeNode | undefined

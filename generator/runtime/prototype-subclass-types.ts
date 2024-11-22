@@ -1,7 +1,8 @@
-import { RuntimeGenerationContext } from "./runtime"
-import { Type } from "./FactorioRuntimeApiJson.js"
-import { capitalize } from "./genUtil.js"
+import { RuntimeGenerationContext } from "./index"
+import { Type } from "../FactorioRuntimeApiJson"
+import { capitalize } from "../genUtil"
 import ts from "typescript"
+import { FactorioModule } from "../OutputFile"
 
 export const nameToToPrototypeType = {
   // hardcoded for now; could possibly instead get from prototype definitions, but this is unlikely to change
@@ -50,7 +51,7 @@ export function getSpecificPrototypeTypeForTypeAttribute(
       continue
     }
     const importName = capitalize(name) + "Type"
-    context.currentFile.addImport("prototype", importName)
+    context.currentFile.addImport(FactorioModule.Prototype, importName)
     return ts.factory.createTypeReferenceNode(importName)
   }
   if (toIgnore.some((t) => thisName.includes(t))) {

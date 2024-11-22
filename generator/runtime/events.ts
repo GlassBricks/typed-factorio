@@ -2,28 +2,28 @@ import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { createExtendsClause, toPascalCase } from "../genUtil.js"
 import { mapParameterToProperty } from "./members.js"
-import { analyzeType, RWUsage } from "../read-write-types.js"
 import { byOrder } from "../util.js"
-import { ModuleType } from "../OutputFile.js"
+import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
+import { RWUsage } from "../types"
+import { recordUsage } from "./concept-usage-analysis"
 
 export function preprocessEvents(context: RuntimeGenerationContext): void {
-  context.apiDocs.events.sort(byOrder)
-  for (const event of context.apiDocs.events) {
-    context.references.set(event.name, getMappedEventName(event.name))
+  for (const event of context.events.values()) {
+    context.tsToFactorioType.set(event.name, getMappedEventName(event.name))
     for (const parameter of event.data) {
-      analyzeType(context, parameter.type, RWUsage.Read)
+      recordUsage(context, parameter.type, RWUsage.Read)
     }
     if (event.filter) {
-      analyzeType(context, event.filter, RWUsage.ReadWrite)
+      recordUsage(context, event.filter, RWUsage.ReadWrite)
     }
   }
 }
 
 export function generateEvents(context: RuntimeGenerationContext): void {
-  context.addFile("events", ModuleType.Runtime, () => {
+  context.addFile("events", FactorioModule.Runtime, () => {
     const heritageClause = createExtendsClause("EventData")
-    for (const event of context.apiDocs.events) {
+    for (const event of context.events.values()) {
       const name = getMappedEventName(event.name)
       const existing = context.manualDefs.getDeclaration(name)
       const declaration = ts.factory.createInterfaceDeclaration(

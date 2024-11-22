@@ -14,9 +14,6 @@ export function generateBuiltinType(
     context.warning(`No existing definition for builtin ${name}`)
     return undefined
   }
-  if (existing.annotations.omit) {
-    return undefined
-  }
   addJsDoc(context, existing.node, concept, name)
   context.currentFile.add(existing.node)
 }

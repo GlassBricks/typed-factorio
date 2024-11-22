@@ -5,7 +5,7 @@ import { mapPrototypeType } from "../types.js"
 import { Modifiers, Tokens, Types } from "../genUtil.js"
 import { addJsDoc } from "../documentation.js"
 import { maybeRecordInlineConceptReference } from "./concepts.js"
-import { InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
+import { InterfaceDef, TypeAliasDef } from "../ManualDefinitions"
 import assert from "assert"
 
 export function mapProperty(

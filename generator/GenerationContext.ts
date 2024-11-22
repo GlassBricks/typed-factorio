@@ -1,6 +1,6 @@
 import ts from "typescript"
-import { ModuleType, OutputFile, OutputFileBuilder, OutputFileBuilderImpl } from "./OutputFile.js"
-import { checkManualDefinitions, processManualDefinitions } from "./manualDefinitions.js"
+import { FactorioModule, OutputFile, OutputFileBuilder } from "./OutputFile.js"
+import { checkManualDefinitions, ManualDefinitions, processManualDefinitions } from "./ManualDefinitions"
 import * as runtime from "./FactorioRuntimeApiJson.js"
 import * as prototype from "./FactorioPrototypeApiJson.js"
 
@@ -15,24 +15,32 @@ export interface Options {
   readonly noLink: boolean
 }
 
+export function associateByName<T extends { name: string }>(arr: T[]): Map<string, T> {
+  const map = new Map<string, T>()
+  for (const item of arr) {
+    map.set(item.name, item)
+  }
+  return map
+}
+
 export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   // This is also a record of which types exist
-  references = new Map<string, string>()
+  tsToFactorioType = new Map<string, string>()
 
   hasWarnings = false
 
-  public readonly manualDefs
+  public readonly manualDefs: ManualDefinitions
 
   constructor(
-    public readonly apiDocs: A,
-    public readonly manualDefinitionsSource: ts.SourceFile,
+    protected readonly apiDocs: A,
+    public readonly manualDefsSource: ts.SourceFile,
     public readonly checker: ts.TypeChecker,
     public readonly options: Options,
   ) {
-    this.manualDefs = processManualDefinitions(this.manualDefinitionsSource)
+    this.manualDefs = processManualDefinitions(this.manualDefsSource)
   }
 
-  abstract get stageName(): string
+  abstract get stageName(): FactorioModule
 
   private _currentFile: OutputFileBuilder | undefined
   get currentFile(): OutputFileBuilder {
@@ -42,9 +50,9 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
 
   private allFiles: OutputFile[] = []
 
-  addFile(fileName: string, moduleType: ModuleType, fn: () => void): void {
+  addFile(fileName: string, moduleType: FactorioModule, fn: () => void): void {
     if (this._currentFile) throw new Error("Nested addFile")
-    const builder = new OutputFileBuilderImpl(this.manualDefs, fileName, moduleType)
+    const builder = new OutputFileBuilder(fileName, moduleType)
     this._currentFile = builder
     fn()
     this._currentFile = undefined
@@ -59,8 +67,6 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
     if (this.options.noLink) return "https://lua-api.factorio.com/latest/"
     return `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
   }
-
-  protected abstract preprocessAll(): void
 
   protected abstract generateAll(): void
 
@@ -83,7 +89,6 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
 
   generate(): OutputFile[] {
     this.checkApiDocs()
-    this.preprocessAll()
     this.generateAll()
     checkManualDefinitions(this)
     return this.allFiles

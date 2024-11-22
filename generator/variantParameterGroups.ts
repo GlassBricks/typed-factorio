@@ -4,9 +4,9 @@ import { addJsDoc, processDescription } from "./documentation.js"
 import { LiteralType, Parameter, ParameterGroup, Type, WithVariantParameterGroups } from "./FactorioRuntimeApiJson.js"
 import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil.js"
 import { mapParameterToProperty } from "./runtime/members.js"
-import { RWUsage } from "./read-write-types.js"
 import { byOrder } from "./util.js"
 import { RuntimeGenerationContext } from "./runtime"
+import { RWUsage } from "./types"
 
 export function createVariantParameterTypes(
   context: RuntimeGenerationContext,
@@ -17,11 +17,11 @@ export function createVariantParameterTypes(
   declarations: [mainType: ts.TypeAliasDeclaration, altWriteType?: ts.TypeAliasDeclaration]
   description: string
 } {
-  context.references.set(name, name)
+  context.tsToFactorioType.set(name, name)
   const shortName = removeLuaPrefix(name)
 
   const baseName = "Base" + shortName
-  context.references.set(baseName, name)
+  context.tsToFactorioType.set(baseName, name)
   const existingBase = context.manualDefs.getDeclaration(baseName)
 
   value.variant_parameter_groups!.sort(byOrder)
@@ -126,7 +126,7 @@ export function createVariantParameterTypes(
     addJsDoc(context, declarations[0], group, undefined, { pre: variantDescription })
     declarations.forEach((d) => context.currentFile.add(d))
 
-    context.references.set(variantName, variantName)
+    context.tsToFactorioType.set(variantName, variantName)
 
     if (isOtherTypes) variants?.clear()
   }

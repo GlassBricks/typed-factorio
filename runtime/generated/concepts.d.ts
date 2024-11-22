@@ -54,7 +54,6 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ComparatorString.html Online documentation}
    */
   export type ComparatorString = "=" | ">" | "<" | "≥" | ">=" | "≤" | "<=" | "≠" | "!="
-  /** @see ComparatorString */
   export type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
   export type SpriteType =
     | "item"
@@ -86,11 +85,7 @@ declare module "factorio:runtime" {
    * {@link https://lua-api.factorio.com/2.0.17/concepts/SpritePath.html > The supported types are:}
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/SpritePath.html Online documentation}
    */
-  export type SpritePath =
-    | (string & {
-        _?: never
-      })
-    | `${SpriteType}${"/" | "."}${string}`
+  export type SpritePath = (string & { _?: never }) | `${SpriteType}${"/" | "."}${string}`
   /**
    * @example
    * -- Most common collision mask of buildings:
@@ -517,7 +512,7 @@ declare module "factorio:runtime" {
    * - {@link LuaPostEntityDiedEventFilter}
    * - {@link LuaEntityMarkedForDeconstructionEventFilter}
    * - {@link LuaPlayerMinedEntityEventFilter}
-   * - LuaEntityDamagedEventFilter
+   * - {@link LuaEntityDamagedEventFilter}
    * - {@link LuaScriptRaisedReviveEventFilter}
    * - {@link LuaEntityDiedEventFilter}
    * - {@link LuaPreRobotMinedEntityEventFilter}
@@ -1140,17 +1135,17 @@ declare module "factorio:runtime" {
    *
    * ## Union members
    * - {@link ModSettingPrototypeFilter}
-   * - TilePrototypeFilter
+   * - {@link TilePrototypeFilter}
    * - {@link DecorativePrototypeFilter}
-   * - RecipePrototypeFilter
+   * - {@link RecipePrototypeFilter}
    * - {@link AchievementPrototypeFilter}
-   * - TechnologyPrototypeFilter
+   * - {@link TechnologyPrototypeFilter}
    * - {@link AsteroidChunkPrototypeFilter}
-   * - ItemPrototypeFilter
+   * - {@link ItemPrototypeFilter}
    * - {@link EquipmentPrototypeFilter}
-   * - EntityPrototypeFilter
-   * - SpaceLocationPrototypeFilter
-   * - FluidPrototypeFilter
+   * - {@link EntityPrototypeFilter}
+   * - {@link SpaceLocationPrototypeFilter}
+   * - {@link FluidPrototypeFilter}
    * @see PrototypeFilterWrite
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/PrototypeFilter.html Online documentation}
    */
@@ -2349,7 +2344,7 @@ declare module "factorio:runtime" {
    * - {@link LuaItemStack}: The item stack. Both prototype and quality of the item stack will be used.
    * - {@link LuaItemPrototype}: The item prototype. Normal quality will be used.
    * - `string`: The prototype name. Normal quality will be used.
-   * - ItemIDAndQualityIDPairWrite: A table of entity prototype and quality.
+   * - `ItemIDAndQualityIDPairWrite`: A table of entity prototype and quality.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ItemWithQualityID.html Online documentation}
    */
   export type ItemWithQualityID = LuaItemStack | LuaItemPrototype | string | ItemIDAndQualityIDPairWrite
@@ -2560,19 +2555,16 @@ declare module "factorio:runtime" {
     readonly orientation?: RealOrientation
   }
   /**
-   * Write form of {@link BoundingBox}, as a table, where positions are allowed to take an array form.
-   */
-  export interface BoundingBoxWrite {
-    readonly left_top: MapPosition | MapPositionArray
-    readonly right_bottom: MapPosition | MapPositionArray
-    readonly orientation?: RealOrientation
-  }
-  /**
    * Array form of {@link BoundingBox}.
    * @see BoundingBox
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BoundingBox.html Online documentation}
    */
   export type BoundingBoxArray = readonly [MapPosition | MapPositionArray, MapPosition | MapPositionArray]
+  export interface BoundingBoxWrite {
+    readonly left_top: (MapPosition | MapPositionArray) | MapPositionArray
+    readonly right_bottom: (MapPosition | MapPositionArray) | MapPositionArray
+    readonly orientation?: RealOrientation
+  }
   /**
    * Space platform may be specified in one of one ways.
    *
@@ -2585,8 +2577,8 @@ declare module "factorio:runtime" {
    * Set of forces. Can be specified in one of two ways.
    *
    * ## Union members
-   * - LuaForce[]: Array of many forces.
-   * - LuaForce: A single force.
+   * - {@link LuaForce}[]: Array of many forces.
+   * - {@link LuaForce}: A single force.
    * @see ForceSetWrite
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/ForceSet.html Online documentation}
    */
@@ -2875,104 +2867,306 @@ declare module "factorio:runtime" {
      */
     readonly wires?: BlueprintWire[]
     /** Orientation of the cargo wagon or locomotive, value 0 to 1 */
+    /**
+     * Orientation of the cargo wagon or locomotive, value 0 to 1
+     */
     readonly orientation?: RealOrientation
     /** Copper wire connections, array of entity_numbers */
+    /**
+     * Copper wire connections, array of entity_numbers
+     */
     readonly neighbours?: uint[]
     /** Name of the recipe prototype this assembling machine is set to. */
+    /**
+     * Name of the recipe prototype this assembling machine is set to.
+     */
     readonly recipe?: string
     /** Used by {@link https://wiki.factorio.com/Prototype/Container Prototype/Container}. The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Prototype/Container Prototype/Container}. The index of the first inaccessible item slot due to limiting with the red "bar". 0-based.
+     */
     readonly bar?: uint16
     /** Cargo wagon inventory configuration */
+    /**
+     * Cargo wagon inventory configuration
+     */
     readonly inventory?: BlueprintInventory
     /** Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}.
+     */
     readonly infinity_settings?: BlueprintInfinitySettings | InfinityPipeFilter
     /** Type of the underground belt or loader. Either "input" or "output". */
+    /**
+     * Type of the underground belt or loader. Either "input" or "output".
+     */
     readonly type?: "input" | "output"
     /** Input priority of the splitter. Either "right" or "left", "none" is omitted. */
+    /**
+     * Input priority of the splitter. Either "right" or "left", "none" is omitted.
+     */
     readonly input_priority?: "right" | "left"
     /** Output priority of the splitter. Either "right" or "left", "none" is omitted. */
+    /**
+     * Output priority of the splitter. Either "right" or "left", "none" is omitted.
+     */
     readonly output_priority?: "right" | "left"
     /** Filter of the splitter. Name of the item prototype the filter is set to. */
+    /**
+     * Filter of the splitter. Name of the item prototype the filter is set to.
+     */
     readonly filter?: string
     /** Filters of the filter inserter or loader. Array of {@link InventoryFilter} objects. */
+    /**
+     * Filters of the filter inserter or loader. Array of {@link InventoryFilter } objects.
+     */
     readonly filters?: InventoryFilter[]
     /** Filter mode of the filter inserter. Either "whitelist" or "blacklist". */
+    /**
+     * Filter mode of the filter inserter. Either "whitelist" or "blacklist".
+     */
     readonly filter_mode?: "whitelist" | "blacklist"
     /** The stack size the inserter is set to. */
+    /**
+     * The stack size the inserter is set to.
+     */
     readonly override_stack_size?: uint8
     /** The drop position the inserter is set to. */
+    /**
+     * The drop position the inserter is set to.
+     */
     readonly drop_position?: MapPosition
     /** The pickup position the inserter is set to. */
+    /**
+     * The pickup position the inserter is set to.
+     */
     readonly pickup_position?: MapPosition
     /** Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}.
+     */
     readonly request_filters?: LogisticFilter[]
     /** Whether this requester chest can request from buffer chests. */
+    /**
+     * Whether this requester chest can request from buffer chests.
+     */
     readonly request_from_buffers?: boolean
     /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}.
+     */
     readonly parameters?: ProgrammableSpeakerParameters
     /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}.
+     */
     readonly alert_parameters?: ProgrammableSpeakerAlertParameters
     /** Used by the rocket silo, whether auto launch is enabled. */
+    /**
+     * Used by the rocket silo, whether auto launch is enabled.
+     */
     readonly auto_launch?: boolean
     /** Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}.
+     */
     readonly variation?: uint8
     /** Color of the {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce}, {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}, or train station. */
+    /**
+     * Color of the {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce}, {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}, or train station.
+     */
     readonly color?: Color
     /** The name of the train station. */
+    /**
+     * The name of the train station.
+     */
     readonly station?: string
   }
   /**
-   * Information about a single connection between two connection points.
-   *
-   * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_data_object View Documentation}
+   * Write form of {@link BlueprintEntity}, where some properties allow additional values as input compared to the read form.
+   * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintEntity.html Online documentation}
    */
-  export interface BlueprintConnectionData {
-    /** ID of the entity this connection is connected with. */
-    entity_id: uint
-    /** The circuit connector id of the entity this connection is connected to. */
-    circuit_id?: defines.wire_connector_id
-  }
-  /**
-   * The actual point where a wire is connected to. Contains information about where it is connected to.
-   *
-   * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_point_object View Documentation}
-   */
-  export interface BlueprintConnectionPoint {
+  export interface BlueprintEntityWrite {
     /**
-     * An array of {@link BlueprintConnectionData Connection data object} containing all the connections from this point
-     * created by red wire.
+     * The entity's unique identifier in the blueprint.
      */
-    red?: BlueprintConnectionData[]
+    readonly entity_number: uint
     /**
-     * An array of {@link BlueprintConnectionData Connection data object} containing all the connections from this point
-     * created by green wire.
+     * The prototype name of the entity.
      */
-    green?: BlueprintConnectionData[]
-  }
-  /**
-   * Object containing information about the connections to other entities formed by red or green wires.
-   *
-   * {@link https://wiki.factorio.com/Blueprint_string_format#Connection_object View Documentation}
-   */
-  export interface BlueprintCircuitConnection {
-    /** First connection point. The default for everything that doesn't have multiple connection points. */
-    "1"?: BlueprintConnectionPoint
-    /** Second connection point. For example, the "output" part of an arithmetic combinator. */
-    "2"?: BlueprintConnectionPoint
+    readonly name: string
+    /**
+     * The position of the entity.
+     */
+    readonly position: MapPosition | MapPositionArray
+    /**
+     * The direction the entity is facing. Only present for entities that can face in different directions and when the entity is not facing north.
+     */
+    readonly direction?: defines.direction
+    /**
+     * Whether this entity is mirrored.
+     */
+    readonly mirror?: boolean
+    /**
+     * The prototype name of the entity's quality.
+     */
+    readonly quality?: string
+    /**
+     * The control behavior of the entity, if it has one. The format of the control behavior depends on the entity's type. Only relevant for entities that support control behaviors.
+     */
+    readonly control_behavior?: BlueprintControlBehaviorWrite
+    /**
+     * The items that the entity will request when revived, if any.
+     */
+    readonly items?: readonly BlueprintInsertPlanWrite[]
+    /**
+     * The entity tags of the entity, if there are any.
+     */
+    readonly tags?: Tags
+    /**
+     * The schedule of the entity, if it has one. Only relevant for locomotives.
+     */
+    readonly schedule?: BlueprintScheduleWrite
+    /**
+     * Wires connected to this entity in the blueprint.
+     */
+    readonly wires?: BlueprintWire[]
+    /** Orientation of the cargo wagon or locomotive, value 0 to 1 */
+    /**
+     * Orientation of the cargo wagon or locomotive, value 0 to 1
+     */
+    readonly orientation?: RealOrientation
+    /** Copper wire connections, array of entity_numbers */
+    /**
+     * Copper wire connections, array of entity_numbers
+     */
+    readonly neighbours?: uint[]
+    /** Name of the recipe prototype this assembling machine is set to. */
+    /**
+     * Name of the recipe prototype this assembling machine is set to.
+     */
+    readonly recipe?: string
+    /** Used by {@link https://wiki.factorio.com/Prototype/Container Prototype/Container}. The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Prototype/Container Prototype/Container}. The index of the first inaccessible item slot due to limiting with the red "bar". 0-based.
+     */
+    readonly bar?: uint16
+    /** Cargo wagon inventory configuration */
+    /**
+     * Cargo wagon inventory configuration
+     */
+    readonly inventory?: BlueprintInventory
+    /** Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}.
+     */
+    readonly infinity_settings?: BlueprintInfinitySettings | InfinityPipeFilter
+    /** Type of the underground belt or loader. Either "input" or "output". */
+    /**
+     * Type of the underground belt or loader. Either "input" or "output".
+     */
+    readonly type?: "input" | "output"
+    /** Input priority of the splitter. Either "right" or "left", "none" is omitted. */
+    /**
+     * Input priority of the splitter. Either "right" or "left", "none" is omitted.
+     */
+    readonly input_priority?: "right" | "left"
+    /** Output priority of the splitter. Either "right" or "left", "none" is omitted. */
+    /**
+     * Output priority of the splitter. Either "right" or "left", "none" is omitted.
+     */
+    readonly output_priority?: "right" | "left"
+    /** Filter of the splitter. Name of the item prototype the filter is set to. */
+    /**
+     * Filter of the splitter. Name of the item prototype the filter is set to.
+     */
+    readonly filter?: string
+    /** Filters of the filter inserter or loader. Array of {@link InventoryFilter} objects. */
+    /**
+     * Filters of the filter inserter or loader. Array of {@link InventoryFilter } objects.
+     */
+    readonly filters?: InventoryFilter[]
+    /** Filter mode of the filter inserter. Either "whitelist" or "blacklist". */
+    /**
+     * Filter mode of the filter inserter. Either "whitelist" or "blacklist".
+     */
+    readonly filter_mode?: "whitelist" | "blacklist"
+    /** The stack size the inserter is set to. */
+    /**
+     * The stack size the inserter is set to.
+     */
+    readonly override_stack_size?: uint8
+    /** The drop position the inserter is set to. */
+    /**
+     * The drop position the inserter is set to.
+     */
+    readonly drop_position?: MapPosition
+    /** The pickup position the inserter is set to. */
+    /**
+     * The pickup position the inserter is set to.
+     */
+    readonly pickup_position?: MapPosition
+    /** Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}.
+     */
+    readonly request_filters?: LogisticFilter[]
+    /** Whether this requester chest can request from buffer chests. */
+    /**
+     * Whether this requester chest can request from buffer chests.
+     */
+    readonly request_from_buffers?: boolean
+    /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}.
+     */
+    readonly parameters?: ProgrammableSpeakerParameters
+    /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}.
+     */
+    readonly alert_parameters?: ProgrammableSpeakerAlertParameters
+    /** Used by the rocket silo, whether auto launch is enabled. */
+    /**
+     * Used by the rocket silo, whether auto launch is enabled.
+     */
+    readonly auto_launch?: boolean
+    /** Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}. */
+    /**
+     * Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}.
+     */
+    readonly variation?: uint8
+    /** Color of the {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce}, {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}, or train station. */
+    /**
+     * Color of the {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce}, {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}, or train station.
+     */
+    readonly color?: Color
+    /** The name of the train station. */
+    /**
+     * The name of the train station.
+     */
+    readonly station?: string
   }
   export interface BlueprintInventory {
     readonly filters?: InventoryFilter[]
-    /** The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
+    /**
+     * The index of the first inaccessible item slot due to limiting with the red "bar". 0-based.
+     */
     readonly bar?: uint16
   }
   export interface BlueprintInfinitySettings {
-    /** Whether the "remove unfiltered items" checkbox is checked. */
+    /**
+     * Whether the "remove unfiltered items" checkbox is checked.
+     */
     readonly remove_unfiltered_items: boolean
-    /** Filters of the infinity container. */
+    /**
+     * Filters of the infinity container.
+     */
     readonly filters?: InfinityInventoryFilter[]
   }
   /**
-   * WARNING: this type has not yet been updated for factorio 2.0.
+   * @see BlueprintControlBehaviorWrite
+   * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintControlBehavior.html Online documentation}
    */
   export interface BlueprintControlBehavior {
     readonly condition?: CircuitCondition
@@ -3012,100 +3206,45 @@ declare module "factorio:runtime" {
     readonly circuit_parameters?: ProgrammableSpeakerCircuitParameters
   }
   /**
-   * Write form of {@link BlueprintEntity}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintEntity.html Online documentation}
+   * Write form of {@link BlueprintControlBehavior}, where some properties allow additional values as input compared to the read form.
+   * @see {@link https://lua-api.factorio.com/2.0.17/concepts/BlueprintControlBehavior.html Online documentation}
    */
-  export interface BlueprintEntityWrite {
-    /**
-     * The entity's unique identifier in the blueprint.
-     */
-    readonly entity_number: uint
-    /**
-     * The prototype name of the entity.
-     */
-    readonly name: string
-    /**
-     * The position of the entity.
-     */
-    readonly position: MapPosition | MapPositionArray
-    /**
-     * The direction the entity is facing. Only present for entities that can face in different directions and when the entity is not facing north.
-     */
-    readonly direction?: defines.direction
-    /**
-     * Whether this entity is mirrored.
-     */
-    readonly mirror?: boolean
-    /**
-     * The prototype name of the entity's quality.
-     */
-    readonly quality?: string
-    /**
-     * The control behavior of the entity, if it has one. The format of the control behavior depends on the entity's type. Only relevant for entities that support control behaviors.
-     */
-    readonly control_behavior?: BlueprintControlBehavior
-    /**
-     * The items that the entity will request when revived, if any.
-     */
-    readonly items?: readonly BlueprintInsertPlanWrite[]
-    /**
-     * The entity tags of the entity, if there are any.
-     */
-    readonly tags?: Tags
-    /**
-     * The schedule of the entity, if it has one. Only relevant for locomotives.
-     */
-    readonly schedule?: BlueprintScheduleWrite
-    /**
-     * Wires connected to this entity in the blueprint.
-     */
-    readonly wires?: BlueprintWire[]
-    /** Orientation of the cargo wagon or locomotive, value 0 to 1 */
-    readonly orientation?: RealOrientation
-    /** Copper wire connections, array of entity_numbers */
-    readonly neighbours?: uint[]
-    /** Name of the recipe prototype this assembling machine is set to. */
-    readonly recipe?: string
-    /** Used by {@link https://wiki.factorio.com/Prototype/Container Prototype/Container}. The index of the first inaccessible item slot due to limiting with the red "bar". 0-based. */
-    readonly bar?: uint16
-    /** Cargo wagon inventory configuration */
-    readonly inventory?: BlueprintInventory
-    /** Used by {@link https://wiki.factorio.com/Prototype/InfinityContainer Prototype/InfinityContainer}. */
-    readonly infinity_settings?: BlueprintInfinitySettings | InfinityPipeFilter
-    /** Type of the underground belt or loader. Either "input" or "output". */
-    readonly type?: "input" | "output"
-    /** Input priority of the splitter. Either "right" or "left", "none" is omitted. */
-    readonly input_priority?: "right" | "left"
-    /** Output priority of the splitter. Either "right" or "left", "none" is omitted. */
-    readonly output_priority?: "right" | "left"
-    /** Filter of the splitter. Name of the item prototype the filter is set to. */
-    readonly filter?: string
-    /** Filters of the filter inserter or loader. Array of {@link InventoryFilter} objects. */
-    readonly filters?: InventoryFilter[]
-    /** Filter mode of the filter inserter. Either "whitelist" or "blacklist". */
-    readonly filter_mode?: "whitelist" | "blacklist"
-    /** The stack size the inserter is set to. */
-    readonly override_stack_size?: uint8
-    /** The drop position the inserter is set to. */
-    readonly drop_position?: MapPosition
-    /** The pickup position the inserter is set to. */
-    readonly pickup_position?: MapPosition
-    /** Used by {@link https://wiki.factorio.com/Prototype/LogisticContainer Prototype/LogisticContainer}. */
-    readonly request_filters?: LogisticFilter[]
-    /** Whether this requester chest can request from buffer chests. */
-    readonly request_from_buffers?: boolean
-    /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-    readonly parameters?: ProgrammableSpeakerParameters
-    /** Used by {@link https://wiki.factorio.com/Programmable_speaker Programmable speaker}. */
-    readonly alert_parameters?: ProgrammableSpeakerAlertParameters
-    /** Used by the rocket silo, whether auto launch is enabled. */
-    readonly auto_launch?: boolean
-    /** Used by {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce} or {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}. */
-    readonly variation?: uint8
-    /** Color of the {@link https://wiki.factorio.com/Prototype/SimpleEntityWithForce Prototype/SimpleEntityWithForce}, {@link https://wiki.factorio.com/Prototype/SimpleEntityWithOwner Prototype/SimpleEntityWithOwner}, or train station. */
-    readonly color?: Color
-    /** The name of the train station. */
-    readonly station?: string
+  export interface BlueprintControlBehaviorWrite {
+    readonly condition?: CircuitConditionWrite
+    readonly circuit_condition?: CircuitConditionWrite
+    readonly is_on?: boolean
+    readonly arithmetic_conditions?: ArithmeticCombinatorParameters
+    readonly decider_conditions?: DeciderCombinatorParameters
+    readonly circuit_enable_disable?: boolean
+    readonly circuit_read_resources?: boolean
+    readonly circuit_resource_read_mode?: defines.control_behavior.mining_drill.resource_read_mode
+    readonly read_stopped_train?: boolean
+    readonly train_stopped_signal?: SignalID
+    readonly read_from_train?: boolean
+    readonly send_to_train?: boolean
+    readonly circuit_mode_of_operation?: number
+    readonly circuit_read_hand_contents?: boolean
+    readonly circuit_hand_read_mode?: defines.control_behavior.inserter.hand_read_mode
+    readonly circuit_set_stack_size?: boolean
+    readonly stack_control_input_signal?: SignalID
+    readonly use_colors?: boolean
+    readonly read_robot_stats?: boolean
+    readonly read_logistics?: boolean
+    readonly available_logistic_output_signal?: boolean
+    readonly total_logistic_output_signal?: boolean
+    readonly available_construction_output_signal?: boolean
+    readonly total_construction_output_signal?: boolean
+    readonly circuit_contents_read_mode?: defines.control_behavior.transport_belt.content_read_mode
+    readonly output_signal?: SignalID
+    readonly circuit_close_signal?: boolean
+    readonly circuit_read_signal?: boolean
+    readonly red_output_signal?: SignalID
+    readonly orange_output_signal?: SignalID
+    readonly green_output_signal?: SignalID
+    readonly blue_output_signal?: SignalID
+    readonly circuit_open_gate?: boolean
+    readonly circuit_read_sensor?: boolean
+    readonly circuit_parameters?: ProgrammableSpeakerCircuitParameters
   }
   /**
    * A string that represents a math expression. The expression parser recognizes four basic token types (with their regex):
@@ -6245,11 +6384,7 @@ declare module "factorio:runtime" {
    * {@link https://lua-api.factorio.com/2.0.17/concepts/SoundPath.html > The utility and ambient types each contain general use sound prototypes defined by the game itself.}
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/SoundPath.html Online documentation}
    */
-  export type SoundPath =
-    | (string & {
-        _?: never
-      })
-    | `${SoundCategory}/${string}`
+  export type SoundPath = (string & { _?: never }) | `${SoundCategory}/${string}`
   export interface CircularParticleCreationSpecification {
     /**
      * Name of the {@link LuaEntityPrototype}.
@@ -6542,6 +6677,24 @@ declare module "factorio:runtime" {
     | "top-right"
     | "right"
     | "bottom-right"
+  export type RaiseableEvents =
+    | typeof defines.events.on_console_chat
+    | typeof defines.events.on_player_crafted_item
+    | typeof defines.events.on_player_fast_transferred
+    | typeof defines.events.on_biter_base_built
+    | typeof defines.events.on_market_item_purchased
+    | typeof defines.events.script_raised_built
+    | typeof defines.events.script_raised_destroy
+    | typeof defines.events.script_raised_revive
+    | typeof defines.events.script_raised_teleported
+    | typeof defines.events.script_raised_set_tiles
+  export type EventId<T extends object, F = unknown> = uint & {
+    readonly _eventData: T
+    readonly _filter: F
+  }
+  export type CustomEventId<T extends table> = EventId<T> & {
+    _customEventIdBrand: any
+  }
   /**
    * Information about the event that has been raised. The table can also contain other fields depending on the type of event. See {@linkplain https://lua-api.factorio.com/2.0.17/events.html the list of Factorio events} for more information on these.
    * @see {@link https://lua-api.factorio.com/2.0.17/concepts/EventData.html Online documentation}
@@ -6662,7 +6815,6 @@ declare module "factorio:runtime" {
     readonly "button-8"?: true
     readonly "button-9"?: true
   }
-  /** @see MouseButtonFlags */
   export type MouseButtonFlagsWrite = MouseButtonFlags | ReadonlyArray<keyof MouseButtonFlags | "left-and-right">
   /**
    * ## Union members
@@ -11210,24 +11362,6 @@ declare module "factorio:runtime" {
     | GhostTypePreRobotMinedEntityEventFilter
     | GhostNamePreRobotMinedEntityEventFilter
     | OtherPreRobotMinedEntityEventFilter
-  export type StyleValuesArray =
-    | readonly [topBottom: int, leftRight: int]
-    | readonly [top: int, right: int, bottom: int, left: int]
-  export type SizeArray = readonly [width: int, height: int]
-  export type RaiseableEvents =
-    | typeof defines.events.on_console_chat
-    | typeof defines.events.on_player_crafted_item
-    | typeof defines.events.on_player_fast_transferred
-    | typeof defines.events.on_biter_base_built
-    | typeof defines.events.on_market_item_purchased
-    | typeof defines.events.script_raised_built
-    | typeof defines.events.script_raised_destroy
-    | typeof defines.events.script_raised_revive
-    | typeof defines.events.script_raised_teleported
-    | typeof defines.events.script_raised_set_tiles
-  /** An event id. */
-  export type EventId<T extends object, F = unknown> = uint & {
-    readonly _eventData: T
-    readonly _filter: F
-  }
+  export type StyleValuesArray = [topBottom: int, leftRight: int] | [top: int, right: int, bottom: int, left: int]
+  export type SizeArray = [width: int, height: int]
 }

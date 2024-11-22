@@ -2,21 +2,21 @@ import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Define } from "../FactorioRuntimeApiJson.js"
 import { createConst, createNamespace, escapePropertyName, Types } from "../genUtil.js"
-import { AnyDef } from "../manualDefinitions.js"
+import { AnyDef } from "../ManualDefinitions"
 import { byOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
-import { ModuleType } from "../OutputFile.js"
+import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessDefines(context: RuntimeGenerationContext): void {
   function addDefine(define: Define, parent: string) {
     const name = parent + (parent ? "." : "") + define.name
-    context.references.set(name, name)
+    context.tsToFactorioType.set(name, name)
     context.defines.set(name, define)
     if (define.values) {
       for (const value of define.values) {
         const valueName = name + "." + value.name
-        context.references.set(valueName, valueName)
+        context.tsToFactorioType.set(valueName, valueName)
       }
     }
     if (define.subkeys) {
@@ -30,7 +30,7 @@ export function preprocessDefines(context: RuntimeGenerationContext): void {
 }
 
 export function generateDefines(context: RuntimeGenerationContext): void {
-  context.addFile("defines", ModuleType.Global, () => {
+  context.addFile("defines", FactorioModule.Global, () => {
     const [defines] = generateDefinesDeclaration(
       context,
       createRootDefine(context),
@@ -40,7 +40,7 @@ export function generateDefines(context: RuntimeGenerationContext): void {
     context.currentFile.add(defines)
 
     // manually added imports for now
-    context.currentFile.addImport("runtime", "EventId")
+    context.currentFile.addImport(FactorioModule.Runtime, "EventId")
   })
 }
 
@@ -61,7 +61,7 @@ function generateEventsDefine(context: RuntimeGenerationContext, define: Define)
     }
 
     for (const typeArg of typeArguments) {
-      context.currentFile.addImport("runtime", typeArg)
+      context.currentFile.addImport(FactorioModule.Runtime, typeArg)
     }
 
     const statement = createConst(
@@ -150,7 +150,7 @@ function createRootDefine(context: RuntimeGenerationContext): Define {
     order: 0,
     name: "defines",
     description: "",
-    subkeys: context.apiDocs.defines,
+    subkeys: context.rootDefines,
   }
 }
 

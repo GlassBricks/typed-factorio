@@ -1,12 +1,11 @@
 import { PrototypeGenerationContext } from "./index.js"
-import { ModuleType } from "../OutputFile.js"
+import { FactorioModule } from "../OutputFile.js"
 import { Property, PrototypeConcept, Type } from "../FactorioPrototypeApiJson.js"
 import { addJsDoc, createTag } from "../documentation.js"
 import { mapPrototypeConcept, typeToDeclaration } from "../types.js"
 import { getHeritageClauses, getOverridenAttributes } from "./properties.js"
-import { assertNever, byOrder } from "../util.js"
+import { assertNever } from "../util.js"
 import ts from "typescript"
-import { copyExistingDeclaration } from "../manualDefinitions.js"
 import { generateBuiltinType } from "../builtin"
 
 export function maybeRecordInlineConceptReference(
@@ -55,8 +54,8 @@ export function maybeRecordInlineConceptReference(
 }
 
 export function preprocessTypes(context: PrototypeGenerationContext): void {
-  for (const concept of context.apiDocs.types) {
-    context.references.set(concept.name, concept.name)
+  for (const concept of context.types.values()) {
+    context.tsToFactorioType.set(concept.name, concept.name)
 
     if (concept.properties) {
       for (const property of concept.properties) {
@@ -75,8 +74,8 @@ export function preprocessTypes(context: PrototypeGenerationContext): void {
 }
 
 export function generateTypes(context: PrototypeGenerationContext): void {
-  context.addFile("types", ModuleType.Prototype, () => {
-    for (const type of context.apiDocs.types.sort(byOrder)) {
+  context.addFile("types", FactorioModule.Prototype, () => {
+    for (const type of context.types.values()) {
       generateType(context, type)
     }
   })
@@ -103,16 +102,7 @@ function generateType(context: PrototypeGenerationContext, concept: PrototypeCon
     return generateBuiltinType(context, concept)
   }
 
-  const existing = context.manualDefs.getDeclaration(concept.name)
-
-  let declaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration
-  let innerStructDeclaration: ts.InterfaceDeclaration | ts.TypeAliasDeclaration | undefined
-  let description: string | undefined
-  if (existing?.annotations.replace) {
-    declaration = copyExistingDeclaration(existing.node)
-  } else {
-    ;({ declaration, description, innerStructDeclaration } = generateTypeDeclaration(concept, context))
-  }
+  const { declaration, description, innerStructDeclaration } = generateTypeDeclaration(concept, context)
 
   if (!!innerStructDeclaration !== context.hasInnerStructType.has(concept.name)) {
     context.warning(`Inconsistency in having inner struct type for ${concept.name}`)

@@ -1,7 +1,7 @@
 import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { decapitalize } from "../genUtil.js"
-import { ModuleType } from "../OutputFile.js"
+import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export interface IndexType {
@@ -72,12 +72,12 @@ export const IndexTypes: IndexType[] = [
 
 export function preprocessIndexTypes(context: RuntimeGenerationContext): void {
   for (const indexType of IndexTypes) {
-    context.references.set(indexType.name, indexType.name)
+    context.tsToFactorioType.set(indexType.name, indexType.name)
   }
 }
 
 export function generateIndexTypesFile(context: RuntimeGenerationContext): void {
-  context.addFile("index-types", ModuleType.Runtime, () => {
+  context.addFile("index-types", FactorioModule.Runtime, () => {
     for (const indexType of IndexTypes) {
       // type ${name} = uint & { _${name}Brand: void }
       const typeNode = ts.factory.createIntersectionTypeNode([

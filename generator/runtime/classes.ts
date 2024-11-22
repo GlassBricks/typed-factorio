@@ -2,19 +2,25 @@ import ts from "typescript"
 import { addJsDoc } from "../documentation.js"
 import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioRuntimeApiJson.js"
 import { addFakeJSDoc, Modifiers, removeLuaPrefix, toPascalCase, Types } from "../genUtil.js"
-import { getAnnotations, InterfaceDef, TypeAliasDef } from "../manualDefinitions.js"
+import { getAnnotations, InterfaceDef, TypeAliasDef } from "../ManualDefinitions"
 import { analyzeMethod, mapAttribute, mapMethod } from "./members.js"
-import { mapRuntimeType } from "../types.js"
+import { mapRuntimeType, RWUsage } from "../types.js"
 import { assertNever, byOrder } from "../util.js"
-import { analyzeType, RWUsage } from "../read-write-types.js"
 import { tryGetStringEnumType } from "../variantParameterGroups.js"
-import { ModuleType } from "../OutputFile.js"
+import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 import assert from "assert"
+import { recordUsage } from "./concept-usage-analysis"
 
 export function preprocessClasses(context: RuntimeGenerationContext): void {
-  for (const clazz of context.apiDocs.classes) {
-    context.references.set(clazz.name, clazz.name)
+  for (const clazz of context.classes.values()) {
+    context.tsToFactorioType.set(clazz.name, clazz.name)
+    const manualDef = context.manualDefs.getDeclaration(clazz.name)
+    if (manualDef?.annotations.references) {
+      for (const ref of manualDef.annotations.references) {
+        recordUsage(context, ref, RWUsage.Read)
+      }
+    }
     for (const method of clazz.methods) {
       analyzeMethod(context, method)
     }
@@ -33,22 +39,22 @@ export function preprocessClasses(context: RuntimeGenerationContext): void {
 
 function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribute) {
   if (attribute.read_type) {
-    analyzeType(context, attribute.read_type, RWUsage.Read)
+    recordUsage(context, attribute.read_type, RWUsage.Read)
   }
   if (attribute.write_type) {
-    analyzeType(context, attribute.write_type, RWUsage.Write)
+    recordUsage(context, attribute.write_type, RWUsage.Write)
   }
 }
 
 export function generateClasses(context: RuntimeGenerationContext): void {
-  context.addFile("classes", ModuleType.Runtime, () => {
-    for (const clazz of context.apiDocs.classes.sort(byOrder)) {
+  context.addFile("classes", FactorioModule.Runtime, () => {
+    for (const clazz of context.classes.values()) {
       const existing = context.manualDefs.getDeclaration(clazz.name)
       generateClass(context, clazz, existing)
     }
     // manually added imports for now
-    context.currentFile.addImport("common", "ActiveMods")
-    context.currentFile.addImport("common", "CustomInputName")
+    context.currentFile.addImport(FactorioModule.Common, "ActiveMods")
+    context.currentFile.addImport(FactorioModule.Common, "CustomInputName")
   })
 }
 
@@ -415,7 +421,7 @@ function generateClass(
       thisMembers.flatMap((m) => m.member),
     )
     context.currentFile.add(baseDeclaration)
-    if (!context.references.has(name)) context.references.set(name, name)
+    if (!context.tsToFactorioType.has(name)) context.tsToFactorioType.set(name, name)
 
     if (!indexTypeName) {
       if (classForDocs) {

@@ -1,5 +1,5 @@
 import { PrototypeGenerationContext } from "./index.js"
-import { ModuleType } from "../OutputFile.js"
+import { FactorioModule } from "../OutputFile.js"
 import { byOrder } from "../util.js"
 import { Prototype } from "../FactorioPrototypeApiJson.js"
 import ts from "typescript"
@@ -9,30 +9,30 @@ import { getHeritageClauses, getOverridenAttributes, mapProperty } from "./prope
 import { maybeRecordInlineConceptReference } from "./concepts.js"
 import { mapPrototypeType } from "../types.js"
 import assert from "assert"
-import { InterfaceDef } from "../manualDefinitions.js"
-import { nameToToPrototypeType } from "../prototypeSubclassTypes.js"
+import { InterfaceDef } from "../ManualDefinitions"
+import { nameToToPrototypeType } from "../runtime/prototype-subclass-types"
 
 export function preprocessPrototypes(context: PrototypeGenerationContext): void {
-  for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
-    context.references.set(prototype.name, prototype.name)
+  for (const prototype of context.prototypes.values()) {
+    context.tsToFactorioType.set(prototype.name, prototype.name)
 
     for (const property of prototype.properties) {
       maybeRecordInlineConceptReference(context, prototype.name, property)
     }
   }
-  context.references.set("PrototypeMap", "PrototypeMap")
-  context.references.set("PrototypeType", "PrototypeType")
+  context.tsToFactorioType.set("PrototypeMap", "PrototypeMap")
+  context.tsToFactorioType.set("PrototypeType", "PrototypeType")
 }
 
 export function generatePrototypes(context: PrototypeGenerationContext): void {
-  context.addFile("prototypes", ModuleType.Prototype, () => {
+  context.addFile("prototypes", FactorioModule.Prototype, () => {
     const { subclassMap, rootPrototypes } = getSubclassMap(context)
-    for (const prototype of context.apiDocs.prototypes.sort(byOrder)) {
+    for (const prototype of context.prototypes.values()) {
       generatePrototype(context, prototype, subclassMap)
     }
     addPrototypeMapDefinitions(context, subclassMap, rootPrototypes)
     // manually added imports for now
-    context.currentFile.addImport("common", "CustomInputName")
+    context.currentFile.addImport(FactorioModule.Common, "CustomInputName")
   })
 }
 
@@ -42,10 +42,10 @@ function getSubclassMap(context: PrototypeGenerationContext): {
 } {
   const subclassMap = new Map<string, string[]>()
   const rootPrototypes: string[] = []
-  for (const prototype of context.apiDocs.prototypes) {
+  for (const prototype of context.prototypes.values()) {
     subclassMap.set(prototype.name, [])
   }
-  for (const prototype of context.apiDocs.prototypes) {
+  for (const prototype of context.prototypes.values()) {
     if (
       prototype.name !== "PrototypeBase" &&
       prototype.name !== "Prototype" &&
@@ -209,7 +209,7 @@ function addPrototypeMapDefinitions(
   //  "type": Interface
   // }
 
-  const members = context.apiDocs.prototypes
+  const members = Array.from(context.prototypes.values())
     .filter((p) => p.typename)
     .map((p) => {
       const member = ts.factory.createPropertySignature(

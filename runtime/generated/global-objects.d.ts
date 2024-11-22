@@ -15,20 +15,15 @@ import type {
 
 declare global {
   /**
-   * The main scripting interface through which most of the API is accessed.
-   * @see {@link https://lua-api.factorio.com/2.0.17/index-runtime.html Online documentation}
-   */
-  const game: LuaGameScript
-  /**
-   * Provides an interface for registering game event handlers.
-   * @see {@link https://lua-api.factorio.com/2.0.17/index-runtime.html Online documentation}
-   */
-  const script: LuaBootstrap
-  /**
    * Allows registration of custom commands for the in-game console.
    * @see {@link https://lua-api.factorio.com/2.0.17/index-runtime.html Online documentation}
    */
   const commands: LuaCommandProcessor
+  /**
+   * The main scripting interface through which most of the API is accessed.
+   * @see {@link https://lua-api.factorio.com/2.0.17/index-runtime.html Online documentation}
+   */
+  const game: LuaGameScript
   /**
    * Provides access to various helper and utility functions.
    * @see {@link https://lua-api.factorio.com/2.0.17/index-runtime.html Online documentation}
@@ -54,5 +49,10 @@ declare global {
    * @see {@link https://lua-api.factorio.com/2.0.17/index-runtime.html Online documentation}
    */
   const rendering: LuaRendering
+  /**
+   * Provides an interface for registering game event handlers.
+   * @see {@link https://lua-api.factorio.com/2.0.17/index-runtime.html Online documentation}
+   */
+  const script: LuaBootstrap
   //The "settings" global is declared in common/settings-global.d.ts; its runtime type is handled below.
 }

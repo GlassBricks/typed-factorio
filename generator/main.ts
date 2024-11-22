@@ -72,7 +72,7 @@ function generateFiles(context: GenerationContext) {
   for (const { name, statements } of files) {
     let content = "// This is an auto-generated file. Do not edit directly!\n\n"
     for (const statement of statements) {
-      content += printer.printNode(ts.EmitHint.Unspecified, statement, context.manualDefinitionsSource) + "\n\n"
+      content += printer.printNode(ts.EmitHint.Unspecified, statement, context.manualDefsSource) + "\n\n"
     }
     fileResults.set(`${context.stageName}/generated/${name}.d.ts`, content)
   }

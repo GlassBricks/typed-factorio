@@ -1,112 +1,62 @@
 import ts from "typescript"
 import { createComment, createDeclareGlobal, createDeclareModule, createSimpleImports } from "./genUtil.js"
-import { ManualDefinitions } from "./manualDefinitions.js"
 
-export interface OutputFileBuilder {
-  fileName: string
-  moduleType: ModuleType
-
-  addImport(fromModule: string, importName: string): void
-  add(statement: ts.Statement): void
-  addOutsideModule(statement: ts.Statement): void
+export enum FactorioModule {
+  Runtime = "runtime",
+  Prototype = "prototype",
+  Common = "common",
+  Global = "global",
 }
 
 export interface OutputFile {
   name: string
+  module: FactorioModule
   statements: readonly ts.Statement[]
 }
 
-export enum ModuleType {
-  Runtime = "runtime",
-  Prototype = "prototype",
-  Global = "global",
-}
+const compareIgnoreCase = (a: string, b: string) => a.localeCompare(b, undefined, { sensitivity: "base" })
 
-export class OutputFileBuilderImpl implements OutputFileBuilder {
+export class OutputFileBuilder {
+  private imports = new Map<FactorioModule, Set<string>>()
   private statements: ts.Statement[] = []
-  private endStatements: ts.Statement[] = []
-  private imports = new Map<ModuleType, Set<string>>()
 
   constructor(
-    private manualDefs: ManualDefinitions,
-    public fileName: string,
-    public moduleType: ModuleType,
+    public readonly fileName: string,
+    public readonly module: FactorioModule,
   ) {}
 
-  addImport(fromModule: ModuleType, importName: string): void {
-    if (fromModule === this.moduleType) return
-    let imports = this.imports.get(fromModule)
+  addImport(module: FactorioModule, importName: string): void {
+    if (module === this.module || module === FactorioModule.Global) return
+    let imports = this.imports.get(module)
     if (!imports) {
-      imports = new Set()
-      this.imports.set(fromModule, imports)
+      this.imports.set(module, (imports = new Set()))
     }
     imports.add(importName)
   }
 
   add(statement: ts.Statement): void {
-    const name = OutputFileBuilderImpl.getName(statement)
-    if (name) {
-      const addBefore = this.manualDefs.addBefore.get(name)
-      if (addBefore) {
-        this.statements.push(...addBefore)
-        this.manualDefs.addBefore.delete(name)
-      }
-    }
     this.statements.push(statement)
-
-    if (name) {
-      const addAfter = this.manualDefs.addAfter.get(name)
-      if (addAfter) {
-        this.statements.push(...addAfter)
-        this.manualDefs.addAfter.delete(name)
-      }
-    }
-  }
-
-  addOutsideModule(statement: ts.Statement): void {
-    this.endStatements.push(statement)
-  }
-
-  private static getName(statement: ts.Statement) {
-    let name: string | undefined
-    if (
-      ts.isInterfaceDeclaration(statement) ||
-      ts.isTypeAliasDeclaration(statement) ||
-      ts.isModuleDeclaration(statement)
-    ) {
-      name = statement.name.text
-    } else if (ts.isVariableStatement(statement)) {
-      name = (statement.declarationList.declarations[0].name as ts.Identifier).text
-    }
-    return name
   }
 
   build(): OutputFile {
-    const addTo = this.manualDefs.addTo.get(this.fileName)
-    if (addTo) {
-      this.statements.push(...addTo)
-      this.manualDefs.addTo.delete(this.fileName)
-    }
     const result: ts.Statement[] = []
     result.push(createComment("* @noSelfInFile ", true))
 
     // imports
     for (const [fromModule, importsSet] of this.imports) {
-      const compareIgnoreCase = (a: string, b: string) => a.localeCompare(b, undefined, { sensitivity: "base" })
       const imports = [...importsSet].sort(compareIgnoreCase)
       result.push(createSimpleImports(imports, "factorio:" + fromModule))
     }
 
     const module =
-      this.moduleType === ModuleType.Global
+      this.module === FactorioModule.Global
         ? createDeclareGlobal(this.statements)
-        : createDeclareModule("factorio:" + this.moduleType, this.statements)
+        : createDeclareModule("factorio:" + this.module, this.statements)
     result.push(module)
-
-    result.push(...this.endStatements)
 
     return {
       name: this.fileName,
+      module: this.module,
       statements: result,
     }
   }
