@@ -13090,12 +13090,12 @@ declare module "factorio:prototype" {
      * The index of the row or column after which to insert `spacing`.
      * @see {@link https://lua-api.factorio.com/2.0.21/types/SpacingItem.html#index Online documentation}
      */
-    index: uint32_t
+    index: uint32
     /**
      * The spacing in scaled pixels between columns `column` and `column + 1`.
      * @see {@link https://lua-api.factorio.com/2.0.21/types/SpacingItem.html#spacing Online documentation}
      */
-    spacing: int32_t
+    spacing: int32
   }
   /**
    * Struct type for {@link SpawnPoint}
@@ -14581,7 +14581,7 @@ declare module "factorio:prototype" {
     progress_bar_shadow?: ElementImageSet
     progress_bar_height?: uint32
     progress_bar_color?: Color
-    drag_handle_style?: EmptyWidgetStyle
+    drag_handle_style?: string
   }
   /**
    * Loaded as one of the technology triggers, based on the value of the `type` key.

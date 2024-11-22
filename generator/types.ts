@@ -312,6 +312,12 @@ function mapBasicType(
   if (type === "bool") {
     type = "boolean"
   }
+  if (type === "uint32_t") {
+    type = "uint"
+  }
+  if (type === "int32_t") {
+    type = "int"
+  }
   return createBasicType(context, type)
 }
 

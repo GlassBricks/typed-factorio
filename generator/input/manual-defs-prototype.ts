@@ -1,4 +1,5 @@
 import { AnyPrototype, CustomInputName } from "factorio:common"
+import { EmptyWidgetStyleSpecification } from "factorio:prototype"
 
 export type bool = boolean
 export type double = number
@@ -34,6 +35,23 @@ export type LocalisedString = string | number | boolean | undefined | readonly [
 interface PrototypeMap {}
 
 type PrototypeType = keyof PrototypeMap
+
+export interface SpacingItem {
+  /**
+   * The index of the row or column after which to insert `spacing`.
+   * @see {@link https://lua-api.factorio.com/2.0.21/types/SpacingItem.html#index Online documentation}
+   */
+  index: uint32
+  /**
+   * The spacing in scaled pixels between columns `column` and `column + 1`.
+   * @see {@link https://lua-api.factorio.com/2.0.21/types/SpacingItem.html#spacing Online documentation}
+   */
+  spacing: int32
+}
+
+interface TechnologySlotStyleSpecification {
+  drag_handle_style?: string
+}
 
 interface PrototypeBase {
   type: PrototypeType
