@@ -2981,7 +2981,7 @@ declare module "factorio:runtime" {
     /**
      * Used by spidertons.
      */
-    readonly vehicle_automatic_targeting_parameters: VehicleAutomaticTargetingParameters
+    readonly vehicle_automatic_targeting_parameters?: VehicleAutomaticTargetingParameters
     /**
      * Used by vehicles.
      */
@@ -3195,7 +3195,7 @@ declare module "factorio:runtime" {
     /**
      * Used by spidertons.
      */
-    readonly vehicle_automatic_targeting_parameters: VehicleAutomaticTargetingParameters
+    readonly vehicle_automatic_targeting_parameters?: VehicleAutomaticTargetingParameters
     /**
      * Used by vehicles.
      */

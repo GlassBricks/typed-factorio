@@ -1,3 +1,7 @@
+# v3.5.1
+
+- Fix that vehicle_automatic_targeting_parameters was not optional in BlueprintEntity
+
 # v3.5.0
 
 - Updated to factorio version 2.0.21
@@ -33,7 +37,8 @@
 - Simplified types for ChooseElemButtonSpec; it is no longer a discriminated union for each subtype.
 - Iteration key type for `LuaCustomTable`s are now accurate.
 
-The major version has been bumped to reflect breaking changes in the factorio API. However, the way typed-factorio is accessed or configured has not changed.
+The major version has been bumped to reflect breaking changes in the factorio API. However, the way typed-factorio is
+accessed or configured has not changed.
 
 # v2.14.0
 

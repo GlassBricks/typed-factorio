@@ -652,7 +652,7 @@ export interface BlueprintEntity {
   copy_color_from_train_stop?: boolean
 
   /** Used by spidertons. */
-  vehicle_automatic_targeting_parameters: VehicleAutomaticTargetingParameters
+  vehicle_automatic_targeting_parameters?: VehicleAutomaticTargetingParameters
   /** Used by vehicles. */
   driver_is_main_gunner?: boolean
   /** Used by vehicles. */
