@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.21",
+  "application_version": "2.0.22",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -1901,10 +1901,10 @@
         {
           "name": "automated_ammo_count",
           "order": 3,
-          "description": "",
+          "description": "Must be > 0.",
           "override": false,
           "type": "ItemCountType",
-          "optional": false
+          "optional": true
         },
         {
           "name": "base_picture",
@@ -2156,8 +2156,16 @@
           "optional": false
         },
         {
+          "name": "automated_ammo_count",
+          "order": 3,
+          "description": "Must be > 0.",
+          "override": false,
+          "type": "ItemCountType",
+          "optional": true
+        },
+        {
           "name": "cannon_barrel_light_direction",
-          "order": 17,
+          "order": 18,
           "description": "Only loaded if `cannon_barrel_recoil_shiftings` is loaded.",
           "override": false,
           "type": "Vector3D",
@@ -2165,7 +2173,7 @@
         },
         {
           "name": "cannon_barrel_pictures",
-          "order": 10,
+          "order": 11,
           "description": "",
           "override": false,
           "type": "RollingStockRotatedSlopedGraphics",
@@ -2173,7 +2181,7 @@
         },
         {
           "name": "cannon_barrel_recoil_shiftings",
-          "order": 15,
+          "order": 16,
           "description": "",
           "override": false,
           "type": {
@@ -2184,7 +2192,7 @@
         },
         {
           "name": "cannon_barrel_recoil_shiftings_load_correction_matrix",
-          "order": 16,
+          "order": 17,
           "description": "Only loaded if `cannon_barrel_recoil_shiftings` is loaded.",
           "override": false,
           "type": {
@@ -2195,38 +2203,6 @@
         },
         {
           "name": "cannon_base_height",
-          "order": 7,
-          "description": "",
-          "override": false,
-          "type": "double",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
-        },
-        {
-          "name": "cannon_base_pictures",
-          "order": 6,
-          "description": "",
-          "override": false,
-          "type": "RollingStockRotatedSlopedGraphics",
-          "optional": true
-        },
-        {
-          "name": "cannon_base_shift_when_horizontal",
-          "order": 9,
-          "description": "",
-          "override": false,
-          "type": "double",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
-        },
-        {
-          "name": "cannon_base_shift_when_vertical",
           "order": 8,
           "description": "",
           "override": false,
@@ -2238,8 +2214,40 @@
           }
         },
         {
+          "name": "cannon_base_pictures",
+          "order": 7,
+          "description": "",
+          "override": false,
+          "type": "RollingStockRotatedSlopedGraphics",
+          "optional": true
+        },
+        {
+          "name": "cannon_base_shift_when_horizontal",
+          "order": 10,
+          "description": "",
+          "override": false,
+          "type": "double",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
+          "name": "cannon_base_shift_when_vertical",
+          "order": 9,
+          "description": "",
+          "override": false,
+          "type": "double",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
           "name": "cannon_parking_frame_count",
-          "order": 13,
+          "order": 14,
           "description": "",
           "override": false,
           "type": "uint16",
@@ -2251,7 +2259,7 @@
         },
         {
           "name": "cannon_parking_speed",
-          "order": 14,
+          "order": 15,
           "description": "Must be positive.",
           "override": false,
           "type": "float",
@@ -2263,7 +2271,7 @@
         },
         {
           "name": "disable_automatic_firing",
-          "order": 5,
+          "order": 6,
           "description": "",
           "override": false,
           "type": "bool",
@@ -2291,7 +2299,7 @@
         },
         {
           "name": "manual_range_modifier",
-          "order": 4,
+          "order": 5,
           "description": "Must be > 0.",
           "override": false,
           "type": "double",
@@ -2299,7 +2307,7 @@
         },
         {
           "name": "rotating_sound",
-          "order": 11,
+          "order": 12,
           "description": "",
           "override": false,
           "type": "InterruptibleSound",
@@ -2307,7 +2315,7 @@
         },
         {
           "name": "turn_after_shooting_cooldown",
-          "order": 12,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "uint16",
@@ -2319,7 +2327,7 @@
         },
         {
           "name": "turret_rotation_speed",
-          "order": 3,
+          "order": 4,
           "description": "",
           "override": false,
           "type": "double",
@@ -5888,7 +5896,7 @@
       "properties": [
         {
           "name": "animation",
-          "order": 21,
+          "order": 22,
           "description": "The dying animation.",
           "override": false,
           "type": "RotatedAnimationVariations",
@@ -5896,7 +5904,7 @@
         },
         {
           "name": "animation_overlay",
-          "order": 22,
+          "order": 23,
           "description": "Variation count must be the same as `animation` variation count. Direction count must be the same as `animation` direction count. Frame count must be the same as `animation` frame count.",
           "override": false,
           "type": "RotatedAnimationVariations",
@@ -5904,7 +5912,7 @@
         },
         {
           "name": "animation_overlay_final_render_layer",
-          "order": 12,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -5916,7 +5924,7 @@
         },
         {
           "name": "animation_overlay_render_layer",
-          "order": 11,
+          "order": 12,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -5928,7 +5936,7 @@
         },
         {
           "name": "animation_render_layer",
-          "order": 9,
+          "order": 10,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -5939,8 +5947,20 @@
           }
         },
         {
+          "name": "auto_setup_collision_box",
+          "order": 7,
+          "description": "If true, and the collision box is unset, this will take the collision box of the first entity that uses this corpse.",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
           "name": "decay_animation",
-          "order": 23,
+          "order": 24,
           "description": "",
           "override": false,
           "type": "RotatedAnimationVariations",
@@ -5948,7 +5968,7 @@
         },
         {
           "name": "decay_frame_transition_duration",
-          "order": 20,
+          "order": 21,
           "description": "",
           "override": false,
           "type": "float",
@@ -5960,7 +5980,7 @@
         },
         {
           "name": "direction_shuffle",
-          "order": 30,
+          "order": 31,
           "description": "An array of arrays of integers. The inner arrays are called \"groups\" and must all have the same size.",
           "override": false,
           "type": {
@@ -5998,7 +6018,7 @@
         },
         {
           "name": "final_render_layer",
-          "order": 7,
+          "order": 8,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6010,7 +6030,7 @@
         },
         {
           "name": "ground_patch",
-          "order": 25,
+          "order": 26,
           "description": "",
           "override": false,
           "type": "AnimationVariations",
@@ -6018,7 +6038,7 @@
         },
         {
           "name": "ground_patch_decay",
-          "order": 27,
+          "order": 28,
           "description": "",
           "override": false,
           "type": "AnimationVariations",
@@ -6026,18 +6046,6 @@
         },
         {
           "name": "ground_patch_fade_in_delay",
-          "order": 17,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
-        },
-        {
-          "name": "ground_patch_fade_in_speed",
           "order": 18,
           "description": "",
           "override": false,
@@ -6049,19 +6057,7 @@
           }
         },
         {
-          "name": "ground_patch_fade_out_duration",
-          "order": 29,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
-        },
-        {
-          "name": "ground_patch_fade_out_start",
+          "name": "ground_patch_fade_in_speed",
           "order": 19,
           "description": "",
           "override": false,
@@ -6073,8 +6069,32 @@
           }
         },
         {
+          "name": "ground_patch_fade_out_duration",
+          "order": 30,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
+          "name": "ground_patch_fade_out_start",
+          "order": 20,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
           "name": "ground_patch_higher",
-          "order": 26,
+          "order": 27,
           "description": "",
           "override": false,
           "type": "AnimationVariations",
@@ -6082,7 +6102,7 @@
         },
         {
           "name": "ground_patch_render_layer",
-          "order": 8,
+          "order": 9,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6118,7 +6138,7 @@
         },
         {
           "name": "shuffle_directions_at_frame",
-          "order": 13,
+          "order": 14,
           "description": "",
           "override": false,
           "type": "uint8",
@@ -6130,7 +6150,7 @@
         },
         {
           "name": "splash",
-          "order": 24,
+          "order": 25,
           "description": "",
           "override": false,
           "type": "AnimationVariations",
@@ -6138,7 +6158,7 @@
         },
         {
           "name": "splash_render_layer",
-          "order": 10,
+          "order": 11,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6180,7 +6200,7 @@
         },
         {
           "name": "underwater_layer_offset",
-          "order": 16,
+          "order": 17,
           "description": "",
           "override": false,
           "type": "int8",
@@ -6192,7 +6212,7 @@
         },
         {
           "name": "underwater_patch",
-          "order": 28,
+          "order": 29,
           "description": "",
           "override": false,
           "type": "RotatedSprite",
@@ -6200,7 +6220,7 @@
         },
         {
           "name": "use_decay_layer",
-          "order": 15,
+          "order": 16,
           "description": "",
           "override": false,
           "type": "bool",
@@ -6212,7 +6232,7 @@
         },
         {
           "name": "use_tile_color_for_ground_patch_tint",
-          "order": 14,
+          "order": 15,
           "description": "",
           "override": false,
           "type": "bool",
@@ -12434,7 +12454,7 @@
         },
         {
           "name": "gui_mode",
-          "order": 1,
+          "order": 2,
           "description": "Controls which players can control what the chest spawns.",
           "override": false,
           "type": {
@@ -12463,7 +12483,7 @@
         },
         {
           "name": "inventory_size",
-          "order": 4,
+          "order": 5,
           "description": "The number of slots in this container. May not be zero.",
           "override": true,
           "type": "ItemStackIndex",
@@ -12471,7 +12491,7 @@
         },
         {
           "name": "logistic_mode",
-          "order": 2,
+          "order": 3,
           "description": "The way this chest interacts with the logistic network.",
           "override": true,
           "type": {
@@ -12503,8 +12523,20 @@
           "optional": true
         },
         {
+          "name": "preserve_contents_when_created",
+          "order": 1,
+          "description": "When true, items created inside the infinity chest will not start to spoil until they have been removed from the chest.",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
           "name": "render_not_in_network_icon",
-          "order": 3,
+          "order": 4,
           "description": "Whether the \"no network\" icon should be rendered on this entity if the entity is not within a logistics network.",
           "images": [
             {
@@ -22340,7 +22372,7 @@
       "order": 218,
       "description": "Definition for a shortcut button in the [shortcut bar](https://wiki.factorio.com/Shortcut_bar).\n\nThis is **not** a custom keybinding (keyboard shortcut), for that see [CustomInputPrototype](prototype:CustomInputPrototype).",
       "examples": [
-        "```\n{\n  type = \"shortcut\",\n  name = \"give-deconstruction-planner\",\n  order = \"b[blueprints]-i[deconstruction-planner]\",\n  action = \"spawn-item\",\n  localised_name = {\"shortcut.make-deconstruction-planner\"},\n  associated_control_input = \"give-deconstruction-planner\",\n  technology_to_unlock = \"construction-robotics\",\n  item_to_spawn = \"deconstruction-planner\",\n  style = \"red\",\n  icon = \"__base__/graphics/icons/shortcut-toolbar/mip/new-deconstruction-planner-x32.png\",\n  icon_size = 32,\n  small_icon = \"__base__/graphics/icons/shortcut-toolbar/mip/new-deconstruction-planner-x24.png\",\n  small_icon_size = 24\n}\n```"
+        "```\n{\n  type = \"shortcut\",\n  name = \"give-deconstruction-planner\",\n  order = \"b[blueprints]-i[deconstruction-planner]\",\n  action = \"spawn-item\",\n  localised_name = {\"shortcut.make-deconstruction-planner\"},\n  associated_control_input = \"give-deconstruction-planner\",\n  technology_to_unlock = \"construction-robotics\",\n  item_to_spawn = \"deconstruction-planner\",\n  style = \"red\",\n  icon = \"__base__/graphics/icons/shortcut-toolbar/mip/new-deconstruction-planner-x56.png\",\n  icon_size = 56,\n  small_icon = \"__base__/graphics/icons/shortcut-toolbar/mip/new-deconstruction-planner-x24.png\",\n  small_icon_size = 24\n}\n```"
       ],
       "parent": "Prototype",
       "abstract": false,
@@ -38757,7 +38789,7 @@
       "properties": [
         {
           "name": "collision_mode",
-          "order": 5,
+          "order": 6,
           "description": "",
           "override": false,
           "type": {
@@ -38790,7 +38822,7 @@
         },
         {
           "name": "show_in_tooltip",
-          "order": 4,
+          "order": 5,
           "description": "",
           "override": false,
           "type": "bool",
@@ -38798,6 +38830,18 @@
           "default": {
             "complex_type": "literal",
             "value": true
+          }
+        },
+        {
+          "name": "target_enemies",
+          "order": 4,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
           }
         },
         {
@@ -53640,6 +53684,18 @@
         {
           "name": "show_side_menu",
           "order": 8,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
+          "name": "show_surface_list",
+          "order": 16,
           "description": "",
           "override": false,
           "type": "bool",
@@ -70531,7 +70587,7 @@
           "order": 0,
           "description": "The index of the row or column after which to insert `spacing`.",
           "override": false,
-          "type": "uint32_t",
+          "type": "uint32",
           "optional": false
         },
         {
@@ -70539,7 +70595,7 @@
           "order": 1,
           "description": "The spacing in scaled pixels between columns `column` and `column + 1`.",
           "override": false,
-          "type": "int32_t",
+          "type": "int32",
           "optional": false
         }
       ]
@@ -74388,7 +74444,7 @@
           "order": 34,
           "description": "",
           "override": false,
-          "type": "EmptyWidgetStyle",
+          "type": "EmptyWidgetStyleSpecification",
           "optional": true
         },
         {
@@ -84444,953 +84500,958 @@
           "description": ""
         },
         {
-          "name": "on_character_corpse_expired",
+          "name": "on_cargo_pod_finished_ascending",
           "order": 9,
           "description": ""
         },
         {
-          "name": "on_chart_tag_added",
+          "name": "on_character_corpse_expired",
           "order": 10,
           "description": ""
         },
         {
-          "name": "on_chart_tag_modified",
+          "name": "on_chart_tag_added",
           "order": 11,
           "description": ""
         },
         {
-          "name": "on_chart_tag_removed",
+          "name": "on_chart_tag_modified",
           "order": 12,
           "description": ""
         },
         {
-          "name": "on_chunk_charted",
+          "name": "on_chart_tag_removed",
           "order": 13,
           "description": ""
         },
         {
-          "name": "on_chunk_deleted",
+          "name": "on_chunk_charted",
           "order": 14,
           "description": ""
         },
         {
-          "name": "on_chunk_generated",
+          "name": "on_chunk_deleted",
           "order": 15,
           "description": ""
         },
         {
-          "name": "on_combat_robot_expired",
+          "name": "on_chunk_generated",
           "order": 16,
           "description": ""
         },
         {
-          "name": "on_console_chat",
+          "name": "on_combat_robot_expired",
           "order": 17,
           "description": ""
         },
         {
-          "name": "on_console_command",
+          "name": "on_console_chat",
           "order": 18,
           "description": ""
         },
         {
-          "name": "on_cutscene_cancelled",
+          "name": "on_console_command",
           "order": 19,
           "description": ""
         },
         {
-          "name": "on_cutscene_finished",
+          "name": "on_cutscene_cancelled",
           "order": 20,
           "description": ""
         },
         {
-          "name": "on_cutscene_started",
+          "name": "on_cutscene_finished",
           "order": 21,
           "description": ""
         },
         {
-          "name": "on_cutscene_waypoint_reached",
+          "name": "on_cutscene_started",
           "order": 22,
           "description": ""
         },
         {
-          "name": "on_entity_cloned",
+          "name": "on_cutscene_waypoint_reached",
           "order": 23,
           "description": ""
         },
         {
-          "name": "on_entity_color_changed",
+          "name": "on_entity_cloned",
           "order": 24,
           "description": ""
         },
         {
-          "name": "on_entity_damaged",
+          "name": "on_entity_color_changed",
           "order": 25,
           "description": ""
         },
         {
-          "name": "on_entity_died",
+          "name": "on_entity_damaged",
           "order": 26,
           "description": ""
         },
         {
-          "name": "on_entity_logistic_slot_changed",
+          "name": "on_entity_died",
           "order": 27,
           "description": ""
         },
         {
-          "name": "on_entity_renamed",
+          "name": "on_entity_logistic_slot_changed",
           "order": 28,
           "description": ""
         },
         {
-          "name": "on_entity_settings_pasted",
+          "name": "on_entity_renamed",
           "order": 29,
           "description": ""
         },
         {
-          "name": "on_entity_spawned",
+          "name": "on_entity_settings_pasted",
           "order": 30,
           "description": ""
         },
         {
-          "name": "on_equipment_inserted",
+          "name": "on_entity_spawned",
           "order": 31,
           "description": ""
         },
         {
-          "name": "on_equipment_removed",
+          "name": "on_equipment_inserted",
           "order": 32,
           "description": ""
         },
         {
-          "name": "on_force_cease_fire_changed",
+          "name": "on_equipment_removed",
           "order": 33,
           "description": ""
         },
         {
-          "name": "on_force_created",
+          "name": "on_force_cease_fire_changed",
           "order": 34,
           "description": ""
         },
         {
-          "name": "on_force_friends_changed",
+          "name": "on_force_created",
           "order": 35,
           "description": ""
         },
         {
-          "name": "on_force_reset",
+          "name": "on_force_friends_changed",
           "order": 36,
           "description": ""
         },
         {
-          "name": "on_forces_merged",
+          "name": "on_force_reset",
           "order": 37,
           "description": ""
         },
         {
-          "name": "on_forces_merging",
+          "name": "on_forces_merged",
           "order": 38,
           "description": ""
         },
         {
-          "name": "on_game_created_from_scenario",
+          "name": "on_forces_merging",
           "order": 39,
           "description": ""
         },
         {
-          "name": "on_gui_checked_state_changed",
+          "name": "on_game_created_from_scenario",
           "order": 40,
           "description": ""
         },
         {
-          "name": "on_gui_click",
+          "name": "on_gui_checked_state_changed",
           "order": 41,
           "description": ""
         },
         {
-          "name": "on_gui_closed",
+          "name": "on_gui_click",
           "order": 42,
           "description": ""
         },
         {
-          "name": "on_gui_confirmed",
+          "name": "on_gui_closed",
           "order": 43,
           "description": ""
         },
         {
-          "name": "on_gui_elem_changed",
+          "name": "on_gui_confirmed",
           "order": 44,
           "description": ""
         },
         {
-          "name": "on_gui_hover",
+          "name": "on_gui_elem_changed",
           "order": 45,
           "description": ""
         },
         {
-          "name": "on_gui_leave",
+          "name": "on_gui_hover",
           "order": 46,
           "description": ""
         },
         {
-          "name": "on_gui_location_changed",
+          "name": "on_gui_leave",
           "order": 47,
           "description": ""
         },
         {
-          "name": "on_gui_opened",
+          "name": "on_gui_location_changed",
           "order": 48,
           "description": ""
         },
         {
-          "name": "on_gui_selected_tab_changed",
+          "name": "on_gui_opened",
           "order": 49,
           "description": ""
         },
         {
-          "name": "on_gui_selection_state_changed",
+          "name": "on_gui_selected_tab_changed",
           "order": 50,
           "description": ""
         },
         {
-          "name": "on_gui_switch_state_changed",
+          "name": "on_gui_selection_state_changed",
           "order": 51,
           "description": ""
         },
         {
-          "name": "on_gui_text_changed",
+          "name": "on_gui_switch_state_changed",
           "order": 52,
           "description": ""
         },
         {
-          "name": "on_gui_value_changed",
+          "name": "on_gui_text_changed",
           "order": 53,
           "description": ""
         },
         {
-          "name": "on_land_mine_armed",
+          "name": "on_gui_value_changed",
           "order": 54,
           "description": ""
         },
         {
-          "name": "on_lua_shortcut",
+          "name": "on_land_mine_armed",
           "order": 55,
           "description": ""
         },
         {
-          "name": "on_marked_for_deconstruction",
+          "name": "on_lua_shortcut",
           "order": 56,
           "description": ""
         },
         {
-          "name": "on_marked_for_upgrade",
+          "name": "on_marked_for_deconstruction",
           "order": 57,
           "description": ""
         },
         {
-          "name": "on_market_item_purchased",
+          "name": "on_marked_for_upgrade",
           "order": 58,
           "description": ""
         },
         {
-          "name": "on_mod_item_opened",
+          "name": "on_market_item_purchased",
           "order": 59,
           "description": ""
         },
         {
-          "name": "on_object_destroyed",
+          "name": "on_mod_item_opened",
           "order": 60,
           "description": ""
         },
         {
-          "name": "on_permission_group_added",
+          "name": "on_object_destroyed",
           "order": 61,
           "description": ""
         },
         {
-          "name": "on_permission_group_deleted",
+          "name": "on_permission_group_added",
           "order": 62,
           "description": ""
         },
         {
-          "name": "on_permission_group_edited",
+          "name": "on_permission_group_deleted",
           "order": 63,
           "description": ""
         },
         {
-          "name": "on_permission_string_imported",
+          "name": "on_permission_group_edited",
           "order": 64,
           "description": ""
         },
         {
-          "name": "on_picked_up_item",
+          "name": "on_permission_string_imported",
           "order": 65,
           "description": ""
         },
         {
-          "name": "on_player_alt_reverse_selected_area",
+          "name": "on_picked_up_item",
           "order": 66,
           "description": ""
         },
         {
-          "name": "on_player_alt_selected_area",
+          "name": "on_player_alt_reverse_selected_area",
           "order": 67,
           "description": ""
         },
         {
-          "name": "on_player_ammo_inventory_changed",
+          "name": "on_player_alt_selected_area",
           "order": 68,
           "description": ""
         },
         {
-          "name": "on_player_armor_inventory_changed",
+          "name": "on_player_ammo_inventory_changed",
           "order": 69,
           "description": ""
         },
         {
-          "name": "on_player_banned",
+          "name": "on_player_armor_inventory_changed",
           "order": 70,
           "description": ""
         },
         {
-          "name": "on_player_built_tile",
+          "name": "on_player_banned",
           "order": 71,
           "description": ""
         },
         {
-          "name": "on_player_cancelled_crafting",
+          "name": "on_player_built_tile",
           "order": 72,
           "description": ""
         },
         {
-          "name": "on_player_changed_force",
+          "name": "on_player_cancelled_crafting",
           "order": 73,
           "description": ""
         },
         {
-          "name": "on_player_changed_position",
+          "name": "on_player_changed_force",
           "order": 74,
           "description": ""
         },
         {
-          "name": "on_player_changed_surface",
+          "name": "on_player_changed_position",
           "order": 75,
           "description": ""
         },
         {
-          "name": "on_player_cheat_mode_disabled",
+          "name": "on_player_changed_surface",
           "order": 76,
           "description": ""
         },
         {
-          "name": "on_player_cheat_mode_enabled",
+          "name": "on_player_cheat_mode_disabled",
           "order": 77,
           "description": ""
         },
         {
-          "name": "on_player_clicked_gps_tag",
+          "name": "on_player_cheat_mode_enabled",
           "order": 78,
           "description": ""
         },
         {
-          "name": "on_player_configured_blueprint",
+          "name": "on_player_clicked_gps_tag",
           "order": 79,
           "description": ""
         },
         {
-          "name": "on_player_controller_changed",
+          "name": "on_player_configured_blueprint",
           "order": 80,
           "description": ""
         },
         {
-          "name": "on_player_crafted_item",
+          "name": "on_player_controller_changed",
           "order": 81,
           "description": ""
         },
         {
-          "name": "on_player_created",
+          "name": "on_player_crafted_item",
           "order": 82,
           "description": ""
         },
         {
-          "name": "on_player_cursor_stack_changed",
+          "name": "on_player_created",
           "order": 83,
           "description": ""
         },
         {
-          "name": "on_player_deconstructed_area",
+          "name": "on_player_cursor_stack_changed",
           "order": 84,
           "description": ""
         },
         {
-          "name": "on_player_demoted",
+          "name": "on_player_deconstructed_area",
           "order": 85,
           "description": ""
         },
         {
-          "name": "on_player_died",
+          "name": "on_player_demoted",
           "order": 86,
           "description": ""
         },
         {
-          "name": "on_player_display_density_scale_changed",
+          "name": "on_player_died",
           "order": 87,
           "description": ""
         },
         {
-          "name": "on_player_display_resolution_changed",
+          "name": "on_player_display_density_scale_changed",
           "order": 88,
           "description": ""
         },
         {
-          "name": "on_player_display_scale_changed",
+          "name": "on_player_display_resolution_changed",
           "order": 89,
           "description": ""
         },
         {
-          "name": "on_player_driving_changed_state",
+          "name": "on_player_display_scale_changed",
           "order": 90,
           "description": ""
         },
         {
-          "name": "on_player_dropped_item",
+          "name": "on_player_driving_changed_state",
           "order": 91,
           "description": ""
         },
         {
-          "name": "on_player_fast_transferred",
+          "name": "on_player_dropped_item",
           "order": 92,
           "description": ""
         },
         {
-          "name": "on_player_flipped_entity",
+          "name": "on_player_fast_transferred",
           "order": 93,
           "description": ""
         },
         {
-          "name": "on_player_flushed_fluid",
+          "name": "on_player_flipped_entity",
           "order": 94,
           "description": ""
         },
         {
-          "name": "on_player_gun_inventory_changed",
+          "name": "on_player_flushed_fluid",
           "order": 95,
           "description": ""
         },
         {
-          "name": "on_player_input_method_changed",
+          "name": "on_player_gun_inventory_changed",
           "order": 96,
           "description": ""
         },
         {
-          "name": "on_player_joined_game",
+          "name": "on_player_input_method_changed",
           "order": 97,
           "description": ""
         },
         {
-          "name": "on_player_kicked",
+          "name": "on_player_joined_game",
           "order": 98,
           "description": ""
         },
         {
-          "name": "on_player_left_game",
+          "name": "on_player_kicked",
           "order": 99,
           "description": ""
         },
         {
-          "name": "on_player_locale_changed",
+          "name": "on_player_left_game",
           "order": 100,
           "description": ""
         },
         {
-          "name": "on_player_main_inventory_changed",
+          "name": "on_player_locale_changed",
           "order": 101,
           "description": ""
         },
         {
-          "name": "on_player_mined_entity",
+          "name": "on_player_main_inventory_changed",
           "order": 102,
           "description": ""
         },
         {
-          "name": "on_player_mined_item",
+          "name": "on_player_mined_entity",
           "order": 103,
           "description": ""
         },
         {
-          "name": "on_player_mined_tile",
+          "name": "on_player_mined_item",
           "order": 104,
           "description": ""
         },
         {
-          "name": "on_player_muted",
+          "name": "on_player_mined_tile",
           "order": 105,
           "description": ""
         },
         {
-          "name": "on_player_pipette",
+          "name": "on_player_muted",
           "order": 106,
           "description": ""
         },
         {
-          "name": "on_player_placed_equipment",
+          "name": "on_player_pipette",
           "order": 107,
           "description": ""
         },
         {
-          "name": "on_player_promoted",
+          "name": "on_player_placed_equipment",
           "order": 108,
           "description": ""
         },
         {
-          "name": "on_player_removed",
+          "name": "on_player_promoted",
           "order": 109,
           "description": ""
         },
         {
-          "name": "on_player_removed_equipment",
+          "name": "on_player_removed",
           "order": 110,
           "description": ""
         },
         {
-          "name": "on_player_repaired_entity",
+          "name": "on_player_removed_equipment",
           "order": 111,
           "description": ""
         },
         {
-          "name": "on_player_respawned",
+          "name": "on_player_repaired_entity",
           "order": 112,
           "description": ""
         },
         {
-          "name": "on_player_reverse_selected_area",
+          "name": "on_player_respawned",
           "order": 113,
           "description": ""
         },
         {
-          "name": "on_player_rotated_entity",
+          "name": "on_player_reverse_selected_area",
           "order": 114,
           "description": ""
         },
         {
-          "name": "on_player_selected_area",
+          "name": "on_player_rotated_entity",
           "order": 115,
           "description": ""
         },
         {
-          "name": "on_player_set_quick_bar_slot",
+          "name": "on_player_selected_area",
           "order": 116,
           "description": ""
         },
         {
-          "name": "on_player_setup_blueprint",
+          "name": "on_player_set_quick_bar_slot",
           "order": 117,
           "description": ""
         },
         {
-          "name": "on_player_toggled_alt_mode",
+          "name": "on_player_setup_blueprint",
           "order": 118,
           "description": ""
         },
         {
-          "name": "on_player_toggled_map_editor",
+          "name": "on_player_toggled_alt_mode",
           "order": 119,
           "description": ""
         },
         {
-          "name": "on_player_trash_inventory_changed",
+          "name": "on_player_toggled_map_editor",
           "order": 120,
           "description": ""
         },
         {
-          "name": "on_player_unbanned",
+          "name": "on_player_trash_inventory_changed",
           "order": 121,
           "description": ""
         },
         {
-          "name": "on_player_unmuted",
+          "name": "on_player_unbanned",
           "order": 122,
           "description": ""
         },
         {
-          "name": "on_player_used_capsule",
+          "name": "on_player_unmuted",
           "order": 123,
           "description": ""
         },
         {
-          "name": "on_player_used_spidertron_remote",
+          "name": "on_player_used_capsule",
           "order": 124,
           "description": ""
         },
         {
-          "name": "on_post_entity_died",
+          "name": "on_player_used_spidertron_remote",
           "order": 125,
           "description": ""
         },
         {
-          "name": "on_pre_build",
+          "name": "on_post_entity_died",
           "order": 126,
           "description": ""
         },
         {
-          "name": "on_pre_chunk_deleted",
+          "name": "on_pre_build",
           "order": 127,
           "description": ""
         },
         {
-          "name": "on_pre_entity_settings_pasted",
+          "name": "on_pre_chunk_deleted",
           "order": 128,
           "description": ""
         },
         {
-          "name": "on_pre_ghost_deconstructed",
+          "name": "on_pre_entity_settings_pasted",
           "order": 129,
           "description": ""
         },
         {
-          "name": "on_pre_ghost_upgraded",
+          "name": "on_pre_ghost_deconstructed",
           "order": 130,
           "description": ""
         },
         {
-          "name": "on_pre_permission_group_deleted",
+          "name": "on_pre_ghost_upgraded",
           "order": 131,
           "description": ""
         },
         {
-          "name": "on_pre_permission_string_imported",
+          "name": "on_pre_permission_group_deleted",
           "order": 132,
           "description": ""
         },
         {
-          "name": "on_pre_player_crafted_item",
+          "name": "on_pre_permission_string_imported",
           "order": 133,
           "description": ""
         },
         {
-          "name": "on_pre_player_died",
+          "name": "on_pre_player_crafted_item",
           "order": 134,
           "description": ""
         },
         {
-          "name": "on_pre_player_left_game",
+          "name": "on_pre_player_died",
           "order": 135,
           "description": ""
         },
         {
-          "name": "on_pre_player_mined_item",
+          "name": "on_pre_player_left_game",
           "order": 136,
           "description": ""
         },
         {
-          "name": "on_pre_player_removed",
+          "name": "on_pre_player_mined_item",
           "order": 137,
           "description": ""
         },
         {
-          "name": "on_pre_player_toggled_map_editor",
+          "name": "on_pre_player_removed",
           "order": 138,
           "description": ""
         },
         {
-          "name": "on_pre_robot_exploded_cliff",
+          "name": "on_pre_player_toggled_map_editor",
           "order": 139,
           "description": ""
         },
         {
-          "name": "on_pre_scenario_finished",
+          "name": "on_pre_robot_exploded_cliff",
           "order": 140,
           "description": ""
         },
         {
-          "name": "on_pre_script_inventory_resized",
+          "name": "on_pre_scenario_finished",
           "order": 141,
           "description": ""
         },
         {
-          "name": "on_pre_surface_cleared",
+          "name": "on_pre_script_inventory_resized",
           "order": 142,
           "description": ""
         },
         {
-          "name": "on_pre_surface_deleted",
+          "name": "on_pre_surface_cleared",
           "order": 143,
           "description": ""
         },
         {
-          "name": "on_redo_applied",
+          "name": "on_pre_surface_deleted",
           "order": 144,
           "description": ""
         },
         {
-          "name": "on_research_cancelled",
+          "name": "on_redo_applied",
           "order": 145,
           "description": ""
         },
         {
-          "name": "on_research_finished",
+          "name": "on_research_cancelled",
           "order": 146,
           "description": ""
         },
         {
-          "name": "on_research_moved",
+          "name": "on_research_finished",
           "order": 147,
           "description": ""
         },
         {
-          "name": "on_research_reversed",
+          "name": "on_research_moved",
           "order": 148,
           "description": ""
         },
         {
-          "name": "on_research_started",
+          "name": "on_research_reversed",
           "order": 149,
           "description": ""
         },
         {
-          "name": "on_resource_depleted",
+          "name": "on_research_started",
           "order": 150,
           "description": ""
         },
         {
-          "name": "on_robot_built_entity",
+          "name": "on_resource_depleted",
           "order": 151,
           "description": ""
         },
         {
-          "name": "on_robot_built_tile",
+          "name": "on_robot_built_entity",
           "order": 152,
           "description": ""
         },
         {
-          "name": "on_robot_exploded_cliff",
+          "name": "on_robot_built_tile",
           "order": 153,
           "description": ""
         },
         {
-          "name": "on_robot_mined",
+          "name": "on_robot_exploded_cliff",
           "order": 154,
           "description": ""
         },
         {
-          "name": "on_robot_mined_entity",
+          "name": "on_robot_mined",
           "order": 155,
           "description": ""
         },
         {
-          "name": "on_robot_mined_tile",
+          "name": "on_robot_mined_entity",
           "order": 156,
           "description": ""
         },
         {
-          "name": "on_robot_pre_mined",
+          "name": "on_robot_mined_tile",
           "order": 157,
           "description": ""
         },
         {
-          "name": "on_rocket_launch_ordered",
+          "name": "on_robot_pre_mined",
           "order": 158,
           "description": ""
         },
         {
-          "name": "on_rocket_launched",
+          "name": "on_rocket_launch_ordered",
           "order": 159,
           "description": ""
         },
         {
-          "name": "on_runtime_mod_setting_changed",
+          "name": "on_rocket_launched",
           "order": 160,
           "description": ""
         },
         {
-          "name": "on_script_inventory_resized",
+          "name": "on_runtime_mod_setting_changed",
           "order": 161,
           "description": ""
         },
         {
-          "name": "on_script_path_request_finished",
+          "name": "on_script_inventory_resized",
           "order": 162,
           "description": ""
         },
         {
-          "name": "on_script_trigger_effect",
+          "name": "on_script_path_request_finished",
           "order": 163,
           "description": ""
         },
         {
-          "name": "on_sector_scanned",
+          "name": "on_script_trigger_effect",
           "order": 164,
           "description": ""
         },
         {
-          "name": "on_segment_entity_created",
+          "name": "on_sector_scanned",
           "order": 165,
           "description": ""
         },
         {
-          "name": "on_selected_entity_changed",
+          "name": "on_segment_entity_created",
           "order": 166,
           "description": ""
         },
         {
-          "name": "on_space_platform_built_entity",
+          "name": "on_selected_entity_changed",
           "order": 167,
           "description": ""
         },
         {
-          "name": "on_space_platform_built_tile",
+          "name": "on_space_platform_built_entity",
           "order": 168,
           "description": ""
         },
         {
-          "name": "on_space_platform_changed_state",
+          "name": "on_space_platform_built_tile",
           "order": 169,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_entity",
+          "name": "on_space_platform_changed_state",
           "order": 170,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_item",
+          "name": "on_space_platform_mined_entity",
           "order": 171,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_tile",
+          "name": "on_space_platform_mined_item",
           "order": 172,
           "description": ""
         },
         {
-          "name": "on_space_platform_pre_mined",
+          "name": "on_space_platform_mined_tile",
           "order": 173,
           "description": ""
         },
         {
-          "name": "on_spider_command_completed",
+          "name": "on_space_platform_pre_mined",
           "order": 174,
           "description": ""
         },
         {
-          "name": "on_string_translated",
+          "name": "on_spider_command_completed",
           "order": 175,
           "description": ""
         },
         {
-          "name": "on_surface_cleared",
+          "name": "on_string_translated",
           "order": 176,
           "description": ""
         },
         {
-          "name": "on_surface_created",
+          "name": "on_surface_cleared",
           "order": 177,
           "description": ""
         },
         {
-          "name": "on_surface_deleted",
+          "name": "on_surface_created",
           "order": 178,
           "description": ""
         },
         {
-          "name": "on_surface_imported",
+          "name": "on_surface_deleted",
           "order": 179,
           "description": ""
         },
         {
-          "name": "on_surface_renamed",
+          "name": "on_surface_imported",
           "order": 180,
           "description": ""
         },
         {
-          "name": "on_technology_effects_reset",
+          "name": "on_surface_renamed",
           "order": 181,
           "description": ""
         },
         {
-          "name": "on_tick",
+          "name": "on_technology_effects_reset",
           "order": 182,
           "description": ""
         },
         {
-          "name": "on_train_changed_state",
+          "name": "on_tick",
           "order": 183,
           "description": ""
         },
         {
-          "name": "on_train_created",
+          "name": "on_train_changed_state",
           "order": 184,
           "description": ""
         },
         {
-          "name": "on_train_schedule_changed",
+          "name": "on_train_created",
           "order": 185,
           "description": ""
         },
         {
-          "name": "on_trigger_created_entity",
+          "name": "on_train_schedule_changed",
           "order": 186,
           "description": ""
         },
         {
-          "name": "on_trigger_fired_artillery",
+          "name": "on_trigger_created_entity",
           "order": 187,
           "description": ""
         },
         {
-          "name": "on_undo_applied",
+          "name": "on_trigger_fired_artillery",
           "order": 188,
           "description": ""
         },
         {
-          "name": "on_unit_added_to_group",
+          "name": "on_undo_applied",
           "order": 189,
           "description": ""
         },
         {
-          "name": "on_unit_group_created",
+          "name": "on_unit_added_to_group",
           "order": 190,
           "description": ""
         },
         {
-          "name": "on_unit_group_finished_gathering",
+          "name": "on_unit_group_created",
           "order": 191,
           "description": ""
         },
         {
-          "name": "on_unit_removed_from_group",
+          "name": "on_unit_group_finished_gathering",
           "order": 192,
           "description": ""
         },
         {
-          "name": "on_worker_robot_expired",
+          "name": "on_unit_removed_from_group",
           "order": 193,
           "description": ""
         },
         {
-          "name": "script_raised_built",
+          "name": "on_worker_robot_expired",
           "order": 194,
           "description": ""
         },
         {
-          "name": "script_raised_destroy",
+          "name": "script_raised_built",
           "order": 195,
           "description": ""
         },
         {
-          "name": "script_raised_revive",
+          "name": "script_raised_destroy",
           "order": 196,
           "description": ""
         },
         {
-          "name": "script_raised_set_tiles",
+          "name": "script_raised_revive",
           "order": 197,
           "description": ""
         },
         {
-          "name": "script_raised_teleported",
+          "name": "script_raised_set_tiles",
           "order": 198,
+          "description": ""
+        },
+        {
+          "name": "script_raised_teleported",
+          "order": 199,
           "description": ""
         }
       ]

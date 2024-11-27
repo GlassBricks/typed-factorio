@@ -1,3 +1,7 @@
+# v3.6.0
+
+- Updated to factorio version 2.0.22
+
 # v3.5.1
 
 - Fix that vehicle_automatic_targeting_parameters was not optional in BlueprintEntity
