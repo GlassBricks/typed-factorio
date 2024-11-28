@@ -3371,6 +3371,12 @@ declare module "factorio:runtime" {
      */
     readonly read_contents?: boolean
     /**
+     * For assembling machines, whether to include items in crafting for {@link read_contents }.
+     *
+     * Default true.
+     */
+    readonly include_in_crafting?: boolean
+    /**
      * If an **asteroid collector** reads its contents to the circuit network. Default false.
      */
     readonly circuit_read_contents?: boolean
@@ -3617,6 +3623,12 @@ declare module "factorio:runtime" {
      * Does not apply to asteroid collectors, see {@link circuit_read_contents }.
      */
     readonly read_contents?: boolean
+    /**
+     * For assembling machines, whether to include items in crafting for {@link read_contents }.
+     *
+     * Default true.
+     */
+    readonly include_in_crafting?: boolean
     /**
      * If an **asteroid collector** reads its contents to the circuit network. Default false.
      */

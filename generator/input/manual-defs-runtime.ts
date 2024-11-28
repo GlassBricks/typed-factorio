@@ -741,6 +741,12 @@ export interface BlueprintControlBehavior {
    */
   read_contents?: boolean
 
+  /**
+   * For assembling machines, whether to include items in crafting for {@link read_contents}.
+   * Default true.
+   */
+  include_in_crafting?: boolean
+
   /** If an **asteroid collector** reads its contents to the circuit network. Default false.*/
   circuit_read_contents?: boolean
 
