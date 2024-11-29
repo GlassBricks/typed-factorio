@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.22",
+  "application_version": "2.0.23",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -52760,6 +52760,18 @@
           "override": false,
           "type": "EffectTexture",
           "optional": false
+        },
+        {
+          "name": "tick_factor",
+          "order": 5,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0.000005
+          }
         }
       ]
     },
@@ -76940,7 +76952,7 @@
             "complex_type": "array",
             "value": "TileMainPictures"
           },
-          "optional": false
+          "optional": true
         },
         {
           "name": "material_background",

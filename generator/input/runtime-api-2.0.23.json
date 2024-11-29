@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.22",
+  "application_version": "2.0.23",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -14255,7 +14255,7 @@
           "return_values": [
             {
               "order": 0,
-              "description": "The counts, indexed by equipment names.",
+              "description": "List of all equipment in the grid.",
               "type": {
                 "complex_type": "array",
                 "value": "EquipmentWithQualityCounts"
@@ -46950,29 +46950,36 @@
       "description": "Called when a cargo pod departs a surface.",
       "data": [
         {
-          "name": "launched_by_rocket",
+          "name": "cargo_pod",
           "order": 0,
+          "description": "",
+          "type": "LuaEntity",
+          "optional": false
+        },
+        {
+          "name": "launched_by_rocket",
+          "order": 1,
           "description": "True for pods spawned on a rocket. This event triggers for platform and modded pods as well, but only when true will the pod count towards rocket launch statistics and trigger 'rocket-launched' achievement with objective_condition.",
           "type": "boolean",
           "optional": false
         },
         {
           "name": "name",
-          "order": 2,
+          "order": 3,
           "description": "Identifier of the event",
           "type": "defines.events",
           "optional": false
         },
         {
           "name": "player_index",
-          "order": 1,
+          "order": 2,
           "description": "The player that is riding the rocket, if any.",
           "type": "uint",
           "optional": true
         },
         {
           "name": "tick",
-          "order": 3,
+          "order": 4,
           "description": "Tick the event was generated.",
           "type": "uint",
           "optional": false
