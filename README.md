@@ -1,3 +1,5 @@
+[![NPM Version](https://img.shields.io/npm/v/%40dimava%2Ftyped-factorio)](https://www.npmjs.com/package/@dimava/typed-factorio)
+
 # Typed Factorio
 
 Complete and featureful typescript definitions for the Factorio modding lua API, for use with [TypescriptToLua](https://typescripttolua.github.io/).
