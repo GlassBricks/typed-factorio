@@ -29,7 +29,6 @@ async function downloadApi(stage: string) {
   const expected = {
     application: "factorio",
     stage,
-    // api_version: 3,
   }
   for (const [k, value] of Object.entries(expected)) {
     const key = k as keyof typeof expected
@@ -48,10 +47,17 @@ async function downloadApi(stage: string) {
   const resultContents = JSON.stringify(contents, undefined, 2) + "\n"
   const resultFile = path.resolve(destinationFolder, `${stage}-api-${version}.json`)
   await fs.writeFile(resultFile, resultContents)
+
+  return version
 }
 
 const stages = ["runtime", "prototype"]
-await Promise.all(stages.map(downloadApi))
+const [version] = await Promise.all(stages.map(downloadApi))
+
+const packageJsonPath = path.resolve(__dirname, "../package.json")
+const packageJson = JSON.parse(await fs.readFile(packageJsonPath, "utf8"))
+packageJson.factorioVersion = version
+await fs.writeFile(packageJsonPath, JSON.stringify(packageJson, undefined, 2))
 
 // add to git
 const projectDir = path.resolve(__dirname, "..")

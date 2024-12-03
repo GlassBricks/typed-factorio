@@ -60,5 +60,6 @@
     "tsx": "^4.7.1",
     "typescript": "~5.4.2",
     "typescript-to-lua": "^1.25.0"
-  }
+  },
+  "factorioVersion": "2.0.23"
 }
