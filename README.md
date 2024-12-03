@@ -1,4 +1,4 @@
-[![NPM Version](https://img.shields.io/npm/v/typed-factorio)](https://www.npmjs.com/package/typed-factorio)
+[![NPM Version](https://img.shields.io/npm/v/typed-factorio)](https://www.npmjs.com/package/typed-factorio) ![Factorio version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fregistry.npmjs.com%2Ftyped-factorio%2Flatest&query=%24.factorioVersion&prefix=v&label=Factorio%20version)
 
 # Typed Factorio
 
