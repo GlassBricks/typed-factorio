@@ -3,11 +3,12 @@
 /// <reference path="../../settings/types.d.ts" />
 // noinspection JSUnusedGlobalSymbols
 
-import { ActiveMods, CustomInputName, VersionString } from "factorio:common"
+import { ActiveMods, CustomInputName, VersionString } from "factorio:common" // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
 
 // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
 /** @omit */
 export interface VirtualSignalID {}
+
 /** @omit */
 export interface BurnerUsageID {}
 
@@ -22,7 +23,9 @@ export interface LuaObject {
 }
 
 export interface LogisticSections {}
+
 export interface LogisticSection {}
+
 export interface BlueprintLogisticFilter {}
 
 export type double = number
@@ -159,6 +162,8 @@ export interface BaseGuiSpec {}
 
 export interface SignalID {}
 
+export interface SignalIDWrite {}
+
 export interface ItemIDAndQualityIDPair {}
 
 // stub only
@@ -175,14 +180,22 @@ export type LuaGuiElement = {
   /** @variantsName GuiSpec */
   add<Type extends GuiElementType>(element: GuiSpec & { type: Type }): Extract<LuaGuiElement, { type: Type }>
 
-  elem_value: // @ts-ignore
-  | (this["elem_type"] extends "signal"
-        ? SignalID
-        : // @ts-ignore
-          this["elem_type"] extends "with-quality"
-          ? ItemIDAndQualityIDPair
-          : string)
-    | nil
+  get elem_value(): // @ts-ignore
+  this["elem_type"] extends "signal"
+    ? SignalID
+    : // @ts-ignore
+      this["elem_type"] extends "with-quality"
+      ? { readonly name: string; readonly quality?: string }
+      : string
+  set elem_value(
+    value: // @ts-ignore
+    this["elem_type"] extends "signal"
+      ? SignalIDWrite
+      : // @ts-ignore
+        this["elem_type"] extends "with-quality"
+        ? { readonly name: string; readonly quality?: string }
+        : string,
+  )
 
   /** @subclasses slider */
   get_slider_minimum()
@@ -315,7 +328,7 @@ export interface ConfigurationChangedData {
  */
 /** An event id. */
 export type EventId<T extends object, F = unknown> = uint & {
-  readonly _eventData: T
+  readonly _eventData: T & EventData
   readonly _filter: F
 }
 
@@ -328,6 +341,29 @@ export type CustomEventId<T extends table> = EventId<T> & {
   _customEventIdBrand: any
 }
 
+/** @unionAdd */
+type LuaEventType = EventId<any>
+
+interface LuaCustomInputPrototype {
+  readonly event_id: EventId<CustomInputEvent>
+}
+
+interface LuaCustomEventPrototype {
+  readonly event_id: EventId<EventData>
+}
+
+/**
+ * @addTo concepts
+ * @usage w
+ */
+export type EventTypeOf<T extends LuaEventType> = T extends string | LuaCustomInputPrototype
+  ? CustomInputEvent
+  : T extends EventId<infer E, any>
+    ? E
+    : T extends LuaCustomEventPrototype
+      ? EventData
+      : never
+
 /**
  * @references RaiseableEvents CustomEventId
  */
@@ -337,19 +373,20 @@ export interface LuaBootstrap {
     handler: ((data: E["_eventData"]) => void) | nil,
     filters?: E["_filter"][],
   ): void
-
-  on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | nil): void
-
-  on_event(event: CustomInputName, f: ((data: CustomInputEvent) => void) | nil): void
+  on_event<E extends EventId<any>>(event: E | readonly E[], f: ((data: E["_eventData"]) => void) | nil): void
+  on_event(event: CustomInputName | LuaCustomInputPrototype, f: ((data: CustomInputEvent) => void) | nil): void
+  on_event<E extends LuaEventType>(event: E, f: ((data: EventTypeOf<E>) => void) | nil): void
 
   generate_event_name<T extends table>(): CustomEventId<T>
 
-  get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | nil
+  get_event_id<E extends EventId<any, any>>(event: E): E
+  get_event_id<E extends LuaEventType>(event: E): EventId<EventTypeOf<E>>
 
-  get_event_handler(event: CustomInputName): (data: CustomInputEvent) => void | nil
+  get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | nil
+  get_event_handler(event: CustomInputName | LuaCustomInputPrototype): (data: CustomInputEvent) => void | nil
+  get_event_handler<E extends LuaEventType>(event: E): (data: EventTypeOf<E>) => void | nil
 
   get_event_filter<E extends EventId<any, table>>(event: E): E["_filter"][] | nil
-
   set_event_filter<E extends EventId<any, table>>(event: E, filters: E["_filter"][] | nil): void
 
   raise_event<E extends RaiseableEvents | CustomEventId<any>>(
@@ -521,6 +558,7 @@ export interface TechnologyID {}
 // export interface SurfaceIdentification {}
 
 export interface EntityID {}
+
 export interface QualityID {}
 
 /** @readType LuaPlayer */

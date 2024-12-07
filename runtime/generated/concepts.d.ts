@@ -2418,7 +2418,7 @@ declare module "factorio:runtime" {
    * - {@link LuaItemStack}: The item stack. Both prototype and quality of the item stack will be used.
    * - {@link LuaItemPrototype}: The item prototype. Normal quality will be used.
    * - `string`: The prototype name. Normal quality will be used.
-   * - `ItemIDAndQualityIDPairWrite`: A table of entity prototype and quality.
+   * - {@link ItemIDAndQualityIDPair}: A table of entity prototype and quality.
    * @see {@link https://lua-api.factorio.com/2.0.24/concepts/ItemWithQualityID.html Online documentation}
    */
   export type ItemWithQualityID = LuaItemStack | LuaItemPrototype | string | ItemIDAndQualityIDPairWrite
@@ -2892,7 +2892,7 @@ declare module "factorio:runtime" {
    * - `string`: Name of the event.
    * @see {@link https://lua-api.factorio.com/2.0.24/concepts/LuaEventType.html Online documentation}
    */
-  export type LuaEventType = LuaCustomEventPrototype | LuaCustomInputPrototype | defines.events | string
+  export type LuaEventType = LuaCustomEventPrototype | LuaCustomInputPrototype | defines.events | string | EventId<any>
   /**
    * ## Union members
    * - `"center-to-center"`
@@ -7529,7 +7529,7 @@ declare module "factorio:runtime" {
     | typeof defines.events.script_raised_teleported
     | typeof defines.events.script_raised_set_tiles
   export type EventId<T extends object, F = unknown> = uint & {
-    readonly _eventData: T
+    readonly _eventData: T & EventData
     readonly _filter: F
   }
   export type CustomEventId<T extends table> = EventId<T> & {
@@ -12208,4 +12208,11 @@ declare module "factorio:runtime" {
     | OtherPreRobotMinedEntityEventFilter
   export type StyleValuesArray = [topBottom: int, leftRight: int] | [top: int, right: int, bottom: int, left: int]
   export type SizeArray = [width: int, height: int]
+  export type EventTypeOf<T extends LuaEventType> = T extends string | LuaCustomInputPrototype
+    ? CustomInputEvent
+    : T extends EventId<infer E, any>
+      ? E
+      : T extends LuaCustomEventPrototype
+        ? EventData
+        : never
 }

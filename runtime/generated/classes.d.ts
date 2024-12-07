@@ -459,8 +459,9 @@ declare module "factorio:runtime" {
       handler: ((data: E["_eventData"]) => void) | nil,
       filters?: E["_filter"][],
     ): void
-    on_event<E extends EventId<any>>(event: E | E[], f: ((data: E["_eventData"]) => void) | nil): void
-    on_event(event: CustomInputName, f: ((data: CustomInputEvent) => void) | nil): void
+    on_event<E extends EventId<any>>(event: E | readonly E[], f: ((data: E["_eventData"]) => void) | nil): void
+    on_event(event: CustomInputName | LuaCustomInputPrototype, f: ((data: CustomInputEvent) => void) | nil): void
+    on_event<E extends LuaEventType>(event: E, f: ((data: EventTypeOf<E>) => void) | nil): void
     /**
      * Register a handler to run every nth-tick(s). When the game is on tick 0 it will trigger all registered handlers.
      * @param tick The nth-tick(s) to invoke the handler on. Passing `nil` as the only parameter will unregister all nth-tick handlers.
@@ -520,7 +521,8 @@ declare module "factorio:runtime" {
      * Converts LuaEventType into related value of defines.events. Value will be provided also if event was not given a constant inside of defines.events.
      * @see {@link https://lua-api.factorio.com/2.0.24/classes/LuaBootstrap.html#LuaBootstrap.get_event_id Online documentation}
      */
-    get_event_id(event: LuaEventType): defines.events
+    get_event_id<E extends EventId<any, any>>(event: E): E
+    get_event_id<E extends LuaEventType>(event: E): EventId<EventTypeOf<E>>
     /**
      * Find the event handler for an event.
      * @param event The event identifier to get a handler for.
@@ -528,7 +530,8 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.0.24/classes/LuaBootstrap.html#LuaBootstrap.get_event_handler Online documentation}
      */
     get_event_handler<E extends EventId<any>>(event: E): (data: E["_eventData"]) => void | nil
-    get_event_handler(event: CustomInputName): (data: CustomInputEvent) => void | nil
+    get_event_handler(event: CustomInputName | LuaCustomInputPrototype): (data: CustomInputEvent) => void | nil
+    get_event_handler<E extends LuaEventType>(event: E): (data: EventTypeOf<E>) => void | nil
     /**
      * Gets the mod event order as a string.
      * @see {@link https://lua-api.factorio.com/2.0.24/classes/LuaBootstrap.html#LuaBootstrap.get_event_order Online documentation}
@@ -2239,7 +2242,7 @@ declare module "factorio:runtime" {
      * Event identifier associated with this custom event.
      * @see {@link https://lua-api.factorio.com/2.0.24/classes/LuaCustomEventPrototype.html#LuaCustomEventPrototype.event_id Online documentation}
      */
-    readonly event_id: defines.events
+    readonly event_id: EventId<EventData>
     /**
      * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
      */
@@ -2258,7 +2261,7 @@ declare module "factorio:runtime" {
      * Event identifier associated with this custom input.
      * @see {@link https://lua-api.factorio.com/2.0.24/classes/LuaCustomInputPrototype.html#LuaCustomInputPrototype.event_id Online documentation}
      */
-    readonly event_id: defines.events
+    readonly event_id: EventId<CustomInputEvent>
     /**
      * The default key sequence for this custom input.
      * @see {@link https://lua-api.factorio.com/2.0.24/classes/LuaCustomInputPrototype.html#LuaCustomInputPrototype.key_sequence Online documentation}
@@ -15444,8 +15447,24 @@ declare module "factorio:runtime" {
      * _Can only be used if this is choose-elem-button_
      * @see {@link https://lua-api.factorio.com/2.0.24/classes/LuaGuiElement.html#LuaGuiElement.elem_value Online documentation}
      */
-    get elem_value(): string | SignalID | table
-    set elem_value(value: string | SignalIDWrite | table)
+    get elem_value(): this["elem_type"] extends "signal"
+      ? SignalID
+      : this["elem_type"] extends "with-quality"
+        ? {
+            readonly name: string
+            readonly quality?: string
+          }
+        : string
+    set elem_value(
+      value: this["elem_type"] extends "signal"
+        ? SignalIDWrite
+        : this["elem_type"] extends "with-quality"
+          ? {
+              readonly name: string
+              readonly quality?: string
+            }
+          : string,
+    )
     /**
      * The elem filters of this choose-elem-button, if any. The compatible type of filter is determined by `elem_type`.
      *
