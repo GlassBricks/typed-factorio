@@ -1,3 +1,8 @@
+# v3.8.0
+
+- Updated to factorio version 2.0.24
+- Includes typings for new event id handling
+
 # v3.7.0
 
 - Updated to factorio version 2.0.23

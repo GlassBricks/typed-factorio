@@ -15,6 +15,7 @@ import { GenerationContext } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype"
 import { getSpecificPrototypeTypeForTypeAttribute } from "./runtime/prototype-subclass-types"
 import { mapProperty } from "./prototype/properties.js"
+import { FactorioModule } from "./OutputFile"
 
 export interface TypeContext {
   contextName?: string
@@ -317,6 +318,10 @@ function mapBasicType(
   }
   if (type === "int32_t") {
     type = "int"
+  }
+  if (context.stageName === FactorioModule.Prototype && type === "DamageEntityTriggerEffectItem") {
+    // WUUUUUUUBEE
+    type = "DamageTriggerEffectItem"
   }
   return createBasicType(context, type)
 }

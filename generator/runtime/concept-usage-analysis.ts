@@ -239,6 +239,7 @@ function overrideReadWriteType(
           read: `${referencingConcept.name}`,
           write: `${referencingConcept.name}Write`,
         }
+        context.tsToFactorioType.set(defaultNames.write, referencingConcept.name)
         readWriteTypeNames.set(referencingConcept, defaultNames)
         setReadWriteTypeWorker(referencingConcept)
       }

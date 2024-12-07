@@ -166,6 +166,7 @@ function getTypeFromTsType(type: ts.TypeNode | undefined): Type {
     ts.isIntersectionTypeNode(type) ||
     ts.isTemplateLiteralTypeNode(type) ||
     ts.isTypeQueryNode(type) ||
+    ts.isConditionalTypeNode(type) ||
     type.kind === ts.SyntaxKind.BooleanKeyword ||
     type.kind === ts.SyntaxKind.StringKeyword ||
     type.kind === ts.SyntaxKind.NumberKeyword
