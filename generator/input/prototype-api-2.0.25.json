@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.24",
+  "application_version": "2.0.25",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -2435,7 +2435,7 @@
         {
           "name": "fixed_quality",
           "order": 1,
-          "description": "",
+          "description": "Only loaded when fixed_recipe is provided.",
           "override": false,
           "type": "QualityID",
           "optional": true
@@ -7751,6 +7751,14 @@
           "optional": false
         },
         {
+          "name": "ignore_tile_conditions",
+          "order": 26,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": false
+        },
+        {
           "name": "instant_blueprint_building",
           "order": 11,
           "description": "",
@@ -12398,6 +12406,18 @@
           "override": false,
           "type": "ConnectableEntityGraphics",
           "optional": true
+        },
+        {
+          "name": "heating_radius",
+          "order": 3,
+          "description": "Must be >= 0.",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 1
+          }
         }
       ]
     },
@@ -12612,7 +12632,7 @@
       "properties": [
         {
           "name": "allow_burner_leech",
-          "order": 20,
+          "order": 21,
           "description": "Whether this burner inserter can fuel itself from the fuel inventory of the entity it is picking up items from.",
           "override": false,
           "type": "bool",
@@ -12624,7 +12644,7 @@
         },
         {
           "name": "allow_custom_vectors",
-          "order": 19,
+          "order": 20,
           "description": "Whether pickup and insert position can be set run-time.",
           "override": false,
           "type": "bool",
@@ -12636,7 +12656,7 @@
         },
         {
           "name": "bulk",
-          "order": 18,
+          "order": 19,
           "description": "Whether this inserter is considered a bulk inserter. Relevant for determining how [inserter capacity bonus (research)](https://wiki.factorio.com/Inserter_capacity_bonus_(research)) applies to the inserter.",
           "override": false,
           "type": "bool",
@@ -12648,7 +12668,7 @@
         },
         {
           "name": "chases_belt_items",
-          "order": 34,
+          "order": 35,
           "description": "Whether the inserter hand should move to the items it picks up from belts, leading to item chasing behaviour. If this is off, the inserter hand will stay in the center of the belt and any items picked up from the edges of the belt \"teleport\" to the inserter hand.",
           "override": false,
           "type": "bool",
@@ -12660,7 +12680,7 @@
         },
         {
           "name": "circuit_connector",
-          "order": 36,
+          "order": 37,
           "description": "",
           "override": false,
           "type": {
@@ -12676,7 +12696,7 @@
         },
         {
           "name": "circuit_wire_max_distance",
-          "order": 29,
+          "order": 30,
           "description": "The maximum circuit wire distance for this entity.",
           "override": false,
           "type": "double",
@@ -12688,7 +12708,7 @@
         },
         {
           "name": "default_stack_control_input_signal",
-          "order": 32,
+          "order": 33,
           "description": "",
           "override": false,
           "type": "SignalIDConnector",
@@ -12696,7 +12716,7 @@
         },
         {
           "name": "draw_circuit_wires",
-          "order": 31,
+          "order": 32,
           "description": "",
           "override": false,
           "type": "bool",
@@ -12708,7 +12728,7 @@
         },
         {
           "name": "draw_copper_wires",
-          "order": 30,
+          "order": 31,
           "description": "",
           "override": false,
           "type": "bool",
@@ -12720,7 +12740,7 @@
         },
         {
           "name": "draw_held_item",
-          "order": 21,
+          "order": 22,
           "description": "Whether the item that the inserter is holding should be drawn.",
           "override": false,
           "type": "bool",
@@ -12732,7 +12752,7 @@
         },
         {
           "name": "draw_inserter_arrow",
-          "order": 33,
+          "order": 34,
           "description": "Whether the yellow arrow that indicates the drop point of the inserter and the line that indicates the pickup position should be drawn.",
           "override": false,
           "type": "bool",
@@ -12744,18 +12764,6 @@
         },
         {
           "name": "energy_per_movement",
-          "order": 16,
-          "description": "",
-          "override": false,
-          "type": "Energy",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
-        },
-        {
-          "name": "energy_per_rotation",
           "order": 17,
           "description": "",
           "override": false,
@@ -12767,8 +12775,20 @@
           }
         },
         {
+          "name": "energy_per_rotation",
+          "order": 18,
+          "description": "",
+          "override": false,
+          "type": "Energy",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
           "name": "energy_source",
-          "order": 15,
+          "order": 16,
           "description": "Defines how this inserter gets energy. The emissions set on the energy source are ignored so inserters cannot produce pollution.",
           "override": false,
           "type": "EnergySource",
@@ -12776,7 +12796,7 @@
         },
         {
           "name": "enter_drop_mode_if_held_stack_spoiled",
-          "order": 25,
+          "order": 26,
           "description": "If inserter waits for full hand it could become stuck when item in hand changed because of spoiling. If this flag is set then inserter will start dropping held stack even if it was waiting for full hand.",
           "override": false,
           "type": "bool",
@@ -12796,7 +12816,7 @@
         },
         {
           "name": "filter_count",
-          "order": 27,
+          "order": 28,
           "description": "How many filters this inserter has. Maximum count of filtered items in inserter is 5.",
           "override": false,
           "type": "uint8",
@@ -12808,7 +12828,7 @@
         },
         {
           "name": "grab_less_to_match_belt_stack",
-          "order": 23,
+          "order": 24,
           "description": "If drop target is belt, inserter may grab less so that it does not drop partial stacks unless it is forced to drop partial.",
           "override": false,
           "type": "bool",
@@ -12820,54 +12840,6 @@
         },
         {
           "name": "hand_base_frozen",
-          "order": 9,
-          "description": "",
-          "override": false,
-          "type": "Sprite",
-          "optional": true
-        },
-        {
-          "name": "hand_base_picture",
-          "order": 6,
-          "description": "",
-          "override": false,
-          "type": "Sprite",
-          "optional": true
-        },
-        {
-          "name": "hand_base_shadow",
-          "order": 12,
-          "description": "",
-          "override": false,
-          "type": "Sprite",
-          "optional": true
-        },
-        {
-          "name": "hand_closed_frozen",
-          "order": 11,
-          "description": "",
-          "override": false,
-          "type": "Sprite",
-          "optional": true
-        },
-        {
-          "name": "hand_closed_picture",
-          "order": 8,
-          "description": "",
-          "override": false,
-          "type": "Sprite",
-          "optional": true
-        },
-        {
-          "name": "hand_closed_shadow",
-          "order": 14,
-          "description": "",
-          "override": false,
-          "type": "Sprite",
-          "optional": true
-        },
-        {
-          "name": "hand_open_frozen",
           "order": 10,
           "description": "",
           "override": false,
@@ -12875,7 +12847,7 @@
           "optional": true
         },
         {
-          "name": "hand_open_picture",
+          "name": "hand_base_picture",
           "order": 7,
           "description": "",
           "override": false,
@@ -12883,7 +12855,7 @@
           "optional": true
         },
         {
-          "name": "hand_open_shadow",
+          "name": "hand_base_shadow",
           "order": 13,
           "description": "",
           "override": false,
@@ -12891,8 +12863,56 @@
           "optional": true
         },
         {
+          "name": "hand_closed_frozen",
+          "order": 12,
+          "description": "",
+          "override": false,
+          "type": "Sprite",
+          "optional": true
+        },
+        {
+          "name": "hand_closed_picture",
+          "order": 9,
+          "description": "",
+          "override": false,
+          "type": "Sprite",
+          "optional": true
+        },
+        {
+          "name": "hand_closed_shadow",
+          "order": 15,
+          "description": "",
+          "override": false,
+          "type": "Sprite",
+          "optional": true
+        },
+        {
+          "name": "hand_open_frozen",
+          "order": 11,
+          "description": "",
+          "override": false,
+          "type": "Sprite",
+          "optional": true
+        },
+        {
+          "name": "hand_open_picture",
+          "order": 8,
+          "description": "",
+          "override": false,
+          "type": "Sprite",
+          "optional": true
+        },
+        {
+          "name": "hand_open_shadow",
+          "order": 14,
+          "description": "",
+          "override": false,
+          "type": "Sprite",
+          "optional": true
+        },
+        {
           "name": "hand_size",
-          "order": 28,
+          "order": 29,
           "description": "Used to determine how long the arm of the inserter is when drawing it. Does not affect gameplay. The lower the value, the straighter the arm. Increasing the value will give the inserter a bigger bend due to its longer parts.",
           "override": false,
           "type": "double",
@@ -12904,7 +12924,7 @@
         },
         {
           "name": "insert_position",
-          "order": 2,
+          "order": 3,
           "description": "",
           "override": false,
           "type": "Vector",
@@ -12912,7 +12932,7 @@
         },
         {
           "name": "max_belt_stack_size",
-          "order": 26,
+          "order": 27,
           "description": "This inserter will not create stacks on belt with more than this amount of items. Must be >= 1.",
           "visibility": [
             "space_age"
@@ -12927,7 +12947,7 @@
         },
         {
           "name": "pickup_position",
-          "order": 3,
+          "order": 4,
           "description": "",
           "override": false,
           "type": "Vector",
@@ -12935,7 +12955,7 @@
         },
         {
           "name": "platform_frozen",
-          "order": 5,
+          "order": 6,
           "description": "",
           "override": false,
           "type": "Sprite4Way",
@@ -12943,7 +12963,7 @@
         },
         {
           "name": "platform_picture",
-          "order": 4,
+          "order": 5,
           "description": "",
           "override": false,
           "type": "Sprite4Way",
@@ -12959,7 +12979,7 @@
         },
         {
           "name": "stack_size_bonus",
-          "order": 35,
+          "order": 36,
           "description": "Stack size bonus that is inherent to the prototype without having to be researched.",
           "override": false,
           "type": "uint8",
@@ -12970,8 +12990,20 @@
           }
         },
         {
+          "name": "starting_distance",
+          "order": 2,
+          "description": "",
+          "override": false,
+          "type": "double",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0.7
+          }
+        },
+        {
           "name": "use_easter_egg",
-          "order": 22,
+          "order": 23,
           "description": "Whether the inserter should be able to fish [fish](https://wiki.factorio.com/Raw_fish).",
           "override": false,
           "type": "bool",
@@ -12983,7 +13015,7 @@
         },
         {
           "name": "wait_for_full_hand",
-          "order": 24,
+          "order": 25,
           "description": "Inserter will wait until its hand is full.",
           "override": false,
           "type": "bool",
@@ -18910,7 +18942,7 @@
       "properties": [
         {
           "name": "circuit_connector",
-          "order": 20,
+          "order": 21,
           "description": "",
           "override": false,
           "type": "CircuitConnectorDefinition",
@@ -18918,7 +18950,7 @@
         },
         {
           "name": "circuit_wire_max_distance",
-          "order": 17,
+          "order": 18,
           "description": "The maximum circuit wire distance for this entity.",
           "override": false,
           "type": "double",
@@ -18930,7 +18962,7 @@
         },
         {
           "name": "connection_patches_connected",
-          "order": 4,
+          "order": 5,
           "description": "If defined, number of variations must be at least equal to count of [connections](prototype:HeatBuffer::connections) defined in `heat_buffer`. Each variation represents connected heat buffer connection of corresponding index.",
           "override": false,
           "type": "SpriteVariations",
@@ -18938,7 +18970,7 @@
         },
         {
           "name": "connection_patches_disconnected",
-          "order": 5,
+          "order": 6,
           "description": "If defined, number of variations must be at least equal to count of [connections](prototype:HeatBuffer::connections) defined in `heat_buffer`. Each variation represents unconnected heat buffer connection of corresponding index.",
           "override": false,
           "type": "SpriteVariations",
@@ -18946,7 +18978,7 @@
         },
         {
           "name": "consumption",
-          "order": 3,
+          "order": 4,
           "description": "How much energy this reactor can consume (from the input energy source) and then output as heat.",
           "override": false,
           "type": "Energy",
@@ -18954,7 +18986,7 @@
         },
         {
           "name": "default_fuel_glow_color",
-          "order": 16,
+          "order": 17,
           "description": "When `use_fuel_glow_color` is true, this is the color used as `working_light_picture` tint for fuels that don't have glow color defined.",
           "override": false,
           "type": "Color",
@@ -18963,7 +18995,7 @@
         },
         {
           "name": "default_temperature_signal",
-          "order": 21,
+          "order": 22,
           "description": "",
           "override": false,
           "type": "SignalIDConnector",
@@ -18971,7 +19003,7 @@
         },
         {
           "name": "draw_circuit_wires",
-          "order": 19,
+          "order": 20,
           "description": "",
           "override": false,
           "type": "bool",
@@ -18983,7 +19015,7 @@
         },
         {
           "name": "draw_copper_wires",
-          "order": 18,
+          "order": 19,
           "description": "",
           "override": false,
           "type": "bool",
@@ -18995,7 +19027,7 @@
         },
         {
           "name": "energy_source",
-          "order": 2,
+          "order": 3,
           "description": "May not be a heat energy source.\n\nThe input energy source, in vanilla it is a burner energy source.",
           "override": false,
           "type": "EnergySource",
@@ -19011,7 +19043,7 @@
         },
         {
           "name": "heat_connection_patches_connected",
-          "order": 6,
+          "order": 7,
           "description": "If defined, number of variations must be at least equal to count of [connections](prototype:HeatBuffer::connections) defined in `heat_buffer`. When reactor is heated, corresponding variations are drawn over `connection_patches_connected`.",
           "override": false,
           "type": "SpriteVariations",
@@ -19019,7 +19051,7 @@
         },
         {
           "name": "heat_connection_patches_disconnected",
-          "order": 7,
+          "order": 8,
           "description": "If defined, number of variations must be at least equal to count of [connections](prototype:HeatBuffer::connections) defined in `heat_buffer`. When reactor is heated, corresponding variations are drawn over `connection_patches_disconnected`.",
           "override": false,
           "type": "SpriteVariations",
@@ -19027,15 +19059,27 @@
         },
         {
           "name": "heat_lower_layer_picture",
-          "order": 9,
+          "order": 10,
           "description": "",
           "override": false,
           "type": "Sprite",
           "optional": true
         },
         {
+          "name": "heating_radius",
+          "order": 2,
+          "description": "Must be >= 0.",
+          "override": false,
+          "type": "double",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 1
+          }
+        },
+        {
           "name": "light",
-          "order": 11,
+          "order": 12,
           "description": "",
           "override": false,
           "type": "LightDefinition",
@@ -19043,7 +19087,7 @@
         },
         {
           "name": "lower_layer_picture",
-          "order": 8,
+          "order": 9,
           "description": "",
           "override": false,
           "type": "Sprite",
@@ -19051,7 +19095,7 @@
         },
         {
           "name": "meltdown_action",
-          "order": 12,
+          "order": 13,
           "description": "The action is triggered when the reactor dies (is destroyed) at over 90% of max temperature.",
           "override": false,
           "type": "Trigger",
@@ -19059,7 +19103,7 @@
         },
         {
           "name": "neighbour_bonus",
-          "order": 13,
+          "order": 14,
           "description": "",
           "override": false,
           "type": "double",
@@ -19071,7 +19115,7 @@
         },
         {
           "name": "picture",
-          "order": 10,
+          "order": 11,
           "description": "",
           "override": false,
           "type": "Sprite",
@@ -19079,7 +19123,7 @@
         },
         {
           "name": "scale_energy_usage",
-          "order": 14,
+          "order": 15,
           "description": "When this is true, the reactor will stop consuming fuel/energy when the temperature has reached the maximum.",
           "override": false,
           "type": "bool",
@@ -19091,7 +19135,7 @@
         },
         {
           "name": "use_fuel_glow_color",
-          "order": 15,
+          "order": 16,
           "description": "Whether the reactor should use [fuel_glow_color](prototype:ItemPrototype::fuel_glow_color) from the fuel item prototype as light color and tint for `working_light_picture`. [Forum post.](https://forums.factorio.com/71121)",
           "override": false,
           "type": "bool",
@@ -28870,7 +28914,7 @@
             "```\nconsumed_condition = \"uranium-fuel-cell\"\n```"
           ],
           "override": false,
-          "type": "ItemID",
+          "type": "ItemIDFilter",
           "optional": true
         },
         {
@@ -28885,8 +28929,16 @@
           "optional": false
         },
         {
-          "name": "required_to_build",
+          "name": "produced_condition",
           "order": 2,
+          "description": "This item needs to be produced before gaining the achievement.",
+          "override": false,
+          "type": "ItemIDFilter",
+          "optional": true
+        },
+        {
+          "name": "required_to_build",
+          "order": 3,
           "description": "This item need to be built before gaining the achievement.",
           "examples": [
             "```\nrequired_to_build = \"nuclear-reactor\"\n```"
@@ -42227,6 +42279,30 @@
           "optional": false
         },
         {
+          "name": "initial_fuel",
+          "order": 8,
+          "description": "",
+          "override": false,
+          "type": "ItemID",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": ""
+          }
+        },
+        {
+          "name": "initial_fuel_percent",
+          "order": 9,
+          "description": "",
+          "override": false,
+          "type": "double",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0.25
+          }
+        },
+        {
           "name": "light_flicker",
           "order": 4,
           "description": "",
@@ -52687,10 +52763,7 @@
           "override": false,
           "type": "FluidAmount",
           "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
+          "default": "Value of `ignored_by_stats`"
         },
         {
           "name": "ignored_by_stats",
@@ -55843,10 +55916,7 @@
           "override": false,
           "type": "uint16",
           "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
+          "default": "Value of `ignored_by_stats`"
         },
         {
           "name": "ignored_by_stats",
@@ -90141,7 +90211,7 @@
         {
           "name": "no_schedule",
           "order": 5,
-          "description": "Waiting for a starter pack"
+          "description": "Doesn't have any stations in schedule."
         },
         {
           "name": "on_the_path",

@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.24",
+  "application_version": "2.0.25",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -2051,6 +2051,20 @@
           "optional": false
         },
         {
+          "name": "initial_fuel",
+          "order": 9,
+          "description": "",
+          "read_type": "LuaItemPrototype",
+          "optional": true
+        },
+        {
+          "name": "initial_fuel_percent",
+          "order": 10,
+          "description": "",
+          "read_type": "double",
+          "optional": false
+        },
+        {
           "name": "light_flicker",
           "order": 7,
           "description": "The light flicker definition for this burner prototype.",
@@ -2119,7 +2133,7 @@
         },
         {
           "name": "object_name",
-          "order": 10,
+          "order": 12,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -2150,7 +2164,7 @@
         },
         {
           "name": "valid",
-          "order": 9,
+          "order": 11,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -20242,6 +20256,7 @@
           "order": 3,
           "description": "`true` if this should connect to the logistic network.",
           "read_type": "boolean",
+          "write_type": "boolean",
           "optional": false
         },
         {
@@ -20259,6 +20274,7 @@
             "```\n-- Tell an entity to be active (for example a lamp to be lit) when the logistics\n-- network it's connected to has more than four chain signals.\na_behavior.logistic_condition = {condition={\n  comparator=\">\",\n  first_signal={type=\"item\", name=\"rail-chain-signal\"},\n  constant=4}\n}\n```"
           ],
           "read_type": "CircuitConditionDefinition",
+          "write_type": "CircuitConditionDefinition",
           "optional": false
         }
       ],
@@ -37734,7 +37750,7 @@
       "attributes": [
         {
           "name": "damaged_tiles",
-          "order": 12,
+          "order": 14,
           "description": "The damaged tiles on this platform.",
           "read_type": {
             "complex_type": "array",
@@ -37769,7 +37785,7 @@
         },
         {
           "name": "hub",
-          "order": 7,
+          "order": 9,
           "description": "The hub on this platform. `nil` if the platform has not had the starter pack applied or hub was destroyed but the platform not yet deleted.\n\nIf the hub is destroyed the platform will be deleted at the end of the tick but is otherwise valid to use until that point.",
           "read_type": "LuaEntity",
           "optional": true
@@ -37782,6 +37798,13 @@
           "optional": false
         },
         {
+          "name": "last_visited_space_location",
+          "order": 4,
+          "description": "The space location this space platform previously went through or stopped at.",
+          "read_type": "LuaSpaceLocationPrototype",
+          "optional": true
+        },
+        {
           "name": "name",
           "order": 1,
           "description": "The name of this space platform.",
@@ -37791,14 +37814,22 @@
         },
         {
           "name": "object_name",
-          "order": 14,
+          "order": 16,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
+          "name": "paused",
+          "order": 6,
+          "description": "When `true`, the platform has paused thrust and does not advance its schedule.",
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
           "name": "schedule",
-          "order": 8,
+          "order": 10,
           "description": "This platform's current schedule, if any. Set to `nil` to clear.\n\nThe schedule can't be changed by modifying the returned table. Instead, changes must be made by assigning a new table to this attribute.",
           "read_type": "PlatformSchedule",
           "write_type": "PlatformSchedule",
@@ -37806,7 +37837,7 @@
         },
         {
           "name": "scheduled_for_deletion",
-          "order": 10,
+          "order": 12,
           "description": "If this platform is scheduled for deletion.\n\nReturns how many ticks are left before the platform will be deleted. 0 if not scheduled for deletion.",
           "read_type": "uint",
           "optional": false
@@ -37820,7 +37851,7 @@
         },
         {
           "name": "speed",
-          "order": 9,
+          "order": 11,
           "description": "",
           "read_type": "double",
           "write_type": "double",
@@ -37828,35 +37859,35 @@
         },
         {
           "name": "starter_pack",
-          "order": 5,
+          "order": 7,
           "description": "The starter pack used to create this space platform.",
           "read_type": "ItemIDAndQualityIDPair",
-          "optional": false
+          "optional": true
         },
         {
           "name": "state",
-          "order": 4,
+          "order": 5,
           "description": "The current state of this space platform.",
           "read_type": "defines.space_platform_state",
           "optional": false
         },
         {
           "name": "surface",
-          "order": 6,
+          "order": 8,
           "description": "The surface that belongs to this platform (if it has been created yet).",
           "read_type": "LuaSurface",
           "optional": false
         },
         {
           "name": "valid",
-          "order": 13,
+          "order": 15,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "weight",
-          "order": 11,
+          "order": 13,
           "description": "The total weight of the platform.",
           "read_type": "uint",
           "optional": false
@@ -82694,7 +82725,7 @@
         {
           "name": "no_schedule",
           "order": 5,
-          "description": "Waiting for a starter pack"
+          "description": "Doesn't have any stations in schedule."
         },
         {
           "name": "on_the_path",
