@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.25",
+  "application_version": "2.0.27",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -36,8 +36,16 @@
           "optional": false
         },
         {
-          "name": "object_name",
+          "name": "join_attacks",
           "order": 5,
+          "description": "If enabled, the unit will join attack groups.",
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "object_name",
+          "order": 7,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -51,8 +59,16 @@
           "optional": false
         },
         {
-          "name": "valid",
+          "name": "size_in_group",
           "order": 4,
+          "description": "The number of \"slots\" that the unit takes up in a unit group. Must be greater than 0.\n\nIf this value is changed after the unit has been added to a group, the exact behavior is undefined.",
+          "read_type": "float",
+          "write_type": "float",
+          "optional": false
+        },
+        {
+          "name": "valid",
+          "order": 6,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -8636,7 +8652,7 @@
       "attributes": [
         {
           "name": "absorbed_pollution",
-          "order": 114,
+          "order": 115,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -8654,7 +8670,7 @@
         },
         {
           "name": "ai_settings",
-          "order": 142,
+          "order": 143,
           "description": "The ai settings of this unit.",
           "subclasses": [
             "Unit",
@@ -8665,7 +8681,7 @@
         },
         {
           "name": "alert_parameters",
-          "order": 108,
+          "order": 109,
           "description": "",
           "subclasses": [
             "ProgrammableSpeaker"
@@ -8676,7 +8692,7 @@
         },
         {
           "name": "allow_dispatching_robots",
-          "order": 152,
+          "order": 153,
           "description": "Whether this character's personal roboports are allowed to dispatch robots.",
           "subclasses": [
             "Character"
@@ -8687,7 +8703,7 @@
         },
         {
           "name": "always_on",
-          "order": 193,
+          "order": 194,
           "description": "If the lamp is always on when not driven by control behavior.",
           "subclasses": [
             "Lamp"
@@ -8698,7 +8714,7 @@
         },
         {
           "name": "amount",
-          "order": 23,
+          "order": 24,
           "description": "Count of resource units contained.",
           "subclasses": [
             "ResourceEntity"
@@ -8709,7 +8725,7 @@
         },
         {
           "name": "armed",
-          "order": 135,
+          "order": 136,
           "description": "Whether this land mine is armed.",
           "subclasses": [
             "LandMine"
@@ -8719,7 +8735,7 @@
         },
         {
           "name": "artillery_auto_targeting",
-          "order": 194,
+          "order": 195,
           "description": "If this artillery auto-targets enemies.",
           "subclasses": [
             "ArtilleryWagon",
@@ -8731,7 +8747,7 @@
         },
         {
           "name": "associated_player",
-          "order": 126,
+          "order": 127,
           "description": "The player this character is associated with, if any. Set to `nil` to clear.\n\nThe player will be automatically disassociated when a controller is set on the character. Also, all characters associated to a player will be logged off when the player logs off in multiplayer.\n\nReading this property will return a [LuaPlayer](runtime:LuaPlayer), while [PlayerIdentification](runtime:PlayerIdentification) can be used when writing.\n\nA character associated with a player is not directly controlled by any player.",
           "subclasses": [
             "Character"
@@ -8756,7 +8772,7 @@
         },
         {
           "name": "autopilot_destination",
-          "order": 160,
+          "order": 161,
           "description": "Destination of this spidertron's autopilot, if any. Writing `nil` clears all destinations.",
           "subclasses": [
             "SpiderVehicle"
@@ -8767,7 +8783,7 @@
         },
         {
           "name": "autopilot_destinations",
-          "order": 161,
+          "order": 162,
           "description": "The queued destination positions of spidertron's autopilot.",
           "subclasses": [
             "SpiderVehicle"
@@ -8780,7 +8796,7 @@
         },
         {
           "name": "backer_name",
-          "order": 49,
+          "order": 50,
           "description": "The backer name assigned to this entity. Entities that support backer names are labs, locomotives, radars, roboports, and train stops. `nil` if this entity doesn't support backer names.\n\nWhile train stops get the name of a backer when placed down, players can rename them if they want to. In this case, `backer_name` returns the player-given name of the entity.",
           "raises": [
             {
@@ -8797,14 +8813,14 @@
         },
         {
           "name": "beacons_count",
-          "order": 120,
+          "order": 121,
           "description": "Number of beacons affecting this effect receiver. Can only be used when the entity has an effect receiver (AssemblingMachine, Furnace, Lab, MiningDrills)",
           "read_type": "uint",
           "optional": true
         },
         {
           "name": "belt_neighbours",
-          "order": 47,
+          "order": 48,
           "description": "The belt connectable neighbours of this belt connectable entity. Only entities that input to or are outputs of this entity. Does not contain the other end of an underground belt, see [LuaEntity::neighbours](runtime:LuaEntity::neighbours) for that.",
           "subclasses": [
             "TransportBeltConnectable"
@@ -8838,7 +8854,7 @@
         },
         {
           "name": "belt_shape",
-          "order": 188,
+          "order": 189,
           "description": "Gives what is the current shape of a transport-belt.\n\nCan also be used on entity ghost if it contains transport-belt.",
           "subclasses": [
             "TransportBelt"
@@ -8865,7 +8881,7 @@
         },
         {
           "name": "belt_to_ground_type",
-          "order": 64,
+          "order": 65,
           "description": "Whether this underground belt goes into or out of the ground.",
           "subclasses": [
             "UndergroundBelt"
@@ -8888,7 +8904,7 @@
         },
         {
           "name": "bonus_mining_progress",
-          "order": 83,
+          "order": 84,
           "description": "The bonus mining progress for this mining drill. Read yields a number in range [0, mining_target.prototype.mineable_properties.mining_time]. `nil` if this isn't a mining drill.",
           "read_type": "double",
           "write_type": "double",
@@ -8896,7 +8912,7 @@
         },
         {
           "name": "bonus_progress",
-          "order": 58,
+          "order": 59,
           "description": "The current productivity bonus progress, as a number in range `[0, 1]`.",
           "subclasses": [
             "CraftingMachine"
@@ -8907,21 +8923,21 @@
         },
         {
           "name": "bounding_box",
-          "order": 86,
+          "order": 87,
           "description": "[LuaEntityPrototype::collision_box](runtime:LuaEntityPrototype::collision_box) around entity's given position and respecting the current entity orientation.",
           "read_type": "BoundingBox",
           "optional": false
         },
         {
           "name": "burner",
-          "order": 101,
+          "order": 102,
           "description": "The burner energy source for this entity, if any.",
           "read_type": "LuaBurner",
           "optional": true
         },
         {
           "name": "cargo_pod",
-          "order": 196,
+          "order": 197,
           "description": "Gets the cargo pod attached to this rocket silo rocket if one exists.",
           "subclasses": [
             "RocketSiloRocket"
@@ -8931,7 +8947,7 @@
         },
         {
           "name": "chain_signal_state",
-          "order": 54,
+          "order": 55,
           "description": "The state of this chain signal.",
           "subclasses": [
             "RailChainSignal"
@@ -8941,7 +8957,7 @@
         },
         {
           "name": "character_corpse_death_cause",
-          "order": 125,
+          "order": 126,
           "description": "The reason this character corpse character died. `\"\"` if there is no reason.",
           "subclasses": [
             "CharacterCorpse"
@@ -8952,7 +8968,7 @@
         },
         {
           "name": "character_corpse_player_index",
-          "order": 123,
+          "order": 124,
           "description": "The player index associated with this character corpse.\n\nThe index is not guaranteed to be valid so it should always be checked first if a player with that index actually exists.",
           "subclasses": [
             "CharacterCorpse"
@@ -8963,7 +8979,7 @@
         },
         {
           "name": "character_corpse_tick_of_death",
-          "order": 124,
+          "order": 125,
           "description": "The tick this character corpse died at.",
           "subclasses": [
             "CharacterCorpse"
@@ -8974,7 +8990,7 @@
         },
         {
           "name": "cliff_orientation",
-          "order": 20,
+          "order": 21,
           "description": "The orientation of this cliff.",
           "subclasses": [
             "Cliff"
@@ -8984,7 +9000,7 @@
         },
         {
           "name": "color",
-          "order": 52,
+          "order": 53,
           "description": "The color of this character, rolling stock, train stop, car, spider-vehicle, flying text, corpse or simple-entity-with-owner. `nil` if this entity doesn't use custom colors.\n\nCar color is overridden by the color of the current driver/passenger, if there is one.",
           "read_type": "Color",
           "write_type": "Color",
@@ -8992,7 +9008,7 @@
         },
         {
           "name": "combat_robot_owner",
-          "order": 167,
+          "order": 168,
           "description": "The owner of this combat robot, if any.",
           "subclasses": [
             "CombatRobot"
@@ -9003,7 +9019,7 @@
         },
         {
           "name": "combinator_description",
-          "order": 118,
+          "order": 119,
           "description": "The description on this combinator",
           "read_type": "string",
           "write_type": "string",
@@ -9011,14 +9027,14 @@
         },
         {
           "name": "commandable",
-          "order": 190,
+          "order": 191,
           "description": "Returns a LuaCommandable for this entity or nil if entity is not commandable.",
           "read_type": "LuaCommandable",
           "optional": true
         },
         {
           "name": "connected_rail",
-          "order": 137,
+          "order": 138,
           "description": "The rail entity this train stop is connected to, if any.",
           "subclasses": [
             "TrainStop"
@@ -9028,7 +9044,7 @@
         },
         {
           "name": "connected_rail_direction",
-          "order": 138,
+          "order": 139,
           "description": "Rail direction to which this train stop is binding. This returns a value even when no rails are present.",
           "subclasses": [
             "TrainStop"
@@ -9038,14 +9054,14 @@
         },
         {
           "name": "consumption_bonus",
-          "order": 63,
+          "order": 64,
           "description": "The consumption bonus of this entity.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "consumption_modifier",
-          "order": 26,
+          "order": 27,
           "description": "Multiplies the energy consumption.",
           "subclasses": [
             "Car"
@@ -9056,7 +9072,7 @@
         },
         {
           "name": "copy_color_from_train_stop",
-          "order": 184,
+          "order": 185,
           "description": "If this RollingStock has 'copy color from train stop' enabled.",
           "subclasses": [
             "RollingStock"
@@ -9067,7 +9083,7 @@
         },
         {
           "name": "corpse_expires",
-          "order": 156,
+          "order": 157,
           "description": "Whether this corpse will ever fade away.",
           "subclasses": [
             "Corpse"
@@ -9078,7 +9094,7 @@
         },
         {
           "name": "corpse_immune_to_entity_placement",
-          "order": 157,
+          "order": 158,
           "description": "If true, corpse won't be destroyed when entities are placed over it. If false, whether corpse will be removed or not depends on value of [CorpsePrototype::remove_on_entity_placement](prototype:CorpsePrototype::remove_on_entity_placement).",
           "subclasses": [
             "Corpse"
@@ -9089,7 +9105,7 @@
         },
         {
           "name": "crafting_progress",
-          "order": 57,
+          "order": 58,
           "description": "The current crafting progress, as a number in range `[0, 1]`.",
           "subclasses": [
             "CraftingMachine"
@@ -9100,7 +9116,7 @@
         },
         {
           "name": "crafting_speed",
-          "order": 56,
+          "order": 57,
           "description": "The current crafting speed, including speed bonuses from modules and beacons.",
           "subclasses": [
             "CraftingMachine"
@@ -9110,7 +9126,7 @@
         },
         {
           "name": "crane_destination",
-          "order": 180,
+          "order": 181,
           "description": "Destination of the crane of this entity. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -9121,7 +9137,7 @@
         },
         {
           "name": "crane_destination_3d",
-          "order": 181,
+          "order": 182,
           "description": "Destination of the crane of this entity in 3D. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -9132,7 +9148,7 @@
         },
         {
           "name": "crane_grappler_destination",
-          "order": 182,
+          "order": 183,
           "description": "Will set destination for the grappler of crane of this entity. The crane grappler will start moving to reach the destination, but the rest of the arm will remain stationary. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -9142,7 +9158,7 @@
         },
         {
           "name": "crane_grappler_destination_3d",
-          "order": 183,
+          "order": 184,
           "description": "Will set destination in 3D for the grappler of crane of this entity. The crane grappler will start moving to reach the destination, but the rest of the arm will remain stationary. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -9152,7 +9168,7 @@
         },
         {
           "name": "custom_status",
-          "order": 146,
+          "order": 147,
           "description": "A custom status for this entity that will be displayed in the GUI.",
           "read_type": "CustomEntityStatus",
           "write_type": "CustomEntityStatus",
@@ -9160,7 +9176,7 @@
         },
         {
           "name": "damage_dealt",
-          "order": 73,
+          "order": 74,
           "description": "The damage dealt by this turret, artillery turret, or artillery wagon.",
           "subclasses": [
             "Turret"
@@ -9179,15 +9195,46 @@
         },
         {
           "name": "direction",
-          "order": 16,
+          "order": 17,
           "description": "The current direction this entity is facing.",
           "read_type": "defines.direction",
           "write_type": "defines.direction",
           "optional": false
         },
         {
+          "name": "disabled_by_control_behavior",
+          "order": 201,
+          "description": "If the updatable entity is disabled by control behavior.",
+          "subclasses": [
+            "UpdatableEntity"
+          ],
+          "read_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "disabled_by_recipe",
+          "order": 202,
+          "description": "If the updatable entity is disabled by recipe.",
+          "subclasses": [
+            "UpdatableEntity"
+          ],
+          "read_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "disabled_by_script",
+          "order": 200,
+          "description": "If the updatable entity is disabled by script.\n\nNote: Some entities (Corpse, FireFlame, Roboport, RollingStock, dying entities) need to remain active and will ignore writes.",
+          "subclasses": [
+            "UpdatableEntity"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
           "name": "draw_data",
-          "order": 186,
+          "order": 187,
           "description": "Gives a draw data of the given entity if it supports such data.",
           "subclasses": [
             "RollingStock"
@@ -9197,7 +9244,7 @@
         },
         {
           "name": "driver_is_gunner",
-          "order": 28,
+          "order": 29,
           "description": "Whether the driver of this car or spidertron is the gunner. If `false`, the passenger is the gunner. `nil` if this is neither a car or a spidertron.",
           "subclasses": [
             "Car",
@@ -9209,7 +9256,7 @@
         },
         {
           "name": "drop_position",
-          "order": 35,
+          "order": 36,
           "description": "Position where the entity puts its stuff.\n\nMining drills and crafting machines can't have their drop position changed; inserters must have `allow_custom_vectors` set to true on their prototype to allow changing the drop position.\n\nMeaningful only for entities that put stuff somewhere, such as mining drills, crafting machines with a drop target or inserters.",
           "read_type": "MapPosition",
           "write_type": "MapPosition",
@@ -9217,7 +9264,7 @@
         },
         {
           "name": "drop_target",
-          "order": 37,
+          "order": 38,
           "description": "The entity this entity is putting its items to. If there are multiple possible entities at the drop-off point, writing to this attribute allows a mod to choose which one to drop off items to. The entity needs to collide with the tile box under the drop-off position. `nil` if there is no entity to put items to, or if this is not an entity that puts items somewhere.",
           "read_type": "LuaEntity",
           "write_type": "LuaEntity",
@@ -9225,7 +9272,7 @@
         },
         {
           "name": "effective_speed",
-          "order": 31,
+          "order": 32,
           "description": "The current speed of this unit in tiles per tick, taking into account any walking speed modifier given by the tile the unit is standing on. `nil` if this is not a unit.",
           "subclasses": [
             "Unit"
@@ -9235,7 +9282,7 @@
         },
         {
           "name": "effectivity_modifier",
-          "order": 25,
+          "order": 26,
           "description": "Multiplies the acceleration the vehicle can create for one unit of energy. Defaults to `1`.",
           "subclasses": [
             "Car"
@@ -9246,14 +9293,14 @@
         },
         {
           "name": "effects",
-          "order": 119,
+          "order": 120,
           "description": "The effects being applied to this entity, if any. For beacons, this is the effect the beacon is broadcasting.",
           "read_type": "ModuleEffects",
           "optional": true
         },
         {
           "name": "electric_buffer_size",
-          "order": 77,
+          "order": 78,
           "description": "The buffer size for the electric energy source. `nil` if the entity doesn't have an electric energy source.\n\nWrite access is limited to the ElectricEnergyInterface type.",
           "read_type": "double",
           "write_type": "double",
@@ -9261,14 +9308,14 @@
         },
         {
           "name": "electric_drain",
-          "order": 78,
+          "order": 79,
           "description": "The electric drain for the electric energy source. `nil` if the entity doesn't have an electric energy source.",
           "read_type": "double",
           "optional": true
         },
         {
           "name": "electric_emissions_per_joule",
-          "order": 79,
+          "order": 80,
           "description": "The table of emissions of this energy source in `pollution/Joule`, indexed by pollutant type. `nil` if the entity doesn't have an electric energy source. Multiplying values in the returned table by energy consumption in `Watt` gives `pollution/second`.",
           "read_type": {
             "complex_type": "dictionary",
@@ -9279,14 +9326,14 @@
         },
         {
           "name": "electric_network_id",
-          "order": 151,
+          "order": 152,
           "description": "Returns the id of the electric network that this entity is connected to, if any.",
           "read_type": "uint",
           "optional": true
         },
         {
           "name": "electric_network_statistics",
-          "order": 109,
+          "order": 110,
           "description": "The electric network statistics for this electric pole.",
           "subclasses": [
             "ElectricPole"
@@ -9296,7 +9343,7 @@
         },
         {
           "name": "enable_logistics_while_moving",
-          "order": 147,
+          "order": 148,
           "description": "Whether equipment grid logistics are enabled while this vehicle is moving.",
           "subclasses": [
             "Vehicle"
@@ -9307,7 +9354,7 @@
         },
         {
           "name": "energy",
-          "order": 40,
+          "order": 41,
           "description": "Energy stored in the entity's energy buffer (energy stored in electrical devices etc.). Always 0 for entities that don't have the concept of energy stored inside.",
           "examples": [
             "```\ngame.player.print(\"Machine energy: \" .. game.player.selected.energy .. \"J\")\ngame.player.selected.energy = 3000\n```"
@@ -9318,7 +9365,7 @@
         },
         {
           "name": "energy_generated_last_tick",
-          "order": 153,
+          "order": 154,
           "description": "How much energy this generator generated in the last tick.",
           "subclasses": [
             "Generator"
@@ -9328,7 +9375,7 @@
         },
         {
           "name": "entity_label",
-          "order": 50,
+          "order": 51,
           "description": "The label on this spider-vehicle entity, if any. `nil` if this is not a spider-vehicle.",
           "raises": [
             {
@@ -9345,28 +9392,28 @@
         },
         {
           "name": "filter_slot_count",
-          "order": 91,
+          "order": 92,
           "description": "The number of filter slots this inserter, loader, mining drill or logistic storage container has. 0 if not one of those entities.",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "fluidbox",
-          "order": 48,
+          "order": 49,
           "description": "Fluidboxes of this entity.",
           "read_type": "LuaFluidBox",
           "optional": false
         },
         {
           "name": "fluids_count",
-          "order": 191,
+          "order": 192,
           "description": "Returns count of fluid storages. This includes fluid storages provided by FluidBoxes but also covers other fluid storages like FluidTurret's internal buffer and FluidWagon's fluid since they are not FluidBox and cannot be exposed through [LuaFluidBox](runtime:LuaFluidBox).",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "follow_offset",
-          "order": 170,
+          "order": 171,
           "description": "The follow offset of this spidertron, if any entity is being followed. This is randomized each time the follow entity is set.",
           "subclasses": [
             "SpiderVehicle"
@@ -9377,7 +9424,7 @@
         },
         {
           "name": "follow_target",
-          "order": 169,
+          "order": 170,
           "description": "The follow target of this spidertron, if any.",
           "subclasses": [
             "SpiderVehicle"
@@ -9388,7 +9435,7 @@
         },
         {
           "name": "friction_modifier",
-          "order": 27,
+          "order": 28,
           "description": "Multiplies the car friction rate.",
           "examples": [
             "```\n-- This will allow the car to go much faster\ngame.player.vehicle.friction_modifier = 0.5\n```"
@@ -9398,6 +9445,16 @@
           ],
           "read_type": "float",
           "write_type": "float",
+          "optional": false
+        },
+        {
+          "name": "frozen",
+          "order": 204,
+          "description": "If the freezable entity is currently frozen.",
+          "subclasses": [
+            "FreezableEntity"
+          ],
+          "read_type": "boolean",
           "optional": false
         },
         {
@@ -9432,7 +9489,7 @@
         },
         {
           "name": "ghost_prototype",
-          "order": 34,
+          "order": 35,
           "description": "The prototype of the entity or tile contained in this ghost.",
           "subclasses": [
             "Ghost"
@@ -9459,7 +9516,7 @@
         },
         {
           "name": "ghost_unit_number",
-          "order": 81,
+          "order": 82,
           "description": "The [unit_number](runtime:LuaEntity::unit_number) of the entity contained in this ghost. It is the same as the unit number of the [EntityWithOwnerPrototype](prototype:EntityWithOwnerPrototype) that was destroyed to create this ghost. If it was created by other means, or if the inner entity does not support unit numbers, this property is `nil`.",
           "subclasses": [
             "EntityGhost"
@@ -9469,7 +9526,7 @@
         },
         {
           "name": "gps_tag",
-          "order": 189,
+          "order": 190,
           "description": "Returns a [rich text](https://wiki.factorio.com/Rich_text) string containing this entity's position and surface name as a gps tag. [Printing](runtime:LuaGameScript::print) it will ping the location of the entity.",
           "examples": [
             "```\n-- called on a LuaEntity on the default surface it returns:\nentity.gps_tag -- => \"[gps=-4,-9]\"\n\n-- called on a LuaEntity on \"custom-surface\" it returns:\ndifferent_entity.gps_tag -- => \"[gps=1,-5,custom-surface]\"\n```"
@@ -9479,7 +9536,7 @@
         },
         {
           "name": "graphics_variation",
-          "order": 94,
+          "order": 95,
           "description": "The graphics variation for this entity. `nil` if this entity doesn't use graphics variations.",
           "read_type": "uint8",
           "write_type": "uint8",
@@ -9487,14 +9544,14 @@
         },
         {
           "name": "grid",
-          "order": 93,
+          "order": 94,
           "description": "This entity's equipment grid, if any.",
           "read_type": "LuaEquipmentGrid",
           "optional": true
         },
         {
           "name": "health",
-          "order": 14,
+          "order": 15,
           "description": "The current health of the entity, if any. Health is automatically clamped to be between `0` and max health (inclusive). Entities with a health of `0` can not be attacked.\n\nTo get the maximum possible health of this entity, see [LuaEntity::max_health](runtime:LuaEntity::max_health).",
           "read_type": "float",
           "write_type": "float",
@@ -9502,7 +9559,7 @@
         },
         {
           "name": "held_stack",
-          "order": 43,
+          "order": 44,
           "description": "The item stack currently held in an inserter's hand.",
           "subclasses": [
             "Inserter"
@@ -9512,7 +9569,7 @@
         },
         {
           "name": "held_stack_position",
-          "order": 44,
+          "order": 45,
           "description": "Current position of the inserter's \"hand\".",
           "subclasses": [
             "Inserter"
@@ -9522,7 +9579,7 @@
         },
         {
           "name": "highlight_box_blink_interval",
-          "order": 144,
+          "order": 145,
           "description": "The blink interval of this highlight box entity. `0` indicates no blink.",
           "subclasses": [
             "HighlightBox"
@@ -9533,7 +9590,7 @@
         },
         {
           "name": "highlight_box_type",
-          "order": 143,
+          "order": 144,
           "description": "The highlight box type of this highlight box entity.",
           "subclasses": [
             "HighlightBox"
@@ -9544,7 +9601,7 @@
         },
         {
           "name": "ignore_unprioritised_targets",
-          "order": 75,
+          "order": 76,
           "description": "Whether this turret shoots at targets that are not on its priority list.",
           "subclasses": [
             "Turret"
@@ -9555,7 +9612,7 @@
         },
         {
           "name": "infinity_container_filters",
-          "order": 121,
+          "order": 122,
           "description": "The filters for this infinity container.",
           "subclasses": [
             "InfinityContainer"
@@ -9572,7 +9629,7 @@
         },
         {
           "name": "initial_amount",
-          "order": 24,
+          "order": 25,
           "description": "Count of initial resource units contained. `nil` if this is not an infinite resource.\n\nIf this is not an infinite resource, writing will produce an error.",
           "subclasses": [
             "ResourceEntity"
@@ -9583,7 +9640,7 @@
         },
         {
           "name": "insert_plan",
-          "order": 70,
+          "order": 71,
           "description": "The insert plan for this ghost or item request proxy.",
           "subclasses": [
             "EntityGhost",
@@ -9601,7 +9658,7 @@
         },
         {
           "name": "inserter_filter_mode",
-          "order": 130,
+          "order": 131,
           "description": "The filter mode for this filter inserter. `nil` if this inserter doesn't use filters.",
           "subclasses": [
             "Inserter"
@@ -9638,7 +9695,7 @@
         },
         {
           "name": "inserter_stack_size_override",
-          "order": 111,
+          "order": 112,
           "description": "Sets the stack size limit on this inserter.\n\nSet to `0` to reset.",
           "subclasses": [
             "Inserter"
@@ -9649,7 +9706,7 @@
         },
         {
           "name": "inserter_target_pickup_count",
-          "order": 110,
+          "order": 111,
           "description": "Returns the current target pickup count of the inserter.\n\nThis considers the circuit network, manual override and the inserter stack size limit based on technology.",
           "subclasses": [
             "Inserter"
@@ -9659,21 +9716,28 @@
         },
         {
           "name": "is_entity_with_health",
-          "order": 166,
+          "order": 167,
           "description": "If this entity is EntityWithHealth",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_entity_with_owner",
-          "order": 165,
+          "order": 166,
           "description": "If this entity is EntityWithOwner",
           "read_type": "boolean",
           "optional": false
         },
         {
+          "name": "is_freezable",
+          "order": 203,
+          "description": "If the entity is freezable.",
+          "read_type": "boolean",
+          "optional": false
+        },
+        {
           "name": "is_headed_to_trains_front",
-          "order": 185,
+          "order": 186,
           "description": "If the rolling stock is facing train's front.",
           "subclasses": [
             "RollingStock"
@@ -9683,15 +9747,22 @@
         },
         {
           "name": "is_military_target",
-          "order": 164,
+          "order": 165,
           "description": "Whether this entity is a MilitaryTarget. Can be written to if [LuaEntityPrototype::allow_run_time_change_of_is_military_target](runtime:LuaEntityPrototype::allow_run_time_change_of_is_military_target) returns `true`.",
           "read_type": "boolean",
           "write_type": "boolean",
           "optional": false
         },
         {
+          "name": "is_updatable",
+          "order": 199,
+          "description": "If the entity is updatable.",
+          "read_type": "boolean",
+          "optional": false
+        },
+        {
           "name": "item_requests",
-          "order": 69,
+          "order": 70,
           "description": "Items this ghost will request when revived or items this item request proxy is requesting.",
           "read_type": {
             "complex_type": "array",
@@ -9701,7 +9772,7 @@
         },
         {
           "name": "kills",
-          "order": 74,
+          "order": 75,
           "description": "The number of units killed by this turret, artillery turret, or artillery wagon.",
           "subclasses": [
             "Turret"
@@ -9712,7 +9783,7 @@
         },
         {
           "name": "last_user",
-          "order": 76,
+          "order": 77,
           "description": "The last player that changed any setting on this entity. This includes building the entity, changing its color, or configuring its circuit network. `nil` if the last user is not part of the save anymore.\n\nReading this property will return a [LuaPlayer](runtime:LuaPlayer), while [PlayerIdentification](runtime:PlayerIdentification) can be used when writing.",
           "subclasses": [
             "EntityWithOwner",
@@ -9739,7 +9810,7 @@
         },
         {
           "name": "link_id",
-          "order": 168,
+          "order": 169,
           "description": "The link ID this linked container is using.",
           "subclasses": [
             "LinkedContainer"
@@ -9750,7 +9821,7 @@
         },
         {
           "name": "linked_belt_neighbour",
-          "order": 172,
+          "order": 173,
           "description": "Neighbour to which this linked belt is connected to, if any.\n\nCan also be used on entity ghost if it contains linked-belt.\n\nMay return entity ghost which contains linked belt to which connection is made.",
           "subclasses": [
             "LinkedBelt"
@@ -9760,7 +9831,7 @@
         },
         {
           "name": "linked_belt_type",
-          "order": 171,
+          "order": 172,
           "description": "Type of linked belt. Changing type will also flip direction so the belt is out of the same side.\n\nCan only be changed when linked belt is disconnected (has no neighbour set).\n\nCan also be used on entity ghost if it contains linked-belt.",
           "subclasses": [
             "LinkedBelt"
@@ -9797,7 +9868,7 @@
         },
         {
           "name": "loader_container",
-          "order": 92,
+          "order": 93,
           "description": "The container entity this loader is pointing at/pulling from depending on the [LuaEntity::loader_type](runtime:LuaEntity::loader_type), if any.",
           "subclasses": [
             "Loader"
@@ -9807,7 +9878,7 @@
         },
         {
           "name": "loader_filter_mode",
-          "order": 131,
+          "order": 132,
           "description": "The filter mode for this loader. `nil` if this loader does not support filters.",
           "subclasses": [
             "Loader"
@@ -9852,7 +9923,7 @@
         },
         {
           "name": "loader_type",
-          "order": 65,
+          "order": 66,
           "description": "Whether this loader gets items from or puts item into a container.",
           "subclasses": [
             "Loader"
@@ -9903,14 +9974,14 @@
         },
         {
           "name": "logistic_cell",
-          "order": 68,
+          "order": 69,
           "description": "The logistic cell this entity is a part of. Will be `nil` if this entity is not a part of any logistic cell.",
           "read_type": "LuaLogisticCell",
           "optional": false
         },
         {
           "name": "logistic_network",
-          "order": 67,
+          "order": 68,
           "description": "The logistic network this entity is a part of, or `nil` if this entity is not a part of any logistic network.",
           "read_type": "LuaLogisticNetwork",
           "write_type": "LuaLogisticNetwork",
@@ -9918,7 +9989,7 @@
         },
         {
           "name": "max_health",
-          "order": 15,
+          "order": 16,
           "description": "Max health of this entity.",
           "read_type": "float",
           "optional": false
@@ -9926,14 +9997,22 @@
         {
           "name": "minable",
           "order": 11,
-          "description": "Not minable entities can still be destroyed.\n\nEntities that are not minable naturally (like smoke, character, enemy units etc) can't be set to minable.",
+          "description": "Not minable entities can still be destroyed.\n\nTells if entity reports as being minable right now. This takes into account minable_flag and entity specific conditions (for example rail under rolling stocks is not minable, vehicle with passenger is not minable).\n\nWrite to this field since 2.0.26 is deprecated and it will result in write to minable_flag instead.",
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "minable_flag",
+          "order": 12,
+          "description": "Script controlled flag that allows entity to be mined.",
           "read_type": "boolean",
           "write_type": "boolean",
           "optional": false
         },
         {
           "name": "mining_drill_filter_mode",
-          "order": 132,
+          "order": 133,
           "description": "The filter mode for this mining drill. `nil` if this mining drill doesn't have filters.",
           "subclasses": [
             "MiningDrill"
@@ -9970,7 +10049,7 @@
         },
         {
           "name": "mining_progress",
-          "order": 82,
+          "order": 83,
           "description": "The mining progress for this mining drill. Is a number in range [0, mining_target.prototype.mineable_properties.mining_time]. `nil` if this isn't a mining drill.",
           "read_type": "double",
           "write_type": "double",
@@ -9978,7 +10057,7 @@
         },
         {
           "name": "mining_target",
-          "order": 90,
+          "order": 91,
           "description": "The mining target, if any.",
           "subclasses": [
             "MiningDrill"
@@ -9988,7 +10067,7 @@
         },
         {
           "name": "mirroring",
-          "order": 17,
+          "order": 18,
           "description": "If the entity is currently mirrored. This state is referred to as `flipped` elsewhere, such as on the [on_player_flipped_entity](runtime:on_player_flipped_entity) event.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -10003,7 +10082,7 @@
         },
         {
           "name": "name_tag",
-          "order": 176,
+          "order": 177,
           "description": "Name tag of this entity. Returns `nil` if entity has no name tag. When name tag is already used by other entity, the name will be removed from the other entity. Entity name tags can also be set in the entity \"extra settings\" GUI in the map editor.",
           "read_type": "string",
           "write_type": "string",
@@ -10011,7 +10090,7 @@
         },
         {
           "name": "neighbour_bonus",
-          "order": 141,
+          "order": 142,
           "description": "The current total neighbour bonus of this reactor.",
           "subclasses": [
             "Reactor"
@@ -10021,7 +10100,7 @@
         },
         {
           "name": "neighbours",
-          "order": 46,
+          "order": 47,
           "description": "A list of neighbours for certain types of entities. Applies to underground belts, walls, gates, reactors, cliffs, and pipe-connectable entities.",
           "lists": [
             "Differs depending on the type of entity:\n\n- When called on a pipe-connectable entity, this is an array of entity arrays of all entities a given fluidbox is connected to.\n- When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.\n- When called on a wall-connectable entity or reactor, this is a dictionary of all connections indexed by the connection direction \"north\", \"south\", \"east\", and \"west\".\n- When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction \"north\", \"south\", \"east\", and \"west\"."
@@ -10052,14 +10131,14 @@
         },
         {
           "name": "object_name",
-          "order": 199,
+          "order": 206,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "operable",
-          "order": 13,
+          "order": 14,
           "description": "Player can't open gui of this entity and he can't quick insert/input stuff in to the entity when it is not operable.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -10067,7 +10146,7 @@
         },
         {
           "name": "orientation",
-          "order": 19,
+          "order": 20,
           "description": "The smooth orientation of this entity.",
           "read_type": "RealOrientation",
           "write_type": "RealOrientation",
@@ -10075,7 +10154,7 @@
         },
         {
           "name": "parameters",
-          "order": 107,
+          "order": 108,
           "description": "",
           "subclasses": [
             "ProgrammableSpeaker"
@@ -10086,7 +10165,7 @@
         },
         {
           "name": "pickup_position",
-          "order": 36,
+          "order": 37,
           "description": "Where the inserter will pick up items from.\n\nInserters must have `allow_custom_vectors` set to true on their prototype to allow changing the pickup position.",
           "subclasses": [
             "Inserter"
@@ -10097,7 +10176,7 @@
         },
         {
           "name": "pickup_target",
-          "order": 38,
+          "order": 39,
           "description": "The entity this inserter will attempt to pick up items from. If there are multiple possible entities at the pick-up point, writing to this attribute allows a mod to choose which one to pick up items from. The entity needs to collide with the tile box under the pick-up position. `nil` if there is no entity to pull items from.",
           "subclasses": [
             "Inserter"
@@ -10108,7 +10187,7 @@
         },
         {
           "name": "player",
-          "order": 72,
+          "order": 73,
           "description": "The player connected to this character, if any.",
           "subclasses": [
             "Character"
@@ -10118,14 +10197,14 @@
         },
         {
           "name": "pollution_bonus",
-          "order": 61,
+          "order": 62,
           "description": "The pollution bonus of this entity.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "power_production",
-          "order": 84,
+          "order": 85,
           "description": "The power production specific to the ElectricEnergyInterface entity type.",
           "subclasses": [
             "ElectricEnergyInterface"
@@ -10136,7 +10215,7 @@
         },
         {
           "name": "power_switch_state",
-          "order": 117,
+          "order": 118,
           "description": "The state of this power switch.",
           "subclasses": [
             "PowerSwitch"
@@ -10147,7 +10226,7 @@
         },
         {
           "name": "power_usage",
-          "order": 85,
+          "order": 86,
           "description": "The power usage specific to the ElectricEnergyInterface entity type.",
           "subclasses": [
             "ElectricEnergyInterface"
@@ -10158,7 +10237,7 @@
         },
         {
           "name": "previous_recipe",
-          "order": 42,
+          "order": 43,
           "description": "The previous recipe this furnace was using, if any.",
           "subclasses": [
             "Furnace"
@@ -10168,7 +10247,7 @@
         },
         {
           "name": "procession_tick",
-          "order": 197,
+          "order": 198,
           "description": "how far into the current procession the cargo pod is.",
           "subclasses": [
             "CargoPod"
@@ -10179,14 +10258,14 @@
         },
         {
           "name": "productivity_bonus",
-          "order": 60,
+          "order": 61,
           "description": "The productivity bonus of this entity.\n\nThis includes force based bonuses as well as beacon/module bonuses.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "products_finished",
-          "order": 112,
+          "order": 113,
           "description": "The number of products this machine finished crafting in its lifetime.",
           "subclasses": [
             "CraftingMachine"
@@ -10197,14 +10276,14 @@
         },
         {
           "name": "prototype",
-          "order": 33,
+          "order": 34,
           "description": "The entity prototype of this entity.",
           "read_type": "LuaEntityPrototype",
           "optional": false
         },
         {
           "name": "proxy_target",
-          "order": 103,
+          "order": 104,
           "description": "The target entity for this item-request-proxy, if any.",
           "subclasses": [
             "ItemRequestProxy"
@@ -10214,7 +10293,7 @@
         },
         {
           "name": "pump_rail_target",
-          "order": 150,
+          "order": 151,
           "description": "The rail target of this pump, if any.",
           "subclasses": [
             "Pump"
@@ -10224,14 +10303,14 @@
         },
         {
           "name": "quality",
-          "order": 173,
+          "order": 174,
           "description": "The quality of this entity.\n\nNot all entities support quality and will give the \"normal\" quality back if they don't.",
           "read_type": "LuaQualityPrototype",
           "optional": false
         },
         {
           "name": "radar_scan_progress",
-          "order": 175,
+          "order": 176,
           "description": "The current radar scan progress, as a number in range `[0, 1]`.",
           "subclasses": [
             "Radar"
@@ -10241,7 +10320,7 @@
         },
         {
           "name": "rail_layer",
-          "order": 174,
+          "order": 175,
           "description": "Gets rail layer of a given signal",
           "subclasses": [
             "RailSignal",
@@ -10252,7 +10331,7 @@
         },
         {
           "name": "recipe_locked",
-          "order": 136,
+          "order": 137,
           "description": "When locked; the recipe in this assembling machine can't be changed by the player.",
           "subclasses": [
             "AssemblingMachine"
@@ -10263,7 +10342,7 @@
         },
         {
           "name": "relative_turret_orientation",
-          "order": 21,
+          "order": 22,
           "description": "The relative orientation of the vehicle turret, artillery turret, artillery wagon. `nil` if this entity isn't a vehicle with a vehicle turret or artillery turret/wagon.\n\nWriting does nothing if the vehicle doesn't have a turret.",
           "read_type": "RealOrientation",
           "write_type": "RealOrientation",
@@ -10271,7 +10350,7 @@
         },
         {
           "name": "removal_plan",
-          "order": 71,
+          "order": 72,
           "description": "The removal plan for this item request proxy.",
           "subclasses": [
             "ItemRequestProxy"
@@ -10288,7 +10367,7 @@
         },
         {
           "name": "remove_unfiltered_items",
-          "order": 122,
+          "order": 123,
           "description": "Whether items not included in this infinity container filters should be removed from the container.",
           "subclasses": [
             "InfinityContainer"
@@ -10299,7 +10378,7 @@
         },
         {
           "name": "render_player",
-          "order": 148,
+          "order": 149,
           "description": "The player that this `simple-entity-with-owner`, `simple-entity-with-force`, or `highlight-box` is visible to. `nil` when this entity is rendered for all players.\n\nReading this property will return a [LuaPlayer](runtime:LuaPlayer), while [PlayerIdentification](runtime:PlayerIdentification) can be used when writing.",
           "read_type": {
             "complex_type": "union",
@@ -10321,7 +10400,7 @@
         },
         {
           "name": "render_to_forces",
-          "order": 149,
+          "order": 150,
           "description": "The forces that this `simple-entity-with-owner` or `simple-entity-with-force` is visible to. `nil` or an empty array when this entity is rendered for all forces.\n\nReading will always give an array of [LuaForce](runtime:LuaForce)",
           "read_type": "ForceSet",
           "write_type": "ForceSet",
@@ -10329,7 +10408,7 @@
         },
         {
           "name": "request_from_buffers",
-          "order": 155,
+          "order": 156,
           "description": "Whether this requester chest is set to also request from buffer chests.\n\nUseable only on entities that have requester slots.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -10337,7 +10416,7 @@
         },
         {
           "name": "result_quality",
-          "order": 59,
+          "order": 60,
           "description": "The quality produced when this crafting machine finishes crafting. `nil` when crafting is not in progress.\n\nNote: Writing `nil` is not allowed.",
           "subclasses": [
             "CraftingMachine"
@@ -10348,7 +10427,7 @@
         },
         {
           "name": "robot_order_queue",
-          "order": 195,
+          "order": 196,
           "description": "Get the current queue of robot orders.",
           "subclasses": [
             "ConstructionRobot",
@@ -10362,7 +10441,7 @@
         },
         {
           "name": "rocket_parts",
-          "order": 66,
+          "order": 67,
           "description": "Number of rocket parts in the silo.",
           "subclasses": [
             "RocketSilo"
@@ -10373,7 +10452,7 @@
         },
         {
           "name": "rocket_silo_status",
-          "order": 177,
+          "order": 178,
           "description": "The status of this rocket silo entity.",
           "subclasses": [
             "RocketSilo"
@@ -10383,7 +10462,7 @@
         },
         {
           "name": "rotatable",
-          "order": 12,
+          "order": 13,
           "description": "When entity is not to be rotatable (inserter, transport belt etc), it can't be rotated by player using the R key.\n\nEntities that are not rotatable naturally (like chest or furnace) can't be set to be rotatable.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -10391,21 +10470,21 @@
         },
         {
           "name": "secondary_bounding_box",
-          "order": 87,
+          "order": 88,
           "description": "The secondary bounding box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.",
           "read_type": "BoundingBox",
           "optional": true
         },
         {
           "name": "secondary_selection_box",
-          "order": 89,
+          "order": 90,
           "description": "The secondary selection box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.",
           "read_type": "BoundingBox",
           "optional": true
         },
         {
           "name": "selected_gun_index",
-          "order": 39,
+          "order": 40,
           "description": "Index of the currently selected weapon slot of this character, car, or spidertron. `nil` if this entity doesn't have guns.",
           "subclasses": [
             "Character",
@@ -10418,14 +10497,14 @@
         },
         {
           "name": "selection_box",
-          "order": 88,
+          "order": 89,
           "description": "[LuaEntityPrototype::selection_box](runtime:LuaEntityPrototype::selection_box) around entity's given position and respecting the current entity orientation.",
           "read_type": "BoundingBox",
           "optional": false
         },
         {
           "name": "shooting_target",
-          "order": 102,
+          "order": 103,
           "description": "The shooting target for this turret, if any. Can't be set to `nil` via script.",
           "subclasses": [
             "Turret"
@@ -10436,7 +10515,7 @@
         },
         {
           "name": "signal_state",
-          "order": 53,
+          "order": 54,
           "description": "The state of this rail signal.",
           "subclasses": [
             "RailSignal",
@@ -10447,7 +10526,7 @@
         },
         {
           "name": "spawn_shift",
-          "order": 115,
+          "order": 116,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -10457,7 +10536,7 @@
         },
         {
           "name": "spawning_cooldown",
-          "order": 113,
+          "order": 114,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -10467,7 +10546,7 @@
         },
         {
           "name": "speed",
-          "order": 30,
+          "order": 31,
           "description": "The current speed if this is a car, rolling stock, projectile or spidertron, or the maximum speed if this is a unit. The speed is in tiles per tick. `nil` if this is not a car, rolling stock, unit, projectile or spidertron.\n\nOnly the speed of units, cars, and projectiles are writable.",
           "read_type": "float",
           "write_type": "float",
@@ -10475,14 +10554,14 @@
         },
         {
           "name": "speed_bonus",
-          "order": 62,
+          "order": 63,
           "description": "The speed bonus of this entity.\n\nThis includes force based bonuses as well as beacon/module bonuses.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "splitter_filter",
-          "order": 129,
+          "order": 130,
           "description": "The filter for this splitter, if any is set.",
           "subclasses": [
             "Splitter",
@@ -10494,7 +10573,7 @@
         },
         {
           "name": "splitter_input_priority",
-          "order": 133,
+          "order": 134,
           "description": "The input priority for this splitter.",
           "subclasses": [
             "Splitter",
@@ -10540,7 +10619,7 @@
         },
         {
           "name": "splitter_output_priority",
-          "order": 134,
+          "order": 135,
           "description": "The output priority for this splitter.",
           "subclasses": [
             "Splitter",
@@ -10586,7 +10665,7 @@
         },
         {
           "name": "stack",
-          "order": 32,
+          "order": 33,
           "description": "",
           "subclasses": [
             "ItemEntity"
@@ -10596,14 +10675,14 @@
         },
         {
           "name": "status",
-          "order": 145,
+          "order": 146,
           "description": "The status of this entity, if any.\n\nThis is always the actual status of the entity, even if [LuaEntity::custom_status](runtime:LuaEntity::custom_status) is set.",
           "read_type": "defines.entity_status",
           "optional": true
         },
         {
           "name": "sticked_to",
-          "order": 105,
+          "order": 106,
           "description": "The entity this sticker is sticked to.",
           "subclasses": [
             "Sticker"
@@ -10613,7 +10692,7 @@
         },
         {
           "name": "sticker_vehicle_modifiers",
-          "order": 106,
+          "order": 107,
           "description": "The vehicle modifiers applied to this entity through the attached stickers.",
           "read_type": {
             "complex_type": "table",
@@ -10645,7 +10724,7 @@
         },
         {
           "name": "stickers",
-          "order": 104,
+          "order": 105,
           "description": "The sticker entities attached to this entity, if any.",
           "read_type": {
             "complex_type": "array",
@@ -10655,7 +10734,7 @@
         },
         {
           "name": "storage_filter",
-          "order": 154,
+          "order": 155,
           "description": "The storage filter for this logistic storage container.\n\nUseable only on logistic containers with the `\"storage\"` [logistic_mode](runtime:LuaEntityPrototype::logistic_mode).",
           "read_type": "ItemIDAndQualityIDPair",
           "write_type": "ItemWithQualityID",
@@ -10663,14 +10742,14 @@
         },
         {
           "name": "supports_direction",
-          "order": 18,
+          "order": 19,
           "description": "Whether the entity has direction. When it is false for this entity, it will always return north direction when asked for.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "tags",
-          "order": 158,
+          "order": 159,
           "description": "The tags associated with this entity ghost. `nil` if this is not an entity ghost.",
           "read_type": "Tags",
           "write_type": "Tags",
@@ -10678,7 +10757,7 @@
         },
         {
           "name": "temperature",
-          "order": 41,
+          "order": 42,
           "description": "The temperature of this entity's heat energy source. `nil` if this entity does not use a heat energy source.",
           "read_type": "double",
           "write_type": "double",
@@ -10686,7 +10765,7 @@
         },
         {
           "name": "tick_grown",
-          "order": 192,
+          "order": 193,
           "description": "The tick when this plant is fully grown.",
           "subclasses": [
             "Plant"
@@ -10697,7 +10776,7 @@
         },
         {
           "name": "tick_of_last_attack",
-          "order": 127,
+          "order": 128,
           "description": "The last tick this character entity was attacked.",
           "subclasses": [
             "Character"
@@ -10708,7 +10787,7 @@
         },
         {
           "name": "tick_of_last_damage",
-          "order": 128,
+          "order": 129,
           "description": "The last tick this character entity was damaged.",
           "subclasses": [
             "Character"
@@ -10719,21 +10798,21 @@
         },
         {
           "name": "tile_height",
-          "order": 179,
+          "order": 180,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "tile_width",
-          "order": 178,
+          "order": 179,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "time_to_live",
-          "order": 51,
+          "order": 52,
           "description": "The ticks left before a combat robot, highlight box, smoke, or sticker entity is destroyed.",
           "subclasses": [
             "CombatRobot",
@@ -10747,7 +10826,7 @@
         },
         {
           "name": "time_to_next_effect",
-          "order": 159,
+          "order": 160,
           "description": "The ticks until the next trigger effect of this smoke-with-trigger.",
           "subclasses": [
             "SmokeWithTrigger"
@@ -10758,7 +10837,7 @@
         },
         {
           "name": "timeout",
-          "order": 140,
+          "order": 141,
           "description": "The timeout that's left on this landmine in ticks. It describes the time between the landmine being placed and it being armed.",
           "subclasses": [
             "LandMine"
@@ -10769,7 +10848,7 @@
         },
         {
           "name": "to_be_looted",
-          "order": 55,
+          "order": 56,
           "description": "Will this item entity be picked up automatically when the player walks over it?",
           "subclasses": [
             "ItemEntity"
@@ -10780,7 +10859,7 @@
         },
         {
           "name": "torso_orientation",
-          "order": 22,
+          "order": 23,
           "description": "The torso orientation of this spider vehicle.",
           "subclasses": [
             "SpiderVehicle"
@@ -10791,14 +10870,14 @@
         },
         {
           "name": "train",
-          "order": 45,
+          "order": 46,
           "description": "The train this rolling stock belongs to, if any. `nil` if this is not a rolling stock.",
           "read_type": "LuaTrain",
           "optional": true
         },
         {
           "name": "train_stop_priority",
-          "order": 187,
+          "order": 188,
           "description": "Priority of this train stop.",
           "subclasses": [
             "TrainStop"
@@ -10809,7 +10888,7 @@
         },
         {
           "name": "trains_count",
-          "order": 162,
+          "order": 163,
           "description": "Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint.\n\nTrain may be included multiple times when braking distance covers this train stop multiple times.\n\nValue may be read even when train stop has no control behavior.",
           "subclasses": [
             "TrainStop"
@@ -10819,7 +10898,7 @@
         },
         {
           "name": "trains_in_block",
-          "order": 139,
+          "order": 140,
           "description": "The number of trains in this rail block for this rail entity.",
           "subclasses": [
             "Rail"
@@ -10829,7 +10908,7 @@
         },
         {
           "name": "trains_limit",
-          "order": 163,
+          "order": 164,
           "description": "Amount of trains above which no new trains will be sent to this train stop. Writing nil will disable the limit (will set a maximum possible value).\n\nWhen a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it.",
           "subclasses": [
             "TrainStop"
@@ -10840,7 +10919,7 @@
         },
         {
           "name": "tree_color_index",
-          "order": 95,
+          "order": 96,
           "description": "Index of the tree color.",
           "subclasses": [
             "Tree"
@@ -10851,7 +10930,7 @@
         },
         {
           "name": "tree_color_index_max",
-          "order": 96,
+          "order": 97,
           "description": "Maximum index of the tree colors.",
           "subclasses": [
             "Tree"
@@ -10861,7 +10940,7 @@
         },
         {
           "name": "tree_gray_stage_index",
-          "order": 99,
+          "order": 100,
           "description": "Index of the tree gray stage",
           "subclasses": [
             "Tree"
@@ -10872,7 +10951,7 @@
         },
         {
           "name": "tree_gray_stage_index_max",
-          "order": 100,
+          "order": 101,
           "description": "Maximum index of the tree gray stages.",
           "subclasses": [
             "Tree"
@@ -10882,7 +10961,7 @@
         },
         {
           "name": "tree_stage_index",
-          "order": 97,
+          "order": 98,
           "description": "Index of the tree stage.",
           "subclasses": [
             "Tree"
@@ -10893,7 +10972,7 @@
         },
         {
           "name": "tree_stage_index_max",
-          "order": 98,
+          "order": 99,
           "description": "Maximum index of the tree stages.",
           "subclasses": [
             "Tree"
@@ -10910,14 +10989,14 @@
         },
         {
           "name": "unit_number",
-          "order": 80,
+          "order": 81,
           "description": "A unique number identifying this entity for the lifetime of the save. These are allocated sequentially, and not re-used (until overflow).\n\nOnly entities inheriting from [EntityWithOwnerPrototype](prototype:EntityWithOwnerPrototype), as well as [ItemRequestProxyPrototype](prototype:ItemRequestProxyPrototype) and [EntityGhostPrototype](prototype:EntityGhostPrototype) are assigned a unit number. Returns `nil` otherwise.",
           "read_type": "uint",
           "optional": true
         },
         {
           "name": "units",
-          "order": 116,
+          "order": 117,
           "description": "The units associated with this spawner entity.",
           "subclasses": [
             "Spawner"
@@ -10941,14 +11020,14 @@
         },
         {
           "name": "valid",
-          "order": 198,
+          "order": 205,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "vehicle_automatic_targeting_parameters",
-          "order": 29,
+          "order": 30,
           "description": "Read when this spidertron auto-targets enemies",
           "subclasses": [
             "SpiderVehicle"
@@ -11379,7 +11458,7 @@
       "attributes": [
         {
           "name": "absorptions_to_join_attack",
-          "order": 158,
+          "order": 160,
           "description": "A table of pollutions amounts that has to be absorbed by the unit's spawner before the unit will leave the spawner and attack the source of the pollution, indexed by the name of each absorbed pollution type.",
           "subclasses": [
             "SpiderUnit",
@@ -11394,7 +11473,7 @@
         },
         {
           "name": "active_energy_usage",
-          "order": 193,
+          "order": 195,
           "description": "The active energy usage of this rocket silo or combinator prototype.",
           "subclasses": [
             "RocketSilo",
@@ -11415,7 +11494,7 @@
         },
         {
           "name": "affected_by_tiles",
-          "order": 164,
+          "order": 166,
           "description": "Whether this unit prototype is affected by tile walking speed modifiers.",
           "subclasses": [
             "Unit"
@@ -11435,14 +11514,14 @@
         },
         {
           "name": "alert_icon_scale",
-          "order": 168,
+          "order": 170,
           "description": "The alert icon scale of this entity prototype.",
           "read_type": "float",
           "optional": false
         },
         {
           "name": "alert_icon_shift",
-          "order": 167,
+          "order": 169,
           "description": "The alert icon shift of this entity prototype.",
           "read_type": "Vector",
           "optional": false
@@ -11469,7 +11548,7 @@
         },
         {
           "name": "allow_access_to_all_forces",
-          "order": 171,
+          "order": 173,
           "description": "Whether this market allows access to all forces or just friendly ones.",
           "subclasses": [
             "Market"
@@ -11506,7 +11585,7 @@
         },
         {
           "name": "allow_passengers",
-          "order": 174,
+          "order": 176,
           "description": "Whether this vehicle allows passengers.",
           "subclasses": [
             "Vehicle"
@@ -11516,7 +11595,7 @@
         },
         {
           "name": "allow_run_time_change_of_is_military_target",
-          "order": 182,
+          "order": 184,
           "description": "True if this entity-with-owner's is_military_target can be changed run-time (on the entity, not on the prototype itself)",
           "subclasses": [
             "EntityWithOwner"
@@ -11571,7 +11650,7 @@
         },
         {
           "name": "animation_speed_coefficient",
-          "order": 190,
+          "order": 192,
           "description": "The animation speed coefficient of this belt connectable prototype.",
           "subclasses": [
             "BeltConnectable"
@@ -11598,7 +11677,7 @@
         },
         {
           "name": "auto_setup_collision_box",
-          "order": 210,
+          "order": 212,
           "description": "",
           "subclasses": [
             "Corpse"
@@ -11619,7 +11698,7 @@
         },
         {
           "name": "automatic_weapon_cycling",
-          "order": 187,
+          "order": 189,
           "description": "Whether this spider vehicle prototype automatically cycles weapons.",
           "subclasses": [
             "SpiderVehicle"
@@ -11729,7 +11808,7 @@
         },
         {
           "name": "build_distance",
-          "order": 213,
+          "order": 215,
           "description": "",
           "subclasses": [
             "Character"
@@ -11783,7 +11862,7 @@
         },
         {
           "name": "can_open_gates",
-          "order": 163,
+          "order": 165,
           "description": "Whether this unit prototype can open gates.",
           "subclasses": [
             "Unit"
@@ -11793,7 +11872,7 @@
         },
         {
           "name": "chain_shooting_cooldown_modifier",
-          "order": 188,
+          "order": 190,
           "description": "The chain shooting cooldown modifier of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -11803,7 +11882,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 225,
+          "order": 227,
           "description": "",
           "subclasses": [
             "Character"
@@ -11813,7 +11892,7 @@
         },
         {
           "name": "chunk_exploration_radius",
-          "order": 189,
+          "order": 191,
           "description": "The chunk exploration radius of this vehicle prototype.",
           "subclasses": [
             "Vehicle"
@@ -11823,7 +11902,7 @@
         },
         {
           "name": "cliff_explosive_prototype",
-          "order": 154,
+          "order": 156,
           "description": "The item prototype name used to destroy this cliff.",
           "subclasses": [
             "Cliff"
@@ -11875,7 +11954,7 @@
         },
         {
           "name": "connection_distance",
-          "order": 201,
+          "order": 203,
           "description": "",
           "subclasses": [
             "RollingStock"
@@ -12072,7 +12151,7 @@
         },
         {
           "name": "damage_hit_tint",
-          "order": 224,
+          "order": 226,
           "description": "",
           "subclasses": [
             "Character"
@@ -12112,7 +12191,7 @@
         },
         {
           "name": "distraction_cooldown",
-          "order": 165,
+          "order": 167,
           "description": "The distraction cooldown of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -12170,7 +12249,7 @@
         },
         {
           "name": "drop_item_distance",
-          "order": 214,
+          "order": 216,
           "description": "",
           "subclasses": [
             "Character"
@@ -12180,7 +12259,7 @@
         },
         {
           "name": "dying_speed",
-          "order": 192,
+          "order": 194,
           "description": "The dying time of this corpse prototype.",
           "subclasses": [
             "Corpse"
@@ -12190,7 +12269,7 @@
         },
         {
           "name": "effect_receiver",
-          "order": 170,
+          "order": 172,
           "description": "Effect receiver prototype of this crafting machine, lab, or mining drill.",
           "subclasses": [
             "CraftingMachine",
@@ -12285,7 +12364,7 @@
         },
         {
           "name": "enter_vehicle_distance",
-          "order": 219,
+          "order": 221,
           "description": "",
           "subclasses": [
             "Character"
@@ -12436,14 +12515,14 @@
         },
         {
           "name": "grid_prototype",
-          "order": 175,
+          "order": 177,
           "description": "The equipment grid prototype for this entity, if any.",
           "read_type": "LuaEquipmentGridPrototype",
           "optional": true
         },
         {
           "name": "growth_grid_tile_size",
-          "order": 206,
+          "order": 208,
           "description": "",
           "subclasses": [
             "AgriculturalTower"
@@ -12453,7 +12532,7 @@
         },
         {
           "name": "growth_ticks",
-          "order": 204,
+          "order": 206,
           "description": "",
           "subclasses": [
             "Plant"
@@ -12474,7 +12553,7 @@
         },
         {
           "name": "harvest_emissions",
-          "order": 205,
+          "order": 207,
           "description": "A table of pollutants that this plant will release when it is harvested.",
           "subclasses": [
             "Plant"
@@ -12488,7 +12567,7 @@
         },
         {
           "name": "has_belt_immunity",
-          "order": 156,
+          "order": 158,
           "description": "Whether this unit, car, or character prototype has belt immunity.",
           "subclasses": [
             "Unit",
@@ -12521,14 +12600,14 @@
         },
         {
           "name": "heating_energy",
-          "order": 209,
+          "order": 211,
           "description": "The energy required to keep this entity from freezing. Zero energy means it doesn't freeze.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "height",
-          "order": 184,
+          "order": 186,
           "description": "The height of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -12615,7 +12694,7 @@
         },
         {
           "name": "inserter_stack_size_bonus",
-          "order": 178,
+          "order": 180,
           "description": "The built-in stack size bonus of this inserter prototype.",
           "subclasses": [
             "Inserter"
@@ -12676,14 +12755,14 @@
         },
         {
           "name": "is_entity_with_owner",
-          "order": 180,
+          "order": 182,
           "description": "True if this is entity-with-owner",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_military_target",
-          "order": 181,
+          "order": 183,
           "description": "True if this entity-with-owner is military target",
           "subclasses": [
             "EntityWithOwner"
@@ -12693,7 +12772,7 @@
         },
         {
           "name": "item_pickup_distance",
-          "order": 217,
+          "order": 219,
           "description": "",
           "subclasses": [
             "Character"
@@ -12713,7 +12792,7 @@
         },
         {
           "name": "joint_distance",
-          "order": 202,
+          "order": 204,
           "description": "",
           "subclasses": [
             "RollingStock"
@@ -12723,7 +12802,7 @@
         },
         {
           "name": "lab_inputs",
-          "order": 169,
+          "order": 171,
           "description": "The item prototype names that are the inputs of this lab prototype.",
           "subclasses": [
             "Lab"
@@ -12736,7 +12815,7 @@
         },
         {
           "name": "lamp_energy_usage",
-          "order": 194,
+          "order": 196,
           "description": "The lamp energy usage of this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -12805,7 +12884,7 @@
         },
         {
           "name": "logistic_parameters",
-          "order": 183,
+          "order": 185,
           "description": "The logistic parameters for this roboport.",
           "subclasses": [
             "Roboport"
@@ -12954,7 +13033,7 @@
         },
         {
           "name": "loot_pickup_distance",
-          "order": 218,
+          "order": 220,
           "description": "",
           "subclasses": [
             "Character"
@@ -12964,7 +13043,7 @@
         },
         {
           "name": "manual_range_modifier",
-          "order": 191,
+          "order": 193,
           "description": "The manual range modifier for this artillery turret or wagon prototype.",
           "subclasses": [
             "ArtilleryWagon",
@@ -12988,6 +13067,16 @@
           "optional": false
         },
         {
+          "name": "max_count_of_owned_defensive_units",
+          "order": 150,
+          "description": "Count of defensive enemies this spawner can sustain.",
+          "subclasses": [
+            "Spawner"
+          ],
+          "read_type": "double",
+          "optional": true
+        },
+        {
           "name": "max_count_of_owned_units",
           "order": 149,
           "description": "Count of enemies this spawner can sustain.",
@@ -13008,8 +13097,18 @@
           "optional": true
         },
         {
+          "name": "max_defensive_friends_around_to_spawn",
+          "order": 152,
+          "description": "How many defensive friendly units are required within the spawning_radius of this spawner for it to stop producing more units.",
+          "subclasses": [
+            "Spawner"
+          ],
+          "read_type": "double",
+          "optional": true
+        },
+        {
           "name": "max_friends_around_to_spawn",
-          "order": 150,
+          "order": 151,
           "description": "How many friendly units are required within the spawning_radius of this spawner for it to stop producing more units.",
           "subclasses": [
             "Spawner"
@@ -13050,7 +13149,7 @@
         },
         {
           "name": "max_pursue_distance",
-          "order": 160,
+          "order": 162,
           "description": "The maximum pursue distance of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13093,7 +13192,7 @@
         },
         {
           "name": "maximum_corner_sliding_distance",
-          "order": 212,
+          "order": 214,
           "description": "",
           "subclasses": [
             "Character"
@@ -13123,7 +13222,7 @@
         },
         {
           "name": "min_pursue_time",
-          "order": 159,
+          "order": 161,
           "description": "The minimum pursue time of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13189,7 +13288,7 @@
         },
         {
           "name": "move_while_shooting",
-          "order": 162,
+          "order": 164,
           "description": "Whether this unit prototype can move while shooting.",
           "subclasses": [
             "Unit"
@@ -13226,7 +13325,7 @@
         },
         {
           "name": "object_name",
-          "order": 227,
+          "order": 229,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -13256,7 +13355,7 @@
         },
         {
           "name": "protected_from_tile_building",
-          "order": 179,
+          "order": 181,
           "description": "True if this entity prototype should be included during tile collision checks with [LuaTilePrototype::check_collision_with_entities](runtime:LuaTilePrototype::check_collision_with_entities) enabled.",
           "read_type": "boolean",
           "optional": false
@@ -13274,7 +13373,7 @@
         },
         {
           "name": "radar_range",
-          "order": 161,
+          "order": 163,
           "description": "The radar range of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13285,21 +13384,21 @@
         },
         {
           "name": "radius",
-          "order": 153,
+          "order": 155,
           "description": "The radius of this entity prototype.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "radius_visualisation_specification",
-          "order": 203,
+          "order": 205,
           "description": "",
           "read_type": "RadiusVisualisationSpecification",
           "optional": true
         },
         {
           "name": "reach_distance",
-          "order": 215,
+          "order": 217,
           "description": "",
           "subclasses": [
             "Character"
@@ -13309,7 +13408,7 @@
         },
         {
           "name": "reach_resource_distance",
-          "order": 216,
+          "order": 218,
           "description": "",
           "subclasses": [
             "Character"
@@ -13319,7 +13418,7 @@
         },
         {
           "name": "related_underground_belt",
-          "order": 177,
+          "order": 179,
           "description": "",
           "subclasses": [
             "TransportBelt"
@@ -13339,7 +13438,7 @@
         },
         {
           "name": "remove_decoratives",
-          "order": 176,
+          "order": 178,
           "description": "Whether this entity should remove decoratives that collide with it when this entity is built.",
           "read_type": {
             "complex_type": "union",
@@ -13425,7 +13524,7 @@
         },
         {
           "name": "respawn_time",
-          "order": 223,
+          "order": 225,
           "description": "",
           "subclasses": [
             "Character"
@@ -13458,7 +13557,7 @@
         },
         {
           "name": "rocket_entity_prototype",
-          "order": 155,
+          "order": 157,
           "description": "The rocket entity prototype associated with this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -13498,7 +13597,7 @@
         },
         {
           "name": "running_speed",
-          "order": 211,
+          "order": 213,
           "description": "The movement speed of this character prototype.",
           "subclasses": [
             "Character"
@@ -13581,7 +13680,7 @@
         },
         {
           "name": "spawn_decoration",
-          "order": 199,
+          "order": 201,
           "description": "",
           "subclasses": [
             "Spawner",
@@ -13595,7 +13694,7 @@
         },
         {
           "name": "spawn_decorations_on_expansion",
-          "order": 200,
+          "order": 202,
           "description": "",
           "subclasses": [
             "Spawner",
@@ -13606,7 +13705,7 @@
         },
         {
           "name": "spawning_radius",
-          "order": 151,
+          "order": 153,
           "description": "How far from the spawner can the units be spawned.",
           "subclasses": [
             "Spawner"
@@ -13616,7 +13715,7 @@
         },
         {
           "name": "spawning_spacing",
-          "order": 152,
+          "order": 154,
           "description": "What spaces should be between the spawned units.",
           "subclasses": [
             "Spawner"
@@ -13626,7 +13725,7 @@
         },
         {
           "name": "spawning_time_modifier",
-          "order": 166,
+          "order": 168,
           "description": "The spawning time modifier of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13666,14 +13765,14 @@
         },
         {
           "name": "supports_direction",
-          "order": 172,
+          "order": 174,
           "description": "Whether this entity prototype could possibly ever be rotated.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "surface_conditions",
-          "order": 208,
+          "order": 210,
           "description": "The surface conditions required to build this entity.",
           "read_type": {
             "complex_type": "array",
@@ -13703,7 +13802,7 @@
         },
         {
           "name": "terrain_friction_modifier",
-          "order": 173,
+          "order": 175,
           "description": "The terrain friction modifier for this vehicle.",
           "subclasses": [
             "Vehicle"
@@ -13713,7 +13812,7 @@
         },
         {
           "name": "ticks_to_keep_aiming_direction",
-          "order": 221,
+          "order": 223,
           "description": "",
           "subclasses": [
             "Character"
@@ -13723,16 +13822,6 @@
         },
         {
           "name": "ticks_to_keep_gun",
-          "order": 220,
-          "description": "",
-          "subclasses": [
-            "Character"
-          ],
-          "read_type": "uint",
-          "optional": true
-        },
-        {
-          "name": "ticks_to_stay_in_combat",
           "order": 222,
           "description": "",
           "subclasses": [
@@ -13742,15 +13831,25 @@
           "optional": true
         },
         {
+          "name": "ticks_to_stay_in_combat",
+          "order": 224,
+          "description": "",
+          "subclasses": [
+            "Character"
+          ],
+          "read_type": "uint",
+          "optional": true
+        },
+        {
           "name": "tile_height",
-          "order": 197,
+          "order": 199,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "tile_width",
-          "order": 196,
+          "order": 198,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)",
           "read_type": "uint",
           "optional": false
@@ -13774,7 +13873,7 @@
         },
         {
           "name": "torso_bob_speed",
-          "order": 186,
+          "order": 188,
           "description": "The torso bob speed of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13785,7 +13884,7 @@
         },
         {
           "name": "torso_rotation_speed",
-          "order": 185,
+          "order": 187,
           "description": "The torso rotation speed of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13847,7 +13946,7 @@
         },
         {
           "name": "use_exact_mode",
-          "order": 195,
+          "order": 197,
           "description": "Whether this logistic container prototype uses exact mode",
           "subclasses": [
             "LogisticContainer"
@@ -13857,14 +13956,14 @@
         },
         {
           "name": "valid",
-          "order": 226,
+          "order": 228,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "vector_to_place_result",
-          "order": 207,
+          "order": 209,
           "description": "",
           "subclasses": [
             "MiningDrill",
@@ -13875,7 +13974,7 @@
         },
         {
           "name": "vertical_selection_shift",
-          "order": 198,
+          "order": 200,
           "description": "Vertical selection shift used by rolling stocks. It affects selection box vertical position but is also used to shift rolling stock graphics along the rails to fine tune train's look.",
           "subclasses": [
             "RollingStock"
@@ -13885,7 +13984,7 @@
         },
         {
           "name": "vision_distance",
-          "order": 157,
+          "order": 159,
           "description": "The vision distance of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -24463,7 +24562,7 @@
             {
               "order": 0,
               "description": "",
-              "type": "string",
+              "type": "ItemFilter",
               "optional": true
             }
           ]
@@ -24778,9 +24877,7 @@
               "type": {
                 "complex_type": "union",
                 "options": [
-                  "string",
-                  "LuaEntityPrototype",
-                  "LuaEntity",
+                  "ItemFilter",
                   "nil"
                 ],
                 "full_format": false
@@ -25086,17 +25183,17 @@
         {
           "name": "entity_filters",
           "order": 31,
-          "description": "The entity filters for this deconstruction item. The attribute is a sparse array with the keys representing the index of the filter. All strings in this array must be entity prototype names that don't have the `\"not-deconstructable\"` flag set and are either a `cliff` or marked as `minable`.",
+          "description": "The entity filters for this deconstruction item. The attribute is a sparse array with the keys representing the index of the filter. All prototypes in this array must not have the `\"not-deconstructable\"` flag set and are either a `cliff` or marked as `minable`.",
           "subclasses": [
             "DeconstructionItem"
           ],
           "read_type": {
             "complex_type": "array",
-            "value": "string"
+            "value": "ItemFilter"
           },
           "write_type": {
             "complex_type": "array",
-            "value": "string"
+            "value": "ItemFilter"
           },
           "optional": false
         },
@@ -33509,7 +33606,7 @@
         {
           "name": "cancel_deconstruct_area",
           "order": 18,
-          "description": "Cancel deconstruct the given area with this deconstruction planner,.",
+          "description": "Cancel deconstruct the given area with this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -33694,7 +33791,7 @@
         {
           "name": "deconstruct_area",
           "order": 17,
-          "description": "Deconstruct the given area with this deconstruction planner,.",
+          "description": "Deconstruct the given area with this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -33880,7 +33977,7 @@
         {
           "name": "get_entity_filter",
           "order": 13,
-          "description": "Gets the entity filter at the given index for this deconstruction planner,.",
+          "description": "Gets the entity filter at the given index for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -33900,7 +33997,7 @@
             {
               "order": 0,
               "description": "",
-              "type": "string",
+              "type": "ItemFilter",
               "optional": true
             }
           ]
@@ -33950,7 +34047,7 @@
         {
           "name": "get_tile_filter",
           "order": 15,
-          "description": "Gets the tile filter at the given index for this deconstruction planner,.",
+          "description": "Gets the tile filter at the given index for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -34109,7 +34206,7 @@
         {
           "name": "set_entity_filter",
           "order": 14,
-          "description": "Sets the entity filter at the given index for this deconstruction planner,.",
+          "description": "Sets the entity filter at the given index for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -34121,9 +34218,7 @@
               "type": {
                 "complex_type": "union",
                 "options": [
-                  "string",
-                  "LuaEntityPrototype",
-                  "LuaEntity",
+                  "ItemFilter",
                   "nil"
                 ],
                 "full_format": false
@@ -34195,7 +34290,7 @@
         {
           "name": "set_tile_filter",
           "order": 16,
-          "description": "Sets the tile filter at the given index for this deconstruction planner,.",
+          "description": "Sets the tile filter at the given index for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -34322,7 +34417,7 @@
         {
           "name": "entity_filter_mode",
           "order": 11,
-          "description": "The blacklist/whitelist entity filter mode for this deconstruction planner,.",
+          "description": "The blacklist/whitelist entity filter mode for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -34333,17 +34428,17 @@
         {
           "name": "entity_filters",
           "order": 9,
-          "description": "The entity filters for this deconstruction planner. The attribute is a sparse array with the keys representing the index of the filter. All strings in this array must be entity prototype names that don't have the `\"not-deconstructable\"` flag set and are either a `cliff` or marked as `minable`.",
+          "description": "The entity filters for this deconstruction planner. The attribute is a sparse array with the keys representing the index of the filter. All prototypes in this array must not have the `\"not-deconstructable\"` flag set and are either a `cliff` or marked as `minable`.",
           "subclasses": [
             "DeconstructionRecord"
           ],
           "read_type": {
             "complex_type": "array",
-            "value": "string"
+            "value": "ItemFilter"
           },
           "write_type": {
             "complex_type": "array",
-            "value": "string"
+            "value": "ItemFilter"
           },
           "optional": false
         },
@@ -34387,7 +34482,7 @@
         {
           "name": "tile_filter_mode",
           "order": 12,
-          "description": "The blacklist/whitelist tile filter mode for this deconstruction planner,.",
+          "description": "The blacklist/whitelist tile filter mode for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -34398,7 +34493,7 @@
         {
           "name": "tile_filters",
           "order": 10,
-          "description": "The tile filters for this deconstruction planner,. The attribute is a sparse array with the keys representing the index of the filter. Reading filters always returns an array of strings which are the tile prototype names.",
+          "description": "The tile filters for this deconstruction planner. The attribute is a sparse array with the keys representing the index of the filter. Reading filters always returns an array of strings which are the tile prototype names.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -34415,7 +34510,7 @@
         {
           "name": "tile_selection_mode",
           "order": 13,
-          "description": "The tile selection mode for this deconstruction planner,.",
+          "description": "The tile selection mode for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
           ],
@@ -42992,6 +43087,14 @@
           "optional": false
         },
         {
+          "name": "ignore_surface_conditions",
+          "order": 29,
+          "description": "If surface condition checks should not be performed on this surface.",
+          "read_type": "bool",
+          "write_type": "bool",
+          "optional": false
+        },
+        {
           "name": "index",
           "order": 1,
           "description": "This surface's index in [LuaGameScript::surfaces](runtime:LuaGameScript::surfaces) (unique ID). It is assigned when a surface is created, and remains so until it is [deleted](runtime:on_surface_deleted). Indexes of deleted surfaces can be reused.",
@@ -43057,7 +43160,7 @@
         },
         {
           "name": "object_name",
-          "order": 30,
+          "order": 31,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -43117,7 +43220,7 @@
         },
         {
           "name": "valid",
-          "order": 29,
+          "order": 30,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false

@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.25",
+  "application_version": "2.0.27",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -8276,7 +8276,7 @@
       "properties": [
         {
           "name": "absorptions_per_second",
-          "order": 12,
+          "order": 14,
           "description": "",
           "override": false,
           "type": {
@@ -8288,7 +8288,7 @@
         },
         {
           "name": "allow_run_time_change_of_is_military_target",
-          "order": 19,
+          "order": 21,
           "description": "If this is true, this entities `is_military_target property` can be changed runtime (on the entity, not on the prototype itself).",
           "override": true,
           "type": {
@@ -8303,7 +8303,7 @@
         },
         {
           "name": "call_for_help_radius",
-          "order": 8,
+          "order": 10,
           "description": "",
           "override": false,
           "type": "double",
@@ -8311,7 +8311,7 @@
         },
         {
           "name": "captured_spawner_entity",
-          "order": 17,
+          "order": 19,
           "description": "",
           "override": false,
           "type": "EntityID",
@@ -8319,7 +8319,7 @@
         },
         {
           "name": "dying_sound",
-          "order": 11,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -8335,7 +8335,7 @@
         },
         {
           "name": "is_military_target",
-          "order": 18,
+          "order": 20,
           "description": "Whether this prototype should be a high priority target for enemy forces. See [Military units and structures](https://wiki.factorio.com/Military_units_and_structures).",
           "override": true,
           "type": {
@@ -8349,6 +8349,15 @@
           }
         },
         {
+          "name": "max_count_of_owned_defensive_units",
+          "order": 2,
+          "description": "Count of defensive enemies this spawner can sustain. Defensive units are units with [UnitAISettings::join_attacks](prototype:UnitAISettings::join_attacks) set to false. If set below [EnemySpawnerPrototype::max_count_of_owned_units](prototype:EnemySpawnerPrototype::max_count_of_owned_units), the difference will be the space reserved for non-defensive units.",
+          "override": false,
+          "type": "uint32",
+          "optional": true,
+          "default": "Value of `max_count_of_owned_units`"
+        },
+        {
           "name": "max_count_of_owned_units",
           "order": 1,
           "description": "Count of enemies this spawner can sustain.",
@@ -8358,7 +8367,7 @@
         },
         {
           "name": "max_darkness_to_spawn",
-          "order": 14,
+          "order": 16,
           "description": "",
           "override": false,
           "type": "float",
@@ -8369,8 +8378,17 @@
           }
         },
         {
+          "name": "max_defensive_friends_around_to_spawn",
+          "order": 4,
+          "description": "How many friendly defensive units are required within the [EnemySpawnerPrototype::spawning_radius](prototype:EnemySpawnerPrototype::spawning_radius) of this spawner for it to stop producing more units. Defensive units are units with [UnitAISettings::join_attacks](prototype:UnitAISettings::join_attacks) set to false. If set below [EnemySpawnerPrototype::max_friends_around_to_spawn](prototype:EnemySpawnerPrototype::max_friends_around_to_spawn), the difference will be the space reserved for non-defensive units.",
+          "override": false,
+          "type": "uint32",
+          "optional": true,
+          "default": "Value of `max_friends_around_to_spawn`"
+        },
+        {
           "name": "max_friends_around_to_spawn",
-          "order": 2,
+          "order": 3,
           "description": "How many friendly units are required within the [EnemySpawnerPrototype::spawning_radius](prototype:EnemySpawnerPrototype::spawning_radius) of this spawner for it to stop producing more units.",
           "override": false,
           "type": "uint32",
@@ -8378,7 +8396,7 @@
         },
         {
           "name": "max_richness_for_spawn_shift",
-          "order": 6,
+          "order": 8,
           "description": "Max richness to determine spawn shift. Spawn shift is linear interpolation between 0 and max_spawn_shift.",
           "override": false,
           "type": "double",
@@ -8386,7 +8404,7 @@
         },
         {
           "name": "max_spawn_shift",
-          "order": 7,
+          "order": 9,
           "description": "Caps how much richness can be added on top of evolution when spawning units. [See also](https://www.reddit.com/r/factorio/comments/8pjscm/friday_facts_246_the_gui_update_part_3/e0bttnp/)",
           "override": false,
           "type": "double",
@@ -8394,7 +8412,7 @@
         },
         {
           "name": "min_darkness_to_spawn",
-          "order": 13,
+          "order": 15,
           "description": "",
           "override": false,
           "type": "float",
@@ -8406,7 +8424,7 @@
         },
         {
           "name": "result_units",
-          "order": 10,
+          "order": 12,
           "description": "Array of the [entities](prototype:EntityPrototype) that this spawner can spawn and their spawn probabilities. The sum of probabilities is expected to be 1.0. The array must not be empty.",
           "override": false,
           "type": {
@@ -8417,7 +8435,7 @@
         },
         {
           "name": "spawn_decoration",
-          "order": 16,
+          "order": 18,
           "description": "Decoratives to be created when the spawner is created by the [map generator](https://wiki.factorio.com/Map_generator). Placed when enemies expand if `spawn_decorations_on_expansion` is set to true.",
           "override": false,
           "type": {
@@ -8428,7 +8446,7 @@
         },
         {
           "name": "spawn_decorations_on_expansion",
-          "order": 15,
+          "order": 17,
           "description": "Whether `spawn_decoration` should be spawned when enemies [expand](https://wiki.factorio.com/Enemies#Expansions).",
           "override": false,
           "type": "bool",
@@ -8440,7 +8458,7 @@
         },
         {
           "name": "spawning_cooldown",
-          "order": 3,
+          "order": 5,
           "description": "Ticks for cooldown after unit is spawned. The first member of the tuple is min, the second member of the tuple is max.",
           "override": false,
           "type": {
@@ -8454,7 +8472,7 @@
         },
         {
           "name": "spawning_radius",
-          "order": 4,
+          "order": 6,
           "description": "How far from the spawner can the units be spawned.",
           "override": false,
           "type": "double",
@@ -8462,7 +8480,7 @@
         },
         {
           "name": "spawning_spacing",
-          "order": 5,
+          "order": 7,
           "description": "What spaces should be between the spawned units.",
           "override": false,
           "type": "double",
@@ -8470,7 +8488,7 @@
         },
         {
           "name": "time_to_capture",
-          "order": 9,
+          "order": 11,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -80168,6 +80186,18 @@
           }
         },
         {
+          "name": "join_attacks",
+          "order": 6,
+          "description": "If enabled, the unit is permitted to join attack groups.",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
           "name": "path_resolution_modifier",
           "order": 3,
           "description": "Must be between -8 and 8.",
@@ -80177,6 +80207,18 @@
           "default": {
             "complex_type": "literal",
             "value": 0
+          }
+        },
+        {
+          "name": "size_in_group",
+          "order": 5,
+          "description": "The amount of slots in a unit group this unit takes up. For example, a unit with `groupingSize` of 2 will count as 2 normal-sized units when filling up a unit group. Must be greater than 0.",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 1
           }
         },
         {
