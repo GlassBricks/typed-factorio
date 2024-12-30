@@ -48,7 +48,7 @@
         "checkLoops": false
       }
     ],
-    "prettier/prettier": "warn",
+    "prettier/prettier": "off",
     // on
     "no-template-curly-in-string": "error",
     "no-lonely-if": "error",
