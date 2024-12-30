@@ -73,7 +73,6 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   }
 
   generateAll(): void {
-    this.manualCheckMessage()
     this.events = associateByName(preprocessTypesWithManualDefs(this, this.apiDocs.events, "events"))
     this.classes = associateByName(preprocessTypesWithManualDefs(this, this.apiDocs.classes, "classes"))
     const concepts = preprocessTypesWithManualDefs(
@@ -105,21 +104,5 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     generateClasses(this)
     generateConcepts(this)
     generateIndexTypesFile(this)
-  }
-
-  private manualCheckMessage() {
-    const lastVersion = "2.0.25"
-    if (this.apiDocs.application_version !== lastVersion) {
-      const message = `
-Factorio version has been updated from ${lastVersion}. Manually check for the following, then update this file/check:
-
-Manual definitions:
-- if/how https://forums.factorio.com/viewtopic.php?f=233&t=118305 is resolved.
-- if SpaceLocationAsteroidSpawnDefinition::type and SpaceConnectionAsteroidSpawnDefinition::type are now more specific strings.
-- If LuaPostEntityDiedEventFilter has changed.
-- SurfacePropertyID was manually converted to string when used as dictionary key. Check if this is still the case.
-`
-      this.warning(message)
-    }
   }
 }
