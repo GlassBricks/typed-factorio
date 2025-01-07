@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.28",
+  "application_version": "2.0.29",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -4418,6 +4418,18 @@
           "override": false,
           "type": "ItemStackIndex",
           "optional": false
+        },
+        {
+          "name": "quality_affects_inventory_size",
+          "order": 1,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
         }
       ]
     },
@@ -11317,8 +11329,20 @@
           "optional": false
         },
         {
-          "name": "tank_count",
+          "name": "quality_affects_capacity",
           "order": 1,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
+          "name": "tank_count",
+          "order": 2,
           "description": "Must be 1, 2 or 3.",
           "override": false,
           "type": "uint8",
@@ -87276,12 +87300,12 @@
       "values": [
         {
           "name": "artillery_turret_ammo",
-          "order": 42,
+          "order": 43,
           "description": ""
         },
         {
           "name": "artillery_wagon_ammo",
-          "order": 43,
+          "order": 44,
           "description": ""
         },
         {
@@ -87306,7 +87330,7 @@
         },
         {
           "name": "beacon_modules",
-          "order": 40,
+          "order": 41,
           "description": ""
         },
         {
@@ -87320,18 +87344,23 @@
           "description": ""
         },
         {
+          "name": "car_trash",
+          "order": 38,
+          "description": ""
+        },
+        {
           "name": "car_trunk",
           "order": 36,
           "description": ""
         },
         {
           "name": "cargo_landing_pad_main",
-          "order": 49,
+          "order": 50,
           "description": ""
         },
         {
           "name": "cargo_landing_pad_trash",
-          "order": 50,
+          "order": 51,
           "description": ""
         },
         {
@@ -87341,7 +87370,7 @@
         },
         {
           "name": "cargo_wagon",
-          "order": 38,
+          "order": 39,
           "description": ""
         },
         {
@@ -87356,7 +87385,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 41,
+          "order": 42,
           "description": ""
         },
         {
@@ -87431,12 +87460,12 @@
         },
         {
           "name": "hub_main",
-          "order": 47,
+          "order": 48,
           "description": ""
         },
         {
           "name": "hub_trash",
-          "order": 48,
+          "order": 49,
           "description": ""
         },
         {
@@ -87511,22 +87540,22 @@
         },
         {
           "name": "spider_ammo",
-          "order": 45,
-          "description": ""
-        },
-        {
-          "name": "spider_trash",
           "order": 46,
           "description": ""
         },
         {
+          "name": "spider_trash",
+          "order": 47,
+          "description": ""
+        },
+        {
           "name": "spider_trunk",
-          "order": 44,
+          "order": 45,
           "description": ""
         },
         {
           "name": "turret_ammo",
-          "order": 39,
+          "order": 40,
           "description": ""
         }
       ]
