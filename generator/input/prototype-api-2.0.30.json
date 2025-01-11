@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.29",
+  "application_version": "2.0.30",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -5567,6 +5567,18 @@
           "default": {
             "complex_type": "literal",
             "value": true
+          }
+        },
+        {
+          "name": "pulse_duration",
+          "order": 8,
+          "description": "When not zero, toggle entity will enable constant combinator for that amount of ticks and then turn it off.",
+          "override": false,
+          "type": "uint",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
           }
         },
         {
@@ -29508,7 +29520,7 @@
         },
         {
           "name": "environment_sounds_transition_fade_in_ticks",
-          "order": 166,
+          "order": 168,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -29995,7 +30007,7 @@
         },
         {
           "name": "moving_sound_count_reduction_rate",
-          "order": 165,
+          "order": 167,
           "description": "Silently clamped to be between 0 and 1.",
           "override": false,
           "type": "float",
@@ -30136,6 +30148,22 @@
           "optional": false
         },
         {
+          "name": "space_LPF_max_cutoff_frequency",
+          "order": 165,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": false
+        },
+        {
+          "name": "space_LPF_min_cutoff_frequency",
+          "order": 164,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": false
+        },
+        {
           "name": "space_platform_default_speed_formula",
           "order": 122,
           "description": "Variables: speed, thrust, weight, width, height",
@@ -30185,7 +30213,7 @@
         },
         {
           "name": "time_to_show_full_health_bar",
-          "order": 167,
+          "order": 169,
           "description": "The number of ticks to show a segmented unit's health bar after fully regenerating.",
           "override": false,
           "type": "MapTick",
@@ -30377,7 +30405,7 @@
         },
         {
           "name": "walking_sound_count_reduction_rate",
-          "order": 164,
+          "order": 166,
           "description": "Silently clamped to be between 0 and 1.",
           "override": false,
           "type": "float",
@@ -59800,7 +59828,7 @@
       "properties": [
         {
           "name": "count",
-          "order": 7,
+          "order": 8,
           "description": "Only loaded if `results` is not defined.\n\nHow many of result are dropped.",
           "override": false,
           "type": "uint16",
@@ -59812,7 +59840,7 @@
         },
         {
           "name": "fluid_amount",
-          "order": 4,
+          "order": 5,
           "description": "The amount of fluid that is used up when this object is mined. If this is > 0, this object cannot be mined by hand.",
           "override": false,
           "type": "FluidAmount",
@@ -59832,7 +59860,7 @@
         },
         {
           "name": "mining_particle",
-          "order": 5,
+          "order": 6,
           "description": "Name of a [ParticlePrototype](prototype:ParticlePrototype). Which set of particles to use.",
           "override": false,
           "type": "ParticleID",
@@ -59848,7 +59876,7 @@
         },
         {
           "name": "mining_trigger",
-          "order": 8,
+          "order": 9,
           "description": "",
           "override": false,
           "type": "Trigger",
@@ -59856,7 +59884,7 @@
         },
         {
           "name": "required_fluid",
-          "order": 6,
+          "order": 7,
           "description": "Name of a [FluidPrototype](prototype:FluidPrototype). The fluid that is used up when this object is mined.",
           "override": false,
           "type": "FluidID",
@@ -59864,7 +59892,7 @@
         },
         {
           "name": "result",
-          "order": 3,
+          "order": 4,
           "description": "Only loaded if `results` is not defined.\n\nWhich item is dropped when this is mined. Cannot be empty. If you want the entity to not be minable, don't specify the minable properties, if you want it to be minable with no result item, don't specify the result at all.",
           "override": false,
           "type": "ItemID",
@@ -59872,14 +59900,26 @@
         },
         {
           "name": "results",
-          "order": 2,
-          "description": "The items that are returned when this object is mined.",
+          "order": 3,
+          "description": "The items or fluids that are returned when this object is mined.",
           "override": false,
           "type": {
             "complex_type": "array",
             "value": "ProductPrototype"
           },
           "optional": true
+        },
+        {
+          "name": "transfer_entity_health_to_products",
+          "order": 2,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
         }
       ]
     },
