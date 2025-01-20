@@ -5241,6 +5241,10 @@ declare module "factorio:runtime" {
      */
     readonly quality?: string
   }
+  export interface PrototypeWithQualityRead {
+    readonly name: string
+    readonly quality: string
+  }
   /**
    * A `string` specifying a type for {@link LuaGuiElement#elem_type choose elem buttons}. It's also used by {@link ElemID} for {@link LuaGuiElement#elem_tooltip LuaGuiElement::elem_tooltip}.
    *

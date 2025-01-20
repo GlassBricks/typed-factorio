@@ -15664,19 +15664,13 @@ declare module "factorio:runtime" {
     get elem_value(): this["elem_type"] extends "signal"
       ? SignalID
       : this["elem_type"] extends "with-quality"
-        ? {
-            readonly name: string
-            readonly quality?: string
-          }
+        ? PrototypeWithQualityRead
         : string
     set elem_value(
       value: this["elem_type"] extends "signal"
         ? SignalIDWrite
         : this["elem_type"] extends "with-quality"
-          ? {
-              readonly name: string
-              readonly quality?: string
-            }
+          ? PrototypeWithQuality
           : string,
     )
     /**

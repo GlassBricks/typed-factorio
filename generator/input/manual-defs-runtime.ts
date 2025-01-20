@@ -171,6 +171,16 @@ export interface GuiSpec {
   type
 }
 
+/**
+ * @readType PrototypeWithQualityRead
+ */
+interface PrototypeWithQuality {}
+/** @addTo concepts after PrototypeWithQuality */
+interface PrototypeWithQualityRead {
+  readonly name: string
+  readonly quality: string
+}
+
 /** @discriminatedUnion type */
 export type LuaGuiElement = {
   readonly [name: string]: LuaGuiElement | nil
@@ -185,7 +195,7 @@ export type LuaGuiElement = {
     ? SignalID
     : // @ts-ignore
       this["elem_type"] extends "with-quality"
-      ? { readonly name: string; readonly quality?: string }
+      ? PrototypeWithQualityRead
       : string
   set elem_value(
     value: // @ts-ignore
@@ -193,7 +203,7 @@ export type LuaGuiElement = {
       ? SignalIDWrite
       : // @ts-ignore
         this["elem_type"] extends "with-quality"
-        ? { readonly name: string; readonly quality?: string }
+        ? PrototypeWithQuality
         : string,
   )
 
