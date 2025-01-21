@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.31",
+  "application_version": "2.0.32",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -11122,6 +11122,18 @@
           "override": false,
           "type": "LightDefinition",
           "optional": true
+        },
+        {
+          "name": "target_initial_position_only",
+          "order": 29,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
         },
         {
           "name": "target_position_deviation",
