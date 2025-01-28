@@ -192,19 +192,19 @@ export type LuaGuiElement = {
 
   get elem_value(): // @ts-ignore
   this["elem_type"] extends "signal"
-    ? SignalID
+    ? SignalID | nil
     : // @ts-ignore
       this["elem_type"] extends "with-quality"
-      ? PrototypeWithQualityRead
-      : string
+      ? PrototypeWithQualityRead | nil
+      : string | nil
   set elem_value(
     value: // @ts-ignore
     this["elem_type"] extends "signal"
-      ? SignalIDWrite
+      ? SignalIDWrite | nil
       : // @ts-ignore
         this["elem_type"] extends "with-quality"
-        ? PrototypeWithQuality
-        : string,
+        ? PrototypeWithQuality | nil
+        : string | nil,
   )
 
   /** @subclasses slider */

@@ -15662,16 +15662,16 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.0.32/classes/LuaGuiElement.html#LuaGuiElement.elem_value Online documentation}
      */
     get elem_value(): this["elem_type"] extends "signal"
-      ? SignalID
+      ? SignalID | nil
       : this["elem_type"] extends "with-quality"
-        ? PrototypeWithQualityRead
-        : string
+        ? PrototypeWithQualityRead | nil
+        : string | nil
     set elem_value(
       value: this["elem_type"] extends "signal"
-        ? SignalIDWrite
+        ? SignalIDWrite | nil
         : this["elem_type"] extends "with-quality"
-          ? PrototypeWithQuality
-          : string,
+          ? PrototypeWithQuality | nil
+          : string | nil,
     )
     /**
      * The elem filters of this choose-elem-button, if any. The compatible type of filter is determined by `elem_type`.
