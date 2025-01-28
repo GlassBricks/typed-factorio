@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.31",
+  "application_version": "2.0.32",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -69780,6 +69780,16 @@
         "complex_type": "table",
         "parameters": [
           {
+            "name": "connection_category",
+            "order": 5,
+            "description": "",
+            "type": {
+              "complex_type": "array",
+              "value": "string"
+            },
+            "optional": false
+          },
+          {
             "name": "connection_type",
             "order": 0,
             "description": "",
@@ -69836,7 +69846,7 @@
           },
           {
             "name": "linked_connection_id",
-            "order": 5,
+            "order": 6,
             "description": "Only supplied if `connection_type` is `\"linked\"`.",
             "type": "uint",
             "optional": true
