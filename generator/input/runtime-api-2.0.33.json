@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.32",
+  "application_version": "2.0.33",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -11482,6 +11482,35 @@
           ]
         },
         {
+          "name": "get_pumping_speed",
+          "order": 17,
+          "description": "The pumping speed of this offshore or normal pump.",
+          "subclasses": [
+            "OffshorePump",
+            "Pump"
+          ],
+          "parameters": [
+            {
+              "name": "quality",
+              "order": 0,
+              "description": "",
+              "type": "QualityID",
+              "optional": true
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "",
+              "type": "double",
+              "optional": false
+            }
+          ]
+        },
+        {
           "name": "get_researching_speed",
           "order": 11,
           "description": "The base researching speed of this lab prototype.",
@@ -13472,7 +13501,7 @@
         {
           "name": "pumping_speed",
           "order": 92,
-          "description": "The pumping speed of this offshore or normal pump.",
+          "description": "The pumping speed of this offshore or normal pump. This property is deprecated in favor of [LuaEntityPrototype::get_pumping_speed](runtime:LuaEntityPrototype::get_pumping_speed) and should not be used.",
           "subclasses": [
             "OffshorePump",
             "Pump"
@@ -20406,7 +20435,7 @@
           "name": "tick",
           "order": 9,
           "description": "Current map tick.",
-          "read_type": "uint",
+          "read_type": "MapTick",
           "optional": false
         },
         {
@@ -20421,7 +20450,7 @@
           "name": "ticks_played",
           "order": 10,
           "description": "The number of ticks since this game was created using either \"new game\" or \"new game from scenario\". Notably, this number progresses even when the game is [tick_paused](runtime:LuaGameScript::tick_paused).\n\nThis differs from [LuaGameScript::tick](runtime:LuaGameScript::tick) in that creating a game from a scenario always starts with this value at `0`, even if the scenario has its own level data where the `tick` has progressed past `0`.",
-          "read_type": "uint",
+          "read_type": "MapTick",
           "optional": false
         },
         {
@@ -21787,7 +21816,7 @@
         {
           "name": "remove_tab",
           "order": 27,
-          "description": "Removes the given tab and its associated content from this tabbed pane.\n\nRemoving a tab does not destroy the tab or the tab contents. It just removes them from the view. When removing tabs, [LuaGuiElement::selected_tab_index](runtime:LuaGuiElement::selected_tab_index) needs to be manually updated.",
+          "description": "Removes the given tab and its associated content from this tabbed pane.\n\nRemoving a tab does not destroy the tab or the tab contents. It just removes them from the view.",
           "subclasses": [
             "tabbed-pane"
           ],
@@ -26927,8 +26956,8 @@
           "name": "spoil_tick",
           "order": 7,
           "description": "The tick this item spoils, or `0` if it does not spoil. When writing, setting to anything < the current game tick will spoil the item instantly.",
-          "read_type": "uint",
-          "write_type": "uint",
+          "read_type": "MapTick",
+          "write_type": "MapTick",
           "optional": false
         },
         {
@@ -29726,14 +29755,14 @@
           "parameters": [
             {
               "name": "color",
-              "order": 3,
+              "order": 4,
               "description": "The color of the flying text. Defaults to white text.",
               "type": "Color",
               "optional": true
             },
             {
               "name": "create_at_cursor",
-              "order": 2,
+              "order": 3,
               "description": "If `true`, the flying text is created at the player's cursor. Defaults to `false`.",
               "type": "boolean",
               "optional": true
@@ -29747,9 +29776,16 @@
             },
             {
               "name": "speed",
-              "order": 5,
+              "order": 6,
               "description": "The speed at which the text rises upwards in tiles/second. Can't be a negative value.",
               "type": "double",
+              "optional": true
+            },
+            {
+              "name": "surface",
+              "order": 2,
+              "description": "The surface which this text will be shown on. Defaults to player surface.",
+              "type": "SurfaceIdentification",
               "optional": true
             },
             {
@@ -29761,7 +29797,7 @@
             },
             {
               "name": "time_to_live",
-              "order": 4,
+              "order": 5,
               "description": "The amount of ticks that the flying text will be shown for. Defaults to `80`.",
               "type": "uint",
               "optional": true
@@ -31261,7 +31297,7 @@
         {
           "name": "render_mode",
           "order": 36,
-          "description": "The render mode of the player, like map or zoom to world. The render mode can be set using [LuaPlayer::open_map](runtime:LuaPlayer::open_map), [LuaPlayer::zoom_to_world](runtime:LuaPlayer::zoom_to_world) and [LuaPlayer::close_map](runtime:LuaPlayer::close_map).",
+          "description": "The render mode of the player, like map or zoom to world.",
           "read_type": "defines.render_mode",
           "optional": false
         },
@@ -80061,7 +80097,7 @@
         {
           "name": "assembling_machine_dump",
           "order": 25,
-          "description": ""
+          "description": "Used when items are ejected or items held by inserters cannot be inserted due to changing the recipe with the circuit network."
         },
         {
           "name": "assembling_machine_input",
