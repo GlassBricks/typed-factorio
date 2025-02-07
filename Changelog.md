@@ -1,3 +1,7 @@
+# v3.14.0
+
+- Updated to factorio version 2.0.34
+
 # v3.13.1
 
 - Fix that LuaGuiElement::elem_value should be able to be `nil`
