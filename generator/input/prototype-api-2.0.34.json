@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.32",
+  "application_version": "2.0.34",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -9,7 +9,7 @@
       "order": 0,
       "description": "Entity with energy source with specialised animation for charging/discharging. Used for the [accumulator](https://wiki.factorio.com/Accumulator) entity.",
       "examples": [
-        "```\n{\n  type = \"accumulator\",\n  name = \"accumulator\",\n  icon = \"__base__/graphics/icons/accumulator.png\",\n  flags = {\"placeable-neutral\", \"player-creation\"},\n  minable = {mining_time = 0.1, result = \"accumulator\"},\n  fast_replaceable_group = \"accumulator\",\n  max_health = 150,\n  corpse = \"accumulator-remnants\",\n  collision_box = {{-0.9, -0.9}, {0.9, 0.9}},\n  selection_box = {{-1, -1}, {1, 1}},\n  energy_source =\n  {\n    type = \"electric\",\n    buffer_capacity = \"5MJ\",\n    usage_priority = \"tertiary\",\n    input_flow_limit = \"300kW\",\n    output_flow_limit = \"300kW\"\n  },\n  chargable_graphics =\n  {\n    picture = accumulator_picture(),\n    charge_animation = accumulator_charge(),\n    charge_cooldown = 30,\n    discharge_animation = accumulator_discharge(),\n    discharge_cooldown = 60\n  },\n  water_reflection = accumulator_reflection(),\n  working_sound =\n  {\n    main_sounds =\n    {\n      {\n        sound = {filename = \"__base__/sound/accumulator-working.ogg\", volume = 0.4, modifiers = volume_multiplier(\"main-menu\", 1.44)},\n        match_volume_to_activity = true,\n        activity_to_volume_modifiers = {offset = 2, inverted = true},\n        fade_in_ticks = 4,\n        fade_out_ticks = 20\n      },\n      {\n        sound = {filename = \"__base__/sound/accumulator-discharging.ogg\", volume = 0.4, modifiers = volume_multiplier(\"main-menu\", 1.44)},\n        match_volume_to_activity = true,\n        activity_to_volume_modifiers = {offset = 1},\n        fade_in_ticks = 4,\n        fade_out_ticks = 20\n      }\n    },\n    idle_sound = {filename = \"__base__/sound/accumulator-idle.ogg\", volume = 0.35},\n    max_sounds_per_type = 3,\n    audible_distance_modifier = 0.5\n  },\n\n  circuit_connector = circuit_connector_definitions[\"accumulator\"],\n  circuit_wire_max_distance = default_circuit_wire_max_distance,\n\n  default_output_signal = {type = \"virtual\", name = \"signal-A\"}\n}\n```"
+        "```\n{\n  type = \"accumulator\",\n  name = \"accumulator\",\n  icon = \"__base__/graphics/icons/accumulator.png\",\n  flags = {\"placeable-neutral\", \"player-creation\"},\n  minable = {mining_time = 0.1, result = \"accumulator\"},\n  fast_replaceable_group = \"accumulator\",\n  max_health = 150,\n  corpse = \"accumulator-remnants\",\n  collision_box = {{-0.9, -0.9}, {0.9, 0.9}},\n  selection_box = {{-1, -1}, {1, 1}},\n  energy_source =\n  {\n    type = \"electric\",\n    buffer_capacity = \"5MJ\",\n    usage_priority = \"tertiary\",\n    input_flow_limit = \"300kW\",\n    output_flow_limit = \"300kW\"\n  },\n  chargable_graphics =\n  {\n    picture = accumulator_picture(),\n    charge_animation = accumulator_charge(),\n    charge_cooldown = 30,\n    discharge_animation = accumulator_discharge(),\n    discharge_cooldown = 60\n  },\n  water_reflection = accumulator_reflection(),\n  working_sound =\n  {\n    main_sounds =\n    {\n      {\n        sound = {filename = \"__base__/sound/accumulator-working.ogg\", volume = 0.4, modifiers = volume_multiplier(\"main-menu\", 1.44)},\n        match_volume_to_activity = true,\n        activity_to_volume_modifiers = {offset = 2, inverted = true},\n        fade_in_ticks = 4,\n        fade_out_ticks = 20\n      },\n      {\n        sound = {filename = \"__base__/sound/accumulator-discharging.ogg\", volume = 0.4, modifiers = volume_multiplier(\"main-menu\", 1.44)},\n        match_volume_to_activity = true,\n        activity_to_volume_modifiers = {offset = 1},\n        fade_in_ticks = 4,\n        fade_out_ticks = 20\n      }\n    },\n    idle_sound = {filename = \"__base__/sound/accumulator-idle.ogg\", volume = 0.35},\n    max_sounds_per_prototype = 3,\n    audible_distance_modifier = 0.5\n  },\n\n  circuit_connector = circuit_connector_definitions[\"accumulator\"],\n  circuit_wire_max_distance = default_circuit_wire_max_distance,\n\n  default_output_signal = {type = \"virtual\", name = \"signal-A\"}\n}\n```"
       ],
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -3263,7 +3263,7 @@
           "order": 2,
           "description": "The maximum distance that this beacon can supply its neighbors with its module's effects. Max distance is 64.",
           "override": false,
-          "type": "double",
+          "type": "uint32",
           "optional": false
         }
       ]
@@ -12274,6 +12274,31 @@
           }
         },
         {
+          "name": "attack_type",
+          "order": 2,
+          "description": "The type of attack that triggers this achievement. \"autonomous\" attacks are triggered in response to pollution or a territory disturbance. \"distraction\" attacks are in response to taking damage or seeing a nearby enemy. \"scripted\" attacks are triggered from mods.",
+          "override": false,
+          "type": {
+            "complex_type": "union",
+            "options": [
+              {
+                "complex_type": "literal",
+                "value": "autonomous"
+              },
+              {
+                "complex_type": "literal",
+                "value": "distraction"
+              },
+              {
+                "complex_type": "literal",
+                "value": "scripted"
+              }
+            ],
+            "full_format": false
+          },
+          "optional": true
+        },
+        {
           "name": "entities",
           "order": 1,
           "description": "The achievement is only triggered if the attacking group of enemies contains at least one of the entities listed here.",
@@ -13620,7 +13645,7 @@
         {
           "name": "weight",
           "order": 23,
-          "description": "The default weight is calculated automatically from recipes and falls back to [UtilityConstants::default_item_weight](prototype:UtilityConstants::default_item_weight).",
+          "description": "The default weight is calculated automatically from recipes and falls back to [UtilityConstants::default_item_weight](prototype:UtilityConstants::default_item_weight).\n\nMore information on how item weight is determined can be found on its [auxiliary page](runtime:item-weight).",
           "override": false,
           "type": "Weight",
           "optional": true
@@ -21033,7 +21058,7 @@
         },
         {
           "name": "cargo_station_parameters",
-          "order": 55,
+          "order": 54,
           "description": "Must have exactly one entry in [CargoStationParameters::hatch_definitions](prototype:CargoStationParameters::hatch_definitions).",
           "override": false,
           "type": "CargoStationParameters",
@@ -21188,7 +21213,7 @@
         },
         {
           "name": "launch_to_space_platforms",
-          "order": 56,
+          "order": 55,
           "description": "Enables 'Space Age' functionality for this rocket silo, allowing it to supply space platforms.",
           "visibility": [
             "space_age"
@@ -21226,7 +21251,7 @@
         },
         {
           "name": "logistic_trash_inventory_size",
-          "order": 54,
+          "order": 53,
           "description": "",
           "override": false,
           "type": "ItemStackIndex",
@@ -21353,18 +21378,6 @@
           "override": false,
           "type": "Sprite",
           "optional": true
-        },
-        {
-          "name": "rocket_supply_inventory_size",
-          "order": 53,
-          "description": "",
-          "override": false,
-          "type": "ItemStackIndex",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
         },
         {
           "name": "satellite_animation",
@@ -29097,7 +29110,7 @@
         },
         {
           "name": "asteroid_collector_blockage_update_tile_distance",
-          "order": 118,
+          "order": 119,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -29105,30 +29118,6 @@
         },
         {
           "name": "asteroid_collector_max_nurbs_control_point_separation",
-          "order": 119,
-          "description": "",
-          "override": false,
-          "type": "double",
-          "optional": false
-        },
-        {
-          "name": "asteroid_collector_navmesh_refresh_tick_interval",
-          "order": 117,
-          "description": "",
-          "override": false,
-          "type": "uint32",
-          "optional": false
-        },
-        {
-          "name": "asteroid_collector_static_head_swing_segment_count",
-          "order": 121,
-          "description": "",
-          "override": false,
-          "type": "uint32",
-          "optional": false
-        },
-        {
-          "name": "asteroid_collector_static_head_swing_strength_scale",
           "order": 120,
           "description": "",
           "override": false,
@@ -29136,8 +29125,32 @@
           "optional": false
         },
         {
+          "name": "asteroid_collector_navmesh_refresh_tick_interval",
+          "order": 118,
+          "description": "",
+          "override": false,
+          "type": "uint32",
+          "optional": false
+        },
+        {
+          "name": "asteroid_collector_static_head_swing_segment_count",
+          "order": 122,
+          "description": "",
+          "override": false,
+          "type": "uint32",
+          "optional": false
+        },
+        {
+          "name": "asteroid_collector_static_head_swing_strength_scale",
+          "order": 121,
+          "description": "",
+          "override": false,
+          "type": "double",
+          "optional": false
+        },
+        {
           "name": "asteroid_fading_range",
-          "order": 114,
+          "order": 115,
           "description": "",
           "override": false,
           "type": "float",
@@ -29145,7 +29158,7 @@
         },
         {
           "name": "asteroid_position_offset_to_speed_coefficient",
-          "order": 116,
+          "order": 117,
           "description": "",
           "override": false,
           "type": "double",
@@ -29153,7 +29166,7 @@
         },
         {
           "name": "asteroid_spawning_offset",
-          "order": 113,
+          "order": 114,
           "description": "",
           "override": false,
           "type": "SimpleBoundingBox",
@@ -29161,7 +29174,7 @@
         },
         {
           "name": "asteroid_spawning_with_random_orientation_max_speed",
-          "order": 115,
+          "order": 116,
           "description": "",
           "override": false,
           "type": "double",
@@ -29169,7 +29182,7 @@
         },
         {
           "name": "bonus_gui_ordering",
-          "order": 55,
+          "order": 56,
           "description": "The base game uses more entries here that are applied via the ammo-category.lua file.",
           "override": false,
           "type": "BonusGuiOrdering",
@@ -29193,7 +29206,7 @@
         },
         {
           "name": "building_collision_mask",
-          "order": 144,
+          "order": 145,
           "description": "",
           "override": false,
           "type": "CollisionMaskConnector",
@@ -29249,7 +29262,7 @@
         },
         {
           "name": "checkerboard_black",
-          "order": 62,
+          "order": 63,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29257,7 +29270,7 @@
         },
         {
           "name": "checkerboard_white",
-          "order": 61,
+          "order": 62,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29265,7 +29278,7 @@
         },
         {
           "name": "clear_cursor_volume_modifier",
-          "order": 108,
+          "order": 109,
           "description": "",
           "override": false,
           "type": "float",
@@ -29273,7 +29286,7 @@
         },
         {
           "name": "clipboard_history_size",
-          "order": 77,
+          "order": 78,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -29281,7 +29294,7 @@
         },
         {
           "name": "color_filters",
-          "order": 105,
+          "order": 106,
           "description": "",
           "override": false,
           "type": {
@@ -29300,7 +29313,7 @@
         },
         {
           "name": "daytime_color_lookup",
-          "order": 56,
+          "order": 57,
           "description": "",
           "override": false,
           "type": "DaytimeColorLookupTable",
@@ -29316,7 +29329,7 @@
         },
         {
           "name": "default_alert_icon_scale",
-          "order": 52,
+          "order": 53,
           "description": "",
           "override": false,
           "type": "float",
@@ -29324,7 +29337,7 @@
         },
         {
           "name": "default_alert_icon_scale_by_type",
-          "order": 54,
+          "order": 55,
           "description": "",
           "override": false,
           "type": {
@@ -29336,7 +29349,7 @@
         },
         {
           "name": "default_alert_icon_shift_by_type",
-          "order": 53,
+          "order": 54,
           "description": "",
           "override": false,
           "type": {
@@ -29348,7 +29361,7 @@
         },
         {
           "name": "default_collision_masks",
-          "order": 142,
+          "order": 143,
           "description": "The strings can be entity types or custom strings.",
           "override": false,
           "type": {
@@ -29368,7 +29381,7 @@
         },
         {
           "name": "default_item_weight",
-          "order": 127,
+          "order": 128,
           "description": "",
           "override": false,
           "type": "Weight",
@@ -29384,7 +29397,7 @@
         },
         {
           "name": "default_pipeline_extent",
-          "order": 130,
+          "order": 131,
           "description": "The default value of [FluidBox::max_pipeline_extent](prototype:FluidBox::max_pipeline_extent).",
           "override": false,
           "type": "double",
@@ -29392,7 +29405,7 @@
         },
         {
           "name": "default_planet_procession_set",
-          "order": 131,
+          "order": 132,
           "description": "Must contain arrival and departure with [procession_style](prototype:ProcessionPrototype::procession_style) containing 0.",
           "override": false,
           "type": "ProcessionSet",
@@ -29400,7 +29413,7 @@
         },
         {
           "name": "default_platform_procession_set",
-          "order": 132,
+          "order": 133,
           "description": "Must contain arrival and departure with [procession_style](prototype:ProcessionPrototype::procession_style) containing 0.",
           "override": false,
           "type": "ProcessionSet",
@@ -29416,7 +29429,7 @@
         },
         {
           "name": "default_scorch_mark_color",
-          "order": 104,
+          "order": 105,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29424,7 +29437,7 @@
         },
         {
           "name": "default_trigger_target_mask_by_type",
-          "order": 83,
+          "order": 84,
           "description": "The strings are entity types.",
           "override": false,
           "type": {
@@ -29436,7 +29449,7 @@
         },
         {
           "name": "disabled_recipe_slot_background_tint",
-          "order": 46,
+          "order": 47,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29444,7 +29457,7 @@
         },
         {
           "name": "disabled_recipe_slot_tint",
-          "order": 45,
+          "order": 46,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29452,7 +29465,7 @@
         },
         {
           "name": "drop_item_radius",
-          "order": 60,
+          "order": 61,
           "description": "",
           "override": false,
           "type": "float",
@@ -29460,7 +29473,7 @@
         },
         {
           "name": "dynamic_recipe_overload_factor",
-          "order": 86,
+          "order": 87,
           "description": "",
           "override": false,
           "type": "double",
@@ -29468,7 +29481,7 @@
         },
         {
           "name": "ejected_item_direction_variation",
-          "order": 139,
+          "order": 140,
           "description": "Silently clamped to be between 0 and 0.99.",
           "override": false,
           "type": "double",
@@ -29476,7 +29489,7 @@
         },
         {
           "name": "ejected_item_friction",
-          "order": 140,
+          "order": 141,
           "description": "Silently clamped to be between 0 and 1.",
           "override": false,
           "type": "double",
@@ -29484,7 +29497,7 @@
         },
         {
           "name": "ejected_item_lifetime",
-          "order": 137,
+          "order": 138,
           "description": "Silently clamped to be between 1 tick and 5 minutes (`5 * 60 * 60` ticks).",
           "override": false,
           "type": "MapTick",
@@ -29492,7 +29505,7 @@
         },
         {
           "name": "ejected_item_speed",
-          "order": 138,
+          "order": 139,
           "description": "Silently clamped to be between 0 and 1/60.",
           "override": false,
           "type": "double",
@@ -29500,7 +29513,7 @@
         },
         {
           "name": "enabled_recipe_slot_tint",
-          "order": 44,
+          "order": 45,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29508,7 +29521,7 @@
         },
         {
           "name": "enemies_in_simulation_volume_modifier",
-          "order": 111,
+          "order": 112,
           "description": "",
           "override": false,
           "type": "float",
@@ -29524,7 +29537,7 @@
         },
         {
           "name": "entity_renderer_search_box_limits",
-          "order": 89,
+          "order": 90,
           "description": "",
           "override": false,
           "type": "EntityRendererSearchBoxLimits",
@@ -29532,7 +29545,7 @@
         },
         {
           "name": "environment_sounds_transition_fade_in_ticks",
-          "order": 168,
+          "order": 169,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -29564,7 +29577,7 @@
         },
         {
           "name": "explosions_in_simulation_volume_modifier",
-          "order": 110,
+          "order": 111,
           "description": "",
           "override": false,
           "type": "float",
@@ -29572,7 +29585,7 @@
         },
         {
           "name": "filter_outline_color",
-          "order": 72,
+          "order": 73,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29580,7 +29593,7 @@
         },
         {
           "name": "flying_text_ttl",
-          "order": 157,
+          "order": 158,
           "description": "Must be >= 1.",
           "override": false,
           "type": "uint32",
@@ -29588,7 +29601,7 @@
         },
         {
           "name": "forced_enabled_recipe_slot_background_tint",
-          "order": 47,
+          "order": 48,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29596,7 +29609,7 @@
         },
         {
           "name": "freezing_temperature",
-          "order": 150,
+          "order": 151,
           "description": "",
           "override": false,
           "type": "double",
@@ -29604,7 +29617,7 @@
         },
         {
           "name": "frozen_color_lookup",
-          "order": 58,
+          "order": 59,
           "description": "",
           "override": false,
           "type": "ColorLookupTable",
@@ -29612,7 +29625,7 @@
         },
         {
           "name": "ghost_layer",
-          "order": 146,
+          "order": 147,
           "description": "",
           "override": false,
           "type": "CollisionLayerID",
@@ -29667,8 +29680,16 @@
           "optional": false
         },
         {
+          "name": "huge_animation_sound_area",
+          "order": 41,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": false
+        },
+        {
           "name": "icon_shadow_color",
-          "order": 76,
+          "order": 77,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29676,22 +29697,6 @@
         },
         {
           "name": "icon_shadow_inset",
-          "order": 74,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": false
-        },
-        {
-          "name": "icon_shadow_radius",
-          "order": 73,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": false
-        },
-        {
-          "name": "icon_shadow_sharpness",
           "order": 75,
           "description": "",
           "override": false,
@@ -29699,15 +29704,23 @@
           "optional": false
         },
         {
-          "name": "inserter_hand_stack_items_per_sprite",
-          "order": 160,
-          "description": "Must be >= 1.",
+          "name": "icon_shadow_radius",
+          "order": 74,
+          "description": "",
           "override": false,
-          "type": "ItemCountType",
+          "type": "float",
           "optional": false
         },
         {
-          "name": "inserter_hand_stack_max_sprites",
+          "name": "icon_shadow_sharpness",
+          "order": 76,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": false
+        },
+        {
+          "name": "inserter_hand_stack_items_per_sprite",
           "order": 161,
           "description": "Must be >= 1.",
           "override": false,
@@ -29715,8 +29728,16 @@
           "optional": false
         },
         {
+          "name": "inserter_hand_stack_max_sprites",
+          "order": 162,
+          "description": "Must be >= 1.",
+          "override": false,
+          "type": "ItemCountType",
+          "optional": false
+        },
+        {
           "name": "inventory_width",
-          "order": 154,
+          "order": 155,
           "description": "Must be in range [1, 100].",
           "override": false,
           "type": "uint32",
@@ -29724,7 +29745,7 @@
         },
         {
           "name": "item_ammo_magazine_left_bar_color",
-          "order": 70,
+          "order": 71,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29732,7 +29753,7 @@
         },
         {
           "name": "item_default_random_tint_strength",
-          "order": 67,
+          "order": 68,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29740,7 +29761,7 @@
         },
         {
           "name": "item_health_bar_colors",
-          "order": 69,
+          "order": 70,
           "description": "There must be one array item with a threshold of `0`.",
           "override": false,
           "type": {
@@ -29751,7 +29772,7 @@
         },
         {
           "name": "item_outline_color",
-          "order": 63,
+          "order": 64,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29759,22 +29780,6 @@
         },
         {
           "name": "item_outline_inset",
-          "order": 65,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": false
-        },
-        {
-          "name": "item_outline_radius",
-          "order": 64,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": false
-        },
-        {
-          "name": "item_outline_sharpness",
           "order": 66,
           "description": "",
           "override": false,
@@ -29782,8 +29787,24 @@
           "optional": false
         },
         {
+          "name": "item_outline_radius",
+          "order": 65,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": false
+        },
+        {
+          "name": "item_outline_sharpness",
+          "order": 67,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": false
+        },
+        {
           "name": "item_tool_durability_bar_color",
-          "order": 71,
+          "order": 72,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29791,7 +29812,7 @@
         },
         {
           "name": "landing_area_clear_zone_radius",
-          "order": 133,
+          "order": 134,
           "description": "Radius of area where cargo pods won't land.",
           "override": false,
           "type": "float",
@@ -29799,7 +29820,7 @@
         },
         {
           "name": "landing_area_max_radius",
-          "order": 134,
+          "order": 135,
           "description": "Max radius where cargo pods will land.",
           "override": false,
           "type": "float",
@@ -29815,7 +29836,7 @@
         },
         {
           "name": "large_blueprint_area_size",
-          "order": 43,
+          "order": 44,
           "description": "",
           "override": false,
           "type": "float",
@@ -29823,7 +29844,7 @@
         },
         {
           "name": "light_renderer_search_distance_limit",
-          "order": 90,
+          "order": 91,
           "description": "Can be set to anything from range 0 to 255, but larger values will be clamped to 160. Setting it to larger values can have performance impact (growing geometrically).",
           "override": false,
           "type": "uint8",
@@ -29831,7 +29852,7 @@
         },
         {
           "name": "lightning_attractor_collection_range_color",
-          "order": 135,
+          "order": 136,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29839,7 +29860,7 @@
         },
         {
           "name": "lightning_attractor_protection_range_color",
-          "order": 136,
+          "order": 137,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29863,7 +29884,7 @@
         },
         {
           "name": "low_energy_robot_estimate_multiplier",
-          "order": 112,
+          "order": 113,
           "description": "",
           "override": false,
           "type": "double",
@@ -29871,7 +29892,7 @@
         },
         {
           "name": "main_menu_background_image_location",
-          "order": 100,
+          "order": 101,
           "description": "",
           "override": false,
           "type": "FileName",
@@ -29879,14 +29900,6 @@
         },
         {
           "name": "main_menu_background_vignette_intensity",
-          "order": 102,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": false
-        },
-        {
-          "name": "main_menu_background_vignette_sharpness",
           "order": 103,
           "description": "",
           "override": false,
@@ -29894,8 +29907,16 @@
           "optional": false
         },
         {
+          "name": "main_menu_background_vignette_sharpness",
+          "order": 104,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": false
+        },
+        {
           "name": "main_menu_simulations",
-          "order": 101,
+          "order": 102,
           "description": "The strings represent the names of the simulations.",
           "override": false,
           "type": {
@@ -29907,7 +29928,7 @@
         },
         {
           "name": "manual_rail_building_reach_modifier",
-          "order": 79,
+          "order": 80,
           "description": "",
           "override": false,
           "type": "double",
@@ -29915,7 +29936,7 @@
         },
         {
           "name": "map_editor",
-          "order": 59,
+          "order": 60,
           "description": "",
           "override": false,
           "type": "MapEditorConstants",
@@ -29923,7 +29944,7 @@
         },
         {
           "name": "max_belt_stack_size",
-          "order": 159,
+          "order": 160,
           "description": "Must be >= 1.",
           "override": false,
           "type": "uint8",
@@ -29931,7 +29952,7 @@
         },
         {
           "name": "max_fluid_flow",
-          "order": 129,
+          "order": 130,
           "description": "",
           "override": false,
           "type": "FluidAmount",
@@ -29955,7 +29976,7 @@
         },
         {
           "name": "maximum_recipe_overload_multiplier",
-          "order": 88,
+          "order": 89,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -29971,7 +29992,7 @@
         },
         {
           "name": "medium_blueprint_area_size",
-          "order": 42,
+          "order": 43,
           "description": "",
           "override": false,
           "type": "float",
@@ -29979,7 +30000,7 @@
         },
         {
           "name": "minimap_slot_clicked_tint",
-          "order": 107,
+          "order": 108,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29987,7 +30008,7 @@
         },
         {
           "name": "minimap_slot_hovered_tint",
-          "order": 106,
+          "order": 107,
           "description": "",
           "override": false,
           "type": "Color",
@@ -29995,7 +30016,7 @@
         },
         {
           "name": "minimum_recipe_overload_multiplier",
-          "order": 87,
+          "order": 88,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -30003,7 +30024,7 @@
         },
         {
           "name": "missing_preview_sprite_location",
-          "order": 99,
+          "order": 100,
           "description": "",
           "override": false,
           "type": "FileName",
@@ -30011,7 +30032,7 @@
         },
         {
           "name": "module_inventory_width",
-          "order": 155,
+          "order": 156,
           "description": "Must be in range [1, 100].",
           "override": false,
           "type": "uint32",
@@ -30019,7 +30040,7 @@
         },
         {
           "name": "moving_sound_count_reduction_rate",
-          "order": 167,
+          "order": 168,
           "description": "Silently clamped to be between 0 and 1.",
           "override": false,
           "type": "float",
@@ -30027,7 +30048,7 @@
         },
         {
           "name": "player_colors",
-          "order": 49,
+          "order": 50,
           "description": "The table with `name = \"default\"` must exist and be the first member of the array.",
           "override": false,
           "type": {
@@ -30054,7 +30075,7 @@
         },
         {
           "name": "rail_segment_colors",
-          "order": 48,
+          "order": 49,
           "description": "",
           "override": false,
           "type": {
@@ -30065,7 +30086,7 @@
         },
         {
           "name": "recipe_step_limit",
-          "order": 78,
+          "order": 79,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -30073,7 +30094,7 @@
         },
         {
           "name": "remote_view_LPF_max_cutoff_frequency",
-          "order": 163,
+          "order": 164,
           "description": "",
           "override": false,
           "type": "float",
@@ -30081,7 +30102,7 @@
         },
         {
           "name": "remote_view_LPF_min_cutoff_frequency",
-          "order": 162,
+          "order": 163,
           "description": "",
           "override": false,
           "type": "float",
@@ -30089,7 +30110,7 @@
         },
         {
           "name": "rocket_lift_weight",
-          "order": 128,
+          "order": 129,
           "description": "",
           "override": false,
           "type": "Weight",
@@ -30097,7 +30118,7 @@
         },
         {
           "name": "script_command_console_chat_color",
-          "order": 51,
+          "order": 52,
           "description": "",
           "override": false,
           "type": "Color",
@@ -30105,7 +30126,7 @@
         },
         {
           "name": "select_group_row_count",
-          "order": 152,
+          "order": 153,
           "description": "Must be in range [1, 100].",
           "override": false,
           "type": "uint8",
@@ -30113,7 +30134,7 @@
         },
         {
           "name": "select_slot_row_count",
-          "order": 153,
+          "order": 154,
           "description": "Must be in range [1, 100].",
           "override": false,
           "type": "uint8",
@@ -30129,7 +30150,7 @@
         },
         {
           "name": "server_command_console_chat_color",
-          "order": 50,
+          "order": 51,
           "description": "",
           "override": false,
           "type": "Color",
@@ -30137,7 +30158,7 @@
         },
         {
           "name": "show_chunk_components_collision_mask",
-          "order": 143,
+          "order": 144,
           "description": "",
           "override": false,
           "type": "CollisionMaskConnector",
@@ -30153,7 +30174,7 @@
         },
         {
           "name": "small_blueprint_area_size",
-          "order": 41,
+          "order": 42,
           "description": "",
           "override": false,
           "type": "float",
@@ -30161,7 +30182,7 @@
         },
         {
           "name": "space_LPF_max_cutoff_frequency",
-          "order": 165,
+          "order": 166,
           "description": "",
           "override": false,
           "type": "float",
@@ -30169,7 +30190,7 @@
         },
         {
           "name": "space_LPF_min_cutoff_frequency",
-          "order": 164,
+          "order": 165,
           "description": "",
           "override": false,
           "type": "float",
@@ -30177,7 +30198,7 @@
         },
         {
           "name": "space_platform_default_speed_formula",
-          "order": 122,
+          "order": 123,
           "description": "Variables: speed, thrust, weight, width, height",
           "override": false,
           "type": "MathExpression",
@@ -30185,7 +30206,7 @@
         },
         {
           "name": "space_platform_dump_cooldown",
-          "order": 126,
+          "order": 127,
           "description": "Determines how fast space platforms will send items in trash slots to the surface. Each item type has its own cooldown.",
           "override": false,
           "type": "uint32",
@@ -30193,7 +30214,7 @@
         },
         {
           "name": "space_platform_max_size",
-          "order": 125,
+          "order": 126,
           "description": "",
           "override": false,
           "type": "SimpleBoundingBox",
@@ -30201,7 +30222,7 @@
         },
         {
           "name": "space_platform_relative_speed_factor",
-          "order": 123,
+          "order": 124,
           "description": "",
           "override": false,
           "type": "double",
@@ -30209,7 +30230,7 @@
         },
         {
           "name": "space_platform_starfield_movement_vector",
-          "order": 124,
+          "order": 125,
           "description": "",
           "override": false,
           "type": "Vector",
@@ -30217,7 +30238,7 @@
         },
         {
           "name": "spawner_evolution_factor_health_modifier",
-          "order": 68,
+          "order": 69,
           "description": "",
           "override": false,
           "type": "float",
@@ -30225,7 +30246,7 @@
         },
         {
           "name": "time_to_show_full_health_bar",
-          "order": 169,
+          "order": 170,
           "description": "The number of ticks to show a segmented unit's health bar after fully regenerating.",
           "override": false,
           "type": "MapTick",
@@ -30233,7 +30254,7 @@
         },
         {
           "name": "tooltip_monitor_edge_border",
-          "order": 156,
+          "order": 157,
           "description": "Must be >= 1.",
           "override": false,
           "type": "int32",
@@ -30241,7 +30262,7 @@
         },
         {
           "name": "train_inactivity_wait_condition_default",
-          "order": 82,
+          "order": 83,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -30249,7 +30270,7 @@
         },
         {
           "name": "train_on_elevated_rail_shadow_shift_multiplier",
-          "order": 151,
+          "order": 152,
           "description": "",
           "override": false,
           "type": "Vector",
@@ -30257,7 +30278,7 @@
         },
         {
           "name": "train_path_finding",
-          "order": 158,
+          "order": 159,
           "description": "",
           "override": false,
           "type": "TrainPathFinderConstants",
@@ -30265,7 +30286,7 @@
         },
         {
           "name": "train_pushed_by_player_ignores_friction",
-          "order": 149,
+          "order": 150,
           "description": "",
           "override": false,
           "type": "bool",
@@ -30273,7 +30294,7 @@
         },
         {
           "name": "train_pushed_by_player_max_acceleration",
-          "order": 148,
+          "order": 149,
           "description": "",
           "override": false,
           "type": "double",
@@ -30281,7 +30302,7 @@
         },
         {
           "name": "train_pushed_by_player_max_speed",
-          "order": 147,
+          "order": 148,
           "description": "",
           "override": false,
           "type": "double",
@@ -30289,14 +30310,6 @@
         },
         {
           "name": "train_temporary_stop_wait_time",
-          "order": 80,
-          "description": "",
-          "override": false,
-          "type": "uint32",
-          "optional": false
-        },
-        {
-          "name": "train_time_wait_condition_default",
           "order": 81,
           "description": "",
           "override": false,
@@ -30304,8 +30317,16 @@
           "optional": false
         },
         {
+          "name": "train_time_wait_condition_default",
+          "order": 82,
+          "description": "",
+          "override": false,
+          "type": "uint32",
+          "optional": false
+        },
+        {
           "name": "train_visualization",
-          "order": 141,
+          "order": 142,
           "description": "",
           "override": false,
           "type": "TrainVisualizationConstants",
@@ -30313,22 +30334,6 @@
         },
         {
           "name": "tree_leaf_distortion_distortion_far",
-          "order": 92,
-          "description": "",
-          "override": false,
-          "type": "Vector",
-          "optional": false
-        },
-        {
-          "name": "tree_leaf_distortion_distortion_near",
-          "order": 95,
-          "description": "",
-          "override": false,
-          "type": "Vector",
-          "optional": false
-        },
-        {
-          "name": "tree_leaf_distortion_speed_far",
           "order": 93,
           "description": "",
           "override": false,
@@ -30336,7 +30341,7 @@
           "optional": false
         },
         {
-          "name": "tree_leaf_distortion_speed_near",
+          "name": "tree_leaf_distortion_distortion_near",
           "order": 96,
           "description": "",
           "override": false,
@@ -30344,15 +30349,7 @@
           "optional": false
         },
         {
-          "name": "tree_leaf_distortion_strength_far",
-          "order": 91,
-          "description": "",
-          "override": false,
-          "type": "Vector",
-          "optional": false
-        },
-        {
-          "name": "tree_leaf_distortion_strength_near",
+          "name": "tree_leaf_distortion_speed_far",
           "order": 94,
           "description": "",
           "override": false,
@@ -30360,8 +30357,32 @@
           "optional": false
         },
         {
-          "name": "tree_shadow_roughness",
+          "name": "tree_leaf_distortion_speed_near",
           "order": 97,
+          "description": "",
+          "override": false,
+          "type": "Vector",
+          "optional": false
+        },
+        {
+          "name": "tree_leaf_distortion_strength_far",
+          "order": 92,
+          "description": "",
+          "override": false,
+          "type": "Vector",
+          "optional": false
+        },
+        {
+          "name": "tree_leaf_distortion_strength_near",
+          "order": 95,
+          "description": "",
+          "override": false,
+          "type": "Vector",
+          "optional": false
+        },
+        {
+          "name": "tree_shadow_roughness",
+          "order": 98,
           "description": "",
           "override": false,
           "type": "float",
@@ -30369,7 +30390,7 @@
         },
         {
           "name": "tree_shadow_speed",
-          "order": 98,
+          "order": 99,
           "description": "",
           "override": false,
           "type": "float",
@@ -30401,7 +30422,7 @@
         },
         {
           "name": "unit_group_max_pursue_distance",
-          "order": 85,
+          "order": 86,
           "description": "",
           "override": false,
           "type": "double",
@@ -30409,7 +30430,7 @@
         },
         {
           "name": "unit_group_pathfind_resolution",
-          "order": 84,
+          "order": 85,
           "description": "",
           "override": false,
           "type": "int8",
@@ -30417,7 +30438,7 @@
         },
         {
           "name": "walking_sound_count_reduction_rate",
-          "order": 166,
+          "order": 167,
           "description": "Silently clamped to be between 0 and 1.",
           "override": false,
           "type": "float",
@@ -30425,7 +30446,7 @@
         },
         {
           "name": "water_collision_mask",
-          "order": 145,
+          "order": 146,
           "description": "",
           "override": false,
           "type": "CollisionMaskConnector",
@@ -30433,7 +30454,7 @@
         },
         {
           "name": "weapons_in_simulation_volume_modifier",
-          "order": 109,
+          "order": 110,
           "description": "",
           "override": false,
           "type": "float",
@@ -30457,7 +30478,7 @@
         },
         {
           "name": "zoom_to_world_daytime_color_lookup",
-          "order": 57,
+          "order": 58,
           "description": "",
           "override": false,
           "type": "DaytimeColorLookupTable",
@@ -40207,6 +40228,18 @@
           "optional": true
         },
         {
+          "name": "true_collinear_ejection",
+          "order": 25,
+          "description": "Projectile will be creation position and orientation will be collinear with shooter and target (unless offset projectile center is specified). Used for railgun turrets to avoid unexpected friendly fire incidents.",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
           "name": "turn_range",
           "order": 3,
           "description": "If this is <= 0, it is set to 1. Arc from 0 to 1, so for example 0.25 is 90°. Used by the [flamethrower turret](https://wiki.factorio.com/Flamethrower_turret) in the base game. Arcs greater than 0.5 but less than 1 will be clamped to 0.5 as targeting in arcs larger than half circle is [not implemented](https://forums.factorio.com/94654).",
@@ -48294,6 +48327,18 @@
           "optional": true
         },
         {
+          "name": "only_when_visible",
+          "order": 13,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
           "name": "smoke_name",
           "order": 1,
           "description": "",
@@ -55260,7 +55305,7 @@
     {
       "name": "IconData",
       "order": 273,
-      "description": "One layer of an icon. Icon layering follows the following rules:\n\n- The rendering order of the individual icon layers follows the array order: Later added icon layers (higher index) are drawn on top of previously added icon layers (lower index).\n\n- By default the first icon layer will draw an outline (or shadow in GUI), other layers will draw it only if they have `draw_background` explicitly set to `true`. There are caveats to this though. See [the doc](prototype:IconData::draw_background).\n\n- When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look [undesirable](https://forums.factorio.com/viewtopic.php?p=575844#p575844).\n\n- When the final icon is displayed with a shadow (e.g. an item on the ground or on a belt when item shadows are turned on), each icon layer will [cast a shadow](https://forums.factorio.com/84888) and the shadow is cast on the layer below it.\n\n- The final icon will always be resized and centered in GUI so that all its layers fit the target slot, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.\n\n- Shift values are based on [`expected_icon_size / 2`](prototype:IconData::scale).\n\nThe game automatically generates [icon mipmaps](https://factorio.com/blog/post/fff-291) for all icons. However, icons can have custom mipmaps defined. Custom mipmaps may help to achieve clearer icons at reduced size (e.g. when zooming out) than auto-generated mipmaps. If an icon file contains mipmaps then the game will automatically infer the icon's mipmap count. Icon files for custom mipmaps must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.",
+      "description": "One layer of an icon. Icon layering follows the following rules:\n\n- The rendering order of the individual icon layers follows the array order: Later added icon layers (higher index) are drawn on top of previously added icon layers (lower index).\n\n- By default the first icon layer will draw an outline (or shadow in GUI), other layers will draw it only if they have `draw_background` explicitly set to `true`. There are caveats to this though. See [the doc](prototype:IconData::draw_background).\n\n- When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look [undesirable](https://forums.factorio.com/viewtopic.php?p=575844#p575844).\n\n- When the final icon is displayed with a shadow (e.g. an item on the ground or on a belt when item shadows are turned on), each icon layer will [cast a shadow](https://forums.factorio.com/84888) and the shadow is cast on the layer below it.\n\n- The final icon will always be resized and centered in GUI so that all its layers (except the [`floating`](prototype:IconData::floating) ones) fit the target slot, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.\n\n- Shift values are based on [`expected_icon_size / 2`](prototype:IconData::scale).\n\nThe game automatically generates [icon mipmaps](https://factorio.com/blog/post/fff-291) for all icons. However, icons can have custom mipmaps defined. Custom mipmaps may help to achieve clearer icons at reduced size (e.g. when zooming out) than auto-generated mipmaps. If an icon file contains mipmaps then the game will automatically infer the icon's mipmap count. Icon files for custom mipmaps must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.",
       "examples": [
         "```\n-- one icon layer\n{\n  icon = \"__base__/graphics/icons/fluid/heavy-oil.png\",\n  icon_size = 64,\n  scale = 0.5,\n  shift = {4, -8}\n}\n```",
         "```\n-- Layered icon, with size defined per layer\nicons = {\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty.png\",\n    icon_size = 32\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-side-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0, g = 0, r = 0 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-top-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0.5, g = 0.5, r = 0.5 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/crude-oil.png\",\n    icon_size = 32,\n    scale = 0.5,\n    shift = {7, 8}\n  }\n}\n```"
@@ -55279,6 +55324,18 @@
           "type": "bool",
           "optional": true,
           "default": "`true` for the first layer, `false` otherwise"
+        },
+        {
+          "name": "floating",
+          "order": 6,
+          "description": "When `true` the layer is not considered for calculating bounds of the icon, so it can go out of bounds of rectangle into which the icon is drawn in GUI.",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
         },
         {
           "name": "icon",
@@ -58634,14 +58691,6 @@
       "properties": [
         {
           "name": "activity_to_speed_modifiers",
-          "order": 6,
-          "description": "",
-          "override": false,
-          "type": "ActivityMatchingModifiers",
-          "optional": true
-        },
-        {
-          "name": "activity_to_volume_modifiers",
           "order": 5,
           "description": "",
           "override": false,
@@ -58649,20 +58698,16 @@
           "optional": true
         },
         {
-          "name": "audible_distance_modifier",
-          "order": 1,
-          "description": "Modifies how far a sound can be heard. Can only be 1 or lower, has to be a positive number.",
+          "name": "activity_to_volume_modifiers",
+          "order": 4,
+          "description": "",
           "override": false,
-          "type": "double",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 1
-          }
+          "type": "ActivityMatchingModifiers",
+          "optional": true
         },
         {
           "name": "fade_in_ticks",
-          "order": 3,
+          "order": 2,
           "description": "Can't be used when `match_progress_to_activity` is `true`.",
           "override": false,
           "type": "uint32",
@@ -58674,7 +58719,7 @@
         },
         {
           "name": "fade_out_ticks",
-          "order": 4,
+          "order": 3,
           "description": "Can't be used when `match_progress_to_activity` is `true`.",
           "override": false,
           "type": "uint32",
@@ -58686,7 +58731,7 @@
         },
         {
           "name": "match_progress_to_activity",
-          "order": 7,
+          "order": 6,
           "description": "",
           "override": false,
           "type": "bool",
@@ -58698,18 +58743,6 @@
         },
         {
           "name": "match_speed_to_activity",
-          "order": 9,
-          "description": "",
-          "override": false,
-          "type": "bool",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": false
-          }
-        },
-        {
-          "name": "match_volume_to_activity",
           "order": 8,
           "description": "",
           "override": false,
@@ -58721,9 +58754,21 @@
           }
         },
         {
-          "name": "play_for_working_visualisations",
-          "order": 10,
+          "name": "match_volume_to_activity",
+          "order": 7,
           "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
+          "name": "play_for_working_visualisations",
+          "order": 9,
+          "description": "Array of [WorkingVisualisation::name](prototype:WorkingVisualisation::name)s, individual names cannot be empty.\n\nThe `sound` is played when at least one of the specified working visualisations is drawn.",
           "override": false,
           "type": {
             "complex_type": "array",
@@ -58733,8 +58778,8 @@
         },
         {
           "name": "probability",
-          "order": 2,
-          "description": "Modifies how often the sound is played.",
+          "order": 1,
+          "description": "Modifies how often the sound is played.\n\nSilently clamped to the [0.0, 1.0] range.",
           "examples": [
             "```\nprobability = 1 / (3 * 60) -- average pause between the sound is 3 seconds\n```"
           ],
@@ -58749,14 +58794,14 @@
         {
           "name": "sound",
           "order": 0,
-          "description": "",
+          "description": "Cannot be empty.",
           "override": false,
           "type": "Sound",
           "optional": true
         },
         {
           "name": "volume_smoothing_window_size",
-          "order": 11,
+          "order": 10,
           "description": "Only used if [WorkingSound::persistent](prototype:WorkingSound::persistent) is `true`.",
           "override": false,
           "type": "uint32",
@@ -59044,7 +59089,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": true
+            "value": false
           }
         },
         {
@@ -62878,18 +62923,6 @@
       },
       "properties": [
         {
-          "name": "audible_distance_modifier",
-          "order": 5,
-          "description": "Negative values are silently clamped to 0.",
-          "override": false,
-          "type": "float",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 1
-          }
-        },
-        {
           "name": "max_distance",
           "order": 3,
           "description": "Negative values are silently clamped to 0.",
@@ -62912,7 +62945,7 @@
         },
         {
           "name": "play_on_target_position",
-          "order": 6,
+          "order": 4,
           "description": "",
           "override": false,
           "type": "bool",
@@ -62940,18 +62973,6 @@
             "value": "play-sound"
           },
           "optional": false
-        },
-        {
-          "name": "volume_modifier",
-          "order": 4,
-          "description": "Negative values are silently clamped to 0.",
-          "override": false,
-          "type": "float",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 1
-          }
         }
       ]
     },
@@ -63056,7 +63077,7 @@
       "properties": [
         {
           "name": "max_probability",
-          "order": 1,
+          "order": 2,
           "description": "",
           "override": false,
           "type": "float",
@@ -63068,7 +63089,7 @@
         },
         {
           "name": "max_y_offset",
-          "order": 3,
+          "order": 4,
           "description": "",
           "override": false,
           "type": "float",
@@ -63080,7 +63101,7 @@
         },
         {
           "name": "min_probability",
-          "order": 0,
+          "order": 1,
           "description": "",
           "override": false,
           "type": "float",
@@ -63092,7 +63113,7 @@
         },
         {
           "name": "min_y_offset",
-          "order": 2,
+          "order": 3,
           "description": "",
           "override": false,
           "type": "float",
@@ -63103,8 +63124,16 @@
           }
         },
         {
+          "name": "render_box",
+          "order": 0,
+          "description": "If given, the plumes will only render if this area is on screen (relative to the thruster)",
+          "override": false,
+          "type": "BoundingBox",
+          "optional": true
+        },
+        {
           "name": "stateless_visualisations",
-          "order": 4,
+          "order": 5,
           "description": "Array may not be empty and may at most have 255 elements.\n\nNon-zero `period` needs to be provided. May not have `positions` or `particle_tick_offset`.",
           "override": false,
           "type": {
@@ -69870,7 +69899,7 @@
         {
           "name": "audible_distance_modifier",
           "order": 4,
-          "description": "Modifies how far a sound can be heard. Must be between `0` and `1` inclusive.",
+          "description": "Modifies how far a sound can be heard. Cannot be less than zero.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -70056,18 +70085,6 @@
       },
       "properties": [
         {
-          "name": "audible_distance_modifier",
-          "order": 2,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 1
-          }
-        },
-        {
           "name": "frame",
           "order": 1,
           "description": "",
@@ -70080,14 +70097,11 @@
           }
         },
         {
-          "name": "play_for_working_visualisations",
-          "order": 3,
-          "description": "",
+          "name": "play_for_working_visualisation",
+          "order": 2,
+          "description": "Play the `sound` for a working visualisation of a given [WorkingVisualisation::name](prototype:WorkingVisualisation::name).\n\nThe name cannot be empty.",
           "override": false,
-          "type": {
-            "complex_type": "array",
-            "value": "string"
-          },
+          "type": "string",
           "optional": true
         },
         {
@@ -82439,8 +82453,8 @@
       "order": 665,
       "description": "This type is used to produce sound from in-game entities when they are working/idle.",
       "examples": [
-        "```\n-- refinery\nworking_sound =\n{\n  sound = { filename = \"__base__/sound/oil-refinery.ogg\" },\n  idle_sound = { filename = \"__base__/sound/idle1.ogg\", volume = 0.6 },\n  apparent_volume = 2.5,\n}\n```",
-        "```\n-- roboport\nworking_sound =\n{\n  sound = { filename = \"__base__/sound/roboport-working.ogg\", volume = 0.6 },\n  max_sounds_per_type = 3,\n  audible_distance_modifier = 0.5,\n  probability = 1 / (5 * 60) -- average pause between the sound is 5 seconds\n}\n```"
+        "```\n-- refinery\nworking_sound =\n{\n  sound = {filename = \"__base__/sound/oil-refinery.ogg\"},\n  idle_sound = {filename = \"__base__/sound/idle1.ogg\", volume = 0.6},\n}\n```",
+        "```\n-- roboport\nworking_sound =\n{\n  sound = {filename = \"__base__/sound/roboport-working.ogg\", volume = 0.6, audible_distance_modifier = 0.5},\n  max_sounds_per_prototype = 3,\n  probability = 1 / (5 * 60) -- average pause between the sound is 5 seconds\n}\n```"
       ],
       "parent": "MainSound",
       "abstract": false,
@@ -82458,39 +82472,15 @@
       "properties": [
         {
           "name": "activate_sound",
-          "order": 8,
+          "order": 6,
           "description": "Might not work with all entities that use working_sound.",
           "override": false,
           "type": "Sound",
           "optional": true
         },
         {
-          "name": "apparent_volume",
-          "order": 1,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 1
-          }
-        },
-        {
-          "name": "audible_distance_modifier",
-          "order": 6,
-          "description": "Modifies how far a sound can be heard. Can only be 1 or lower, has to be a positive number.",
-          "override": true,
-          "type": "double",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 1
-          }
-        },
-        {
           "name": "deactivate_sound",
-          "order": 9,
+          "order": 7,
           "description": "Might not work with all entities that use working_sound.",
           "override": false,
           "type": "Sound",
@@ -82498,8 +82488,8 @@
         },
         {
           "name": "extra_sounds_ignore_limit",
-          "order": 3,
-          "description": "",
+          "order": 2,
+          "description": "If `true`, `max_sounds_per_prototype` is ignored. 'extra sound' refers to `idle_sound`, `activate_sound` or `deactivate_sound`.",
           "override": false,
           "type": "bool",
           "optional": true,
@@ -82510,7 +82500,7 @@
         },
         {
           "name": "idle_sound",
-          "order": 7,
+          "order": 5,
           "description": "The sound to be played when the entity is idle. Might not work with all entities that use working_sound.",
           "override": false,
           "type": "Sound",
@@ -82535,17 +82525,17 @@
           "optional": true
         },
         {
-          "name": "max_sounds_per_type",
-          "order": 2,
-          "description": "",
+          "name": "max_sounds_per_prototype",
+          "order": 1,
+          "description": "Sets a maximum limit on how many entities of the same prototype will play their working sound.\n\nInactive entities without an `idle_sound` don't count towards this limit.\n\nEntities with their working sound fading out don't count towards this limit.",
           "override": false,
           "type": "uint8",
           "optional": true
         },
         {
           "name": "persistent",
-          "order": 4,
-          "description": "",
+          "order": 3,
+          "description": "When `true`, working sounds for all entities of the same prototype are combined into one and some (most) properties of this are ignored or unused.",
           "override": false,
           "type": "bool",
           "optional": true,
@@ -82556,7 +82546,7 @@
         },
         {
           "name": "sound_accents",
-          "order": 10,
+          "order": 8,
           "description": "",
           "override": false,
           "type": {
@@ -82574,7 +82564,7 @@
         },
         {
           "name": "use_doppler_shift",
-          "order": 5,
+          "order": 4,
           "description": "",
           "override": false,
           "type": "bool",
@@ -83551,8 +83541,40 @@
       ]
     },
     {
-      "name": "chain_signal_state",
+      "name": "cargo_destination",
       "order": 4,
+      "description": "",
+      "values": [
+        {
+          "name": "invalid",
+          "order": 0,
+          "description": ""
+        },
+        {
+          "name": "orbit",
+          "order": 1,
+          "description": "Cargo pods with orbit destination are destroyed when ascent is completed."
+        },
+        {
+          "name": "space_platform",
+          "order": 4,
+          "description": "Only used for sending a space platform starter pack to a platform that is waiting for one."
+        },
+        {
+          "name": "station",
+          "order": 2,
+          "description": "Any cargo landing pad or space platform hub."
+        },
+        {
+          "name": "surface",
+          "order": 3,
+          "description": "Cargo pods will switch destination type from surface to station before starting descent if there is a station available, unless [CargoDestination::position](runtime:CargoDestination::position) has also been specified."
+        }
+      ]
+    },
+    {
+      "name": "chain_signal_state",
+      "order": 5,
       "description": "State of a chain signal.",
       "values": [
         {
@@ -83579,7 +83601,7 @@
     },
     {
       "name": "chunk_generated_status",
-      "order": 5,
+      "order": 6,
       "description": "",
       "values": [
         {
@@ -83616,7 +83638,7 @@
     },
     {
       "name": "command",
-      "order": 6,
+      "order": 7,
       "description": "Command given to units describing what they should do.",
       "values": [
         {
@@ -83668,7 +83690,7 @@
     },
     {
       "name": "compound_command",
-      "order": 7,
+      "order": 8,
       "description": "How commands are joined together in a compound command (see [defines.command.compound](runtime:defines.command.compound)).",
       "values": [
         {
@@ -83690,7 +83712,7 @@
     },
     {
       "name": "control_behavior",
-      "order": 8,
+      "order": 9,
       "description": "",
       "subkeys": [
         {
@@ -84086,7 +84108,7 @@
     },
     {
       "name": "controllers",
-      "order": 9,
+      "order": 10,
       "description": "",
       "values": [
         {
@@ -84128,7 +84150,7 @@
     },
     {
       "name": "deconstruction_item",
-      "order": 10,
+      "order": 11,
       "description": "",
       "subkeys": [
         {
@@ -84196,12 +84218,12 @@
     },
     {
       "name": "default_icon_size",
-      "order": 11,
+      "order": 12,
       "description": ""
     },
     {
       "name": "difficulty",
-      "order": 12,
+      "order": 13,
       "description": "",
       "values": [
         {
@@ -84223,7 +84245,7 @@
     },
     {
       "name": "direction",
-      "order": 13,
+      "order": 14,
       "description": "",
       "values": [
         {
@@ -84310,7 +84332,7 @@
     },
     {
       "name": "disconnect_reason",
-      "order": 14,
+      "order": 15,
       "description": "",
       "values": [
         {
@@ -84372,7 +84394,7 @@
     },
     {
       "name": "distraction",
-      "order": 15,
+      "order": 16,
       "description": "",
       "values": [
         {
@@ -84399,7 +84421,7 @@
     },
     {
       "name": "entity_status",
-      "order": 16,
+      "order": 17,
       "description": "",
       "values": [
         {
@@ -84736,7 +84758,7 @@
     },
     {
       "name": "entity_status_diode",
-      "order": 17,
+      "order": 18,
       "description": "",
       "values": [
         {
@@ -84758,7 +84780,7 @@
     },
     {
       "name": "events",
-      "order": 18,
+      "order": 19,
       "description": "See the [events page](runtime:events) for more info on what events contain and when they get raised.",
       "values": [
         {
@@ -85765,7 +85787,7 @@
     },
     {
       "name": "flow_precision_index",
-      "order": 19,
+      "order": 20,
       "description": "",
       "values": [
         {
@@ -85812,7 +85834,7 @@
     },
     {
       "name": "game_controller_interaction",
-      "order": 20,
+      "order": 21,
       "description": "",
       "values": [
         {
@@ -85834,7 +85856,7 @@
     },
     {
       "name": "group_state",
-      "order": 21,
+      "order": 22,
       "description": "",
       "values": [
         {
@@ -85876,7 +85898,7 @@
     },
     {
       "name": "gui_type",
-      "order": 22,
+      "order": 23,
       "description": "",
       "values": [
         {
@@ -85983,7 +86005,7 @@
     },
     {
       "name": "input_action",
-      "order": 23,
+      "order": 24,
       "description": "",
       "values": [
         {
@@ -87330,7 +87352,7 @@
     },
     {
       "name": "input_method",
-      "order": 24,
+      "order": 25,
       "description": "",
       "values": [
         {
@@ -87347,7 +87369,7 @@
     },
     {
       "name": "inventory",
-      "order": 25,
+      "order": 26,
       "description": "",
       "values": [
         {
@@ -87363,7 +87385,7 @@
         {
           "name": "assembling_machine_dump",
           "order": 25,
-          "description": ""
+          "description": "Used when items are ejected or items held by inserters cannot be inserted due to changing the recipe with the circuit network."
         },
         {
           "name": "assembling_machine_input",
@@ -87614,7 +87636,7 @@
     },
     {
       "name": "logistic_member_index",
-      "order": 26,
+      "order": 27,
       "description": "",
       "values": [
         {
@@ -87656,7 +87678,7 @@
     },
     {
       "name": "logistic_mode",
-      "order": 27,
+      "order": 28,
       "description": "",
       "values": [
         {
@@ -87693,7 +87715,7 @@
     },
     {
       "name": "logistic_section_type",
-      "order": 28,
+      "order": 29,
       "description": "",
       "values": [
         {
@@ -87720,7 +87742,7 @@
     },
     {
       "name": "mouse_button_type",
-      "order": 29,
+      "order": 30,
       "description": "",
       "values": [
         {
@@ -87747,7 +87769,7 @@
     },
     {
       "name": "moving_state",
-      "order": 30,
+      "order": 31,
       "description": "",
       "values": [
         {
@@ -87774,7 +87796,7 @@
     },
     {
       "name": "print_skip",
-      "order": 31,
+      "order": 32,
       "description": "",
       "values": [
         {
@@ -87796,7 +87818,7 @@
     },
     {
       "name": "print_sound",
-      "order": 32,
+      "order": 33,
       "description": "",
       "values": [
         {
@@ -87818,7 +87840,7 @@
     },
     {
       "name": "prototypes",
-      "order": 33,
+      "order": 34,
       "description": "This define describes all top-level prototypes and their associated subtypes. It is organized as a lookup table, meaning the values of all the defines is `0`. As an example, `defines.prototypes['entity']` looks like `{furnace=0, inserter=0, container=0, ...}`.",
       "subkeys": [
         {
@@ -89548,7 +89570,7 @@
     },
     {
       "name": "rail_connection_direction",
-      "order": 34,
+      "order": 35,
       "description": "",
       "values": [
         {
@@ -89575,7 +89597,7 @@
     },
     {
       "name": "rail_direction",
-      "order": 35,
+      "order": 36,
       "description": "",
       "values": [
         {
@@ -89592,7 +89614,7 @@
     },
     {
       "name": "rail_layer",
-      "order": 36,
+      "order": 37,
       "description": "",
       "values": [
         {
@@ -89609,7 +89631,7 @@
     },
     {
       "name": "relative_gui_position",
-      "order": 37,
+      "order": 38,
       "description": "",
       "values": [
         {
@@ -89636,7 +89658,7 @@
     },
     {
       "name": "relative_gui_type",
-      "order": 38,
+      "order": 39,
       "description": "",
       "values": [
         {
@@ -90013,7 +90035,7 @@
     },
     {
       "name": "render_mode",
-      "order": 39,
+      "order": 40,
       "description": "",
       "values": [
         {
@@ -90035,7 +90057,7 @@
     },
     {
       "name": "rich_text_setting",
-      "order": 40,
+      "order": 41,
       "description": "",
       "values": [
         {
@@ -90057,7 +90079,7 @@
     },
     {
       "name": "riding",
-      "order": 41,
+      "order": 42,
       "description": "",
       "subkeys": [
         {
@@ -90113,7 +90135,7 @@
     },
     {
       "name": "robot_order_type",
-      "order": 42,
+      "order": 43,
       "description": "",
       "values": [
         {
@@ -90165,7 +90187,7 @@
     },
     {
       "name": "rocket_silo_status",
-      "order": 43,
+      "order": 44,
       "description": "The various parts of the launch sequence of the rocket silo.",
       "values": [
         {
@@ -90247,7 +90269,7 @@
     },
     {
       "name": "selection_mode",
-      "order": 44,
+      "order": 45,
       "description": "",
       "values": [
         {
@@ -90274,7 +90296,7 @@
     },
     {
       "name": "shooting",
-      "order": 45,
+      "order": 46,
       "description": "",
       "values": [
         {
@@ -90296,7 +90318,7 @@
     },
     {
       "name": "signal_state",
-      "order": 46,
+      "order": 47,
       "description": "State of an ordinary rail signal.",
       "values": [
         {
@@ -90323,7 +90345,7 @@
     },
     {
       "name": "space_platform_state",
-      "order": 47,
+      "order": 48,
       "description": "",
       "values": [
         {
@@ -90375,9 +90397,14 @@
     },
     {
       "name": "target_type",
-      "order": 48,
+      "order": 49,
       "description": "",
       "values": [
+        {
+          "name": "cargo_hatch",
+          "order": 18,
+          "description": ""
+        },
         {
           "name": "commandable",
           "order": 15,
@@ -90472,7 +90499,7 @@
     },
     {
       "name": "train_state",
-      "order": 49,
+      "order": 50,
       "description": "",
       "values": [
         {
@@ -90529,7 +90556,7 @@
     },
     {
       "name": "transport_line",
-      "order": 50,
+      "order": 51,
       "description": "",
       "values": [
         {
@@ -90586,7 +90613,7 @@
     },
     {
       "name": "wire_connector_id",
-      "order": 51,
+      "order": 52,
       "description": "",
       "values": [
         {
@@ -90638,7 +90665,7 @@
     },
     {
       "name": "wire_origin",
-      "order": 52,
+      "order": 53,
       "description": "",
       "values": [
         {
@@ -90660,7 +90687,7 @@
     },
     {
       "name": "wire_type",
-      "order": 53,
+      "order": 54,
       "description": "",
       "values": [
         {
