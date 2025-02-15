@@ -6885,7 +6885,7 @@ declare module "factorio:prototype" {
     /**
      * The default weight is calculated automatically from recipes and falls back to {@link UtilityConstants#default_item_weight UtilityConstants::default_item_weight}.
      *
-     * More information on how item weight is determined can be found on its {@link import("factorio:runtime").item-weight auxiliary page}.
+     * More information on how item weight is determined can be found on its {@linkplain https://lua-api.factorio.com/2.0.34/auxiliary/item-weight.html auxiliary page}.
      * @see {@link https://lua-api.factorio.com/2.0.34/prototypes/ItemPrototype.html#weight Online documentation}
      */
     weight?: Weight

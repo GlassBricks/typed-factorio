@@ -18131,7 +18131,7 @@ declare module "factorio:runtime" {
     readonly spoil_to_trigger_result?: SpoilToTriggerResult
     readonly destroyed_by_dropping_trigger?: TriggerItem[]
     /**
-     * Weight of this item. More information on how item weight is determined can be found on its {@link runtime:item-weight auxiliary page}.
+     * Weight of this item. More information on how item weight is determined can be found on its {@linkplain https://lua-api.factorio.com/2.0.34/auxiliary/item-weight.html auxiliary page}.
      * @see {@link https://lua-api.factorio.com/2.0.34/classes/LuaItemPrototype.html#LuaItemPrototype.weight Online documentation}
      */
     readonly weight: double
@@ -18491,7 +18491,7 @@ declare module "factorio:runtime" {
     readonly spoil_to_trigger_result?: SpoilToTriggerResult
     readonly destroyed_by_dropping_trigger?: TriggerItem[]
     /**
-     * Weight of this item. More information on how item weight is determined can be found on its {@link runtime:item-weight auxiliary page}.
+     * Weight of this item. More information on how item weight is determined can be found on its {@linkplain https://lua-api.factorio.com/2.0.34/auxiliary/item-weight.html auxiliary page}.
      * @see {@link https://lua-api.factorio.com/2.0.34/classes/LuaItemPrototype.html#LuaItemPrototype.weight Online documentation}
      */
     readonly weight: double
