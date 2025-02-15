@@ -18,6 +18,9 @@ export interface CircuitNetworkSelection {}
 /** @omit */
 export interface RaiseEventParameters {}
 
+/** @omit */
+export interface SpaceConnectionID {}
+
 export interface LuaObject {
   readonly object_name: string
 }
