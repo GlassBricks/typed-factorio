@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.34",
+  "application_version": "2.0.35",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -2346,7 +2346,23 @@
       "properties": [
         {
           "name": "circuit_connector",
-          "order": 10,
+          "order": 11,
+          "description": "",
+          "override": false,
+          "type": {
+            "complex_type": "tuple",
+            "values": [
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition"
+            ]
+          },
+          "optional": true
+        },
+        {
+          "name": "circuit_connector_flipped",
+          "order": 12,
           "description": "",
           "override": false,
           "type": {
@@ -2390,7 +2406,7 @@
         },
         {
           "name": "disabled_when_recipe_not_researched",
-          "order": 12,
+          "order": 14,
           "description": "Defaults to true if fixed_recipe is not given.",
           "override": false,
           "type": "bool",
@@ -2454,7 +2470,7 @@
         },
         {
           "name": "fluid_boxes_off_when_no_fluid_recipe",
-          "order": 11,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "bool",
@@ -2481,11 +2497,23 @@
           "order": 9,
           "description": "Sets the maximum number of ingredients this machine can craft with. Any recipe with more ingredients than this will be unavailable in this machine.\n\nThis only counts item ingredients, not fluid ingredients! This means if ingredient count is 2, and the recipe has 2 item ingredients and 1 fluid ingredient, it can still be crafted in the machine.",
           "override": false,
-          "type": "uint8",
+          "type": "uint16",
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": 255
+            "value": 65535
+          }
+        },
+        {
+          "name": "max_item_product_count",
+          "order": 10,
+          "description": "",
+          "override": false,
+          "type": "uint16",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 65535
           }
         }
       ]
@@ -9250,7 +9278,7 @@
         {
           "name": "water_reflection",
           "order": 53,
-          "description": "May also be defined inside `graphics_set` instead of directly in the entity prototype. This is useful for entities that use a `graphics_set` property to define their graphics, because then all graphics can be defined in one place.\n\n[Currently only renders](https://forums.factorio.com/100703) for [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype).",
+          "description": "May also be defined inside `graphics_set` instead of directly in the entity prototype. This is useful for entities that use a `graphics_set` property to define their graphics, because then all graphics can be defined in one place.\n\n[Currently only renders](https://forums.factorio.com/100703) for [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype) and [CorpsePrototype](prototype:CorpsePrototype).",
           "override": false,
           "type": "WaterReflectionDefinition",
           "optional": true
@@ -9543,12 +9571,20 @@
         },
         {
           "name": "quality_indicator_scale",
-          "order": 2,
+          "order": 3,
           "description": "The default scale is based on the tile distance of the shorter dimension. Where size 3 results into scale 1. The default minimum is 0.5 and maximum 1.0.",
           "override": false,
           "type": "double",
           "optional": true,
           "default": "Calculated based on entity tile_width and height"
+        },
+        {
+          "name": "quality_indicator_shift",
+          "order": 2,
+          "description": "The shift from the bottom left corner of the selection box.",
+          "override": false,
+          "type": "Vector",
+          "optional": true
         }
       ]
     },
@@ -11639,6 +11675,50 @@
           }
         },
         {
+          "name": "circuit_connector",
+          "order": 4,
+          "description": "",
+          "override": false,
+          "type": {
+            "complex_type": "tuple",
+            "values": [
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition"
+            ]
+          },
+          "optional": true
+        },
+        {
+          "name": "circuit_connector_flipped",
+          "order": 5,
+          "description": "",
+          "override": false,
+          "type": {
+            "complex_type": "tuple",
+            "values": [
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition",
+              "CircuitConnectorDefinition"
+            ]
+          },
+          "optional": true
+        },
+        {
+          "name": "circuit_wire_max_distance",
+          "order": 6,
+          "description": "The maximum circuit wire distance for this entity.",
+          "override": false,
+          "type": "double",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
           "name": "custom_input_slot_tooltip_key",
           "order": 3,
           "description": "The locale key of the tooltip to be shown in the input slot instead of the automatically generated list of items that fit there",
@@ -11648,6 +11728,46 @@
           "default": {
             "complex_type": "literal",
             "value": ""
+          }
+        },
+        {
+          "name": "default_recipe_finished_signal",
+          "order": 9,
+          "description": "",
+          "override": false,
+          "type": "SignalIDConnector",
+          "optional": true
+        },
+        {
+          "name": "default_working_signal",
+          "order": 10,
+          "description": "",
+          "override": false,
+          "type": "SignalIDConnector",
+          "optional": true
+        },
+        {
+          "name": "draw_circuit_wires",
+          "order": 8,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
+          "name": "draw_copper_wires",
+          "order": 7,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
           }
         },
         {
@@ -12361,7 +12481,7 @@
       "custom_properties": {
         "description": "Styles are defined as uniquely named [StyleSpecification](prototype:StyleSpecification) properties of the prototype.\n\nStyles with certain names are mandatory, as they are used by the base game GUI. A list is found below.",
         "lists": [
-          "Mandatory styles:\n\n- \"confirm_button\"\n- \"confirm_button_without_tooltip\"\n- \"confirm_double_arrow_button\"\n- \"tips_and_tricks_notification_button\"\n- \"red_confirm_button\"\n- \"red_back_button\"\n- \"red_button\"\n- \"green_button\"\n- \"tool_button_red\"\n- \"tool_button\"\n- \"tool_button_without_padding\"\n- \"tool_button_green\"\n- \"tool_button_blue\"\n- \"tool_button_flush_fluid\"\n- \"mini_button\"\n- \"mini_button_aligned_to_text_vertically\"\n- \"mini_button_aligned_to_text_vertically_when_centered\"\n- \"mini_tool_button_red\"\n- \"highlighted_tool_button\"\n- \"confirm_in_load_game_button\"\n- \"back_button\"\n- \"forward_button\"\n- \"menu_button\"\n- \"menu_button_continue\"\n- \"side_menu_button\"\n- \"dialog_button\"\n- \"control_settings_button\"\n- \"control_settings_section_button\"\n- \"quick_bar_page_button\"\n- \"slot_button\"\n- \"slot_button_in_shallow_frame\"\n- \"yellow_slot_button\"\n- \"red_slot_button\"\n- \"slot_sized_button\"\n- \"compact_slot_sized_button\"\n- \"slot_sized_button_blue\"\n- \"slot_sized_button_red\"\n- \"slot_sized_button_green\"\n- \"shortcut_bar_button\"\n- \"shortcut_bar_button_blue\"\n- \"shortcut_bar_button_red\"\n- \"shortcut_bar_button_green\"\n- \"shortcut_bar_button_small\"\n- \"shortcut_bar_button_small_green\"\n- \"shortcut_bar_button_small_red\"\n- \"shortcut_bar_button_small_blue\"\n- \"compact_slot\"\n- \"slot\"\n- \"red_slot\"\n- \"yellow_slot\"\n- \"green_slot\"\n- \"blue_slot\"\n- \"inventory_slot\"\n- \"filter_inventory_slot\"\n- \"closed_inventory_slot\"\n- \"red_inventory_slot\"\n- \"yellow_inventory_slot\"\n- \"filter_group_button_tab_slightly_larger\"\n- \"blueprint_record_slot_button\"\n- \"blueprint_record_selection_button\"\n- \"compact_red_slot\"\n- \"inventory_limit_slot_button\"\n- \"working_weapon_button\"\n- \"not_working_weapon_button\"\n- \"transparent_slot\"\n- \"universe_frame\"\n- \"universe_widget\"\n- \"universe_connection_button\"\n- \"universe_platform_button\"\n- \"frame_action_button\"\n- \"train_schedule_action_button\"\n- \"train_schedule_delete_button\"\n- \"train_schedule_collapse_button\"\n- \"shortcut_bar_expand_button\"\n- \"open_armor_button\"\n- \"item_and_count_select_confirm\"\n- \"tool_bar_open_button\"\n- \"map_view_add_button\"\n- \"tool_equip_ammo_slot\"\n- \"choose_chat_icon_button\"\n- \"choose_chat_icon_in_textbox_button\"\n- \"decider_combinator_signal_select_button\"\n- \"decider_combinator_fulfilled_signal_select_button\"\n- \"tool_equip_equipment_image\"\n- \"clickable_empty_technology_slot\"\n- \"disabled_technology_slot\"\n- \"disabled_index_technology_slot\"\n- \"researched_technology_slot\"\n- \"available_technology_slot\"\n- \"conditionally_available_technology_slot\"\n- \"unavailable_technology_slot\"\n- \"disabled_preview_technology_slot\"\n- \"disabled_preview_index_technology_slot\"\n- \"researched_preview_technology_slot\"\n- \"available_preview_technology_slot\"\n- \"conditionally_available_preview_technology_slot\"\n- \"unavailable_preview_technology_slot\"\n- \"omitted_technology_slot\"\n- \"crafting_queue_slot\"\n- \"promised_crafting_queue_slot\"\n- \"image_tab_slot\"\n- \"image_tab_selected_slot\"\n- \"red_circuit_network_content_slot\"\n- \"green_circuit_network_content_slot\"\n- \"drop_target_button\"\n- \"locomotive_minimap_button\"\n- \"browse_games_gui_toggle_favorite_on_button\"\n- \"browse_games_gui_toggle_favorite_off_button\"\n- \"research_queue_cancel_button\"\n- \"new_game_header_list_box_item\"\n- \"list_box_item\"\n- \"train_status_button\"\n- \"station_train_status_button\"\n- \"title_tip_item\"\n- \"default_permission_group_list_box_item\"\n- \"target_station_in_schedule_in_train_view_list_box_item\"\n- \"no_path_station_in_schedule_in_train_view_list_box_item\"\n- \"not_accessible_station_in_station_selection\"\n- \"partially_accessible_station_in_station_selection\"\n- \"other_settings_gui_button\"\n- \"map_generator_preview_button\"\n- \"map_generator_close_preview_button\"\n- \"map_generator_confirm_button\"\n- \"train_schedule_comparison_type_button\"\n- \"train_schedule_add_wait_condition_button\"\n- \"train_schedule_add_station_button\"\n- \"train_schedule_add_interrupt_station_button\"\n- \"train_schedule_item_select_button\"\n- \"train_schedule_fulfilled_item_select_button\"\n- \"train_schedule_fulfilled_delete_button\"\n- \"train_schedule_temporary_station_delete_button\"\n- \"train_schedule_condition_time_selection_button\"\n- \"entity_variation_button\"\n- \"tile_variation_button\"\n- \"cancel_close_button\"\n- \"close_button\"\n- \"mods_filter_exclude_button\"\n- \"wide_list_box\"\n- \"wide_list_box_in_shallow_frame\"\n- \"wide_list_box_under_subheader\"\n- \"wide_list_box_in_shallow_frame_under_subheader\"\n- \"list_box_under_subheader\"\n- \"campaigns_list_box\"\n- \"campaign_levels_list_box\"\n- \"custom_games_list_box\"\n- \"train_station_list_box\"\n- \"floating_train_station_list_box\"\n- \"schedule_in_train_view_list_box\"\n- \"permissions_groups_list_box\"\n- \"permissions_players_list_box\"\n- \"naked_list_box\"\n- \"locale_dropdown\"\n- \"game_controller_icons_dropdown\"\n- \"circuit_condition_comparator_dropdown\"\n- \"train_schedule_circuit_condition_comparator_dropdown\"\n- \"changelog_textbox\"\n- \"console_input_textfield\"\n- \"invalid_value_textfield\"\n- \"highlighted_value_textfield\"\n- \"mod_startup_settings_mismatch_notice_box\"\n- \"notice_scroll_pane\"\n- \"pins_scroll_pane\"\n- \"notice_textbox\"\n- \"long_number_textfield\"\n- \"big_notice_textbox\"\n- \"small_notice_textbox\"\n- \"search_popup_textfield\"\n- \"other_settings_gui_textbox\"\n- \"short_number_textfield\"\n- \"invalid_value_short_number_textfield\"\n- \"very_short_number_textfield\"\n- \"slider_value_textfield\"\n- \"wide_slider_value_textfield\"\n- \"stretchable_textfield\"\n- \"editor_lua_textbox\"\n- \"edit_blueprint_description_textbox\"\n- \"non_draggable_frame\"\n- \"invisible_frame\"\n- \"frame_with_even_paddings\"\n- \"no_header_filler_frame\"\n- \"map_details_frame\"\n- \"bordered_frame\"\n- \"inside_deep_frame\"\n- \"tab_deep_frame_in_entity_frame\"\n- \"deep_frame_in_shallow_frame_for_description\"\n- \"deep_frame_in_shallow_frame_for_description_with_fixed_width\"\n- \"inside_shallow_frame\"\n- \"shallow_frame_in_shallow_frame\"\n- \"inside_shallow_frame_with_padding\"\n- \"inside_shallow_frame_with_padding_and_vertical_spacing\"\n- \"deep_frame_in_shallow_frame\"\n- \"deep_frame_in_tabbed_pane\"\n- \"slot_button_deep_frame\"\n- \"inventory_frame\"\n- \"quick_panel_slot_button_deep_frame\"\n- \"filter_frame\"\n- \"train_inventory_frame\"\n- \"tooltip_frame\"\n- \"tooltip_description_frame\"\n- \"blueprint_tooltip_description_frame\"\n- \"goal_frame\"\n- \"goal_inner_frame\"\n- \"shortcut_bar_window_frame\"\n- \"quick_bar_inner_panel\"\n- \"tool_equip_inner_panel\"\n- \"shortcut_bar_inner_panel\"\n- \"subfooter_frame\"\n- \"subfooter_frame_with_left_edge\"\n- \"tips_and_tricks_info_frame\"\n- \"tips_and_tricks_info_frame_small_screen\"\n- \"tips_and_tricks_subfooter\"\n- \"right_container_frame\"\n- \"minimap_frame\"\n- \"side_menu_frame\"\n- \"achievement_frame\"\n- \"completed_achievement_frame\"\n- \"tips_and_tricks_frame\"\n- \"failed_achievement_frame\"\n- \"achievement_notification_frame\"\n- \"tips_and_tricks_notification_frame\"\n- \"subheader_frame\"\n- \"repeated_subheader_frame\"\n- \"subheader_frame_with_text_on_the_right\"\n- \"negative_subheader_frame\"\n- \"slot_group_frame\"\n- \"inside_shallow_frame_packed\"\n- \"slot_window_frame\"\n- \"quick_bar_slot_window_frame\"\n- \"technology_card_frame\"\n- \"research_progress_inner_frame_inactive\"\n- \"research_progress_inner_frame_active\"\n- \"shallow_frame\"\n- \"control_settings_section_frame\"\n- \"technology_gui_outer_frame\"\n- \"technology_gui_left_frame\"\n- \"technology_graph_title_frame\"\n- \"train_schedule_station_frame\"\n- \"train_schedule_station_in_interrupt_frame\"\n- \"train_schedule_temporary_station_frame\"\n- \"train_schedule_condition_frame\"\n- \"blueprint_parameter_frame\"\n- \"train_schedule_fullfilled_condition_frame\"\n- \"train_schedule_comparison_type_frame\"\n- \"train_schedule_comparison_type_frame_indented\"\n- \"train_schedule_comparison_type_frame_extra_indented\"\n- \"sync_mods_default_status_frame\"\n- \"sync_mods_downloading_status_frame\"\n- \"tooltip_title_frame_light\"\n- \"tooltip_panel_background\"\n- \"number_input_frame\"\n- \"neutral_message_frame\"\n- \"negative_message_frame\"\n- \"positive_message_frame\"\n- \"shortcut_selection_row\"\n- \"frame_tabbed_pane_corner\"\n- \"frame_tabbed_pane_frame_header\"\n- \"tabbed_pane_frame\"\n- \"frame_without_left_side\"\n- \"frame_without_left_and_right_side\"\n- \"character_gui_left_side\"\n- \"search_popup_frame\"\n- \"bonus_card_frame\"\n- \"empty_bonus_card_frame\"\n- \"inset_frame_container_frame\"\n- \"chart_search_result_frame\"\n- \"pins_frame\"\n- \"current_research_info_button\"\n- \"current_research_info_image\"\n- \"current_research_info_percent_label\"\n- \"blueprint_book_edit_frame\"\n- \"main_progressbar_frame\"\n- \"editor_mode_selection_frame\"\n- \"editor_inner_frame\"\n- \"new_game_subfooter\"\n- \"entity_frame\"\n- \"entity_button_frame\"\n- \"train_with_minimap_frame\"\n- \"lab_technology_frame\"\n- \"lab_technology_frame_empty\"\n- \"right_side_frame\"\n- \"decider_combinator_frame\"\n- \"decider_combinator_condition_frame\"\n- \"decider_combinator_fulfilled_condition_frame\"\n- \"frame_around_top\"\n- \"frame_around_bottom\"\n- \"frame_around_left\"\n- \"frame_around_right\"\n- \"frame_around_center\"\n- \"packed_horizontal_flow\"\n- \"compact_horizontal_flow\"\n- \"dialog_buttons_horizontal_flow\"\n- \"player_input_horizontal_flow\"\n- \"inset_frame_container_horizontal_flow\"\n- \"inset_frame_container_horizontal_flow_in_tabbed_pane\"\n- \"train_schedule_mode_switch_horizontal_flow\"\n- \"horizontal_flow_with_extra_right_margin\"\n- \"relative_gui_top_flow\"\n- \"relative_gui_bottom_flow\"\n- \"two_module_spacing_horizontal_flow\"\n- \"relative_gui_left_flow\"\n- \"relative_gui_right_flow\"\n- \"packed_vertical_flow\"\n- \"padded_vertical_flow\"\n- \"quickbar_holder_flow\"\n- \"inset_frame_container_vertical_flow\"\n- \"two_module_spacing_vertical_flow\"\n- \"new_game_difficulty_vertical_flow\"\n- \"crafting_queue_flow\"\n- \"table_with_selection\"\n- \"players_table\"\n- \"mods_explore_results_table\"\n- \"bordered_table\"\n- \"compact_slot_table\"\n- \"slot_table\"\n- \"browse_games_table\"\n- \"browse_games_on_lan_table\"\n- \"inset_frame_container_table\"\n- \"map_generator_frequency_table\"\n- \"player_input_table\"\n- \"graphics_settings_table\"\n- \"control_settings_bordered_table\"\n- \"sync_mods_table\"\n- \"removed_content_table\"\n- \"finished_game_table\"\n- \"filter_slot_table\"\n- \"editor_mode_selection_table\"\n- \"splitter_settings_table\"\n- \"trains_widget_table\"\n- \"undelete_space_platforms_table\"\n- \"research_queue_table\"\n- \"wide_activity_bar\"\n- \"production_progressbar\"\n- \"burning_progressbar\"\n- \"health_progressbar\"\n- \"vehicle_health_progressbar\"\n- \"mining_progressbar\"\n- \"shield_progressbar\"\n- \"bonus_progressbar\"\n- \"battery_progressbar\"\n- \"electric_satisfaction_progressbar\"\n- \"electric_satisfaction_statistics_progressbar\"\n- \"electric_statistics_progressbar\"\n- \"electric_satisfaction_in_description_progressbar\"\n- \"item_spoilage_in_description_progress_bar\"\n- \"thick_progressbar\"\n- \"disk_usage_progressbar\"\n- \"achievement_progressbar\"\n- \"achievement_card_progressbar\"\n- \"heat_progressbar\"\n- \"rocket_weight_used_progress_bar\"\n- \"caption_checkbox\"\n- \"subheader_caption_checkbox\"\n- \"black_checkbox\"\n- \"caption_radiobutton\"\n- \"frame_title\"\n- \"caption_label\"\n- \"semibold_caption_label\"\n- \"semibold_label\"\n- \"bold_label\"\n- \"green_label\"\n- \"bold_black_label\"\n- \"bold_green_label\"\n- \"red_label\"\n- \"bold_red_label\"\n- \"electric_usage_label\"\n- \"count_label\"\n- \"recipe_count_line_label\"\n- \"tooltip_label\"\n- \"tooltip_title_label\"\n- \"subheader_label\"\n- \"subheader_caption_label\"\n- \"subheader_semibold_label\"\n- \"subheader_right_aligned_label\"\n- \"heading_2_label\"\n- \"achievement_unlocked_title_label\"\n- \"achievement_locked_title_label\"\n- \"achievement_failed_title_label\"\n- \"achievement_failed_description_label\"\n- \"achievement_failed_reason_label\"\n- \"tips_and_tricks_title_label\"\n- \"steam_friend_label\"\n- \"frame_subheading_label\"\n- \"orange_label\"\n- \"bold_orange_label\"\n- \"grey_label\"\n- \"bold_grey_label\"\n- \"tooltip_heading_label\"\n- \"tooltip_heading_label_category\"\n- \"squashable_label\"\n- \"black_label\"\n- \"black_squashable_label\"\n- \"black_label_with_left_padding\"\n- \"black_squashable_label_with_left_padding\"\n- \"black_clickable_label\"\n- \"black_clickable_squashable_label\"\n- \"color_picker_label\"\n- \"tooltip_item_label\"\n- \"clickable_label\"\n- \"clickable_squashable_label\"\n- \"label_with_left_padding\"\n- \"squashable_label_with_left_padding\"\n- \"train_schedule_unavailable_stop_label\"\n- \"train_schedule_non_existent_stop_label\"\n- \"hyperlink_label\"\n- \"info_label\"\n- \"control_input_shortcut_label\"\n- \"main_menu_version_label\"\n- \"label_under_widget\"\n- \"finished_game_label\"\n- \"train_stop_subheader\"\n- \"inventory_frame_title_style\"\n- \"mods_filter_hit_count_label\"\n- \"inside_shallow_frame_with_padding_line\"\n- \"blurry_panel_horizontal_line\"\n- \"dark_line\"\n- \"tooltip_category_line\"\n- \"tooltip_horizontal_line\"\n- \"lab_progress_and_slot_divider\"\n- \"lab_progress_and_slot_divider_empty\"\n- \"scroll_pane_in_shallow_frame\"\n- \"trains_scroll_pane\"\n- \"trains_scroll_pane_with_side_margin\"\n- \"stations_scroll_pane\"\n- \"stations_scroll_pane_small_screen\"\n- \"tab_scroll_pane\"\n- \"technology_list_scroll_pane\"\n- \"statistics_scroll_pane\"\n- \"blurry_scroll_pane\"\n- \"map_preview_scroll_pane\"\n- \"tab_shallow_scroll_pane\"\n- \"featured_technology_description_scroll_pane\"\n- \"scroll_pane_under_subheader\"\n- \"train_schedule_scroll_pane\"\n- \"train_interrupts_scroll_pane\"\n- \"mods_scroll_pane\"\n- \"stations_trains_scroll_pane\"\n- \"entity_frame_scroll_pane\"\n- \"shallow_scroll_pane\"\n- \"shallow_slots_scroll_pane\"\n- \"deep_scroll_pane\"\n- \"deep_slots_scroll_pane\"\n- \"achievement_slots_scroll_pane\"\n- \"logistic_sections_scroll_pane\"\n- \"character_crafting_queue_scroll_pane\"\n- \"logistic_gui_items_scroll_pane\"\n- \"shortcut_bar_selection_scroll_pane\"\n- \"naked_scroll_pane\"\n- \"horizontally_limited_equipment_grid_scroll_pane\"\n- \"text_holding_scroll_pane\"\n- \"factoriopedia_contents_scroll_pane\"\n- \"factoriopedia_icon_grid_scroll_pane\"\n- \"decider_combinator_conditions_scroll_pane\"\n- \"decider_combinator_outputs_scroll_pane\"\n- \"achievement_image\"\n- \"map_info_image\"\n- \"new_game_info_image\"\n- \"mod_thumbnail_image\"\n- \"mod_explore_thumbnail_image\"\n- \"mod_updates_status_image\"\n- \"install_mod_status_image\"\n- \"mod_attribute_image\"\n- \"tips_and_tricks_image\"\n- \"logistics_diode\"\n- \"status_image\"\n- \"achievement_warning_image\"\n- \"mods_sorting_image\"\n- \"recipe_tooltip_horizontal_image\"\n- \"tips_and_tricks_simulation\"\n- \"entity_button_base\"\n- \"undo_camera\"\n- \"tooltip_camera\"\n- \"wide_entity_button\"\n- \"draggable_space_in_train_schedule\"\n- \"draggable_space_in_temporary_train_station\"\n- \"fulfilled_draggable_space_in_train_schedule\"\n- \"color_indicator\"\n- \"minimap_widget_under_subheader\"\n- \"blueprint_preview\"\n- \"entity_frame_filler\"\n- \"tool_bar_empty_slot\"\n- \"research_queue_drag_handle\"\n- \"research_queue_active_glow_dark\"\n- \"research_queue_active_glow_light\"\n- \"research_queue_active_glow_outer\"\n- \"notched_slider\"\n- \"map_generator_notched_slider\"\n- \"map_generator_13_notch_slider\"\n- \"map_generator_notched_slider_wide\"\n- \"red_slider\"\n- \"green_slider\"\n- \"blue_slider\"\n- \"other_settings_slider\"\n- \"notched_double_slider\"\n- \"blueprint_drop_slot_button\"\n- \"blueprint_icon_preview\"\n- \"draggable_space\"\n- \"draggable_space_in_shortcut_list\"\n- \"filter_tabbed_pane\"\n- \"frame_tabbed_pane\"\n- \"quick_panel_tabbed_pane\"\n- \"tabbed_pane_with_no_side_padding\"\n- \"tabbed_pane_with_extra_padding\"\n- \"frame_tab\"\n- \"filter_group_tab\"\n- \"slightly_smaller_tab\"\n- \"filter_group_slot_tab\"\n- \"production_graph\"\n- \"research_info_tooltip_graph\""
+          "Mandatory styles:\n\n- \"confirm_button\"\n- \"confirm_button_without_tooltip\"\n- \"confirm_double_arrow_button\"\n- \"tips_and_tricks_notification_button\"\n- \"red_confirm_button\"\n- \"red_back_button\"\n- \"red_button\"\n- \"green_button\"\n- \"tool_button_red\"\n- \"tool_button\"\n- \"tool_button_without_padding\"\n- \"tool_button_green\"\n- \"tool_button_blue\"\n- \"tool_button_flush_fluid\"\n- \"mini_button\"\n- \"mini_button_aligned_to_text_vertically\"\n- \"mini_button_aligned_to_text_vertically_when_centered\"\n- \"mini_tool_button_red\"\n- \"highlighted_tool_button\"\n- \"confirm_in_load_game_button\"\n- \"back_button\"\n- \"forward_button\"\n- \"menu_button\"\n- \"menu_button_continue\"\n- \"side_menu_button\"\n- \"dialog_button\"\n- \"control_settings_button\"\n- \"control_settings_section_button\"\n- \"quick_bar_page_button\"\n- \"slot_button\"\n- \"slot_button_in_shallow_frame\"\n- \"yellow_slot_button\"\n- \"red_slot_button\"\n- \"slot_sized_button\"\n- \"compact_slot_sized_button\"\n- \"slot_sized_button_blue\"\n- \"slot_sized_button_red\"\n- \"slot_sized_button_green\"\n- \"shortcut_bar_button\"\n- \"shortcut_bar_button_blue\"\n- \"shortcut_bar_button_red\"\n- \"shortcut_bar_button_green\"\n- \"shortcut_bar_button_small\"\n- \"shortcut_bar_button_small_green\"\n- \"shortcut_bar_button_small_red\"\n- \"shortcut_bar_button_small_blue\"\n- \"compact_slot\"\n- \"slot\"\n- \"red_slot\"\n- \"yellow_slot\"\n- \"green_slot\"\n- \"blue_slot\"\n- \"inventory_slot\"\n- \"filter_inventory_slot\"\n- \"closed_inventory_slot\"\n- \"red_inventory_slot\"\n- \"yellow_inventory_slot\"\n- \"filter_group_button_tab_slightly_larger\"\n- \"blueprint_record_slot_button\"\n- \"blueprint_record_selection_button\"\n- \"compact_red_slot\"\n- \"inventory_limit_slot_button\"\n- \"working_weapon_button\"\n- \"not_working_weapon_button\"\n- \"transparent_slot\"\n- \"universe_frame\"\n- \"universe_widget\"\n- \"universe_connection_button\"\n- \"universe_platform_button\"\n- \"frame_action_button\"\n- \"train_schedule_action_button\"\n- \"train_schedule_delete_button\"\n- \"train_schedule_collapse_button\"\n- \"shortcut_bar_expand_button\"\n- \"open_armor_button\"\n- \"item_and_count_select_confirm\"\n- \"tool_bar_open_button\"\n- \"map_view_add_button\"\n- \"tool_equip_ammo_slot\"\n- \"choose_chat_icon_button\"\n- \"choose_chat_icon_in_textbox_button\"\n- \"decider_combinator_signal_select_button\"\n- \"decider_combinator_fulfilled_signal_select_button\"\n- \"tool_equip_equipment_image\"\n- \"clickable_empty_technology_slot\"\n- \"disabled_technology_slot\"\n- \"disabled_index_technology_slot\"\n- \"researched_technology_slot\"\n- \"available_technology_slot\"\n- \"conditionally_available_technology_slot\"\n- \"unavailable_technology_slot\"\n- \"disabled_preview_technology_slot\"\n- \"disabled_preview_index_technology_slot\"\n- \"researched_preview_technology_slot\"\n- \"available_preview_technology_slot\"\n- \"conditionally_available_preview_technology_slot\"\n- \"unavailable_preview_technology_slot\"\n- \"omitted_technology_slot\"\n- \"crafting_queue_slot\"\n- \"promised_crafting_queue_slot\"\n- \"image_tab_slot\"\n- \"image_tab_selected_slot\"\n- \"red_circuit_network_content_slot\"\n- \"green_circuit_network_content_slot\"\n- \"drop_target_button\"\n- \"locomotive_minimap_button\"\n- \"browse_games_gui_toggle_favorite_on_button\"\n- \"browse_games_gui_toggle_favorite_off_button\"\n- \"research_queue_cancel_button\"\n- \"new_game_header_list_box_item\"\n- \"list_box_item\"\n- \"train_status_button\"\n- \"station_train_status_button\"\n- \"title_tip_item\"\n- \"default_permission_group_list_box_item\"\n- \"target_station_in_schedule_in_train_view_list_box_item\"\n- \"no_path_station_in_schedule_in_train_view_list_box_item\"\n- \"not_accessible_station_in_station_selection\"\n- \"partially_accessible_station_in_station_selection\"\n- \"other_settings_gui_button\"\n- \"map_generator_preview_button\"\n- \"map_generator_close_preview_button\"\n- \"map_generator_confirm_button\"\n- \"train_schedule_comparison_type_button\"\n- \"train_schedule_add_wait_condition_button\"\n- \"train_schedule_add_station_button\"\n- \"train_schedule_add_interrupt_station_button\"\n- \"train_schedule_item_select_button\"\n- \"train_schedule_fulfilled_item_select_button\"\n- \"train_schedule_fulfilled_delete_button\"\n- \"train_schedule_temporary_station_delete_button\"\n- \"train_schedule_condition_time_selection_button\"\n- \"entity_variation_button\"\n- \"tile_variation_button\"\n- \"cancel_close_button\"\n- \"close_button\"\n- \"mods_filter_exclude_button\"\n- \"wide_list_box\"\n- \"wide_list_box_in_shallow_frame\"\n- \"wide_list_box_under_subheader\"\n- \"wide_list_box_in_shallow_frame_under_subheader\"\n- \"list_box_under_subheader\"\n- \"campaigns_list_box\"\n- \"campaign_levels_list_box\"\n- \"custom_games_list_box\"\n- \"train_station_list_box\"\n- \"floating_train_station_list_box\"\n- \"schedule_in_train_view_list_box\"\n- \"permissions_groups_list_box\"\n- \"permissions_players_list_box\"\n- \"naked_list_box\"\n- \"locale_dropdown\"\n- \"game_controller_icons_dropdown\"\n- \"circuit_condition_comparator_dropdown\"\n- \"train_schedule_circuit_condition_comparator_dropdown\"\n- \"changelog_textbox\"\n- \"console_input_textfield\"\n- \"invalid_value_textfield\"\n- \"highlighted_value_textfield\"\n- \"mod_startup_settings_mismatch_notice_box\"\n- \"notice_scroll_pane\"\n- \"pins_scroll_pane\"\n- \"notice_textbox\"\n- \"long_number_textfield\"\n- \"big_notice_textbox\"\n- \"small_notice_textbox\"\n- \"search_popup_textfield\"\n- \"other_settings_gui_textbox\"\n- \"short_number_textfield\"\n- \"invalid_value_short_number_textfield\"\n- \"very_short_number_textfield\"\n- \"slider_value_textfield\"\n- \"wide_slider_value_textfield\"\n- \"stretchable_textfield\"\n- \"editor_lua_textbox\"\n- \"edit_blueprint_description_textbox\"\n- \"non_draggable_frame\"\n- \"invisible_frame\"\n- \"frame_with_even_paddings\"\n- \"no_header_filler_frame\"\n- \"map_details_frame\"\n- \"bordered_frame\"\n- \"inside_deep_frame\"\n- \"tab_deep_frame_in_entity_frame\"\n- \"deep_frame_in_shallow_frame_for_description\"\n- \"deep_frame_in_shallow_frame_for_description_with_fixed_width\"\n- \"inside_shallow_frame\"\n- \"shallow_frame_in_shallow_frame\"\n- \"inside_shallow_frame_with_padding\"\n- \"inside_shallow_frame_with_padding_and_vertical_spacing\"\n- \"deep_frame_in_shallow_frame\"\n- \"deep_frame_in_tabbed_pane\"\n- \"slot_button_deep_frame\"\n- \"inventory_frame\"\n- \"quick_panel_slot_button_deep_frame\"\n- \"filter_frame\"\n- \"train_inventory_frame\"\n- \"tooltip_frame\"\n- \"tooltip_description_frame\"\n- \"blueprint_tooltip_description_frame\"\n- \"goal_frame\"\n- \"goal_inner_frame\"\n- \"shortcut_bar_window_frame\"\n- \"quick_bar_inner_panel\"\n- \"tool_equip_inner_panel\"\n- \"shortcut_bar_inner_panel\"\n- \"subfooter_frame\"\n- \"subfooter_frame_with_left_edge\"\n- \"tips_and_tricks_info_frame\"\n- \"tips_and_tricks_info_frame_small_screen\"\n- \"tips_and_tricks_subfooter\"\n- \"right_container_frame\"\n- \"minimap_frame\"\n- \"side_menu_frame\"\n- \"achievement_frame\"\n- \"completed_achievement_frame\"\n- \"tips_and_tricks_frame\"\n- \"failed_achievement_frame\"\n- \"achievement_notification_frame\"\n- \"tips_and_tricks_notification_frame\"\n- \"subheader_frame\"\n- \"repeated_subheader_frame\"\n- \"subheader_frame_with_text_on_the_right\"\n- \"negative_subheader_frame\"\n- \"slot_group_frame\"\n- \"inside_shallow_frame_packed\"\n- \"slot_window_frame\"\n- \"quick_bar_slot_window_frame\"\n- \"technology_card_frame\"\n- \"research_progress_inner_frame_inactive\"\n- \"research_progress_inner_frame_active\"\n- \"shallow_frame\"\n- \"control_settings_section_frame\"\n- \"technology_gui_outer_frame\"\n- \"technology_gui_left_frame\"\n- \"technology_graph_title_frame\"\n- \"train_schedule_station_frame\"\n- \"train_schedule_station_in_interrupt_frame\"\n- \"train_schedule_temporary_station_frame\"\n- \"train_schedule_condition_frame\"\n- \"blueprint_parameter_frame\"\n- \"train_schedule_fullfilled_condition_frame\"\n- \"train_schedule_comparison_type_frame\"\n- \"train_schedule_comparison_type_frame_indented\"\n- \"train_schedule_comparison_type_frame_extra_indented\"\n- \"sync_mods_default_status_frame\"\n- \"sync_mods_downloading_status_frame\"\n- \"tooltip_title_frame_light\"\n- \"tooltip_panel_background\"\n- \"number_input_frame\"\n- \"neutral_message_frame\"\n- \"negative_message_frame\"\n- \"positive_message_frame\"\n- \"shortcut_selection_row\"\n- \"frame_tabbed_pane_corner\"\n- \"frame_tabbed_pane_frame_header\"\n- \"tabbed_pane_frame\"\n- \"frame_without_left_side\"\n- \"frame_without_left_and_right_side\"\n- \"character_gui_left_side\"\n- \"search_popup_frame\"\n- \"bonus_card_frame\"\n- \"empty_bonus_card_frame\"\n- \"inset_frame_container_frame\"\n- \"chart_search_result_frame\"\n- \"pins_frame\"\n- \"current_research_info_button\"\n- \"current_research_info_image\"\n- \"current_research_info_percent_label\"\n- \"blueprint_book_edit_frame\"\n- \"main_progressbar_frame\"\n- \"editor_mode_selection_frame\"\n- \"editor_inner_frame\"\n- \"new_game_subfooter\"\n- \"entity_frame\"\n- \"entity_button_frame\"\n- \"train_with_minimap_frame\"\n- \"lab_technology_frame\"\n- \"lab_technology_frame_empty\"\n- \"right_side_frame\"\n- \"decider_combinator_frame\"\n- \"decider_combinator_condition_frame\"\n- \"decider_combinator_fulfilled_condition_frame\"\n- \"frame_around_top\"\n- \"frame_around_bottom\"\n- \"frame_around_left\"\n- \"frame_around_right\"\n- \"frame_around_center\"\n- \"packed_horizontal_flow\"\n- \"compact_horizontal_flow\"\n- \"dialog_buttons_horizontal_flow\"\n- \"player_input_horizontal_flow\"\n- \"inset_frame_container_horizontal_flow\"\n- \"inset_frame_container_horizontal_flow_in_tabbed_pane\"\n- \"train_schedule_mode_switch_horizontal_flow\"\n- \"horizontal_flow_with_extra_right_margin\"\n- \"relative_gui_top_flow\"\n- \"relative_gui_bottom_flow\"\n- \"two_module_spacing_horizontal_flow\"\n- \"relative_gui_left_flow\"\n- \"relative_gui_right_flow\"\n- \"packed_vertical_flow\"\n- \"padded_vertical_flow\"\n- \"quickbar_holder_flow\"\n- \"inset_frame_container_vertical_flow\"\n- \"two_module_spacing_vertical_flow\"\n- \"new_game_difficulty_vertical_flow\"\n- \"crafting_queue_flow\"\n- \"table_with_selection\"\n- \"players_table\"\n- \"mods_explore_results_table\"\n- \"bordered_table\"\n- \"compact_slot_table\"\n- \"slot_table\"\n- \"browse_games_table\"\n- \"browse_games_on_lan_table\"\n- \"inset_frame_container_table\"\n- \"map_generator_frequency_table\"\n- \"player_input_table\"\n- \"graphics_settings_table\"\n- \"control_settings_bordered_table\"\n- \"sync_mods_table\"\n- \"removed_content_table\"\n- \"finished_game_table\"\n- \"filter_slot_table\"\n- \"editor_mode_selection_table\"\n- \"splitter_settings_table\"\n- \"trains_widget_table\"\n- \"undelete_space_platforms_table\"\n- \"research_queue_table\"\n- \"mappers_table\"\n- \"wide_activity_bar\"\n- \"production_progressbar\"\n- \"burning_progressbar\"\n- \"health_progressbar\"\n- \"vehicle_health_progressbar\"\n- \"mining_progressbar\"\n- \"shield_progressbar\"\n- \"bonus_progressbar\"\n- \"battery_progressbar\"\n- \"electric_satisfaction_progressbar\"\n- \"electric_satisfaction_statistics_progressbar\"\n- \"electric_statistics_progressbar\"\n- \"electric_satisfaction_in_description_progressbar\"\n- \"item_spoilage_in_description_progress_bar\"\n- \"thick_progressbar\"\n- \"disk_usage_progressbar\"\n- \"achievement_progressbar\"\n- \"achievement_card_progressbar\"\n- \"heat_progressbar\"\n- \"rocket_weight_used_progress_bar\"\n- \"caption_checkbox\"\n- \"subheader_caption_checkbox\"\n- \"black_checkbox\"\n- \"caption_radiobutton\"\n- \"frame_title\"\n- \"caption_label\"\n- \"semibold_caption_label\"\n- \"semibold_label\"\n- \"bold_label\"\n- \"green_label\"\n- \"bold_black_label\"\n- \"bold_green_label\"\n- \"red_label\"\n- \"bold_red_label\"\n- \"electric_usage_label\"\n- \"count_label\"\n- \"recipe_count_line_label\"\n- \"tooltip_label\"\n- \"tooltip_title_label\"\n- \"subheader_label\"\n- \"subheader_caption_label\"\n- \"subheader_semibold_label\"\n- \"subheader_right_aligned_label\"\n- \"heading_2_label\"\n- \"achievement_unlocked_title_label\"\n- \"achievement_locked_title_label\"\n- \"achievement_failed_title_label\"\n- \"achievement_failed_description_label\"\n- \"achievement_failed_reason_label\"\n- \"tips_and_tricks_title_label\"\n- \"steam_friend_label\"\n- \"frame_subheading_label\"\n- \"orange_label\"\n- \"bold_orange_label\"\n- \"grey_label\"\n- \"bold_grey_label\"\n- \"tooltip_heading_label\"\n- \"tooltip_heading_label_category\"\n- \"squashable_label\"\n- \"black_label\"\n- \"black_squashable_label\"\n- \"black_label_with_left_padding\"\n- \"black_squashable_label_with_left_padding\"\n- \"black_clickable_label\"\n- \"black_clickable_squashable_label\"\n- \"color_picker_label\"\n- \"tooltip_item_label\"\n- \"clickable_label\"\n- \"clickable_squashable_label\"\n- \"label_with_left_padding\"\n- \"squashable_label_with_left_padding\"\n- \"train_schedule_unavailable_stop_label\"\n- \"train_schedule_non_existent_stop_label\"\n- \"hyperlink_label\"\n- \"info_label\"\n- \"control_input_shortcut_label\"\n- \"main_menu_version_label\"\n- \"label_under_widget\"\n- \"finished_game_label\"\n- \"train_stop_subheader\"\n- \"inventory_frame_title_style\"\n- \"mods_filter_hit_count_label\"\n- \"slot_column_header_label\"\n- \"inside_shallow_frame_with_padding_line\"\n- \"blurry_panel_horizontal_line\"\n- \"dark_line\"\n- \"tooltip_category_line\"\n- \"tooltip_horizontal_line\"\n- \"lab_progress_and_slot_divider\"\n- \"lab_progress_and_slot_divider_empty\"\n- \"scroll_pane_in_shallow_frame\"\n- \"trains_scroll_pane\"\n- \"trains_scroll_pane_with_side_margin\"\n- \"stations_scroll_pane\"\n- \"stations_scroll_pane_small_screen\"\n- \"tab_scroll_pane\"\n- \"technology_list_scroll_pane\"\n- \"statistics_scroll_pane\"\n- \"blurry_scroll_pane\"\n- \"map_preview_scroll_pane\"\n- \"tab_shallow_scroll_pane\"\n- \"featured_technology_description_scroll_pane\"\n- \"scroll_pane_under_subheader\"\n- \"train_schedule_scroll_pane\"\n- \"train_interrupts_scroll_pane\"\n- \"mods_scroll_pane\"\n- \"stations_trains_scroll_pane\"\n- \"entity_frame_scroll_pane\"\n- \"shallow_scroll_pane\"\n- \"shallow_slots_scroll_pane\"\n- \"deep_scroll_pane\"\n- \"deep_slots_scroll_pane\"\n- \"achievement_slots_scroll_pane\"\n- \"logistic_sections_scroll_pane\"\n- \"character_crafting_queue_scroll_pane\"\n- \"logistic_gui_items_scroll_pane\"\n- \"shortcut_bar_selection_scroll_pane\"\n- \"naked_scroll_pane\"\n- \"horizontally_limited_equipment_grid_scroll_pane\"\n- \"text_holding_scroll_pane\"\n- \"factoriopedia_contents_scroll_pane\"\n- \"factoriopedia_icon_grid_scroll_pane\"\n- \"decider_combinator_conditions_scroll_pane\"\n- \"decider_combinator_outputs_scroll_pane\"\n- \"mappers_scroll_pane\"\n- \"achievement_image\"\n- \"map_info_image\"\n- \"new_game_info_image\"\n- \"mod_thumbnail_image\"\n- \"mod_explore_thumbnail_image\"\n- \"mod_updates_status_image\"\n- \"install_mod_status_image\"\n- \"mod_attribute_image\"\n- \"tips_and_tricks_image\"\n- \"logistics_diode\"\n- \"status_image\"\n- \"achievement_warning_image\"\n- \"mods_sorting_image\"\n- \"recipe_tooltip_horizontal_image\"\n- \"tips_and_tricks_simulation\"\n- \"entity_button_base\"\n- \"undo_camera\"\n- \"tooltip_camera\"\n- \"wide_entity_button\"\n- \"draggable_space_in_train_schedule\"\n- \"draggable_space_in_temporary_train_station\"\n- \"fulfilled_draggable_space_in_train_schedule\"\n- \"color_indicator\"\n- \"minimap_widget_under_subheader\"\n- \"blueprint_preview\"\n- \"entity_frame_filler\"\n- \"tool_bar_empty_slot\"\n- \"research_queue_drag_handle\"\n- \"research_queue_active_glow_dark\"\n- \"research_queue_active_glow_light\"\n- \"research_queue_active_glow_outer\"\n- \"notched_slider\"\n- \"map_generator_notched_slider\"\n- \"map_generator_13_notch_slider\"\n- \"map_generator_notched_slider_wide\"\n- \"red_slider\"\n- \"green_slider\"\n- \"blue_slider\"\n- \"other_settings_slider\"\n- \"notched_double_slider\"\n- \"blueprint_drop_slot_button\"\n- \"blueprint_icon_preview\"\n- \"draggable_space\"\n- \"draggable_space_in_shortcut_list\"\n- \"filter_tabbed_pane\"\n- \"frame_tabbed_pane\"\n- \"quick_panel_tabbed_pane\"\n- \"tabbed_pane_with_no_side_padding\"\n- \"tabbed_pane_with_extra_padding\"\n- \"frame_tab\"\n- \"filter_group_tab\"\n- \"slightly_smaller_tab\"\n- \"filter_group_slot_tab\"\n- \"production_graph\"\n- \"research_info_tooltip_graph\""
         ],
         "examples": [
           "```\n-- Adding a custom frame_style-type style\ndata.raw[\"gui-style\"][\"default\"][\"custom_style_for_a_frame\"] =\n{\n  type = \"frame_style\",\n  parent = \"frame\",\n  use_header_filler = false,\n  drag_by_title = false\n}\n```"
@@ -15041,6 +15161,21 @@
       "deprecated": false,
       "properties": [
         {
+          "name": "adjustable_belt_stack_size",
+          "order": 9,
+          "description": "Loader belt stack size can be adjusted at runtime. Requires [LoaderPrototype::max_belt_stack_size](prototype:LoaderPrototype::max_belt_stack_size) to be > 1.",
+          "visibility": [
+            "space_age"
+          ],
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
           "name": "allow_container_interaction",
           "order": 6,
           "description": "Whether this loader can load and unload stationary inventories such as containers and crafting machines.",
@@ -15066,7 +15201,7 @@
         },
         {
           "name": "belt_length",
-          "order": 9,
+          "order": 10,
           "description": "How long this loader's belt is. Should be the same as belt_distance, which is hardcoded to `0.5` for [Loader1x2Prototype](prototype:Loader1x2Prototype) and to 0 for [Loader1x1Prototype](prototype:Loader1x1Prototype). See the linked prototypes for an explanation of belt_distance.",
           "override": false,
           "type": "double",
@@ -15078,7 +15213,7 @@
         },
         {
           "name": "circuit_connector",
-          "order": 15,
+          "order": 16,
           "description": "First the four cardinal directions for `direction_out`, followed by the four directions for `direction_in`.",
           "override": false,
           "type": {
@@ -15101,7 +15236,7 @@
         },
         {
           "name": "circuit_wire_max_distance",
-          "order": 12,
+          "order": 13,
           "description": "The maximum circuit wire distance for this entity.",
           "override": false,
           "type": "double",
@@ -15125,7 +15260,7 @@
         },
         {
           "name": "draw_circuit_wires",
-          "order": 14,
+          "order": 15,
           "description": "",
           "override": false,
           "type": "bool",
@@ -15137,7 +15272,7 @@
         },
         {
           "name": "draw_copper_wires",
-          "order": 13,
+          "order": 14,
           "description": "",
           "override": false,
           "type": "bool",
@@ -15149,7 +15284,7 @@
         },
         {
           "name": "energy_per_item",
-          "order": 11,
+          "order": 12,
           "description": "Energy in Joules. Can't be negative.",
           "override": false,
           "type": "Energy",
@@ -15161,7 +15296,7 @@
         },
         {
           "name": "energy_source",
-          "order": 10,
+          "order": 11,
           "description": "",
           "override": false,
           "type": {
@@ -55319,7 +55454,7 @@
         {
           "name": "draw_background",
           "order": 5,
-          "description": "Outline is drawn using signed distance field generated on load.One icon image, will have only one SDF generated. But if the image is used in multiple icon with different scales, outline width won't match the desired width in all the scales but the largest one.",
+          "description": "Outline is drawn using signed distance field generated on load. One icon image, will have only one SDF generated. But if the image is used in multiple icon with different scales, outline width won't match the desired width in all the scales but the largest one.",
           "override": false,
           "type": "bool",
           "optional": true,
@@ -83548,7 +83683,7 @@
         {
           "name": "invalid",
           "order": 0,
-          "description": ""
+          "description": "The default destination type of a cargo pod when created runtime. Setting its destination to any other type will instantly launch it."
         },
         {
           "name": "orbit",
@@ -83558,7 +83693,7 @@
         {
           "name": "space_platform",
           "order": 4,
-          "description": "Only used for sending a space platform starter pack to a platform that is waiting for one."
+          "description": "Only used for sending a space platform starter pack to a platform that is waiting for one. Regular deliveries to space platform hubs use [station](runtime:defines.cargo_destination.station) destination type instead."
         },
         {
           "name": "station",
@@ -83568,7 +83703,7 @@
         {
           "name": "surface",
           "order": 3,
-          "description": "Cargo pods will switch destination type from surface to station before starting descent if there is a station available, unless [CargoDestination::position](runtime:CargoDestination::position) has also been specified."
+          "description": "Cargo pods will switch destination type from surface to station before starting descent if there is a station available and [CargoDestination::position](runtime:CargoDestination::position) has not been specified."
         }
       ]
     },
@@ -83996,6 +84131,11 @@
               "name": "display_panel",
               "order": 28,
               "description": "[LuaDisplayPanelControlBehavior](runtime:LuaDisplayPanelControlBehavior)"
+            },
+            {
+              "name": "furnace",
+              "order": 32,
+              "description": "[LuaFurnaceControlBehavior](runtime:LuaFurnaceControlBehavior)"
             },
             {
               "name": "generic_on_off",
@@ -84829,958 +84969,978 @@
           "description": ""
         },
         {
-          "name": "on_cargo_pod_finished_ascending",
+          "name": "on_cargo_pod_delivered_cargo",
           "order": 9,
           "description": ""
         },
         {
-          "name": "on_character_corpse_expired",
+          "name": "on_cargo_pod_finished_ascending",
           "order": 10,
           "description": ""
         },
         {
-          "name": "on_chart_tag_added",
+          "name": "on_cargo_pod_finished_descending",
           "order": 11,
           "description": ""
         },
         {
-          "name": "on_chart_tag_modified",
+          "name": "on_character_corpse_expired",
           "order": 12,
           "description": ""
         },
         {
-          "name": "on_chart_tag_removed",
+          "name": "on_chart_tag_added",
           "order": 13,
           "description": ""
         },
         {
-          "name": "on_chunk_charted",
+          "name": "on_chart_tag_modified",
           "order": 14,
           "description": ""
         },
         {
-          "name": "on_chunk_deleted",
+          "name": "on_chart_tag_removed",
           "order": 15,
           "description": ""
         },
         {
-          "name": "on_chunk_generated",
+          "name": "on_chunk_charted",
           "order": 16,
           "description": ""
         },
         {
-          "name": "on_combat_robot_expired",
+          "name": "on_chunk_deleted",
           "order": 17,
           "description": ""
         },
         {
-          "name": "on_console_chat",
+          "name": "on_chunk_generated",
           "order": 18,
           "description": ""
         },
         {
-          "name": "on_console_command",
+          "name": "on_combat_robot_expired",
           "order": 19,
           "description": ""
         },
         {
-          "name": "on_cutscene_cancelled",
+          "name": "on_console_chat",
           "order": 20,
           "description": ""
         },
         {
-          "name": "on_cutscene_finished",
+          "name": "on_console_command",
           "order": 21,
           "description": ""
         },
         {
-          "name": "on_cutscene_started",
+          "name": "on_cutscene_cancelled",
           "order": 22,
           "description": ""
         },
         {
-          "name": "on_cutscene_waypoint_reached",
+          "name": "on_cutscene_finished",
           "order": 23,
           "description": ""
         },
         {
-          "name": "on_entity_cloned",
+          "name": "on_cutscene_started",
           "order": 24,
           "description": ""
         },
         {
-          "name": "on_entity_color_changed",
+          "name": "on_cutscene_waypoint_reached",
           "order": 25,
           "description": ""
         },
         {
-          "name": "on_entity_damaged",
+          "name": "on_entity_cloned",
           "order": 26,
           "description": ""
         },
         {
-          "name": "on_entity_died",
+          "name": "on_entity_color_changed",
           "order": 27,
           "description": ""
         },
         {
-          "name": "on_entity_logistic_slot_changed",
+          "name": "on_entity_damaged",
           "order": 28,
           "description": ""
         },
         {
-          "name": "on_entity_renamed",
+          "name": "on_entity_died",
           "order": 29,
           "description": ""
         },
         {
-          "name": "on_entity_settings_pasted",
+          "name": "on_entity_logistic_slot_changed",
           "order": 30,
           "description": ""
         },
         {
-          "name": "on_entity_spawned",
+          "name": "on_entity_renamed",
           "order": 31,
           "description": ""
         },
         {
-          "name": "on_equipment_inserted",
+          "name": "on_entity_settings_pasted",
           "order": 32,
           "description": ""
         },
         {
-          "name": "on_equipment_removed",
+          "name": "on_entity_spawned",
           "order": 33,
           "description": ""
         },
         {
-          "name": "on_force_cease_fire_changed",
+          "name": "on_equipment_inserted",
           "order": 34,
           "description": ""
         },
         {
-          "name": "on_force_created",
+          "name": "on_equipment_removed",
           "order": 35,
           "description": ""
         },
         {
-          "name": "on_force_friends_changed",
+          "name": "on_force_cease_fire_changed",
           "order": 36,
           "description": ""
         },
         {
-          "name": "on_force_reset",
+          "name": "on_force_created",
           "order": 37,
           "description": ""
         },
         {
-          "name": "on_forces_merged",
+          "name": "on_force_friends_changed",
           "order": 38,
           "description": ""
         },
         {
-          "name": "on_forces_merging",
+          "name": "on_force_reset",
           "order": 39,
           "description": ""
         },
         {
-          "name": "on_game_created_from_scenario",
+          "name": "on_forces_merged",
           "order": 40,
           "description": ""
         },
         {
-          "name": "on_gui_checked_state_changed",
+          "name": "on_forces_merging",
           "order": 41,
           "description": ""
         },
         {
-          "name": "on_gui_click",
+          "name": "on_game_created_from_scenario",
           "order": 42,
           "description": ""
         },
         {
-          "name": "on_gui_closed",
+          "name": "on_gui_checked_state_changed",
           "order": 43,
           "description": ""
         },
         {
-          "name": "on_gui_confirmed",
+          "name": "on_gui_click",
           "order": 44,
           "description": ""
         },
         {
-          "name": "on_gui_elem_changed",
+          "name": "on_gui_closed",
           "order": 45,
           "description": ""
         },
         {
-          "name": "on_gui_hover",
+          "name": "on_gui_confirmed",
           "order": 46,
           "description": ""
         },
         {
-          "name": "on_gui_leave",
+          "name": "on_gui_elem_changed",
           "order": 47,
           "description": ""
         },
         {
-          "name": "on_gui_location_changed",
+          "name": "on_gui_hover",
           "order": 48,
           "description": ""
         },
         {
-          "name": "on_gui_opened",
+          "name": "on_gui_leave",
           "order": 49,
           "description": ""
         },
         {
-          "name": "on_gui_selected_tab_changed",
+          "name": "on_gui_location_changed",
           "order": 50,
           "description": ""
         },
         {
-          "name": "on_gui_selection_state_changed",
+          "name": "on_gui_opened",
           "order": 51,
           "description": ""
         },
         {
-          "name": "on_gui_switch_state_changed",
+          "name": "on_gui_selected_tab_changed",
           "order": 52,
           "description": ""
         },
         {
-          "name": "on_gui_text_changed",
+          "name": "on_gui_selection_state_changed",
           "order": 53,
           "description": ""
         },
         {
-          "name": "on_gui_value_changed",
+          "name": "on_gui_switch_state_changed",
           "order": 54,
           "description": ""
         },
         {
-          "name": "on_land_mine_armed",
+          "name": "on_gui_text_changed",
           "order": 55,
           "description": ""
         },
         {
-          "name": "on_lua_shortcut",
+          "name": "on_gui_value_changed",
           "order": 56,
           "description": ""
         },
         {
-          "name": "on_marked_for_deconstruction",
+          "name": "on_land_mine_armed",
           "order": 57,
           "description": ""
         },
         {
-          "name": "on_marked_for_upgrade",
+          "name": "on_lua_shortcut",
           "order": 58,
           "description": ""
         },
         {
-          "name": "on_market_item_purchased",
+          "name": "on_marked_for_deconstruction",
           "order": 59,
           "description": ""
         },
         {
-          "name": "on_mod_item_opened",
+          "name": "on_marked_for_upgrade",
           "order": 60,
           "description": ""
         },
         {
-          "name": "on_object_destroyed",
+          "name": "on_market_item_purchased",
           "order": 61,
           "description": ""
         },
         {
-          "name": "on_permission_group_added",
+          "name": "on_mod_item_opened",
           "order": 62,
           "description": ""
         },
         {
-          "name": "on_permission_group_deleted",
+          "name": "on_multiplayer_init",
           "order": 63,
           "description": ""
         },
         {
-          "name": "on_permission_group_edited",
+          "name": "on_object_destroyed",
           "order": 64,
           "description": ""
         },
         {
-          "name": "on_permission_string_imported",
+          "name": "on_permission_group_added",
           "order": 65,
           "description": ""
         },
         {
-          "name": "on_picked_up_item",
+          "name": "on_permission_group_deleted",
           "order": 66,
           "description": ""
         },
         {
-          "name": "on_player_alt_reverse_selected_area",
+          "name": "on_permission_group_edited",
           "order": 67,
           "description": ""
         },
         {
-          "name": "on_player_alt_selected_area",
+          "name": "on_permission_string_imported",
           "order": 68,
           "description": ""
         },
         {
-          "name": "on_player_ammo_inventory_changed",
+          "name": "on_picked_up_item",
           "order": 69,
           "description": ""
         },
         {
-          "name": "on_player_armor_inventory_changed",
+          "name": "on_player_alt_reverse_selected_area",
           "order": 70,
           "description": ""
         },
         {
-          "name": "on_player_banned",
+          "name": "on_player_alt_selected_area",
           "order": 71,
           "description": ""
         },
         {
-          "name": "on_player_built_tile",
+          "name": "on_player_ammo_inventory_changed",
           "order": 72,
           "description": ""
         },
         {
-          "name": "on_player_cancelled_crafting",
+          "name": "on_player_armor_inventory_changed",
           "order": 73,
           "description": ""
         },
         {
-          "name": "on_player_changed_force",
+          "name": "on_player_banned",
           "order": 74,
           "description": ""
         },
         {
-          "name": "on_player_changed_position",
+          "name": "on_player_built_tile",
           "order": 75,
           "description": ""
         },
         {
-          "name": "on_player_changed_surface",
+          "name": "on_player_cancelled_crafting",
           "order": 76,
           "description": ""
         },
         {
-          "name": "on_player_cheat_mode_disabled",
+          "name": "on_player_changed_force",
           "order": 77,
           "description": ""
         },
         {
-          "name": "on_player_cheat_mode_enabled",
+          "name": "on_player_changed_position",
           "order": 78,
           "description": ""
         },
         {
-          "name": "on_player_clicked_gps_tag",
+          "name": "on_player_changed_surface",
           "order": 79,
           "description": ""
         },
         {
-          "name": "on_player_configured_blueprint",
+          "name": "on_player_cheat_mode_disabled",
           "order": 80,
           "description": ""
         },
         {
-          "name": "on_player_controller_changed",
+          "name": "on_player_cheat_mode_enabled",
           "order": 81,
           "description": ""
         },
         {
-          "name": "on_player_crafted_item",
+          "name": "on_player_clicked_gps_tag",
           "order": 82,
           "description": ""
         },
         {
-          "name": "on_player_created",
+          "name": "on_player_configured_blueprint",
           "order": 83,
           "description": ""
         },
         {
-          "name": "on_player_cursor_stack_changed",
+          "name": "on_player_controller_changed",
           "order": 84,
           "description": ""
         },
         {
-          "name": "on_player_deconstructed_area",
+          "name": "on_player_crafted_item",
           "order": 85,
           "description": ""
         },
         {
-          "name": "on_player_demoted",
+          "name": "on_player_created",
           "order": 86,
           "description": ""
         },
         {
-          "name": "on_player_died",
+          "name": "on_player_cursor_stack_changed",
           "order": 87,
           "description": ""
         },
         {
-          "name": "on_player_display_density_scale_changed",
+          "name": "on_player_deconstructed_area",
           "order": 88,
           "description": ""
         },
         {
-          "name": "on_player_display_resolution_changed",
+          "name": "on_player_demoted",
           "order": 89,
           "description": ""
         },
         {
-          "name": "on_player_display_scale_changed",
+          "name": "on_player_died",
           "order": 90,
           "description": ""
         },
         {
-          "name": "on_player_driving_changed_state",
+          "name": "on_player_display_density_scale_changed",
           "order": 91,
           "description": ""
         },
         {
-          "name": "on_player_dropped_item",
+          "name": "on_player_display_resolution_changed",
           "order": 92,
           "description": ""
         },
         {
-          "name": "on_player_fast_transferred",
+          "name": "on_player_display_scale_changed",
           "order": 93,
           "description": ""
         },
         {
-          "name": "on_player_flipped_entity",
+          "name": "on_player_driving_changed_state",
           "order": 94,
           "description": ""
         },
         {
-          "name": "on_player_flushed_fluid",
+          "name": "on_player_dropped_item",
           "order": 95,
           "description": ""
         },
         {
-          "name": "on_player_gun_inventory_changed",
+          "name": "on_player_fast_transferred",
           "order": 96,
           "description": ""
         },
         {
-          "name": "on_player_input_method_changed",
+          "name": "on_player_flipped_entity",
           "order": 97,
           "description": ""
         },
         {
-          "name": "on_player_joined_game",
+          "name": "on_player_flushed_fluid",
           "order": 98,
           "description": ""
         },
         {
-          "name": "on_player_kicked",
+          "name": "on_player_gun_inventory_changed",
           "order": 99,
           "description": ""
         },
         {
-          "name": "on_player_left_game",
+          "name": "on_player_input_method_changed",
           "order": 100,
           "description": ""
         },
         {
-          "name": "on_player_locale_changed",
+          "name": "on_player_joined_game",
           "order": 101,
           "description": ""
         },
         {
-          "name": "on_player_main_inventory_changed",
+          "name": "on_player_kicked",
           "order": 102,
           "description": ""
         },
         {
-          "name": "on_player_mined_entity",
+          "name": "on_player_left_game",
           "order": 103,
           "description": ""
         },
         {
-          "name": "on_player_mined_item",
+          "name": "on_player_locale_changed",
           "order": 104,
           "description": ""
         },
         {
-          "name": "on_player_mined_tile",
+          "name": "on_player_main_inventory_changed",
           "order": 105,
           "description": ""
         },
         {
-          "name": "on_player_muted",
+          "name": "on_player_mined_entity",
           "order": 106,
           "description": ""
         },
         {
-          "name": "on_player_pipette",
+          "name": "on_player_mined_item",
           "order": 107,
           "description": ""
         },
         {
-          "name": "on_player_placed_equipment",
+          "name": "on_player_mined_tile",
           "order": 108,
           "description": ""
         },
         {
-          "name": "on_player_promoted",
+          "name": "on_player_muted",
           "order": 109,
           "description": ""
         },
         {
-          "name": "on_player_removed",
+          "name": "on_player_pipette",
           "order": 110,
           "description": ""
         },
         {
-          "name": "on_player_removed_equipment",
+          "name": "on_player_placed_equipment",
           "order": 111,
           "description": ""
         },
         {
-          "name": "on_player_repaired_entity",
+          "name": "on_player_promoted",
           "order": 112,
           "description": ""
         },
         {
-          "name": "on_player_respawned",
+          "name": "on_player_removed",
           "order": 113,
           "description": ""
         },
         {
-          "name": "on_player_reverse_selected_area",
+          "name": "on_player_removed_equipment",
           "order": 114,
           "description": ""
         },
         {
-          "name": "on_player_rotated_entity",
+          "name": "on_player_repaired_entity",
           "order": 115,
           "description": ""
         },
         {
-          "name": "on_player_selected_area",
+          "name": "on_player_respawned",
           "order": 116,
           "description": ""
         },
         {
-          "name": "on_player_set_quick_bar_slot",
+          "name": "on_player_reverse_selected_area",
           "order": 117,
           "description": ""
         },
         {
-          "name": "on_player_setup_blueprint",
+          "name": "on_player_rotated_entity",
           "order": 118,
           "description": ""
         },
         {
-          "name": "on_player_toggled_alt_mode",
+          "name": "on_player_selected_area",
           "order": 119,
           "description": ""
         },
         {
-          "name": "on_player_toggled_map_editor",
+          "name": "on_player_set_quick_bar_slot",
           "order": 120,
           "description": ""
         },
         {
-          "name": "on_player_trash_inventory_changed",
+          "name": "on_player_setup_blueprint",
           "order": 121,
           "description": ""
         },
         {
-          "name": "on_player_unbanned",
+          "name": "on_player_toggled_alt_mode",
           "order": 122,
           "description": ""
         },
         {
-          "name": "on_player_unmuted",
+          "name": "on_player_toggled_map_editor",
           "order": 123,
           "description": ""
         },
         {
-          "name": "on_player_used_capsule",
+          "name": "on_player_trash_inventory_changed",
           "order": 124,
           "description": ""
         },
         {
-          "name": "on_player_used_spidertron_remote",
+          "name": "on_player_unbanned",
           "order": 125,
           "description": ""
         },
         {
-          "name": "on_post_entity_died",
+          "name": "on_player_unmuted",
           "order": 126,
           "description": ""
         },
         {
-          "name": "on_pre_build",
+          "name": "on_player_used_capsule",
           "order": 127,
           "description": ""
         },
         {
-          "name": "on_pre_chunk_deleted",
+          "name": "on_player_used_spidertron_remote",
           "order": 128,
           "description": ""
         },
         {
-          "name": "on_pre_entity_settings_pasted",
+          "name": "on_post_entity_died",
           "order": 129,
           "description": ""
         },
         {
-          "name": "on_pre_ghost_deconstructed",
+          "name": "on_pre_build",
           "order": 130,
           "description": ""
         },
         {
-          "name": "on_pre_ghost_upgraded",
+          "name": "on_pre_chunk_deleted",
           "order": 131,
           "description": ""
         },
         {
-          "name": "on_pre_permission_group_deleted",
+          "name": "on_pre_entity_settings_pasted",
           "order": 132,
           "description": ""
         },
         {
-          "name": "on_pre_permission_string_imported",
+          "name": "on_pre_ghost_deconstructed",
           "order": 133,
           "description": ""
         },
         {
-          "name": "on_pre_player_crafted_item",
+          "name": "on_pre_ghost_upgraded",
           "order": 134,
           "description": ""
         },
         {
-          "name": "on_pre_player_died",
+          "name": "on_pre_permission_group_deleted",
           "order": 135,
           "description": ""
         },
         {
-          "name": "on_pre_player_left_game",
+          "name": "on_pre_permission_string_imported",
           "order": 136,
           "description": ""
         },
         {
-          "name": "on_pre_player_mined_item",
+          "name": "on_pre_player_crafted_item",
           "order": 137,
           "description": ""
         },
         {
-          "name": "on_pre_player_removed",
+          "name": "on_pre_player_died",
           "order": 138,
           "description": ""
         },
         {
-          "name": "on_pre_player_toggled_map_editor",
+          "name": "on_pre_player_left_game",
           "order": 139,
           "description": ""
         },
         {
-          "name": "on_pre_robot_exploded_cliff",
+          "name": "on_pre_player_mined_item",
           "order": 140,
           "description": ""
         },
         {
-          "name": "on_pre_scenario_finished",
+          "name": "on_pre_player_removed",
           "order": 141,
           "description": ""
         },
         {
-          "name": "on_pre_script_inventory_resized",
+          "name": "on_pre_player_toggled_map_editor",
           "order": 142,
           "description": ""
         },
         {
-          "name": "on_pre_surface_cleared",
+          "name": "on_pre_robot_exploded_cliff",
           "order": 143,
           "description": ""
         },
         {
-          "name": "on_pre_surface_deleted",
+          "name": "on_pre_scenario_finished",
           "order": 144,
           "description": ""
         },
         {
-          "name": "on_redo_applied",
+          "name": "on_pre_script_inventory_resized",
           "order": 145,
           "description": ""
         },
         {
-          "name": "on_research_cancelled",
+          "name": "on_pre_surface_cleared",
           "order": 146,
           "description": ""
         },
         {
-          "name": "on_research_finished",
+          "name": "on_pre_surface_deleted",
           "order": 147,
           "description": ""
         },
         {
-          "name": "on_research_moved",
+          "name": "on_redo_applied",
           "order": 148,
           "description": ""
         },
         {
-          "name": "on_research_reversed",
+          "name": "on_research_cancelled",
           "order": 149,
           "description": ""
         },
         {
-          "name": "on_research_started",
+          "name": "on_research_finished",
           "order": 150,
           "description": ""
         },
         {
-          "name": "on_resource_depleted",
+          "name": "on_research_moved",
           "order": 151,
           "description": ""
         },
         {
-          "name": "on_robot_built_entity",
+          "name": "on_research_reversed",
           "order": 152,
           "description": ""
         },
         {
-          "name": "on_robot_built_tile",
+          "name": "on_research_started",
           "order": 153,
           "description": ""
         },
         {
-          "name": "on_robot_exploded_cliff",
+          "name": "on_resource_depleted",
           "order": 154,
           "description": ""
         },
         {
-          "name": "on_robot_mined",
+          "name": "on_robot_built_entity",
           "order": 155,
           "description": ""
         },
         {
-          "name": "on_robot_mined_entity",
+          "name": "on_robot_built_tile",
           "order": 156,
           "description": ""
         },
         {
-          "name": "on_robot_mined_tile",
+          "name": "on_robot_exploded_cliff",
           "order": 157,
           "description": ""
         },
         {
-          "name": "on_robot_pre_mined",
+          "name": "on_robot_mined",
           "order": 158,
           "description": ""
         },
         {
-          "name": "on_rocket_launch_ordered",
+          "name": "on_robot_mined_entity",
           "order": 159,
           "description": ""
         },
         {
-          "name": "on_rocket_launched",
+          "name": "on_robot_mined_tile",
           "order": 160,
           "description": ""
         },
         {
-          "name": "on_runtime_mod_setting_changed",
+          "name": "on_robot_pre_mined",
           "order": 161,
           "description": ""
         },
         {
-          "name": "on_script_inventory_resized",
+          "name": "on_rocket_launch_ordered",
           "order": 162,
           "description": ""
         },
         {
-          "name": "on_script_path_request_finished",
+          "name": "on_rocket_launched",
           "order": 163,
           "description": ""
         },
         {
-          "name": "on_script_trigger_effect",
+          "name": "on_runtime_mod_setting_changed",
           "order": 164,
           "description": ""
         },
         {
-          "name": "on_sector_scanned",
+          "name": "on_script_inventory_resized",
           "order": 165,
           "description": ""
         },
         {
-          "name": "on_segment_entity_created",
+          "name": "on_script_path_request_finished",
           "order": 166,
           "description": ""
         },
         {
-          "name": "on_selected_entity_changed",
+          "name": "on_script_trigger_effect",
           "order": 167,
           "description": ""
         },
         {
-          "name": "on_space_platform_built_entity",
+          "name": "on_sector_scanned",
           "order": 168,
           "description": ""
         },
         {
-          "name": "on_space_platform_built_tile",
+          "name": "on_segment_entity_created",
           "order": 169,
           "description": ""
         },
         {
-          "name": "on_space_platform_changed_state",
+          "name": "on_selected_entity_changed",
           "order": 170,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_entity",
+          "name": "on_singleplayer_init",
           "order": 171,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_item",
+          "name": "on_space_platform_built_entity",
           "order": 172,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_tile",
+          "name": "on_space_platform_built_tile",
           "order": 173,
           "description": ""
         },
         {
-          "name": "on_space_platform_pre_mined",
+          "name": "on_space_platform_changed_state",
           "order": 174,
           "description": ""
         },
         {
-          "name": "on_spider_command_completed",
+          "name": "on_space_platform_mined_entity",
           "order": 175,
           "description": ""
         },
         {
-          "name": "on_string_translated",
+          "name": "on_space_platform_mined_item",
           "order": 176,
           "description": ""
         },
         {
-          "name": "on_surface_cleared",
+          "name": "on_space_platform_mined_tile",
           "order": 177,
           "description": ""
         },
         {
-          "name": "on_surface_created",
+          "name": "on_space_platform_pre_mined",
           "order": 178,
           "description": ""
         },
         {
-          "name": "on_surface_deleted",
+          "name": "on_spider_command_completed",
           "order": 179,
           "description": ""
         },
         {
-          "name": "on_surface_imported",
+          "name": "on_string_translated",
           "order": 180,
           "description": ""
         },
         {
-          "name": "on_surface_renamed",
+          "name": "on_surface_cleared",
           "order": 181,
           "description": ""
         },
         {
-          "name": "on_technology_effects_reset",
+          "name": "on_surface_created",
           "order": 182,
           "description": ""
         },
         {
-          "name": "on_tick",
+          "name": "on_surface_deleted",
           "order": 183,
           "description": ""
         },
         {
-          "name": "on_train_changed_state",
+          "name": "on_surface_imported",
           "order": 184,
           "description": ""
         },
         {
-          "name": "on_train_created",
+          "name": "on_surface_renamed",
           "order": 185,
           "description": ""
         },
         {
-          "name": "on_train_schedule_changed",
+          "name": "on_technology_effects_reset",
           "order": 186,
           "description": ""
         },
         {
-          "name": "on_trigger_created_entity",
+          "name": "on_tick",
           "order": 187,
           "description": ""
         },
         {
-          "name": "on_trigger_fired_artillery",
+          "name": "on_train_changed_state",
           "order": 188,
           "description": ""
         },
         {
-          "name": "on_undo_applied",
+          "name": "on_train_created",
           "order": 189,
           "description": ""
         },
         {
-          "name": "on_unit_added_to_group",
+          "name": "on_train_schedule_changed",
           "order": 190,
           "description": ""
         },
         {
-          "name": "on_unit_group_created",
+          "name": "on_trigger_created_entity",
           "order": 191,
           "description": ""
         },
         {
-          "name": "on_unit_group_finished_gathering",
+          "name": "on_trigger_fired_artillery",
           "order": 192,
           "description": ""
         },
         {
-          "name": "on_unit_removed_from_group",
+          "name": "on_undo_applied",
           "order": 193,
           "description": ""
         },
         {
-          "name": "on_worker_robot_expired",
+          "name": "on_unit_added_to_group",
           "order": 194,
           "description": ""
         },
         {
-          "name": "script_raised_built",
+          "name": "on_unit_group_created",
           "order": 195,
           "description": ""
         },
         {
-          "name": "script_raised_destroy",
+          "name": "on_unit_group_finished_gathering",
           "order": 196,
           "description": ""
         },
         {
-          "name": "script_raised_revive",
+          "name": "on_unit_removed_from_group",
           "order": 197,
           "description": ""
         },
         {
-          "name": "script_raised_set_tiles",
+          "name": "on_worker_robot_expired",
           "order": 198,
           "description": ""
         },
         {
-          "name": "script_raised_teleported",
+          "name": "script_raised_built",
           "order": 199,
+          "description": ""
+        },
+        {
+          "name": "script_raised_destroy",
+          "order": 200,
+          "description": ""
+        },
+        {
+          "name": "script_raised_revive",
+          "order": 201,
+          "description": ""
+        },
+        {
+          "name": "script_raised_set_tiles",
+          "order": 202,
+          "description": ""
+        },
+        {
+          "name": "script_raised_teleported",
+          "order": 203,
           "description": ""
         }
       ]
@@ -86639,713 +86799,758 @@
           "description": ""
         },
         {
-          "name": "move_research",
+          "name": "move_pin",
           "order": 126,
           "description": ""
         },
         {
-          "name": "open_achievements_gui",
+          "name": "move_research",
           "order": 127,
           "description": ""
         },
         {
-          "name": "open_blueprint_library_gui",
+          "name": "open_achievements_gui",
           "order": 128,
           "description": ""
         },
         {
-          "name": "open_blueprint_record",
+          "name": "open_blueprint_library_gui",
           "order": 129,
           "description": ""
         },
         {
-          "name": "open_bonus_gui",
+          "name": "open_blueprint_record",
           "order": 130,
           "description": ""
         },
         {
-          "name": "open_character_gui",
+          "name": "open_bonus_gui",
           "order": 131,
           "description": ""
         },
         {
-          "name": "open_current_vehicle_gui",
+          "name": "open_character_gui",
           "order": 132,
           "description": ""
         },
         {
-          "name": "open_equipment",
+          "name": "open_current_vehicle_gui",
           "order": 133,
           "description": ""
         },
         {
-          "name": "open_global_electric_network_gui",
+          "name": "open_equipment",
           "order": 134,
           "description": ""
         },
         {
-          "name": "open_gui",
+          "name": "open_global_electric_network_gui",
           "order": 135,
           "description": ""
         },
         {
-          "name": "open_item",
+          "name": "open_gui",
           "order": 136,
           "description": ""
         },
         {
-          "name": "open_logistics_gui",
+          "name": "open_item",
           "order": 137,
           "description": ""
         },
         {
-          "name": "open_mod_item",
+          "name": "open_logistics_gui",
           "order": 138,
           "description": ""
         },
         {
-          "name": "open_new_platform_button_from_rocket_silo",
+          "name": "open_mod_item",
           "order": 139,
           "description": ""
         },
         {
-          "name": "open_opened_entity_grid",
+          "name": "open_new_platform_button_from_rocket_silo",
           "order": 140,
           "description": ""
         },
         {
-          "name": "open_parent_of_opened_item",
+          "name": "open_opened_entity_grid",
           "order": 141,
           "description": ""
         },
         {
-          "name": "open_production_gui",
+          "name": "open_parent_of_opened_item",
           "order": 142,
           "description": ""
         },
         {
-          "name": "open_train_gui",
+          "name": "open_production_gui",
           "order": 143,
           "description": ""
         },
         {
-          "name": "open_train_station_gui",
+          "name": "open_train_gui",
           "order": 144,
           "description": ""
         },
         {
-          "name": "open_trains_gui",
+          "name": "open_train_station_gui",
           "order": 145,
           "description": ""
         },
         {
-          "name": "parametrise_blueprint",
+          "name": "open_trains_gui",
           "order": 146,
           "description": ""
         },
         {
-          "name": "paste_entity_settings",
+          "name": "parametrise_blueprint",
           "order": 147,
           "description": ""
         },
         {
-          "name": "pin_alert_group",
+          "name": "paste_entity_settings",
           "order": 148,
           "description": ""
         },
         {
-          "name": "pin_custom_alert",
+          "name": "pin_alert_group",
           "order": 149,
           "description": ""
         },
         {
-          "name": "pin_search_result",
+          "name": "pin_custom_alert",
           "order": 150,
           "description": ""
         },
         {
-          "name": "pipette",
+          "name": "pin_search_result",
           "order": 151,
           "description": ""
         },
         {
-          "name": "place_equipment",
+          "name": "pipette",
           "order": 152,
           "description": ""
         },
         {
-          "name": "quick_bar_pick_slot",
+          "name": "place_equipment",
           "order": 153,
           "description": ""
         },
         {
-          "name": "quick_bar_set_selected_page",
+          "name": "quick_bar_pick_slot",
           "order": 154,
           "description": ""
         },
         {
-          "name": "quick_bar_set_slot",
+          "name": "quick_bar_set_selected_page",
           "order": 155,
           "description": ""
         },
         {
-          "name": "reassign_blueprint",
+          "name": "quick_bar_set_slot",
           "order": 156,
           "description": ""
         },
         {
-          "name": "redo",
+          "name": "reassign_blueprint",
           "order": 157,
           "description": ""
         },
         {
-          "name": "remote_view_entity",
+          "name": "redo",
           "order": 158,
           "description": ""
         },
         {
-          "name": "remote_view_surface",
+          "name": "remote_view_entity",
           "order": 159,
           "description": ""
         },
         {
-          "name": "remove_cables",
+          "name": "remote_view_surface",
           "order": 160,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_condition",
+          "name": "remove_cables",
           "order": 161,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_output",
+          "name": "remove_decider_combinator_condition",
           "order": 162,
           "description": ""
         },
         {
-          "name": "remove_logistic_section",
+          "name": "remove_decider_combinator_output",
           "order": 163,
           "description": ""
         },
         {
-          "name": "remove_pin",
+          "name": "remove_logistic_section",
           "order": 164,
           "description": ""
         },
         {
-          "name": "remove_train_interrupt",
+          "name": "remove_pin",
           "order": 165,
           "description": ""
         },
         {
-          "name": "remove_train_station",
+          "name": "remove_train_interrupt",
           "order": 166,
           "description": ""
         },
         {
-          "name": "rename_interrupt",
+          "name": "remove_train_station",
           "order": 167,
           "description": ""
         },
         {
-          "name": "rename_space_platform",
+          "name": "rename_interrupt",
           "order": 168,
           "description": ""
         },
         {
-          "name": "reorder_logistic_section",
+          "name": "rename_space_platform",
           "order": 169,
           "description": ""
         },
         {
-          "name": "request_missing_construction_materials",
+          "name": "reorder_logistic_section",
           "order": 170,
           "description": ""
         },
         {
-          "name": "reset_assembling_machine",
+          "name": "request_missing_construction_materials",
           "order": 171,
           "description": ""
         },
         {
-          "name": "reverse_select_area",
+          "name": "reset_assembling_machine",
           "order": 172,
           "description": ""
         },
         {
-          "name": "rotate_entity",
+          "name": "reverse_select_area",
           "order": 173,
           "description": ""
         },
         {
-          "name": "select_area",
+          "name": "rotate_entity",
           "order": 174,
           "description": ""
         },
         {
-          "name": "select_asteroid_chunk_slot",
+          "name": "select_area",
           "order": 175,
           "description": ""
         },
         {
-          "name": "select_blueprint_entities",
+          "name": "select_asteroid_chunk_slot",
           "order": 176,
           "description": ""
         },
         {
-          "name": "select_entity_filter_slot",
+          "name": "select_blueprint_entities",
           "order": 177,
           "description": ""
         },
         {
-          "name": "select_entity_slot",
+          "name": "select_entity_filter_slot",
           "order": 178,
           "description": ""
         },
         {
-          "name": "select_item_filter",
+          "name": "select_entity_slot",
           "order": 179,
           "description": ""
         },
         {
-          "name": "select_mapper_slot_from",
+          "name": "select_item_filter",
           "order": 180,
           "description": ""
         },
         {
-          "name": "select_mapper_slot_to",
+          "name": "select_mapper_slot_from",
           "order": 181,
           "description": ""
         },
         {
-          "name": "select_next_valid_gun",
+          "name": "select_mapper_slot_to",
           "order": 182,
           "description": ""
         },
         {
-          "name": "select_tile_slot",
+          "name": "select_next_valid_gun",
           "order": 183,
           "description": ""
         },
         {
-          "name": "send_spidertron",
+          "name": "select_tile_slot",
           "order": 184,
           "description": ""
         },
         {
-          "name": "send_stack_to_trash",
+          "name": "send_spidertron",
           "order": 185,
           "description": ""
         },
         {
-          "name": "send_stacks_to_trash",
+          "name": "send_stack_to_trash",
           "order": 186,
           "description": ""
         },
         {
-          "name": "send_train_to_pin_target",
+          "name": "send_stacks_to_trash",
           "order": 187,
           "description": ""
         },
         {
-          "name": "set_behavior_mode",
+          "name": "send_train_to_pin_target",
           "order": 188,
           "description": ""
         },
         {
-          "name": "set_car_weapons_control",
+          "name": "set_behavior_mode",
           "order": 189,
           "description": ""
         },
         {
-          "name": "set_cheat_mode_quality",
+          "name": "set_car_weapons_control",
           "order": 190,
           "description": ""
         },
         {
-          "name": "set_circuit_condition",
+          "name": "set_cheat_mode_quality",
           "order": 191,
           "description": ""
         },
         {
-          "name": "set_circuit_mode_of_operation",
+          "name": "set_circuit_condition",
           "order": 192,
           "description": ""
         },
         {
-          "name": "set_combinator_description",
+          "name": "set_circuit_mode_of_operation",
           "order": 193,
           "description": ""
         },
         {
-          "name": "set_copy_color_from_train_stop",
+          "name": "set_combinator_description",
           "order": 194,
           "description": ""
         },
         {
-          "name": "set_deconstruction_item_tile_selection_mode",
+          "name": "set_copy_color_from_train_stop",
           "order": 195,
           "description": ""
         },
         {
-          "name": "set_deconstruction_item_trees_and_rocks_only",
+          "name": "set_deconstruction_item_tile_selection_mode",
           "order": 196,
           "description": ""
         },
         {
-          "name": "set_entity_color",
+          "name": "set_deconstruction_item_trees_and_rocks_only",
           "order": 197,
           "description": ""
         },
         {
-          "name": "set_entity_energy_property",
+          "name": "set_entity_color",
           "order": 198,
           "description": ""
         },
         {
-          "name": "set_filter",
+          "name": "set_entity_energy_property",
           "order": 199,
           "description": ""
         },
         {
-          "name": "set_ghost_cursor",
+          "name": "set_filter",
           "order": 200,
           "description": ""
         },
         {
-          "name": "set_heat_interface_mode",
+          "name": "set_ghost_cursor",
           "order": 201,
           "description": ""
         },
         {
-          "name": "set_heat_interface_temperature",
+          "name": "set_heat_interface_mode",
           "order": 202,
           "description": ""
         },
         {
-          "name": "set_infinity_container_filter_item",
+          "name": "set_heat_interface_temperature",
           "order": 203,
           "description": ""
         },
         {
-          "name": "set_infinity_container_remove_unfiltered_items",
+          "name": "set_infinity_container_filter_item",
           "order": 204,
           "description": ""
         },
         {
-          "name": "set_infinity_pipe_filter",
+          "name": "set_infinity_container_remove_unfiltered_items",
           "order": 205,
           "description": ""
         },
         {
-          "name": "set_inserter_max_stack_size",
+          "name": "set_infinity_pipe_filter",
           "order": 206,
           "description": ""
         },
         {
-          "name": "set_inventory_bar",
+          "name": "set_inserter_max_stack_size",
           "order": 207,
           "description": ""
         },
         {
-          "name": "set_lamp_always_on",
+          "name": "set_inventory_bar",
           "order": 208,
           "description": ""
         },
         {
-          "name": "set_linked_container_link_i_d",
+          "name": "set_lamp_always_on",
           "order": 209,
           "description": ""
         },
         {
-          "name": "set_logistic_filter_item",
+          "name": "set_linked_container_link_i_d",
           "order": 210,
           "description": ""
         },
         {
-          "name": "set_logistic_network_name",
+          "name": "set_loader_belt_stack_size_override",
           "order": 211,
           "description": ""
         },
         {
-          "name": "set_logistic_section_active",
+          "name": "set_logistic_filter_item",
           "order": 212,
           "description": ""
         },
         {
-          "name": "set_player_color",
+          "name": "set_logistic_network_name",
           "order": 213,
           "description": ""
         },
         {
-          "name": "set_pump_fluid_filter",
+          "name": "set_logistic_section_active",
           "order": 214,
           "description": ""
         },
         {
-          "name": "set_request_from_buffers",
+          "name": "set_player_color",
           "order": 215,
           "description": ""
         },
         {
-          "name": "set_research_finished_stops_game",
+          "name": "set_pump_fluid_filter",
           "order": 216,
           "description": ""
         },
         {
-          "name": "set_rocket_silo_send_to_orbit_automated_mode",
+          "name": "set_request_from_buffers",
           "order": 217,
           "description": ""
         },
         {
-          "name": "set_schedule_record_allow_unloading",
+          "name": "set_research_finished_stops_game",
           "order": 218,
           "description": ""
         },
         {
-          "name": "set_signal",
+          "name": "set_rocket_silo_send_to_orbit_automated_mode",
           "order": 219,
           "description": ""
         },
         {
-          "name": "set_splitter_priority",
+          "name": "set_schedule_record_allow_unloading",
           "order": 220,
           "description": ""
         },
         {
-          "name": "set_spoil_priority",
+          "name": "set_signal",
           "order": 221,
           "description": ""
         },
         {
-          "name": "set_train_stop_priority",
+          "name": "set_splitter_priority",
           "order": 222,
           "description": ""
         },
         {
-          "name": "set_train_stopped",
+          "name": "set_spoil_priority",
           "order": 223,
           "description": ""
         },
         {
-          "name": "set_trains_limit",
+          "name": "set_train_stop_priority",
           "order": 224,
           "description": ""
         },
         {
-          "name": "set_turret_ignore_unlisted",
+          "name": "set_train_stopped",
           "order": 225,
           "description": ""
         },
         {
-          "name": "set_use_inserter_filters",
+          "name": "set_trains_limit",
           "order": 226,
           "description": ""
         },
         {
-          "name": "set_vehicle_automatic_targeting_parameters",
+          "name": "set_turret_ignore_unlisted",
           "order": 227,
           "description": ""
         },
         {
-          "name": "setup_assembling_machine",
+          "name": "set_use_inserter_filters",
           "order": 228,
           "description": ""
         },
         {
-          "name": "setup_blueprint",
+          "name": "set_vehicle_automatic_targeting_parameters",
           "order": 229,
           "description": ""
         },
         {
-          "name": "setup_single_blueprint_record",
+          "name": "setup_assembling_machine",
           "order": 230,
           "description": ""
         },
         {
-          "name": "spawn_item",
+          "name": "setup_blueprint",
           "order": 231,
           "description": ""
         },
         {
-          "name": "spectator_change_surface",
+          "name": "setup_single_blueprint_record",
           "order": 232,
           "description": ""
         },
         {
-          "name": "stack_split",
+          "name": "spawn_item",
           "order": 233,
           "description": ""
         },
         {
-          "name": "stack_transfer",
+          "name": "spectator_change_surface",
           "order": 234,
           "description": ""
         },
         {
-          "name": "start_repair",
+          "name": "stack_split",
           "order": 235,
           "description": ""
         },
         {
-          "name": "start_research",
+          "name": "stack_transfer",
           "order": 236,
           "description": ""
         },
         {
-          "name": "start_walking",
+          "name": "start_repair",
           "order": 237,
           "description": ""
         },
         {
-          "name": "stop_drag_build",
+          "name": "start_research",
           "order": 238,
           "description": ""
         },
         {
-          "name": "swap_logistic_filter_items",
+          "name": "start_walking",
           "order": 239,
           "description": ""
         },
         {
-          "name": "switch_connect_to_logistic_network",
+          "name": "stop_drag_build",
           "order": 240,
           "description": ""
         },
         {
-          "name": "switch_constant_combinator_state",
+          "name": "swap_asteroid_chunk_slots",
           "order": 241,
           "description": ""
         },
         {
-          "name": "switch_inserter_filter_mode_state",
+          "name": "swap_entity_filter_slots",
           "order": 242,
           "description": ""
         },
         {
-          "name": "switch_loader_filter_mode",
+          "name": "swap_entity_slots",
           "order": 243,
           "description": ""
         },
         {
-          "name": "switch_mining_drill_filter_mode_state",
+          "name": "swap_infinity_container_filter_items",
           "order": 244,
           "description": ""
         },
         {
-          "name": "switch_power_switch_state",
+          "name": "swap_item_filters",
           "order": 245,
           "description": ""
         },
         {
-          "name": "take_equipment",
+          "name": "swap_logistic_filter_items",
           "order": 246,
           "description": ""
         },
         {
-          "name": "toggle_artillery_auto_targeting",
+          "name": "swap_mappers",
           "order": 247,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_entity_filter_mode",
+          "name": "swap_tile_slots",
           "order": 248,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_tile_filter_mode",
+          "name": "switch_connect_to_logistic_network",
           "order": 249,
           "description": ""
         },
         {
-          "name": "toggle_driving",
+          "name": "switch_constant_combinator_state",
           "order": 250,
           "description": ""
         },
         {
-          "name": "toggle_enable_vehicle_logistics_while_moving",
+          "name": "switch_inserter_filter_mode_state",
           "order": 251,
           "description": ""
         },
         {
-          "name": "toggle_entity_logistic_requests",
+          "name": "switch_loader_filter_mode",
           "order": 252,
           "description": ""
         },
         {
-          "name": "toggle_equipment_movement_bonus",
+          "name": "switch_mining_drill_filter_mode_state",
           "order": 253,
           "description": ""
         },
         {
-          "name": "toggle_map_editor",
+          "name": "switch_power_switch_state",
           "order": 254,
           "description": ""
         },
         {
-          "name": "toggle_personal_logistic_requests",
+          "name": "take_equipment",
           "order": 255,
           "description": ""
         },
         {
-          "name": "toggle_personal_roboport",
+          "name": "toggle_artillery_auto_targeting",
           "order": 256,
           "description": ""
         },
         {
-          "name": "toggle_selected_entity",
+          "name": "toggle_deconstruction_item_entity_filter_mode",
           "order": 257,
           "description": ""
         },
         {
-          "name": "toggle_show_entity_info",
+          "name": "toggle_deconstruction_item_tile_filter_mode",
           "order": 258,
           "description": ""
         },
         {
-          "name": "translate_string",
+          "name": "toggle_driving",
           "order": 259,
           "description": ""
         },
         {
-          "name": "trash_not_requested_items",
+          "name": "toggle_enable_vehicle_logistics_while_moving",
           "order": 260,
           "description": ""
         },
         {
-          "name": "undo",
+          "name": "toggle_entity_logistic_requests",
           "order": 261,
           "description": ""
         },
         {
-          "name": "upgrade",
+          "name": "toggle_equipment_movement_bonus",
           "order": 262,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_item",
+          "name": "toggle_map_editor",
           "order": 263,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_record",
+          "name": "toggle_personal_logistic_requests",
           "order": 264,
           "description": ""
         },
         {
-          "name": "use_item",
+          "name": "toggle_personal_roboport",
           "order": 265,
           "description": ""
         },
         {
-          "name": "wire_dragging",
+          "name": "toggle_selected_entity",
           "order": 266,
           "description": ""
         },
         {
-          "name": "write_to_console",
+          "name": "toggle_show_entity_info",
           "order": 267,
+          "description": ""
+        },
+        {
+          "name": "translate_string",
+          "order": 268,
+          "description": ""
+        },
+        {
+          "name": "trash_not_requested_items",
+          "order": 269,
+          "description": ""
+        },
+        {
+          "name": "undo",
+          "order": 270,
+          "description": ""
+        },
+        {
+          "name": "upgrade",
+          "order": 271,
+          "description": ""
+        },
+        {
+          "name": "upgrade_opened_blueprint_by_item",
+          "order": 272,
+          "description": ""
+        },
+        {
+          "name": "upgrade_opened_blueprint_by_record",
+          "order": 273,
+          "description": ""
+        },
+        {
+          "name": "use_item",
+          "order": 274,
+          "description": ""
+        },
+        {
+          "name": "wire_dragging",
+          "order": 275,
+          "description": ""
+        },
+        {
+          "name": "write_to_console",
+          "order": 276,
           "description": ""
         }
       ]
@@ -87374,37 +87579,42 @@
       "values": [
         {
           "name": "artillery_turret_ammo",
-          "order": 43,
+          "order": 45,
           "description": ""
         },
         {
           "name": "artillery_wagon_ammo",
-          "order": 44,
+          "order": 46,
           "description": ""
         },
         {
           "name": "assembling_machine_dump",
-          "order": 25,
+          "order": 26,
           "description": "Used when items are ejected or items held by inserters cannot be inserted due to changing the recipe with the circuit network."
         },
         {
           "name": "assembling_machine_input",
-          "order": 22,
-          "description": ""
-        },
-        {
-          "name": "assembling_machine_modules",
-          "order": 24,
-          "description": ""
-        },
-        {
-          "name": "assembling_machine_output",
           "order": 23,
           "description": ""
         },
         {
+          "name": "assembling_machine_modules",
+          "order": 25,
+          "description": ""
+        },
+        {
+          "name": "assembling_machine_output",
+          "order": 24,
+          "description": ""
+        },
+        {
+          "name": "assembling_machine_trash",
+          "order": 27,
+          "description": "Used for spoil result items that do not fit into the recipe slots and for items that are ejected when changing the recipe via remote view."
+        },
+        {
           "name": "beacon_modules",
-          "order": 41,
+          "order": 43,
           "description": ""
         },
         {
@@ -87414,72 +87624,72 @@
         },
         {
           "name": "car_ammo",
-          "order": 37,
-          "description": ""
-        },
-        {
-          "name": "car_trash",
-          "order": 38,
-          "description": ""
-        },
-        {
-          "name": "car_trunk",
-          "order": 36,
-          "description": ""
-        },
-        {
-          "name": "cargo_landing_pad_main",
-          "order": 50,
-          "description": ""
-        },
-        {
-          "name": "cargo_landing_pad_trash",
-          "order": 51,
-          "description": ""
-        },
-        {
-          "name": "cargo_unit",
-          "order": 35,
-          "description": ""
-        },
-        {
-          "name": "cargo_wagon",
           "order": 39,
           "description": ""
         },
         {
-          "name": "character_ammo",
-          "order": 9,
+          "name": "car_trash",
+          "order": 40,
           "description": ""
         },
         {
-          "name": "character_armor",
+          "name": "car_trunk",
+          "order": 38,
+          "description": ""
+        },
+        {
+          "name": "cargo_landing_pad_main",
+          "order": 52,
+          "description": ""
+        },
+        {
+          "name": "cargo_landing_pad_trash",
+          "order": 53,
+          "description": ""
+        },
+        {
+          "name": "cargo_unit",
+          "order": 37,
+          "description": ""
+        },
+        {
+          "name": "cargo_wagon",
+          "order": 41,
+          "description": ""
+        },
+        {
+          "name": "character_ammo",
           "order": 10,
           "description": ""
         },
         {
+          "name": "character_armor",
+          "order": 11,
+          "description": ""
+        },
+        {
           "name": "character_corpse",
-          "order": 42,
+          "order": 44,
           "description": ""
         },
         {
           "name": "character_guns",
-          "order": 8,
+          "order": 9,
           "description": ""
         },
         {
           "name": "character_main",
-          "order": 7,
+          "order": 8,
           "description": ""
         },
         {
           "name": "character_trash",
-          "order": 12,
+          "order": 13,
           "description": ""
         },
         {
           "name": "character_vehicle",
-          "order": 11,
+          "order": 12,
           "description": ""
         },
         {
@@ -87489,22 +87699,22 @@
         },
         {
           "name": "editor_ammo",
-          "order": 16,
-          "description": ""
-        },
-        {
-          "name": "editor_armor",
           "order": 17,
           "description": ""
         },
         {
+          "name": "editor_armor",
+          "order": 18,
+          "description": ""
+        },
+        {
           "name": "editor_guns",
-          "order": 15,
+          "order": 16,
           "description": ""
         },
         {
           "name": "editor_main",
-          "order": 14,
+          "order": 15,
           "description": ""
         },
         {
@@ -87528,33 +87738,38 @@
           "description": ""
         },
         {
+          "name": "furnace_trash",
+          "order": 7,
+          "description": "Used for spoil result items that do not fit into the recipe slots."
+        },
+        {
           "name": "god_main",
-          "order": 13,
+          "order": 14,
           "description": ""
         },
         {
           "name": "hub_main",
-          "order": 48,
+          "order": 50,
           "description": ""
         },
         {
           "name": "hub_trash",
-          "order": 49,
+          "order": 51,
           "description": ""
         },
         {
           "name": "item_main",
-          "order": 29,
+          "order": 31,
           "description": ""
         },
         {
           "name": "lab_input",
-          "order": 26,
+          "order": 28,
           "description": ""
         },
         {
           "name": "lab_modules",
-          "order": 27,
+          "order": 29,
           "description": ""
         },
         {
@@ -87564,72 +87779,72 @@
         },
         {
           "name": "mining_drill_modules",
-          "order": 28,
-          "description": ""
-        },
-        {
-          "name": "roboport_material",
-          "order": 19,
-          "description": ""
-        },
-        {
-          "name": "roboport_robot",
-          "order": 18,
-          "description": ""
-        },
-        {
-          "name": "robot_cargo",
-          "order": 20,
-          "description": ""
-        },
-        {
-          "name": "robot_repair",
-          "order": 21,
-          "description": ""
-        },
-        {
-          "name": "rocket_silo_input",
-          "order": 32,
-          "description": ""
-        },
-        {
-          "name": "rocket_silo_modules",
-          "order": 34,
-          "description": ""
-        },
-        {
-          "name": "rocket_silo_output",
-          "order": 33,
-          "description": ""
-        },
-        {
-          "name": "rocket_silo_rocket",
           "order": 30,
           "description": ""
         },
         {
+          "name": "roboport_material",
+          "order": 20,
+          "description": ""
+        },
+        {
+          "name": "roboport_robot",
+          "order": 19,
+          "description": ""
+        },
+        {
+          "name": "robot_cargo",
+          "order": 21,
+          "description": ""
+        },
+        {
+          "name": "robot_repair",
+          "order": 22,
+          "description": ""
+        },
+        {
+          "name": "rocket_silo_input",
+          "order": 34,
+          "description": ""
+        },
+        {
+          "name": "rocket_silo_modules",
+          "order": 36,
+          "description": ""
+        },
+        {
+          "name": "rocket_silo_output",
+          "order": 35,
+          "description": ""
+        },
+        {
+          "name": "rocket_silo_rocket",
+          "order": 32,
+          "description": ""
+        },
+        {
           "name": "rocket_silo_trash",
-          "order": 31,
+          "order": 33,
           "description": ""
         },
         {
           "name": "spider_ammo",
-          "order": 46,
+          "order": 48,
           "description": ""
         },
         {
           "name": "spider_trash",
-          "order": 47,
+          "order": 49,
           "description": ""
         },
         {
           "name": "spider_trunk",
-          "order": 45,
+          "order": 47,
           "description": ""
         },
         {
           "name": "turret_ammo",
-          "order": 40,
+          "order": 42,
           "description": ""
         }
       ]
