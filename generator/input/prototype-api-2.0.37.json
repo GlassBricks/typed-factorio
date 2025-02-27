@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.35",
+  "application_version": "2.0.37",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -9526,7 +9526,7 @@
           "order": 7,
           "description": "See [damage](https://wiki.factorio.com/Damage).",
           "examples": [
-            "```\nresistances =\n{\n  {\n    type = \"fire\",\n      percent = 80\n  },\n  {\n    type = \"explosion\",\n    percent = 30\n  }\n}\n```"
+            "```\nresistances =\n{\n  {\n    type = \"fire\",\n    percent = 80\n  },\n  {\n    type = \"explosion\",\n    percent = 30\n  }\n}\n```"
           ],
           "override": false,
           "type": {
@@ -19738,8 +19738,8 @@
           "order": 5,
           "description": "A table containing ingredient names and amounts. Can also contain information about fluid temperature and whether some of the amount is ignored by production statistics.\n\nThe maximum ingredient amount is 65 535. Can be set to an empty table to create a recipe that needs no ingredients.\n\nDuplicate ingredients, e.g. two entries with the same name, are *not* allowed. In-game, the item ingredients are ordered by [ItemGroup::order_in_recipe](prototype:ItemGroup::order_in_recipe).",
           "examples": [
-            "```\n-- Recipe with items\ningredients = {\n  {type = \"item\", name = \"iron-stick\", amount = 2},\n  {type = \"item\", name = \"iron-plate\", amount = 3}\n}\n```",
-            "```\n-- Recipe with fluids\ningredients = {\n  {type=\"fluid\", name=\"water\", amount=50},\n  {type=\"fluid\", name=\"crude-oil\", amount=100}\n}\n```"
+            "```\n-- Recipe with items\ningredients =\n{\n  {type = \"item\", name = \"iron-stick\", amount = 2},\n  {type = \"item\", name = \"iron-plate\", amount = 3}\n}\n```",
+            "```\n-- Recipe with fluids\ningredients =\n{\n  {type=\"fluid\", name=\"water\", amount=50},\n  {type=\"fluid\", name=\"crude-oil\", amount=100}\n}\n```"
           ],
           "override": false,
           "type": {
@@ -19821,8 +19821,8 @@
           "order": 6,
           "description": "A table containing result names and amounts. Products also contain information such as fluid temperature, probability of results and whether some of the amount is ignored by productivity.\n\nCan be set to an empty table to create a recipe that produces nothing. Duplicate results, e.g. two entries with the same name, are allowed.",
           "examples": [
-            "```\nresults = {\n  {type=\"fluid\", name=\"heavy-oil\", amount=3},\n  {type=\"fluid\", name=\"light-oil\", amount=3},\n  {type=\"fluid\", name=\"petroleum-gas\", amount=4}\n}\n```",
-            "```\nresults = {\n  {type = \"item\", name = \"iron-nuggets\", amount = 9},\n  {type = \"item\", name = \"gold-nuggets\", amount = 1}\n}\n```",
+            "```\nresults =\n{\n  {type=\"fluid\", name=\"heavy-oil\", amount=3},\n  {type=\"fluid\", name=\"light-oil\", amount=3},\n  {type=\"fluid\", name=\"petroleum-gas\", amount=4}\n}\n```",
+            "```\nresults =\n{\n  {type = \"item\", name = \"iron-nuggets\", amount = 9},\n  {type = \"item\", name = \"gold-nuggets\", amount = 1}\n}\n```",
             "```\nresults = {{type = \"fluid\", name = \"steam\", amount = 1, temperature = 165}}\n```"
           ],
           "override": false,
@@ -37467,7 +37467,7 @@
       "examples": [
         "```\n-- Trivial example - frame_sequence defines same sequence in which the animation would load by default,\n-- so it is useless in this case:\nframe_count = 4,\nframe_sequence = { 1, 2, 3, 4 }\n```",
         "```\n-- Usage example - first five times repeat frame 2, then alternate between 4 and 3 two times. Frame 1 is not used:\nframe_count = 4,\nframe_sequence = { 2, 2, 2, 2, 2, 4, 3, 4, 3 }\n```",
-        "```\n-- Complex example - animation contains different layers with different frame counts:\nlocal custom_frame_sequence = { 2, 2, 2, 2, 2, 4, 3, 4, 3 }\nlayers = {\n  {\n    -- Animation with custom frame sequence\n    frame_count = 4,\n    frame_sequence = custom_frame_sequence,\n  },\n  {\n    -- Single sprite that's repeated\n    repeat_count = #custom_frame_sequence,\n  },\n  {\n    -- Other animation with different frame count\n    -- Assuming: #custom_frame_sequence < frame_count\n    frame_count = #custom_frame_sequence,\n  },\n}\n```"
+        "```\n-- Complex example - animation contains different layers with different frame counts:\nlocal custom_frame_sequence = { 2, 2, 2, 2, 2, 4, 3, 4, 3 }\nlayers =\n{\n  {\n    -- Animation with custom frame sequence\n    frame_count = 4,\n    frame_sequence = custom_frame_sequence,\n  },\n  {\n    -- Single sprite that's repeated\n    repeat_count = #custom_frame_sequence,\n  },\n  {\n    -- Other animation with different frame count\n    -- Assuming: #custom_frame_sequence < frame_count\n    frame_count = #custom_frame_sequence,\n  },\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -55443,7 +55443,7 @@
       "description": "One layer of an icon. Icon layering follows the following rules:\n\n- The rendering order of the individual icon layers follows the array order: Later added icon layers (higher index) are drawn on top of previously added icon layers (lower index).\n\n- By default the first icon layer will draw an outline (or shadow in GUI), other layers will draw it only if they have `draw_background` explicitly set to `true`. There are caveats to this though. See [the doc](prototype:IconData::draw_background).\n\n- When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look [undesirable](https://forums.factorio.com/viewtopic.php?p=575844#p575844).\n\n- When the final icon is displayed with a shadow (e.g. an item on the ground or on a belt when item shadows are turned on), each icon layer will [cast a shadow](https://forums.factorio.com/84888) and the shadow is cast on the layer below it.\n\n- The final icon will always be resized and centered in GUI so that all its layers (except the [`floating`](prototype:IconData::floating) ones) fit the target slot, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.\n\n- Shift values are based on [`expected_icon_size / 2`](prototype:IconData::scale).\n\nThe game automatically generates [icon mipmaps](https://factorio.com/blog/post/fff-291) for all icons. However, icons can have custom mipmaps defined. Custom mipmaps may help to achieve clearer icons at reduced size (e.g. when zooming out) than auto-generated mipmaps. If an icon file contains mipmaps then the game will automatically infer the icon's mipmap count. Icon files for custom mipmaps must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.",
       "examples": [
         "```\n-- one icon layer\n{\n  icon = \"__base__/graphics/icons/fluid/heavy-oil.png\",\n  icon_size = 64,\n  scale = 0.5,\n  shift = {4, -8}\n}\n```",
-        "```\n-- Layered icon, with size defined per layer\nicons = {\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty.png\",\n    icon_size = 32\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-side-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0, g = 0, r = 0 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-top-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0.5, g = 0.5, r = 0.5 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/crude-oil.png\",\n    icon_size = 32,\n    scale = 0.5,\n    shift = {7, 8}\n  }\n}\n```"
+        "```\n-- Layered icon, with size defined per layer\nicons =\n{\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty.png\",\n    icon_size = 32\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-side-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0, g = 0, r = 0 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-top-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0.5, g = 0.5, r = 0.5 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/crude-oil.png\",\n    icon_size = 32,\n    scale = 0.5,\n    shift = {7, 8}\n  }\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -55682,7 +55682,7 @@
       "order": 276,
       "description": "",
       "examples": [
-        "```\ndata.raw[\"gui-style\"][\"default\"][\"stretchy-sprite\"] = {\n  type = \"image_style\",\n  vertically_stretchable = \"on\",\n  horizontally_stretchable = \"on\",\n  stretch_image_to_widget_size = true,\n}\n```"
+        "```\ndata.raw[\"gui-style\"][\"default\"][\"stretchy-sprite\"] =\n{\n  type = \"image_style\",\n  vertically_stretchable = \"on\",\n  horizontally_stretchable = \"on\",\n  stretch_image_to_widget_size = true,\n}\n```"
       ],
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -60010,7 +60010,7 @@
       "description": "The mining properties of objects. For formulas for the mining time, see [mining](https://wiki.factorio.com/Mining).",
       "examples": [
         "```\nminable = { mining_time = 0.55, result = \"wood\", count = 4, mining_particle = \"wooden-particle\" }\n```",
-        "```\nminable = {\n  mining_time = 1,\n  results =\n  {\n    {\n      type = \"fluid\",\n      name = \"crude-oil\",\n      amount = 10\n    }\n  }\n}\n```"
+        "```\nminable =\n{\n  mining_time = 1,\n  results =\n  {\n    {\n      type = \"fluid\",\n      name = \"crude-oil\",\n      amount = 10\n    }\n  }\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -64541,6 +64541,14 @@
       },
       "properties": [
         {
+          "name": "cyclic_sound",
+          "order": 2,
+          "description": "Cannot contain aggregations.\n\nOne of `sound` or `cyclic_sound` must be defined. Both cannot be defined together.",
+          "override": false,
+          "type": "CyclicSound",
+          "optional": true
+        },
+        {
           "name": "name",
           "order": 0,
           "description": "",
@@ -64551,10 +64559,10 @@
         {
           "name": "sound",
           "order": 1,
-          "description": "Cannot contain aggregation.",
+          "description": "Cannot contain aggregation.\n\nOne of `sound` or `cyclic_sound` must be defined. Both cannot be defined together.",
           "override": false,
           "type": "Sound",
-          "optional": false
+          "optional": true
         }
       ]
     },
@@ -65010,7 +65018,7 @@
       "order": 427,
       "description": "A mapping of arrays of [PumpConnectorGraphicsAnimations](prototype:PumpConnectorGraphicsAnimation) to all 4 directions of the pump connection (to a fluid wagon).",
       "examples": [
-        "```\nload_animations =\n{\nwest = {\n  [1] = {\n    standup_base = {\n      filename = \"__base__/graphics/entity/pump/connector/V-R-135-load-standup-base.png\",\n      width = 110,\n      height = 126,\n      scale = 0.5,\n      line_length = 1,\n      frame_count = 20,\n      shift = util.by_pixel(-23.5, -13.5)\n    },\n    standup_shadow = {\n      filename = \"__base__/graphics/entity/pump/connector/V-R-1-load-standup-base-shadow.png\",\n      width = 157,\n      height = 136,\n      scale = 0.5,\n      line_length = 1,\n      frame_count = 20,\n      shift = util.by_pixel(-8.75, 8.5)\n    },\n  },\n  [2] = {\n    standup_base = { ... },\n    standup_shadow = { ... },\n    connector_shadow = { ... },\n  },\n  [3] = { ... },\n  [4] = { ... },\n  [5] = { ... },\n  [6] = { ... },\n},\nnorth = { ... },\neast = { ... },\nsouth = { ... },\n}\n```"
+        "```\nload_animations =\n{\n  west =\n  {\n    [1] =\n    {\n      standup_base =\n      {\n        filename = \"__base__/graphics/entity/pump/connector/V-R-135-load-standup-base.png\",\n        width = 110,\n        height = 126,\n        scale = 0.5,\n        line_length = 1,\n        frame_count = 20,\n        shift = util.by_pixel(-23.5, -13.5)\n      },\n      standup_shadow =\n      {\n        filename = \"__base__/graphics/entity/pump/connector/V-R-1-load-standup-base-shadow.png\",\n        width = 157,\n        height = 136,\n        scale = 0.5,\n        line_length = 1,\n        frame_count = 20,\n        shift = util.by_pixel(-8.75, 8.5)\n      },\n    },\n    [2] =\n    {\n      standup_base = { ... },\n      standup_shadow = { ... },\n      connector_shadow = { ... },\n    },\n    [3] = { ... },\n    [4] = { ... },\n    [5] = { ... },\n    [6] = { ... },\n  },\n  north = { ... },\n  east = { ... },\n  south = { ... },\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -76447,8 +76455,8 @@
       "order": 584,
       "description": "The properties from the parent TileSpriteLayoutVariant provide defaults for the properties defined here.\n\nThe `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the properties inside the specific variant. They are used to specify select values for the variant without creating the table for the variant.\n\nThese various ways to define the variants are also shown in the examples below.",
       "examples": [
-        "```\n-- longest version, using TileSpriteLayoutVariant tables for each variant\n{\n  inner_corner =\n  {\n    scale = 0.5,\n    count = 8,\n  },\n  outer_corner =\n  {\n  \tscale = 0.5,\n  \tcount = 8,\n  \tx = 576\n  },\n  u_transition  =\n  {\n  \tscale = 0.5,\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
-        "```\n-- The above version is quite verbose, scale is duplicated in each variant layout.\n-- So it is possible to define default value of each property of TileSpriteLayoutVariant directly in TileTransitionVariantLayout:\n{\n  scale = 0.5,\n  inner_corner =\n  {\n    count = 8,\n  },\n  outer_corner =\n  {\n  \tcount = 8,\n  \tx = 576\n  },\n  u_transition  =\n  {\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
+        "```\n-- longest version, using TileSpriteLayoutVariant tables for each variant\n{\n  inner_corner =\n  {\n    scale = 0.5,\n    count = 8,\n  },\n  outer_corner =\n  {\n    scale = 0.5,\n    count = 8,\n    x = 576\n  },\n  u_transition  =\n  {\n    scale = 0.5,\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
+        "```\n-- The above version is quite verbose, scale is duplicated in each variant layout.\n-- So it is possible to define default value of each property of TileSpriteLayoutVariant directly in TileTransitionVariantLayout:\n{\n  scale = 0.5,\n  inner_corner =\n  {\n    count = 8,\n  },\n  outer_corner =\n  {\n    count = 8,\n    x = 576\n  },\n  u_transition  =\n  {\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
         "```\n-- The above version is creating a table to just specify inner_corner has 8 count. It can be shorter by using variant prefix properties:\n{\n  scale = 0.5,\n  inner_corner_count = 8,\n  outer_corner_count = 8,\n  u_transition_count = 1,\n  outer_corner_x = 576,\n  u_transition_x = 1728,\n  [...]\n}\n```"
       ],
       "parent": "TileSpriteLayoutVariant",
@@ -90693,6 +90701,11 @@
         {
           "name": "render_object",
           "order": 11,
+          "description": ""
+        },
+        {
+          "name": "schedule",
+          "order": 19,
           "description": ""
         },
         {
