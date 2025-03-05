@@ -12,21 +12,21 @@ import type { VersionString } from "factorio:common"
 declare module "factorio:runtime" {
   /**
    * `math.huge` represents the maximum possible tick.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapTick.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapTick.html Online documentation}
    */
   export type MapTick = uint64
   /**
    * The percentual increase of the attribute. A value of `0.6` means a 60% increase.
    *
    * Quality values are divided by 10 internally, allowing for one more decimal of precision.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ModuleEffectValue.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ModuleEffectValue.html Online documentation}
    */
   export type ModuleEffectValue = float
   /**
    * @example
    * -- These are the effects of the vanilla Speed Module 3
    * {speed = 0.5, consumption = 0.7, quality = -0.25}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ModuleEffects.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ModuleEffects.html Online documentation}
    */
   export interface ModuleEffects {
     readonly consumption?: ModuleEffectValue
@@ -50,7 +50,7 @@ declare module "factorio:runtime" {
    * - `"<="`: "lesser than or equal to"
    * - `"≠"`: "not equal to"
    * - `"!="`: "not equal to"
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ComparatorString.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ComparatorString.html Online documentation}
    */
   export type ComparatorString = "=" | ">" | "<" | "≥" | ">=" | "≤" | "<=" | "≠" | "!="
   export type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
@@ -81,8 +81,8 @@ declare module "factorio:runtime" {
    *
    * The validity of a SpritePath can be verified at runtime using {@link LuaHelpers#is_valid_sprite_path LuaHelpers::is_valid_sprite_path}.
    *
-   * {@link https://lua-api.factorio.com/2.0.35/concepts/SpritePath.html > The supported types are:}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SpritePath.html Online documentation}
+   * {@link https://lua-api.factorio.com/2.0.38/concepts/SpritePath.html > The supported types are:}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SpritePath.html Online documentation}
    */
   export type SpritePath = (string & { _?: never }) | `${SpriteType}${"/" | "."}${string}`
   /**
@@ -93,14 +93,14 @@ declare module "factorio:runtime" {
    * - {@link FluidID}: Used with fluid production statistics.
    * - {@link EntityWithQualityID}: Used with electric network, entity build count, and kill count statistics.
    * - {@link EntityID}: Used with pollution statistics.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/FlowStatisticsID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/FlowStatisticsID.html Online documentation}
    */
   export type FlowStatisticsID = ItemWithQualityID | FluidID | EntityWithQualityID | EntityID
   /**
    * @example
    * -- Most common collision mask of buildings:
    * collision_mask = {layers = {item = true, meltable = true, object = true, player = true, water_tile = true, is_object = true, is_lower_object = true}}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CollisionMask.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CollisionMask.html Online documentation}
    */
   export interface CollisionMask {
     /**
@@ -228,7 +228,7 @@ declare module "factorio:runtime" {
    * - `"check-box"`
    * - `"switch"`
    * - `"label"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SimulationWidgetType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SimulationWidgetType.html Online documentation}
    */
   export type SimulationWidgetType =
     | "signal-id"
@@ -354,7 +354,7 @@ declare module "factorio:runtime" {
    * - `"any-goal-accessible"`: The method will return {@link TrainPathFinderOneGoalResult}.
    * - `"all-goals-accessible"`: The method will return {@link TrainPathAllGoalsResult}.
    * - `"all-goals-penalties"`: The method will return {@link TrainPathAllGoalsResult} with `penalties`.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TrainPathRequestType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TrainPathRequestType.html Online documentation}
    */
   export type TrainPathRequestType = "path" | "any-goal-accessible" | "all-goals-accessible" | "all-goals-penalties"
   /**
@@ -363,7 +363,7 @@ declare module "factorio:runtime" {
    * - {@link RailEndGoal}
    * - {@link LuaRailEnd}
    * - {@link LuaEntity}: Only if it points at train-stop that is connected to a rail.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TrainPathFinderGoal.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TrainPathFinderGoal.html Online documentation}
    */
   export type TrainPathFinderGoal = TrainStopGoal | RailEndGoal | LuaRailEnd | LuaEntity
   export interface TrainStopGoal {
@@ -455,6 +455,21 @@ declare module "factorio:runtime" {
      */
     readonly steps_count: uint
   }
+  export interface AddRecordData {
+    /**
+     * One of station or rail must be given.
+     */
+    readonly station?: string
+    readonly rail?: LuaEntity
+    readonly rail_direction?: RailDirection
+    readonly wait_conditions?: readonly WaitConditionWrite[]
+    readonly temporary?: boolean
+    readonly allows_unloading?: boolean
+    /**
+     * If index is not given, the record is appended.
+     */
+    readonly index?: ScheduleRecordPosition
+  }
   export interface DetailedItemOnLine {
     readonly stack: LuaItemStack
     /**
@@ -468,7 +483,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A single pipe connection for a given fluidbox.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PipeConnection.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PipeConnection.html Online documentation}
    */
   export interface PipeConnection {
     readonly flow_direction: "input" | "output" | "input-output"
@@ -531,7 +546,7 @@ declare module "factorio:runtime" {
    * - {@link LuaEntityDiedEventFilter}
    * - {@link LuaPreRobotMinedEntityEventFilter}
    * @see EventFilterWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EventFilter.html Online documentation}
    */
   export type EventFilter =
     | LuaPrePlatformMinedEntityEventFilter[]
@@ -561,7 +576,7 @@ declare module "factorio:runtime" {
     | LuaPreRobotMinedEntityEventFilter[]
   /**
    * Write form of {@link EventFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EventFilter.html Online documentation}
    */
   export type EventFilterWrite =
     | readonly LuaPrePlatformMinedEntityEventFilter[]
@@ -612,7 +627,8 @@ declare module "factorio:runtime" {
    * - {@link LuaCustomChartTag}: Target type {@link defines.target_type.custom_chart_tag custom_chart_tag}; `useful_id` {@link LuaCustomChartTag#tag_number LuaCustomChartTag::tag_number}
    * - {@link LuaGuiElement}: Target type {@link defines.target_type.gui_element gui_element}; `useful_id` {@link LuaGuiElement#index LuaGuiElement::index}
    * - {@link LuaCargoHatch}: Target type {@link defines.target_type.cargo_hatch cargo_hatch}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/RegistrationTarget.html Online documentation}
+   * - {@link LuaSchedule}: Target type {@link defines.target_type.schedule schedule}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/RegistrationTarget.html Online documentation}
    */
   export type RegistrationTarget =
     | LuaEntity
@@ -634,6 +650,7 @@ declare module "factorio:runtime" {
     | LuaCustomChartTag
     | LuaGuiElement
     | LuaCargoHatch
+    | LuaSchedule
   /**
    * Common attributes to all variants of {@link UndoRedoAction}.
    */
@@ -814,7 +831,7 @@ declare module "factorio:runtime" {
    * - `"wire-removed"`: {@link WireRemovedUndoRedoAction}
    * - `"rotated-entity"`: {@link RotatedEntityUndoRedoAction}
    * - `"copy-entity-settings"`: {@link CopyEntitySettingsUndoRedoAction}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/UndoRedoAction.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/UndoRedoAction.html Online documentation}
    */
   export type UndoRedoAction =
     | BuiltEntityUndoRedoAction
@@ -846,7 +863,7 @@ declare module "factorio:runtime" {
    * - `"weapon"`
    * - `"explosion"`
    * - `"enemy"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SoundType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SoundType.html Online documentation}
    */
   export type SoundType =
     | "game-effect"
@@ -929,7 +946,7 @@ declare module "factorio:runtime" {
    * - `"controllable-remove"`
    * - `"entity-ghost"`: Selects entities that are `entity-ghost`s.
    * - `"tile-ghost"`: Selects entities that are `tile-ghost`s.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SelectionModeFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SelectionModeFlags.html Online documentation}
    */
   export interface SelectionModeFlags {
     /**
@@ -1048,7 +1065,7 @@ declare module "factorio:runtime" {
    * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
    *
    * By default, none of these flags are set.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemPrototypeFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemPrototypeFlags.html Online documentation}
    */
   export type ItemPrototypeFlags = {
     readonly [T in ItemPrototypeFlag]?: true
@@ -1069,7 +1086,7 @@ declare module "factorio:runtime" {
    * - `"spawnable"`: Allows the item to be spawned by a quickbar shortcut or custom input.
    * - `"spoil-result"`
    * - `"ignore-spoil-time-modifier"`: Controls whether the spoil time ignores the spoil time modifier in the {@link DifficultySettings}.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemPrototypeFlag.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemPrototypeFlag.html Online documentation}
    */
   export type ItemPrototypeFlag =
     | "draw-logistic-overlay"
@@ -1089,7 +1106,7 @@ declare module "factorio:runtime" {
    * - `"none"`
    * - `"whitelist"`
    * - `"blacklist"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PrototypeFilterMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PrototypeFilterMode.html Online documentation}
    */
   export type PrototypeFilterMode = "none" | "whitelist" | "blacklist"
   export interface PipeConnectionDefinition {
@@ -1114,7 +1131,7 @@ declare module "factorio:runtime" {
    * The name of a {@link LuaCollisionLayerPrototype}.
    * @example
    * "is_lower_object"
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CollisionLayerID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CollisionLayerID.html Online documentation}
    */
   export type CollisionLayerID = string
   export interface ItemIDFilter {
@@ -1164,7 +1181,7 @@ declare module "factorio:runtime" {
    * - {@link SpaceLocationPrototypeFilter}
    * - {@link FluidPrototypeFilter}
    * @see PrototypeFilterWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PrototypeFilter.html Online documentation}
    */
   export type PrototypeFilter =
     | ModSettingPrototypeFilter[]
@@ -1181,7 +1198,7 @@ declare module "factorio:runtime" {
     | FluidPrototypeFilter[]
   /**
    * Write form of {@link PrototypeFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PrototypeFilter.html Online documentation}
    */
   export type PrototypeFilterWrite =
     | readonly ModSettingPrototypeFilter[]
@@ -1198,7 +1215,7 @@ declare module "factorio:runtime" {
     | readonly FluidPrototypeFilterWrite[]
   /**
    * @see DisplayPanelMessageDefinitionWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/DisplayPanelMessageDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/DisplayPanelMessageDefinition.html Online documentation}
    */
   export interface DisplayPanelMessageDefinition {
     /**
@@ -1216,7 +1233,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link DisplayPanelMessageDefinition}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/DisplayPanelMessageDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/DisplayPanelMessageDefinition.html Online documentation}
    */
   export interface DisplayPanelMessageDefinitionWrite {
     /**
@@ -1242,7 +1259,7 @@ declare module "factorio:runtime" {
    * - `"space-location"`
    * - `"asteroid-chunk"`
    * - `"quality"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SignalIDType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SignalIDType.html Online documentation}
    */
   export type SignalIDType =
     | "item"
@@ -1255,7 +1272,7 @@ declare module "factorio:runtime" {
     | "quality"
   /**
    * @see SignalIDWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SignalID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SignalID.html Online documentation}
    */
   export interface SignalID {
     /**
@@ -1273,7 +1290,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link SignalID}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SignalID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SignalID.html Online documentation}
    */
   export interface SignalIDWrite {
     /**
@@ -1479,7 +1496,7 @@ declare module "factorio:runtime" {
    * - `"play-next-track"`
    * - `"play-previous-track"`
    * - `"pause-resume-music"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LinkedGameControl.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LinkedGameControl.html Online documentation}
    */
   export type LinkedGameControl =
     | "move-up"
@@ -1730,7 +1747,7 @@ declare module "factorio:runtime" {
    * - `"create-ghost-on-entity-death"`
    * - `"belt-stack-size-bonus"`
    * - `"vehicle-logistics"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ModifierType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ModifierType.html Online documentation}
    */
   export type ModifierType =
     | "inserter-stack-size-bonus"
@@ -1849,7 +1866,7 @@ declare module "factorio:runtime" {
    * - `"capture-spawner"`: {@link CaptureSpawnerResearchTrigger}
    * - `"build-entity"`: {@link BuildEntityResearchTrigger}
    * - `"send-item-to-orbit"`: {@link SendItemToOrbitResearchTrigger}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ResearchTrigger.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ResearchTrigger.html Online documentation}
    */
   export type ResearchTrigger =
     | CraftItemResearchTrigger
@@ -1863,7 +1880,7 @@ declare module "factorio:runtime" {
    * A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.
    *
    * By default, none of these flags are set.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EntityPrototypeFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EntityPrototypeFlags.html Online documentation}
    */
   export type EntityPrototypeFlags = {
     readonly [T in EntityPrototypeFlag]?: true
@@ -1898,7 +1915,7 @@ declare module "factorio:runtime" {
    * - `"building-direction-16-way"`
    * - `"snap-to-rail-support-spot"`
    * - `"not-in-made-in"`: Prevents the entity from being shown in the "made in" list in recipe tooltips.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EntityPrototypeFlag.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EntityPrototypeFlag.html Online documentation}
    */
   export type EntityPrototypeFlag =
     | "not-rotatable"
@@ -1968,7 +1985,7 @@ declare module "factorio:runtime" {
    * - `"local"`: The sound can be heard within the audible range around the speaker.
    * - `"surface"`: The sound can be heard anywhere on the speaker's surface.
    * - `"global"`: The sound can be heard everywhere.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ProgrammableSpeakerPlaybackMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ProgrammableSpeakerPlaybackMode.html Online documentation}
    */
   export type ProgrammableSpeakerPlaybackMode = "local" | "surface" | "global"
   /**
@@ -1993,7 +2010,7 @@ declare module "factorio:runtime" {
    * - `"none-to-south"`
    * - `"south-to-none"`
    * - `"none-to-north"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CliffOrientation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CliffOrientation.html Online documentation}
    */
   export type CliffOrientation =
     | "west-to-east"
@@ -2019,7 +2036,7 @@ declare module "factorio:runtime" {
   /**
    * Defines an item type that a blueprint entity will request.
    * @see BlueprintInsertPlanWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintInsertPlan.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintInsertPlan.html Online documentation}
    */
   export interface BlueprintInsertPlan {
     /**
@@ -2033,7 +2050,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintInsertPlan}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintInsertPlan.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintInsertPlan.html Online documentation}
    */
   export interface BlueprintInsertPlanWrite {
     /**
@@ -2061,7 +2078,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A single offer on a market entity.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Offer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Offer.html Online documentation}
    */
   export interface Offer {
     /**
@@ -2076,7 +2093,7 @@ declare module "factorio:runtime" {
   /**
    * An item filter may be specified in two ways, either as a string which is an item prototype name or as a table.
    * @see ItemFilterWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemFilter.html Online documentation}
    */
   export type ItemFilter =
     | {
@@ -2096,7 +2113,7 @@ declare module "factorio:runtime" {
     | string
   /**
    * Write form of {@link ItemFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemFilter.html Online documentation}
    */
   export type ItemFilterWrite =
     | {
@@ -2114,52 +2131,6 @@ declare module "factorio:runtime" {
         readonly comparator?: ComparatorString
       }
     | string
-  /**
-   * @see ScheduleRecordWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScheduleRecord.html Online documentation}
-   */
-  export interface ScheduleRecord {
-    /**
-     * Name of the station.
-     */
-    readonly station?: string
-    /**
-     * Rail to path to. Ignored if `station` is present.
-     */
-    readonly rail?: LuaEntity
-    /**
-     * When a train is allowed to reach rail target from any direction it will be `nil`. If rail has to be reached from specific direction, this value allows to choose the direction. This value corresponds to {@link LuaEntity#connected_rail_direction LuaEntity::connected_rail_direction} of a TrainStop.
-     */
-    readonly rail_direction?: defines.rail_direction
-    readonly wait_conditions?: WaitCondition[]
-    /**
-     * Only present when the station is temporary, the value is then always `true`.
-     */
-    readonly temporary?: boolean
-  }
-  /**
-   * Write form of {@link ScheduleRecord}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScheduleRecord.html Online documentation}
-   */
-  export interface ScheduleRecordWrite {
-    /**
-     * Name of the station.
-     */
-    readonly station?: string
-    /**
-     * Rail to path to. Ignored if `station` is present.
-     */
-    readonly rail?: LuaEntity
-    /**
-     * When a train is allowed to reach rail target from any direction it will be `nil`. If rail has to be reached from specific direction, this value allows to choose the direction. This value corresponds to {@link LuaEntity#connected_rail_direction LuaEntity::connected_rail_direction} of a TrainStop.
-     */
-    readonly rail_direction?: defines.rail_direction
-    readonly wait_conditions?: readonly WaitConditionWrite[]
-    /**
-     * Only present when the station is temporary, the value is then always `true`.
-     */
-    readonly temporary?: boolean
-  }
   /**
    * Common attributes to all variants of {@link GuiArrowSpecification}.
    */
@@ -2225,7 +2196,7 @@ declare module "factorio:runtime" {
    * - `"position"`: {@link PositionGuiArrowSpecification}
    * - `"crafting_queue"`: {@link CraftingQueueGuiArrowSpecification}
    * - `"item_stack"`: {@link ItemStackGuiArrowSpecification}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GuiArrowSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GuiArrowSpecification.html Online documentation}
    */
   export type GuiArrowSpecification =
     | EntityGuiArrowSpecification
@@ -2238,7 +2209,7 @@ declare module "factorio:runtime" {
    *
    * If this is specified as a three-element array then the array items are x, y and z, in that order.
    * @see Vector3DArray
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Vector3D.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Vector3D.html Online documentation}
    */
   export interface Vector3D {
     readonly x: float
@@ -2248,7 +2219,7 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link Vector3D}.
    * @see Vector3D
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Vector3D.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Vector3D.html Online documentation}
    */
   export type Vector3DArray = readonly [float, float, float]
   export interface ItemWithQualityCounts {
@@ -2281,7 +2252,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see TrainScheduleWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TrainSchedule.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TrainSchedule.html Online documentation}
    */
   export interface TrainSchedule {
     /**
@@ -2292,7 +2263,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link TrainSchedule}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TrainSchedule.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TrainSchedule.html Online documentation}
    */
   export interface TrainScheduleWrite {
     /**
@@ -2303,7 +2274,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see PlatformScheduleWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PlatformSchedule.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PlatformSchedule.html Online documentation}
    */
   export interface PlatformSchedule {
     /**
@@ -2314,7 +2285,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link PlatformSchedule}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PlatformSchedule.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PlatformSchedule.html Online documentation}
    */
   export interface PlatformScheduleWrite {
     /**
@@ -2331,7 +2302,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A recipe prototype with optional quality specification.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/RecipeIDAndQualityIDPair.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/RecipeIDAndQualityIDPair.html Online documentation}
    */
   export interface RecipeIDAndQualityIDPair {
     /**
@@ -2380,7 +2351,7 @@ declare module "factorio:runtime" {
    * - `string`: Name of the force, same as {@link LuaForce#name LuaForce::name}.
    * - {@link uint8}: Index of the force, same as {@link LuaForce#index LuaForce::index}.
    * - {@link LuaForce}: A reference to {@link LuaForce} may be passed directly.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ForceID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ForceID.html Online documentation}
    */
   export type ForceID = string | uint8 | LuaForce
   /**
@@ -2390,7 +2361,7 @@ declare module "factorio:runtime" {
    * - `string`: The fluid name.
    * - {@link LuaFluidPrototype}: The fluid prototype.
    * - {@link Fluid}: The fluid.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/FluidID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/FluidID.html Online documentation}
    */
   export type FluidID = string | LuaFluidPrototype | Fluid
   /**
@@ -2401,12 +2372,12 @@ declare module "factorio:runtime" {
    * - {@link LuaEntityPrototype}: The entity prototype. Normal quality will be used.
    * - `string`: The prototype name. Normal quality will be used.
    * - {@link EntityIDAndQualityIDPair}: A table of entity prototype and quality.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EntityWithQualityID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EntityWithQualityID.html Online documentation}
    */
   export type EntityWithQualityID = LuaEntity | LuaEntityPrototype | string | EntityIDAndQualityIDPair
   /**
    * An entity prototype with optional quality specification.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EntityIDAndQualityIDPair.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EntityIDAndQualityIDPair.html Online documentation}
    */
   export interface EntityIDAndQualityIDPair {
     /**
@@ -2426,13 +2397,13 @@ declare module "factorio:runtime" {
    * - {@link LuaItemPrototype}: The item prototype. Normal quality will be used.
    * - `string`: The prototype name. Normal quality will be used.
    * - {@link ItemIDAndQualityIDPair}: A table of entity prototype and quality.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemWithQualityID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemWithQualityID.html Online documentation}
    */
   export type ItemWithQualityID = LuaItemStack | LuaItemPrototype | string | ItemIDAndQualityIDPairWrite
   /**
    * An item prototype with optional quality specification.
    * @see ItemIDAndQualityIDPairWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemIDAndQualityIDPair.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemIDAndQualityIDPair.html Online documentation}
    */
   export interface ItemIDAndQualityIDPair {
     /**
@@ -2446,7 +2417,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link ItemIDAndQualityIDPair}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemIDAndQualityIDPair.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemIDAndQualityIDPair.html Online documentation}
    */
   export interface ItemIDAndQualityIDPairWrite {
     /**
@@ -2466,7 +2437,7 @@ declare module "factorio:runtime" {
    * - {@link LuaItemStack}: Non empty item stack.
    * - {@link LuaItem}: The item.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemID.html Online documentation}
    */
   export type ItemID = LuaItemPrototype | LuaItemStack | LuaItem | string
   /**
@@ -2476,7 +2447,7 @@ declare module "factorio:runtime" {
    * - {@link LuaEntityPrototype}: The entity prototype.
    * - {@link LuaEntity}: The entity.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EntityID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EntityID.html Online documentation}
    */
   export type EntityID = LuaEntityPrototype | LuaEntity | string
   /**
@@ -2486,7 +2457,7 @@ declare module "factorio:runtime" {
    * - {@link LuaTechnologyPrototype}: The technology prototype.
    * - {@link LuaTechnology}: Instance of the technology.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TechnologyID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TechnologyID.html Online documentation}
    */
   export type TechnologyID = LuaTechnologyPrototype | LuaTechnology | string
   /**
@@ -2495,7 +2466,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link LuaParticlePrototype}: The particle prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ParticleID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ParticleID.html Online documentation}
    */
   export type ParticleID = LuaParticlePrototype | string
   /**
@@ -2504,7 +2475,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link LuaDamagePrototype}: The damage type prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/DamageTypeID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/DamageTypeID.html Online documentation}
    */
   export type DamageTypeID = LuaDamagePrototype | string
   /**
@@ -2513,7 +2484,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link LuaTrivialSmokePrototype}: The trivial smoke prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TrivialSmokeID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TrivialSmokeID.html Online documentation}
    */
   export type TrivialSmokeID = LuaTrivialSmokePrototype | string
   /**
@@ -2525,7 +2496,7 @@ declare module "factorio:runtime" {
    * - `"left"`
    * - `"right"`
    * - `"center"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TextAlign.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TextAlign.html Online documentation}
    */
   export type TextAlign = "left" | "right" | "center"
   /**
@@ -2538,7 +2509,7 @@ declare module "factorio:runtime" {
    * - `"middle"`
    * - `"baseline"`
    * - `"bottom"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/VerticalTextAlign.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/VerticalTextAlign.html Online documentation}
    */
   export type VerticalTextAlign = "top" | "middle" | "baseline" | "bottom"
   /**
@@ -2547,7 +2518,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link LuaQualityPrototype}: The quality prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/QualityID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/QualityID.html Online documentation}
    */
   export type QualityID = LuaQualityPrototype | string
   /**
@@ -2557,7 +2528,7 @@ declare module "factorio:runtime" {
    * - {@link LuaRecipePrototype}: By recipe prototype.
    * - {@link LuaRecipe}: By instance of recipe.
    * - `string`: By name of the recipe prototype.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/RecipeID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/RecipeID.html Online documentation}
    */
   export type RecipeID = LuaRecipePrototype | LuaRecipe | string
   /**
@@ -2567,7 +2538,7 @@ declare module "factorio:runtime" {
    * - {@link LuaTilePrototype}: By tile prototype.
    * - {@link LuaTile}: By instance of tile.
    * - `string`: By name of the tile prototype.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TileID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TileID.html Online documentation}
    */
   export type TileID = LuaTilePrototype | LuaTile | string
   export interface Fluid {
@@ -2591,7 +2562,7 @@ declare module "factorio:runtime" {
    * - {@link LuaEquipmentPrototype}: The equipment prototype.
    * - {@link LuaEquipment}: The equipment.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EquipmentID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EquipmentID.html Online documentation}
    */
   export type EquipmentID = LuaEquipmentPrototype | LuaEquipment | string
   /**
@@ -2602,12 +2573,12 @@ declare module "factorio:runtime" {
    * - {@link LuaEquipment}: The equipment. Both prototype and quality of the provided equipment will be used.
    * - `string`: The prototype name. Normal quality will be used.
    * - {@link EquipmentIDAndQualityIDPair}: A table of equipment prototype and quality.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EquipmentWithQualityID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EquipmentWithQualityID.html Online documentation}
    */
   export type EquipmentWithQualityID = LuaEquipmentPrototype | LuaEquipment | string | EquipmentIDAndQualityIDPair
   /**
    * An equipment prototype with optional quality specification.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EquipmentIDAndQualityIDPair.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EquipmentIDAndQualityIDPair.html Online documentation}
    */
   export interface EquipmentIDAndQualityIDPair {
     /**
@@ -2628,7 +2599,7 @@ declare module "factorio:runtime" {
    * @example
    * -- Shorthand
    * {{-2, -3}, {5, 8}}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BoundingBox.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BoundingBox.html Online documentation}
    */
   export interface BoundingBox {
     readonly left_top: MapPosition
@@ -2638,7 +2609,7 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link BoundingBox}.
    * @see BoundingBox
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BoundingBox.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BoundingBox.html Online documentation}
    */
   export type BoundingBoxArray = readonly [MapPosition | MapPositionArray, MapPosition | MapPositionArray]
   export interface BoundingBoxWrite {
@@ -2651,7 +2622,7 @@ declare module "factorio:runtime" {
    *
    * ## Union members
    * - {@link LuaSpacePlatform}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SpacePlatformIdentification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SpacePlatformIdentification.html Online documentation}
    */
   export type SpacePlatformIdentification = LuaSpacePlatform
   /**
@@ -2661,12 +2632,12 @@ declare module "factorio:runtime" {
    * - {@link LuaForce}[]: Array of many forces.
    * - {@link LuaForce}: A single force.
    * @see ForceSetWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ForceSet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ForceSet.html Online documentation}
    */
   export type ForceSet = LuaForce[] | LuaForce
   /**
    * Write form of {@link ForceSet}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ForceSet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ForceSet.html Online documentation}
    */
   export type ForceSetWrite = readonly ForceID[] | ForceID
   /**
@@ -2675,7 +2646,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link LuaDecorativePrototype}: The decorative prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/DecorativeID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/DecorativeID.html Online documentation}
    */
   export type DecorativeID = LuaDecorativePrototype | string
   /**
@@ -2684,7 +2655,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link LuaAsteroidChunkPrototype}: The asteroid chunk prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AsteroidChunkID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AsteroidChunkID.html Online documentation}
    */
   export type AsteroidChunkID = LuaAsteroidChunkPrototype | string
   /**
@@ -2693,13 +2664,13 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link LuaSpaceLocationPrototype}: The space location prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SpaceLocationID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SpaceLocationID.html Online documentation}
    */
   export type SpaceLocationID = LuaSpaceLocationPrototype | string
   /**
    * A signal filter may be specified in two ways, either as a string which is a virtual signal name or item prototype name or as a table.
    * @see SignalFilterWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SignalFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SignalFilter.html Online documentation}
    */
   export type SignalFilter =
     | {
@@ -2723,7 +2694,7 @@ declare module "factorio:runtime" {
     | string
   /**
    * Write form of {@link SignalFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SignalFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SignalFilter.html Online documentation}
    */
   export type SignalFilterWrite =
     | {
@@ -2747,7 +2718,7 @@ declare module "factorio:runtime" {
     | string
   /**
    * @see LogisticFilterWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LogisticFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LogisticFilter.html Online documentation}
    */
   export interface LogisticFilter {
     /**
@@ -2773,7 +2744,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link LogisticFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LogisticFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LogisticFilter.html Online documentation}
    */
   export interface LogisticFilterWrite {
     /**
@@ -2829,23 +2800,23 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link LuaSurfacePropertyPrototype}: The surface property prototype.
    * - `string`: The prototype name.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SurfacePropertyID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SurfacePropertyID.html Online documentation}
    */
   export type SurfacePropertyID = LuaSurfacePropertyPrototype | string
   /**
    * When writing it is possible to give LuaEntity or MapPosition directly. However, reading always returns the full ScriptRenderTargetTable.
    * @see ScriptRenderTargetWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScriptRenderTarget.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScriptRenderTarget.html Online documentation}
    */
   export type ScriptRenderTarget = LuaEntity | MapPosition | ScriptRenderTargetTable
   /**
    * Write form of {@link ScriptRenderTarget}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScriptRenderTarget.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScriptRenderTarget.html Online documentation}
    */
   export type ScriptRenderTargetWrite = LuaEntity | (MapPosition | MapPositionArray) | ScriptRenderTargetTableWrite
   /**
    * @see ScriptRenderTargetTableWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScriptRenderTargetTable.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScriptRenderTargetTable.html Online documentation}
    */
   export interface ScriptRenderTargetTable {
     readonly entity?: LuaEntity
@@ -2860,7 +2831,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link ScriptRenderTargetTable}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScriptRenderTargetTable.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScriptRenderTargetTable.html Online documentation}
    */
   export interface ScriptRenderTargetTableWrite {
     readonly entity?: LuaEntity
@@ -2875,7 +2846,7 @@ declare module "factorio:runtime" {
   }
   /**
    * An item filter may be specified in two ways, either as a string which is a quality prototype name or as a table.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/QualityCondition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/QualityCondition.html Online documentation}
    */
   export type QualityCondition =
     | {
@@ -2892,7 +2863,7 @@ declare module "factorio:runtime" {
   /**
    * The destination of a cargo pod.
    * @see CargoDestinationWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CargoDestination.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CargoDestination.html Online documentation}
    */
   export interface CargoDestination {
     /**
@@ -2930,7 +2901,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link CargoDestination}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CargoDestination.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CargoDestination.html Online documentation}
    */
   export interface CargoDestinationWrite {
     /**
@@ -2966,6 +2937,16 @@ declare module "factorio:runtime" {
      */
     readonly space_platform?: SpacePlatformIdentification
   }
+  export interface ScheduleRecordPosition {
+    /**
+     * The schedule index
+     */
+    readonly schedule_index?: uint
+    /**
+     * The interrupt index
+     */
+    readonly interrupt_index?: uint
+  }
   /**
    * Event name may be specified in one of four ways.
    *
@@ -2974,7 +2955,7 @@ declare module "factorio:runtime" {
    * - {@link LuaCustomInputPrototype}: Custom input prototype.
    * - {@link defines.events}: Event identifier.
    * - `string`: Name of the event.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaEventType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaEventType.html Online documentation}
    */
   export type LuaEventType = LuaCustomEventPrototype | LuaCustomInputPrototype | defines.events | string | EventId<any>
   /**
@@ -2982,13 +2963,13 @@ declare module "factorio:runtime" {
    * - `"center-to-center"`
    * - `"bounding-box-to-bounding-box"`
    * - `"center-to-bounding-box"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/RangeMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/RangeMode.html Online documentation}
    */
   export type RangeMode = "center-to-center" | "bounding-box-to-bounding-box" | "center-to-bounding-box"
   /**
    * The representation of an entity inside of a blueprint. It has at least these fields, but can contain additional ones depending on the kind of entity.
    * @see BlueprintEntityWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintEntity.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintEntity.html Online documentation}
    */
   export interface BlueprintEntity {
     /**
@@ -3202,7 +3183,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintEntity}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintEntity.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintEntity.html Online documentation}
    */
   export interface BlueprintEntityWrite {
     /**
@@ -3423,7 +3404,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see BlueprintEquipmentWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintEquipment.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintEquipment.html Online documentation}
    */
   export interface BlueprintEquipment {
     readonly equipment: ItemIDAndQualityIDPair
@@ -3431,7 +3412,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintEquipment}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintEquipment.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintEquipment.html Online documentation}
    */
   export interface BlueprintEquipmentWrite {
     readonly equipment: ItemIDAndQualityIDPairWrite
@@ -3439,7 +3420,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see BlueprintInventoryWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintInventory.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintInventory.html Online documentation}
    */
   export interface BlueprintInventory {
     readonly filters?: BlueprintLogisticFilter[]
@@ -3450,7 +3431,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintInventory}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintInventory.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintInventory.html Online documentation}
    */
   export interface BlueprintInventoryWrite {
     readonly filters?: readonly BlueprintLogisticFilterWrite[]
@@ -3471,7 +3452,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see BlueprintControlBehaviorWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintControlBehavior.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintControlBehavior.html Online documentation}
    */
   export interface BlueprintControlBehavior {
     /**
@@ -3724,7 +3705,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintControlBehavior}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintControlBehavior.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintControlBehavior.html Online documentation}
    */
   export interface BlueprintControlBehaviorWrite {
     /**
@@ -4005,7 +3986,7 @@ declare module "factorio:runtime" {
    * "2500 * (L - 3)"
    * @example
    * "(4e5 * (abs(speed) + 10.5)) / weight"
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MathExpression.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MathExpression.html Online documentation}
    */
   export type MathExpression = string
   /**
@@ -4027,7 +4008,7 @@ declare module "factorio:runtime" {
    * -- What a custom recipe would look like that had a probability of 0.5 to return a
    * -- minimum amount of 1 and a maximum amount of 5
    * {{type="item", name="custom-item", probability=0.5, amount_min=1, amount_max=5}}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Product.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Product.html Online documentation}
    */
   export type Product = ItemProduct | FluidProduct | ResearchProgressProduct
   /**
@@ -4038,7 +4019,7 @@ declare module "factorio:runtime" {
    * -- What a custom recipe would look like that had a probability of 0.5 to return a
    * -- minimum amount of 1 and a maximum amount of 5
    * {{type="item", name="custom-item", probability=0.5, amount_min=1, amount_max=5}}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemProduct.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemProduct.html Online documentation}
    */
   export interface ItemProduct {
     readonly type: "item"
@@ -4082,7 +4063,7 @@ declare module "factorio:runtime" {
    * {{type="fluid", name="heavy-oil", amount=1},
    *   {type="fluid", name="light-oil", amount=4.5},
    *   {type="fluid", name="petroleum-gas", amount=5.5}}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/FluidProduct.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/FluidProduct.html Online documentation}
    */
   export interface FluidProduct {
     readonly type: "fluid"
@@ -4130,7 +4111,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see LogisticSectionsWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LogisticSections.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LogisticSections.html Online documentation}
    */
   export interface LogisticSections {
     readonly sections?: LogisticSection[]
@@ -4141,7 +4122,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link LogisticSections}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LogisticSections.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LogisticSections.html Online documentation}
    */
   export interface LogisticSectionsWrite {
     readonly sections?: readonly LogisticSectionWrite[]
@@ -4177,7 +4158,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see LogisticSectionWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LogisticSection.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LogisticSection.html Online documentation}
    */
   export interface LogisticSection {
     readonly index: uint8
@@ -4194,7 +4175,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link LogisticSection}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LogisticSection.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LogisticSection.html Online documentation}
    */
   export interface LogisticSectionWrite {
     readonly index: uint8
@@ -4211,7 +4192,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see BlueprintLogisticFilterWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintLogisticFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintLogisticFilter.html Online documentation}
    */
   export interface BlueprintLogisticFilter {
     readonly index: LogisticFilterIndex
@@ -4241,7 +4222,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintLogisticFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintLogisticFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintLogisticFilter.html Online documentation}
    */
   export interface BlueprintLogisticFilterWrite {
     readonly index: LogisticFilterIndex
@@ -4271,7 +4252,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Specifies how probability and richness are calculated when placing something on the map.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AutoplaceSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AutoplaceSpecification.html Online documentation}
    */
   export interface AutoplaceSpecification {
     /**
@@ -4288,7 +4269,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see CliffPlacementSettingsWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CliffPlacementSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CliffPlacementSettings.html Online documentation}
    */
   export interface CliffPlacementSettings {
     /**
@@ -4318,7 +4299,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link CliffPlacementSettings}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CliffPlacementSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CliffPlacementSettings.html Online documentation}
    */
   export interface CliffPlacementSettingsWrite {
     /**
@@ -4348,7 +4329,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see AutoplaceSettingsWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AutoplaceSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AutoplaceSettings.html Online documentation}
    */
   export interface AutoplaceSettings {
     /**
@@ -4362,7 +4343,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link AutoplaceSettings}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AutoplaceSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AutoplaceSettings.html Online documentation}
    */
   export interface AutoplaceSettingsWrite {
     /**
@@ -4397,7 +4378,7 @@ declare module "factorio:runtime" {
    * surface.map_gen_settings = mgs
    * -- This does not require a NamedNoiseExpression to be defined, since literal numbers (and strings naming literal
    * -- numbers, e.g. `"123"`) are understood to stand for constant value expressions.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapGenSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapGenSettings.html Online documentation}
    */
   export interface MapGenSettings {
     /**
@@ -4452,7 +4433,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link MapGenSettings}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapGenSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapGenSettings.html Online documentation}
    */
   export interface MapGenSettingsWrite {
     /**
@@ -4511,7 +4492,7 @@ declare module "factorio:runtime" {
   }
   /**
    * These values are for the time frame of one second (60 ticks).
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PollutionMapSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PollutionMapSettings.html Online documentation}
    */
   export interface PollutionMapSettings {
     /**
@@ -4565,7 +4546,7 @@ declare module "factorio:runtime" {
   }
   /**
    * These values represent a percentual increase in evolution. This means a value of `0.1` would increase evolution by 10%.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EnemyEvolutionMapSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EnemyEvolutionMapSettings.html Online documentation}
    */
   export interface EnemyEvolutionMapSettings {
     /**
@@ -4603,7 +4584,7 @@ declare module "factorio:runtime" {
    *     * neighbouring_base_chunk_coefficient^distance(chunk, neighbour)
    * score(chunk) = 1 / (1 + player + base)
    * ```
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EnemyExpansionMapSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EnemyExpansionMapSettings.html Online documentation}
    */
   export interface EnemyExpansionMapSettings {
     /**
@@ -4862,17 +4843,17 @@ declare module "factorio:runtime" {
   }
   /**
    * Technology difficulty settings. Updating any of the attributes will immediately take effect in the game engine.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/DifficultySettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/DifficultySettings.html Online documentation}
    */
   export interface DifficultySettings {
     /**
      * A value in range [0.001, 1000].
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/DifficultySettings.technology_price_multiplier.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/DifficultySettings.technology_price_multiplier.html Online documentation}
      */
     technology_price_multiplier: double
     /**
      * A value in range [0.01, 100].
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/DifficultySettings.spoil_time_modifier.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/DifficultySettings.spoil_time_modifier.html Online documentation}
      */
     spoil_time_modifier: double
   }
@@ -4888,7 +4869,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A standard table containing all {@link MapSettings} attributes plus an additional table that contains all {@link DifficultySettings} properties.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapAndDifficultySettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapAndDifficultySettings.html Online documentation}
    */
   export interface MapAndDifficultySettings {
     readonly pollution: PollutionMapSettings
@@ -4909,7 +4890,7 @@ declare module "factorio:runtime" {
    * @example
    * -- Increase the number of short paths the pathfinder can cache.
    * game.map_settings.path_finder.short_cache_size = 15
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapSettings.html Online documentation}
    */
   export interface MapSettings {
     pollution: PollutionMapSettings
@@ -4921,13 +4902,13 @@ declare module "factorio:runtime" {
     asteroids: AsteroidMapSettings
     /**
      * If a behavior fails this many times, the enemy (or enemy group) is destroyed. This solves biters getting stuck within their own base.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapSettings.max_failed_behavior_count.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapSettings.max_failed_behavior_count.html Online documentation}
      */
     max_failed_behavior_count: uint
   }
   /**
    * @see BlueprintScheduleRecordWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintScheduleRecord.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintScheduleRecord.html Online documentation}
    */
   export interface BlueprintScheduleRecord {
     /**
@@ -4935,16 +4916,13 @@ declare module "factorio:runtime" {
      */
     readonly station?: string
     readonly wait_conditions?: WaitCondition[]
-    /**
-     * Only present when the station is temporary, the value is then always `true`.
-     */
     readonly temporary?: boolean
     readonly created_by_interrupt?: boolean
     readonly allows_unloading?: boolean
   }
   /**
    * Write form of {@link BlueprintScheduleRecord}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintScheduleRecord.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintScheduleRecord.html Online documentation}
    */
   export interface BlueprintScheduleRecordWrite {
     /**
@@ -4952,16 +4930,51 @@ declare module "factorio:runtime" {
      */
     readonly station?: string
     readonly wait_conditions?: readonly WaitConditionWrite[]
+    readonly temporary?: boolean
+    readonly created_by_interrupt?: boolean
+    readonly allows_unloading?: boolean
+  }
+  /**
+   * @see ScheduleRecordWrite
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScheduleRecord.html Online documentation}
+   */
+  export interface ScheduleRecord {
     /**
-     * Only present when the station is temporary, the value is then always `true`.
+     * Name of the station.
      */
+    readonly station?: string
+    readonly rail?: LuaEntity
+    /**
+     * When a train is allowed to reach rail target from any direction it will be `nil`. If rail has to be reached from specific direction, this value allows to choose the direction. This value corresponds to {@link LuaEntity#connected_rail_direction LuaEntity::connected_rail_direction} of a TrainStop.
+     */
+    readonly rail_direction?: defines.rail_direction
+    readonly wait_conditions?: WaitCondition[]
+    readonly temporary?: boolean
+    readonly created_by_interrupt?: boolean
+    readonly allows_unloading?: boolean
+  }
+  /**
+   * Write form of {@link ScheduleRecord}, where some properties allow additional values as input compared to the read form.
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScheduleRecord.html Online documentation}
+   */
+  export interface ScheduleRecordWrite {
+    /**
+     * Name of the station.
+     */
+    readonly station?: string
+    readonly rail?: LuaEntity
+    /**
+     * When a train is allowed to reach rail target from any direction it will be `nil`. If rail has to be reached from specific direction, this value allows to choose the direction. This value corresponds to {@link LuaEntity#connected_rail_direction LuaEntity::connected_rail_direction} of a TrainStop.
+     */
+    readonly rail_direction?: defines.rail_direction
+    readonly wait_conditions?: readonly WaitConditionWrite[]
     readonly temporary?: boolean
     readonly created_by_interrupt?: boolean
     readonly allows_unloading?: boolean
   }
   /**
    * @see BlueprintScheduleInterruptWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintScheduleInterrupt.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintScheduleInterrupt.html Online documentation}
    */
   export interface BlueprintScheduleInterrupt {
     readonly name?: string
@@ -4971,7 +4984,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintScheduleInterrupt}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintScheduleInterrupt.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintScheduleInterrupt.html Online documentation}
    */
   export interface BlueprintScheduleInterruptWrite {
     readonly name?: string
@@ -4980,8 +4993,28 @@ declare module "factorio:runtime" {
     readonly inside_interrupt: boolean
   }
   /**
+   * @see ScheduleInterruptWrite
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScheduleInterrupt.html Online documentation}
+   */
+  export interface ScheduleInterrupt {
+    readonly name?: string
+    readonly conditions?: WaitCondition[]
+    readonly targets?: ScheduleRecord[]
+    readonly inside_interrupt: boolean
+  }
+  /**
+   * Write form of {@link ScheduleInterrupt}, where some properties allow additional values as input compared to the read form.
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScheduleInterrupt.html Online documentation}
+   */
+  export interface ScheduleInterruptWrite {
+    readonly name?: string
+    readonly conditions?: readonly WaitConditionWrite[]
+    readonly targets?: readonly ScheduleRecordWrite[]
+    readonly inside_interrupt: boolean
+  }
+  /**
    * @see BlueprintScheduleWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintSchedule.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintSchedule.html Online documentation}
    */
   export interface BlueprintSchedule {
     readonly records?: BlueprintScheduleRecord[]
@@ -4990,7 +5023,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintSchedule}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintSchedule.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintSchedule.html Online documentation}
    */
   export interface BlueprintScheduleWrite {
     readonly records?: readonly BlueprintScheduleRecordWrite[]
@@ -4999,7 +5032,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see WaitConditionWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/WaitCondition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/WaitCondition.html Online documentation}
    */
   export interface WaitCondition {
     readonly type: WaitConditionType
@@ -5030,7 +5063,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link WaitCondition}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/WaitCondition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/WaitCondition.html Online documentation}
    */
   export interface WaitConditionWrite {
     readonly type: WaitConditionType
@@ -5089,7 +5122,7 @@ declare module "factorio:runtime" {
    * - `"at_station"`
    * - `"not_at_station"`
    * - `"damage_taken"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/WaitConditionType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/WaitConditionType.html Online documentation}
    */
   export type WaitConditionType =
     | "time"
@@ -5131,7 +5164,7 @@ declare module "factorio:runtime" {
    * - `"blueprint-snap-rectangle"`: Green by default.
    * - `"spidertron-remote-selected"`
    * - `"spidertron-remote-to-be-selected"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CursorBoxRenderType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CursorBoxRenderType.html Online documentation}
    */
   export type CursorBoxRenderType =
     | "entity"
@@ -5147,7 +5180,7 @@ declare module "factorio:runtime" {
     | "spidertron-remote-to-be-selected"
   /**
    * What is shown in the map view. If a field is not given, that setting will not be changed.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapViewSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapViewSettings.html Online documentation}
    */
   export interface MapViewSettings {
     readonly "show-logistic-network"?: boolean
@@ -5240,7 +5273,7 @@ declare module "factorio:runtime" {
    * - `"collision-selection-box"`: 189
    * - `"arrow"`: 190
    * - `"cursor"`: 226
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/RenderLayer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/RenderLayer.html Online documentation}
    */
   export type RenderLayer =
     | `${bigint}`
@@ -5350,7 +5383,7 @@ declare module "factorio:runtime" {
    * - `"entity-with-quality"`
    * - `"recipe-with-quality"`
    * - `"equipment-with-quality"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ElemType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ElemType.html Online documentation}
    */
   export type ElemType =
     | "achievement"
@@ -5377,7 +5410,7 @@ declare module "factorio:runtime" {
    * - `"left"`
    * - `"right"`
    * - `"none"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SwitchState.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SwitchState.html Online documentation}
    */
   export type SwitchState = "left" | "right" | "none"
   export interface ElemID {
@@ -5418,7 +5451,7 @@ declare module "factorio:runtime" {
    * - `"destroy-decoratives"`
    * - `"camera-effect"`
    * - `"activate-impact"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TriggerEffectItemType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TriggerEffectItemType.html Online documentation}
    */
   export type TriggerEffectItemType =
     | "damage"
@@ -5455,7 +5488,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A set of trigger target masks.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TriggerTargetMask.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TriggerTargetMask.html Online documentation}
    */
   export type TriggerTargetMask = Record<string, true>
   export interface TriggerItem {
@@ -5522,7 +5555,7 @@ declare module "factorio:runtime" {
    * -- If 'entity-description.furnace' exists, it is concatenated with "\n" and returned. Otherwise, if 'item-description.furnace'
    * --  exists, it is returned as-is. Otherwise, "optional fallback" is returned. If this value wasn't specified, the
    * --  translation result would be "Unknown key: 'item-description.furnace'".
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LocalisedString.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LocalisedString.html Online documentation}
    */
   export type LocalisedString = string | number | boolean | LuaObject | nil | [string, ...LocalisedString[]]
   export interface DisplayResolution {
@@ -5533,7 +5566,7 @@ declare module "factorio:runtime" {
    * The smooth orientation. It is a {@link float} in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise. This means a value of `0` indicates "north", a value of `0.5` indicates "south".
    *
    * For example then, a value of `0.625` would indicate "south-west", and a value of `0.875` would indicate "north-west".
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/RealOrientation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/RealOrientation.html Online documentation}
    */
   export type RealOrientation = float
   /**
@@ -5548,7 +5581,7 @@ declare module "factorio:runtime" {
    * @example
    * -- Shorthand
    * {1.625, 2.375}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapPosition.html Online documentation}
    */
   export interface MapPosition {
     readonly x: double
@@ -5557,13 +5590,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link MapPosition}.
    * @see MapPosition
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapPosition.html Online documentation}
    */
   export type MapPositionArray = readonly [double, double]
   /**
    * Coordinates of a chunk in a {@link LuaSurface} where each integer `x`/`y` represents a different chunk. This uses the same format as {@link MapPosition}, meaning it can be specified either with or without explicit keys. A {@link MapPosition} can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.
    * @see ChunkPositionArray
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ChunkPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ChunkPosition.html Online documentation}
    */
   export interface ChunkPosition {
     readonly x: int
@@ -5572,13 +5605,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link ChunkPosition}.
    * @see ChunkPosition
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ChunkPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ChunkPosition.html Online documentation}
    */
   export type ChunkPositionArray = readonly [int, int]
   /**
    * Coordinates of a tile on a {@link LuaSurface} where each integer `x`/`y` represents a different tile. This uses the same format as {@link MapPosition}, except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.
    * @see TilePositionArray
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TilePosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TilePosition.html Online documentation}
    */
   export interface TilePosition {
     readonly x: int
@@ -5587,7 +5620,7 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link TilePosition}.
    * @see TilePosition
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TilePosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TilePosition.html Online documentation}
    */
   export type TilePositionArray = readonly [int, int]
   /**
@@ -5600,7 +5633,7 @@ declare module "factorio:runtime" {
    * @example
    * -- Shorthand
    * {1, 2}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EquipmentPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EquipmentPosition.html Online documentation}
    */
   export interface EquipmentPosition {
     readonly x: int
@@ -5609,13 +5642,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link EquipmentPosition}.
    * @see EquipmentPosition
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EquipmentPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EquipmentPosition.html Online documentation}
    */
   export type EquipmentPositionArray = readonly [int, int]
   /**
    * Screen coordinates of a GUI element in a {@link LuaGui}. This uses the same format as {@link TilePosition}, meaning it can be specified either with or without explicit keys.
    * @see GuiLocationArray
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GuiLocation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GuiLocation.html Online documentation}
    */
   export interface GuiLocation {
     readonly x: int
@@ -5624,12 +5657,12 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link GuiLocation}.
    * @see GuiLocation
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GuiLocation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GuiLocation.html Online documentation}
    */
   export type GuiLocationArray = readonly [int, int]
   /**
    * A {@link ChunkPosition} with an added bounding box for the area of the chunk.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ChunkPositionAndArea.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ChunkPositionAndArea.html Online documentation}
    */
   export interface ChunkPositionAndArea {
     readonly x: int
@@ -5638,7 +5671,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A table used to define a manual shape for a piece of equipment.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EquipmentPoint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EquipmentPoint.html Online documentation}
    */
   export interface EquipmentPoint {
     readonly x: uint
@@ -5674,7 +5707,7 @@ declare module "factorio:runtime" {
    * Note that the API returns tags as a simple table, meaning any modifications to it will not propagate back to the game. Thus, to modify a set of tags, the whole table needs to be written back to the respective property.
    * @example
    * {a = 1, b = true, c = "three", d = {e = "f"}}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Tags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Tags.html Online documentation}
    */
   export type Tags = Record<string, AnyBasic>
   export interface SurfaceCondition {
@@ -5708,13 +5741,13 @@ declare module "factorio:runtime" {
    * A vector is a two-element array or dictionary containing the `x` and `y` components. The game will always provide the array format. Positive x goes east, positive y goes south.
    * @example
    * right = {1.0, 0.0}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Vector.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Vector.html Online documentation}
    */
   export type Vector = MapPositionArray
   /**
    * An area defined using the map editor.
    * @see ScriptAreaWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScriptArea.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScriptArea.html Online documentation}
    */
   export interface ScriptArea {
     readonly area: BoundingBox
@@ -5724,7 +5757,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link ScriptArea}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScriptArea.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScriptArea.html Online documentation}
    */
   export interface ScriptAreaWrite {
     readonly area: BoundingBoxWrite | BoundingBoxArray
@@ -5735,7 +5768,7 @@ declare module "factorio:runtime" {
   /**
    * A position defined using the map editor.
    * @see ScriptPositionWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScriptPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScriptPosition.html Online documentation}
    */
   export interface ScriptPosition {
     readonly position: MapPosition
@@ -5745,7 +5778,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link ScriptPosition}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScriptPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScriptPosition.html Online documentation}
    */
   export interface ScriptPositionWrite {
     readonly position: MapPosition | MapPositionArray
@@ -5763,7 +5796,7 @@ declare module "factorio:runtime" {
    * red2 = {r = 0.5, a = 0.5}                -- Same color as red1
    * black = {}                               -- All channels omitted: black
    * red1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Color.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Color.html Online documentation}
    */
   export interface Color {
     readonly r?: float
@@ -5774,13 +5807,13 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link Color}.
    * @see Color
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Color.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Color.html Online documentation}
    */
   export type ColorArray = readonly [r: double, g: double, b: double, a?: double]
   /**
    * Same as {@link Color}, but red, green, blue and alpha values can be any floating point number, without any special handling of the range [1, 255].
    * @see ColorModifierArray
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ColorModifier.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ColorModifier.html Online documentation}
    */
   export interface ColorModifier {
     readonly r?: float
@@ -5791,7 +5824,7 @@ declare module "factorio:runtime" {
   /**
    * Array form of {@link ColorModifier}.
    * @see ColorModifier
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ColorModifier.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ColorModifier.html Online documentation}
    */
   export type ColorModifierArray = readonly [r: double, g: double, b: double, a?: double]
   export interface CraftingQueueItem {
@@ -5934,7 +5967,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see AsteroidChunkWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AsteroidChunk.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AsteroidChunk.html Online documentation}
    */
   export interface AsteroidChunk {
     /**
@@ -5946,7 +5979,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link AsteroidChunk}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AsteroidChunk.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AsteroidChunk.html Online documentation}
    */
   export interface AsteroidChunkWrite {
     /**
@@ -5968,7 +6001,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Either `icon`, `text`, or both must be provided.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ChartTagSpec.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ChartTagSpec.html Online documentation}
    */
   export interface ChartTagSpec {
     readonly position: MapPosition | MapPositionArray
@@ -5978,93 +6011,93 @@ declare module "factorio:runtime" {
   }
   /**
    * Parameters that affect the look and control of the game. Updating any of the member attributes here will immediately take effect in the game engine.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.html Online documentation}
    */
   export interface GameViewSettings {
     /**
      * Show the controller GUI elements. This includes the toolbar, the selected tool slot, the armour slot, and the gun and ammunition slots.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_controller_gui.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_controller_gui.html Online documentation}
      */
     show_controller_gui: boolean
     /**
      * Show the chart in the upper right-hand corner of the screen.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_minimap.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_minimap.html Online documentation}
      */
     show_minimap: boolean
     /**
      * Show research progress and name in the upper right-hand corner of the screen.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_research_info.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_research_info.html Online documentation}
      */
     show_research_info: boolean
     /**
      * Show overlay icons on entities. Also known as "alt-mode".
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_entity_info.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_entity_info.html Online documentation}
      */
     show_entity_info: boolean
     /**
      * Show the flashing alert icons next to the player's toolbar.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_alert_gui.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_alert_gui.html Online documentation}
      */
     show_alert_gui: boolean
     /**
      * When `true` (the default), mousing over an entity will select it. Otherwise, moving the mouse won't update entity selection.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.update_entity_selection.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.update_entity_selection.html Online documentation}
      */
     update_entity_selection: boolean
     /**
      * When `true` (`false` is default), the rails will always show the rail block visualisation.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_rail_block_visualisation.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_rail_block_visualisation.html Online documentation}
      */
     show_rail_block_visualisation: boolean
     /**
      * Shows or hides the buttons row.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_side_menu.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_side_menu.html Online documentation}
      */
     show_side_menu: boolean
     /**
      * Shows or hides the view options when map is opened.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_map_view_options.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_map_view_options.html Online documentation}
      */
     show_map_view_options: boolean
     /**
      * Shows or hides the tooltip that is displayed when selecting an entity.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_entity_tooltip.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_entity_tooltip.html Online documentation}
      */
     show_entity_tooltip: boolean
     /**
      * Shows or hides quickbar of shortcuts.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_quickbar.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_quickbar.html Online documentation}
      */
     show_quickbar: boolean
     /**
      * Shows or hides the shortcut bar.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_shortcut_bar.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_shortcut_bar.html Online documentation}
      */
     show_shortcut_bar: boolean
     /**
      * Shows or hides the crafting queue.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_crafting_queue.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_crafting_queue.html Online documentation}
      */
     show_crafting_queue: boolean
     /**
      * Shows or hides the tool window with the weapons and armor.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_tool_bar.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_tool_bar.html Online documentation}
      */
     show_tool_bar: boolean
     /**
      * Shows or hides the mouse and keyboard/controller button hints in the bottom left corner if they are enabled in the interface settings.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_hotkey_suggestions.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_hotkey_suggestions.html Online documentation}
      */
     show_hotkey_suggestions: boolean
     /**
      * Shows or hides the surface list while in Remote View.
-     * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GameViewSettings.show_surface_list.html Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GameViewSettings.show_surface_list.html Online documentation}
      */
     show_surface_list: boolean
   }
   /**
    * The data that can be extracted from a map exchange string, as a plain table.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapExchangeStringData.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapExchangeStringData.html Online documentation}
    */
   export interface MapExchangeStringData {
     readonly map_settings: MapAndDifficultySettings
@@ -6072,7 +6105,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see BlueprintSignalIconWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintSignalIcon.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintSignalIcon.html Online documentation}
    */
   export interface BlueprintSignalIcon {
     /**
@@ -6086,7 +6119,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link BlueprintSignalIcon}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintSignalIcon.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintSignalIcon.html Online documentation}
    */
   export interface BlueprintSignalIconWrite {
     /**
@@ -6115,12 +6148,12 @@ declare module "factorio:runtime" {
    * - `target_entity_number`
    *
    * - `target_wire_connector_id`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/BlueprintWire.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/BlueprintWire.html Online documentation}
    */
   export type BlueprintWire = readonly [uint, defines.wire_connector_id, uint, defines.wire_connector_id]
   /**
    * @see TileWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Tile.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Tile.html Online documentation}
    */
   export interface Tile {
     /**
@@ -6134,7 +6167,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link Tile}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Tile.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Tile.html Online documentation}
    */
   export interface TileWrite {
     /**
@@ -6189,7 +6222,7 @@ declare module "factorio:runtime" {
    *
    * Other attributes may be specified depending on `type`:
    * - `"fluid"`: {@link FluidIngredient}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Ingredient.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Ingredient.html Online documentation}
    */
   export type Ingredient = FluidIngredient | OtherIngredient
   export interface Loot {
@@ -6355,7 +6388,7 @@ declare module "factorio:runtime" {
    * - `"unlock-recipe"`: {@link UnlockRecipeTechnologyModifier}
    * - `"nothing"`: {@link NothingTechnologyModifier}
    * - Other types: {@link OtherTechnologyModifier}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TechnologyModifier.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TechnologyModifier.html Online documentation}
    */
   export type TechnologyModifier =
     | GunSpeedTechnologyModifier
@@ -6367,7 +6400,7 @@ declare module "factorio:runtime" {
     | OtherTechnologyModifier
   /**
    * A fragment of a functional program used to generate coherent noise, probably for purposes related to terrain generation. These can only be meaningfully written/modified during the data load phase. More detailed information is found on the {@link import("factorio:prototype").NamedNoiseExpression prototype docs}.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/NoiseExpression.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/NoiseExpression.html Online documentation}
    */
   export interface NoiseExpression {
     /**
@@ -6420,7 +6453,7 @@ declare module "factorio:runtime" {
    * - `"very-high"`: equivalent to `2`.
    * - `"very-big"`: equivalent to `2`.
    * - `"very-good"`: equivalent to `2`.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MapGenSize.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MapGenSize.html Online documentation}
    */
   export type MapGenSize =
     | float
@@ -6442,7 +6475,7 @@ declare module "factorio:runtime" {
     | "very-good"
   /**
    * @see AutoplaceControlWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AutoplaceControl.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AutoplaceControl.html Online documentation}
    */
   export interface AutoplaceControl {
     /**
@@ -6460,7 +6493,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link AutoplaceControl}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AutoplaceControl.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AutoplaceControl.html Online documentation}
    */
   export interface AutoplaceControlWrite {
     /**
@@ -6479,10 +6512,10 @@ declare module "factorio:runtime" {
   /**
    * All other MapGenSettings feed into named noise expressions, and therefore placement can be overridden by including the name of a property in this dictionary. The probability and richness functions for placing specific tiles, entities, and decoratives can be overridden by including an entry named `{tile|entity|decorative}:(prototype name):{probability|richness}`.
    *
-   * {@link https://lua-api.factorio.com/2.0.35/concepts/PropertyExpressionNames.html > Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `5`). All other controls can be overridden by a property expression names. Notable properties:}
+   * {@link https://lua-api.factorio.com/2.0.38/concepts/PropertyExpressionNames.html > Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `5`). All other controls can be overridden by a property expression names. Notable properties:}
    *
-   * {@link https://lua-api.factorio.com/2.0.35/concepts/PropertyExpressionNames.html > Climate controls ('Moisture' and 'Terrain type' at the bottom of the Terrain tab in the map generator GUI) don't have their own dedicated structures in MapGenSettings. Instead, their values are stored as property expression overrides with long names:}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PropertyExpressionNames.html Online documentation}
+   * {@link https://lua-api.factorio.com/2.0.38/concepts/PropertyExpressionNames.html > Climate controls ('Moisture' and 'Terrain type' at the bottom of the Terrain tab in the map generator GUI) don't have their own dedicated structures in MapGenSettings. Instead, their values are stored as property expression overrides with long names:}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PropertyExpressionNames.html Online documentation}
    */
   export type PropertyExpressionNames = Record<string, string>
   export interface AdvancedMapGenSettings {
@@ -6505,7 +6538,7 @@ declare module "factorio:runtime" {
   }
   /**
    * An actual signal transmitted by the network.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Signal.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Signal.html Online documentation}
    */
   export interface Signal {
     /**
@@ -6519,7 +6552,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see UpgradeMapperSourceWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/UpgradeMapperSource.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/UpgradeMapperSource.html Online documentation}
    */
   export interface UpgradeMapperSource {
     readonly type: "item" | "entity"
@@ -6538,7 +6571,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link UpgradeMapperSource}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/UpgradeMapperSource.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/UpgradeMapperSource.html Online documentation}
    */
   export interface UpgradeMapperSourceWrite {
     readonly type: "item" | "entity"
@@ -6575,7 +6608,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A single filter used by an infinity-filters instance.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/InfinityInventoryFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/InfinityInventoryFilter.html Online documentation}
    */
   export interface InfinityInventoryFilter {
     /**
@@ -6597,7 +6630,7 @@ declare module "factorio:runtime" {
   }
   /**
    * A single filter used by an infinity-pipe type entity.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/InfinityPipeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/InfinityPipeFilter.html Online documentation}
    */
   export interface InfinityPipeFilter {
     /**
@@ -6651,7 +6684,7 @@ declare module "factorio:runtime" {
   }
   /**
    * The settings used by a heat-interface type entity.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/HeatSetting.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/HeatSetting.html Online documentation}
    */
   export interface HeatSetting {
     /**
@@ -6669,7 +6702,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see ArithmeticCombinatorParametersWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ArithmeticCombinatorParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ArithmeticCombinatorParameters.html Online documentation}
    */
   export interface ArithmeticCombinatorParameters {
     /**
@@ -6699,7 +6732,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link ArithmeticCombinatorParameters}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ArithmeticCombinatorParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ArithmeticCombinatorParameters.html Online documentation}
    */
   export interface ArithmeticCombinatorParametersWrite {
     /**
@@ -6729,7 +6762,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see SelectorCombinatorParametersWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SelectorCombinatorParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SelectorCombinatorParameters.html Online documentation}
    */
   export interface SelectorCombinatorParameters {
     /**
@@ -6755,7 +6788,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link SelectorCombinatorParameters}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SelectorCombinatorParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SelectorCombinatorParameters.html Online documentation}
    */
   export interface SelectorCombinatorParametersWrite {
     /**
@@ -6797,7 +6830,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see CircuitConditionWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CircuitCondition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CircuitCondition.html Online documentation}
    */
   export interface CircuitCondition {
     /**
@@ -6819,7 +6852,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link CircuitCondition}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CircuitCondition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CircuitCondition.html Online documentation}
    */
   export interface CircuitConditionWrite {
     /**
@@ -6841,7 +6874,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see CircuitConditionDefinitionWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CircuitConditionDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CircuitConditionDefinition.html Online documentation}
    */
   export interface CircuitConditionDefinition {
     /**
@@ -6855,7 +6888,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link CircuitConditionDefinition}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CircuitConditionDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CircuitConditionDefinition.html Online documentation}
    */
   export interface CircuitConditionDefinitionWrite {
     /**
@@ -7130,7 +7163,7 @@ declare module "factorio:runtime" {
    * - {@link defines.command.stop}: {@link StopCommand}
    * - {@link defines.command.flee}: {@link FleeCommand}
    * - {@link defines.command.build_base}: {@link BuildBaseCommand}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Command.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Command.html Online documentation}
    */
   export type Command =
     | AttackCommand
@@ -7144,7 +7177,7 @@ declare module "factorio:runtime" {
     | BuildBaseCommand
   /**
    * Write form of {@link Command}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Command.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Command.html Online documentation}
    */
   export type CommandWrite =
     | AttackCommand
@@ -7229,7 +7262,7 @@ declare module "factorio:runtime" {
    * These are both full stacks of iron plates (for iron-plate, a full stack is 100 plates)
    * "iron-plate"
    * {name="iron-plate", count=100}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SimpleItemStack.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SimpleItemStack.html Online documentation}
    */
   export type SimpleItemStack = string | ItemStackDefinition
   /**
@@ -7239,7 +7272,7 @@ declare module "factorio:runtime" {
    * - SurfaceIndex: It will be the index of the surface. `nauvis` has index `1`, the first surface-created surface will have index `2` and so on.
    * - `string`: It will be the surface name. E.g. `"nauvis"`.
    * - {@link LuaSurface}: A reference to {@link LuaSurface} may be passed directly.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SurfaceIdentification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SurfaceIdentification.html Online documentation}
    */
   export type SurfaceIdentification = SurfaceIndex | string | LuaSurface
   /**
@@ -7249,7 +7282,7 @@ declare module "factorio:runtime" {
    * - PlayerIndex: The player index.
    * - `string`: The player name.
    * - {@link LuaPlayer}: A reference to {@link LuaPlayer} may be passed directly.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/PlayerIdentification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/PlayerIdentification.html Online documentation}
    */
   export type PlayerIdentification = PlayerIndex | string | LuaPlayer
   /**
@@ -7258,7 +7291,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - {@link SimpleItemStack}
    * - {@link LuaItemStack}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemStackIdentification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemStackIdentification.html Online documentation}
    */
   export type ItemStackIdentification = SimpleItemStack | LuaItemStack
   /**
@@ -7268,7 +7301,7 @@ declare module "factorio:runtime" {
    * - `"entity"`: Fires at an entity.
    * - `"position"`: Fires directly at a position.
    * - `"direction"`: Fires in a direction.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TargetType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TargetType.html Online documentation}
    */
   export type TargetType = "entity" | "position" | "direction"
   export interface BeamTarget {
@@ -7305,8 +7338,8 @@ declare module "factorio:runtime" {
    *
    * The validity of a SoundPath can be verified at runtime using {@link LuaHelpers#is_valid_sound_path LuaHelpers::is_valid_sound_path}.
    *
-   * {@link https://lua-api.factorio.com/2.0.35/concepts/SoundPath.html > The utility and ambient types each contain general use sound prototypes defined by the game itself.}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SoundPath.html Online documentation}
+   * {@link https://lua-api.factorio.com/2.0.38/concepts/SoundPath.html > The utility and ambient types each contain general use sound prototypes defined by the game itself.}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SoundPath.html Online documentation}
    */
   export type SoundPath = (string & { _?: never }) | `${SoundCategory}/${string}`
   export interface CircularParticleCreationSpecification {
@@ -7438,7 +7471,7 @@ declare module "factorio:runtime" {
    * Other attributes may be specified depending on `type`:
    * - `"projectile"`: {@link ProjectileAttackParameters}
    * - `"stream"`: {@link StreamAttackParameters}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AttackParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AttackParameters.html Online documentation}
    */
   export type AttackParameters = ProjectileAttackParameters | StreamAttackParameters | OtherAttackParameters
   export interface GunShift4Way {
@@ -7504,7 +7537,7 @@ declare module "factorio:runtime" {
    * - `"use-on-self"`: {@link UseOnSelfCapsuleAction}
    * - `"artillery-remote"`: {@link ArtilleryRemoteCapsuleAction}
    * - `"destroy-cliffs"`: {@link DestroyCliffsCapsuleAction}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/CapsuleAction.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/CapsuleAction.html Online documentation}
    */
   export type CapsuleAction =
     | ThrowCapsuleAction
@@ -7544,12 +7577,12 @@ declare module "factorio:runtime" {
   }
   /**
    * Any basic type (string, number, boolean) or table.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AnyBasic.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AnyBasic.html Online documentation}
    */
   export type AnyBasic = string | boolean | number | table
   /**
    * Any basic type (string, number, boolean), table, or LuaObject.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Any.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Any.html Online documentation}
    */
   export type Any = string | boolean | number | table | LuaObject
   export interface ProgrammableSpeakerParameters {
@@ -7559,7 +7592,7 @@ declare module "factorio:runtime" {
   }
   /**
    * @see ProgrammableSpeakerAlertParametersWrite
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ProgrammableSpeakerAlertParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ProgrammableSpeakerAlertParameters.html Online documentation}
    */
   export interface ProgrammableSpeakerAlertParameters {
     readonly show_alert: boolean
@@ -7569,7 +7602,7 @@ declare module "factorio:runtime" {
   }
   /**
    * Write form of {@link ProgrammableSpeakerAlertParameters}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ProgrammableSpeakerAlertParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ProgrammableSpeakerAlertParameters.html Online documentation}
    */
   export interface ProgrammableSpeakerAlertParametersWrite {
     readonly show_alert: boolean
@@ -7601,7 +7634,7 @@ declare module "factorio:runtime" {
    * - `"top-right"`
    * - `"right"`: The same as `"middle-right"`
    * - `"bottom-right"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/Alignment.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/Alignment.html Online documentation}
    */
   export type Alignment =
     | "top-left"
@@ -7634,8 +7667,8 @@ declare module "factorio:runtime" {
     _customEventIdBrand: any
   }
   /**
-   * Information about the event that has been raised. The table can also contain other fields depending on the type of event. See {@linkplain https://lua-api.factorio.com/2.0.35/events.html the list of Factorio events} for more information on these.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EventData.html Online documentation}
+   * Information about the event that has been raised. The table can also contain other fields depending on the type of event. See {@linkplain https://lua-api.factorio.com/2.0.38/events.html the list of Factorio events} for more information on these.
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EventData.html Online documentation}
    */
   export interface EventData {
     /**
@@ -7744,7 +7777,7 @@ declare module "factorio:runtime" {
    * - `"button-7"`
    * - `"button-8"`
    * - `"button-9"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/MouseButtonFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/MouseButtonFlags.html Online documentation}
    */
   export interface MouseButtonFlags {
     readonly left?: true
@@ -7767,7 +7800,7 @@ declare module "factorio:runtime" {
    * - `"not-friend"`: Forces which are not friends pass.
    * - `"same"`: The same force pass.
    * - `"not-same"`: The non-same forces pass.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ForceCondition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ForceCondition.html Online documentation}
    */
   export type ForceCondition = "all" | "enemy" | "ally" | "friend" | "not-friend" | "same" | "not-same"
   export interface ItemStackLocation {
@@ -7805,7 +7838,7 @@ declare module "factorio:runtime" {
    * - `"tabbed-pane"`: A collection of `tab`s and their contents. Relevant event: {@link OnGuiSelectedTabChangedEvent on_gui_selected_tab_changed}
    * - `"tab"`: A tab for use in a `tabbed-pane`.
    * - `"switch"`: A switch with three possible states. Can have labels attached to either side. Relevant event: {@link OnGuiSwitchStateChangedEvent on_gui_switch_state_changed}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GuiElementType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GuiElementType.html Online documentation}
    */
   export type GuiElementType =
     | "button"
@@ -7845,7 +7878,7 @@ declare module "factorio:runtime" {
    * - `"position"`
    * - `"crafting_queue"`
    * - `"item_stack"`: Will point to a given item stack in an inventory.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GuiArrowType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GuiArrowType.html Online documentation}
    */
   export type GuiArrowType =
     | "nowhere"
@@ -7862,7 +7895,7 @@ declare module "factorio:runtime" {
    * ## Union members
    * - `"horizontal"`
    * - `"vertical"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/GuiDirection.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/GuiDirection.html Online documentation}
    */
   export type GuiDirection = "horizontal" | "vertical"
   /**
@@ -7874,7 +7907,7 @@ declare module "factorio:runtime" {
    * - `"always"`
    * - `"auto"`
    * - `"auto-and-reserve-space"`
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ScrollPolicy.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ScrollPolicy.html Online documentation}
    */
   export type ScrollPolicy = "never" | "dont-show-but-allow-scrolling" | "always" | "auto" | "auto-and-reserve-space"
   export interface RailLocation {
@@ -7891,71 +7924,71 @@ declare module "factorio:runtime" {
   }
   /**
    * A floating-point number. This is a single-precision floating point number. Whilst Lua only uses double-precision numbers, when a function takes a float, the game engine will immediately convert the double-precision number to single-precision.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/float.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/float.html Online documentation}
    */
   export type float = number
   /**
    * A double-precision floating-point number. This is the same data type as all Lua numbers use.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/double.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/double.html Online documentation}
    */
   export type double = number
   /**
    * 32-bit signed integer. Possible values are `-2 147 483 648` to `2 147 483 647`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `int` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/int.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/int.html Online documentation}
    */
   export type int = number
   /**
    * 8-bit signed integer. Possible values are `-128` to `127`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `int8` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/int8.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/int8.html Online documentation}
    */
   export type int8 = number
   /**
    * 32-bit unsigned integer. Possible values are `0` to `4 294 967 295`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/uint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/uint.html Online documentation}
    */
   export type uint = number
   /**
    * 8-bit unsigned integer. Possible values are `0` to `255`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint8` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/uint8.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/uint8.html Online documentation}
    */
   export type uint8 = number
   /**
    * 16-bit unsigned integer. Possible values are `0` to `65 535`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint16` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/uint16.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/uint16.html Online documentation}
    */
   export type uint16 = number
   /**
    * 64-bit unsigned integer. Possible values are `0` to `18 446 744 073 709 551 615`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint64` will floor the given double.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/uint64.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/uint64.html Online documentation}
    */
   export type uint64 = number
   /**
    * Nil is the type of the value `nil`, whose main property is to be different from any other value. It usually represents the absence of a useful value.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/nil.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/nil.html Online documentation}
    */
   export type nil = undefined
   /**
    * Tables are enclosed in curly brackets, like this `{}`.
    *
    * Throughout the API docs, the terms "array" and "dictionary" are used. These are fundamentally just {@linkplain http://www.lua.org/pil/2.5.html Lua tables}, but have a limitation on which kind of table keys can be used. An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/table.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/table.html Online documentation}
    */
   export type table = object
   /**
-   * Any LuaObject listed on the {@linkplain https://lua-api.factorio.com/2.0.35/classes.html Classes} page.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaObject.html Online documentation}
+   * Any LuaObject listed on the {@linkplain https://lua-api.factorio.com/2.0.38/classes.html Classes} page.
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaObject.html Online documentation}
    */
   export interface LuaObject {
     readonly object_name: string
@@ -8014,7 +8047,7 @@ declare module "factorio:runtime" {
    * - `"type"`: {@link TypeModSettingPrototypeFilter}
    * - `"mod"`: {@link ModModSettingPrototypeFilter}
    * - `"setting-type"`: {@link SettingTypeModSettingPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ModSettingPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ModSettingPrototypeFilter.html Online documentation}
    */
   export type ModSettingPrototypeFilter =
     | TypeModSettingPrototypeFilter
@@ -8159,7 +8192,7 @@ declare module "factorio:runtime" {
    * - `"vehicle-friction-modifier"`: {@link VehicleFrictionModifierTilePrototypeFilter}
    * - `"decorative-removal-probability"`: {@link DecorativeRemovalProbabilityTilePrototypeFilter}
    * - `"absorptions-per-second"`: {@link AbsorptionsPerSecondTilePrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TilePrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TilePrototypeFilter.html Online documentation}
    */
   export type TilePrototypeFilter =
     | CollisionMaskTilePrototypeFilter
@@ -8170,7 +8203,7 @@ declare module "factorio:runtime" {
     | OtherTilePrototypeFilter
   /**
    * Write form of {@link TilePrototypeFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TilePrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TilePrototypeFilter.html Online documentation}
    */
   export type TilePrototypeFilterWrite =
     | CollisionMaskTilePrototypeFilter
@@ -8221,7 +8254,7 @@ declare module "factorio:runtime" {
    *
    * Other attributes may be specified depending on `filter`:
    * - `"collision-mask"`: {@link CollisionMaskDecorativePrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/DecorativePrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/DecorativePrototypeFilter.html Online documentation}
    */
   export type DecorativePrototypeFilter = CollisionMaskDecorativePrototypeFilter | OtherDecorativePrototypeFilter
   /**
@@ -8475,7 +8508,7 @@ declare module "factorio:runtime" {
    * - `"emissions-multiplier"`: {@link EmissionsMultiplierRecipePrototypeFilter}
    * - `"request-paste-multiplier"`: {@link RequestPasteMultiplierRecipePrototypeFilter}
    * - `"overload-multiplier"`: {@link OverloadMultiplierRecipePrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/RecipePrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/RecipePrototypeFilter.html Online documentation}
    */
   export type RecipePrototypeFilter =
     | HasIngredientItemRecipePrototypeFilter
@@ -8491,7 +8524,7 @@ declare module "factorio:runtime" {
     | OtherRecipePrototypeFilter
   /**
    * Write form of {@link RecipePrototypeFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/RecipePrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/RecipePrototypeFilter.html Online documentation}
    */
   export type RecipePrototypeFilterWrite =
     | HasIngredientItemRecipePrototypeFilterWrite
@@ -8543,7 +8576,7 @@ declare module "factorio:runtime" {
    *
    * Other attributes may be specified depending on `filter`:
    * - `"type"`: {@link TypeAchievementPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/AchievementPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/AchievementPrototypeFilter.html Online documentation}
    */
   export type AchievementPrototypeFilter = TypeAchievementPrototypeFilter | OtherAchievementPrototypeFilter
   /**
@@ -8666,7 +8699,7 @@ declare module "factorio:runtime" {
    * - `"level"`: {@link LevelTechnologyPrototypeFilter}
    * - `"max-level"`: {@link MaxLevelTechnologyPrototypeFilter}
    * - `"time"`: {@link TimeTechnologyPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TechnologyPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TechnologyPrototypeFilter.html Online documentation}
    */
   export type TechnologyPrototypeFilter =
     | ResearchUnitIngredientTechnologyPrototypeFilter
@@ -8677,7 +8710,7 @@ declare module "factorio:runtime" {
     | OtherTechnologyPrototypeFilter
   /**
    * Write form of {@link TechnologyPrototypeFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/TechnologyPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/TechnologyPrototypeFilter.html Online documentation}
    */
   export type TechnologyPrototypeFilterWrite =
     | ResearchUnitIngredientTechnologyPrototypeFilter
@@ -8994,7 +9027,7 @@ declare module "factorio:runtime" {
    * - `"fuel-acceleration-multiplier"`: {@link FuelAccelerationMultiplierItemPrototypeFilter}
    * - `"fuel-top-speed-multiplier"`: {@link FuelTopSpeedMultiplierItemPrototypeFilter}
    * - `"fuel-emissions-multiplier"`: {@link FuelEmissionsMultiplierItemPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemPrototypeFilter.html Online documentation}
    */
   export type ItemPrototypeFilter =
     | PlaceResultItemPrototypeFilter
@@ -9014,7 +9047,7 @@ declare module "factorio:runtime" {
     | OtherItemPrototypeFilter
   /**
    * Write form of {@link ItemPrototypeFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/ItemPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/ItemPrototypeFilter.html Online documentation}
    */
   export type ItemPrototypeFilterWrite =
     | PlaceResultItemPrototypeFilterWrite
@@ -9070,7 +9103,7 @@ declare module "factorio:runtime" {
    *
    * Other attributes may be specified depending on `filter`:
    * - `"type"`: {@link TypeEquipmentPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EquipmentPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EquipmentPrototypeFilter.html Online documentation}
    */
   export type EquipmentPrototypeFilter = TypeEquipmentPrototypeFilter | OtherEquipmentPrototypeFilter
   /**
@@ -9301,7 +9334,7 @@ declare module "factorio:runtime" {
    * - `"selection-priority"`: {@link SelectionPriorityEntityPrototypeFilter}
    * - `"emissions-per-second"`: {@link EmissionsPerSecondEntityPrototypeFilter}
    * - `"crafting-category"`: {@link CraftingCategoryEntityPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EntityPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EntityPrototypeFilter.html Online documentation}
    */
   export type EntityPrototypeFilter =
     | NameEntityPrototypeFilter
@@ -9315,7 +9348,7 @@ declare module "factorio:runtime" {
     | OtherEntityPrototypeFilter
   /**
    * Write form of {@link EntityPrototypeFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/EntityPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/EntityPrototypeFilter.html Online documentation}
    */
   export type EntityPrototypeFilterWrite =
     | NameEntityPrototypeFilter
@@ -9385,7 +9418,7 @@ declare module "factorio:runtime" {
    * Other attributes may be specified depending on `filter`:
    * - `"type"`: {@link TypeSpaceLocationPrototypeFilter}
    * - `"solar-power-in-space"`: {@link SolarPowerInSpaceSpaceLocationPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SpaceLocationPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SpaceLocationPrototypeFilter.html Online documentation}
    */
   export type SpaceLocationPrototypeFilter =
     | TypeSpaceLocationPrototypeFilter
@@ -9393,7 +9426,7 @@ declare module "factorio:runtime" {
     | OtherSpaceLocationPrototypeFilter
   /**
    * Write form of {@link SpaceLocationPrototypeFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/SpaceLocationPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/SpaceLocationPrototypeFilter.html Online documentation}
    */
   export type SpaceLocationPrototypeFilterWrite =
     | TypeSpaceLocationPrototypeFilter
@@ -9581,7 +9614,7 @@ declare module "factorio:runtime" {
    * - `"fuel-value"`: {@link FuelValueFluidPrototypeFilter}
    * - `"emissions-multiplier"`: {@link EmissionsMultiplierFluidPrototypeFilter}
    * - `"gas-temperature"`: {@link GasTemperatureFluidPrototypeFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/FluidPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/FluidPrototypeFilter.html Online documentation}
    */
   export type FluidPrototypeFilter =
     | NameFluidPrototypeFilter
@@ -9595,7 +9628,7 @@ declare module "factorio:runtime" {
     | OtherFluidPrototypeFilter
   /**
    * Write form of {@link FluidPrototypeFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/FluidPrototypeFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/FluidPrototypeFilter.html Online documentation}
    */
   export type FluidPrototypeFilterWrite =
     | NameFluidPrototypeFilter
@@ -9704,7 +9737,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NamePrePlatformMinedEntityEventFilter}
    * - `"ghost_type"`: {@link GhostTypePrePlatformMinedEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePrePlatformMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPrePlatformMinedEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPrePlatformMinedEntityEventFilter.html Online documentation}
    */
   export type LuaPrePlatformMinedEntityEventFilter =
     | TypePrePlatformMinedEntityEventFilter
@@ -9809,7 +9842,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameRobotMinedEntityEventFilter}
    * - `"ghost_type"`: {@link GhostTypeRobotMinedEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNameRobotMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaRobotMinedEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaRobotMinedEntityEventFilter.html Online documentation}
    */
   export type LuaRobotMinedEntityEventFilter =
     | TypeRobotMinedEntityEventFilter
@@ -9914,7 +9947,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameEntityMarkedForUpgradeEventFilter}
    * - `"ghost_type"`: {@link GhostTypeEntityMarkedForUpgradeEventFilter}
    * - `"ghost_name"`: {@link GhostNameEntityMarkedForUpgradeEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaEntityMarkedForUpgradeEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaEntityMarkedForUpgradeEventFilter.html Online documentation}
    */
   export type LuaEntityMarkedForUpgradeEventFilter =
     | TypeEntityMarkedForUpgradeEventFilter
@@ -10019,7 +10052,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NamePreGhostUpgradedEventFilter}
    * - `"ghost_type"`: {@link GhostTypePreGhostUpgradedEventFilter}
    * - `"ghost_name"`: {@link GhostNamePreGhostUpgradedEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPreGhostUpgradedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPreGhostUpgradedEventFilter.html Online documentation}
    */
   export type LuaPreGhostUpgradedEventFilter =
     | TypePreGhostUpgradedEventFilter
@@ -10124,7 +10157,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NamePlatformMinedEntityEventFilter}
    * - `"ghost_type"`: {@link GhostTypePlatformMinedEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePlatformMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPlatformMinedEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPlatformMinedEntityEventFilter.html Online documentation}
    */
   export type LuaPlatformMinedEntityEventFilter =
     | TypePlatformMinedEntityEventFilter
@@ -10229,7 +10262,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameScriptRaisedDestroyEventFilter}
    * - `"ghost_type"`: {@link GhostTypeScriptRaisedDestroyEventFilter}
    * - `"ghost_name"`: {@link GhostNameScriptRaisedDestroyEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaScriptRaisedDestroyEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaScriptRaisedDestroyEventFilter.html Online documentation}
    */
   export type LuaScriptRaisedDestroyEventFilter =
     | TypeScriptRaisedDestroyEventFilter
@@ -10346,7 +10379,7 @@ declare module "factorio:runtime" {
    * - `"ghost_type"`: {@link GhostTypePlayerBuiltEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePlayerBuiltEntityEventFilter}
    * - `"force"`: {@link ForcePlayerBuiltEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPlayerBuiltEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPlayerBuiltEntityEventFilter.html Online documentation}
    */
   export type LuaPlayerBuiltEntityEventFilter =
     | TypePlayerBuiltEntityEventFilter
@@ -10464,7 +10497,7 @@ declare module "factorio:runtime" {
    * - `"ghost_type"`: {@link GhostTypePlatformBuiltEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePlatformBuiltEntityEventFilter}
    * - `"force"`: {@link ForcePlatformBuiltEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPlatformBuiltEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPlatformBuiltEntityEventFilter.html Online documentation}
    */
   export type LuaPlatformBuiltEntityEventFilter =
     | TypePlatformBuiltEntityEventFilter
@@ -10570,7 +10603,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NamePreGhostDeconstructedEventFilter}
    * - `"ghost_type"`: {@link GhostTypePreGhostDeconstructedEventFilter}
    * - `"ghost_name"`: {@link GhostNamePreGhostDeconstructedEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPreGhostDeconstructedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPreGhostDeconstructedEventFilter.html Online documentation}
    */
   export type LuaPreGhostDeconstructedEventFilter =
     | TypePreGhostDeconstructedEventFilter
@@ -10675,7 +10708,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameEntityClonedEventFilter}
    * - `"ghost_type"`: {@link GhostTypeEntityClonedEventFilter}
    * - `"ghost_name"`: {@link GhostNameEntityClonedEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaEntityClonedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaEntityClonedEventFilter.html Online documentation}
    */
   export type LuaEntityClonedEventFilter =
     | TypeEntityClonedEventFilter
@@ -10780,7 +10813,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameScriptRaisedTeleportedEventFilter}
    * - `"ghost_type"`: {@link GhostTypeScriptRaisedTeleportedEventFilter}
    * - `"ghost_name"`: {@link GhostNameScriptRaisedTeleportedEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaScriptRaisedTeleportedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaScriptRaisedTeleportedEventFilter.html Online documentation}
    */
   export type LuaScriptRaisedTeleportedEventFilter =
     | TypeScriptRaisedTeleportedEventFilter
@@ -10887,7 +10920,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameEntityDeconstructionCancelledEventFilter}
    * - `"ghost_type"`: {@link GhostTypeEntityDeconstructionCancelledEventFilter}
    * - `"ghost_name"`: {@link GhostNameEntityDeconstructionCancelledEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaEntityDeconstructionCancelledEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaEntityDeconstructionCancelledEventFilter.html Online documentation}
    */
   export type LuaEntityDeconstructionCancelledEventFilter =
     | TypeEntityDeconstructionCancelledEventFilter
@@ -11004,7 +11037,7 @@ declare module "factorio:runtime" {
    * - `"ghost_type"`: {@link GhostTypeRobotBuiltEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNameRobotBuiltEntityEventFilter}
    * - `"force"`: {@link ForceRobotBuiltEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaRobotBuiltEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaRobotBuiltEntityEventFilter.html Online documentation}
    */
   export type LuaRobotBuiltEntityEventFilter =
     | TypeRobotBuiltEntityEventFilter
@@ -11110,7 +11143,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameScriptRaisedBuiltEventFilter}
    * - `"ghost_type"`: {@link GhostTypeScriptRaisedBuiltEventFilter}
    * - `"ghost_name"`: {@link GhostNameScriptRaisedBuiltEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaScriptRaisedBuiltEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaScriptRaisedBuiltEventFilter.html Online documentation}
    */
   export type LuaScriptRaisedBuiltEventFilter =
     | TypeScriptRaisedBuiltEventFilter
@@ -11215,7 +11248,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NamePrePlayerMinedEntityEventFilter}
    * - `"ghost_type"`: {@link GhostTypePrePlayerMinedEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePrePlayerMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPrePlayerMinedEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPrePlayerMinedEntityEventFilter.html Online documentation}
    */
   export type LuaPrePlayerMinedEntityEventFilter =
     | TypePrePlayerMinedEntityEventFilter
@@ -11320,7 +11353,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NamePlayerRepairedEntityEventFilter}
    * - `"ghost_type"`: {@link GhostTypePlayerRepairedEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePlayerRepairedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPlayerRepairedEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPlayerRepairedEntityEventFilter.html Online documentation}
    */
   export type LuaPlayerRepairedEntityEventFilter =
     | TypePlayerRepairedEntityEventFilter
@@ -11425,7 +11458,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameUpgradeCancelledEventFilter}
    * - `"ghost_type"`: {@link GhostTypeUpgradeCancelledEventFilter}
    * - `"ghost_name"`: {@link GhostNameUpgradeCancelledEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaUpgradeCancelledEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaUpgradeCancelledEventFilter.html Online documentation}
    */
   export type LuaUpgradeCancelledEventFilter =
     | TypeUpgradeCancelledEventFilter
@@ -11530,7 +11563,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameSectorScannedEventFilter}
    * - `"ghost_type"`: {@link GhostTypeSectorScannedEventFilter}
    * - `"ghost_name"`: {@link GhostNameSectorScannedEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaSectorScannedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaSectorScannedEventFilter.html Online documentation}
    */
   export type LuaSectorScannedEventFilter =
     | TypeSectorScannedEventFilter
@@ -11576,7 +11609,7 @@ declare module "factorio:runtime" {
    *
    * Other attributes may be specified depending on `filter`:
    * - `"type"`: {@link TypePostEntityDiedEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPostEntityDiedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPostEntityDiedEventFilter.html Online documentation}
    */
   export type LuaPostEntityDiedEventFilter = TypePostEntityDiedEventFilter | OtherPostEntityDiedEventFilter
   /**
@@ -11678,7 +11711,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameEntityMarkedForDeconstructionEventFilter}
    * - `"ghost_type"`: {@link GhostTypeEntityMarkedForDeconstructionEventFilter}
    * - `"ghost_name"`: {@link GhostNameEntityMarkedForDeconstructionEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaEntityMarkedForDeconstructionEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaEntityMarkedForDeconstructionEventFilter.html Online documentation}
    */
   export type LuaEntityMarkedForDeconstructionEventFilter =
     | TypeEntityMarkedForDeconstructionEventFilter
@@ -11783,7 +11816,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NamePlayerMinedEntityEventFilter}
    * - `"ghost_type"`: {@link GhostTypePlayerMinedEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePlayerMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPlayerMinedEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPlayerMinedEntityEventFilter.html Online documentation}
    */
   export type LuaPlayerMinedEntityEventFilter =
     | TypePlayerMinedEntityEventFilter
@@ -11963,7 +11996,7 @@ declare module "factorio:runtime" {
    * - `"final-damage-amount"`: {@link FinalDamageAmountEntityDamagedEventFilter}
    * - `"damage-type"`: {@link DamageTypeEntityDamagedEventFilter}
    * - `"final-health"`: {@link FinalHealthEntityDamagedEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaEntityDamagedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaEntityDamagedEventFilter.html Online documentation}
    */
   export type LuaEntityDamagedEventFilter =
     | TypeEntityDamagedEventFilter
@@ -11977,7 +12010,7 @@ declare module "factorio:runtime" {
     | OtherEntityDamagedEventFilter
   /**
    * Write form of {@link LuaEntityDamagedEventFilter}, where some properties allow additional values as input compared to the read form.
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaEntityDamagedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaEntityDamagedEventFilter.html Online documentation}
    */
   export type LuaEntityDamagedEventFilterWrite =
     | TypeEntityDamagedEventFilter
@@ -12086,7 +12119,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameScriptRaisedReviveEventFilter}
    * - `"ghost_type"`: {@link GhostTypeScriptRaisedReviveEventFilter}
    * - `"ghost_name"`: {@link GhostNameScriptRaisedReviveEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaScriptRaisedReviveEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaScriptRaisedReviveEventFilter.html Online documentation}
    */
   export type LuaScriptRaisedReviveEventFilter =
     | TypeScriptRaisedReviveEventFilter
@@ -12191,7 +12224,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NameEntityDiedEventFilter}
    * - `"ghost_type"`: {@link GhostTypeEntityDiedEventFilter}
    * - `"ghost_name"`: {@link GhostNameEntityDiedEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaEntityDiedEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaEntityDiedEventFilter.html Online documentation}
    */
   export type LuaEntityDiedEventFilter =
     | TypeEntityDiedEventFilter
@@ -12296,7 +12329,7 @@ declare module "factorio:runtime" {
    * - `"name"`: {@link NamePreRobotMinedEntityEventFilter}
    * - `"ghost_type"`: {@link GhostTypePreRobotMinedEntityEventFilter}
    * - `"ghost_name"`: {@link GhostNamePreRobotMinedEntityEventFilter}
-   * @see {@link https://lua-api.factorio.com/2.0.35/concepts/LuaPreRobotMinedEntityEventFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.38/concepts/LuaPreRobotMinedEntityEventFilter.html Online documentation}
    */
   export type LuaPreRobotMinedEntityEventFilter =
     | TypePreRobotMinedEntityEventFilter
