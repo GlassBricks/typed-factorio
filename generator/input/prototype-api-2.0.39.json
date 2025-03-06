@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.35",
+  "application_version": "2.0.39",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -9526,7 +9526,7 @@
           "order": 7,
           "description": "See [damage](https://wiki.factorio.com/Damage).",
           "examples": [
-            "```\nresistances =\n{\n  {\n    type = \"fire\",\n      percent = 80\n  },\n  {\n    type = \"explosion\",\n    percent = 30\n  }\n}\n```"
+            "```\nresistances =\n{\n  {\n    type = \"fire\",\n    percent = 80\n  },\n  {\n    type = \"explosion\",\n    percent = 30\n  }\n}\n```"
           ],
           "override": false,
           "type": {
@@ -12675,8 +12675,72 @@
       ]
     },
     {
-      "name": "InfinityContainerPrototype",
+      "name": "InfinityCargoWagonPrototype",
       "order": 125,
+      "description": "A cargo wagon that can spawn or void items at will.",
+      "parent": "CargoWagonPrototype",
+      "abstract": false,
+      "typename": "infinity-cargo-wagon",
+      "deprecated": false,
+      "properties": [
+        {
+          "name": "erase_contents_when_mined",
+          "order": 0,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
+          "name": "gui_mode",
+          "order": 2,
+          "description": "Controls which players can control what the chest spawns.",
+          "override": false,
+          "type": {
+            "complex_type": "union",
+            "options": [
+              {
+                "complex_type": "literal",
+                "value": "all"
+              },
+              {
+                "complex_type": "literal",
+                "value": "none"
+              },
+              {
+                "complex_type": "literal",
+                "value": "admins"
+              }
+            ],
+            "full_format": false
+          },
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": "all"
+          }
+        },
+        {
+          "name": "preserve_contents_when_created",
+          "order": 1,
+          "description": "When true, items created inside the infinity cargo wagon will not start to spoil until they have been removed from the wagon.",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "InfinityContainerPrototype",
+      "order": 126,
       "description": "A generic container, such as a chest, that can spawn or void items and interact with the logistics network.",
       "parent": "LogisticContainerPrototype",
       "abstract": false,
@@ -12794,7 +12858,7 @@
     },
     {
       "name": "InfinityPipePrototype",
-      "order": 126,
+      "order": 127,
       "description": "This entity produces or consumes fluids. Its fluid settings can be changed runtime.",
       "parent": "PipePrototype",
       "abstract": false,
@@ -12834,7 +12898,7 @@
     },
     {
       "name": "InserterPrototype",
-      "order": 127,
+      "order": 128,
       "description": "An [inserter](https://wiki.factorio.com/Inserter).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -13240,7 +13304,7 @@
     },
     {
       "name": "InventoryBonusEquipmentPrototype",
-      "order": 128,
+      "order": 129,
       "description": "",
       "parent": "EquipmentPrototype",
       "abstract": false,
@@ -13267,7 +13331,7 @@
     },
     {
       "name": "ItemEntityPrototype",
-      "order": 129,
+      "order": 130,
       "description": "The entity used for items on the ground.",
       "examples": [
         "```\n{\n  type = \"item-entity\",\n  name = \"item-on-ground\",\n  flags = { \"placeable-off-grid\", \"not-on-map\" },\n  collision_box = { {-0.14, -0.14}, {0.14, 0.14} },\n  selection_box = { {-0.17, -0.17}, {0.17, 0.17} },\n  minable = { mining_time = 0.025 }\n}\n```"
@@ -13293,7 +13357,7 @@
     },
     {
       "name": "ItemGroup",
-      "order": 130,
+      "order": 131,
       "description": "An item group. Item groups are the tabs shown above the list of craftable items in the player's inventory GUI. The built-in groups are \"logistics\", \"production\", \"intermediate-products\" and \"combat\" but mods can define their own.\n\nItems are sorted into item groups by sorting them into a [subgroup](prototype:ItemPrototype::subgroup) which then belongs to an [item group](prototype:ItemSubGroup::group).",
       "examples": [
         "```\n{\n  type = \"item-group\",\n  name = \"logistics\",\n  order = \"a\",\n  icon = \"__base__/graphics/item-group/logistics.png\",\n  icon_size = 128,\n}\n```"
@@ -13348,7 +13412,7 @@
     },
     {
       "name": "ItemPrototype",
-      "order": 131,
+      "order": 132,
       "description": "Possible configuration for all items.",
       "parent": "Prototype",
       "abstract": false,
@@ -13774,7 +13838,7 @@
     },
     {
       "name": "ItemRequestProxyPrototype",
-      "order": 132,
+      "order": 133,
       "description": "Entity used to signify that an entity is requesting items, for example modules for an assembling machine after it was blueprinted with modules inside.",
       "parent": "EntityPrototype",
       "abstract": false,
@@ -13797,7 +13861,7 @@
     },
     {
       "name": "ItemSubGroup",
-      "order": 133,
+      "order": 134,
       "description": "An item subgroup. Item subgroups are the rows in the recipe list in the player's inventory GUI. The subgroup of a prototype also determines its item [group](prototype:ItemGroup::group) (tab in the recipe list).\n\nThe built-in subgroups can be found [here](https://wiki.factorio.com/Data.raw#item-subgroup). See [ItemPrototype::subgroup](prototype:ItemPrototype::subgroup) for setting the subgroup of an item.",
       "examples": [
         "```\n{\n  type = \"item-subgroup\",\n  name = \"train-transport\",\n  group = \"logistics\",\n  order = \"e\"\n}\n```"
@@ -13819,7 +13883,7 @@
     },
     {
       "name": "ItemWithEntityDataPrototype",
-      "order": 134,
+      "order": 135,
       "description": "ItemWithEntityData saves data associated with the entity that it represents, for example the content of the equipment grid of a car.",
       "parent": "ItemPrototype",
       "abstract": false,
@@ -13892,7 +13956,7 @@
     },
     {
       "name": "ItemWithInventoryPrototype",
-      "order": 135,
+      "order": 136,
       "description": "The inventory allows setting player defined filters similar to cargo wagon inventories.",
       "parent": "ItemWithLabelPrototype",
       "abstract": false,
@@ -14007,7 +14071,7 @@
     },
     {
       "name": "ItemWithLabelPrototype",
-      "order": 136,
+      "order": 137,
       "description": "Like a normal item but with the ability to have a colored label.",
       "parent": "ItemPrototype",
       "abstract": false,
@@ -14039,7 +14103,7 @@
     },
     {
       "name": "ItemWithTagsPrototype",
-      "order": 137,
+      "order": 138,
       "description": "Item type that can store any basic arbitrary Lua data, see [LuaItemStack::tags](runtime:LuaItemStack::tags).",
       "parent": "ItemWithLabelPrototype",
       "abstract": false,
@@ -14049,7 +14113,7 @@
     },
     {
       "name": "KillAchievementPrototype",
-      "order": 138,
+      "order": 139,
       "description": "This prototype is used for receiving an achievement when the player destroys a certain amount of an entity, with a specific damage type.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -14167,7 +14231,7 @@
     },
     {
       "name": "LabPrototype",
-      "order": 139,
+      "order": 140,
       "description": "A [lab](https://wiki.factorio.com/Lab). It consumes [science packs](prototype:ToolPrototype) to research [technologies](prototype:TechnologyPrototype).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -14321,7 +14385,7 @@
     },
     {
       "name": "LampPrototype",
-      "order": 140,
+      "order": 141,
       "description": "A [lamp](https://wiki.factorio.com/Lamp) to provide light, using energy.",
       "examples": [
         "```\n{\n  type = \"lamp\",\n  name = \"small-lamp\",\n  icon = \"__base__/graphics/icons/small-lamp.png\",\n  icon_size = 64,\n  flags = {\"placeable-neutral\", \"player-creation\"},\n  minable = {mining_time = 0.1, result = \"small-lamp\"},\n  max_health = 100,\n  corpse = \"lamp-remnants\",\n  dying_explosion = \"lamp-explosion\",\n  collision_box = {{-0.15, -0.15}, {0.15, 0.15}},\n  selection_box = {{-0.5, -0.5}, {0.5, 0.5}},\n  energy_source =\n  {\n    type = \"electric\",\n    usage_priority = \"lamp\"\n  },\n  energy_usage_per_tick = \"5kW\",\n  darkness_for_all_lamps_on = 0.5,\n  darkness_for_all_lamps_off = 0.3,\n  light = {intensity = 0.9, size = 40, color = {r=1.0, g=1.0, b=0.75}},\n  light_when_colored = {intensity = 0, size = 6, color = {r=1.0, g=1.0, b=0.75}},\n  glow_size = 6,\n  glow_color_intensity = 1,\n  glow_render_mode = \"multiplicative\",\n  picture_off =\n  {\n    layers =\n    {\n      {\n        filename = \"__base__/graphics/entity/small-lamp/lamp.png\",\n        priority = \"high\",\n        width = 42,\n        height = 36,\n        frame_count = 1,\n        axially_symmetrical = false,\n        direction_count = 1,\n        shift = util.by_pixel(0,3)\n      },\n      {\n        filename = \"__base__/graphics/entity/small-lamp/lamp-shadow.png\",\n        priority = \"high\",\n        width = 38,\n        height = 24,\n        frame_count = 1,\n        axially_symmetrical = false,\n        direction_count = 1,\n        shift = util.by_pixel(4,5),\n        draw_as_shadow = true\n      }\n    }\n  },\n  picture_on =\n  {\n    filename = \"__base__/graphics/entity/small-lamp/lamp-light.png\",\n    priority = \"high\",\n    width = 46,\n    height = 40,\n    frame_count = 1,\n    axially_symmetrical = false,\n    direction_count = 1,\n    shift = util.by_pixel(0, -7)\n  },\n  signal_to_color_mapping =\n  {\n    {type = \"virtual\", name = \"signal-red\",    color = {r = 1, g = 0, b = 0}},\n    {type = \"virtual\", name = \"signal-green\",  color = {r = 0, g = 1, b = 0}},\n    {type = \"virtual\", name = \"signal-blue\",   color = {r = 0, g = 0, b = 1}},\n    {type = \"virtual\", name = \"signal-yellow\", color = {r = 1, g = 1, b = 0}},\n    {type = \"virtual\", name = \"signal-pink\",   color = {r = 1, g = 0, b = 1}},\n    {type = \"virtual\", name = \"signal-cyan\",   color = {r = 0, g = 1, b = 1}},\n    {type = \"virtual\", name = \"signal-white\",  color = {r = 1, g = 1, b = 1}}\n  },\n\n  circuit_connector = circuit_connector_definitions[\"lamp\"],\n  circuit_wire_max_distance = default_circuit_wire_max_distance\n}\n```"
@@ -14562,7 +14626,7 @@
     },
     {
       "name": "LandMinePrototype",
-      "order": 141,
+      "order": 142,
       "description": "A [land mine](https://wiki.factorio.com/Land_mine).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -14678,7 +14742,7 @@
     },
     {
       "name": "LaneSplitterPrototype",
-      "order": 142,
+      "order": 143,
       "description": "",
       "parent": "TransportBeltConnectablePrototype",
       "abstract": false,
@@ -14729,7 +14793,7 @@
     },
     {
       "name": "LegacyCurvedRailPrototype",
-      "order": 143,
+      "order": 144,
       "description": "A legacy curved rail.",
       "parent": "RailPrototype",
       "abstract": false,
@@ -14749,7 +14813,7 @@
     },
     {
       "name": "LegacyStraightRailPrototype",
-      "order": 144,
+      "order": 145,
       "description": "A legacy straight rail.",
       "parent": "RailPrototype",
       "abstract": false,
@@ -14769,7 +14833,7 @@
     },
     {
       "name": "LightningAttractorPrototype",
-      "order": 145,
+      "order": 146,
       "description": "",
       "visibility": [
         "space_age"
@@ -14831,7 +14895,7 @@
     },
     {
       "name": "LightningPrototype",
-      "order": 146,
+      "order": 147,
       "description": "",
       "visibility": [
         "space_age"
@@ -14938,7 +15002,7 @@
     },
     {
       "name": "LinkedBeltPrototype",
-      "order": 147,
+      "order": 148,
       "description": "A belt that can be connected to a belt anywhere else, including on a different surface. The linked belts have to be [connected with console commands](https://wiki.factorio.com/Console#Connect_linked_belts) or runtime scripting in mods or scenarios. [LuaEntity::connect_linked_belts](runtime:LuaEntity::connect_linked_belts) and other runtime functions.",
       "parent": "TransportBeltConnectablePrototype",
       "abstract": false,
@@ -15005,7 +15069,7 @@
     },
     {
       "name": "LinkedContainerPrototype",
-      "order": 148,
+      "order": 149,
       "description": "A container that shares its inventory with containers with the same [link_id](runtime:LuaEntity::link_id), which can be set via the GUI. The link IDs are per prototype and force, so only containers with the **same ID**, **same prototype name** and **same force** will share inventories.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -15134,7 +15198,7 @@
     },
     {
       "name": "Loader1x1Prototype",
-      "order": 149,
+      "order": 150,
       "description": "Continuously loads and unloads machines, as an alternative to inserters.\n\nThis loader type is identical to [Loader1x2Prototype](prototype:Loader1x2Prototype) with the exception of its hardcoded belt_distance. The belt_distance of the loader determines the distance between the position of this loader and the tile of the loader's belt target.\n\nThis loader type always has a belt_distance of 0, meaning by default it is 1 tile long in total. For a loader type with a belt_distance of 0.5, see [Loader1x2Prototype](prototype:Loader1x2Prototype).",
       "parent": "LoaderPrototype",
       "abstract": false,
@@ -15144,7 +15208,7 @@
     },
     {
       "name": "Loader1x2Prototype",
-      "order": 150,
+      "order": 151,
       "description": "Continuously loads and unloads machines, as an alternative to inserters.\n\nThis loader type is identical to [Loader1x1Prototype](prototype:Loader1x1Prototype) with the exception of its hardcoded belt_distance. The belt_distance of the loader determines the distance between the position of this loader and the tile of the loader's belt target.\n\nThis loader type always has a belt_distance of 0.5, meaning by default it is 2 tiles long in total. For a loader type with a belt_distance of 0, see [Loader1x1Prototype](prototype:Loader1x1Prototype).",
       "parent": "LoaderPrototype",
       "abstract": false,
@@ -15154,7 +15218,7 @@
     },
     {
       "name": "LoaderPrototype",
-      "order": 151,
+      "order": 152,
       "description": "Continuously loads and unloads machines, as an alternative to inserters.",
       "parent": "TransportBeltConnectablePrototype",
       "abstract": true,
@@ -15370,7 +15434,7 @@
     },
     {
       "name": "LocomotivePrototype",
-      "order": 152,
+      "order": 153,
       "description": "A [locomotive](https://wiki.factorio.com/Locomotive).",
       "parent": "RollingStockPrototype",
       "abstract": false,
@@ -15452,7 +15516,7 @@
     },
     {
       "name": "LogisticContainerPrototype",
-      "order": 153,
+      "order": 154,
       "description": "A generic container, such as a chest, that interacts with the logistics network.",
       "parent": "ContainerPrototype",
       "abstract": false,
@@ -15586,7 +15650,7 @@
     },
     {
       "name": "LogisticRobotPrototype",
-      "order": 154,
+      "order": 155,
       "description": "A [logistic robot](https://wiki.factorio.com/Logistic_robot).",
       "parent": "RobotWithLogisticInterfacePrototype",
       "abstract": false,
@@ -15641,7 +15705,7 @@
     },
     {
       "name": "MapGenPresets",
-      "order": 155,
+      "order": 156,
       "description": "The available map gen presets.",
       "examples": [
         "```\n{\n  type = \"map-gen-presets\",\n  name = \"default\",\n  [\"marathon\"] =\n  {\n    order = \"c\",\n    basic_settings =\n    {\n      property_expression_names = {},\n    },\n    advanced_settings =\n    {\n      difficulty_settings =\n      {\n        technology_price_multiplier = 4\n      }\n    }\n  },\n  [\"island\"] =\n  {\n    order = \"h\",\n    basic_settings =\n    {\n      property_expression_names =\n      {\n        elevation = \"elevation_island\",\n        moisture = \"moisture_basic\",\n        aux = \"aux_basic\",\n        cliffiness = \"cliffiness_basic\",\n        cliff_elevation = \"cliff_elevation_from_elevation\",\n        trees_forest_path_cutout = 1\n      },\n      cliff_settings =\n      {\n        cliff_smoothing = 1\n      },\n      autoplace_controls =\n      {\n        [\"trees\"] =\n        {\n          frequency = 1,\n          size = 0.5\n        }\n      }\n    }\n  }\n}\n```"
@@ -15679,7 +15743,7 @@
     },
     {
       "name": "MapSettings",
-      "order": 156,
+      "order": 157,
       "description": "The default map settings.",
       "abstract": false,
       "typename": "map-settings",
@@ -15781,7 +15845,7 @@
     },
     {
       "name": "MarketPrototype",
-      "order": 157,
+      "order": 158,
       "description": "Offers can be added to a market and they are shown when opening the entity. Offers allow to spend items to get research bonuses or items.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -15812,7 +15876,7 @@
     },
     {
       "name": "MiningDrillPrototype",
-      "order": 158,
+      "order": 159,
       "description": "A mining drill for automatically extracting resources from [resource entities](prototype:ResourceEntityPrototype). This prototype type is used by [burner mining drill](https://wiki.factorio.com/Burner_mining_drill), [electric mining drill](https://wiki.factorio.com/Electric_mining_drill) and [pumpjack](https://wiki.factorio.com/Pumpjack) in vanilla.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -16133,7 +16197,7 @@
     },
     {
       "name": "ModuleCategory",
-      "order": 159,
+      "order": 160,
       "description": "A module category. The built-in categories can be found [here](https://wiki.factorio.com/Data.raw#module-category). See [ModulePrototype::category](prototype:ModulePrototype::category).",
       "parent": "Prototype",
       "abstract": false,
@@ -16144,7 +16208,7 @@
     },
     {
       "name": "ModulePrototype",
-      "order": 160,
+      "order": 161,
       "description": "A [module](https://wiki.factorio.com/Module). They are used to affect the capabilities of existing machines, for example by increasing the crafting speed of a [crafting machine](prototype:CraftingMachinePrototype).",
       "parent": "ItemPrototype",
       "abstract": false,
@@ -16207,7 +16271,7 @@
     },
     {
       "name": "ModuleTransferAchievementPrototype",
-      "order": 161,
+      "order": 162,
       "description": "This prototype is used for receiving an achievement when the player moves a module with the cursor.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -16263,7 +16327,7 @@
     },
     {
       "name": "MouseCursor",
-      "order": 162,
+      "order": 163,
       "description": "Used by [SelectionToolPrototype::mouse_cursor](prototype:SelectionToolPrototype::mouse_cursor).",
       "examples": [
         "```\n{\n  type = \"mouse-cursor\",\n  name = \"selection-tool-cursor\",\n  filename = \"__core__/graphics/cross-select-x32.png\",\n  hot_pixel_x = 16,\n  hot_pixel_y = 16\n}\n```",
@@ -16361,7 +16425,7 @@
     },
     {
       "name": "MovementBonusEquipmentPrototype",
-      "order": 163,
+      "order": 164,
       "description": "Used by [exoskeleton](https://wiki.factorio.com/Exoskeleton). Increases max speed of characters or acceleration of vehicles if they have this equipment in their grid.",
       "parent": "EquipmentPrototype",
       "abstract": false,
@@ -16388,7 +16452,7 @@
     },
     {
       "name": "NamedNoiseExpression",
-      "order": 164,
+      "order": 165,
       "description": "A [NoiseExpression](prototype:NoiseExpression) with a name. The base game uses named noise expressions to specify functions for many map properties to be used in map generation; e.g. the \"elevation\" expression is used to calculate elevation for every point on a map. For a list of the built-in named noise expressions, see [data.raw](https://wiki.factorio.com/Data.raw#noise-expression).\n\nNamed noise expressions can be used by [MapGenSettings](prototype:MapGenSettings) and [MapGenPreset](prototype:MapGenPreset) to override which named expression is used to calculate a given property by having an entry in `property_expression_names`, e.g. `elevation = \"elevation_island\"`.\n\nAlternate expressions can be made available in the map generator GUI by setting their `intended_property` to the name of the property they should override.\n\nNamed noise expressions can also be used as [noise variables](runtime:noise-expressions) e.g. `var(\"my-noise-expression\")`.",
       "examples": [
         "```\n{\n  type = \"noise-expression\",\n  name = \"distance\",\n  expression = \"distance_from_nearest_point{x = x, y = y, points = starting_positions}\"\n}\n```"
@@ -16450,7 +16514,7 @@
     },
     {
       "name": "NamedNoiseFunction",
-      "order": 165,
+      "order": 166,
       "description": "Named noise functions are defined in the same way as [NamedNoiseExpression](prototype:NamedNoiseExpression) except that they also have parameters.\n\nNamed noise functions are available to be used in [NoiseExpressions](prototype:NoiseExpression).",
       "examples": [
         "```\n{\n  type = \"noise-function\",\n  name = \"random_between\",\n  parameters = {\"from\", \"to\"},\n  expression = \"random_penalty{x = x, y = y, source = to, amplitude = to - from}\"\n}\n```",
@@ -16508,7 +16572,7 @@
     },
     {
       "name": "NightVisionEquipmentPrototype",
-      "order": 166,
+      "order": 167,
       "description": "Used by [nightvision](https://wiki.factorio.com/Nightvision).",
       "parent": "EquipmentPrototype",
       "abstract": false,
@@ -16563,7 +16627,7 @@
     },
     {
       "name": "OffshorePumpPrototype",
-      "order": 167,
+      "order": 168,
       "description": "An [offshore pump](https://wiki.factorio.com/Offshore_pump).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -16709,7 +16773,7 @@
     },
     {
       "name": "ParticlePrototype",
-      "order": 168,
+      "order": 169,
       "description": "An entity with a limited lifetime that can use trigger effects.",
       "parent": "Prototype",
       "abstract": false,
@@ -16872,7 +16936,7 @@
     },
     {
       "name": "ParticleSourcePrototype",
-      "order": 169,
+      "order": 170,
       "description": "Creates particles.",
       "parent": "EntityPrototype",
       "abstract": false,
@@ -17002,7 +17066,7 @@
     },
     {
       "name": "PipePrototype",
-      "order": 170,
+      "order": 171,
       "description": "An entity to transport fluids over a distance and between machines.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -17045,7 +17109,7 @@
     },
     {
       "name": "PipeToGroundPrototype",
-      "order": 171,
+      "order": 172,
       "description": "A [pipe to ground](https://wiki.factorio.com/Pipe_to_ground).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -17108,7 +17172,7 @@
     },
     {
       "name": "PlaceEquipmentAchievementPrototype",
-      "order": 172,
+      "order": 173,
       "description": "",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -17167,7 +17231,7 @@
     },
     {
       "name": "PlanetPrototype",
-      "order": 173,
+      "order": 174,
       "description": "",
       "parent": "SpaceLocationPrototype",
       "abstract": false,
@@ -17273,7 +17337,7 @@
     },
     {
       "name": "PlantPrototype",
-      "order": 174,
+      "order": 175,
       "description": "",
       "visibility": [
         "space_age"
@@ -17315,7 +17379,7 @@
     },
     {
       "name": "PlayerDamagedAchievementPrototype",
-      "order": 175,
+      "order": 176,
       "description": "This prototype is used for receiving an achievement when the player receives damage.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -17363,7 +17427,7 @@
     },
     {
       "name": "PlayerPortPrototype",
-      "order": 176,
+      "order": 177,
       "description": "Deprecated in 2.0.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -17373,7 +17437,7 @@
     },
     {
       "name": "PowerSwitchPrototype",
-      "order": 177,
+      "order": 178,
       "description": "A [power switch](https://wiki.factorio.com/Power_switch).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -17500,7 +17564,7 @@
     },
     {
       "name": "ProcessionLayerInheritanceGroup",
-      "order": 178,
+      "order": 179,
       "description": "Helps [ProcessionLayers](prototype:ProcessionLayer) pass properties between subsequent transitions if they belong to the same group.",
       "parent": "Prototype",
       "abstract": false,
@@ -17528,7 +17592,7 @@
     },
     {
       "name": "ProcessionPrototype",
-      "order": 179,
+      "order": 180,
       "description": "Describes the duration and visuals of a departure, arrival or an intermezzo while traveling between surfaces. Usually provided inside of a [ProcessionSet](prototype:ProcessionSet).",
       "parent": "Prototype",
       "abstract": false,
@@ -17601,7 +17665,7 @@
     },
     {
       "name": "ProduceAchievementPrototype",
-      "order": 180,
+      "order": 181,
       "description": "This prototype is used for receiving an achievement when the player produces more than the specified amount of items.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -17653,7 +17717,7 @@
     },
     {
       "name": "ProducePerHourAchievementPrototype",
-      "order": 181,
+      "order": 182,
       "description": "This prototype is used for receiving an achievement when the player crafts a specified item a certain amount, in an hour.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -17697,7 +17761,7 @@
     },
     {
       "name": "ProgrammableSpeakerPrototype",
-      "order": 182,
+      "order": 183,
       "description": "A [programmable speaker](https://wiki.factorio.com/Programmable_speaker).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -17814,7 +17878,7 @@
     },
     {
       "name": "ProjectilePrototype",
-      "order": 183,
+      "order": 184,
       "description": "Entity with limited lifetime that can hit other entities and has triggers when this happens.",
       "parent": "EntityPrototype",
       "abstract": false,
@@ -18018,7 +18082,7 @@
     },
     {
       "name": "Prototype",
-      "order": 184,
+      "order": 185,
       "description": "",
       "parent": "PrototypeBase",
       "abstract": true,
@@ -18036,7 +18100,7 @@
     },
     {
       "name": "PrototypeBase",
-      "order": 185,
+      "order": 186,
       "description": "The abstract base for prototypes. PrototypeBase defines the common features of prototypes, such as localization and order.",
       "abstract": true,
       "deprecated": false,
@@ -18145,8 +18209,83 @@
       ]
     },
     {
+      "name": "ProxyContainerPrototype",
+      "order": 187,
+      "description": "A container that must be set to point at other entity and inventory index so it can forward all inventory interactions to the other entity.",
+      "parent": "EntityWithOwnerPrototype",
+      "abstract": false,
+      "typename": "proxy-container",
+      "deprecated": false,
+      "properties": [
+        {
+          "name": "circuit_connector",
+          "order": 5,
+          "description": "",
+          "override": false,
+          "type": "CircuitConnectorDefinition",
+          "optional": true
+        },
+        {
+          "name": "circuit_wire_max_distance",
+          "order": 2,
+          "description": "The maximum circuit wire distance for this entity.",
+          "override": false,
+          "type": "double",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
+          "name": "draw_circuit_wires",
+          "order": 4,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
+          "name": "draw_copper_wires",
+          "order": 3,
+          "description": "",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
+          "name": "draw_inventory_content",
+          "order": 1,
+          "description": "If the content of the inventory should be rendered in alt mode.",
+          "override": false,
+          "type": "bool",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
+          "name": "picture",
+          "order": 0,
+          "description": "",
+          "override": false,
+          "type": "Sprite",
+          "optional": true
+        }
+      ]
+    },
+    {
       "name": "PumpPrototype",
-      "order": 186,
+      "order": 188,
       "description": "The pump is used to transfer fluids between tanks, fluid wagons and pipes.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -18311,7 +18450,7 @@
     },
     {
       "name": "QualityPrototype",
-      "order": 187,
+      "order": 189,
       "description": "",
       "parent": "Prototype",
       "abstract": false,
@@ -18446,7 +18585,7 @@
     },
     {
       "name": "RadarPrototype",
-      "order": 188,
+      "order": 190,
       "description": "A [radar](https://wiki.factorio.com/Radar).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -18654,7 +18793,7 @@
     },
     {
       "name": "RailChainSignalPrototype",
-      "order": 189,
+      "order": 191,
       "description": "A [rail chain signal](https://wiki.factorio.com/Rail_chain_signal).",
       "parent": "RailSignalBasePrototype",
       "abstract": false,
@@ -18664,7 +18803,7 @@
     },
     {
       "name": "RailPlannerPrototype",
-      "order": 190,
+      "order": 192,
       "description": "A [rail planner](https://wiki.factorio.com/Rail_planner).",
       "parent": "ItemPrototype",
       "abstract": false,
@@ -18703,7 +18842,7 @@
     },
     {
       "name": "RailPrototype",
-      "order": 191,
+      "order": 193,
       "description": "The abstract base of all rail prototypes.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": true,
@@ -18830,7 +18969,7 @@
     },
     {
       "name": "RailRampPrototype",
-      "order": 192,
+      "order": 194,
       "description": "A rail ramp.",
       "parent": "RailPrototype",
       "abstract": false,
@@ -18870,7 +19009,7 @@
     },
     {
       "name": "RailRemnantsPrototype",
-      "order": 193,
+      "order": 195,
       "description": "Used for rail corpses.",
       "parent": "CorpsePrototype",
       "abstract": false,
@@ -18929,7 +19068,7 @@
     },
     {
       "name": "RailSignalBasePrototype",
-      "order": 194,
+      "order": 196,
       "description": "The abstract base entity for both rail signals.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": true,
@@ -19060,7 +19199,7 @@
     },
     {
       "name": "RailSignalPrototype",
-      "order": 195,
+      "order": 197,
       "description": "A [rail signal](https://wiki.factorio.com/Rail_signal).",
       "parent": "RailSignalBasePrototype",
       "abstract": false,
@@ -19070,7 +19209,7 @@
     },
     {
       "name": "RailSupportPrototype",
-      "order": 196,
+      "order": 198,
       "description": "",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -19159,7 +19298,7 @@
     },
     {
       "name": "ReactorPrototype",
-      "order": 197,
+      "order": 199,
       "description": "A [reactor](https://wiki.factorio.com/Reactor).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -19383,7 +19522,7 @@
     },
     {
       "name": "RecipeCategory",
-      "order": 198,
+      "order": 200,
       "description": "A recipe category. The built-in categories can be found [here](https://wiki.factorio.com/Data.raw#recipe-category). See [RecipePrototype::category](prototype:RecipePrototype::category). Recipe categories can be used to specify which [machine](prototype:CraftingMachinePrototype::crafting_categories) can craft which [recipes](prototype:RecipePrototype).\n\nThe recipe category with the name \"crafting\" cannot contain recipes with fluid ingredients or products.",
       "examples": [
         "```\n{\n  type = \"recipe-category\",\n  name = \"my-category\"\n}\n```"
@@ -19396,7 +19535,7 @@
     },
     {
       "name": "RecipePrototype",
-      "order": 199,
+      "order": 201,
       "description": "A recipe. It can be a crafting recipe, a smelting recipe, or a custom type of recipe, see [RecipeCategory](prototype:RecipeCategory).",
       "examples": [
         "```\n{\n  type = \"recipe\",\n  name = \"iron-plate\",\n  category = \"smelting\",\n  energy_required = 3.5,\n  ingredients = {{type = \"item\", name = \"iron-ore\", amount = 1}},\n  results = {{type=\"item\", name=\"iron-plate\", amount=1}}\n}\n```",
@@ -19738,8 +19877,8 @@
           "order": 5,
           "description": "A table containing ingredient names and amounts. Can also contain information about fluid temperature and whether some of the amount is ignored by production statistics.\n\nThe maximum ingredient amount is 65 535. Can be set to an empty table to create a recipe that needs no ingredients.\n\nDuplicate ingredients, e.g. two entries with the same name, are *not* allowed. In-game, the item ingredients are ordered by [ItemGroup::order_in_recipe](prototype:ItemGroup::order_in_recipe).",
           "examples": [
-            "```\n-- Recipe with items\ningredients = {\n  {type = \"item\", name = \"iron-stick\", amount = 2},\n  {type = \"item\", name = \"iron-plate\", amount = 3}\n}\n```",
-            "```\n-- Recipe with fluids\ningredients = {\n  {type=\"fluid\", name=\"water\", amount=50},\n  {type=\"fluid\", name=\"crude-oil\", amount=100}\n}\n```"
+            "```\n-- Recipe with items\ningredients =\n{\n  {type = \"item\", name = \"iron-stick\", amount = 2},\n  {type = \"item\", name = \"iron-plate\", amount = 3}\n}\n```",
+            "```\n-- Recipe with fluids\ningredients =\n{\n  {type=\"fluid\", name=\"water\", amount=50},\n  {type=\"fluid\", name=\"crude-oil\", amount=100}\n}\n```"
           ],
           "override": false,
           "type": {
@@ -19821,8 +19960,8 @@
           "order": 6,
           "description": "A table containing result names and amounts. Products also contain information such as fluid temperature, probability of results and whether some of the amount is ignored by productivity.\n\nCan be set to an empty table to create a recipe that produces nothing. Duplicate results, e.g. two entries with the same name, are allowed.",
           "examples": [
-            "```\nresults = {\n  {type=\"fluid\", name=\"heavy-oil\", amount=3},\n  {type=\"fluid\", name=\"light-oil\", amount=3},\n  {type=\"fluid\", name=\"petroleum-gas\", amount=4}\n}\n```",
-            "```\nresults = {\n  {type = \"item\", name = \"iron-nuggets\", amount = 9},\n  {type = \"item\", name = \"gold-nuggets\", amount = 1}\n}\n```",
+            "```\nresults =\n{\n  {type=\"fluid\", name=\"heavy-oil\", amount=3},\n  {type=\"fluid\", name=\"light-oil\", amount=3},\n  {type=\"fluid\", name=\"petroleum-gas\", amount=4}\n}\n```",
+            "```\nresults =\n{\n  {type = \"item\", name = \"iron-nuggets\", amount = 9},\n  {type = \"item\", name = \"gold-nuggets\", amount = 1}\n}\n```",
             "```\nresults = {{type = \"fluid\", name = \"steam\", amount = 1, temperature = 165}}\n```"
           ],
           "override": false,
@@ -19874,7 +20013,7 @@
     },
     {
       "name": "RemoteControllerPrototype",
-      "order": 200,
+      "order": 202,
       "description": "Properties of the remote controller.",
       "abstract": false,
       "typename": "remote-controller",
@@ -19912,7 +20051,7 @@
     },
     {
       "name": "RepairToolPrototype",
-      "order": 201,
+      "order": 203,
       "description": "A [repair pack](https://wiki.factorio.com/Repair_pack). Using the tool decreases durability to restore entity health.",
       "parent": "ToolPrototype",
       "abstract": false,
@@ -19931,7 +20070,7 @@
     },
     {
       "name": "ResearchAchievementPrototype",
-      "order": 202,
+      "order": 204,
       "description": "This prototype is used for receiving an achievement when the player completes a specific research.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -19968,7 +20107,7 @@
     },
     {
       "name": "ResearchWithSciencePackAchievementPrototype",
-      "order": 203,
+      "order": 205,
       "description": "",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -19999,7 +20138,7 @@
     },
     {
       "name": "ResourceCategory",
-      "order": 204,
+      "order": 206,
       "description": "A resource category. The built-in categories can be found [here](https://wiki.factorio.com/Data.raw#resource-category). See [ResourceEntityPrototype::category](prototype:ResourceEntityPrototype::category).",
       "parent": "Prototype",
       "abstract": false,
@@ -20010,7 +20149,7 @@
     },
     {
       "name": "ResourceEntityPrototype",
-      "order": 205,
+      "order": 207,
       "description": "A mineable/gatherable entity.",
       "examples": [
         "```\n{\n  type = \"resource\",\n  name = \"crude-oil\",\n  icon = \"__base__/graphics/icons/crude-oil.png\",\n  icon_size = 32,\n  flags = {\"placeable-neutral\"},\n  category = \"basic-fluid\",\n  order=\"a-b-a\",\n  infinite = true,\n  highlight = true,\n  minimum = 60000,\n  normal = 300000,\n  infinite_depletion_amount = 10,\n  resource_patch_search_radius = 12,\n  tree_removal_probability = 0.7,\n  tree_removal_max_distance = 32 * 32,\n  minable =\n  {\n    mining_time = 1,\n    results =\n    {\n      {\n        type = \"fluid\",\n        name = \"crude-oil\",\n        amount_min = 10,\n        amount_max = 10,\n        probability = 1\n      }\n    }\n  },\n  collision_box = {{ -1.4, -1.4}, {1.4, 1.4}},\n  selection_box = {{ -0.5, -0.5}, {0.5, 0.5}},\n  autoplace = resource_autoplace.resource_autoplace_settings{\n    name = \"crude-oil\",\n    order = \"c\", -- Other resources are \"b\"; oil won't get placed if something else is already there.\n    base_density = 8.2,\n    base_spots_per_km2 = 1.8,\n    random_probability = 1/48,\n    random_spot_size_minimum = 1,\n    random_spot_size_maximum = 1, -- don't randomize spot size\n    additional_richness = 220000, -- this increases the total everywhere, so base_density needs to be decreased to compensate\n    has_starting_area_placement = false,\n    resource_index = resource_autoplace.resource_indexes[\"crude-oil\"],\n    regular_rq_factor_multiplier = 1\n  },\n  stage_counts = {0},\n  stages =\n  {\n    sheet =\n    {\n      filename = \"__base__/graphics/entity/crude-oil/crude-oil.png\",\n      priority = \"extra-high\",\n      width = 75,\n      height = 61,\n      frame_count = 4,\n      variation_count = 1\n    }\n  },\n  map_color = {r=0.78, g=0.2, b=0.77},\n  map_grid = false\n}\n```"
@@ -20291,7 +20430,7 @@
     },
     {
       "name": "RoboportEquipmentPrototype",
-      "order": 206,
+      "order": 208,
       "description": "Used by [personal roboport](https://wiki.factorio.com/Personal_roboport).",
       "parent": "EquipmentPrototype",
       "abstract": false,
@@ -20534,7 +20673,7 @@
     },
     {
       "name": "RoboportPrototype",
-      "order": 207,
+      "order": 209,
       "description": "A [roboport](https://wiki.factorio.com/Roboport).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -21002,7 +21141,7 @@
     },
     {
       "name": "RobotWithLogisticInterfacePrototype",
-      "order": 208,
+      "order": 210,
       "description": "The common properties of logistic and construction robots represented by an abstract prototype.",
       "parent": "FlyingRobotPrototype",
       "abstract": true,
@@ -21080,7 +21219,7 @@
     },
     {
       "name": "RocketSiloPrototype",
-      "order": 209,
+      "order": 211,
       "description": "A [rocket silo](https://wiki.factorio.com/Rocket_silo).",
       "parent": "AssemblingMachinePrototype",
       "abstract": false,
@@ -21578,7 +21717,7 @@
     },
     {
       "name": "RocketSiloRocketPrototype",
-      "order": 210,
+      "order": 212,
       "description": "The rocket inside the rocket silo.",
       "parent": "EntityPrototype",
       "abstract": false,
@@ -21902,7 +22041,7 @@
     },
     {
       "name": "RocketSiloRocketShadowPrototype",
-      "order": 211,
+      "order": 213,
       "description": "The shadow of the rocket inside the rocket silo.",
       "examples": [
         "```\n{\n  type = \"rocket-silo-rocket-shadow\",\n  name = \"rocket-silo-rocket-shadow\",\n  flags = {\"not-on-map\"},\n  hidden = true,\n  collision_mask = {layers={}, not_colliding_with_itself=true},\n  collision_box = {{0, 0}, {10, 3.5}},\n  selection_box = {{0, 0}, {0, 0}}\n}\n```"
@@ -21915,7 +22054,7 @@
     },
     {
       "name": "RollingStockPrototype",
-      "order": 212,
+      "order": 214,
       "description": "The abstract base of all rolling stock.",
       "parent": "VehiclePrototype",
       "abstract": true,
@@ -22149,7 +22288,7 @@
     },
     {
       "name": "SegmentPrototype",
-      "order": 213,
+      "order": 215,
       "description": "Entity representing an individual segment in a [SegmentedUnitPrototype](prototype:SegmentedUnitPrototype)",
       "visibility": [
         "space_age"
@@ -22273,7 +22412,7 @@
     },
     {
       "name": "SegmentedUnitPrototype",
-      "order": 214,
+      "order": 216,
       "description": "Entity composed of multiple segment entities that trail behind the head.",
       "visibility": [
         "space_age"
@@ -22455,7 +22594,7 @@
     },
     {
       "name": "SelectionToolPrototype",
-      "order": 215,
+      "order": 217,
       "description": "Used in the base game as a base for the blueprint item and the deconstruction item.",
       "parent": "ItemWithLabelPrototype",
       "abstract": false,
@@ -22542,7 +22681,7 @@
     },
     {
       "name": "SelectorCombinatorPrototype",
-      "order": 216,
+      "order": 218,
       "description": "",
       "parent": "CombinatorPrototype",
       "abstract": false,
@@ -22609,7 +22748,7 @@
     },
     {
       "name": "ShootAchievementPrototype",
-      "order": 217,
+      "order": 219,
       "description": "This prototype is used for receiving an achievement when the player shoots certain ammo.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -22643,7 +22782,7 @@
     },
     {
       "name": "ShortcutPrototype",
-      "order": 218,
+      "order": 220,
       "description": "Definition for a shortcut button in the [shortcut bar](https://wiki.factorio.com/Shortcut_bar).\n\nThis is **not** a custom keybinding (keyboard shortcut), for that see [CustomInputPrototype](prototype:CustomInputPrototype).",
       "examples": [
         "```\n{\n  type = \"shortcut\",\n  name = \"give-deconstruction-planner\",\n  order = \"b[blueprints]-i[deconstruction-planner]\",\n  action = \"spawn-item\",\n  localised_name = {\"shortcut.make-deconstruction-planner\"},\n  associated_control_input = \"give-deconstruction-planner\",\n  technology_to_unlock = \"construction-robotics\",\n  item_to_spawn = \"deconstruction-planner\",\n  style = \"red\",\n  icon = \"__base__/graphics/icons/shortcut-toolbar/mip/new-deconstruction-planner-x56.png\",\n  icon_size = 56,\n  small_icon = \"__base__/graphics/icons/shortcut-toolbar/mip/new-deconstruction-planner-x24.png\",\n  small_icon_size = 24\n}\n```"
@@ -22869,7 +23008,7 @@
     },
     {
       "name": "SimpleEntityPrototype",
-      "order": 219,
+      "order": 221,
       "description": "An extremely basic entity with no special functionality. Used for minable rocks. Cannot be rotated.",
       "parent": "EntityWithHealthPrototype",
       "abstract": false,
@@ -22995,7 +23134,7 @@
     },
     {
       "name": "SimpleEntityWithForcePrototype",
-      "order": 220,
+      "order": 222,
       "description": "By default, this entity will be a priority target for units/turrets, who will choose to attack it even if it does not block their path. Setting [EntityWithOwnerPrototype::is_military_target](prototype:EntityWithOwnerPrototype::is_military_target) to `false` will turn this off, which then makes this type equivalent to [SimpleEntityWithOwnerPrototype](prototype:SimpleEntityWithOwnerPrototype).",
       "parent": "SimpleEntityWithOwnerPrototype",
       "abstract": false,
@@ -23018,7 +23157,7 @@
     },
     {
       "name": "SimpleEntityWithOwnerPrototype",
-      "order": 221,
+      "order": 223,
       "description": "Has a force, but unlike [SimpleEntityWithForcePrototype](prototype:SimpleEntityWithForcePrototype) it is only attacked if the biters get stuck on it (or if [EntityWithOwnerPrototype::is_military_target](prototype:EntityWithOwnerPrototype::is_military_target) set to true to make the two entity types equivalent).\n\nCan be rotated in 4 directions. `picture` can be used to specify different graphics per direction.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -23144,7 +23283,7 @@
     },
     {
       "name": "SmokePrototype",
-      "order": 222,
+      "order": 224,
       "description": "Abstract entity that has an animation.",
       "parent": "EntityPrototype",
       "abstract": true,
@@ -23332,7 +23471,7 @@
     },
     {
       "name": "SmokeWithTriggerPrototype",
-      "order": 223,
+      "order": 225,
       "description": "An entity with animation and a trigger.",
       "parent": "SmokePrototype",
       "abstract": false,
@@ -23467,7 +23606,7 @@
     },
     {
       "name": "SolarPanelEquipmentPrototype",
-      "order": 224,
+      "order": 226,
       "description": "A [portable solar panel](https://wiki.factorio.com/Portable_solar_panel).",
       "parent": "EquipmentPrototype",
       "abstract": false,
@@ -23486,7 +23625,7 @@
     },
     {
       "name": "SolarPanelPrototype",
-      "order": 225,
+      "order": 227,
       "description": "A [solar panel](https://wiki.factorio.com/Solar_panel).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -23529,7 +23668,7 @@
     },
     {
       "name": "SoundPrototype",
-      "order": 226,
+      "order": 228,
       "description": "Specifies a sound that can be used with [SoundPath](runtime:SoundPath) at runtime.",
       "abstract": false,
       "typename": "sound",
@@ -23766,7 +23905,7 @@
     },
     {
       "name": "SpaceConnectionDistanceTraveledAchievementPrototype",
-      "order": 227,
+      "order": 229,
       "description": "",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -23801,7 +23940,7 @@
     },
     {
       "name": "SpaceConnectionPrototype",
-      "order": 228,
+      "order": 230,
       "description": "",
       "parent": "Prototype",
       "abstract": false,
@@ -23882,7 +24021,7 @@
     },
     {
       "name": "SpaceLocationPrototype",
-      "order": 229,
+      "order": 231,
       "description": "A space location, such as a planet.",
       "parent": "Prototype",
       "abstract": false,
@@ -24115,7 +24254,7 @@
     },
     {
       "name": "SpacePlatformHubPrototype",
-      "order": 230,
+      "order": 232,
       "description": "",
       "visibility": [
         "space_age"
@@ -24276,7 +24415,7 @@
     },
     {
       "name": "SpacePlatformStarterPackPrototype",
-      "order": 231,
+      "order": 233,
       "description": "",
       "parent": "ItemPrototype",
       "abstract": false,
@@ -24337,7 +24476,7 @@
     },
     {
       "name": "SpectatorControllerPrototype",
-      "order": 232,
+      "order": 234,
       "description": "Properties of the spectator controller.",
       "abstract": false,
       "typename": "spectator-controller",
@@ -24375,7 +24514,7 @@
     },
     {
       "name": "SpeechBubblePrototype",
-      "order": 233,
+      "order": 235,
       "description": "A speech bubble. It floats in the world and can display text.",
       "parent": "EntityPrototype",
       "abstract": false,
@@ -24430,7 +24569,7 @@
     },
     {
       "name": "SpiderLegPrototype",
-      "order": 234,
+      "order": 236,
       "description": "Used by [SpiderLegSpecification](prototype:SpiderLegSpecification) for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype), also known as [spidertron](https://wiki.factorio.com/Spidertron).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -24595,7 +24734,7 @@
     },
     {
       "name": "SpiderUnitPrototype",
-      "order": 235,
+      "order": 237,
       "description": "",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -24762,7 +24901,7 @@
     },
     {
       "name": "SpiderVehiclePrototype",
-      "order": 236,
+      "order": 238,
       "description": "A [spidertron](https://wiki.factorio.com/Spidertron).",
       "parent": "VehiclePrototype",
       "abstract": false,
@@ -24891,7 +25030,7 @@
     },
     {
       "name": "SpidertronRemotePrototype",
-      "order": 237,
+      "order": 239,
       "description": "The [spidertron remote](https://wiki.factorio.com/Spidertron_remote). This remote can only be used for entities of type [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "parent": "SelectionToolPrototype",
       "abstract": false,
@@ -24916,7 +25055,7 @@
     },
     {
       "name": "SplitterPrototype",
-      "order": 238,
+      "order": 240,
       "description": "A [splitter](https://wiki.factorio.com/Splitter).",
       "parent": "TransportBeltConnectablePrototype",
       "abstract": false,
@@ -24983,7 +25122,7 @@
     },
     {
       "name": "SpritePrototype",
-      "order": 239,
+      "order": 241,
       "description": "Specifies an image that can be used with [SpritePath](runtime:SpritePath) at runtime.",
       "examples": [
         "```\n{\n  type = \"sprite\"\n  name = \"accumulator-sprite\",\n  filename = \"__base__/graphics/entity/basic-accumulator/basic-accumulator.png\",\n  priority = \"extra-high\",\n  width = 124,\n  height = 103,\n  shift = {0.7, -0.2}\n}\n```"
@@ -25375,7 +25514,7 @@
     },
     {
       "name": "StickerPrototype",
-      "order": 240,
+      "order": 242,
       "description": "Entity that sticks to another entity, and damages/slows it. Stickers can only be attached to [UnitPrototype](prototype:UnitPrototype), [CharacterPrototype](prototype:CharacterPrototype), [CarPrototype](prototype:CarPrototype) and [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "parent": "EntityPrototype",
       "abstract": false,
@@ -25708,7 +25847,7 @@
     },
     {
       "name": "StorageTankPrototype",
-      "order": 241,
+      "order": 243,
       "description": "A [storage tank](https://wiki.factorio.com/Storage_tank).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -25827,7 +25966,7 @@
     },
     {
       "name": "StraightRailPrototype",
-      "order": 242,
+      "order": 244,
       "description": "A straight rail.",
       "parent": "RailPrototype",
       "abstract": false,
@@ -25847,7 +25986,7 @@
     },
     {
       "name": "SurfacePropertyPrototype",
-      "order": 243,
+      "order": 245,
       "description": "",
       "parent": "Prototype",
       "abstract": false,
@@ -25887,7 +26026,7 @@
     },
     {
       "name": "SurfacePrototype",
-      "order": 244,
+      "order": 246,
       "description": "",
       "parent": "Prototype",
       "abstract": false,
@@ -25930,7 +26069,7 @@
     },
     {
       "name": "TechnologyPrototype",
-      "order": 245,
+      "order": 247,
       "description": "A [technology](https://wiki.factorio.com/Technologies).",
       "examples": [
         "```\n{\n  type = \"technology\",\n  name = \"steel-processing\",\n  icon_size = 256,\n  icon = \"__base__/graphics/technology/steel-processing.png\",\n  effects =\n  {\n    {\n      type = \"unlock-recipe\",\n      recipe = \"steel-plate\"\n    },\n    {\n      type = \"unlock-recipe\",\n      recipe = \"steel-chest\"\n    }\n  },\n  unit =\n  {\n    count = 50,\n    ingredients = {{\"automation-science-pack\", 1}},\n    time = 5\n  },\n  order = \"c-a\"\n}\n```"
@@ -26120,7 +26259,7 @@
     },
     {
       "name": "TemporaryContainerPrototype",
-      "order": 246,
+      "order": 248,
       "description": "",
       "parent": "ContainerPrototype",
       "abstract": false,
@@ -26167,7 +26306,7 @@
     },
     {
       "name": "ThrusterPrototype",
-      "order": 247,
+      "order": 249,
       "description": "",
       "visibility": [
         "space_age"
@@ -26229,7 +26368,7 @@
     },
     {
       "name": "TileEffectDefinition",
-      "order": 248,
+      "order": 250,
       "description": "Used to define the parameters for tile shaders.",
       "abstract": false,
       "typename": "tile-effect",
@@ -26314,7 +26453,7 @@
     },
     {
       "name": "TileGhostPrototype",
-      "order": 249,
+      "order": 251,
       "description": "The entity used for tile ghosts.",
       "examples": [
         "```\n{\n  type = \"tile-ghost\",\n  name = \"tile-ghost\",\n  flags = {\"not-on-map\"},\n  minable = { mining_time = 0, results={}},\n  collision_box = {{-0.5, -0.5}, {0.5, 0.5}},\n  selection_priority = 45\n}\n```"
@@ -26327,7 +26466,7 @@
     },
     {
       "name": "TilePrototype",
-      "order": 250,
+      "order": 252,
       "description": "A [tile](https://wiki.factorio.com/Tile).",
       "parent": "Prototype",
       "abstract": false,
@@ -26930,7 +27069,7 @@
     },
     {
       "name": "TipsAndTricksItem",
-      "order": 251,
+      "order": 253,
       "description": "A tips and tricks entry.",
       "parent": "PrototypeBase",
       "abstract": false,
@@ -27110,7 +27249,7 @@
     },
     {
       "name": "TipsAndTricksItemCategory",
-      "order": 252,
+      "order": 254,
       "description": "A [TipsAndTricksItem](prototype:TipsAndTricksItem) category, used for sorting of tips and tricks entries: Tips and trick entries are sorted first by category and then by their order within that category.",
       "abstract": false,
       "typename": "tips-and-tricks-item-category",
@@ -27147,7 +27286,7 @@
     },
     {
       "name": "ToolPrototype",
-      "order": 253,
+      "order": 255,
       "description": "Items with a \"durability\". Used for [science packs](https://wiki.factorio.com/Science_pack).",
       "parent": "ItemPrototype",
       "abstract": false,
@@ -27194,7 +27333,7 @@
     },
     {
       "name": "TrainPathAchievementPrototype",
-      "order": 254,
+      "order": 256,
       "description": "This prototype is used for receiving an achievement when the player has a specified train path length.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -27216,7 +27355,7 @@
     },
     {
       "name": "TrainStopPrototype",
-      "order": 255,
+      "order": 257,
       "description": "A [train stop](https://wiki.factorio.com/Train_stop).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -27402,7 +27541,7 @@
     },
     {
       "name": "TransportBeltConnectablePrototype",
-      "order": 256,
+      "order": 258,
       "description": "Abstract class that anything that is a belt or can connect to belts uses.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": true,
@@ -27460,7 +27599,7 @@
     },
     {
       "name": "TransportBeltPrototype",
-      "order": 257,
+      "order": 259,
       "description": "A [transport belt](https://wiki.factorio.com/Transport_belt).",
       "parent": "TransportBeltConnectablePrototype",
       "abstract": false,
@@ -27542,7 +27681,7 @@
     },
     {
       "name": "TreePrototype",
-      "order": 258,
+      "order": 260,
       "description": "A [tree](https://wiki.factorio.com/Tree).",
       "parent": "EntityWithHealthPrototype",
       "abstract": false,
@@ -27632,7 +27771,7 @@
     },
     {
       "name": "TriggerTargetType",
-      "order": 259,
+      "order": 261,
       "description": "The base game always internally defines a \"common\" trigger target type. See [Design discussion: Trigger target type](https://forums.factorio.com/71657).",
       "abstract": false,
       "typename": "trigger-target-type",
@@ -27662,7 +27801,7 @@
     },
     {
       "name": "TrivialSmokePrototype",
-      "order": 260,
+      "order": 262,
       "description": "Smoke, but it's not an entity for optimization purposes.",
       "parent": "Prototype",
       "abstract": false,
@@ -27836,7 +27975,7 @@
     },
     {
       "name": "TurretPrototype",
-      "order": 261,
+      "order": 263,
       "description": "A turret that needs no extra ammunition. See the children for turrets that need some kind of ammunition.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -28672,7 +28811,7 @@
     },
     {
       "name": "TutorialDefinition",
-      "order": 262,
+      "order": 264,
       "description": "The definition of the tutorial to be used in the tips and tricks, see [TipsAndTricksItem](prototype:TipsAndTricksItem). The actual tutorial scripting code is defined in the tutorial scenario. The scenario must be placed in the `tutorials` folder in the mod.",
       "parent": "PrototypeBase",
       "abstract": false,
@@ -28700,7 +28839,7 @@
     },
     {
       "name": "UndergroundBeltPrototype",
-      "order": 263,
+      "order": 265,
       "description": "An [underground belt](https://wiki.factorio.com/Underground_belt).",
       "parent": "TransportBeltConnectablePrototype",
       "abstract": false,
@@ -28768,7 +28907,7 @@
     },
     {
       "name": "UnitPrototype",
-      "order": 264,
+      "order": 266,
       "description": "Entity that moves around and attacks players, for example [biters and spitters](https://wiki.factorio.com/Enemies#Creatures).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -29048,7 +29187,7 @@
     },
     {
       "name": "UpgradeItemPrototype",
-      "order": 265,
+      "order": 267,
       "description": "An [upgrade planner](https://wiki.factorio.com/Upgrade_planner).",
       "parent": "SelectionToolPrototype",
       "abstract": false,
@@ -29113,7 +29252,7 @@
     },
     {
       "name": "UseEntityInEnergyProductionAchievementPrototype",
-      "order": 266,
+      "order": 268,
       "description": "This prototype is used for receiving an achievement when the player produces energy by entity.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -29165,7 +29304,7 @@
     },
     {
       "name": "UseItemAchievementPrototype",
-      "order": 267,
+      "order": 269,
       "description": "This prototype is used for receiving an achievement when the player uses a capsule.",
       "parent": "AchievementPrototype",
       "abstract": false,
@@ -29219,7 +29358,7 @@
     },
     {
       "name": "UtilityConstants",
-      "order": 268,
+      "order": 270,
       "description": "Constants used by the game that are not specific to certain prototypes. See [utility-constants.lua](https://github.com/wube/factorio-data/blob/master/core/prototypes/utility-constants.lua) for the values used by the base game.",
       "parent": "PrototypeBase",
       "abstract": false,
@@ -30631,7 +30770,7 @@
     },
     {
       "name": "UtilitySounds",
-      "order": 269,
+      "order": 271,
       "description": "Sounds used by the game that are not specific to certain prototypes.",
       "parent": "PrototypeBase",
       "abstract": false,
@@ -31163,7 +31302,7 @@
     },
     {
       "name": "UtilitySprites",
-      "order": 270,
+      "order": 272,
       "description": "Sprites used by the game that are not specific to certain prototypes.",
       "parent": "PrototypeBase",
       "abstract": false,
@@ -35823,7 +35962,7 @@
     },
     {
       "name": "VehiclePrototype",
-      "order": 271,
+      "order": 273,
       "description": "Abstract base of all vehicles.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": true,
@@ -35998,7 +36137,7 @@
     },
     {
       "name": "VirtualSignalPrototype",
-      "order": 272,
+      "order": 274,
       "description": "A [virtual signal](https://wiki.factorio.com/Circuit_network#Virtual_signals).",
       "parent": "Prototype",
       "abstract": false,
@@ -36040,7 +36179,7 @@
     },
     {
       "name": "WallPrototype",
-      "order": 273,
+      "order": 275,
       "description": "A [wall](https://wiki.factorio.com/Wall).",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
@@ -37467,7 +37606,7 @@
       "examples": [
         "```\n-- Trivial example - frame_sequence defines same sequence in which the animation would load by default,\n-- so it is useless in this case:\nframe_count = 4,\nframe_sequence = { 1, 2, 3, 4 }\n```",
         "```\n-- Usage example - first five times repeat frame 2, then alternate between 4 and 3 two times. Frame 1 is not used:\nframe_count = 4,\nframe_sequence = { 2, 2, 2, 2, 2, 4, 3, 4, 3 }\n```",
-        "```\n-- Complex example - animation contains different layers with different frame counts:\nlocal custom_frame_sequence = { 2, 2, 2, 2, 2, 4, 3, 4, 3 }\nlayers = {\n  {\n    -- Animation with custom frame sequence\n    frame_count = 4,\n    frame_sequence = custom_frame_sequence,\n  },\n  {\n    -- Single sprite that's repeated\n    repeat_count = #custom_frame_sequence,\n  },\n  {\n    -- Other animation with different frame count\n    -- Assuming: #custom_frame_sequence < frame_count\n    frame_count = #custom_frame_sequence,\n  },\n}\n```"
+        "```\n-- Complex example - animation contains different layers with different frame counts:\nlocal custom_frame_sequence = { 2, 2, 2, 2, 2, 4, 3, 4, 3 }\nlayers =\n{\n  {\n    -- Animation with custom frame sequence\n    frame_count = 4,\n    frame_sequence = custom_frame_sequence,\n  },\n  {\n    -- Single sprite that's repeated\n    repeat_count = #custom_frame_sequence,\n  },\n  {\n    -- Other animation with different frame count\n    -- Assuming: #custom_frame_sequence < frame_count\n    frame_count = #custom_frame_sequence,\n  },\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -38373,6 +38512,11 @@
           },
           {
             "complex_type": "type",
+            "value": "InfinityCargoWagonPrototype",
+            "description": "`'infinity-cargo-wagon'`"
+          },
+          {
+            "complex_type": "type",
             "value": "InfinityContainerPrototype",
             "description": "`'infinity-container'`"
           },
@@ -38660,6 +38804,11 @@
             "complex_type": "type",
             "value": "ProjectilePrototype",
             "description": "`'projectile'`"
+          },
+          {
+            "complex_type": "type",
+            "value": "ProxyContainerPrototype",
+            "description": "`'proxy-container'`"
           },
           {
             "complex_type": "type",
@@ -55443,7 +55592,7 @@
       "description": "One layer of an icon. Icon layering follows the following rules:\n\n- The rendering order of the individual icon layers follows the array order: Later added icon layers (higher index) are drawn on top of previously added icon layers (lower index).\n\n- By default the first icon layer will draw an outline (or shadow in GUI), other layers will draw it only if they have `draw_background` explicitly set to `true`. There are caveats to this though. See [the doc](prototype:IconData::draw_background).\n\n- When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look [undesirable](https://forums.factorio.com/viewtopic.php?p=575844#p575844).\n\n- When the final icon is displayed with a shadow (e.g. an item on the ground or on a belt when item shadows are turned on), each icon layer will [cast a shadow](https://forums.factorio.com/84888) and the shadow is cast on the layer below it.\n\n- The final icon will always be resized and centered in GUI so that all its layers (except the [`floating`](prototype:IconData::floating) ones) fit the target slot, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.\n\n- Shift values are based on [`expected_icon_size / 2`](prototype:IconData::scale).\n\nThe game automatically generates [icon mipmaps](https://factorio.com/blog/post/fff-291) for all icons. However, icons can have custom mipmaps defined. Custom mipmaps may help to achieve clearer icons at reduced size (e.g. when zooming out) than auto-generated mipmaps. If an icon file contains mipmaps then the game will automatically infer the icon's mipmap count. Icon files for custom mipmaps must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.",
       "examples": [
         "```\n-- one icon layer\n{\n  icon = \"__base__/graphics/icons/fluid/heavy-oil.png\",\n  icon_size = 64,\n  scale = 0.5,\n  shift = {4, -8}\n}\n```",
-        "```\n-- Layered icon, with size defined per layer\nicons = {\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty.png\",\n    icon_size = 32\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-side-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0, g = 0, r = 0 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-top-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0.5, g = 0.5, r = 0.5 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/crude-oil.png\",\n    icon_size = 32,\n    scale = 0.5,\n    shift = {7, 8}\n  }\n}\n```"
+        "```\n-- Layered icon, with size defined per layer\nicons =\n{\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty.png\",\n    icon_size = 32\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-side-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0, g = 0, r = 0 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/barreling/barrel-empty-top-mask.png\",\n    icon_size = 32,\n    tint = { a = 0.75, b = 0.5, g = 0.5, r = 0.5 }\n  },\n  {\n    icon = \"__base__/graphics/icons/fluid/crude-oil.png\",\n    icon_size = 32,\n    scale = 0.5,\n    shift = {7, 8}\n  }\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -55682,7 +55831,7 @@
       "order": 276,
       "description": "",
       "examples": [
-        "```\ndata.raw[\"gui-style\"][\"default\"][\"stretchy-sprite\"] = {\n  type = \"image_style\",\n  vertically_stretchable = \"on\",\n  horizontally_stretchable = \"on\",\n  stretch_image_to_widget_size = true,\n}\n```"
+        "```\ndata.raw[\"gui-style\"][\"default\"][\"stretchy-sprite\"] =\n{\n  type = \"image_style\",\n  vertically_stretchable = \"on\",\n  horizontally_stretchable = \"on\",\n  stretch_image_to_widget_size = true,\n}\n```"
       ],
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -60010,7 +60159,7 @@
       "description": "The mining properties of objects. For formulas for the mining time, see [mining](https://wiki.factorio.com/Mining).",
       "examples": [
         "```\nminable = { mining_time = 0.55, result = \"wood\", count = 4, mining_particle = \"wooden-particle\" }\n```",
-        "```\nminable = {\n  mining_time = 1,\n  results =\n  {\n    {\n      type = \"fluid\",\n      name = \"crude-oil\",\n      amount = 10\n    }\n  }\n}\n```"
+        "```\nminable =\n{\n  mining_time = 1,\n  results =\n  {\n    {\n      type = \"fluid\",\n      name = \"crude-oil\",\n      amount = 10\n    }\n  }\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -64541,6 +64690,14 @@
       },
       "properties": [
         {
+          "name": "cyclic_sound",
+          "order": 2,
+          "description": "Cannot contain aggregations.\n\nOne of `sound` or `cyclic_sound` must be defined. Both cannot be defined together.",
+          "override": false,
+          "type": "CyclicSound",
+          "optional": true
+        },
+        {
           "name": "name",
           "order": 0,
           "description": "",
@@ -64551,10 +64708,10 @@
         {
           "name": "sound",
           "order": 1,
-          "description": "Cannot contain aggregation.",
+          "description": "Cannot contain aggregation.\n\nOne of `sound` or `cyclic_sound` must be defined. Both cannot be defined together.",
           "override": false,
           "type": "Sound",
-          "optional": false
+          "optional": true
         }
       ]
     },
@@ -65010,7 +65167,7 @@
       "order": 427,
       "description": "A mapping of arrays of [PumpConnectorGraphicsAnimations](prototype:PumpConnectorGraphicsAnimation) to all 4 directions of the pump connection (to a fluid wagon).",
       "examples": [
-        "```\nload_animations =\n{\nwest = {\n  [1] = {\n    standup_base = {\n      filename = \"__base__/graphics/entity/pump/connector/V-R-135-load-standup-base.png\",\n      width = 110,\n      height = 126,\n      scale = 0.5,\n      line_length = 1,\n      frame_count = 20,\n      shift = util.by_pixel(-23.5, -13.5)\n    },\n    standup_shadow = {\n      filename = \"__base__/graphics/entity/pump/connector/V-R-1-load-standup-base-shadow.png\",\n      width = 157,\n      height = 136,\n      scale = 0.5,\n      line_length = 1,\n      frame_count = 20,\n      shift = util.by_pixel(-8.75, 8.5)\n    },\n  },\n  [2] = {\n    standup_base = { ... },\n    standup_shadow = { ... },\n    connector_shadow = { ... },\n  },\n  [3] = { ... },\n  [4] = { ... },\n  [5] = { ... },\n  [6] = { ... },\n},\nnorth = { ... },\neast = { ... },\nsouth = { ... },\n}\n```"
+        "```\nload_animations =\n{\n  west =\n  {\n    [1] =\n    {\n      standup_base =\n      {\n        filename = \"__base__/graphics/entity/pump/connector/V-R-135-load-standup-base.png\",\n        width = 110,\n        height = 126,\n        scale = 0.5,\n        line_length = 1,\n        frame_count = 20,\n        shift = util.by_pixel(-23.5, -13.5)\n      },\n      standup_shadow =\n      {\n        filename = \"__base__/graphics/entity/pump/connector/V-R-1-load-standup-base-shadow.png\",\n        width = 157,\n        height = 136,\n        scale = 0.5,\n        line_length = 1,\n        frame_count = 20,\n        shift = util.by_pixel(-8.75, 8.5)\n      },\n    },\n    [2] =\n    {\n      standup_base = { ... },\n      standup_shadow = { ... },\n      connector_shadow = { ... },\n    },\n    [3] = { ... },\n    [4] = { ... },\n    [5] = { ... },\n    [6] = { ... },\n  },\n  north = { ... },\n  east = { ... },\n  south = { ... },\n}\n```"
       ],
       "abstract": false,
       "inline": false,
@@ -71649,6 +71806,14 @@
           }
         },
         {
+          "name": "default_color",
+          "order": 10,
+          "description": "The default mask color for the spider vehicle. Defaults to orange.",
+          "override": false,
+          "type": "float",
+          "optional": true
+        },
+        {
           "name": "eye_light",
           "order": 2,
           "description": "Placed in multiple positions, as determined by `light_positions`.",
@@ -76447,8 +76612,8 @@
       "order": 584,
       "description": "The properties from the parent TileSpriteLayoutVariant provide defaults for the properties defined here.\n\nThe `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the properties inside the specific variant. They are used to specify select values for the variant without creating the table for the variant.\n\nThese various ways to define the variants are also shown in the examples below.",
       "examples": [
-        "```\n-- longest version, using TileSpriteLayoutVariant tables for each variant\n{\n  inner_corner =\n  {\n    scale = 0.5,\n    count = 8,\n  },\n  outer_corner =\n  {\n  \tscale = 0.5,\n  \tcount = 8,\n  \tx = 576\n  },\n  u_transition  =\n  {\n  \tscale = 0.5,\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
-        "```\n-- The above version is quite verbose, scale is duplicated in each variant layout.\n-- So it is possible to define default value of each property of TileSpriteLayoutVariant directly in TileTransitionVariantLayout:\n{\n  scale = 0.5,\n  inner_corner =\n  {\n    count = 8,\n  },\n  outer_corner =\n  {\n  \tcount = 8,\n  \tx = 576\n  },\n  u_transition  =\n  {\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
+        "```\n-- longest version, using TileSpriteLayoutVariant tables for each variant\n{\n  inner_corner =\n  {\n    scale = 0.5,\n    count = 8,\n  },\n  outer_corner =\n  {\n    scale = 0.5,\n    count = 8,\n    x = 576\n  },\n  u_transition  =\n  {\n    scale = 0.5,\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
+        "```\n-- The above version is quite verbose, scale is duplicated in each variant layout.\n-- So it is possible to define default value of each property of TileSpriteLayoutVariant directly in TileTransitionVariantLayout:\n{\n  scale = 0.5,\n  inner_corner =\n  {\n    count = 8,\n  },\n  outer_corner =\n  {\n    count = 8,\n    x = 576\n  },\n  u_transition  =\n  {\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
         "```\n-- The above version is creating a table to just specify inner_corner has 8 count. It can be shorter by using variant prefix properties:\n{\n  scale = 0.5,\n  inner_corner_count = 8,\n  outer_corner_count = 8,\n  u_transition_count = 1,\n  outer_corner_x = 576,\n  u_transition_x = 1728,\n  [...]\n}\n```"
       ],
       "parent": "TileSpriteLayoutVariant",
@@ -84173,6 +84338,11 @@
               "description": "[LuaProgrammableSpeakerControlBehavior](runtime:LuaProgrammableSpeakerControlBehavior)"
             },
             {
+              "name": "proxy_container",
+              "order": 33,
+              "description": "[LuaProxyContainerControlBehavior](runtime:LuaProxyContainerControlBehavior)"
+            },
+            {
               "name": "pump",
               "order": 19,
               "description": "[LuaPumpControlBehavior](runtime:LuaPumpControlBehavior)"
@@ -87783,6 +87953,11 @@
           "description": ""
         },
         {
+          "name": "proxy_main",
+          "order": 54,
+          "description": ""
+        },
+        {
           "name": "roboport_material",
           "order": 20,
           "description": ""
@@ -88708,368 +88883,378 @@
               "description": ""
             },
             {
-              "name": "infinity-container",
+              "name": "infinity-cargo-wagon",
               "order": 57,
               "description": ""
             },
             {
-              "name": "infinity-pipe",
+              "name": "infinity-container",
               "order": 58,
               "description": ""
             },
             {
-              "name": "inserter",
+              "name": "infinity-pipe",
               "order": 59,
               "description": ""
             },
             {
-              "name": "item-entity",
+              "name": "inserter",
               "order": 60,
               "description": ""
             },
             {
-              "name": "item-request-proxy",
+              "name": "item-entity",
               "order": 61,
               "description": ""
             },
             {
-              "name": "lab",
+              "name": "item-request-proxy",
               "order": 62,
               "description": ""
             },
             {
-              "name": "lamp",
+              "name": "lab",
               "order": 63,
               "description": ""
             },
             {
-              "name": "land-mine",
+              "name": "lamp",
               "order": 64,
               "description": ""
             },
             {
-              "name": "lane-splitter",
+              "name": "land-mine",
               "order": 65,
               "description": ""
             },
             {
-              "name": "legacy-curved-rail",
+              "name": "lane-splitter",
               "order": 66,
               "description": ""
             },
             {
-              "name": "legacy-straight-rail",
+              "name": "legacy-curved-rail",
               "order": 67,
               "description": ""
             },
             {
-              "name": "lightning",
+              "name": "legacy-straight-rail",
               "order": 68,
               "description": ""
             },
             {
-              "name": "lightning-attractor",
+              "name": "lightning",
               "order": 69,
               "description": ""
             },
             {
-              "name": "linked-belt",
+              "name": "lightning-attractor",
               "order": 70,
               "description": ""
             },
             {
-              "name": "linked-container",
+              "name": "linked-belt",
               "order": 71,
               "description": ""
             },
             {
-              "name": "loader",
+              "name": "linked-container",
               "order": 72,
               "description": ""
             },
             {
-              "name": "loader-1x1",
+              "name": "loader",
               "order": 73,
               "description": ""
             },
             {
-              "name": "locomotive",
+              "name": "loader-1x1",
               "order": 74,
               "description": ""
             },
             {
-              "name": "logistic-container",
+              "name": "locomotive",
               "order": 75,
               "description": ""
             },
             {
-              "name": "logistic-robot",
+              "name": "logistic-container",
               "order": 76,
               "description": ""
             },
             {
-              "name": "market",
+              "name": "logistic-robot",
               "order": 77,
               "description": ""
             },
             {
-              "name": "mining-drill",
+              "name": "market",
               "order": 78,
               "description": ""
             },
             {
-              "name": "offshore-pump",
+              "name": "mining-drill",
               "order": 79,
               "description": ""
             },
             {
-              "name": "particle-source",
+              "name": "offshore-pump",
               "order": 80,
               "description": ""
             },
             {
-              "name": "pipe",
+              "name": "particle-source",
               "order": 81,
               "description": ""
             },
             {
-              "name": "pipe-to-ground",
+              "name": "pipe",
               "order": 82,
               "description": ""
             },
             {
-              "name": "plant",
+              "name": "pipe-to-ground",
               "order": 83,
               "description": ""
             },
             {
-              "name": "player-port",
+              "name": "plant",
               "order": 84,
               "description": ""
             },
             {
-              "name": "power-switch",
+              "name": "player-port",
               "order": 85,
               "description": ""
             },
             {
-              "name": "programmable-speaker",
+              "name": "power-switch",
               "order": 86,
               "description": ""
             },
             {
-              "name": "projectile",
+              "name": "programmable-speaker",
               "order": 87,
               "description": ""
             },
             {
-              "name": "pump",
+              "name": "projectile",
               "order": 88,
               "description": ""
             },
             {
-              "name": "radar",
+              "name": "proxy-container",
               "order": 89,
               "description": ""
             },
             {
-              "name": "rail-chain-signal",
+              "name": "pump",
               "order": 90,
               "description": ""
             },
             {
-              "name": "rail-ramp",
+              "name": "radar",
               "order": 91,
               "description": ""
             },
             {
-              "name": "rail-remnants",
+              "name": "rail-chain-signal",
               "order": 92,
               "description": ""
             },
             {
-              "name": "rail-signal",
+              "name": "rail-ramp",
               "order": 93,
               "description": ""
             },
             {
-              "name": "rail-support",
+              "name": "rail-remnants",
               "order": 94,
               "description": ""
             },
             {
-              "name": "reactor",
+              "name": "rail-signal",
               "order": 95,
               "description": ""
             },
             {
-              "name": "resource",
+              "name": "rail-support",
               "order": 96,
               "description": ""
             },
             {
-              "name": "roboport",
+              "name": "reactor",
               "order": 97,
               "description": ""
             },
             {
-              "name": "rocket-silo",
+              "name": "resource",
               "order": 98,
               "description": ""
             },
             {
-              "name": "rocket-silo-rocket",
+              "name": "roboport",
               "order": 99,
               "description": ""
             },
             {
-              "name": "rocket-silo-rocket-shadow",
+              "name": "rocket-silo",
               "order": 100,
               "description": ""
             },
             {
-              "name": "segment",
+              "name": "rocket-silo-rocket",
               "order": 101,
               "description": ""
             },
             {
-              "name": "segmented-unit",
+              "name": "rocket-silo-rocket-shadow",
               "order": 102,
               "description": ""
             },
             {
-              "name": "selector-combinator",
+              "name": "segment",
               "order": 103,
               "description": ""
             },
             {
-              "name": "simple-entity",
+              "name": "segmented-unit",
               "order": 104,
               "description": ""
             },
             {
-              "name": "simple-entity-with-force",
+              "name": "selector-combinator",
               "order": 105,
               "description": ""
             },
             {
-              "name": "simple-entity-with-owner",
+              "name": "simple-entity",
               "order": 106,
               "description": ""
             },
             {
-              "name": "smoke-with-trigger",
+              "name": "simple-entity-with-force",
               "order": 107,
               "description": ""
             },
             {
-              "name": "solar-panel",
+              "name": "simple-entity-with-owner",
               "order": 108,
               "description": ""
             },
             {
-              "name": "space-platform-hub",
+              "name": "smoke-with-trigger",
               "order": 109,
               "description": ""
             },
             {
-              "name": "speech-bubble",
+              "name": "solar-panel",
               "order": 110,
               "description": ""
             },
             {
-              "name": "spider-leg",
+              "name": "space-platform-hub",
               "order": 111,
               "description": ""
             },
             {
-              "name": "spider-unit",
+              "name": "speech-bubble",
               "order": 112,
               "description": ""
             },
             {
-              "name": "spider-vehicle",
+              "name": "spider-leg",
               "order": 113,
               "description": ""
             },
             {
-              "name": "splitter",
+              "name": "spider-unit",
               "order": 114,
               "description": ""
             },
             {
-              "name": "sticker",
+              "name": "spider-vehicle",
               "order": 115,
               "description": ""
             },
             {
-              "name": "storage-tank",
+              "name": "splitter",
               "order": 116,
               "description": ""
             },
             {
-              "name": "straight-rail",
+              "name": "sticker",
               "order": 117,
               "description": ""
             },
             {
-              "name": "stream",
+              "name": "storage-tank",
               "order": 118,
               "description": ""
             },
             {
-              "name": "temporary-container",
+              "name": "straight-rail",
               "order": 119,
               "description": ""
             },
             {
-              "name": "thruster",
+              "name": "stream",
               "order": 120,
               "description": ""
             },
             {
-              "name": "tile-ghost",
+              "name": "temporary-container",
               "order": 121,
               "description": ""
             },
             {
-              "name": "train-stop",
+              "name": "thruster",
               "order": 122,
               "description": ""
             },
             {
-              "name": "transport-belt",
+              "name": "tile-ghost",
               "order": 123,
               "description": ""
             },
             {
-              "name": "tree",
+              "name": "train-stop",
               "order": 124,
               "description": ""
             },
             {
-              "name": "turret",
+              "name": "transport-belt",
               "order": 125,
               "description": ""
             },
             {
-              "name": "underground-belt",
+              "name": "tree",
               "order": 126,
               "description": ""
             },
             {
-              "name": "unit",
+              "name": "turret",
               "order": 127,
               "description": ""
             },
             {
-              "name": "unit-spawner",
+              "name": "underground-belt",
               "order": 128,
               "description": ""
             },
             {
-              "name": "wall",
+              "name": "unit",
               "order": 129,
+              "description": ""
+            },
+            {
+              "name": "unit-spawner",
+              "order": 130,
+              "description": ""
+            },
+            {
+              "name": "wall",
+              "order": 131,
               "description": ""
             }
           ]
@@ -90132,118 +90317,123 @@
           "description": ""
         },
         {
-          "name": "pump_gui",
+          "name": "proxy_container_gui",
           "order": 51,
           "description": ""
         },
         {
-          "name": "rail_signal_base_gui",
+          "name": "pump_gui",
           "order": 52,
           "description": ""
         },
         {
-          "name": "reactor_gui",
+          "name": "rail_signal_base_gui",
           "order": 53,
           "description": ""
         },
         {
-          "name": "resource_entity_gui",
+          "name": "reactor_gui",
           "order": 54,
           "description": ""
         },
         {
-          "name": "roboport_gui",
+          "name": "resource_entity_gui",
           "order": 55,
           "description": ""
         },
         {
-          "name": "rocket_silo_gui",
+          "name": "roboport_gui",
           "order": 56,
           "description": ""
         },
         {
-          "name": "script_inventory_gui",
+          "name": "rocket_silo_gui",
           "order": 57,
           "description": ""
         },
         {
-          "name": "selector_combinator_gui",
+          "name": "script_inventory_gui",
           "order": 58,
           "description": ""
         },
         {
-          "name": "server_config_gui",
+          "name": "selector_combinator_gui",
           "order": 59,
           "description": ""
         },
         {
-          "name": "space_platform_hub_gui",
+          "name": "server_config_gui",
           "order": 60,
           "description": ""
         },
         {
-          "name": "spider_vehicle_gui",
+          "name": "space_platform_hub_gui",
           "order": 61,
           "description": ""
         },
         {
-          "name": "splitter_gui",
+          "name": "spider_vehicle_gui",
           "order": 62,
           "description": ""
         },
         {
-          "name": "standalone_character_gui",
+          "name": "splitter_gui",
           "order": 63,
           "description": ""
         },
         {
-          "name": "storage_tank_gui",
+          "name": "standalone_character_gui",
           "order": 64,
           "description": ""
         },
         {
-          "name": "tile_variations_gui",
+          "name": "storage_tank_gui",
           "order": 65,
           "description": ""
         },
         {
-          "name": "tips_and_tricks_gui",
+          "name": "tile_variations_gui",
           "order": 66,
           "description": ""
         },
         {
-          "name": "train_gui",
+          "name": "tips_and_tricks_gui",
           "order": 67,
           "description": ""
         },
         {
-          "name": "train_stop_gui",
+          "name": "train_gui",
           "order": 68,
           "description": ""
         },
         {
-          "name": "trains_gui",
+          "name": "train_stop_gui",
           "order": 69,
           "description": ""
         },
         {
-          "name": "transport_belt_gui",
+          "name": "trains_gui",
           "order": 70,
           "description": ""
         },
         {
-          "name": "turret_gui",
+          "name": "transport_belt_gui",
           "order": 71,
           "description": ""
         },
         {
-          "name": "upgrade_item_gui",
+          "name": "turret_gui",
           "order": 72,
           "description": ""
         },
         {
-          "name": "wall_gui",
+          "name": "upgrade_item_gui",
           "order": 73,
+          "description": ""
+        },
+        {
+          "name": "wall_gui",
+          "order": 74,
           "description": ""
         }
       ]
@@ -90693,6 +90883,11 @@
         {
           "name": "render_object",
           "order": 11,
+          "description": ""
+        },
+        {
+          "name": "schedule",
+          "order": 19,
           "description": ""
         },
         {

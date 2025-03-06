@@ -72,7 +72,29 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     return this.docUrlBase() + relative_link
   }
 
+  private manualEdits() {
+    if (this.apiDocs.application_version !== "2.0.39") {
+      this.warning("FIXME: update manual edits for next version")
+      return
+    }
+    const luaSchedule = this.apiDocs.classes.find((x) => x.name === "LuaSchedule")
+    function fixMethod(methodName: string) {
+      const method = luaSchedule!.methods.find((x) => x.name === methodName)!
+      for (const param of method.parameters) {
+        // someone did an oopsie and mixed up the type and name
+        if (param.name === "uint" && param.type === "interrupt_index") {
+          param.type = "uint"
+          param.name = "interrupt_index"
+        }
+      }
+    }
+    fixMethod("get_records")
+    fixMethod("set_records")
+    fixMethod("clear_records")
+  }
+
   generateAll(): void {
+    this.manualEdits()
     this.events = associateByName(preprocessTypesWithManualDefs(this, this.apiDocs.events, "events"))
     this.classes = associateByName(preprocessTypesWithManualDefs(this, this.apiDocs.classes, "classes"))
     const concepts = preprocessTypesWithManualDefs(
