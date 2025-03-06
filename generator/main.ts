@@ -8,7 +8,6 @@ import { AnyApiJson, GenerationContext, Options } from "./GenerationContext.js"
 import { PrototypeGenerationContext } from "./prototype"
 import { RuntimeGenerationContext } from "./runtime"
 import { printer } from "./genUtil.js"
-import { FactorioRuntimeApiJson } from "./FactorioRuntimeApiJson"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
