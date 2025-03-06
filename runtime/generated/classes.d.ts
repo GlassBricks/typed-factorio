@@ -25140,20 +25140,20 @@ declare module "factorio:runtime" {
     drag_wait_condition(index: ScheduleRecordPosition, from: uint, to: uint): void
     get_record(index: ScheduleRecordPosition): ScheduleRecord | nil
     /**
-     * @param uint If provided, gets the records for this interrupt.
+     * @param interrupt_index If provided, gets the records for this interrupt.
      * @see {@link https://lua-api.factorio.com/2.0.39/classes/LuaSchedule.html#LuaSchedule.get_records Online documentation}
      */
-    get_records(uint?: interrupt_index): ScheduleRecord[] | nil
+    get_records(interrupt_index?: uint): ScheduleRecord[] | nil
     /**
-     * @param uint If provided, the records will be set on this interrupt.
+     * @param interrupt_index If provided, the records will be set on this interrupt.
      * @see {@link https://lua-api.factorio.com/2.0.39/classes/LuaSchedule.html#LuaSchedule.set_records Online documentation}
      */
-    set_records(records: readonly ScheduleRecordWrite[], uint?: interrupt_index): void
+    set_records(records: readonly ScheduleRecordWrite[], interrupt_index?: uint): void
     /**
-     * @param uint If provided, clears the records for this interrupt.
+     * @param interrupt_index If provided, clears the records for this interrupt.
      * @see {@link https://lua-api.factorio.com/2.0.39/classes/LuaSchedule.html#LuaSchedule.clear_records Online documentation}
      */
-    clear_records(uint?: interrupt_index): void
+    clear_records(interrupt_index?: uint): void
     get_interrupt(index: uint): ScheduleInterrupt | nil
     get_interrupts(): ScheduleInterrupt[]
     set_interrupts(interrupts: readonly ScheduleInterruptWrite[]): void
