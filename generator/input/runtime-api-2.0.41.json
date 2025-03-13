@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.39",
+  "application_version": "2.0.41",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -12231,7 +12231,7 @@
         },
         {
           "name": "build_distance",
-          "order": 220,
+          "order": 221,
           "description": "",
           "subclasses": [
             "Character"
@@ -12305,7 +12305,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 232,
+          "order": 233,
           "description": "",
           "subclasses": [
             "Character"
@@ -12574,7 +12574,7 @@
         },
         {
           "name": "damage_hit_tint",
-          "order": 231,
+          "order": 232,
           "description": "",
           "subclasses": [
             "Character"
@@ -12672,7 +12672,7 @@
         },
         {
           "name": "drop_item_distance",
-          "order": 221,
+          "order": 222,
           "description": "",
           "subclasses": [
             "Character"
@@ -12787,7 +12787,7 @@
         },
         {
           "name": "enter_vehicle_distance",
-          "order": 226,
+          "order": 227,
           "description": "",
           "subclasses": [
             "Character"
@@ -13202,7 +13202,7 @@
         },
         {
           "name": "item_pickup_distance",
-          "order": 224,
+          "order": 225,
           "description": "",
           "subclasses": [
             "Character"
@@ -13483,7 +13483,7 @@
         },
         {
           "name": "loot_pickup_distance",
-          "order": 225,
+          "order": 226,
           "description": "",
           "subclasses": [
             "Character"
@@ -13652,7 +13652,7 @@
         },
         {
           "name": "maximum_corner_sliding_distance",
-          "order": 219,
+          "order": 220,
           "description": "",
           "subclasses": [
             "Character"
@@ -13785,7 +13785,7 @@
         },
         {
           "name": "object_name",
-          "order": 234,
+          "order": 235,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -13858,7 +13858,7 @@
         },
         {
           "name": "reach_distance",
-          "order": 222,
+          "order": 223,
           "description": "",
           "subclasses": [
             "Character"
@@ -13868,7 +13868,7 @@
         },
         {
           "name": "reach_resource_distance",
-          "order": 223,
+          "order": 224,
           "description": "",
           "subclasses": [
             "Character"
@@ -13984,7 +13984,7 @@
         },
         {
           "name": "respawn_time",
-          "order": 230,
+          "order": 231,
           "description": "",
           "subclasses": [
             "Character"
@@ -14004,6 +14004,16 @@
             "value": "UnitSpawnDefinition"
           },
           "optional": true
+        },
+        {
+          "name": "rewire_neighbours_when_destroying",
+          "order": 218,
+          "description": "",
+          "subclasses": [
+            "ElectricPole"
+          ],
+          "read_type": "boolean",
+          "optional": false
         },
         {
           "name": "rising_speed",
@@ -14057,7 +14067,7 @@
         },
         {
           "name": "running_speed",
-          "order": 218,
+          "order": 219,
           "description": "The movement speed of this character prototype.",
           "subclasses": [
             "Character"
@@ -14282,7 +14292,7 @@
         },
         {
           "name": "ticks_to_keep_aiming_direction",
-          "order": 228,
+          "order": 229,
           "description": "",
           "subclasses": [
             "Character"
@@ -14292,7 +14302,7 @@
         },
         {
           "name": "ticks_to_keep_gun",
-          "order": 227,
+          "order": 228,
           "description": "",
           "subclasses": [
             "Character"
@@ -14302,7 +14312,7 @@
         },
         {
           "name": "ticks_to_stay_in_combat",
-          "order": 229,
+          "order": 230,
           "description": "",
           "subclasses": [
             "Character"
@@ -14426,7 +14436,7 @@
         },
         {
           "name": "valid",
-          "order": 233,
+          "order": 234,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -37689,10 +37699,10 @@
           "description": "",
           "parameters": [
             {
-              "name": "uint",
+              "name": "interrupt_index",
               "order": 0,
               "description": "If provided, clears the records for this interrupt.",
-              "type": "interrupt_index",
+              "type": "uint",
               "optional": true
             }
           ],
@@ -37923,10 +37933,10 @@
           "description": "",
           "parameters": [
             {
-              "name": "uint",
+              "name": "interrupt_index",
               "order": 0,
               "description": "If provided, gets the records for this interrupt.",
-              "type": "interrupt_index",
+              "type": "uint",
               "optional": true
             }
           ],
@@ -38186,6 +38196,13 @@
           "description": "",
           "parameters": [
             {
+              "name": "interrupt_index",
+              "order": 1,
+              "description": "If provided, the records will be set on this interrupt.",
+              "type": "uint",
+              "optional": true
+            },
+            {
               "name": "records",
               "order": 0,
               "description": "",
@@ -38194,13 +38211,6 @@
                 "value": "ScheduleRecord"
               },
               "optional": false
-            },
-            {
-              "name": "uint",
-              "order": 1,
-              "description": "If provided, the records will be set on this interrupt.",
-              "type": "interrupt_index",
-              "optional": true
             }
           ],
           "format": {
