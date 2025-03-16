@@ -1,7 +1,5 @@
 import { AnyPrototype, CustomInputName } from "factorio:common"
-import { EmptyWidgetStyleSpecification } from "factorio:prototype"
 
-export type bool = boolean
 export type double = number
 export type float = number
 export type int8 = number
