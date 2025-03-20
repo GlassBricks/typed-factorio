@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.41",
+  "application_version": "2.0.42",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -4451,7 +4451,7 @@
         {
           "name": "walking_state",
           "order": 12,
-          "description": "Current walking state.",
+          "description": "Current walking state of the player, or the spider-vehicle the character is driving.",
           "examples": [
             "```\n-- Make the player go north. Note that a one-shot action like this will only make the player walk for one tick.\ngame.player.walking_state = {walking = true, direction = defines.direction.north}\n```"
           ],
@@ -8968,7 +8968,7 @@
         },
         {
           "name": "attached_cargo_pod",
-          "order": 209,
+          "order": 210,
           "description": "The cargo pod attached to this rocket silo rocket if any.",
           "subclasses": [
             "RocketSiloRocket"
@@ -9161,6 +9161,17 @@
           "read_type": "CargoDestination",
           "write_type": "CargoDestination",
           "optional": false
+        },
+        {
+          "name": "cargo_pod_origin",
+          "order": 209,
+          "description": "The origin of this cargo pod entity. (Must be a silo, hub or pad)",
+          "subclasses": [
+            "CargoPod"
+          ],
+          "read_type": "LuaEntity",
+          "write_type": "LuaEntity",
+          "optional": true
         },
         {
           "name": "cargo_pod_state",
@@ -9773,7 +9784,7 @@
           "subclasses": [
             "EntityGhost"
           ],
-          "read_type": "uint",
+          "read_type": "uint64",
           "optional": true
         },
         {
@@ -9867,7 +9878,8 @@
           "order": 122,
           "description": "The filters for this infinity container.",
           "subclasses": [
-            "InfinityContainer"
+            "InfinityContainer",
+            "InfinityCargoWagon"
           ],
           "read_type": {
             "complex_type": "array",
@@ -10439,7 +10451,7 @@
         },
         {
           "name": "object_name",
-          "order": 214,
+          "order": 215,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -10601,7 +10613,7 @@
         },
         {
           "name": "proxy_target_entity",
-          "order": 211,
+          "order": 212,
           "description": "Entity of which inventory is exposed by this ProxyContainer",
           "subclasses": [
             "ProxyContainer"
@@ -10612,7 +10624,7 @@
         },
         {
           "name": "proxy_target_inventory",
-          "order": 212,
+          "order": 213,
           "description": "Inventory index of the inventory that is exposed by this ProxyContainer",
           "subclasses": [
             "ProxyContainer"
@@ -10700,7 +10712,8 @@
           "order": 123,
           "description": "Whether items not included in this infinity container filters should be removed from the container.",
           "subclasses": [
-            "InfinityContainer"
+            "InfinityContainer",
+            "InfinityCargoWagon"
           ],
           "read_type": "boolean",
           "write_type": "boolean",
@@ -10771,7 +10784,7 @@
         },
         {
           "name": "rocket",
-          "order": 210,
+          "order": 211,
           "description": "The rocket silo rocket this cargo pod is attached to, or rocket silo rocket attached to this rocket silo - if any.",
           "read_type": "LuaEntity",
           "optional": true
@@ -11328,7 +11341,7 @@
           "name": "unit_number",
           "order": 81,
           "description": "A unique number identifying this entity for the lifetime of the save. These are allocated sequentially, and not re-used (until overflow).\n\nOnly entities inheriting from [EntityWithOwnerPrototype](prototype:EntityWithOwnerPrototype), as well as [ItemRequestProxyPrototype](prototype:ItemRequestProxyPrototype) and [EntityGhostPrototype](prototype:EntityGhostPrototype) are assigned a unit number. Returns `nil` otherwise.",
-          "read_type": "uint",
+          "read_type": "uint64",
           "optional": true
         },
         {
@@ -11357,7 +11370,7 @@
         },
         {
           "name": "valid",
-          "order": 213,
+          "order": 214,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -25886,7 +25899,7 @@
           "name": "item_number",
           "order": 13,
           "description": "The unique identifier for this item, if any. Note that this ID stays the same no matter where the item is moved to.",
-          "read_type": "uint",
+          "read_type": "uint64",
           "optional": true
         },
         {
@@ -40715,7 +40728,7 @@
               "name": "name",
               "order": 0,
               "description": "Name of the entity to check.",
-              "type": "string",
+              "type": "EntityID",
               "optional": false
             },
             {
@@ -40783,7 +40796,7 @@
               "name": "name",
               "order": 0,
               "description": "Name of the entity prototype to check.",
-              "type": "string",
+              "type": "EntityID",
               "optional": false
             },
             {
@@ -44129,7 +44142,7 @@
         {
           "name": "request_path",
           "order": 57,
-          "description": "Generates a path with the specified constraints (as an array of [PathfinderWaypoints](runtime:PathfinderWaypoint)) using the unit pathfinding algorithm. This path can be used to emulate pathing behavior by script for non-unit entities, such as vehicles. If you want to command actual units (such as biters or spitters) to move, use [LuaEntity::set_command](runtime:LuaEntity::set_command) instead.\n\nThe resulting path is ultimately returned asynchronously via [on_script_path_request_finished](runtime:on_script_path_request_finished).",
+          "description": "Generates a path with the specified constraints (as an array of [PathfinderWaypoints](runtime:PathfinderWaypoint)) using the unit pathfinding algorithm. This path can be used to emulate pathing behavior by script for non-unit entities, such as vehicles. If you want to command actual units (such as biters or spitters) to move, use [LuaCommandable::set_command](runtime:LuaCommandable::set_command) via [LuaEntity::commandable](runtime:LuaEntity::commandable) instead.\n\nThe resulting path is ultimately returned asynchronously via [on_script_path_request_finished](runtime:on_script_path_request_finished).",
           "raises": [
             {
               "name": "on_script_path_request_finished",
@@ -57343,7 +57356,7 @@
     {
       "name": "AsteroidMapSettings",
       "order": 128,
-      "description": "",
+      "description": "Used by [MapSettings](runtime:MapSettings) and [MapAndDifficultySettings](runtime:MapAndDifficultySettings).",
       "type": {
         "complex_type": "table",
         "parameters": [
@@ -60976,7 +60989,7 @@
           {
             "complex_type": "literal",
             "value": "get-by-unit-number",
-            "description": "When set, entity will be possible to obtain by using [LuaGameScript::get_entity_by_unit_number](runtime:LuaGameScript::get_entity_by_unit_number). It also changes input actions sent by a player to be selecting entity by unit number instead of a position which may help players in latency to select moving entities."
+            "description": "When set, entity will be possible to obtain by using [LuaGameScript::get_entity_by_unit_number](runtime:LuaGameScript::get_entity_by_unit_number)."
           },
           {
             "complex_type": "literal",
@@ -63663,6 +63676,14 @@
                 },
                 {
                   "complex_type": "literal",
+                  "value": "plant-result"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "spoil-result"
+                },
+                {
+                  "complex_type": "literal",
                   "value": "name"
                 },
                 {
@@ -63754,7 +63775,7 @@
           },
           {
             "name": "flag",
-            "order": 6,
+            "order": 8,
             "description": "",
             "parameters": [
               {
@@ -63768,41 +63789,6 @@
           },
           {
             "name": "fuel-acceleration-multiplier",
-            "order": 11,
-            "description": "",
-            "parameters": [
-              {
-                "name": "comparison",
-                "order": 0,
-                "description": "",
-                "type": "ComparatorString",
-                "optional": false
-              },
-              {
-                "name": "value",
-                "order": 1,
-                "description": "The value to compare against.",
-                "type": "double",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "fuel-category",
-            "order": 8,
-            "description": "",
-            "parameters": [
-              {
-                "name": "fuel-category",
-                "order": 0,
-                "description": "A [LuaFuelCategoryPrototype](runtime:LuaFuelCategoryPrototype) name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "fuel-emissions-multiplier",
             "order": 13,
             "description": "",
             "parameters": [
@@ -63823,8 +63809,43 @@
             ]
           },
           {
+            "name": "fuel-category",
+            "order": 10,
+            "description": "",
+            "parameters": [
+              {
+                "name": "fuel-category",
+                "order": 0,
+                "description": "A [LuaFuelCategoryPrototype](runtime:LuaFuelCategoryPrototype) name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "fuel-emissions-multiplier",
+            "order": 15,
+            "description": "",
+            "parameters": [
+              {
+                "name": "comparison",
+                "order": 0,
+                "description": "",
+                "type": "ComparatorString",
+                "optional": false
+              },
+              {
+                "name": "value",
+                "order": 1,
+                "description": "The value to compare against.",
+                "type": "double",
+                "optional": false
+              }
+            ]
+          },
+          {
             "name": "fuel-top-speed-multiplier",
-            "order": 12,
+            "order": 14,
             "description": "",
             "parameters": [
               {
@@ -63845,7 +63866,7 @@
           },
           {
             "name": "fuel-value",
-            "order": 10,
+            "order": 12,
             "description": "",
             "parameters": [
               {
@@ -63866,7 +63887,7 @@
           },
           {
             "name": "name",
-            "order": 4,
+            "order": 6,
             "description": "For use within nested filters such as the `has-product-item` filter of array[[RecipePrototypeFilter](runtime:RecipePrototypeFilter)].\n\nTo get a specific prototype by name, see [LuaPrototypes::item](runtime:LuaPrototypes::item).",
             "parameters": [
               {
@@ -63940,8 +63961,42 @@
             ]
           },
           {
+            "name": "plant-result",
+            "order": 4,
+            "description": "",
+            "parameters": [
+              {
+                "name": "elem_filters",
+                "order": 0,
+                "description": "Filters for the plant result.",
+                "type": {
+                  "complex_type": "array",
+                  "value": "EntityPrototypeFilter"
+                },
+                "optional": true
+              }
+            ]
+          },
+          {
+            "name": "spoil-result",
+            "order": 5,
+            "description": "",
+            "parameters": [
+              {
+                "name": "elem_filters",
+                "order": 0,
+                "description": "Filters for the spoil result.",
+                "type": {
+                  "complex_type": "array",
+                  "value": "ItemPrototypeFilter"
+                },
+                "optional": true
+              }
+            ]
+          },
+          {
             "name": "stack-size",
-            "order": 9,
+            "order": 11,
             "description": "Usage example:\n\n```\nprototypes.get_item_filtered({{filter = \"stack-size\", comparison = \">\", value = 20}, {filter = \"stack-size\", comparison = \"<\", value = 100, mode = \"and\"}})\n```",
             "parameters": [
               {
@@ -63962,7 +64017,7 @@
           },
           {
             "name": "subgroup",
-            "order": 7,
+            "order": 9,
             "description": "",
             "parameters": [
               {
@@ -63976,7 +64031,7 @@
           },
           {
             "name": "type",
-            "order": 5,
+            "order": 7,
             "description": "Usage example: \n```\nprototypes.get_item_filtered({{filter = \"type\", type = \"armor\"}})\n```",
             "parameters": [
               {
