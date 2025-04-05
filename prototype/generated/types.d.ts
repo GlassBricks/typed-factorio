@@ -16302,7 +16302,7 @@ declare module "factorio:prototype" {
    * Loaded as one of the {@link TriggerEffectItem} extensions, based on the value of the `type` key.
    *
    * ## Union members
-   * - `DamageTriggerEffectItem`: Loaded when the `type` is `"damage"`.
+   * - {@link DamageEntityTriggerEffectItem}: Loaded when the `type` is `"damage"`.
    * - {@link DamageTileTriggerEffectItem}: Loaded when the `type` is `"damage-tile"`.
    * - {@link CreateEntityTriggerEffectItem}: Loaded when the `type` is `"create-entity"`.
    * - {@link CreateExplosionTriggerEffectItem}: Loaded when the `type` is `"create-explosion"`.
@@ -16329,7 +16329,7 @@ declare module "factorio:prototype" {
    */
   export type TriggerEffect =
     | (
-        | DamageTriggerEffectItem
+        | DamageEntityTriggerEffectItem
         | DamageTileTriggerEffectItem
         | CreateEntityTriggerEffectItem
         | CreateExplosionTriggerEffectItem
@@ -16354,7 +16354,7 @@ declare module "factorio:prototype" {
         | ActivateImpactTriggerEffectItem
       )
     | readonly (
-        | DamageTriggerEffectItem
+        | DamageEntityTriggerEffectItem
         | DamageTileTriggerEffectItem
         | CreateEntityTriggerEffectItem
         | CreateExplosionTriggerEffectItem
