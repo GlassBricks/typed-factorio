@@ -11,6 +11,7 @@ This project aims to provide type definitions that are as complete as possible.
 To use in your [TypescriptToLua](https://typescripttolua.github.io/) project:
 
 1. Install this package: `npm install --save-dev typed-factorio`
+
    > Note: When types are updated for a new factorio version, you will need to update this package.
 
 2. Add types for the [Factorio stages](https://lua-api.factorio.com/latest) used to your `tsconfig.json` under `compilerOptions > types`.
@@ -71,7 +72,7 @@ const foo = util.copy(bar)
 
 If you wish to see types for more lualib modules, feel free to open an issue or pull request.
 
-### Types for `data.extend()` 
+### Types for `data.extend()`
 
 In the settings and prototype stages, the `data` global variable is available.
 
@@ -175,7 +176,7 @@ script.on_event("my-custom-input", () => {}) // type-checked
 // script.on_event("my-customm-input", () => {}) // mispelled, will error
 ```
 
-The type `CustomInputName` (not plural) will be a union of strings, for all custom input names. 
+The type `CustomInputName` (not plural) will be a union of strings, for all custom input names.
 If not specified like above, `CustomInputName` defaults to just `string`.
 
 ### Array-like classes
