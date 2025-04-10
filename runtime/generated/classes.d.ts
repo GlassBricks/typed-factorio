@@ -1842,7 +1842,7 @@ declare module "factorio:runtime" {
      * Open the Factoriopedia GUI and select a given entry.
      * @see {@link https://lua-api.factorio.com/2.0.44/classes/LuaControl.html#LuaControl.open_factoriopedia_gui Online documentation}
      */
-    open_factoriopedia_gui(prototype?: PrototypeBase): void
+    open_factoriopedia_gui(prototype?: LuaPrototypeBase): void
     /**
      * Closes the Factoriopedia GUI if it's open.
      * @see {@link https://lua-api.factorio.com/2.0.44/classes/LuaControl.html#LuaControl.close_factoriopedia_gui Online documentation}

@@ -244,6 +244,8 @@ export interface LuaTechnology {}
 
 export interface CraftingQueueItem {}
 
+export interface LuaPrototypeBase {}
+
 export interface LuaControl {
   set opened(
     value:
@@ -271,6 +273,8 @@ export interface LuaControl {
 
   /** @overload */
   teleport(x: number, y?: number): boolean
+
+  open_factoriopedia_gui(prototype?: LuaPrototypeBase): void
 
   readonly crafting_queue?: CraftingQueueItem[]
 }
