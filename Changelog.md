@@ -1,4 +1,4 @@
-# v3.19.1
+# v3.19.2
 
 - Fix regression, where LuaEntity::unit_number no longer had the type UnitNumber
 
