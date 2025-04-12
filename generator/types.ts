@@ -328,7 +328,7 @@ function tryUseIndexTypeFromBasicType(
 ): IntermediateType | undefined {
   if (!typeContext || !type.startsWith("uint")) return undefined
   for (const indexType of IndexTypes) {
-    const expectedType = indexType.expectedTypes ?? ["uint"]
+    const expectedType = indexType.expectedTypes ?? ["uint", "uint64"]
     if (!expectedType.includes(type)) continue
     if (typeContext.contextName === indexType.identificationConcept) {
       return {
@@ -833,7 +833,7 @@ function tryUseIndexType(
 ): RWType | undefined {
   if (!(typeof type === "string" && type.startsWith("uint"))) return
   for (const indexType of IndexTypes) {
-    const expectedType = indexType.expectedTypes ?? ["uint"]
+    const expectedType = indexType.expectedTypes ?? ["uint", "uint64"]
     if (!expectedType.includes(type)) continue
     if (
       (indexType.mainAttributePath.parent === parent && member.name === indexType.mainAttributePath.name) ||

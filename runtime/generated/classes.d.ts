@@ -4326,14 +4326,14 @@ declare module "factorio:runtime" {
      * Only entities inheriting from {@link import("factorio:prototype").EntityWithOwnerPrototype EntityWithOwnerPrototype}, as well as {@link import("factorio:prototype").ItemRequestProxyPrototype ItemRequestProxyPrototype} and {@link import("factorio:prototype").EntityGhostPrototype EntityGhostPrototype} are assigned a unit number. Returns `nil` otherwise.
      * @see {@link https://lua-api.factorio.com/2.0.44/classes/LuaEntity.html#LuaEntity.unit_number Online documentation}
      */
-    readonly unit_number?: uint64
+    readonly unit_number?: UnitNumber
     /**
      * The {@link LuaEntity#unit_number unit_number} of the entity contained in this ghost. It is the same as the unit number of the {@link import("factorio:prototype").EntityWithOwnerPrototype EntityWithOwnerPrototype} that was destroyed to create this ghost. If it was created by other means, or if the inner entity does not support unit numbers, this property is `nil`.
      *
      * _Can only be used if this is EntityGhost_
      * @see {@link https://lua-api.factorio.com/2.0.44/classes/LuaEntity.html#LuaEntity.ghost_unit_number Online documentation}
      */
-    readonly ghost_unit_number?: uint64
+    readonly ghost_unit_number?: UnitNumber
     /**
      * The mining progress for this mining drill. Is a number in range [0, mining_target.prototype.mineable_properties.mining_time]. `nil` if this isn't a mining drill.
      * @see {@link https://lua-api.factorio.com/2.0.44/classes/LuaEntity.html#LuaEntity.mining_progress Online documentation}
@@ -5972,7 +5972,7 @@ declare module "factorio:runtime" {
      * Only entities inheriting from {@link import("factorio:prototype").EntityWithOwnerPrototype EntityWithOwnerPrototype}, as well as {@link import("factorio:prototype").ItemRequestProxyPrototype ItemRequestProxyPrototype} and {@link import("factorio:prototype").EntityGhostPrototype EntityGhostPrototype} are assigned a unit number. Returns `nil` otherwise.
      * @see {@link https://lua-api.factorio.com/2.0.44/classes/LuaEntity.html#LuaEntity.unit_number Online documentation}
      */
-    readonly unit_number?: uint64
+    readonly unit_number?: UnitNumber
     /**
      * The mining progress for this mining drill. Is a number in range [0, mining_target.prototype.mineable_properties.mining_time]. `nil` if this isn't a mining drill.
      * @see {@link https://lua-api.factorio.com/2.0.44/classes/LuaEntity.html#LuaEntity.mining_progress Online documentation}
@@ -6240,7 +6240,7 @@ declare module "factorio:runtime" {
      * _Can only be used if this is EntityGhost_
      * @see {@link https://lua-api.factorio.com/2.0.44/classes/LuaEntity.html#LuaEntity.ghost_unit_number Online documentation}
      */
-    readonly ghost_unit_number?: uint64
+    readonly ghost_unit_number?: UnitNumber
   }
   /**
    * @noSelf

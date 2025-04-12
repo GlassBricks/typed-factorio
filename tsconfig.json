@@ -1,4 +1,6 @@
-// this exists just to help tooling find files for development
+// this exists:
+// - to help tooling find files, for development
+// - For test type checking
 {
   "compilerOptions": {
     "target": "esnext",
@@ -13,5 +15,5 @@
     "types": [],
     "noEmit": true
   },
-  "include": ["**/index.d.ts"]
+  "include": ["**/index.d.ts", "test"]
 }

@@ -35,7 +35,7 @@ declare module "factorio:runtime" {
    *
    * You can cast a raw number to this type, e.g. `1 as UnitNumber`.
    */
-  type UnitNumber = uint & {
+  type UnitNumber = uint64 & {
     _unitNumberBrand: void
   }
   /**

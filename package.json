@@ -16,7 +16,6 @@
   "license": "MIT",
   "files": [
     "**/*.d.ts",
-    "*.d.ts",
     "!generator/**/*"
   ],
   "type": "module",

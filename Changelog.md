@@ -1,3 +1,7 @@
+# v3.19.1
+
+- Fix regression, where LuaEntity::unit_number no longer had the type UnitNumber
+
 # v3.19.0
 
 - Updated to factorio version 2.0.44

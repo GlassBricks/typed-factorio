@@ -51,6 +51,7 @@ export const IndexTypes: IndexType[] = [
       name: "unit_number",
     },
     attributePattern: /^(ghost_)?unit_number$/,
+    expectedTypes: ["uint64", "uint"],
   },
   {
     name: "GuiElementIndex",
