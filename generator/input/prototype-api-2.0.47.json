@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.45",
+  "application_version": "2.0.47",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -3132,6 +3132,18 @@
           "optional": false
         },
         {
+          "name": "related_to_fight_achievements",
+          "order": 3,
+          "description": "Whether this settings being lower than default disables fight related achievements",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
           "name": "richness",
           "order": 1,
           "description": "Sets whether this control's richness can be changed. The map generator GUI will only show the richness slider when the `category` is `\"resource\"`.\n\nIf the autoplace control is used to generate ores, you probably want this to be true.",
@@ -3950,7 +3962,7 @@
         },
         {
           "name": "auto_sort_inventory",
-          "order": 9,
+          "order": 10,
           "description": "If this car prototype keeps the trunk inventory sorted.",
           "override": false,
           "type": "boolean",
@@ -3970,7 +3982,7 @@
         },
         {
           "name": "darkness_to_render_light_animation",
-          "order": 20,
+          "order": 21,
           "description": "",
           "override": false,
           "type": "float",
@@ -3990,7 +4002,7 @@
         },
         {
           "name": "energy_source",
-          "order": 4,
+          "order": 5,
           "description": "",
           "override": false,
           "type": {
@@ -4005,7 +4017,7 @@
         },
         {
           "name": "guns",
-          "order": 22,
+          "order": 23,
           "description": "The names of the  [GunPrototype](prototype:GunPrototype)s this car prototype uses.",
           "override": false,
           "type": {
@@ -4016,7 +4028,7 @@
         },
         {
           "name": "has_belt_immunity",
-          "order": 10,
+          "order": 11,
           "description": "If this car is immune to movement by belts.",
           "override": false,
           "type": "boolean",
@@ -4028,7 +4040,7 @@
         },
         {
           "name": "immune_to_cliff_impacts",
-          "order": 13,
+          "order": 14,
           "description": "If this car gets damaged by driving against [cliffs](prototype:CliffPrototype).",
           "override": false,
           "type": "boolean",
@@ -4040,7 +4052,7 @@
         },
         {
           "name": "immune_to_rock_impacts",
-          "order": 12,
+          "order": 13,
           "description": "If this car gets damaged by driving over/against [rocks](prototype:SimpleEntityPrototype::count_as_rock_for_filtered_deconstruction).",
           "override": false,
           "type": "boolean",
@@ -4052,7 +4064,7 @@
         },
         {
           "name": "immune_to_tree_impacts",
-          "order": 11,
+          "order": 12,
           "description": "If this car gets damaged by driving over/against [trees](prototype:TreePrototype).",
           "override": false,
           "type": "boolean",
@@ -4064,7 +4076,7 @@
         },
         {
           "name": "inventory_size",
-          "order": 16,
+          "order": 17,
           "description": "Size of the car inventory.",
           "override": false,
           "type": "ItemStackIndex",
@@ -4072,7 +4084,7 @@
         },
         {
           "name": "light",
-          "order": 18,
+          "order": 19,
           "description": "",
           "override": false,
           "type": "LightDefinition",
@@ -4080,7 +4092,7 @@
         },
         {
           "name": "light_animation",
-          "order": 6,
+          "order": 7,
           "description": "Must have the same frame count as `animation`.",
           "override": false,
           "type": "RotatedAnimation",
@@ -4088,7 +4100,7 @@
         },
         {
           "name": "render_layer",
-          "order": 7,
+          "order": 8,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -4097,6 +4109,14 @@
             "complex_type": "literal",
             "value": "object"
           }
+        },
+        {
+          "name": "rotation_snap_angle",
+          "order": 4,
+          "description": "Vehicle will snap the vertical, horizontal or diagonal axis if it's within this angle",
+          "override": false,
+          "type": "double",
+          "optional": false
         },
         {
           "name": "rotation_speed",
@@ -4108,7 +4128,7 @@
         },
         {
           "name": "sound_no_fuel",
-          "order": 19,
+          "order": 20,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -4116,7 +4136,7 @@
         },
         {
           "name": "tank_driving",
-          "order": 8,
+          "order": 9,
           "description": "If this car prototype uses tank controls to drive.",
           "override": false,
           "type": "boolean",
@@ -4128,7 +4148,7 @@
         },
         {
           "name": "track_particle_triggers",
-          "order": 21,
+          "order": 22,
           "description": "",
           "override": false,
           "type": "FootstepTriggerEffectList",
@@ -4136,7 +4156,7 @@
         },
         {
           "name": "trash_inventory_size",
-          "order": 17,
+          "order": 18,
           "description": "If set to 0 then the car will not have a Logistics tab.",
           "override": false,
           "type": "ItemStackIndex",
@@ -4148,7 +4168,7 @@
         },
         {
           "name": "turret_animation",
-          "order": 5,
+          "order": 6,
           "description": "Animation speed 1 means 1 frame per tile.",
           "override": false,
           "type": "RotatedAnimation",
@@ -4156,7 +4176,7 @@
         },
         {
           "name": "turret_return_timeout",
-          "order": 15,
+          "order": 16,
           "description": "Timeout in ticks specifying how long the turret must be inactive to return to the default position.",
           "override": false,
           "type": "uint32",
@@ -4168,7 +4188,7 @@
         },
         {
           "name": "turret_rotation_speed",
-          "order": 14,
+          "order": 15,
           "description": "",
           "override": false,
           "type": "float",
@@ -25694,7 +25714,7 @@
         },
         {
           "name": "damage_per_tick",
-          "order": 10,
+          "order": 11,
           "description": "Applied every `damage_interval` ticks, so may not necessarily be \"per tick\".",
           "override": false,
           "type": "DamageParameters",
@@ -25746,7 +25766,7 @@
         },
         {
           "name": "ground_target",
-          "order": 17,
+          "order": 18,
           "description": "If true, causes the target entity to become \"grounded\", disabling flight. This only applies to Character entities wearing mech armor.",
           "override": false,
           "type": "boolean",
@@ -25758,7 +25778,7 @@
         },
         {
           "name": "hidden",
-          "order": 29,
+          "order": 30,
           "description": "The `hidden` property of stickers is hardcoded to `true`.",
           "override": true,
           "type": "boolean",
@@ -25770,7 +25790,7 @@
         },
         {
           "name": "hidden_in_factoriopedia",
-          "order": 30,
+          "order": 31,
           "description": "The `hidden_in_factoriopedia` property of stickers is hardcoded to `true`.",
           "override": true,
           "type": "boolean",
@@ -25791,7 +25811,7 @@
         },
         {
           "name": "selection_box_type",
-          "order": 27,
+          "order": 28,
           "description": "Using this property marks the sticker as a \"selection sticker\", meaning that the selection box will be rendered around the entity when the sticker is on it.",
           "override": false,
           "type": "CursorBoxType",
@@ -25835,7 +25855,7 @@
         },
         {
           "name": "target_movement_max",
-          "order": 14,
+          "order": 15,
           "description": "The maximum movement speed for the target.\n\nNegative values are ignored.",
           "override": false,
           "type": "float",
@@ -25847,7 +25867,7 @@
         },
         {
           "name": "target_movement_max_from",
-          "order": 15,
+          "order": 16,
           "description": "The maximum movement speed for the target when the sticker is attached. It linearly changes over time to reach `target_movement_max_to`.\n\nNegative values are ignored.",
           "override": false,
           "type": "float",
@@ -25856,7 +25876,7 @@
         },
         {
           "name": "target_movement_max_to",
-          "order": 16,
+          "order": 17,
           "description": "The maximum movement speed for the target when the sticker expires. It linearly changes over time starting from `target_movement_max_from`.\n\nNegative values are ignored.",
           "override": false,
           "type": "float",
@@ -25865,7 +25885,7 @@
         },
         {
           "name": "target_movement_modifier",
-          "order": 11,
+          "order": 12,
           "description": "Less than 1 to reduce movement speed, more than 1 to increase it.",
           "override": false,
           "type": "float",
@@ -25877,7 +25897,7 @@
         },
         {
           "name": "target_movement_modifier_from",
-          "order": 12,
+          "order": 13,
           "description": "The modifier value when the sticker is attached. It linearly changes over time to reach `target_movement_modifier_to`.",
           "override": false,
           "type": "float",
@@ -25886,7 +25906,7 @@
         },
         {
           "name": "target_movement_modifier_to",
-          "order": 13,
+          "order": 14,
           "description": "The modifier value when the sticker expires. It linearly changes over time starting from `target_movement_modifier_from`.",
           "override": false,
           "type": "float",
@@ -25895,7 +25915,7 @@
         },
         {
           "name": "update_effects",
-          "order": 28,
+          "order": 29,
           "description": "Effects (with cooldowns) to trigger every tick.",
           "override": false,
           "type": {
@@ -25905,8 +25925,20 @@
           "optional": true
         },
         {
+          "name": "use_damage_substitute",
+          "order": 10,
+          "description": "",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
           "name": "vehicle_friction_modifier",
-          "order": 24,
+          "order": 25,
           "description": "",
           "override": false,
           "type": "float",
@@ -25918,7 +25950,7 @@
         },
         {
           "name": "vehicle_friction_modifier_from",
-          "order": 25,
+          "order": 26,
           "description": "Works similarly to `target_movement_modifier_from`.",
           "override": false,
           "type": "float",
@@ -25927,7 +25959,7 @@
         },
         {
           "name": "vehicle_friction_modifier_to",
-          "order": 26,
+          "order": 27,
           "description": "Works similarly to `target_movement_modifier_to`.",
           "override": false,
           "type": "float",
@@ -25936,7 +25968,7 @@
         },
         {
           "name": "vehicle_speed_max",
-          "order": 21,
+          "order": 22,
           "description": "The maximum movement speed for vehicles.\n\nNegative values are ignored.",
           "override": false,
           "type": "float",
@@ -25948,7 +25980,7 @@
         },
         {
           "name": "vehicle_speed_max_from",
-          "order": 22,
+          "order": 23,
           "description": "The maximum movement speed for vehicles when the sticker is attached. It linearly changes over time to reach `vehicle_speed_max_to`.\n\nNegative values are ignored.",
           "override": false,
           "type": "float",
@@ -25957,7 +25989,7 @@
         },
         {
           "name": "vehicle_speed_max_to",
-          "order": 23,
+          "order": 24,
           "description": "The maximum movement speed for vehicles when the sticker expires. It linearly changes over time starting from `vehicle_speed_max_from`.\n\nNegative values are ignored.",
           "override": false,
           "type": "float",
@@ -25966,7 +25998,7 @@
         },
         {
           "name": "vehicle_speed_modifier",
-          "order": 18,
+          "order": 19,
           "description": "Less than 1 to reduce vehicle speed, more than 1 to increase it.",
           "override": false,
           "type": "float",
@@ -25978,7 +26010,7 @@
         },
         {
           "name": "vehicle_speed_modifier_from",
-          "order": 19,
+          "order": 20,
           "description": "Works similarly to `target_movement_modifier_from`.",
           "override": false,
           "type": "float",
@@ -25987,7 +26019,7 @@
         },
         {
           "name": "vehicle_speed_modifier_to",
-          "order": 20,
+          "order": 21,
           "description": "Works similarly to `target_movement_modifier_to`.",
           "override": false,
           "type": "float",
@@ -51938,11 +51970,6 @@
             },
             {
               "complex_type": "literal",
-              "value": "no-gap-fill-while-building",
-              "description": ""
-            },
-            {
-              "complex_type": "literal",
               "value": "not-flammable",
               "description": "Do not apply fire stickers to the entity."
             },
@@ -72785,7 +72812,7 @@
           "order": 9,
           "description": "Loaded only if `draw_as_shadow`, `draw_as_glow` and `draw_as_light` are `false`, and only by sprites used by tile renderer (decals and underwater patches). Purspose of setting this to `false` is to preserve water mask from sprites that are supposed to be drawn under the water.",
           "override": false,
-          "type": "bool",
+          "type": "boolean",
           "optional": true,
           "default": {
             "complex_type": "literal",
@@ -79526,6 +79553,54 @@
           "optional": false
         },
         {
+          "name": "branches_when_damaged",
+          "order": 16,
+          "description": "This value is multiplied with the percent of health lost.",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
+          "name": "branches_when_destroyed",
+          "order": 17,
+          "description": "",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 15
+          }
+        },
+        {
+          "name": "branches_when_mined_automatically",
+          "order": 15,
+          "description": "",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 8
+          }
+        },
+        {
+          "name": "branches_when_mined_manually",
+          "order": 14,
+          "description": "",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 15
+          }
+        },
+        {
           "name": "disable_shadow_distortion_beginning_at_frame",
           "order": 5,
           "description": "Only loaded if `shadow` is present. Defaults to `shadow.frame_count - 1`.",
@@ -79548,6 +79623,54 @@
           "override": false,
           "type": "Animation",
           "optional": false
+        },
+        {
+          "name": "leaves_when_damaged",
+          "order": 12,
+          "description": "This value is multiplied with the percent of health lost.",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 200
+          }
+        },
+        {
+          "name": "leaves_when_destroyed",
+          "order": 13,
+          "description": "",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 40
+          }
+        },
+        {
+          "name": "leaves_when_mined_automatically",
+          "order": 11,
+          "description": "",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 20
+          }
+        },
+        {
+          "name": "leaves_when_mined_manually",
+          "order": 10,
+          "description": "",
+          "override": false,
+          "type": "uint8",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 40
+          }
         },
         {
           "name": "normal",
@@ -79603,7 +79726,7 @@
         },
         {
           "name": "water_reflection",
-          "order": 10,
+          "order": 18,
           "description": "",
           "override": false,
           "type": "WaterReflectionDefinition",
@@ -86799,42 +86922,42 @@
           "description": ""
         },
         {
-          "name": "change_item_label",
+          "name": "change_heading_riding_state",
           "order": 32,
           "description": ""
         },
         {
-          "name": "change_logistic_point_group",
+          "name": "change_item_label",
           "order": 33,
           "description": ""
         },
         {
-          "name": "change_multiplayer_config",
+          "name": "change_logistic_point_group",
           "order": 34,
           "description": ""
         },
         {
-          "name": "change_picking_state",
+          "name": "change_multiplayer_config",
           "order": 35,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_alert_parameters",
+          "name": "change_picking_state",
           "order": 36,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_circuit_parameters",
+          "name": "change_programmable_speaker_alert_parameters",
           "order": 37,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_parameters",
+          "name": "change_programmable_speaker_circuit_parameters",
           "order": 38,
           "description": ""
         },
         {
-          "name": "change_relative_riding_state",
+          "name": "change_programmable_speaker_parameters",
           "order": 39,
           "description": ""
         },
