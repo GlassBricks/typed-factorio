@@ -3471,6 +3471,16 @@ declare module "factorio:runtime" {
      */
     readonly condition: CircuitConditionDefinitionWrite
   }
+  export interface CircuitNetworkSelection {
+    /**
+     * Defaults to `true`.
+     */
+    readonly red?: boolean
+    /**
+     * Defaults to `true`.
+     */
+    readonly green?: boolean
+  }
   /**
    * @see SignalIDWrite
    * @see {@link https://lua-api.factorio.com/2.0.49/concepts/SignalID.html Online documentation}

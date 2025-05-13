@@ -3058,9 +3058,7 @@ declare module "factorio:prototype" {
      * }
      * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/CraftingMachinePrototype.html#fluid_boxes Online documentation}
      */
-    fluid_boxes?: FluidBox[] & {
-      off_when_no_fluid_recipe?: boolean
-    }
+    fluid_boxes?: readonly FluidBox[]
     effect_receiver?: EffectReceiver
     /**
      * **Default:** `0`

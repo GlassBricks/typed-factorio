@@ -14766,7 +14766,7 @@ declare module "factorio:prototype" {
     progress_bar_shadow?: ElementImageSet
     progress_bar_height?: uint32
     progress_bar_color?: Color
-    drag_handle_style?: string
+    drag_handle_style?: EmptyWidgetStyleSpecification
   }
   /**
    * Loaded as one of the technology triggers, based on the value of the `type` key.
