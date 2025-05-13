@@ -1,6 +1,6 @@
 {
   "name": "typed-factorio",
-  "version": "3.21.0",
+  "version": "3.22.0",
   "description": "Featureful typescript definitions for the Factorio modding api.",
   "keywords": [
     "factorio",
@@ -27,7 +27,7 @@
     "lint": "eslint .",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
-    "check": "npm run check-clean-tree && npm run lint && npm run format:check && tsc --noEmit",
+    "check": "npm run lint && npm run format:check && tsc --noEmit && npm run check-clean-tree",
     "prepublishOnly": "npm run generate && npm run check",
     "script": "tsx --tsconfig scripts/tsconfig.json",
     "check-clean-tree": "git diff --exit-code || (echo \"Generated files are out of date. Please run 'npm run generate' and commit the changes.\" && exit 1)",
@@ -61,5 +61,5 @@
     "typescript": "~5.4.2",
     "typescript-to-lua": "^1.25.0"
   },
-  "factorioVersion": "2.0.47"
+  "factorioVersion": "2.0.49"
 }

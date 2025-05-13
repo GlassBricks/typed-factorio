@@ -5,18 +5,8 @@
 
 import { ActiveMods, CustomInputName, VersionString } from "factorio:common" // See https://forums.factorio.com/viewtopic.php?f=233&t=118305
 
-// See https://forums.factorio.com/viewtopic.php?f=233&t=118305
 /** @omit */
 export interface VirtualSignalID {}
-
-/** @omit */
-export interface BurnerUsageID {}
-
-/** @omit */
-export interface CircuitNetworkSelection {}
-
-/** @omit */
-export interface RaiseEventParameters {}
 
 /** @omit */
 export interface SpaceConnectionID {}
@@ -273,10 +263,6 @@ export interface LuaControl {
 
   /** @overload */
   teleport(x: number, y?: number): boolean
-
-  open_factoriopedia_gui(prototype?: LuaPrototypeBase): void
-
-  readonly crafting_queue?: CraftingQueueItem[]
 }
 
 export interface LuaLogisticPoint {}
@@ -303,8 +289,12 @@ export interface Any {}
 export interface LuaRemote {
   add_interface(name: string, functions: Record<string, (...args: any) => void>): void
 
+  call<I extends Record<K, (...args: any) => any>, K extends keyof I>(
+    _interface: string,
+    _function: K,
+    ...args: Parameters<I[K]>
+  ): ReturnType<I[K]>
   call<T extends (...args: any) => any>(_interface: string, _function: string, ...args: Parameters<T>): ReturnType<T>
-
   call(_interface: string, _function: string, ...args: readonly Any[]): Any | nil
 }
 
@@ -773,6 +763,12 @@ export interface ProgrammableSpeakerCircuitParameters {}
 export interface ArithmeticCombinatorParameters {}
 
 export interface SelectorCombinatorParameters {}
+
+export interface LuaGenericOnOffControlBehavior {
+  circuit_enable_disable
+  connect_to_logistic_network
+  logistic_condition
+}
 
 /** @addTo concepts after BlueprintEntity */
 export interface BlueprintControlBehavior {

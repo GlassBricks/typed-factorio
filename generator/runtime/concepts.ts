@@ -9,6 +9,7 @@ import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 import { generateBuiltinType } from "../builtin.js"
 import { analyzeConcept } from "./concept-usage-analysis"
+import { DeclarationDef } from "../ManualDefinitions"
 
 export function preprocessConcepts(context: RuntimeGenerationContext): void {
   for (const concept of context.concepts.values()) {
@@ -41,30 +42,13 @@ function createVariantParameterConcept(
     addJsDoc(context, writeDecl, { description: getWriteDescription(concept) }, concept.name)
   }
 }
-function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
-  const manualDef = context.manualDefs.getDeclaration(concept.name)
-  const conceptUsage = context.conceptUsageAnalysis.usages.get(concept)
-  if (!conceptUsage) {
-    context.warning(`Unknown concept usage for ${concept.name}`)
-    return
-  }
-  if (
-    typeof concept.type !== "string" &&
-    concept.type.complex_type === "table" &&
-    concept.type.variant_parameter_groups
-  ) {
-    createVariantParameterConcept(context, concept, conceptUsage)
-    return
-  }
 
-  const tableOrArray = context.conceptUsageAnalysis.tableOrArrayConcepts.get(concept)
-  if (tableOrArray) {
-    createTableOrArrayConcept(context, concept, tableOrArray)
-    return
-  }
-  if (typeof concept.type === "object" && concept.type.complex_type === "builtin") {
-    return generateBuiltinType(context, concept)
-  }
+function generateNormalConcept(
+  context: RuntimeGenerationContext,
+  concept: Concept,
+  manualDef: DeclarationDef | undefined,
+  conceptUsage: RWUsage,
+) {
   const conceptType = mapConceptType(
     context,
     concept.type,
@@ -75,11 +59,10 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
     },
     conceptUsage,
   )
-  if (!conceptType) {
-    return
-  }
+  if (!conceptType) return
   const { mainType, description, altWriteType } = conceptType
   let mainResult = typeToDeclaration(context, mainType, concept.name)
+
   const writeName = `${concept.name}Write`
   let tags: ts.JSDocTag[] | undefined
   if (altWriteType) {
@@ -99,19 +82,38 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
 
   addJsDoc(context, mainResult, concept, concept.name, { tags, post: description })
   context.currentFile.add(mainResult)
+
   if (altWriteType) {
     const writeResult = typeToDeclaration(context, altWriteType, writeName)
-    addJsDoc(
-      context,
-      writeResult,
-      {
-        description: getWriteDescription(concept),
-      },
-      concept.name,
-    )
-
+    addJsDoc(context, writeResult, { description: getWriteDescription(concept) }, concept.name)
     context.currentFile.add(writeResult)
   }
+}
+
+function generateConcept(context: RuntimeGenerationContext, concept: Concept): void {
+  const manualDef = context.manualDefs.getDeclaration(concept.name)
+  const conceptUsage = context.conceptUsageAnalysis.usages.get(concept)
+  if (!conceptUsage) {
+    context.warning(`Unknown concept usage for ${concept.name}`)
+    return
+  }
+  if (
+    typeof concept.type !== "string" &&
+    concept.type.complex_type === "table" &&
+    concept.type.variant_parameter_groups
+  ) {
+    return createVariantParameterConcept(context, concept, conceptUsage)
+  }
+
+  const tableOrArray = context.conceptUsageAnalysis.tableOrArrayConcepts.get(concept)
+  if (tableOrArray) {
+    return createTableOrArrayConcept(context, concept, tableOrArray)
+  }
+  if (typeof concept.type === "object" && concept.type.complex_type === "builtin") {
+    return generateBuiltinType(context, concept)
+  }
+
+  return generateNormalConcept(context, concept, manualDef, conceptUsage)
 }
 
 function getWriteDescription(concept: Concept): string {
