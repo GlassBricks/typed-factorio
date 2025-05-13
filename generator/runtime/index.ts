@@ -57,7 +57,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     } else if (reference.includes(".")) {
       const dotIndex = reference.indexOf(".")
       const className = reference.substring(0, dotIndex)
-      const memberName  = reference.substring(dotIndex + 1)
+      const memberName = reference.substring(dotIndex + 1)
       if (this.classes.has(className)) {
         return this.getOnlineDocUrl(className) + "#" + memberName
       }

@@ -289,7 +289,11 @@ export interface Any {}
 export interface LuaRemote {
   add_interface(name: string, functions: Record<string, (...args: any) => void>): void
 
-  call<I extends Record<K, (...args: any)=>any>, K extends keyof I>(_interface: string, _function: K, ...args: Parameters<I[K]>): ReturnType<I[K]>
+  call<I extends Record<K, (...args: any) => any>, K extends keyof I>(
+    _interface: string,
+    _function: K,
+    ...args: Parameters<I[K]>
+  ): ReturnType<I[K]>
   call<T extends (...args: any) => any>(_interface: string, _function: string, ...args: Parameters<T>): ReturnType<T>
   call(_interface: string, _function: string, ...args: readonly Any[]): Any | nil
 }
