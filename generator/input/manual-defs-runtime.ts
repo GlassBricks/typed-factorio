@@ -764,6 +764,12 @@ export interface ArithmeticCombinatorParameters {}
 
 export interface SelectorCombinatorParameters {}
 
+export interface LuaGenericOnOffControlBehavior {
+  circuit_enable_disable
+  connect_to_logistic_network
+  logistic_condition
+}
+
 /** @addTo concepts after BlueprintEntity */
 export interface BlueprintControlBehavior {
   /**
