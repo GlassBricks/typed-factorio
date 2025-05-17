@@ -10,7 +10,7 @@ declare module "factorio:prototype" {
     readonly type: "equipment-remote"
     /**
      * Activation is only implemented for {@link ActiveDefenseEquipmentPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ActivateEquipmentCapsuleAction.html#equipment Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ActivateEquipmentCapsuleAction.html#equipment Online documentation}
      */
     equipment: EquipmentID
   }
@@ -20,7 +20,7 @@ declare module "factorio:prototype" {
      * **Default:** `""`
      *
      * Name of a {@link DeliverCategory}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ActivateImpactTriggerEffectItem.html#deliver_category Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ActivateImpactTriggerEffectItem.html#deliver_category Online documentation}
      */
     deliver_category?: string
   }
@@ -33,7 +33,7 @@ declare module "factorio:prototype" {
    * "chain-lightning-chain"
    * @example
    * "chain-lightning-turret-chain"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ActiveTriggerID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ActiveTriggerID.html Online documentation}
    */
   export type ActiveTriggerID = string
   export interface ActivityBarStyleSpecification extends BaseStyleSpecification {
@@ -48,35 +48,35 @@ declare module "factorio:prototype" {
   export interface ActivityMatchingModifiers {
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ActivityMatchingModifiers.html#multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ActivityMatchingModifiers.html#multiplier Online documentation}
      */
     multiplier?: float
     /**
      * **Default:** `0`
      *
      * Cannot be larger than `maximum`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ActivityMatchingModifiers.html#minimum Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ActivityMatchingModifiers.html#minimum Online documentation}
      */
     minimum?: float
     /**
      * **Default:** `infinity`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ActivityMatchingModifiers.html#maximum Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ActivityMatchingModifiers.html#maximum Online documentation}
      */
     maximum?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ActivityMatchingModifiers.html#offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ActivityMatchingModifiers.html#offset Online documentation}
      */
     offset?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ActivityMatchingModifiers.html#inverted Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ActivityMatchingModifiers.html#inverted Online documentation}
      */
     inverted?: boolean
   }
   /**
    * @see MapGenPreset.advanced_settings
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPreset.html#advanced_settings Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPreset.html#advanced_settings Online documentation}
    */
   export interface AdvancedMapGenSettings {
     asteroids?: MapGenPresetAsteroidSettings
@@ -88,12 +88,12 @@ declare module "factorio:prototype" {
   export interface AdvancedVolumeControl {
     /**
      * Volume reduction (fade-out) controlled by distance (fraction of audible distance).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AdvancedVolumeControl.html#attenuation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AdvancedVolumeControl.html#attenuation Online documentation}
      */
     attenuation?: Fade
     /**
      * Volume reduction (fade-out) or increase (fade-in) controlled by zoom level.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AdvancedVolumeControl.html#fades Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AdvancedVolumeControl.html#fades Online documentation}
      */
     fades?: Fades
     /**
@@ -104,7 +104,7 @@ declare module "factorio:prototype" {
      * Positive values are used for night sounds, the volume of the sound is 1.0 when darkness = threshold, 0.0 when darkness = 0.0 and linearly interpolated in between.
      *
      * Negative values are used for day sounds, the sound of the sound is 0.0  when darkness = -threshold, 1.0 when darkness = 1.0 and linearly interpolated in between.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AdvancedVolumeControl.html#darkness_threshold Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AdvancedVolumeControl.html#darkness_threshold Online documentation}
      */
     darkness_threshold?: float
   }
@@ -114,33 +114,33 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * If `count_already_playing` is `true`, this will determine maximum progress when instance is counted toward playing sounds.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AggregationSpecification.html#progress_threshold Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AggregationSpecification.html#progress_threshold Online documentation}
      */
     progress_threshold?: float
     /**
      * **Default:** `2`
      *
      * Has to be greater than or equal to 0.0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AggregationSpecification.html#volume_reduction_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AggregationSpecification.html#volume_reduction_rate Online documentation}
      */
     volume_reduction_rate?: float
     /**
      * If `false`, the volume of sound instances above `max_count` is calculated according to the formula `volume = (x + 1) ^ (-volume_reduction_rate)`, where `x` is the order number of an instance above the threshold.
      *
      * If `true`, sound instances above `max_count` are removed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AggregationSpecification.html#remove Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AggregationSpecification.html#remove Online documentation}
      */
     remove: boolean
     /**
      * **Default:** `false`
      *
      * If `true`, already playing sounds are taken into account when checking `max_count`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AggregationSpecification.html#count_already_playing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AggregationSpecification.html#count_already_playing Online documentation}
      */
     count_already_playing?: boolean
     /**
      * **Default:** `"closest"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AggregationSpecification.html#priority Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AggregationSpecification.html#priority Online documentation}
      */
     priority?: "closest" | "farthest" | "newest" | "oldest"
   }
@@ -148,24 +148,24 @@ declare module "factorio:prototype" {
     speed: AgriculturalCraneSpeed
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneProperties.html#min_arm_extent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneProperties.html#min_arm_extent Online documentation}
      */
     min_arm_extent?: double
     /**
      * **Default:** `0.2`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneProperties.html#min_grappler_extent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneProperties.html#min_grappler_extent Online documentation}
      */
     min_grappler_extent?: double
     /**
      * **Default:** `45`
      *
      * In degrees.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneProperties.html#operation_angle Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneProperties.html#operation_angle Online documentation}
      */
     operation_angle?: float
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneProperties.html#telescope_default_extention Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneProperties.html#telescope_default_extention Online documentation}
      */
     telescope_default_extention?: double
     origin: Vector3D
@@ -181,14 +181,14 @@ declare module "factorio:prototype" {
      * **Default:** `0.01`
      *
      * May not be 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneSpeedArm.html#turn_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneSpeedArm.html#turn_rate Online documentation}
      */
     turn_rate?: double
     /**
      * **Default:** `0.05`
      *
      * Must be positive.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneSpeedArm.html#extension_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneSpeedArm.html#extension_speed Online documentation}
      */
     extension_speed?: double
   }
@@ -197,26 +197,26 @@ declare module "factorio:prototype" {
      * **Default:** `0.01`
      *
      * May not be 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneSpeedGrappler.html#vertical_turn_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneSpeedGrappler.html#vertical_turn_rate Online documentation}
      */
     vertical_turn_rate?: double
     /**
      * **Default:** `0.01`
      *
      * May not be 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneSpeedGrappler.html#horizontal_turn_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneSpeedGrappler.html#horizontal_turn_rate Online documentation}
      */
     horizontal_turn_rate?: double
     /**
      * **Default:** `0.01`
      *
      * Must be positive.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneSpeedGrappler.html#extension_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneSpeedGrappler.html#extension_speed Online documentation}
      */
     extension_speed?: double
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AgriculturalCraneSpeedGrappler.html#allow_transpolar_movement Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AgriculturalCraneSpeedGrappler.html#allow_transpolar_movement Online documentation}
      */
     allow_transpolar_movement?: boolean
   }
@@ -226,9 +226,38 @@ declare module "factorio:prototype" {
    * "pollution"
    * @example
    * "spores"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AirbornePollutantID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AirbornePollutantID.html Online documentation}
    */
   export type AirbornePollutantID = string
+  /**
+   * A string that specifies where a GUI element should be.
+   *
+   * ## Union members
+   * - `"top-left"`
+   * - `"middle-left"`
+   * - `"left"`: The same as `"middle-left"`
+   * - `"bottom-left"`
+   * - `"top-center"`
+   * - `"middle-center"`
+   * - `"center"`: The same as `"middle-center"`
+   * - `"bottom-center"`
+   * - `"top-right"`
+   * - `"right"`: The same as `"middle-right"`
+   * - `"bottom-right"`
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Alignment.html Online documentation}
+   */
+  export type Alignment =
+    | "top-left"
+    | "middle-left"
+    | "left"
+    | "bottom-left"
+    | "top-center"
+    | "middle-center"
+    | "center"
+    | "bottom-center"
+    | "top-right"
+    | "right"
+    | "bottom-right"
   export interface AlternativeBuildTipTrigger extends CountBasedTipTrigger {
     readonly type: "alternative-build"
   }
@@ -240,7 +269,7 @@ declare module "factorio:prototype" {
    * - `"main-track"`: This track is played interleaved (alternating) with `"interlude"` tracks.
    * - `"hero-track"`: This track is played when a character steps on a new surface for the first time. Only one `"hero-track"` per planet or space platform is allowed.
    * - `"interlude"`: This track is played interleaved (alternating) with `"main-track"` tracks.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AmbientSoundType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AmbientSoundType.html Online documentation}
    */
   export type AmbientSoundType = "menu-track" | "main-track" | "hero-track" | "interlude"
   /**
@@ -249,7 +278,7 @@ declare module "factorio:prototype" {
    * "bullet"
    * @example
    * "melee"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoCategoryID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoCategoryID.html Online documentation}
    */
   export type AmmoCategoryID = string
   export interface AmmoDamageModifier extends BaseModifier {
@@ -258,24 +287,24 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoDamageModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoDamageModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoDamageModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoDamageModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     /**
      * Name of the {@link AmmoCategory} that is affected.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoDamageModifier.html#ammo_category Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoDamageModifier.html#ammo_category Online documentation}
      */
     ammo_category: AmmoCategoryID
     /**
      * Modification value, which will be added to the current ammo damage modifier upon researching.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoDamageModifier.html#modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoDamageModifier.html#modifier Online documentation}
      */
     modifier: double
   }
@@ -289,29 +318,29 @@ declare module "factorio:prototype" {
    * - `"player"`
    * - `"turret"`
    * - `"vehicle"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoSourceType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoSourceType.html Online documentation}
    */
   export type AmmoSourceType = "default" | "player" | "turret" | "vehicle"
   /**
    * Definition of actual parameters used in attack.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html Online documentation}
    */
   export interface AmmoType {
     /**
      * Describes actions taken upon attack happening.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#action Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#action Online documentation}
      */
     action?: Trigger
     /**
      * **Default:** `false`
      *
      * When true, the gun will be able to shoot even when the target is out of range. Only applies when `target_type` equals `"position"`. The gun will fire at the maximum range in the direction of the target position.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#clamp_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#clamp_position Online documentation}
      */
     clamp_position?: boolean
     /**
      * Energy consumption of a single shot, if applicable.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#energy_consumption Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#energy_consumption Online documentation}
      */
     energy_consumption?: Energy
     /**
@@ -320,17 +349,17 @@ declare module "factorio:prototype" {
      * Affects the `range` value of the shooting gun prototype's {@link BaseAttackParameters} to give a modified maximum range. The `min_range` value of the gun is unaffected.
      *
      * This has no effect on artillery turrets and wagons even though the bonus appears in the GUI. {@linkplain https://forums.factorio.com/103658 Forum thread}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#range_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#range_modifier Online documentation}
      */
     range_modifier?: double
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#cooldown_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#cooldown_modifier Online documentation}
      */
     cooldown_modifier?: double
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#consumption_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#consumption_modifier Online documentation}
      */
     consumption_modifier?: float
     /**
@@ -339,19 +368,19 @@ declare module "factorio:prototype" {
      * `"entity"` fires at an entity, `"position"` fires directly at a position, `"direction"` fires in a direction.
      *
      * If this is `"entity"`, `clamp_position` is forced to be `false`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#target_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#target_type Online documentation}
      */
     target_type?: "entity" | "position" | "direction"
     /**
      * Only exists (and is then mandatory) if the {@link AmmoItemPrototype#ammo_type AmmoItemPrototype::ammo_type} this AmmoType is defined on has multiple ammo types.
      *
      * Defines for which kind of entity this ammo type applies. Each entity kind can only be used once per array.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#source_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#source_type Online documentation}
      */
     source_type?: AmmoSourceType
     /**
      * List of entities that can be targeted by this ammo type.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AmmoType.html#target_filter Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AmmoType.html#target_filter Online documentation}
      */
     target_filter?: readonly EntityID[]
   }
@@ -359,22 +388,22 @@ declare module "factorio:prototype" {
     readonly type: "and"
     /**
      * If all of the triggers are fulfilled, this trigger is considered fulfilled.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AndTipTrigger.html#triggers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AndTipTrigger.html#triggers Online documentation}
      */
     triggers: readonly TipTrigger[]
   }
   export interface AnimatedVector {
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimatedVector.html#rotations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimatedVector.html#rotations Online documentation}
      */
     rotations: readonly VectorRotation[]
     /**
      * Default render layer for the rotations.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimatedVector.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimatedVector.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimatedVector.html#direction_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimatedVector.html#direction_shift Online documentation}
      */
     direction_shift?: DirectionShift
   }
@@ -418,7 +447,7 @@ declare module "factorio:prototype" {
    *     }
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation.html Online documentation}
    */
   export interface Animation extends Omit<AnimationParameters, "filename"> {
     /**
@@ -427,43 +456,43 @@ declare module "factorio:prototype" {
      * `animation_speed` and `max_advance` of the first layer are used for all layers. All layers will run at the same speed.
      *
      * If this property is present, all other properties, including those inherited from AnimationParameters, are ignored.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation.html#layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation.html#layers Online documentation}
      */
     layers?: readonly Animation[]
     /**
      * Only loaded if `layers` is not defined. Mandatory if neither `stripes` nor `filenames` are defined.
      *
      * The path to the sprite file to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation.html#filename Online documentation}
      */
     filename?: FileName
     /**
      * Only loaded if `layers` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation.html#stripes Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation.html#stripes Online documentation}
      */
     stripes?: readonly Stripe[]
     /**
      * Only loaded if neither `layers` nor `stripes` are defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation.html#filenames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation.html#filenames Online documentation}
      */
     filenames?: readonly FileName[]
     /**
      * **Default:** `Value of `frame_count``
      *
      * Only loaded if `layers` is not defined and if `filenames` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation.html#slice Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation.html#slice Online documentation}
      */
     slice?: uint32
     /**
      * Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation.html#lines_per_file Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation.html#lines_per_file Online documentation}
      */
     lines_per_file?: uint32
   }
   /**
    * Struct type for {@link Animation4Way}
    * @see Animation4Way
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation4Way.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation4Way.html Online documentation}
    */
   export interface Animation4WayStruct {
     north: Animation
@@ -477,28 +506,28 @@ declare module "factorio:prototype" {
   }
   /**
    * If this is loaded as a single Animation, it applies to all directions. Any direction that is not defined defaults to the north animation.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Animation4Way.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Animation4Way.html Online documentation}
    */
   export type Animation4Way = Animation4WayStruct | Animation
   export interface AnimationElement {
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationElement.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationElement.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationElement.html#secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationElement.html#secondary_draw_order Online documentation}
      */
     secondary_draw_order?: int8
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationElement.html#apply_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationElement.html#apply_tint Online documentation}
      */
     apply_tint?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationElement.html#always_draw Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationElement.html#always_draw Online documentation}
      */
     always_draw?: boolean
     animation?: Animation
@@ -536,82 +565,82 @@ declare module "factorio:prototype" {
    *     frame_count = #custom_frame_sequence,
    *   },
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationFrameSequence.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationFrameSequence.html Online documentation}
    */
   export type AnimationFrameSequence = readonly uint16[]
   export interface AnimationParameters extends SpriteParameters {
     /**
      * The width and height of one frame. If this is a tuple, the first member of the tuple is the width and the second is the height. Otherwise the size is both width and height. Width and height may only be in the range of 0-4096.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#size Online documentation}
      */
     size?: SpriteSizeType | readonly [SpriteSizeType, SpriteSizeType]
     /**
      * Mandatory if `size` is not defined.
      *
      * Width of one frame in pixels, from 0-4096.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#width Online documentation}
      */
     width?: SpriteSizeType
     /**
      * Mandatory if `size` is not defined.
      *
      * Height of one frame in pixels, from 0-4096.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#height Online documentation}
      */
     height?: SpriteSizeType
     /**
      * **Default:** `"forward"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#run_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#run_mode Online documentation}
      */
     run_mode?: AnimationRunMode
     /**
      * **Default:** `1`
      *
      * Can't be `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#frame_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#frame_count Online documentation}
      */
     frame_count?: uint32
     /**
      * **Default:** `0`
      *
      * Specifies how many pictures are on each horizontal line in the image file. `0` means that all the pictures are in one horizontal line. Once the specified number of pictures are loaded from a line, the pictures from the next line are loaded. This is to allow having longer animations loaded in to Factorio's graphics matrix than the game engine's width limit of 8192px per input file. The restriction on input files is to be compatible with most graphics cards.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#line_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#line_length Online documentation}
      */
     line_length?: uint32
     /**
      * **Default:** `1`
      *
      * Modifier of the animation playing speed, the default of `1` means one animation frame per tick (60 fps). The speed of playing can often vary depending on the usage (output of steam engine for example). Has to be greater than `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#animation_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#animation_speed Online documentation}
      */
     animation_speed?: float
     /**
      * **Default:** `MAX_FLOAT`
      *
      * Maximum amount of frames the animation can move forward in one update. Useful to cap the animation speed on entities where it is variable, such as car animations.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#max_advance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#max_advance Online documentation}
      */
     max_advance?: float
     /**
      * **Default:** `1`
      *
      * How many times to repeat the animation to complete an animation cycle. E.g. if one layer is 10 frames, a second layer of 1 frame would need `repeat_count = 10` to match the complete cycle.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#repeat_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#repeat_count Online documentation}
      */
     repeat_count?: uint8
     /**
      * Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4×4 grid.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#dice Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#dice Online documentation}
      */
     dice?: uint8
     /**
      * Same as `dice` above, but this specifies only how many slices there are on the x axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#dice_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#dice_x Online documentation}
      */
     dice_x?: uint8
     /**
      * Same as `dice` above, but this specifies only how many slices there are on the y axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#dice_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#dice_y Online documentation}
      */
     dice_y?: uint8
     frame_sequence?: AnimationFrameSequence
@@ -621,14 +650,14 @@ declare module "factorio:prototype" {
      * Only loaded if this is an icon, that is it has the flag `"group=icon"` or `"group=gui"`.
      *
      * Note that `mipmap_count` doesn't make sense in an animation, as it is not possible to layout mipmaps in a way that would load both the animation and the mipmaps correctly (besides animations with just one frame). See {@linkplain https://forums.factorio.com/viewtopic.php?p=549058#p549058 here}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#mipmap_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#mipmap_count Online documentation}
      */
     mipmap_count?: uint8
     /**
      * **Default:** `false`
      *
      * Unused.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationParameters.html#generate_sdf Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationParameters.html#generate_sdf Online documentation}
      */
     generate_sdf?: boolean
   }
@@ -637,44 +666,44 @@ declare module "factorio:prototype" {
    * - `"forward"`
    * - `"backward"`
    * - `"forward-then-backward"`: Does not repeat the first and last frame when running backwards.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationRunMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationRunMode.html Online documentation}
    */
   export type AnimationRunMode = "forward" | "backward" | "forward-then-backward"
   export interface AnimationSheet extends Omit<AnimationParameters, "filename"> {
     variation_count: uint32
     /**
      * **Default:** `Value of `variation_count``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationSheet.html#line_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationSheet.html#line_length Online documentation}
      */
     line_length?: uint32
     /**
      * Only loaded, and mandatory if `filenames` is not defined.
      *
      * The path to the animation file to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationSheet.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationSheet.html#filename Online documentation}
      */
     filename?: FileName
     filenames?: readonly FileName[]
     /**
      * Mandatory if `filenames` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationSheet.html#lines_per_file Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationSheet.html#lines_per_file Online documentation}
      */
     lines_per_file?: uint32
   }
   /**
    * Struct type for {@link AnimationVariations}
    * @see AnimationVariations
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationVariations.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationVariations.html Online documentation}
    */
   export interface AnimationVariationsStruct {
     /**
      * The variations are arranged vertically in the file, one row for each variation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationVariations.html#sheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationVariations.html#sheet Online documentation}
      */
     sheet?: AnimationSheet
     /**
      * Only loaded if `sheet` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationVariations.html#sheets Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationVariations.html#sheets Online documentation}
      */
     sheets?: readonly AnimationSheet[]
   }
@@ -722,13 +751,13 @@ declare module "factorio:prototype" {
    *     variation_count = 8
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimationVariations.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimationVariations.html Online documentation}
    */
   export type AnimationVariations = AnimationVariationsStruct | Animation | readonly Animation[]
   /**
    * A union of all prototypes. A specific prototype is loaded based on the value of the `type` key.
    *
-   * See the {@linkplain https://lua-api.factorio.com/2.0.49/prototypes.html Prototypes page} for more information.
+   * See the {@linkplain https://lua-api.factorio.com/2.0.50/prototypes.html Prototypes page} for more information.
    *
    * ## Union members
    * - {@link AccumulatorPrototype}: `'accumulator'`
@@ -989,7 +1018,7 @@ declare module "factorio:prototype" {
    * - {@link ValvePrototype}: `'valve'`
    * - {@link VirtualSignalPrototype}: `'virtual-signal'`
    * - {@link WallPrototype}: `'wall'`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AnyPrototype.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AnyPrototype.html Online documentation}
    */
   export type AnyPrototype =
     | AccumulatorPrototype
@@ -1258,27 +1287,27 @@ declare module "factorio:prototype" {
     radius: double
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AreaTriggerItem.html#trigger_from_target Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AreaTriggerItem.html#trigger_from_target Online documentation}
      */
     trigger_from_target?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AreaTriggerItem.html#target_entities Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AreaTriggerItem.html#target_entities Online documentation}
      */
     target_entities?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AreaTriggerItem.html#target_enemies Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AreaTriggerItem.html#target_enemies Online documentation}
      */
     target_enemies?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AreaTriggerItem.html#show_in_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AreaTriggerItem.html#show_in_tooltip Online documentation}
      */
     show_in_tooltip?: boolean
     /**
      * **Default:** `"distance-from-collision-box"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AreaTriggerItem.html#collision_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AreaTriggerItem.html#collision_mode Online documentation}
      */
     collision_mode?: "distance-from-collision-box" | "distance-from-center"
   }
@@ -1288,14 +1317,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryRangeModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryRangeModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryRangeModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryRangeModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -1303,12 +1332,12 @@ declare module "factorio:prototype" {
     readonly type: "artillery-remote"
     /**
      * Name of an {@link ArtilleryFlarePrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryRemoteCapsuleAction.html#flare Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryRemoteCapsuleAction.html#flare Online documentation}
      */
     flare: EntityID
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryRemoteCapsuleAction.html#play_sound_on_failure Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryRemoteCapsuleAction.html#play_sound_on_failure Online documentation}
      */
     play_sound_on_failure?: boolean
   }
@@ -1316,30 +1345,30 @@ declare module "factorio:prototype" {
     readonly type: "artillery"
     /**
      * Name of a {@link ArtilleryProjectilePrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryTriggerDelivery.html#projectile Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryTriggerDelivery.html#projectile Online documentation}
      */
     projectile: EntityID
     starting_speed: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryTriggerDelivery.html#starting_speed_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryTriggerDelivery.html#starting_speed_deviation Online documentation}
      */
     starting_speed_deviation?: float
     /**
      * **Default:** `0`
      *
      * Maximum deviation of the projectile from source orientation, in +/- (`x radians / 2`). Example: `3.14 radians -> +/- (180° / 2)`, meaning up to 90° deviation in either direction of rotation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryTriggerDelivery.html#direction_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryTriggerDelivery.html#direction_deviation Online documentation}
      */
     direction_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryTriggerDelivery.html#range_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryTriggerDelivery.html#range_deviation Online documentation}
      */
     range_deviation?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ArtilleryTriggerDelivery.html#trigger_fired_artillery Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ArtilleryTriggerDelivery.html#trigger_fired_artillery Online documentation}
      */
     trigger_fired_artillery?: boolean
   }
@@ -1349,12 +1378,12 @@ declare module "factorio:prototype" {
    * "metallic-asteroid-chunk"
    * @example
    * "oxide-asteroid-chunk"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidChunkID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidChunkID.html Online documentation}
    */
   export type AsteroidChunkID = string
   /**
    * @see AsteroidCollectorPrototype.graphics_set
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/AsteroidCollectorPrototype.html#graphics_set Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/AsteroidCollectorPrototype.html#graphics_set Online documentation}
    */
   export interface AsteroidCollectorGraphicsSet {
     animation?: Animation4Way
@@ -1370,47 +1399,47 @@ declare module "factorio:prototype" {
   export interface AsteroidGraphicsSet {
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#rotation_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#rotation_speed Online documentation}
      */
     rotation_speed?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#normal_strength Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#normal_strength Online documentation}
      */
     normal_strength?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#light_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#light_width Online documentation}
      */
     light_width?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#brightness Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#brightness Online documentation}
      */
     brightness?: float
     /**
      * **Default:** `5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#specular_strength Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#specular_strength Online documentation}
      */
     specular_strength?: float
     /**
      * **Default:** `6`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#specular_power Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#specular_power Online documentation}
      */
     specular_power?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#specular_purity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#specular_purity Online documentation}
      */
     specular_purity?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#sss_contrast Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#sss_contrast Online documentation}
      */
     sss_contrast?: float
     /**
      * **Default:** `5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#sss_amount Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#sss_amount Online documentation}
      */
     sss_amount?: float
     sprite?: Sprite
@@ -1418,7 +1447,7 @@ declare module "factorio:prototype" {
     lights?: LightProperties | readonly LightProperties[]
     /**
      * **Default:** ``{0.05, 0.05, 0.05, 1.0}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidGraphicsSet.html#ambient_light Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidGraphicsSet.html#ambient_light Online documentation}
      */
     ambient_light?: Color
   }
@@ -1429,21 +1458,21 @@ declare module "factorio:prototype" {
   export interface AsteroidSpawnPoint {
     /**
      * Must be >= 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidSpawnPoint.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidSpawnPoint.html#probability Online documentation}
      */
     probability: double
     /**
      * Must be > 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidSpawnPoint.html#speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidSpawnPoint.html#speed Online documentation}
      */
     speed: double
     /**
      * **Default:** `1`
      *
      * Facing the north. Must be in `[0, 1]` range.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AsteroidSpawnPoint.html#angle_when_stopped Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AsteroidSpawnPoint.html#angle_when_stopped Online documentation}
      */
-    angle_when_stopped?: double
+    angle_when_stopped?: float
   }
   export interface AsteroidVariation {
     color_texture: Sprite
@@ -1458,7 +1487,7 @@ declare module "factorio:prototype" {
    * - {@link ProjectileAttackParameters}: Loaded when the `type` is `"projectile"`.
    * - {@link BeamAttackParameters}: Loaded when the `type` is `"beam"`.
    * - {@link StreamAttackParameters}: Loaded when the `type` is `"stream"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AttackParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AttackParameters.html Online documentation}
    */
   export type AttackParameters = ProjectileAttackParameters | BeamAttackParameters | StreamAttackParameters
   export interface AttackReactionItem {
@@ -1466,7 +1495,7 @@ declare module "factorio:prototype" {
     action?: Trigger
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AttackReactionItem.html#reaction_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AttackReactionItem.html#reaction_modifier Online documentation}
      */
     reaction_modifier?: float
     damage_type?: DamageTypeID
@@ -1475,7 +1504,7 @@ declare module "factorio:prototype" {
     curve_type: AttenuationType
     /**
      * **Default:** `-1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Attenuation.html#tuning_parameter Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Attenuation.html#tuning_parameter Online documentation}
      */
     tuning_parameter?: float
   }
@@ -1487,7 +1516,7 @@ declare module "factorio:prototype" {
    * - `"exponential"`
    * - `"cosine"`
    * - `"S-curve"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AttenuationType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AttenuationType.html Online documentation}
    */
   export type AttenuationType = "none" | "linear" | "logarithmic" | "exponential" | "cosine" | "S-curve"
   /**
@@ -1496,18 +1525,18 @@ declare module "factorio:prototype" {
    * "copper-ore"
    * @example
    * "trees"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceControlID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceControlID.html Online documentation}
    */
   export type AutoplaceControlID = string
   export interface AutoplaceSettings {
     /**
      * Whether missing autoplace names for this type should be default enabled.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSettings.html#treat_missing_as_default Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSettings.html#treat_missing_as_default Online documentation}
      */
     treat_missing_as_default?: boolean
     /**
      * Overrides the FrequencySizeRichness provided to the {@link AutoplaceSpecification} of the entity/tile/decorative. Takes priority over the FrequencySizeRichness set in the {@link AutoplaceSpecification#control autoplace control}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSettings.html#settings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSettings.html#settings Online documentation}
      */
     settings?: Record<EntityID | TileID | DecorativeID, FrequencySizeRichness>
   }
@@ -1515,12 +1544,12 @@ declare module "factorio:prototype" {
    * Autoplace specification is used to determine which entities are placed when generating map. Currently it is used for enemy bases, tiles, resources and other entities (trees, fishes, etc.).
    *
    * Autoplace specification describe conditions for placing tiles, entities, and decoratives during surface generation. Autoplace specification defines probability of placement on any given tile and richness, which has different meaning depending on the thing being placed.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html Online documentation}
    */
   export interface AutoplaceSpecification {
     /**
      * Name of the {@link AutoplaceControl} (row in the map generator GUI) that applies to this entity.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#control Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#control Online documentation}
      */
     control?: AutoplaceControlID
     /**
@@ -1529,139 +1558,139 @@ declare module "factorio:prototype" {
      * Indicates whether the thing should be placed even if {@link MapGenSettings} do not provide frequency/size/richness for it. (either for the specific prototype or for the control named by AutoplaceSpecification.control).
      *
      * If true, normal frequency/size/richness (`value=1`) are used in that case. Otherwise it is treated as if 'none' were selected.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#default_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#default_enabled Online documentation}
      */
     default_enabled?: boolean
     /**
      * **Default:** `"neutral"`
      *
      * Force of the placed entity. Can be a custom force name. Only relevant for {@link EntityWithOwnerPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#force Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#force Online documentation}
      */
     force?: "enemy" | "player" | "neutral" | string
     /**
      * **Default:** `""`
      *
      * Order for placing the entity (has no effect when placing tiles). Entities whose order compares less are placed earlier (this influences placing multiple entities which collide with itself), from entities with equal order string only one with the highest probability is placed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#order Online documentation}
      */
     order?: Order
     /**
      * **Default:** `1`
      *
      * For entities and decoratives, how many times to attempt to place on each tile. Probability and collisions are taken into account each attempt.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#placement_density Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#placement_density Online documentation}
      */
     placement_density?: uint32
     /**
      * Restricts tiles or tile transitions the entity can appear on.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#tile_restriction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#tile_restriction Online documentation}
      */
     tile_restriction?: readonly TileIDRestriction[]
     /**
      * Provides a noise expression that will be evaluated at every point on the map to determine probability.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#probability_expression Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#probability_expression Online documentation}
      */
     probability_expression: NoiseExpression
     /**
      * If specified, provides a noise expression that will be evaluated to determine richness. Otherwise, `probability_expression` will be used instead.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#richness_expression Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#richness_expression Online documentation}
      */
     richness_expression?: NoiseExpression
     /**
      * A map of expression name to expression. Used by `probability_expression` and `richness_expression`.
      *
      * Local expressions are meant to store data locally similar to local variables in Lua. Their purpose is to hold noise expressions used multiple times in the named noise expression, or just to tell the reader that the local expression has a specific purpose. Local expressions can access other local definitions and also function parameters, but recursive definitions aren't supported.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#local_expressions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#local_expressions Online documentation}
      */
     local_expressions?: Record<string, NoiseExpression>
     /**
      * A map of function name to function. Used by `probability_expression` and `richness_expression`.
      *
      * Local functions serve the same purpose as local expressions - they aren't visible outside of the specific prototype and they have access to other local definitions.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#local_functions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#local_functions Online documentation}
      */
     local_functions?: Record<string, NoiseFunction>
   }
   /**
    * The abstract base of all {@link AttackParameters}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html Online documentation}
    */
   export interface BaseAttackParameters {
     /**
      * Before an entity can attack, the distance (in tiles) between the entity and target must be less than or equal to this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#range Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#range Online documentation}
      */
     range: float
     /**
      * Number of ticks in which it will be possible to shoot again. If < 1, multiple shots can be performed in one tick.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#cooldown Online documentation}
      */
     cooldown: float
     /**
      * **Default:** `0`
      *
      * The minimum distance (in tiles) between an entity and target. If a unit's target is less than this, the unit will attempt to move away before attacking. A {@linkplain https://wiki.factorio.com/Flamethrower_turret flamethrower turret} does not move, but has a minimum range. Less than this, it is unable to target an enemy.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#min_range Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#min_range Online documentation}
      */
     min_range?: float
     /**
      * **Default:** `1`
      *
      * If this is <= 0, it is set to 1. Arc from 0 to 1, so for example 0.25 is 90°. Used by the {@linkplain https://wiki.factorio.com/Flamethrower_turret flamethrower turret} in the base game. Arcs greater than 0.5 but less than 1 will be clamped to 0.5 as targeting in arcs larger than half circle is {@linkplain https://forums.factorio.com/94654 not implemented}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#turn_range Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#turn_range Online documentation}
      */
     turn_range?: float
     /**
      * **Default:** `0`
      *
      * Used when searching for the nearest enemy, when this is > 0, enemies that aren't burning are preferred over burning enemies. Definition of "burning" for this: Entity has sticker attached to it, and the sticker has a {@link StickerPrototype#spread_fire_entity spread_fire_entity} set.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#fire_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#fire_penalty Online documentation}
      */
     fire_penalty?: float
     /**
      * **Default:** `0`
      *
      * A higher penalty will discourage turrets from targeting units that would take longer to turn to face.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#rotate_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#rotate_penalty Online documentation}
      */
     rotate_penalty?: float
     /**
      * **Default:** `0`
      *
      * A higher penalty will discourage turrets from targeting units with higher health. A negative penalty will encourage turrets to target units with higher health.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#health_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#health_penalty Online documentation}
      */
     health_penalty?: float
     /**
      * **Default:** `"center-to-center"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#range_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#range_mode Online documentation}
      */
     range_mode?: RangeMode
     /**
      * **Default:** `equal to `range` property`
      *
      * If less than `range`, the entity will choose a random distance between `range` and `min_attack_distance` and attack from that distance.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#min_attack_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#min_attack_distance Online documentation}
      */
     min_attack_distance?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#damage_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#damage_modifier Online documentation}
      */
     damage_modifier?: float
     /**
      * **Default:** `1`
      *
      * Must be greater than or equal to `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#ammo_consumption_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#ammo_consumption_modifier Online documentation}
      */
     ammo_consumption_modifier?: float
     /**
      * **Default:** `0`
      *
      * Must be between `0` and `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#cooldown_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#cooldown_deviation Online documentation}
      */
     cooldown_deviation?: float
     /**
@@ -1670,7 +1699,7 @@ declare module "factorio:prototype" {
      * Number of ticks it takes for the weapon to actually shoot after the order for shooting has been made. This also allows to "adjust" the shooting animation to the effect of shooting.
      *
      * {@link CapsuleAction CapsuleActions} cannot have attack parameters with non-zero warmup.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#warmup Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#warmup Online documentation}
      */
     warmup?: uint32
     /**
@@ -1680,29 +1709,29 @@ declare module "factorio:prototype" {
      * @example
      * -- this is same as particle horizontal speed of flamethrower fire stream
      * lead_target_for_projectile_speed = 0.2* 0.75 * 1.5
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#lead_target_for_projectile_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#lead_target_for_projectile_speed Online documentation}
      */
     lead_target_for_projectile_speed?: float
     /**
      * **Default:** `0`
      *
      * Setting this to anything but zero causes projectiles to aim for the predicted location based on enemy movement instead of the current enemy location. If set, this property adds a flat number of ticks atop `lead_target_for_projectile_speed` that the shooter must lead.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#lead_target_for_projectile_delay Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#lead_target_for_projectile_delay Online documentation}
      */
     lead_target_for_projectile_delay?: uint32
     /**
      * **Default:** `equal to `cooldown` property`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#movement_slow_down_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#movement_slow_down_cooldown Online documentation}
      */
     movement_slow_down_cooldown?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#movement_slow_down_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#movement_slow_down_factor Online documentation}
      */
     movement_slow_down_factor?: double
     /**
      * Can be mandatory.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#ammo_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#ammo_type Online documentation}
      */
     ammo_type?: AmmoType
     /**
@@ -1711,51 +1740,51 @@ declare module "factorio:prototype" {
      * Used in tooltips to set the tooltip category. It is also used to get the locale keys for activation instructions and speed of the action for the tooltip.
      *
      * For example, an activation_type of "throw" will result in the tooltip category "thrown" and the tooltip locale keys "gui.instruction-to-throw" and "description.throwing-speed".
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#activation_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#activation_type Online documentation}
      */
     activation_type?: "shoot" | "throw" | "consume" | "activate"
     /**
      * Played once at the start of the attack if these are {@link ProjectileAttackParameters}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#sound Online documentation}
      */
     sound?: LayeredSound
     animation?: RotatedAnimation
     /**
      * Played during the attack.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#cyclic_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#cyclic_sound Online documentation}
      */
     cyclic_sound?: CyclicSound
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#use_shooter_direction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#use_shooter_direction Online documentation}
      */
     use_shooter_direction?: boolean
     /**
      * Mandatory if `ammo_category` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#ammo_categories Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#ammo_categories Online documentation}
      */
     ammo_categories?: readonly AmmoCategoryID[]
     /**
      * Mandatory if `ammo_categories` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#ammo_category Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#ammo_category Online documentation}
      */
     ammo_category?: AmmoCategoryID
     /**
      * **Default:** `false`
      *
      * Projectile will be creation position and orientation will be collinear with shooter and target (unless offset projectile center is specified). Used for railgun turrets to avoid unexpected friendly fire incidents.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseAttackParameters.html#true_collinear_ejection Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseAttackParameters.html#true_collinear_ejection Online documentation}
      */
     true_collinear_ejection?: boolean
   }
   /**
    * The abstract base of all {@link EnergySource EnergySources}. Specifies the way an entity gets its energy.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseEnergySource.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseEnergySource.html Online documentation}
    */
   export interface BaseEnergySource {
     /**
      * The pollution an entity emits per minute at full energy consumption. This is exactly the value that is shown in the entity tooltip.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseEnergySource.html#emissions_per_minute Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseEnergySource.html#emissions_per_minute Online documentation}
      */
     emissions_per_minute?: Record<AirbornePollutantID, double>
     /**
@@ -1763,8 +1792,8 @@ declare module "factorio:prototype" {
      *
      * Whether to render the "no power" icon if the entity is low on power. Also applies to the "no fuel" icon when using burner energy sources.
      *
-     * ![](https://lua-api.factorio.com/2.0.49/static/images/no_power_icon.png)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseEnergySource.html#render_no_power_icon Online documentation}
+     * ![](https://lua-api.factorio.com/2.0.50/static/images/no_power_icon.png)
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseEnergySource.html#render_no_power_icon Online documentation}
      */
     render_no_power_icon?: boolean
     /**
@@ -1772,26 +1801,26 @@ declare module "factorio:prototype" {
      *
      * Whether to render the "no network" icon if the entity is not connected to an electric network.
      *
-     * ![](https://lua-api.factorio.com/2.0.49/static/images/no_network_icon.png)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseEnergySource.html#render_no_network_icon Online documentation}
+     * ![](https://lua-api.factorio.com/2.0.50/static/images/no_network_icon.png)
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseEnergySource.html#render_no_network_icon Online documentation}
      */
     render_no_network_icon?: boolean
   }
   /**
    * The abstract base of all {@link Modifier Modifiers}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseModifier.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseModifier.html Online documentation}
    */
   export interface BaseModifier {
     /**
      * Can't be an empty array.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseModifier.html#icons Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseModifier.html#icons Online documentation}
      */
     icons?: readonly IconData[]
     /**
      * Path to the icon file.
      *
      * Only loaded if `icons` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseModifier.html#icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseModifier.html#icon Online documentation}
      */
     icon?: FileName
     /**
@@ -1800,12 +1829,12 @@ declare module "factorio:prototype" {
      * The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
      *
      * Only loaded if `icons` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseModifier.html#icon_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseModifier.html#icon_size Online documentation}
      */
     icon_size?: SpriteSizeType
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseModifier.html#hidden Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseModifier.html#hidden Online documentation}
      */
     hidden?: boolean
   }
@@ -1820,158 +1849,158 @@ declare module "factorio:prototype" {
    *   use_header_filler = false,
    *   drag_by_title = false
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html Online documentation}
    */
   export interface BaseStyleSpecification {
     /**
      * Name of a {@link StyleSpecification}. This style inherits all property values from its parent.
      *
      * Styles without a parent property default to the root style for their type. The exception to this are the root styles themselves, as they cannot have a parent set. Due to this, for root styles, some style properties are mandatory and behavior may be unexpected, such as an element not showing up because its size defaults to `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#parent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#parent Online documentation}
      */
     parent?: string
     /**
      * **Default:** `"left"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#horizontal_align Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#horizontal_align Online documentation}
      */
     horizontal_align?: HorizontalAlign
     /**
      * **Default:** `"top"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#vertical_align Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#vertical_align Online documentation}
      */
     vertical_align?: VerticalAlign
     ignored_by_search?: boolean
     never_hide_by_search?: boolean
     /**
      * **Default:** `"auto"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#horizontally_stretchable Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#horizontally_stretchable Online documentation}
      */
     horizontally_stretchable?: StretchRule
     /**
      * **Default:** `"auto"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#vertically_stretchable Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#vertically_stretchable Online documentation}
      */
     vertically_stretchable?: StretchRule
     /**
      * **Default:** `"auto"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#horizontally_squashable Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#horizontally_squashable Online documentation}
      */
     horizontally_squashable?: StretchRule
     /**
      * **Default:** `"auto"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#vertically_squashable Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#vertically_squashable Online documentation}
      */
     vertically_squashable?: StretchRule
     /**
      * If this is a tuple, the first member sets `natural_width` and the second sets `natural_height`. Otherwise, both `natural_width` and `natural_height` are set to the same value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#natural_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#natural_size Online documentation}
      */
     natural_size?: uint32 | readonly [uint32, uint32]
     /**
      * If this is a tuple, the first member sets `width`, and the second sets `height`. Otherwise, both `width` and `height` are set to the same value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#size Online documentation}
      */
     size?: uint32 | readonly [uint32, uint32]
     /**
      * Sets `minimal_width`, `maximal_width` and `natural_width` to the same value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#width Online documentation}
      */
     width?: uint32
     /**
      * **Default:** `0`
      *
      * Minimal width ensures that the widget will never be smaller than than that size. It can't be squashed to be smaller.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#minimal_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#minimal_width Online documentation}
      */
     minimal_width?: uint32
     /**
      * **Default:** `0`
      *
      * Maximal width ensures that the widget will never be bigger than than that size. It can't be stretched to be bigger.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#maximal_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#maximal_width Online documentation}
      */
     maximal_width?: uint32
     /**
      * **Default:** `0`
      *
      * Natural width specifies the width of the element tries to have, but it can still be squashed/stretched to have a different size.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#natural_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#natural_width Online documentation}
      */
     natural_width?: uint32
     /**
      * Sets `minimal_height`, `maximal_height` and `natural_height` to the same value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#height Online documentation}
      */
     height?: uint32
     /**
      * **Default:** `0`
      *
      * Minimal height ensures that the widget will never be smaller than than that size. It can't be squashed to be smaller.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#minimal_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#minimal_height Online documentation}
      */
     minimal_height?: uint32
     /**
      * **Default:** `0`
      *
      * Maximal height ensures that the widget will never be bigger than than that size. It can't be stretched to be bigger.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#maximal_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#maximal_height Online documentation}
      */
     maximal_height?: uint32
     /**
      * **Default:** `0`
      *
      * Natural height specifies the height of the element tries to have, but it can still be squashed/stretched to have a different size.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#natural_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#natural_height Online documentation}
      */
     natural_height?: uint32
     /**
      * Sets `top_padding`, `right_padding`, `bottom_padding` and `left_padding` to the same value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#padding Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#padding Online documentation}
      */
     padding?: int16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#top_padding Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#top_padding Online documentation}
      */
     top_padding?: int16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#right_padding Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#right_padding Online documentation}
      */
     right_padding?: int16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#bottom_padding Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#bottom_padding Online documentation}
      */
     bottom_padding?: int16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#left_padding Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#left_padding Online documentation}
      */
     left_padding?: int16
     /**
      * Sets `top_margin`, `right_margin`, `bottom_margin` and `left_margin` to the same value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#margin Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#margin Online documentation}
      */
     margin?: int16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#top_margin Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#top_margin Online documentation}
      */
     top_margin?: int16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#right_margin Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#right_margin Online documentation}
      */
     right_margin?: int16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#bottom_margin Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#bottom_margin Online documentation}
      */
     bottom_margin?: int16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#left_margin Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#left_margin Online documentation}
      */
     left_margin?: int16
     /**
@@ -1979,12 +2008,12 @@ declare module "factorio:prototype" {
      *
      * ## Union members
      * - `"compilatron-hologram"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#effect Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#effect Online documentation}
      */
     effect?: "compilatron-hologram"
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BaseStyleSpecification.html#effect_opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BaseStyleSpecification.html#effect_opacity Online documentation}
      */
     effect_opacity?: float
     tooltip?: LocalisedString
@@ -1995,73 +2024,73 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconDistributionModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconDistributionModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconDistributionModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconDistributionModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   export interface BeaconGraphicsSet {
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#draw_animation_when_idle Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#draw_animation_when_idle Online documentation}
      */
     draw_animation_when_idle?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#draw_light_when_idle Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#draw_light_when_idle Online documentation}
      */
     draw_light_when_idle?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#random_animation_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#random_animation_offset Online documentation}
      */
     random_animation_offset?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#module_icons_suppressed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#module_icons_suppressed Online documentation}
      */
     module_icons_suppressed?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#reset_animation_when_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#reset_animation_when_frozen Online documentation}
      */
     reset_animation_when_frozen?: boolean
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#base_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#base_layer Online documentation}
      */
     base_layer?: RenderLayer
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#animation_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#animation_layer Online documentation}
      */
     animation_layer?: RenderLayer
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#top_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#top_layer Online documentation}
      */
     top_layer?: RenderLayer
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#animation_progress Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#animation_progress Online documentation}
      */
     animation_progress?: float
     /**
      * **Default:** `"none"`
      *
      * Which tint set in {@link ModulePrototype#beacon_tint ModulePrototype::beacon_tint} should be applied to elements of the `animation_list`, if any.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#apply_module_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#apply_module_tint Online documentation}
      */
     apply_module_tint?: ModuleTint
     /**
      * **Default:** `no color`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#no_modules_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#no_modules_tint Online documentation}
      */
     no_modules_tint?: Color
     animation_list?: readonly AnimationElement[]
@@ -2069,38 +2098,38 @@ declare module "factorio:prototype" {
     light?: LightDefinition
     /**
      * The visualisations available for displaying the modules in the beacon. The visualisation is chosen based on art style, see {@link BeaconModuleVisualizations#art_style BeaconModuleVisualizations::art_style} and {@link ModulePrototype#art_style ModulePrototype::art_style}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#module_visualisations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#module_visualisations Online documentation}
      */
     module_visualisations?: readonly BeaconModuleVisualizations[]
     /**
      * **Default:** `"single-module"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconGraphicsSet.html#module_tint_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconGraphicsSet.html#module_tint_mode Online documentation}
      */
     module_tint_mode?: "single-module" | "mix"
   }
   export interface BeaconModuleVisualization {
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconModuleVisualization.html#has_empty_slot Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconModuleVisualization.html#has_empty_slot Online documentation}
      */
     has_empty_slot?: boolean
     /**
      * **Default:** `0`
      *
      * Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconModuleVisualization.html#secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconModuleVisualization.html#secondary_draw_order Online documentation}
      */
     secondary_draw_order?: int8
     /**
      * **Default:** `"none"`
      *
      * Which tint set in {@link ModulePrototype#beacon_tint ModulePrototype::beacon_tint} should be applied to this, if any.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconModuleVisualization.html#apply_module_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconModuleVisualization.html#apply_module_tint Online documentation}
      */
     apply_module_tint?: ModuleTint
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconModuleVisualization.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconModuleVisualization.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     pictures?: SpriteVariations
@@ -2108,17 +2137,17 @@ declare module "factorio:prototype" {
   export interface BeaconModuleVisualizations {
     /**
      * The visualization is chosen based on the {@link ModulePrototype#art_style ModulePrototype::art_style}, meaning if module art style equals beacon module visualization art style then this visualization is chosen. Vanilla uses `"vanilla"` here.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconModuleVisualizations.html#art_style Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconModuleVisualizations.html#art_style Online documentation}
      */
     art_style: string
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconModuleVisualizations.html#use_for_empty_slots Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconModuleVisualizations.html#use_for_empty_slots Online documentation}
      */
     use_for_empty_slots?: boolean
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconModuleVisualizations.html#tier_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconModuleVisualizations.html#tier_offset Online documentation}
      */
     tier_offset?: int32
     /**
@@ -2146,65 +2175,65 @@ declare module "factorio:prototype" {
      *     }
      *   }
      * }
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconModuleVisualizations.html#slots Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconModuleVisualizations.html#slots Online documentation}
      */
     slots?: readonly (readonly BeaconModuleVisualization[])[]
   }
   /**
    * @see ModulePrototype.beacon_tint
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/ModulePrototype.html#beacon_tint Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/ModulePrototype.html#beacon_tint Online documentation}
    */
   export interface BeaconVisualizationTints {
     /**
      * **Default:** `no color`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconVisualizationTints.html#primary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconVisualizationTints.html#primary Online documentation}
      */
     primary?: Color
     /**
      * **Default:** `no color`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconVisualizationTints.html#secondary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconVisualizationTints.html#secondary Online documentation}
      */
     secondary?: Color
     /**
      * **Default:** `no color`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconVisualizationTints.html#tertiary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconVisualizationTints.html#tertiary Online documentation}
      */
     tertiary?: Color
     /**
      * **Default:** `no color`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeaconVisualizationTints.html#quaternary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeaconVisualizationTints.html#quaternary Online documentation}
      */
     quaternary?: Color
   }
   export interface BeamAnimationSet {
     /**
      * Start point of the beam.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamAnimationSet.html#start Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamAnimationSet.html#start Online documentation}
      */
     start?: Animation
     /**
      * End point of the beam.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamAnimationSet.html#ending Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamAnimationSet.html#ending Online documentation}
      */
     ending?: Animation
     /**
      * Head segment of the beam.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamAnimationSet.html#head Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamAnimationSet.html#head Online documentation}
      */
     head?: Animation
     /**
      * Tail segment of the beam.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamAnimationSet.html#tail Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamAnimationSet.html#tail Online documentation}
      */
     tail?: Animation
     /**
      * Body segment of the beam.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamAnimationSet.html#body Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamAnimationSet.html#body Online documentation}
      */
     body?: AnimationVariations
     /**
      * **Default:** `"projectile"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamAnimationSet.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamAnimationSet.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
   }
@@ -2212,7 +2241,7 @@ declare module "factorio:prototype" {
     readonly type: "beam"
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamAttackParameters.html#source_direction_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamAttackParameters.html#source_direction_count Online documentation}
      */
     source_direction_count?: uint32
     source_offset?: Vector
@@ -2224,22 +2253,22 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * Must be larger than 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamGraphicsSet.html#desired_segment_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamGraphicsSet.html#desired_segment_length Online documentation}
      */
     desired_segment_length?: float
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamGraphicsSet.html#random_end_animation_rotation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamGraphicsSet.html#random_end_animation_rotation Online documentation}
      */
     random_end_animation_rotation?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamGraphicsSet.html#transparent_start_end_animations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamGraphicsSet.html#transparent_start_end_animations Online documentation}
      */
     transparent_start_end_animations?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamGraphicsSet.html#randomize_animation_per_segment Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamGraphicsSet.html#randomize_animation_per_segment Online documentation}
      */
     randomize_animation_per_segment?: boolean
   }
@@ -2247,40 +2276,40 @@ declare module "factorio:prototype" {
     readonly type: "beam"
     /**
      * Name of a {@link BeamPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamTriggerDelivery.html#beam Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamTriggerDelivery.html#beam Online documentation}
      */
     beam: EntityID
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamTriggerDelivery.html#add_to_shooter Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamTriggerDelivery.html#add_to_shooter Online documentation}
      */
     add_to_shooter?: boolean
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamTriggerDelivery.html#max_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamTriggerDelivery.html#max_length Online documentation}
      */
     max_length?: uint32
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamTriggerDelivery.html#duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamTriggerDelivery.html#duration Online documentation}
      */
     duration?: uint32
     source_offset?: Vector
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeamTriggerDelivery.html#destroy_with_source_or_target Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeamTriggerDelivery.html#destroy_with_source_or_target Online documentation}
      */
     destroy_with_source_or_target?: boolean
   }
   export interface BeltReaderLayer {
     /**
      * **Default:** `"transport-belt-reader"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeltReaderLayer.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeltReaderLayer.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * Must have a `frame_count` of `4`, one for each direction.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeltReaderLayer.html#sprites Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeltReaderLayer.html#sprites Online documentation}
      */
     sprites: RotatedAnimation
   }
@@ -2290,7 +2319,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BeltStackSizeBonusModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BeltStackSizeBonusModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2309,7 +2338,7 @@ declare module "factorio:prototype" {
    * - `"multiplicative"`: The result color is determined with the following formula: `Result = Active_RGB * Background_RGB`
    * - `"multiplicative-with-alpha"`: The result color is determined with the following formula: `Result = Active_RGB * Background_RGB * Active_Alpha + Background_RGB * ( 1 - Active_Alpha )`
    * - `"overwrite"`: The result color is determined with the following formula: `Result = Active_RGBA or Background_RGBA`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BlendMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BlendMode.html Online documentation}
    */
   export type BlendMode =
     | "normal"
@@ -2320,7 +2349,7 @@ declare module "factorio:prototype" {
     | "overwrite"
   /**
    * @see BoilerPrototype.pictures
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/BoilerPrototype.html#pictures Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/BoilerPrototype.html#pictures Online documentation}
    */
   export interface BoilerPictureSet {
     north: BoilerPictures
@@ -2332,27 +2361,27 @@ declare module "factorio:prototype" {
     structure: Animation
     /**
      * Drawn above the `structure`, in the "higher-object-under" {@link RenderLayer}. May be useful to correct problems with neighboring pipes overlapping the structure graphics.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoilerPictures.html#patch Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoilerPictures.html#patch Online documentation}
      */
     patch?: Sprite
     /**
      * Animation that is drawn on top of the `structure` when `burning_cooldown` is larger than 1. The animation alpha can be controlled by the energy source light intensity, depending on `fire_flicker_enabled`.
      *
      * The secondary draw order of this is higher than the secondary draw order of `fire_glow`, so this is drawn above `fire_glow`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoilerPictures.html#fire Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoilerPictures.html#fire Online documentation}
      */
     fire?: Animation
     /**
      * Animation that is drawn on top of the `structure` when `burning_cooldown` is larger than 1. The animation alpha can be controlled by the energy source light intensity, depending on `fire_glow_flicker_enabled`.
      *
      * The secondary draw order of this is lower than the secondary draw order of `fire`, so this is drawn below `fire`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoilerPictures.html#fire_glow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoilerPictures.html#fire_glow Online documentation}
      */
     fire_glow?: Animation
   }
   /**
    * @see UtilityConstants.bonus_gui_ordering
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilityConstants.html#bonus_gui_ordering Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilityConstants.html#bonus_gui_ordering Online documentation}
    */
   export interface BonusGuiOrdering {
     artillery_range: Order
@@ -2371,19 +2400,19 @@ declare module "factorio:prototype" {
   export interface BoolModifier extends BaseModifier {
     /**
      * The value this modifier will have upon researching.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoolModifier.html#modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoolModifier.html#modifier Online documentation}
      */
     modifier: boolean
   }
   export interface BorderImageSet {
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BorderImageSet.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BorderImageSet.html#scale Online documentation}
      */
     scale?: double
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BorderImageSet.html#border_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BorderImageSet.html#border_width Online documentation}
      */
     border_width?: int32
     vertical_line?: Sprite
@@ -2405,14 +2434,14 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link BoundingBox}
    * @see BoundingBox
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BoundingBox.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BoundingBox.html Online documentation}
    */
   export interface BoundingBoxStruct {
     left_top: MapPosition
     right_bottom: MapPosition
     /**
      * Unused.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoundingBox.html#orientation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoundingBox.html#orientation Online documentation}
      */
     orientation?: RealOrientation
   }
@@ -2429,7 +2458,7 @@ declare module "factorio:prototype" {
    * @example
    * -- long definition
    * {left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BoundingBox.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BoundingBox.html Online documentation}
    */
   export type BoundingBox =
     | BoundingBoxStruct
@@ -2437,7 +2466,7 @@ declare module "factorio:prototype" {
     | readonly [MapPosition, MapPosition, RealOrientation]
   /**
    * A cursor box, for use in {@link UtilitySprites}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BoxSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BoxSpecification.html Online documentation}
    */
   export interface BoxSpecification {
     sprite: Sprite
@@ -2445,22 +2474,22 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * Whether this is a complete box or just the top left corner. If this is true, `side_length` and `side_height` must be present. Otherwise `max_side_length` must be present.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoxSpecification.html#is_whole_box Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoxSpecification.html#is_whole_box Online documentation}
      */
     is_whole_box?: boolean
     /**
      * Only loaded, and mandatory if `is_whole_box` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoxSpecification.html#side_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoxSpecification.html#side_length Online documentation}
      */
     side_length?: double
     /**
      * Only loaded, and mandatory if `is_whole_box` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoxSpecification.html#side_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoxSpecification.html#side_height Online documentation}
      */
     side_height?: double
     /**
      * Only loaded, and mandatory if `is_whole_box` is `false`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BoxSpecification.html#max_side_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BoxSpecification.html#max_side_length Online documentation}
      */
     max_side_length?: double
   }
@@ -2476,7 +2505,7 @@ declare module "factorio:prototype" {
     entity?: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BuildEntityTipTrigger.html#match_type_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BuildEntityTipTrigger.html#match_type_only Online documentation}
      */
     match_type_only?: boolean
     build_by_dragging?: boolean
@@ -2484,17 +2513,17 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * Building is considered consecutive when the built entity is the same as the last built entity.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BuildEntityTipTrigger.html#consecutive Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BuildEntityTipTrigger.html#consecutive Online documentation}
      */
     consecutive?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BuildEntityTipTrigger.html#linear_power_pole_line Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BuildEntityTipTrigger.html#linear_power_pole_line Online documentation}
      */
     linear_power_pole_line?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BuildEntityTipTrigger.html#build_in_line Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BuildEntityTipTrigger.html#build_in_line Online documentation}
      */
     build_in_line?: boolean
     quality?: QualityID
@@ -2504,7 +2533,7 @@ declare module "factorio:prototype" {
    * - `"normal"`
    * - `"forced"`
    * - `"superforced"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BuildMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BuildMode.html Online documentation}
    */
   export type BuildMode = "normal" | "forced" | "superforced"
   export interface BulkInserterCapacityBonusModifier extends SimpleModifier {
@@ -2513,14 +2542,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BulkInserterCapacityBonusModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BulkInserterCapacityBonusModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BulkInserterCapacityBonusModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BulkInserterCapacityBonusModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2529,7 +2558,7 @@ declare module "factorio:prototype" {
     fuel_inventory_size: ItemStackIndex
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BurnerEnergySource.html#burnt_inventory_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BurnerEnergySource.html#burnt_inventory_size Online documentation}
      */
     burnt_inventory_size?: ItemStackIndex
     smoke?: readonly SmokeSource[]
@@ -2538,29 +2567,29 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * `1` means 100% effectivity. Must be greater than `0`. Multiplier of the energy output.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BurnerEnergySource.html#effectivity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BurnerEnergySource.html#effectivity Online documentation}
      */
     effectivity?: double
     /**
      * **Default:** `"fuel"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BurnerEnergySource.html#burner_usage Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BurnerEnergySource.html#burner_usage Online documentation}
      */
     burner_usage?: BurnerUsageID
     /**
      * **Default:** ``{"chemical"}``
      *
      * The energy source can be used with fuel from these {@link FuelCategory fuel categories}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BurnerEnergySource.html#fuel_categories Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BurnerEnergySource.html#fuel_categories Online documentation}
      */
     fuel_categories?: readonly FuelCategoryID[]
     /**
      * **Default:** `""`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BurnerEnergySource.html#initial_fuel Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BurnerEnergySource.html#initial_fuel Online documentation}
      */
     initial_fuel?: ItemID
     /**
      * **Default:** `0.25`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/BurnerEnergySource.html#initial_fuel_percent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/BurnerEnergySource.html#initial_fuel_percent Online documentation}
      */
     initial_fuel_percent?: double
   }
@@ -2570,14 +2599,14 @@ declare module "factorio:prototype" {
    * "fuel"
    * @example
    * "food"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/BurnerUsageID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/BurnerUsageID.html Online documentation}
    */
   export type BurnerUsageID = string
   export interface ButtonStyleSpecification extends StyleWithClickableGraphicalSetSpecification {
     readonly type: "button_style"
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ButtonStyleSpecification.html#font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ButtonStyleSpecification.html#font Online documentation}
      */
     font?: string
     default_font_color?: Color
@@ -2601,32 +2630,32 @@ declare module "factorio:prototype" {
     duration: uint8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CameraEffectTriggerEffectItem.html#ease_in_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CameraEffectTriggerEffectItem.html#ease_in_duration Online documentation}
      */
     ease_in_duration?: uint8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CameraEffectTriggerEffectItem.html#ease_out_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CameraEffectTriggerEffectItem.html#ease_out_duration Online documentation}
      */
     ease_out_duration?: uint8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CameraEffectTriggerEffectItem.html#delay Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CameraEffectTriggerEffectItem.html#delay Online documentation}
      */
     delay?: uint8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CameraEffectTriggerEffectItem.html#full_strength_max_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CameraEffectTriggerEffectItem.html#full_strength_max_distance Online documentation}
      */
     full_strength_max_distance?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CameraEffectTriggerEffectItem.html#max_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CameraEffectTriggerEffectItem.html#max_distance Online documentation}
      */
     max_distance?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CameraEffectTriggerEffectItem.html#strength Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CameraEffectTriggerEffectItem.html#strength Online documentation}
      */
     strength?: float
   }
@@ -2642,7 +2671,7 @@ declare module "factorio:prototype" {
    * - {@link UseOnSelfCapsuleAction}: Loaded when the `type` is `"use-on-self"`.
    * - {@link DestroyCliffsCapsuleAction}: Loaded when the `type` is `"destroy-cliffs"`.
    * - {@link ArtilleryRemoteCapsuleAction}: Loaded when the `type` is `"artillery-remote"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CapsuleAction.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CapsuleAction.html Online documentation}
    */
   export type CapsuleAction =
     | ThrowCapsuleAction
@@ -2659,14 +2688,14 @@ declare module "factorio:prototype" {
     animation?: Animation
     /**
      * **Default:** `object`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoBayConnectableGraphicsSet.html#animation_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoBayConnectableGraphicsSet.html#animation_render_layer Online documentation}
      */
     animation_render_layer?: RenderLayer
     connections?: CargoBayConnections
   }
   /**
    * Walls should have an even number of variations because they are interleaved.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoBayConnections.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoBayConnections.html Online documentation}
    */
   export interface CargoBayConnections {
     top_wall?: LayeredSpriteVariations
@@ -2693,65 +2722,65 @@ declare module "factorio:prototype" {
      * **Default:** `"cargo-hatch"`
      *
      * render layer for the hatch itself.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#hatch_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#hatch_render_layer Online documentation}
      */
     hatch_render_layer?: RenderLayer
     /**
      * **Default:** `"cargo-hatch"`
      *
      * render layer for objects entering the hatch.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#entering_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#entering_render_layer Online documentation}
      */
     entering_render_layer?: RenderLayer
     /**
      * **Default:** ``{0, 0}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#offset Online documentation}
      */
     offset?: Vector
     /**
      * **Default:** ``{0, 0}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#pod_shadow_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#pod_shadow_offset Online documentation}
      */
     pod_shadow_offset?: Vector
     /**
      * **Default:** `-1`
      *
      * y height relative to hatch position where the pod art gets clipped from sky to regular sorting layer.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#sky_slice_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#sky_slice_height Online documentation}
      */
     sky_slice_height?: float
     /**
      * **Default:** `1`
      *
      * y height relative to hatch position where the pod art gets cut off.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#slice_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#slice_height Online documentation}
      */
     slice_height?: float
     /**
      * **Default:** `1`
      *
      * y height relative to hatch position where the pod travels to during preparing and parking.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#travel_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#travel_height Online documentation}
      */
     travel_height?: float
     /**
      * **Default:** `120`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#busy_timeout_ticks Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#busy_timeout_ticks Online documentation}
      */
     busy_timeout_ticks?: uint32
     /**
      * **Default:** `80`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#hatch_opening_ticks Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#hatch_opening_ticks Online documentation}
      */
     hatch_opening_ticks?: uint32
     /**
      * Cannot use `fade_ticks`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#opening_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#opening_sound Online documentation}
      */
     opening_sound?: InterruptibleSound
     /**
      * Cannot use `fade_ticks`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#closing_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#closing_sound Online documentation}
      */
     closing_sound?: InterruptibleSound
     cargo_unit_entity_to_spawn?: EntityID
@@ -2759,7 +2788,7 @@ declare module "factorio:prototype" {
      * **Default:** `MAX_UINT32`
      *
      * {@link ProcessionGraphic} index pointing to the {@link ProcessionGraphicCatalogue} inside the current {@link SpaceLocationPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoHatchDefinition.html#illumination_graphic_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoHatchDefinition.html#illumination_graphic_index Online documentation}
      */
     illumination_graphic_index?: uint32
     receiving_cargo_units?: readonly EntityID[]
@@ -2770,26 +2799,26 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoLandingPadLimitModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoLandingPadLimitModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   /**
    * A cargo station is any entity that has the capacity to send cargo units. In Space Age those are {@link RocketSiloPrototype}, {@link SpacePlatformHubPrototype} and {@link CargoLandingPadPrototype}. {@link CargoBayPrototype Cargo bays} may provide additional cargo hatches to cargo stations which are cargo bay connectable.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoStationParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoStationParameters.html Online documentation}
    */
   export interface CargoStationParameters {
     /**
      * **Default:** `false`
      *
      * Packed cargo units will wait for the full order to be completed. This is useful to save rockets in rocket silos when items trickle in slowly. The platform hub has immediate access to items so false is better to allow partial fulfillments.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoStationParameters.html#prefer_packed_cargo_units Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoStationParameters.html#prefer_packed_cargo_units Online documentation}
      */
     prefer_packed_cargo_units?: boolean
     hatch_definitions?: readonly CargoHatchDefinition[]
     /**
      * Big additional hatch that goes over the actual hatches.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CargoStationParameters.html#giga_hatch_definitions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CargoStationParameters.html#giga_hatch_definitions Online documentation}
      */
     giga_hatch_definitions?: readonly GigaCargoHatchDefinition[]
   }
@@ -2803,7 +2832,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ChangeRecipeProductivityModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ChangeRecipeProductivityModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     recipe: RecipeID
@@ -2815,7 +2844,7 @@ declare module "factorio:prototype" {
   }
   /**
    * The data for one variation of {@link CharacterPrototype#animations character animations}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html Online documentation}
    */
   export interface CharacterArmorAnimation {
     idle?: RotatedAnimation
@@ -2823,13 +2852,13 @@ declare module "factorio:prototype" {
     running?: RotatedAnimation
     /**
      * Must contain exactly 18 or 40 directions, so all of the combination of gun direction and moving direction can be covered. Some of these variations are used in reverse to save space. You can use the character animation in the base game for reference.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html#running_with_gun Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html#running_with_gun Online documentation}
      */
     running_with_gun: RotatedAnimation
     mining_with_tool: RotatedAnimation
     /**
      * flipped_shadow_running_with_gun must be nil or contain exactly 18 directions, so all of the combination of gun direction and moving direction can be covered. Some of these variations are used in reverse to save space. You can use the character animation in the base game for reference. `flipped_shadow_running_with_gun` has to have same frame count as `running_with_gun`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html#flipped_shadow_running_with_gun Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html#flipped_shadow_running_with_gun Online documentation}
      */
     flipped_shadow_running_with_gun?: RotatedAnimation
     idle_in_air?: RotatedAnimation
@@ -2837,40 +2866,40 @@ declare module "factorio:prototype" {
     flying?: RotatedAnimation
     /**
      * Must contain exactly 18 or 40 directions, so all of the combination of gun direction and moving direction can be covered. Some of these variations are used in reverse to save space. You can use the character animation in the base game for reference.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html#flying_with_gun Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html#flying_with_gun Online documentation}
      */
     flying_with_gun?: RotatedAnimation
     take_off?: RotatedAnimation
     landing?: RotatedAnimation
     /**
      * The names of the armors this animation data is used for. Don't define this if you want the animations to be used for the player without armor.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html#armors Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html#armors Online documentation}
      */
     armors?: readonly ItemID[]
     /**
      * Smoke generator for when in air.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html#smoke_in_air Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html#smoke_in_air Online documentation}
      */
     smoke_in_air?: readonly SmokeSource[]
     /**
      * **Default:** `1`
      *
      * Will be clamped to range {@link SmokeSource 0, 1000]. When the character is flying, each [SmokeSource} in `smoke_in_air` will generate `smoke_cycles_per_tick` * {@link SmokeSource#frequency SmokeSource::frequency} smokes per tick on average.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html#smoke_cycles_per_tick Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html#smoke_cycles_per_tick Online documentation}
      */
     smoke_cycles_per_tick?: float
     /**
      * **Default:** `0`
      *
      * Will be clamped to range {@link SmokeSource 0, 1000]. When the character is flying, each [SmokeSource} in `smoke_in_air` will generate `extra_smoke_cycles_per_tile` * {@link SmokeSource#frequency SmokeSource::frequency} additional smokes per tile moved.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html#extra_smoke_cycles_per_tile Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html#extra_smoke_cycles_per_tile Online documentation}
      */
     extra_smoke_cycles_per_tile?: float
     /**
      * List of positions in the mining with tool animation when the mining sound and mining particles are created.
      *
      * Overrides {@link CharacterPrototype#mining_with_tool_particles_animation_positions CharacterPrototype::mining_with_tool_particles_animation_positions} if defined
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterArmorAnimation.html#mining_with_tool_particles_animation_positions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterArmorAnimation.html#mining_with_tool_particles_animation_positions Online documentation}
      */
     mining_with_tool_particles_animation_positions?: readonly float[]
   }
@@ -2880,7 +2909,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterBuildDistanceModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterBuildDistanceModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2890,7 +2919,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterCraftingSpeedModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterCraftingSpeedModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2900,7 +2929,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterHealthBonusModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterHealthBonusModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2910,7 +2939,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterInventorySlotsBonusModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterInventorySlotsBonusModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2920,7 +2949,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterItemDropDistanceModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterItemDropDistanceModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2930,7 +2959,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterItemPickupDistanceModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterItemPickupDistanceModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2940,7 +2969,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterLogisticRequestsModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterLogisticRequestsModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2950,7 +2979,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterLogisticTrashSlotsModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterLogisticTrashSlotsModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2960,7 +2989,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterLootPickupDistanceModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterLootPickupDistanceModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2970,7 +2999,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterMiningSpeedModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterMiningSpeedModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2980,7 +3009,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterReachDistanceModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterReachDistanceModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -2990,7 +3019,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterResourceReachDistanceModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterResourceReachDistanceModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -3000,7 +3029,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CharacterRunningSpeedModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CharacterRunningSpeedModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -3009,20 +3038,20 @@ declare module "factorio:prototype" {
     charge_animation?: Animation
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ChargableGraphics.html#charge_animation_is_looped Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ChargableGraphics.html#charge_animation_is_looped Online documentation}
      */
     charge_animation_is_looped?: boolean
     charge_light?: LightDefinition
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ChargableGraphics.html#charge_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ChargableGraphics.html#charge_cooldown Online documentation}
      */
     charge_cooldown?: uint16
     discharge_animation?: Animation
     discharge_light?: LightDefinition
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ChargableGraphics.html#discharge_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ChargableGraphics.html#discharge_cooldown Online documentation}
      */
     discharge_cooldown?: uint16
   }
@@ -3062,12 +3091,12 @@ declare module "factorio:prototype" {
     chart_deconstruct_active_color: Color
     /**
      * The strings are entity types.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ChartUtilityConstants.html#default_friendly_color_by_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ChartUtilityConstants.html#default_friendly_color_by_type Online documentation}
      */
     default_friendly_color_by_type?: Record<string, Color>
     /**
      * The strings are entity types.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ChartUtilityConstants.html#default_color_by_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ChartUtilityConstants.html#default_color_by_type Online documentation}
      */
     default_color_by_type?: Record<string, Color>
     explosion_visualization_duration: MapTick
@@ -3083,12 +3112,12 @@ declare module "factorio:prototype" {
     chart_player_circle_size: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ChartUtilityConstants.html#custom_tag_scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ChartUtilityConstants.html#custom_tag_scale Online documentation}
      */
     custom_tag_scale?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ChartUtilityConstants.html#custom_tag_max_scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ChartUtilityConstants.html#custom_tag_max_scale Online documentation}
      */
     custom_tag_max_scale?: float
     custom_tag_selected_overlay_tint?: Color
@@ -3097,7 +3126,7 @@ declare module "factorio:prototype" {
     readonly type: "checkbox_style"
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CheckBoxStyleSpecification.html#font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CheckBoxStyleSpecification.html#font Online documentation}
      */
     font?: string
     font_color?: Color
@@ -3109,61 +3138,61 @@ declare module "factorio:prototype" {
   }
   /**
    * Definition of a circuit connector.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorDefinition.html Online documentation}
    */
   export interface CircuitConnectorDefinition {
     /**
      * The pictures displayed for circuit connector.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorDefinition.html#sprites Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorDefinition.html#sprites Online documentation}
      */
     sprites?: CircuitConnectorSprites
     /**
      * Defines how wires visually connect to this circuit connector.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorDefinition.html#points Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorDefinition.html#points Online documentation}
      */
     points?: WireConnectionPoint
   }
   export interface CircuitConnectorLayer {
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorLayer.html#north Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorLayer.html#north Online documentation}
      */
     north?: RenderLayer
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorLayer.html#east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorLayer.html#east Online documentation}
      */
     east?: RenderLayer
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorLayer.html#south Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorLayer.html#south Online documentation}
      */
     south?: RenderLayer
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorLayer.html#west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorLayer.html#west Online documentation}
      */
     west?: RenderLayer
   }
   export interface CircuitConnectorSecondaryDrawOrder {
     /**
      * **Default:** `100`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorSecondaryDrawOrder.html#north Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorSecondaryDrawOrder.html#north Online documentation}
      */
     north?: int8
     /**
      * **Default:** `100`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorSecondaryDrawOrder.html#east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorSecondaryDrawOrder.html#east Online documentation}
      */
     east?: int8
     /**
      * **Default:** `100`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorSecondaryDrawOrder.html#south Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorSecondaryDrawOrder.html#south Online documentation}
      */
     south?: int8
     /**
      * **Default:** `100`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorSecondaryDrawOrder.html#west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorSecondaryDrawOrder.html#west Online documentation}
      */
     west?: int8
   }
@@ -3174,22 +3203,22 @@ declare module "factorio:prototype" {
     led_light: LightDefinition
     /**
      * Drawn when the entity is connected to a circuit network or a logistic network.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorSprites.html#connector_main Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorSprites.html#connector_main Online documentation}
      */
     connector_main?: Sprite
     /**
      * Drawn when the entity is connected to a circuit network or a logistic network.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorSprites.html#connector_shadow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorSprites.html#connector_shadow Online documentation}
      */
     connector_shadow?: Sprite
     /**
      * Drawn when the entity is connected to a circuit network.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorSprites.html#wire_pins Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorSprites.html#wire_pins Online documentation}
      */
     wire_pins?: Sprite
     /**
      * Drawn when the entity is connected to a circuit network.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitConnectorSprites.html#wire_pins_shadow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitConnectorSprites.html#wire_pins_shadow Online documentation}
      */
     wire_pins_shadow?: Sprite
     led_blue_off?: Sprite
@@ -3202,7 +3231,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircuitNetworkModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircuitNetworkModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -3211,67 +3240,67 @@ declare module "factorio:prototype" {
     starting_frame_speed: float
     /**
      * **Default:** `0.25`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#direction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#direction Online documentation}
      */
     direction?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#direction_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#direction_deviation Online documentation}
      */
     direction_deviation?: float
     /**
      * **Default:** `0.1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#speed Online documentation}
      */
     speed?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#speed_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#speed_deviation Online documentation}
      */
     speed_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#starting_frame_speed_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#starting_frame_speed_deviation Online documentation}
      */
     starting_frame_speed_deviation?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#height Online documentation}
      */
     height?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#height_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#height_deviation Online documentation}
      */
     height_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#vertical_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#vertical_speed Online documentation}
      */
     vertical_speed?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#vertical_speed_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#vertical_speed_deviation Online documentation}
      */
     vertical_speed_deviation?: float
     /**
      * **Default:** `"`{0, 0}`"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#center Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#center Online documentation}
      */
     center?: Vector
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#creation_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#creation_distance Online documentation}
      */
     creation_distance?: double
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#creation_distance_orientation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#creation_distance_orientation Online documentation}
      */
     creation_distance_orientation?: double
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CircularParticleCreationSpecification.html#use_source_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CircularParticleCreationSpecification.html#use_source_position Online documentation}
      */
     use_source_position?: boolean
   }
@@ -3285,45 +3314,45 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CliffDeconstructionEnabledModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CliffDeconstructionEnabledModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   export interface CliffPlacementSettings {
     /**
      * Name of the {@link CliffPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CliffPlacementSettings.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CliffPlacementSettings.html#name Online documentation}
      */
     name?: EntityID
     /**
      * Name of the {@link AutoplaceControl}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CliffPlacementSettings.html#control Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CliffPlacementSettings.html#control Online documentation}
      */
     control?: AutoplaceControlID
     /**
      * **Default:** `10`
      *
      * Elevation at which the first row of cliffs is placed. Can not be set from the map generation GUI.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CliffPlacementSettings.html#cliff_elevation_0 Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CliffPlacementSettings.html#cliff_elevation_0 Online documentation}
      */
     cliff_elevation_0?: float
     /**
      * **Default:** `40`
      *
      * Elevation difference between successive rows of cliffs. This is inversely proportional to 'frequency' in the map generation GUI. Specifically, when set from the GUI the value is `40 / frequency`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CliffPlacementSettings.html#cliff_elevation_interval Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CliffPlacementSettings.html#cliff_elevation_interval Online documentation}
      */
     cliff_elevation_interval?: float
     /**
      * **Default:** `1`
      *
      * Smoothing makes cliffs straighter on rough elevation but makes placement inaccurate. 0 is no smoothing, 1 is full smoothing. Values outside of 0-1 are possible for specific effects but not recommended.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CliffPlacementSettings.html#cliff_smoothing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CliffPlacementSettings.html#cliff_smoothing Online documentation}
      */
     cliff_smoothing?: float
     /**
      * Corresponds to 'continuity' in the GUI. This value is not used directly, but is used by the 'cliffiness' noise expression, which in combination with elevation and the two cliff elevation properties drives cliff placement (cliffs are placed when elevation crosses the elevation contours defined by `cliff_elevation_0` and `cliff_elevation_interval` when 'cliffiness' is greater than `0.5`). The default 'cliffiness' expression interprets this value such that larger values result in longer unbroken walls of cliffs, and smaller values (between `0` and `1`) result in larger gaps in cliff walls.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CliffPlacementSettings.html#richness Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CliffPlacementSettings.html#richness Online documentation}
      */
     richness?: float
   }
@@ -3339,7 +3368,7 @@ declare module "factorio:prototype" {
    * - `"horizontal-stripe"`: Manhattan, but only along y axis. Useful when you want a layer to occlude screen regardless of width.
    * - `"texture"`: Only show area covered by the 'effect_mask' texture.
    * - `"texture-outside"`: Show area covered by the 'effect_mask' texture and fill the rest of the screen.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudEffectStyle.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudEffectStyle.html Online documentation}
    */
   export type CloudEffectStyle =
     | "none"
@@ -3361,69 +3390,69 @@ declare module "factorio:prototype" {
     detail_sample_2: CloudsTextureCoordinateTransformation
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#scale Online documentation}
      */
     scale?: float
     /**
      * **Default:** `0.75`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#movement_speed_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#movement_speed_multiplier Online documentation}
      */
     movement_speed_multiplier?: float
     /**
      * **Default:** `0.06`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#shape_warp_strength Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#shape_warp_strength Online documentation}
      */
     shape_warp_strength?: float
     /**
      * **Default:** `0.4`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#shape_warp_weight Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#shape_warp_weight Online documentation}
      */
     shape_warp_weight?: float
     /**
      * **Default:** `0.25`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#opacity Online documentation}
      */
     opacity?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#opacity_at_night Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#opacity_at_night Online documentation}
      */
     opacity_at_night?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#density Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#density Online documentation}
      */
     density?: float
     /**
      * **Default:** `Value of `density``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#density_at_night Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#density_at_night Online documentation}
      */
     density_at_night?: float
     /**
      * **Default:** `1.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#detail_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#detail_factor Online documentation}
      */
     detail_factor?: float
     /**
      * **Default:** `Value of `detail_factor``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#detail_factor_at_night Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#detail_factor_at_night Online documentation}
      */
     detail_factor_at_night?: float
     /**
      * **Default:** `-1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#shape_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#shape_factor Online documentation}
      */
     shape_factor?: float
     /**
      * **Default:** `0.1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#detail_exponent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#detail_exponent Online documentation}
      */
     detail_exponent?: float
     /**
      * **Default:** `256`
      *
      * When set to 0, detail textures are not being "morphed" to each other, but lerped with ratio 0.5 instead.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsEffectProperties.html#detail_sample_morph_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsEffectProperties.html#detail_sample_morph_duration Online documentation}
      */
     detail_sample_morph_duration?: uint32
   }
@@ -3431,7 +3460,7 @@ declare module "factorio:prototype" {
     scale: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CloudsTextureCoordinateTransformation.html#wind_speed_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CloudsTextureCoordinateTransformation.html#wind_speed_factor Online documentation}
      */
     wind_speed_factor?: float
   }
@@ -3439,13 +3468,13 @@ declare module "factorio:prototype" {
     readonly type: "cluster"
     /**
      * Must be at least `2`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ClusterTriggerItem.html#cluster_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ClusterTriggerItem.html#cluster_count Online documentation}
      */
     cluster_count: uint32
     distance: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ClusterTriggerItem.html#distance_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ClusterTriggerItem.html#distance_deviation Online documentation}
      */
     distance_deviation?: float
   }
@@ -3455,7 +3484,7 @@ declare module "factorio:prototype" {
    * "meltable"
    * @example
    * "floor"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CollisionLayerID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CollisionLayerID.html Online documentation}
    */
   export type CollisionLayerID = string
   /**
@@ -3463,68 +3492,68 @@ declare module "factorio:prototype" {
    * @example
    * -- Most common collision mask of buildings:
    * collision_mask = {layers = {item = true, meltable = true, object = true, player = true, water_tile = true, is_object = true, is_lower_object = true}}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CollisionMaskConnector.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CollisionMaskConnector.html Online documentation}
    */
   export interface CollisionMaskConnector {
     /**
      * Every key in the dictionary is the name of one {@link CollisionLayerPrototype layer} the object collides with. The value is meaningless and always `true`. An empty table means that no layers are set.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CollisionMaskConnector.html#layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CollisionMaskConnector.html#layers Online documentation}
      */
     layers: Record<CollisionLayerID, true>
     /**
      * **Default:** `false`
      *
      * Any two entities that both have this option enabled on their prototype and have an identical collision mask layers list will not collide. Other collision mask options are not included in the identical layer list check. This does mean that two different prototypes with the same collision mask layers and this option enabled will not collide.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CollisionMaskConnector.html#not_colliding_with_itself Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CollisionMaskConnector.html#not_colliding_with_itself Online documentation}
      */
     not_colliding_with_itself?: boolean
     /**
      * **Default:** `false`
      *
      * Uses the prototypes position rather than its collision box when doing collision checks with tile prototypes. Allows the prototype to overlap colliding tiles up until its center point. This is only respected for character movement and cars driven by players.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CollisionMaskConnector.html#consider_tile_transitions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CollisionMaskConnector.html#consider_tile_transitions Online documentation}
      */
     consider_tile_transitions?: boolean
     /**
      * **Default:** `false`
      *
      * Any prototype with this collision option will only be checked for collision with other prototype's collision masks if they are a tile.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CollisionMaskConnector.html#colliding_with_tiles_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CollisionMaskConnector.html#colliding_with_tiles_only Online documentation}
      */
     colliding_with_tiles_only?: boolean
   }
   /**
    * Struct type for {@link Color}
    * @see Color
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Color.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Color.html Online documentation}
    */
   export interface ColorStruct {
     /**
      * **Default:** `0`
      *
      * red value
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Color.html#r Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Color.html#r Online documentation}
      */
     r?: float
     /**
      * **Default:** `0`
      *
      * green value
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Color.html#g Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Color.html#g Online documentation}
      */
     g?: float
     /**
      * **Default:** `0`
      *
      * blue value
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Color.html#b Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Color.html#b Online documentation}
      */
     b?: float
     /**
      * **Default:** `1`
      *
      * alpha value (opacity)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Color.html#a Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Color.html#a Online documentation}
      */
     a?: float
   }
@@ -3541,26 +3570,26 @@ declare module "factorio:prototype" {
    * color = {0, 0, 1} -- blue
    * color = {r=0, g=0.5, b=0, a=0.5} -- half transparency green
    * color = {} -- full opacity black
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Color.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Color.html Online documentation}
    */
   export type Color = ColorStruct | readonly [float, float, float] | readonly [float, float, float, float]
   /**
    * @see UtilityConstants.color_filters
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilityConstants.html#color_filters Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilityConstants.html#color_filters Online documentation}
    */
   export interface ColorFilterData {
     name: string
     localised_name: LocalisedString
     /**
      * 4 arrays of 4-length float arrays, essentially a 4x4 matrix.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ColorFilterData.html#matrix Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ColorFilterData.html#matrix Online documentation}
      */
     matrix: readonly (readonly float[])[]
   }
   export interface ColorHintSpecification {
     /**
      * **Default:** `""`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ColorHintSpecification.html#text Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ColorHintSpecification.html#text Online documentation}
      */
     text?: string
     text_color?: Color
@@ -3571,68 +3600,40 @@ declare module "factorio:prototype" {
    * "identity"
    * @example
    * "__core__/graphics/color_luts/frozen.png"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ColorLookupTable.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ColorLookupTable.html Online documentation}
    */
   export type ColorLookupTable = FileName | "identity"
   export interface ColumnAlignment {
     /**
      * Column index.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ColumnAlignment.html#column Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ColumnAlignment.html#column Online documentation}
      */
     column: uint32
-    /**
-     * ## Union members
-     * - `"center"`
-     * - `"left"`
-     * - `"right"`
-     * - `"top-left"`
-     * - `"middle-left"`
-     * - `"bottom-left"`
-     * - `"top-center"`
-     * - `"middle-center"`
-     * - `"bottom-center"`
-     * - `"top-right"`
-     * - `"middle-right"`
-     * - `"bottom-right"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ColumnAlignment.html#alignment Online documentation}
-     */
-    alignment:
-      | "center"
-      | "left"
-      | "right"
-      | "top-left"
-      | "middle-left"
-      | "bottom-left"
-      | "top-center"
-      | "middle-center"
-      | "bottom-center"
-      | "top-right"
-      | "middle-right"
-      | "bottom-right"
+    alignment: Alignment
   }
   export interface ColumnWidth extends ColumnWidthItem {
     /**
      * Column index.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ColumnWidth.html#column Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ColumnWidth.html#column Online documentation}
      */
     column: uint32
   }
   export interface ColumnWidthItem {
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ColumnWidthItem.html#minimal_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ColumnWidthItem.html#minimal_width Online documentation}
      */
     minimal_width?: int32
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ColumnWidthItem.html#maximal_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ColumnWidthItem.html#maximal_width Online documentation}
      */
     maximal_width?: int32
     /**
      * **Default:** `0`
      *
      * Sets `minimal_width` and `maximal_width` to the same value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ColumnWidthItem.html#width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ColumnWidthItem.html#width Online documentation}
      */
     width?: int32
   }
@@ -3649,12 +3650,12 @@ declare module "factorio:prototype" {
    * - `"<="`: "lesser than or equal to"
    * - `"≠"`: "not equal to"
    * - `"!="`: "not equal to"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ComparatorString.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ComparatorString.html Online documentation}
    */
   export type ComparatorString = "=" | ">" | "<" | "≥" | ">=" | "≤" | "<=" | "≠" | "!="
   /**
    * Graphics for the heat pipe.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ConnectableEntityGraphics.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ConnectableEntityGraphics.html Online documentation}
    */
   export interface ConnectableEntityGraphics {
     single: SpriteVariations
@@ -3682,19 +3683,19 @@ declare module "factorio:prototype" {
    * - `"game-only"`: The associated script event will fire when satisfied and block game events that conflict with the key sequence. Actions that are processed regardless of game paused state cannot be blocked.
    * @example
    * consuming = "none"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ConsumingType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ConsumingType.html Online documentation}
    */
   export type ConsumingType = "none" | "game-only"
   /**
    * Struct type for {@link ControlPoint}
    * @see ControlPoint
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ControlPoint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ControlPoint.html Online documentation}
    */
   export interface ControlPointStruct {
     control: float
     /**
      * Has to be in range (0.0, 100.0).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ControlPoint.html#volume_percentage Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ControlPoint.html#volume_percentage Online documentation}
      */
     volume_percentage: float
   }
@@ -3702,39 +3703,39 @@ declare module "factorio:prototype" {
   export interface CountBasedTipTrigger {
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CountBasedTipTrigger.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CountBasedTipTrigger.html#count Online documentation}
      */
     count?: uint32
   }
   /**
    * Clips the CoverGraphicProcessionLayer.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicEffectData.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicEffectData.html Online documentation}
    */
   export interface CoverGraphicEffectData {
     /**
      * **Default:** `"none"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicEffectData.html#style Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicEffectData.html#style Online documentation}
      */
     style?: CloudEffectStyle
     /**
      * **Default:** `"pod"`
      *
      * Where the effect mask is centered.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicEffectData.html#relative_to Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicEffectData.html#relative_to Online documentation}
      */
     relative_to?: EffectRelativeTo
     /**
      * **Default:** `{0,0}`
      *
      * How much the pod's distance traveled moves the effect
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicEffectData.html#distance_traveled_strength Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicEffectData.html#distance_traveled_strength Online documentation}
      */
     distance_traveled_strength?: Vector
     /**
      * **Default:** `{0,0}`
      *
      * How much the pod's position moves the effect
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicEffectData.html#pod_movement_strength Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicEffectData.html#pod_movement_strength Online documentation}
      */
     pod_movement_strength?: Vector
   }
@@ -3748,102 +3749,102 @@ declare module "factorio:prototype" {
    * - `effect` in this context refers to clipping out portion of the cover graphic. It can use an effect_graphic. `is_cloud_effect_advanced` makes the `effect` modify opacity threshold of the `mask` rather than multiplying alpha.
    *
    * Additionally an area can be masked out by range or effect mask.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html Online documentation}
    */
   export interface CoverGraphicProcessionLayer {
     readonly type: "cover-graphic"
     /**
      * The group this layer belongs to, for inheritance.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#reference_group Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#reference_group Online documentation}
      */
     reference_group?: ProcessionLayerInheritanceGroupID
     /**
      * Adds the final position value from given layer to this one.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#inherit_from Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#inherit_from Online documentation}
      */
     inherit_from?: ProcessionLayerInheritanceGroupID
     /**
      * Main texture of the layer.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#graphic Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#graphic Online documentation}
      */
     graphic?: ProcessionGraphic
     /**
      * Opacity gradient of the layer.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#mask_graphic Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#mask_graphic Online documentation}
      */
     mask_graphic?: ProcessionGraphic
     /**
      * Used by certain effects.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#effect_graphic Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#effect_graphic Online documentation}
      */
     effect_graphic?: ProcessionGraphic
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#secondary_draw_order Online documentation}
      */
     secondary_draw_order?: int8
     /**
      * **Default:** `false`
      *
      * Advanced cloud effect mask modifies the regular mask thresholds instead of being a flat multiplication of the resulting opacity.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#is_cloud_effect_advanced Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#is_cloud_effect_advanced Online documentation}
      */
     is_cloud_effect_advanced?: boolean
     /**
      * **Default:** `false`
      *
      * The texture and mask are interpreted as four smaller textures that are randomly tiled.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#is_quad_texture Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#is_quad_texture Online documentation}
      */
     is_quad_texture?: boolean
     /**
      * **Default:** `false`
      *
      * Add rotation of the pod to the cloud rotation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#rotate_with_pod Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#rotate_with_pod Online documentation}
      */
     rotate_with_pod?: boolean
     /**
      * **Default:** `"ground-origin"`
      *
      * Where the tiled texture is centered and rotated.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#texture_relative_to Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#texture_relative_to Online documentation}
      */
     texture_relative_to?: EffectRelativeTo
     /**
      * **Default:** `{0,0}`
      *
      * How much the pod's distance traveled moves the cloud coordinates
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#distance_traveled_strength Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#distance_traveled_strength Online documentation}
      */
     distance_traveled_strength?: Vector
     /**
      * **Default:** `{1,1}`
      *
      * How much the pod's position moves the cloud coordinates
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#pod_movement_strength Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#pod_movement_strength Online documentation}
      */
     pod_movement_strength?: Vector
     /**
      * **Default:** `{512, 512}`
      *
      * Size the textures are scaled to in the world.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#world_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#world_size Online documentation}
      */
     world_size?: Vector
     /**
      * Clips the graphic.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#effect Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#effect Online documentation}
      */
     effect?: CoverGraphicEffectData
     /**
      * Clips the graphic.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#alt_effect Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#alt_effect Online documentation}
      */
     alt_effect?: CoverGraphicEffectData
     /**
@@ -3866,145 +3867,145 @@ declare module "factorio:prototype" {
      * - alt_effect_shift : {0, 0}
      *
      * - offset : {0, 0}
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#frames Online documentation}
      */
     frames: readonly CoverGraphicProcessionLayerBezierControlPoint[]
   }
   /**
    * One frame in time for a Bezier interpolation.
    * @see CoverGraphicProcessionLayer.frames
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayer.html#frames Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayer.html#frames Online documentation}
    */
   export interface CoverGraphicProcessionLayerBezierControlPoint {
     /**
      * Mandatory if `opacity` or `rotation` or `effect_scale_min` or `effect_scale_max` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#timestamp Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#timestamp Online documentation}
      */
     timestamp?: MapTick
     /**
      * `opacity` and `opacity_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#opacity Online documentation}
      */
     opacity?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#opacity_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#opacity_t Online documentation}
      */
     opacity_t?: double
     /**
      * `rotation` and `rotation_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#rotation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#rotation Online documentation}
      */
     rotation?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#rotation_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#rotation_t Online documentation}
      */
     rotation_t?: double
     /**
      * `effect_scale_min` and `effect_scale_min_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_scale_min Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_scale_min Online documentation}
      */
     effect_scale_min?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_scale_min_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_scale_min_t Online documentation}
      */
     effect_scale_min_t?: double
     /**
      * `effect_scale_max` and `effect_scale_max_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_scale_max Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_scale_max Online documentation}
      */
     effect_scale_max?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_scale_max_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_scale_max_t Online documentation}
      */
     effect_scale_max_t?: double
     /**
      * `alt_effect_scale_min` and `alt_effect_scale_min_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_scale_min Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_scale_min Online documentation}
      */
     alt_effect_scale_min?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_scale_min_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_scale_min_t Online documentation}
      */
     alt_effect_scale_min_t?: double
     /**
      * `alt_effect_scale_max` and `alt_effect_scale_max_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_scale_max Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_scale_max Online documentation}
      */
     alt_effect_scale_max?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_scale_max_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_scale_max_t Online documentation}
      */
     alt_effect_scale_max_t?: double
     /**
      * `effect_shift` and `effect_shift_t` interpolate a vector smoothly over time using `effect_shift_rate` and `effect_shift_rate_t` for a 0-1 rate curve.
      *
      * Vector value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_shift Online documentation}
      */
     effect_shift?: Vector
     /**
      * Vector tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_shift_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_shift_t Online documentation}
      */
     effect_shift_t?: Vector
     /**
      * Rate 0-1 value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_shift_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_shift_rate Online documentation}
      */
     effect_shift_rate?: double
     /**
      * Rate tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_shift_rate_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#effect_shift_rate_t Online documentation}
      */
     effect_shift_rate_t?: double
     /**
      * `alt_effect_shift` and `alt_effect_shift_t` interpolate a vector smoothly over time using `alt_effect_shift_rate` and `alt_effect_shift_rate_t` for a 0-1 rate curve.
      *
      * Vector value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_shift Online documentation}
      */
     alt_effect_shift?: Vector
     /**
      * Vector tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_shift_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_shift_t Online documentation}
      */
     alt_effect_shift_t?: Vector
     /**
      * Rate 0-1 value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_shift_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_shift_rate Online documentation}
      */
     alt_effect_shift_rate?: double
     /**
      * Rate tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_shift_rate_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#alt_effect_shift_rate_t Online documentation}
      */
     alt_effect_shift_rate_t?: double
     /**
      * `offset` and `offset_t` interpolate a vector smoothly over time using `offset_rate` and `offset_rate_t` for a 0-1 rate curve.
      *
      * Vector value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#offset Online documentation}
      */
     offset?: Vector
     /**
      * Vector tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#offset_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#offset_t Online documentation}
      */
     offset_t?: Vector
     /**
      * Rate 0-1 value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#offset_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#offset_rate Online documentation}
      */
     offset_rate?: double
     /**
      * Rate tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CoverGraphicProcessionLayerBezierControlPoint.html#offset_rate_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CoverGraphicProcessionLayerBezierControlPoint.html#offset_rate_t Online documentation}
      */
     offset_rate_t?: double
   }
@@ -4013,7 +4014,7 @@ declare module "factorio:prototype" {
     fluid: FluidID
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraftFluidTechnologyTrigger.html#amount Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraftFluidTechnologyTrigger.html#amount Online documentation}
      */
     amount?: double
   }
@@ -4022,7 +4023,7 @@ declare module "factorio:prototype" {
     item: ItemIDFilter
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraftItemTechnologyTrigger.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraftItemTechnologyTrigger.html#count Online documentation}
      */
     count?: ItemCountType
   }
@@ -4034,14 +4035,14 @@ declare module "factorio:prototype" {
      * - `"crafting-of-single-item-ordered"`
      * - `"crafting-of-multiple-items-ordered"`
      * - `"crafting-finished"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraftItemTipTrigger.html#event_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraftItemTipTrigger.html#event_type Online documentation}
      */
     event_type: "crafting-of-single-item-ordered" | "crafting-of-multiple-items-ordered" | "crafting-finished"
     /**
      * **Default:** `false`
      *
      * Can only be used when `event_type` is `"crafting-finished"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraftItemTipTrigger.html#consecutive Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraftItemTipTrigger.html#consecutive Online documentation}
      */
     consecutive?: boolean
   }
@@ -4051,24 +4052,24 @@ declare module "factorio:prototype" {
      * **Default:** `"object"`
      *
      * Render layer(s) for all directions of the circuit connectors.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraftingMachineGraphicsSet.html#circuit_connector_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraftingMachineGraphicsSet.html#circuit_connector_layer Online documentation}
      */
     circuit_connector_layer?: RenderLayer | CircuitConnectorLayer
     /**
      * **Default:** `100`
      *
      * Secondary draw order(s) for all directions of the circuit connectors.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraftingMachineGraphicsSet.html#circuit_connector_secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraftingMachineGraphicsSet.html#circuit_connector_secondary_draw_order Online documentation}
      */
     circuit_connector_secondary_draw_order?: int8 | CircuitConnectorSecondaryDrawOrder
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraftingMachineGraphicsSet.html#animation_progress Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraftingMachineGraphicsSet.html#animation_progress Online documentation}
      */
     animation_progress?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraftingMachineGraphicsSet.html#reset_animation_when_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraftingMachineGraphicsSet.html#reset_animation_when_frozen Online documentation}
      */
     reset_animation_when_frozen?: boolean
   }
@@ -4077,47 +4078,47 @@ declare module "factorio:prototype" {
      * **Default:** `0`
      *
      * Angle in radian, which is internally converted to a {@link RealOrientation}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#orientation_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#orientation_shift Online documentation}
      */
     orientation_shift?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#is_contractible_by_cropping Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#is_contractible_by_cropping Online documentation}
      */
     is_contractible_by_cropping?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#should_scale_for_perspective Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#should_scale_for_perspective Online documentation}
      */
     should_scale_for_perspective?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#scale_to_fit_model Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#scale_to_fit_model Online documentation}
      */
     scale_to_fit_model?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#allow_sprite_rotation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#allow_sprite_rotation Online documentation}
      */
     allow_sprite_rotation?: boolean
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#snap_start Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#snap_start Online documentation}
      */
     snap_start?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#snap_end Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#snap_end Online documentation}
      */
     snap_end?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#snap_end_arm_extent_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#snap_end_arm_extent_multiplier Online documentation}
      */
     snap_end_arm_extent_multiplier?: float
     /**
      * **Default:** `""`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#name Online documentation}
      */
     name?: string
     dying_effect?: CranePartDyingEffect
@@ -4130,36 +4131,36 @@ declare module "factorio:prototype" {
     sprite?: Sprite
     /**
      * Only loaded if `sprite` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#rotated_sprite Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#rotated_sprite Online documentation}
      */
     rotated_sprite?: RotatedSprite
     sprite_shadow?: Sprite
     /**
      * Only loaded if `sprite_shadow` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#rotated_sprite_shadow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#rotated_sprite_shadow Online documentation}
      */
     rotated_sprite_shadow?: RotatedSprite
     sprite_reflection?: Sprite
     /**
      * Only loaded if `sprite_reflection` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#rotated_sprite_reflection Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#rotated_sprite_reflection Online documentation}
      */
     rotated_sprite_reflection?: RotatedSprite
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePart.html#layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePart.html#layer Online documentation}
      */
     layer?: int8
   }
   export interface CranePartDyingEffect {
     /**
      * **Default:** `0.25`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePartDyingEffect.html#particle_effect_linear_distance_step Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePartDyingEffect.html#particle_effect_linear_distance_step Online documentation}
      */
     particle_effect_linear_distance_step?: float
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CranePartDyingEffect.html#explosion_linear_distance_step Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CranePartDyingEffect.html#explosion_linear_distance_step Online documentation}
      */
     explosion_linear_distance_step?: float
     particle_effects?: CreateParticleTriggerEffectItem | readonly CreateParticleTriggerEffectItem[]
@@ -4168,22 +4169,22 @@ declare module "factorio:prototype" {
   export interface CraterPlacementDefinition {
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraterPlacementDefinition.html#minimum_segments_to_place Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraterPlacementDefinition.html#minimum_segments_to_place Online documentation}
      */
     minimum_segments_to_place?: uint32
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraterPlacementDefinition.html#segment_probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraterPlacementDefinition.html#segment_probability Online documentation}
      */
     segment_probability?: float
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CraterPlacementDefinition.html#segments Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CraterPlacementDefinition.html#segments Online documentation}
      */
     segments: readonly CraterSegment[]
   }
   /**
    * @see CraterPlacementDefinition.segments
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CraterPlacementDefinition.html#segments Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CraterPlacementDefinition.html#segments Online documentation}
    */
   export interface CraterSegment {
     orientation: float
@@ -4202,27 +4203,27 @@ declare module "factorio:prototype" {
     spawn_min_radius: float
     /**
      * Must be less than 24.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateDecorativesTriggerEffectItem.html#spawn_max_radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateDecorativesTriggerEffectItem.html#spawn_max_radius Online documentation}
      */
     spawn_max_radius: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateDecorativesTriggerEffectItem.html#spawn_min Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateDecorativesTriggerEffectItem.html#spawn_min Online documentation}
      */
     spawn_min?: uint16
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateDecorativesTriggerEffectItem.html#radius_curve Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateDecorativesTriggerEffectItem.html#radius_curve Online documentation}
      */
     radius_curve?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateDecorativesTriggerEffectItem.html#apply_projection Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateDecorativesTriggerEffectItem.html#apply_projection Online documentation}
      */
     apply_projection?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateDecorativesTriggerEffectItem.html#spread_evenly Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateDecorativesTriggerEffectItem.html#spread_evenly Online documentation}
      */
     spread_evenly?: boolean
   }
@@ -4230,7 +4231,7 @@ declare module "factorio:prototype" {
     readonly type: "create-entity"
     /**
      * The name of the entity that should be created.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#entity_name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#entity_name Online documentation}
      */
     entity_name: EntityID
     offset_deviation?: BoundingBox
@@ -4238,68 +4239,68 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `true`, the {@link import("factorio:runtime").on_trigger_created_entity on_trigger_created_entity} event will be raised.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#trigger_created_entity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#trigger_created_entity Online documentation}
      */
     trigger_created_entity?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#check_buildability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#check_buildability Online documentation}
      */
     check_buildability?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#show_in_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#show_in_tooltip Online documentation}
      */
     show_in_tooltip?: boolean
     /**
      * Entity creation will not occur if any tile matches the collision condition. Defaults to no collisions.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#tile_collision_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#tile_collision_mask Online documentation}
      */
     tile_collision_mask?: CollisionMaskConnector
     /**
      * If multiple offsets are specified, multiple entities are created. The projectile of the {@linkplain https://wiki.factorio.com/Distractor_capsule Distractor capsule} uses this property to spawn three Distractors.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#offsets Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#offsets Online documentation}
      */
     offsets?: readonly Vector[]
     /**
      * **Default:** `false`
      *
      * If true, creates the entity as a member of the enemy force. If the surface.no_enemies_mode is true, the entity will not be created.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#as_enemy Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#as_enemy Online documentation}
      */
     as_enemy?: boolean
     /**
      * **Default:** `false`
      *
      * If true and `as_enemy` is true, allows the entity to be created even if the current surface.no_enemies_mode is true.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#ignore_no_enemies_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#ignore_no_enemies_mode Online documentation}
      */
     ignore_no_enemies_mode?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#find_non_colliding_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#find_non_colliding_position Online documentation}
      */
     find_non_colliding_position?: boolean
     /**
      * **Default:** `5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#non_colliding_search_radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#non_colliding_search_radius Online documentation}
      */
     non_colliding_search_radius?: double
     /**
      * **Default:** `0.2`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#non_colliding_search_precision Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#non_colliding_search_precision Online documentation}
      */
     non_colliding_search_precision?: double
     /**
      * Only loaded if `find_non_colliding_position` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#non_colliding_fail_result Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#non_colliding_fail_result Online documentation}
      */
     non_colliding_fail_result?: Trigger
     /**
      * **Default:** `false`
      *
      * The result entity will be protected from automated attacks of enemies.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateEntityTriggerEffectItem.html#protected Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateEntityTriggerEffectItem.html#protected Online documentation}
      */
     protected?: boolean
   }
@@ -4307,22 +4308,22 @@ declare module "factorio:prototype" {
     readonly type: "create-explosion"
     /**
      * **Default:** `-1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateExplosionTriggerEffectItem.html#max_movement_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateExplosionTriggerEffectItem.html#max_movement_distance Online documentation}
      */
     max_movement_distance?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateExplosionTriggerEffectItem.html#max_movement_distance_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateExplosionTriggerEffectItem.html#max_movement_distance_deviation Online documentation}
      */
     max_movement_distance_deviation?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateExplosionTriggerEffectItem.html#inherit_movement_distance_from_projectile Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateExplosionTriggerEffectItem.html#inherit_movement_distance_from_projectile Online documentation}
      */
     inherit_movement_distance_from_projectile?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateExplosionTriggerEffectItem.html#cycle_while_moving Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateExplosionTriggerEffectItem.html#cycle_while_moving Online documentation}
      */
     cycle_while_moving?: boolean
   }
@@ -4330,7 +4331,7 @@ declare module "factorio:prototype" {
     readonly type: "create-fire"
     /**
      * **Default:** `MAX_UINT8`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateFireTriggerEffectItem.html#initial_ground_flame_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateFireTriggerEffectItem.html#initial_ground_flame_count Online documentation}
      */
     initial_ground_flame_count?: uint8
   }
@@ -4340,7 +4341,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateGhostOnEntityDeathModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateGhostOnEntityDeathModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -4351,80 +4352,80 @@ declare module "factorio:prototype" {
     offset_deviation?: SimpleBoundingBox
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#show_in_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#show_in_tooltip Online documentation}
      */
     show_in_tooltip?: boolean
     tile_collision_mask?: CollisionMaskConnector
     offsets?: readonly Vector[]
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#initial_height_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#initial_height_deviation Online documentation}
      */
     initial_height_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#initial_vertical_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#initial_vertical_speed Online documentation}
      */
     initial_vertical_speed?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#initial_vertical_speed_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#initial_vertical_speed_deviation Online documentation}
      */
     initial_vertical_speed_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#speed_from_center Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#speed_from_center Online documentation}
      */
     speed_from_center?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#speed_from_center_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#speed_from_center_deviation Online documentation}
      */
     speed_from_center_deviation?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#frame_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#frame_speed Online documentation}
      */
     frame_speed?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#frame_speed_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#frame_speed_deviation Online documentation}
      */
     frame_speed_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#movement_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#movement_multiplier Online documentation}
      */
     movement_multiplier?: float
     /**
      * **Default:** `0`
      *
      * Silently capped to a maximum of 100.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#tail_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#tail_length Online documentation}
      */
     tail_length?: uint8
     /**
      * **Default:** `0`
      *
      * Silently capped to a maximum of 100.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#tail_length_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#tail_length_deviation Online documentation}
      */
     tail_length_deviation?: uint8
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#tail_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#tail_width Online documentation}
      */
     tail_width?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#rotate_offsets Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#rotate_offsets Online documentation}
      */
     rotate_offsets?: boolean
     /**
      * **Default:** `false`
      *
      * Create particles only when they are in 200 tiles range of any connected player.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#only_when_visible Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#only_when_visible Online documentation}
      */
     only_when_visible?: boolean
     apply_tile_tint?: "primary" | "secondary"
@@ -4432,7 +4433,7 @@ declare module "factorio:prototype" {
      * **Default:** ``{1, 1, 1, 1} (white)``
      *
      * Only loaded if `apply_tile_tint` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateParticleTriggerEffectItem.html#tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateParticleTriggerEffectItem.html#tint Online documentation}
      */
     tint?: Color
   }
@@ -4440,38 +4441,38 @@ declare module "factorio:prototype" {
     readonly type: "create-smoke"
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateSmokeTriggerEffectItem.html#initial_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateSmokeTriggerEffectItem.html#initial_height Online documentation}
      */
     initial_height?: float
     speed?: Vector
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateSmokeTriggerEffectItem.html#speed_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateSmokeTriggerEffectItem.html#speed_multiplier Online documentation}
      */
     speed_multiplier?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateSmokeTriggerEffectItem.html#speed_multiplier_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateSmokeTriggerEffectItem.html#speed_multiplier_deviation Online documentation}
      */
     speed_multiplier_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateSmokeTriggerEffectItem.html#starting_frame Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateSmokeTriggerEffectItem.html#starting_frame Online documentation}
      */
     starting_frame?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateSmokeTriggerEffectItem.html#starting_frame_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateSmokeTriggerEffectItem.html#starting_frame_deviation Online documentation}
      */
     starting_frame_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateSmokeTriggerEffectItem.html#speed_from_center Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateSmokeTriggerEffectItem.html#speed_from_center Online documentation}
      */
     speed_from_center?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateSmokeTriggerEffectItem.html#speed_from_center_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateSmokeTriggerEffectItem.html#speed_from_center_deviation Online documentation}
      */
     speed_from_center_deviation?: float
   }
@@ -4482,19 +4483,19 @@ declare module "factorio:prototype" {
     readonly type: "create-sticker"
     /**
      * Name of a {@link StickerPrototype} that should be created.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateStickerTriggerEffectItem.html#sticker Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateStickerTriggerEffectItem.html#sticker Online documentation}
      */
     sticker: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateStickerTriggerEffectItem.html#show_in_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateStickerTriggerEffectItem.html#show_in_tooltip Online documentation}
      */
     show_in_tooltip?: boolean
     /**
      * **Default:** `false`
      *
      * If `true`, {@link import("factorio:runtime").on_trigger_created_entity on_trigger_created_entity} will be triggered when the sticker is created.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateStickerTriggerEffectItem.html#trigger_created_entity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateStickerTriggerEffectItem.html#trigger_created_entity Online documentation}
      */
     trigger_created_entity?: boolean
   }
@@ -4505,54 +4506,54 @@ declare module "factorio:prototype" {
     offsets?: readonly Vector[]
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#initial_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#initial_height Online documentation}
      */
     initial_height?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#max_radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#max_radius Online documentation}
      */
     max_radius?: float
     speed?: Vector
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#speed_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#speed_multiplier Online documentation}
      */
     speed_multiplier?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#speed_multiplier_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#speed_multiplier_deviation Online documentation}
      */
     speed_multiplier_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#starting_frame Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#starting_frame Online documentation}
      */
     starting_frame?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#starting_frame_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#starting_frame_deviation Online documentation}
      */
     starting_frame_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#speed_from_center Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#speed_from_center Online documentation}
      */
     speed_from_center?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#speed_from_center_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#speed_from_center_deviation Online documentation}
      */
     speed_from_center_deviation?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CreateTrivialSmokeEffectItem.html#only_when_visible Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CreateTrivialSmokeEffectItem.html#only_when_visible Online documentation}
      */
     only_when_visible?: boolean
   }
   /**
    * @see UtilitySprites.cursor_box
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilitySprites.html#cursor_box Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilitySprites.html#cursor_box Online documentation}
    */
   export interface CursorBoxSpecification {
     regular: readonly BoxSpecification[]
@@ -4582,7 +4583,7 @@ declare module "factorio:prototype" {
    * - `"blueprint-snap-rectangle"`: Green by default.
    * - `"spidertron-remote-selected"`
    * - `"spidertron-remote-to-be-selected"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CursorBoxType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CursorBoxType.html Online documentation}
    */
   export type CursorBoxType =
     | "entity"
@@ -4598,22 +4599,22 @@ declare module "factorio:prototype" {
     | "spidertron-remote-to-be-selected"
   /**
    * Used by {@link BaseAttackParameters} to play a sound during the attack.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/CyclicSound.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/CyclicSound.html Online documentation}
    */
   export interface CyclicSound {
     /**
      * Played once at the beginning of the overall cyclic sound.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CyclicSound.html#begin_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CyclicSound.html#begin_sound Online documentation}
      */
     begin_sound?: Sound
     /**
      * Played repeatedly after the begin_sound was played.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CyclicSound.html#middle_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CyclicSound.html#middle_sound Online documentation}
      */
     middle_sound?: Sound
     /**
      * Played once when the overall cyclic sound is requested to end.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/CyclicSound.html#end_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/CyclicSound.html#end_sound Online documentation}
      */
     end_sound?: Sound
   }
@@ -4622,51 +4623,51 @@ declare module "factorio:prototype" {
     damage: DamageParameters
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageEntityTriggerEffectItem.html#apply_damage_to_trees Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageEntityTriggerEffectItem.html#apply_damage_to_trees Online documentation}
      */
     apply_damage_to_trees?: boolean
     /**
      * **Default:** `false`
      *
      * If `true`, no corpse for killed entities will be created.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageEntityTriggerEffectItem.html#vaporize Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageEntityTriggerEffectItem.html#vaporize Online documentation}
      */
     vaporize?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageEntityTriggerEffectItem.html#use_substitute Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageEntityTriggerEffectItem.html#use_substitute Online documentation}
      */
     use_substitute?: boolean
     /**
      * **Default:** `MAX_UINT16`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageEntityTriggerEffectItem.html#lower_distance_threshold Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageEntityTriggerEffectItem.html#lower_distance_threshold Online documentation}
      */
     lower_distance_threshold?: uint16
     /**
      * **Default:** `MAX_UINT16`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageEntityTriggerEffectItem.html#upper_distance_threshold Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageEntityTriggerEffectItem.html#upper_distance_threshold Online documentation}
      */
     upper_distance_threshold?: uint16
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageEntityTriggerEffectItem.html#lower_damage_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageEntityTriggerEffectItem.html#lower_damage_modifier Online documentation}
      */
     lower_damage_modifier?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageEntityTriggerEffectItem.html#upper_damage_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageEntityTriggerEffectItem.html#upper_damage_modifier Online documentation}
      */
     upper_damage_modifier?: float
   }
   /**
    * Used to specify what type of damage and how much damage something deals.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageParameters.html Online documentation}
    */
   export interface DamageParameters {
     amount: float
     /**
      * The type of damage. See {@linkplain https://wiki.factorio.com/Data.raw#damage-type here} for a list of built-in types, and {@link DamageType} for creating custom types.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageParameters.html#type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageParameters.html#type Online documentation}
      */
     readonly type: DamageTypeID
   }
@@ -4678,19 +4679,19 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link DamageTypeFilters}
    * @see DamageTypeFilters
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageTypeFilters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageTypeFilters.html Online documentation}
    */
   export interface DamageTypeFiltersStruct {
     /**
      * The damage types to filter for.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageTypeFilters.html#types Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageTypeFilters.html#types Online documentation}
      */
     types: DamageTypeID | readonly DamageTypeID[]
     /**
      * **Default:** `false`
      *
      * Whether this is a whitelist or a blacklist of damage types. Defaults to being a blacklist.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageTypeFilters.html#whitelist Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageTypeFilters.html#whitelist Online documentation}
      */
     whitelist?: boolean
   }
@@ -4711,7 +4712,7 @@ declare module "factorio:prototype" {
    *   whitelist = false, -- optional
    *   types = { "fire" } -- more damage types could be specified here
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageTypeFilters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageTypeFilters.html Online documentation}
    */
   export type DamageTypeFilters = DamageTypeFiltersStruct | DamageTypeID | readonly DamageTypeID[]
   /**
@@ -4720,16 +4721,16 @@ declare module "factorio:prototype" {
    * "impact"
    * @example
    * "poison"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/DamageTypeID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/DamageTypeID.html Online documentation}
    */
   export type DamageTypeID = string
   /**
    * The data table is read by the game to load all prototypes.
    *
-   * At the end of the prototype stage, the data table is loaded by the game engine and the format of the prototypes is validated. Any extra properties are ignored. See {@linkplain https://lua-api.factorio.com/2.0.49/auxiliary/data-lifecycle.html Data Lifecycle} for more information.
+   * At the end of the prototype stage, the data table is loaded by the game engine and the format of the prototypes is validated. Any extra properties are ignored. See {@linkplain https://lua-api.factorio.com/2.0.50/auxiliary/data-lifecycle.html Data Lifecycle} for more information.
    *
    * The data table and its properties are defined in Lua, so their source code can be viewed in {@linkplain https://github.com/wube/factorio-data/blob/master/core/lualib/dataloader.lua dataloader.lua}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Data.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Data.html Online documentation}
    */
   export interface Data {
     /**
@@ -4742,7 +4743,7 @@ declare module "factorio:prototype" {
      * @example
      * -- get the max health of the wooden chest
      * local health = data.raw["container"]["wooden-chest"].max_health
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Data.html#raw Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Data.html#raw Online documentation}
      */
     raw: {
       readonly [Type in PrototypeType]: {
@@ -4769,12 +4770,12 @@ declare module "factorio:prototype" {
      *   name = "best-fuel"
      * }
      * data:extend({not_coal, proto2})
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Data.html#extend Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Data.html#extend Online documentation}
      */
     extend<P extends AnyPrototype>(prototypes: readonly P[]): void
     /**
      * Set by the game based on whether the demo or retail version is running. Should not be used by mods.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Data.html#is_demo Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Data.html#is_demo Online documentation}
      */
     is_demo: boolean
   }
@@ -4796,7 +4797,7 @@ declare module "factorio:prototype" {
    *   {0.55, "__core__/graphics/color_luts/night.png"},
    *   {0.75, "identity"},
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/DaytimeColorLookupTable.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/DaytimeColorLookupTable.html Online documentation}
    */
   export type DaytimeColorLookupTable = readonly (readonly [double, ColorLookupTable])[]
   export interface DeconstructionTimeToLiveModifier extends SimpleModifier {
@@ -4805,7 +4806,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DeconstructionTimeToLiveModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DeconstructionTimeToLiveModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -4815,7 +4816,7 @@ declare module "factorio:prototype" {
    * "dark-mud-decal"
    * @example
    * "red-pita"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/DecorativeID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/DecorativeID.html Online documentation}
    */
   export type DecorativeID = string
   export interface DelayedTriggerDelivery extends TriggerDeliveryItem {
@@ -4824,7 +4825,7 @@ declare module "factorio:prototype" {
   }
   /**
    * This trigger is considered fulfilled when the {@link TipsAndTricksItem#dependencies TipsAndTricksItem::dependencies} are fulfilled.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/DependenciesMetTipTrigger.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/DependenciesMetTipTrigger.html Online documentation}
    */
   export interface DependenciesMetTipTrigger {
     readonly type: "dependencies-met"
@@ -4835,19 +4836,19 @@ declare module "factorio:prototype" {
     radius: float
     /**
      * **Default:** `3600`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyCliffsCapsuleAction.html#timeout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyCliffsCapsuleAction.html#timeout Online documentation}
      */
     timeout?: uint32
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyCliffsCapsuleAction.html#play_sound_on_failure Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyCliffsCapsuleAction.html#play_sound_on_failure Online documentation}
      */
     play_sound_on_failure?: boolean
     /**
      * **Default:** `true`
      *
      * Whether using the capsule consumes an item from the stack.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyCliffsCapsuleAction.html#uses_stack Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyCliffsCapsuleAction.html#uses_stack Online documentation}
      */
     uses_stack?: boolean
   }
@@ -4856,12 +4857,12 @@ declare module "factorio:prototype" {
     radius: float
     /**
      * Entity created at trigger location every time trigger executes.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyCliffsTriggerEffectItem.html#explosion_at_trigger Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyCliffsTriggerEffectItem.html#explosion_at_trigger Online documentation}
      */
     explosion_at_trigger?: EntityID
     /**
      * Entity created at cliff location when a cliff is destroyed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyCliffsTriggerEffectItem.html#explosion_at_cliff Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyCliffsTriggerEffectItem.html#explosion_at_cliff Online documentation}
      */
     explosion_at_cliff?: EntityID
   }
@@ -4870,36 +4871,36 @@ declare module "factorio:prototype" {
     radius: float
     /**
      * **Default:** `first layer`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyDecorativesTriggerEffectItem.html#from_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyDecorativesTriggerEffectItem.html#from_render_layer Online documentation}
      */
     from_render_layer?: RenderLayer
     /**
      * **Default:** `last layer`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyDecorativesTriggerEffectItem.html#to_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyDecorativesTriggerEffectItem.html#to_render_layer Online documentation}
      */
     to_render_layer?: RenderLayer
     /**
      * **Default:** `false`
      *
      * Soft decoratives are those where {@link DecorativePrototype#grows_through_rail_path DecorativePrototype::grows_through_rail_path} is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyDecorativesTriggerEffectItem.html#include_soft_decoratives Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyDecorativesTriggerEffectItem.html#include_soft_decoratives Online documentation}
      */
     include_soft_decoratives?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyDecorativesTriggerEffectItem.html#include_decals Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyDecorativesTriggerEffectItem.html#include_decals Online documentation}
      */
     include_decals?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyDecorativesTriggerEffectItem.html#invoke_decorative_trigger Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyDecorativesTriggerEffectItem.html#invoke_decorative_trigger Online documentation}
      */
     invoke_decorative_trigger?: boolean
     /**
      * **Default:** `false`
      *
      * If `true`, only decoratives with a {@link DecorativePrototype#trigger_effect DecorativePrototype::trigger_effect} will be destroyed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DestroyDecorativesTriggerEffectItem.html#decoratives_with_trigger_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DestroyDecorativesTriggerEffectItem.html#decoratives_with_trigger_only Online documentation}
      */
     decoratives_with_trigger_only?: boolean
   }
@@ -4908,14 +4909,14 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * Must be >= 0.001 and <= 1000.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DifficultySettings.html#technology_price_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DifficultySettings.html#technology_price_multiplier Online documentation}
      */
     technology_price_multiplier?: double
     /**
      * **Default:** `1`
      *
      * Must be >= 0.01 and <= 100.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DifficultySettings.html#spoil_time_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DifficultySettings.html#spoil_time_modifier Online documentation}
      */
     spoil_time_modifier?: double
   }
@@ -4923,7 +4924,7 @@ declare module "factorio:prototype" {
     readonly type: "direct"
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DirectTriggerItem.html#filter_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DirectTriggerItem.html#filter_enabled Online documentation}
      */
     filter_enabled?: boolean
   }
@@ -4947,12 +4948,12 @@ declare module "factorio:prototype" {
    * - `13`: WestNorthWest
    * - `14`: NorthWest
    * - `15`: NorthNorthWest
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Direction.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Direction.html Online documentation}
    */
   export type Direction = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
   /**
    * @see AnimatedVector.direction_shift
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimatedVector.html#direction_shift Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimatedVector.html#direction_shift Online documentation}
    */
   export interface DirectionShift {
     north?: Vector
@@ -4980,7 +4981,7 @@ declare module "factorio:prototype" {
    * - `"west_north_west"`
    * - `"north_west"`
    * - `"north_north_west"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/DirectionString.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/DirectionString.html Online documentation}
    */
   export type DirectionString =
     | "north"
@@ -5014,7 +5015,7 @@ declare module "factorio:prototype" {
     readonly type: "drop-item"
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/DropItemTipTrigger.html#drop_into_entity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/DropItemTipTrigger.html#drop_into_entity Online documentation}
      */
     drop_into_entity?: boolean
   }
@@ -5023,32 +5024,32 @@ declare module "factorio:prototype" {
    * @example
    * -- These are the effects of the vanilla Speed Module 3
    * {speed = 0.5, consumption = 0.7, quality = -0.25}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Effect.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Effect.html Online documentation}
    */
   export interface Effect {
     /**
      * Multiplier to energy used during operation (not idle/drain use). The minimum possible sum is -80%.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Effect.html#consumption Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Effect.html#consumption Online documentation}
      */
     consumption?: EffectValue
     /**
      * Modifier to crafting speed, research speed, etc. The minimum possible sum is -80%.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Effect.html#speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Effect.html#speed Online documentation}
      */
     speed?: EffectValue
     /**
      * Multiplied against work completed, adds to the bonus results of operating. E.g. an extra crafted recipe or immediate research bonus. The minimum possible sum is 0%.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Effect.html#productivity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Effect.html#productivity Online documentation}
      */
     productivity?: EffectValue
     /**
      * Multiplier to the pollution factor of an entity's pollution during use. The minimum possible sum is -80%.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Effect.html#pollution Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Effect.html#pollution Online documentation}
      */
     pollution?: EffectValue
     /**
      * Adds a bonus chance to increase a product's quality. The minimum possible sum is 0%. Quality is a special case because its effect value is divided by 10 internally for actual usage. This allows for one more decimal of precision, as anything beyond two decimals of effect value is ignored.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Effect.html#quality Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Effect.html#quality Online documentation}
      */
     quality?: EffectValue
   }
@@ -5056,19 +5057,19 @@ declare module "factorio:prototype" {
     base_effect?: Effect
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EffectReceiver.html#uses_module_effects Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EffectReceiver.html#uses_module_effects Online documentation}
      */
     uses_module_effects?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EffectReceiver.html#uses_beacon_effects Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EffectReceiver.html#uses_beacon_effects Online documentation}
      */
     uses_beacon_effects?: boolean
     /**
      * **Default:** `true`
      *
      * Controls whether {@link import("factorio:runtime").LuaSurface#global_effect LuaSurface::global_effect} affects this receiver.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EffectReceiver.html#uses_surface_effects Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EffectReceiver.html#uses_surface_effects Online documentation}
      */
     uses_surface_effects?: boolean
   }
@@ -5079,7 +5080,7 @@ declare module "factorio:prototype" {
    * - `"ground-origin"`: Refers to the ground position the pod entity is relative to.
    * - `"pod"`: Refers to the current position of pod playing the transition.
    * - `"spawn-origin"`: Refers to the position where this transition started on tick 0. Useful as a blank slate to apply inherited offsets via {@link ProcessionLayerInheritanceGroup}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EffectRelativeTo.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EffectRelativeTo.html Online documentation}
    */
   export type EffectRelativeTo = "ground-origin" | "pod" | "spawn-origin"
   export interface EffectTexture extends SpriteSource {}
@@ -5098,7 +5099,7 @@ declare module "factorio:prototype" {
    * @example
    * -- Allow only modules that affect speed
    * allowed_effects = "speed"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EffectTypeLimitation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EffectTypeLimitation.html Online documentation}
    */
   export type EffectTypeLimitation =
     | ("speed" | "productivity" | "consumption" | "pollution" | "quality")
@@ -5111,7 +5112,7 @@ declare module "factorio:prototype" {
    * {speed = 0.07}  -- 7% bonus
    * @example
    * {quality = 0.25}  -- 2.5% bonus
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EffectValue.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EffectValue.html Online documentation}
    */
   export type EffectValue = float
   /**
@@ -5120,7 +5121,7 @@ declare module "factorio:prototype" {
    * - `"wetland-water"`: Valid only when {@link FeatureFlags#expansion_shaders expansion_shaders} feature flag is enabled.
    * - `"oil"`: Valid only when {@link FeatureFlags#expansion_shaders expansion_shaders} feature flag is enabled.
    * - `"water"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EffectVariation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EffectVariation.html Online documentation}
    */
   export type EffectVariation = "lava" | "wetland-water" | "oil" | "water"
   /**
@@ -5146,7 +5147,7 @@ declare module "factorio:prototype" {
    *   type = "electric",
    *   usage_priority = "secondary-output"
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ElectricEnergySource.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ElectricEnergySource.html Online documentation}
    */
   export interface ElectricEnergySource extends BaseEnergySource {
     readonly type: "electric"
@@ -5154,13 +5155,13 @@ declare module "factorio:prototype" {
      * How much energy this entity can hold.
      * @example
      * buffer_capacity = "5MJ"
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElectricEnergySource.html#buffer_capacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElectricEnergySource.html#buffer_capacity Online documentation}
      */
     buffer_capacity?: Energy
     /**
      * @example
      * usage_priority = "secondary-input"
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElectricEnergySource.html#usage_priority Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElectricEnergySource.html#usage_priority Online documentation}
      */
     usage_priority: ElectricUsagePriority
     /**
@@ -5169,7 +5170,7 @@ declare module "factorio:prototype" {
      * The rate at which energy can be taken, from the network, to refill the energy buffer. `0` means no transfer.
      * @example
      * input_flow_limit = "300kW"
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElectricEnergySource.html#input_flow_limit Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElectricEnergySource.html#input_flow_limit Online documentation}
      */
     input_flow_limit?: Energy
     /**
@@ -5178,14 +5179,14 @@ declare module "factorio:prototype" {
      * The rate at which energy can be provided, to the network, from the energy buffer. `0` means no transfer.
      * @example
      * output_flow_limit = "300kW"
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElectricEnergySource.html#output_flow_limit Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElectricEnergySource.html#output_flow_limit Online documentation}
      */
     output_flow_limit?: Energy
     /**
      * How much energy (per second) will be continuously removed from the energy buffer. In-game, this is shown in the tooltip as "Min. {@link import("factorio:runtime").LuaEntity#active Minimum] Consumption". Applied as a constant consumption-per-tick, even when the entity has the property [active} set to `false`.
      * @example
      * drain = "1kW"
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElectricEnergySource.html#drain Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElectricEnergySource.html#drain Online documentation}
      */
     drain?: Energy
   }
@@ -5202,7 +5203,7 @@ declare module "factorio:prototype" {
    * - `"lamp"`: Can only be used by {@link LampPrototype}, will be ignored otherwise.
    * @example
    * usage_priority = "primary-input"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ElectricUsagePriority.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ElectricUsagePriority.html Online documentation}
    */
   export type ElectricUsagePriority =
     | "primary-input"
@@ -5215,7 +5216,7 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link ElementImageSet}
    * @see ElementImageSet
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSet.html Online documentation}
    */
   export interface ElementImageSetStruct {
     base?: ElementImageSetLayer
@@ -5224,77 +5225,77 @@ declare module "factorio:prototype" {
   }
   /**
    * If this is loaded as a single ElementImageSetLayer, it gets used as `base`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSet.html Online documentation}
    */
   export type ElementImageSet = ElementImageSetStruct | ElementImageSetLayer
   /**
    * Struct type for {@link ElementImageSetLayer}
    * @see ElementImageSetLayer
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html Online documentation}
    */
   export interface ElementImageSetLayerStruct {
     /**
      * **Default:** `"inner"`
      *
      * Defines whether the border should be drawn inside the widget, which affects the padding and content size of the widget, or outside of the widget which doesn't affect size. The outer draw type is most commonly used for shadows, glows and insets.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#draw_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#draw_type Online documentation}
      */
     draw_type?: "inner" | "outer"
     /**
      * **Default:** ``"none"` if this has no other properties, otherwise `"composition"``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#type Online documentation}
      */
     readonly type?: "none" | "composition"
     /**
      * **Default:** ``{r=1, g=1, b=1, a=1}``
      *
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#tint Online documentation}
      */
     tint?: Color
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#center Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#center Online documentation}
      */
     center?: Sprite
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#left Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#left Online documentation}
      */
     left?: Sprite
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#left_top Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#left_top Online documentation}
      */
     left_top?: Sprite
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#left_bottom Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#left_bottom Online documentation}
      */
     left_bottom?: Sprite
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#right Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#right Online documentation}
      */
     right?: Sprite
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#right_top Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#right_top Online documentation}
      */
     right_top?: Sprite
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#right_bottom Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#right_bottom Online documentation}
      */
     right_bottom?: Sprite
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#top Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#top Online documentation}
      */
     top?: Sprite
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#bottom Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#bottom Online documentation}
      */
     bottom?: Sprite
     /**
@@ -5302,225 +5303,225 @@ declare module "factorio:prototype" {
      *
      * Only loaded if `type` is `"composition"`.
      *
-     * ![In base game, the corner size is 8 and the sides are 1px long and 8px wide.](https://lua-api.factorio.com/2.0.49/static/images/ElementImageSetLayer_base_sizes.png)
+     * ![In base game, the corner size is 8 and the sides are 1px long and 8px wide.](https://lua-api.factorio.com/2.0.50/static/images/ElementImageSetLayer_base_sizes.png)
      * @example
      * {
      *   -- How an ElementImageSet is loaded which has only one layer, which uses the corner_size shown in the diagram
      *   base = {position = {0, 17}, corner_size = 8}
      * }
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#corner_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#corner_size Online documentation}
      */
     corner_size?: uint16 | readonly [uint16, uint16]
     /**
      * **Default:** `The `default_tileset` set in GuiStyle`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#filename Online documentation}
      */
     filename?: FileName
     /**
      * Mandatory if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#position Online documentation}
      */
     position?: MapPosition
     /**
      * **Default:** `true`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#load_in_minimal_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#load_in_minimal_mode Online documentation}
      */
     load_in_minimal_mode?: boolean
     /**
      * **Default:** `1`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#top_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#top_width Online documentation}
      */
     top_width?: SpriteSizeType
     /**
      * **Default:** `1`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#bottom_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#bottom_width Online documentation}
      */
     bottom_width?: SpriteSizeType
     /**
      * **Default:** `1`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#left_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#left_height Online documentation}
      */
     left_height?: SpriteSizeType
     /**
      * **Default:** `1`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#right_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#right_height Online documentation}
      */
     right_height?: SpriteSizeType
     /**
      * **Default:** `1`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#center_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#center_width Online documentation}
      */
     center_width?: SpriteSizeType
     /**
      * **Default:** `1`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#center_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#center_height Online documentation}
      */
     center_height?: SpriteSizeType
     /**
      * **Default:** `1`
      *
      * Only loaded if `corner_size` is defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#scale Online documentation}
      */
     scale?: double
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#top_border Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#top_border Online documentation}
      */
     top_border?: int32
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#right_border Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#right_border Online documentation}
      */
     right_border?: int32
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#bottom_border Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#bottom_border Online documentation}
      */
     bottom_border?: int32
     /**
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#left_border Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#left_border Online documentation}
      */
     left_border?: int32
     /**
      * Sets `top_border`, `right_border`, `bottom_border` and `left_border`.
      *
      * Only loaded if `corner_size` is not defined. Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#border Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#border Online documentation}
      */
     border?: int32
     /**
      * **Default:** `true`
      *
      * Only loaded if `type` is `"composition"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#stretch_monolith_image_to_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#stretch_monolith_image_to_size Online documentation}
      */
     stretch_monolith_image_to_size?: boolean
     /**
      * **Default:** `false`
      *
      * Tiling is used to make a side (not corner) texture repeat instead of being stretched.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#left_tiling Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#left_tiling Online documentation}
      */
     left_tiling?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#right_tiling Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#right_tiling Online documentation}
      */
     right_tiling?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#top_tiling Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#top_tiling Online documentation}
      */
     top_tiling?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#bottom_tiling Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#bottom_tiling Online documentation}
      */
     bottom_tiling?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#center_tiling_vertical Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#center_tiling_vertical Online documentation}
      */
     center_tiling_vertical?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#center_tiling_horizontal Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#center_tiling_horizontal Online documentation}
      */
     center_tiling_horizontal?: boolean
     /**
      * **Default:** `0`
      *
      * Overall tiling is used to make the overall texture repeat instead of being stretched.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#overall_tiling_horizontal_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#overall_tiling_horizontal_size Online documentation}
      */
     overall_tiling_horizontal_size?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#overall_tiling_horizontal_spacing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#overall_tiling_horizontal_spacing Online documentation}
      */
     overall_tiling_horizontal_spacing?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#overall_tiling_horizontal_padding Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#overall_tiling_horizontal_padding Online documentation}
      */
     overall_tiling_horizontal_padding?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#overall_tiling_vertical_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#overall_tiling_vertical_size Online documentation}
      */
     overall_tiling_vertical_size?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#overall_tiling_vertical_spacing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#overall_tiling_vertical_spacing Online documentation}
      */
     overall_tiling_vertical_spacing?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#overall_tiling_vertical_padding Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#overall_tiling_vertical_padding Online documentation}
      */
     overall_tiling_vertical_padding?: uint16
     custom_horizontal_tiling_sizes?: readonly uint32[]
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#opacity Online documentation}
      */
     opacity?: double
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#background_blur Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#background_blur Online documentation}
      */
     background_blur?: boolean
     /**
      * **Default:** ``4` if `background_blur` is `true``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#background_blur_sigma Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#background_blur_sigma Online documentation}
      */
     background_blur_sigma?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#top_outer_border_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#top_outer_border_shift Online documentation}
      */
     top_outer_border_shift?: int32
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#bottom_outer_border_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#bottom_outer_border_shift Online documentation}
      */
     bottom_outer_border_shift?: int32
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#right_outer_border_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#right_outer_border_shift Online documentation}
      */
     right_outer_border_shift?: int32
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html#left_outer_border_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html#left_outer_border_shift Online documentation}
      */
     left_outer_border_shift?: int32
   }
   /**
    * If this is loaded as a Sprite, it gets used as `center`.
    *
-   * ![How the sprites are laid out graphically when using a composition type element image set layer.](https://lua-api.factorio.com/2.0.49/static/images/ElementImageSetLayer_properties.png)
+   * ![How the sprites are laid out graphically when using a composition type element image set layer.](https://lua-api.factorio.com/2.0.50/static/images/ElementImageSetLayer_properties.png)
    *
-   * ![How the sprites are stretched when using a composition type element image set layer.](https://lua-api.factorio.com/2.0.49/static/images/ElementImageSetLayer_stretching.png)
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ElementImageSetLayer.html Online documentation}
+   * ![How the sprites are stretched when using a composition type element image set layer.](https://lua-api.factorio.com/2.0.50/static/images/ElementImageSetLayer_stretching.png)
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ElementImageSetLayer.html Online documentation}
    */
   export type ElementImageSetLayer = ElementImageSetLayerStruct | Sprite
   export interface EmptyWidgetStyleSpecification extends BaseStyleSpecification {
@@ -5531,17 +5532,17 @@ declare module "factorio:prototype" {
     enabled: boolean
     /**
      * Percentual increase in the evolution factor for every second (60 ticks)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemyEvolutionSettings.html#time_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemyEvolutionSettings.html#time_factor Online documentation}
      */
     time_factor: double
     /**
      * Percentual increase in the evolution factor for every destroyed spawner
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemyEvolutionSettings.html#destroy_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemyEvolutionSettings.html#destroy_factor Online documentation}
      */
     destroy_factor: double
     /**
      * Percentual increase in the evolution factor for 1 pollution unit
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemyEvolutionSettings.html#pollution_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemyEvolutionSettings.html#pollution_factor Online documentation}
      */
     pollution_factor: double
   }
@@ -5549,7 +5550,7 @@ declare module "factorio:prototype" {
     enabled: boolean
     /**
      * Distance in chunks from the furthest base around. This prevents expansions from reaching too far into the player's territory.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemyExpansionSettings.html#max_expansion_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemyExpansionSettings.html#max_expansion_distance Online documentation}
      */
     max_expansion_distance: uint32
     friendly_base_influence_radius: uint32
@@ -5560,18 +5561,18 @@ declare module "factorio:prototype" {
     neighbouring_base_chunk_coefficient: double
     /**
      * A chunk has to have at most this much percent unbuildable tiles for it to be considered a candidate. This is to avoid chunks full of water to be marked as candidates.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemyExpansionSettings.html#max_colliding_tiles_coefficient Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemyExpansionSettings.html#max_colliding_tiles_coefficient Online documentation}
      */
     max_colliding_tiles_coefficient: double
     /**
      * Size of the group that goes to build new base (the game interpolates between min size and max size based on evolution factor).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemyExpansionSettings.html#settler_group_min_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemyExpansionSettings.html#settler_group_min_size Online documentation}
      */
     settler_group_min_size: uint32
     settler_group_max_size: uint32
     /**
      * Ticks to expand to a single position for a base is used. Cooldown is calculated as follows: `cooldown = lerp(max_expansion_cooldown, min_expansion_cooldown, -e^2 + 2 * e)` where `lerp` is the linear interpolation function, and e is the current evolution factor.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemyExpansionSettings.html#min_expansion_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemyExpansionSettings.html#min_expansion_cooldown Online documentation}
      */
     min_expansion_cooldown: uint32
     max_expansion_cooldown: uint32
@@ -5585,14 +5586,14 @@ declare module "factorio:prototype" {
     underwater_animations?: AnimationVariations
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemySpawnerGraphicsSet.html#underwater_layer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemySpawnerGraphicsSet.html#underwater_layer_offset Online documentation}
      */
     underwater_layer_offset?: int8
     water_effect_map_animations?: AnimationVariations
     integration?: SpriteVariations
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnemySpawnerGraphicsSet.html#random_animation_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnemySpawnerGraphicsSet.html#random_animation_offset Online documentation}
      */
     random_animation_offset?: boolean
   }
@@ -5628,7 +5629,7 @@ declare module "factorio:prototype" {
    * -- the following two lines result in the same power consumption:
    * energy_usage = "60W"
    * energy_usage = "1J" -- not recommended, Watt is convention for power
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Energy.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Energy.html Online documentation}
    */
   export type Energy = string
   /**
@@ -5640,7 +5641,7 @@ declare module "factorio:prototype" {
    * - {@link HeatEnergySource}: Loaded when the `type` is `"heat"`.
    * - {@link FluidEnergySource}: Loaded when the `type` is `"fluid"`.
    * - {@link VoidEnergySource}: Loaded when the `type` is `"void"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EnergySource.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EnergySource.html Online documentation}
    */
   export type EnergySource =
     | ElectricEnergySource
@@ -5653,30 +5654,30 @@ declare module "factorio:prototype" {
     vehicle?: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EnterVehicleTipTrigger.html#match_type_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EnterVehicleTipTrigger.html#match_type_only Online documentation}
      */
     match_type_only?: boolean
   }
   /**
    * A single tiles worth of animations used when building entities.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityBuildAnimationPiece.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityBuildAnimationPiece.html Online documentation}
    */
   export interface EntityBuildAnimationPiece {
     /**
      * The animation must have a total of 32 frames.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityBuildAnimationPiece.html#top Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityBuildAnimationPiece.html#top Online documentation}
      */
     top: Animation
     /**
      * The animation must have a total of 32 frames.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityBuildAnimationPiece.html#body Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityBuildAnimationPiece.html#body Online documentation}
      */
     body: Animation
   }
   /**
    * A set of animations used when building entities on space platforms. All EntityBuildAnimationPieces must have the same animation speed.
    * @see UtilitySprites.platform_entity_build_animations
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilitySprites.html#platform_entity_build_animations Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilitySprites.html#platform_entity_build_animations Online documentation}
    */
   export interface EntityBuildAnimations {
     back_left: EntityBuildAnimationPiece
@@ -5690,20 +5691,20 @@ declare module "factorio:prototype" {
    * "stone-furnace"
    * @example
    * "bulk-inserter"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityID.html Online documentation}
    */
   export type EntityID = string
   /**
    * Struct type for {@link EntityIDFilter}
    * @see EntityIDFilter
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityIDFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityIDFilter.html Online documentation}
    */
   export interface EntityIDFilterStruct {
     name: EntityID
     quality?: QualityID
     /**
      * Only loaded if `quality` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityIDFilter.html#comparator Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityIDFilter.html#comparator Online documentation}
      */
     comparator?: ComparatorString
   }
@@ -5745,7 +5746,7 @@ declare module "factorio:prototype" {
    * - `"not-in-made-in"`: The entity is not shown in the made in property of recipe tooltips.
    * @example
    * flags = {"placeable-neutral", "player-creation"}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityPrototypeFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityPrototypeFlags.html Online documentation}
    */
   export type EntityPrototypeFlags = readonly (
     | "not-rotatable"
@@ -5777,27 +5778,27 @@ declare module "factorio:prototype" {
   /**
    * How far (in tiles) entities should be rendered outside the visible area of the screen.
    * @see UtilityConstants.entity_renderer_search_box_limits
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilityConstants.html#entity_renderer_search_box_limits Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilityConstants.html#entity_renderer_search_box_limits Online documentation}
    */
   export interface EntityRendererSearchBoxLimits {
     /**
      * Min value 6, max value 15. Min value 6 to compensate for shadows.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityRendererSearchBoxLimits.html#left Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityRendererSearchBoxLimits.html#left Online documentation}
      */
     left: uint8
     /**
      * Min value 3, max value 15.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityRendererSearchBoxLimits.html#top Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityRendererSearchBoxLimits.html#top Online documentation}
      */
     top: uint8
     /**
      * Min value 3, max value 15.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityRendererSearchBoxLimits.html#right Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityRendererSearchBoxLimits.html#right Online documentation}
      */
     right: uint8
     /**
      * Min value 4, max value 15. Min value 4 to compensate for tall entities like electric poles.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityRendererSearchBoxLimits.html#bottom Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityRendererSearchBoxLimits.html#bottom Online documentation}
      */
     bottom: uint8
   }
@@ -5870,7 +5871,7 @@ declare module "factorio:prototype" {
    * - `"no-spot-seedable-by-inputs"`
    * - `"waiting-for-plants-to-grow"`
    * - `"recipe-not-researched"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityStatus.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityStatus.html Online documentation}
    */
   export type EntityStatus =
     | "working"
@@ -5944,7 +5945,7 @@ declare module "factorio:prototype" {
     readonly type: "entity-transfer"
     /**
      * **Default:** `any transfer`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EntityTransferTipTrigger.html#transfer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EntityTransferTipTrigger.html#transfer Online documentation}
      */
     transfer?: "in" | "out"
   }
@@ -5952,7 +5953,7 @@ declare module "factorio:prototype" {
    * The name of an {@link EquipmentCategory}.
    * @example
    * "armor"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EquipmentCategoryID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EquipmentCategoryID.html Online documentation}
    */
   export type EquipmentCategoryID = string
   /**
@@ -5961,7 +5962,7 @@ declare module "factorio:prototype" {
    * "small-equipment-grid"
    * @example
    * "spidertron-equipment-grid"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EquipmentGridID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EquipmentGridID.html Online documentation}
    */
   export type EquipmentGridID = string
   /**
@@ -5970,19 +5971,19 @@ declare module "factorio:prototype" {
    * "fusion-reactor-equipment"
    * @example
    * "exoskeleton-equipment"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EquipmentID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EquipmentID.html Online documentation}
    */
   export type EquipmentID = string
   /**
    * The shape and dimensions of an equipment module.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/EquipmentShape.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/EquipmentShape.html Online documentation}
    */
   export interface EquipmentShape {
     width: uint32
     height: uint32
     /**
      * The shape. When using "manual", `points` must be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EquipmentShape.html#type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EquipmentShape.html#type Online documentation}
      */
     readonly type: "full" | "manual"
     /**
@@ -5996,14 +5997,14 @@ declare module "factorio:prototype" {
      *   {0, 2},                 {3, 2},
      *   {0, 3}, {1, 3}, {2, 3}, {3, 3}
      * }
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/EquipmentShape.html#points Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/EquipmentShape.html#points Online documentation}
      */
     points?: readonly (readonly uint32[])[]
   }
   /**
    * Struct type for {@link ExplosionDefinition}
    * @see ExplosionDefinition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ExplosionDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ExplosionDefinition.html Online documentation}
    */
   export interface ExplosionDefinitionStruct {
     name: EntityID
@@ -6013,7 +6014,7 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link Fade}
    * @see Fade
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Fade.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Fade.html Online documentation}
    */
   export interface FadeStruct extends Attenuation {
     from?: ControlPoint
@@ -6023,12 +6024,12 @@ declare module "factorio:prototype" {
   export interface Fades {
     /**
      * At least one of `fade_in`and `fade_out` needs to be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Fades.html#fade_in Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Fades.html#fade_in Online documentation}
      */
     fade_in?: Fade
     /**
      * At least one of `fade_in`and `fade_out` needs to be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Fades.html#fade_out Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Fades.html#fade_out Online documentation}
      */
     fade_out?: Fade
   }
@@ -6041,7 +6042,7 @@ declare module "factorio:prototype" {
     target?: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FastReplaceTipTrigger.html#match_type_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FastReplaceTipTrigger.html#match_type_only Online documentation}
      */
     match_type_only?: boolean
   }
@@ -6052,7 +6053,7 @@ declare module "factorio:prototype" {
    * if feature_flags["spoiling"] then
    *   data.raw.item.coal.spoil_ticks = 600
    * end
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FeatureFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FeatureFlags.html Online documentation}
    */
   export interface FeatureFlags {
     quality: boolean
@@ -6075,7 +6076,7 @@ declare module "factorio:prototype" {
    * filename = "__base__/graphics/entity/accumulator/accumulator.png"
    * @example
    * filename = "__a-mod__/animations/assembler.png"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FileName.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FileName.html Online documentation}
    */
   export type FileName = string
   export interface FlipEntityTipTrigger extends CountBasedTipTrigger {
@@ -6089,7 +6090,7 @@ declare module "factorio:prototype" {
   }
   /**
    * A fluid amount. The amount is stored as a fixed-size signed 64 bit integer, with 24 bits reserved for decimal precision, meaning the smallest value step is `1/2^24`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidAmount.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidAmount.html Online documentation}
    */
   export type FluidAmount = double
   /**
@@ -6109,12 +6110,12 @@ declare module "factorio:prototype" {
    *   production_type = "input-output",
    *   filter = "water"
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html Online documentation}
    */
   export interface FluidBox {
     /**
      * Must be greater than 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#volume Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#volume Online documentation}
      */
     volume: FluidAmount
     /**
@@ -6123,41 +6124,41 @@ declare module "factorio:prototype" {
      * Connection points may depend on the direction the entity is facing. These connection points cannot share positions with one another or the connection points of another fluid box belonging to the same entity.
      *
      * Can't have more than 255 connections.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#pipe_connections Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#pipe_connections Online documentation}
      */
     pipe_connections: readonly PipeConnectionDefinition[]
     /**
      * Can be used to specify which fluid is allowed to enter this fluid box. See {@linkplain https://forums.factorio.com/viewtopic.php?f=28&t=46302 here}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#filter Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#filter Online documentation}
      */
     filter?: FluidID
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#draw_only_when_connected Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#draw_only_when_connected Online documentation}
      */
     draw_only_when_connected?: boolean
     /**
      * **Default:** `false`
      *
      * Hides the blue input/output arrows and icons at each connection point.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#hide_connection_info Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#hide_connection_info Online documentation}
      */
     hide_connection_info?: boolean
     /**
      * **Default:** `0`
      *
      * A fraction of the volume that will be "reserved" and cannot be removed by flow operations. This does nothing if the fluidbox is part of a fluid segment.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#volume_reservation_fraction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#volume_reservation_fraction Online documentation}
      */
     volume_reservation_fraction?: float
     /**
      * The pictures to show when another fluid box connects to this one.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#pipe_covers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#pipe_covers Online documentation}
      */
     pipe_covers?: Sprite4Way
     pipe_covers_frozen?: Sprite4Way
@@ -6165,71 +6166,71 @@ declare module "factorio:prototype" {
     pipe_picture_frozen?: Sprite4Way
     /**
      * Pipe picture variation used when owner machine is flipped. If no picture is loaded, pipe_picture is used instead.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#mirrored_pipe_picture Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#mirrored_pipe_picture Online documentation}
      */
     mirrored_pipe_picture?: Sprite4Way
     /**
      * Frozen pipe picture variation used when owner machine is flipped. If no picture is loaded, pipe_picture_frozen is used instead.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#mirrored_pipe_picture_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#mirrored_pipe_picture_frozen Online documentation}
      */
     mirrored_pipe_picture_frozen?: Sprite4Way
     /**
      * The minimum temperature allowed into the fluidbox. Only applied if a `filter` is specified.
      * @example
      * minimum_temperature = 100.0
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#minimum_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#minimum_temperature Online documentation}
      */
     minimum_temperature?: float
     /**
      * The maximum temperature allowed into the fluidbox. Only applied if a `filter` is specified.
      * @example
      * maximum_temperature = 1000.0
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#maximum_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#maximum_temperature Online documentation}
      */
     maximum_temperature?: float
     /**
      * **Default:** `Value of `UtilityConstants::default_pipeline_extent``
      *
      * The max extent that a pipeline with this fluidbox can span. A given pipeline's extent is calculated as the min extent of all the fluidboxes that comprise it.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#max_pipeline_extent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#max_pipeline_extent Online documentation}
      */
     max_pipeline_extent?: uint32
     /**
      * **Default:** `"none"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#production_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#production_type Online documentation}
      */
     production_type?: ProductionType
     /**
      * **Default:** `1`
      *
      * Set the secondary draw order for all orientations. Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#secondary_draw_order Online documentation}
      */
     secondary_draw_order?: int8
     /**
      * Set the secondary draw order for each orientation. Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
      *
      * The individual directions default to the value of `secondary_draw_order`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#secondary_draw_orders Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#secondary_draw_orders Online documentation}
      */
     secondary_draw_orders?: FluidBoxSecondaryDrawOrders
     /**
      * Defaults to true if `pipe_picture` is not defined, otherwise defaults to false.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#always_draw_covers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#always_draw_covers Online documentation}
      */
     always_draw_covers?: boolean
     /**
      * Array of the {@link WorkingVisualisation#name WorkingVisualisation::name} of working visualisations to enable when this fluidbox is present.
      *
      * If `draw_only_when_connected` is `true`, then the working visualisation are only enabled when this is *connected*.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#enable_working_visualisations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#enable_working_visualisations Online documentation}
      */
     enable_working_visualisations?: readonly string[]
   }
   export type FluidBoxLinkedConnectionID = uint32
   /**
    * @see FluidBox.secondary_draw_orders
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#secondary_draw_orders Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#secondary_draw_orders Online documentation}
    */
   export interface FluidBoxSecondaryDrawOrders {
     north?: int8
@@ -6241,7 +6242,7 @@ declare module "factorio:prototype" {
     readonly type: "fluid"
     /**
      * All standard fluid box configurations are acceptable, but the type must be `"input"` or `"input-output"` to function correctly. `scale_fluid_usage = true`, `fluid_usage_per_tick`, or a filter on the fluidbox must be set to be able to calculate the fluid usage of the energy source.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidEnergySource.html#fluid_box Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidEnergySource.html#fluid_box Online documentation}
      */
     fluid_box: FluidBox
     smoke?: readonly SmokeSource[]
@@ -6250,21 +6251,21 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * `1` means 100% effectivity. Must be greater than `0`. Multiplier of the energy output.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidEnergySource.html#effectivity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidEnergySource.html#effectivity Online documentation}
      */
     effectivity?: double
     /**
      * **Default:** `false`
      *
      * If set to `true`, the energy source will calculate power based on the fluid's `fuel_value`, else it will calculate based on fluid temperature.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidEnergySource.html#burns_fluid Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidEnergySource.html#burns_fluid Online documentation}
      */
     burns_fluid?: boolean
     /**
      * **Default:** `false`
      *
      * If set to `true`, the energy source will consume as much fluid as required to produce the desired power, otherwise it will consume as much as it is allowed to, wasting any excess.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidEnergySource.html#scale_fluid_usage Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidEnergySource.html#scale_fluid_usage Online documentation}
      */
     scale_fluid_usage?: boolean
     /**
@@ -6273,14 +6274,14 @@ declare module "factorio:prototype" {
      * Property is only used when `burns_fluid` is `true` and the fluid has a {@link FluidPrototype#fuel_value fuel_value} of `0`, or when `burns_fluid` is `false` and the fluid is at its `default_temperature`.
      *
      * In those cases, this property determines whether the fluid should be destroyed, meaning that the fluid is consumed at the rate of `fluid_usage_per_tick`, without producing any power.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidEnergySource.html#destroy_non_fuel_fluid Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidEnergySource.html#destroy_non_fuel_fluid Online documentation}
      */
     destroy_non_fuel_fluid?: boolean
     /**
      * **Default:** `0`
      *
      * The number of fluid units the energy source uses per tick. If used with `scale_fluid_usage`, this specifies the maximum. If this value is not set, `scale_energy_usage` is `false` and a fluid box filter is set, the game will attempt to calculate this value from the fluid box filter's fluid's `fuel_value` or `heat_capacity` and the entity's `energy_usage`. If `burns_fluid` is `false`, `maximum_temperature` will also be used. If the attempt of the game to calculate this value fails (`scale_energy_usage` is `false` and a fluid box filter is set), then `scale_energy_usage` will be forced to `true`, to prevent the energy source from being an infinite fluid sink. More context {@linkplain https://forums.factorio.com/90613 on the forums}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidEnergySource.html#fluid_usage_per_tick Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidEnergySource.html#fluid_usage_per_tick Online documentation}
      */
     fluid_usage_per_tick?: FluidAmount
     /**
@@ -6289,7 +6290,7 @@ declare module "factorio:prototype" {
      * `0` means unlimited maximum temperature. If this is non-zero while `scale_fluid_usage` is `false` and `fluid_usage_per_tick` is not specified, the game will use this value to calculate `fluid_usage_per_tick`. To do that, the filter on the `fluid_box` must be set.
      *
      * Only loaded if `burns_fluid` is `false`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidEnergySource.html#maximum_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidEnergySource.html#maximum_temperature Online documentation}
      */
     maximum_temperature?: float
   }
@@ -6298,7 +6299,7 @@ declare module "factorio:prototype" {
    * - `"input-output"`
    * - `"input"`
    * - `"output"`: ,
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidFlowDirection.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidFlowDirection.html Online documentation}
    */
   export type FluidFlowDirection = "input-output" | "input" | "output"
   /**
@@ -6307,92 +6308,92 @@ declare module "factorio:prototype" {
    * "water"
    * @example
    * "lubricant"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidID.html Online documentation}
    */
   export type FluidID = string
   /**
    * A fluid ingredient definition.
    * @example
    * {type="fluid", name="water", amount=50}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html Online documentation}
    */
   export interface FluidIngredientPrototype {
     readonly type: "fluid"
     /**
      * The name of a {@link FluidPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html#name Online documentation}
      */
     name: FluidID
     /**
      * Can not be `<= 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html#amount Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html#amount Online documentation}
      */
     amount: FluidAmount
     /**
      * Sets the expected temperature of the fluid ingredient.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html#temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html#temperature Online documentation}
      */
     temperature?: float
     /**
      * If `temperature` is not set, this sets the expected minimum temperature of the fluid ingredient.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html#minimum_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html#minimum_temperature Online documentation}
      */
     minimum_temperature?: float
     /**
      * If `temperature` is not set, this sets the expected maximum temperature of the fluid ingredient.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html#maximum_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html#maximum_temperature Online documentation}
      */
     maximum_temperature?: float
     /**
      * **Default:** `0`
      *
      * Amount that should not be included in the consumption statistics, typically with a matching product having the same amount set as {@link FluidProductPrototype#ignored_by_stats ignored_by_stats}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html#ignored_by_stats Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html#ignored_by_stats Online documentation}
      */
     ignored_by_stats?: FluidAmount
     /**
      * **Default:** `0`
      *
      * Used to specify which {@link CraftingMachinePrototype#fluid_boxes CraftingMachinePrototype::fluid_boxes} this ingredient should use. It will use this one fluidbox. The index is 1-based and separate for input and output fluidboxes.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html#fluidbox_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html#fluidbox_index Online documentation}
      */
     fluidbox_index?: uint32
     /**
      * **Default:** `2`
      *
      * Used to set crafting machine fluidbox volumes. Must be at least 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidIngredientPrototype.html#fluidbox_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidIngredientPrototype.html#fluidbox_multiplier Online documentation}
      */
     fluidbox_multiplier?: uint8
   }
   /**
    * A fluid product definition.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html Online documentation}
    */
   export interface FluidProductPrototype {
     readonly type: "fluid"
     /**
      * The name of a {@link FluidPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#name Online documentation}
      */
     name: FluidID
     /**
      * Can not be `< 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#amount Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#amount Online documentation}
      */
     amount?: FluidAmount
     /**
      * Only loaded, and mandatory if `amount` is not defined.
      *
      * Can not be `< 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#amount_min Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#amount_min Online documentation}
      */
     amount_min?: FluidAmount
     /**
      * Only loaded, and mandatory if `amount` is not defined.
      *
      * If set to a number that is less than `amount_min`, the game will use `amount_min` instead.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#amount_max Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#amount_max Online documentation}
      */
     amount_max?: FluidAmount
     /**
@@ -6403,7 +6404,7 @@ declare module "factorio:prototype" {
      * The effect of probability is no product, or a linear distribution on [min, max]. For a recipe with probability `p`, amount_min `min`, and amount_max `max`, the Expected Value of this product can be expressed as `p * (0.5 * (max + min))`. This is what will be shown in a recipe tooltip. The effect of `ignored_by_productivity` on the product is not shown.
      *
      * When `amount_min` and `amount_max` are not provided, `amount` applies as min and max. The Expected Value simplifies to `p * amount`, providing `0` product, or `amount` product, on recipe completion.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#probability Online documentation}
      */
     probability?: double
     /**
@@ -6414,7 +6415,7 @@ declare module "factorio:prototype" {
      * If `ignored_by_stats` is larger than the amount crafted (for instance due to probability) it will instead show as consumed.
      *
      * Products with `ignored_by_stats` defined will not be set as recipe through the circuit network when using the product's fluid-signal.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#ignored_by_stats Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#ignored_by_stats Online documentation}
      */
     ignored_by_stats?: FluidAmount
     /**
@@ -6425,32 +6426,32 @@ declare module "factorio:prototype" {
      * This value can safely be set larger than the maximum expected craft amount, any excess is ignored.
      *
      * This value is ignored when {@link RecipePrototype#allow_productivity allow_productivity} is `false`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#ignored_by_productivity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#ignored_by_productivity Online documentation}
      */
     ignored_by_productivity?: FluidAmount
     /**
      * The temperature of the fluid product.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#temperature Online documentation}
      */
     temperature?: float
     /**
      * **Default:** `0`
      *
      * Used to specify which {@link CraftingMachinePrototype#fluid_boxes CraftingMachinePrototype::fluid_boxes} this product should use. It will use this one fluidbox. The index is 1-based and separate for input and output fluidboxes.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#fluidbox_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#fluidbox_index Online documentation}
      */
     fluidbox_index?: uint32
     /**
      * **Default:** `true`
      *
      * When hovering over a recipe in the crafting menu the recipe tooltip will be shown. An additional item tooltip will be shown for every product, as a separate tooltip, if the item tooltip has a description and/or properties to show and if `show_details_in_recipe_tooltip` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidProductPrototype.html#show_details_in_recipe_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidProductPrototype.html#show_details_in_recipe_tooltip Online documentation}
      */
     show_details_in_recipe_tooltip?: boolean
   }
   /**
    * @see PumpPrototype.fluid_wagon_connector_graphics
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/PumpPrototype.html#fluid_wagon_connector_graphics Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/PumpPrototype.html#fluid_wagon_connector_graphics Online documentation}
    */
   export interface FluidWagonConnectorGraphics {
     load_animations: PumpConnectorGraphics
@@ -6461,24 +6462,24 @@ declare module "factorio:prototype" {
      * **Default:** `"vulcanus"`
      *
      * `gleba` type is rendered per chunk and opacity of fog depends on count of tiles with {@link TilePrototype#lowland_fog lowland_fog} set to `true` on the chunk.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FogEffectProperties.html#fog_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FogEffectProperties.html#fog_type Online documentation}
      */
     fog_type?: "vulcanus" | "gleba"
     shape_noise_texture: EffectTexture
     detail_noise_texture: EffectTexture
     /**
      * **Default:** `{1, 1, 1, 1}`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FogEffectProperties.html#color1 Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FogEffectProperties.html#color1 Online documentation}
      */
     color1?: Color
     /**
      * **Default:** `{1, 1, 1, 1}`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FogEffectProperties.html#color2 Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FogEffectProperties.html#color2 Online documentation}
      */
     color2?: Color
     /**
      * **Default:** `0.000005`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FogEffectProperties.html#tick_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FogEffectProperties.html#tick_factor Online documentation}
      */
     tick_factor?: float
   }
@@ -6486,7 +6487,7 @@ declare module "factorio:prototype" {
     rect: SimpleBoundingBox
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FogMaskShapeDefinition.html#falloff Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FogMaskShapeDefinition.html#falloff Online documentation}
      */
     falloff?: float
   }
@@ -6496,33 +6497,33 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FollowerRobotLifetimeModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FollowerRobotLifetimeModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FollowerRobotLifetimeModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FollowerRobotLifetimeModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   export interface FootprintParticle {
     /**
      * The tiles this footprint particle is shown on when the player walks over them.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FootprintParticle.html#tiles Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FootprintParticle.html#tiles Online documentation}
      */
     tiles: readonly TileID[]
     /**
      * The name of the particle that should be created when the character walks on the defined tiles.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FootprintParticle.html#particle_name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FootprintParticle.html#particle_name Online documentation}
      */
     particle_name?: ParticleID
     /**
      * **Default:** `false`
      *
      * Whether this footprint particle should be the default particle that is used for `tiles` that don't have an associated footprint particle.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FootprintParticle.html#use_as_default Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FootprintParticle.html#use_as_default Online documentation}
      */
     use_as_default?: boolean
   }
@@ -6530,14 +6531,14 @@ declare module "factorio:prototype" {
     tiles: readonly TileID[]
     /**
      * Can be used to specify multiple CreateParticleTriggerEffectItems. If this property is defined, all properties inherited from CreateParticleTriggerEffectItem are ignored.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FootstepTriggerEffectItem.html#actions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FootstepTriggerEffectItem.html#actions Online documentation}
      */
     actions?: readonly CreateParticleTriggerEffectItem[]
     /**
      * **Default:** `false`
      *
      * When `true`, the trigger(s) defined in `actions` are the default triggers for tiles that don't have an associated footstep particle trigger. (ie. don't show up in one of the "tiles" lists).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FootstepTriggerEffectItem.html#use_as_default Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FootstepTriggerEffectItem.html#use_as_default Online documentation}
      */
     use_as_default?: boolean
   }
@@ -6597,21 +6598,19 @@ declare module "factorio:prototype" {
    *     }
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FootstepTriggerEffectList.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FootstepTriggerEffectList.html Online documentation}
    */
   export type FootstepTriggerEffectList = readonly FootstepTriggerEffectItem[]
   /**
-   * One of the following values:
-   *
    * ## Union members
-   * - `"all"`
-   * - `"enemy"`
-   * - `"ally"`
-   * - `"friend"`
-   * - `"not-friend"`
-   * - `"same"`
-   * - `"not-same"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ForceCondition.html Online documentation}
+   * - `"all"`: All forces pass.
+   * - `"enemy"`: Forces which will attack pass.
+   * - `"ally"`: Forces which won't attack pass.
+   * - `"friend"`: Forces which are friends pass.
+   * - `"not-friend"`: Forces which are not friends pass.
+   * - `"same"`: The same force pass.
+   * - `"not-same"`: The non-same forces pass.
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ForceCondition.html Online documentation}
    */
   export type ForceCondition = "all" | "enemy" | "ally" | "friend" | "not-friend" | "same" | "not-same"
   export interface FrameStyleSpecification extends BaseStyleSpecification {
@@ -6639,7 +6638,7 @@ declare module "factorio:prototype" {
    * "chemical"
    * @example
    * "nuclear"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FuelCategoryID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FuelCategoryID.html Online documentation}
    */
   export type FuelCategoryID = string
   export interface FusionGeneratorDirectionGraphicsSet {
@@ -6660,13 +6659,13 @@ declare module "factorio:prototype" {
     west_graphics_set: FusionGeneratorDirectionGraphicsSet
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FusionGeneratorGraphicsSet.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FusionGeneratorGraphicsSet.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     light?: LightDefinition
     /**
      * **Default:** ``{1, 1, 1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FusionGeneratorGraphicsSet.html#glow_color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FusionGeneratorGraphicsSet.html#glow_color Online documentation}
      */
     glow_color?: Color
   }
@@ -6679,19 +6678,19 @@ declare module "factorio:prototype" {
     structure?: Sprite4Way
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FusionReactorGraphicsSet.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FusionReactorGraphicsSet.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * **Default:** ``{1, 1, 1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FusionReactorGraphicsSet.html#default_fuel_glow_color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FusionReactorGraphicsSet.html#default_fuel_glow_color Online documentation}
      */
     default_fuel_glow_color?: Color
     light?: LightDefinition
     working_light_pictures?: Sprite4Way
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FusionReactorGraphicsSet.html#use_fuel_glow_color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FusionReactorGraphicsSet.html#use_fuel_glow_color Online documentation}
      */
     use_fuel_glow_color?: boolean
     fusion_effect_uv_map?: Sprite
@@ -6699,7 +6698,7 @@ declare module "factorio:prototype" {
     direction_to_connections_graphics?: Record<DirectionString, readonly uint8[]>
     /**
      * Cannot be an empty string.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/FusionReactorGraphicsSet.html#plasma_category Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/FusionReactorGraphicsSet.html#plasma_category Online documentation}
      */
     plasma_category: NeighbourConnectableConnectionCategory
   }
@@ -6708,113 +6707,113 @@ declare module "factorio:prototype" {
      * **Default:** `0`
      *
      * Vibration intensity must be between 0 and 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameControllerVibrationData.html#low_frequency_vibration_intensity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameControllerVibrationData.html#low_frequency_vibration_intensity Online documentation}
      */
     low_frequency_vibration_intensity?: float
     /**
      * **Default:** `0`
      *
      * Vibration intensity must be between 0 and 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameControllerVibrationData.html#high_frequency_vibration_intensity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameControllerVibrationData.html#high_frequency_vibration_intensity Online documentation}
      */
     high_frequency_vibration_intensity?: float
     /**
      * **Default:** `0`
      *
      * Duration in milliseconds.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameControllerVibrationData.html#duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameControllerVibrationData.html#duration Online documentation}
      */
     duration?: uint32
     /**
      * **Default:** `"character_actions"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameControllerVibrationData.html#play_for Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameControllerVibrationData.html#play_for Online documentation}
      */
     play_for?: PlayFor
   }
   export interface GameViewSettings {
     /**
      * If this is defined then it sets the default value for all other properties.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#default_show_value Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#default_show_value Online documentation}
      */
     default_show_value?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_controller_gui Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_controller_gui Online documentation}
      */
     show_controller_gui?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_minimap Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_minimap Online documentation}
      */
     show_minimap?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_research_info Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_research_info Online documentation}
      */
     show_research_info?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_entity_info Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_entity_info Online documentation}
      */
     show_entity_info?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_alert_gui Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_alert_gui Online documentation}
      */
     show_alert_gui?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#update_entity_selection Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#update_entity_selection Online documentation}
      */
     update_entity_selection?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_rail_block_visualisation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_rail_block_visualisation Online documentation}
      */
     show_rail_block_visualisation?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_side_menu Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_side_menu Online documentation}
      */
     show_side_menu?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_map_view_options Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_map_view_options Online documentation}
      */
     show_map_view_options?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_entity_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_entity_tooltip Online documentation}
      */
     show_entity_tooltip?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_quickbar Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_quickbar Online documentation}
      */
     show_quickbar?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_shortcut_bar Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_shortcut_bar Online documentation}
      */
     show_shortcut_bar?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_crafting_queue Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_crafting_queue Online documentation}
      */
     show_crafting_queue?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_tool_bar Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_tool_bar Online documentation}
      */
     show_tool_bar?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_hotkey_suggestions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_hotkey_suggestions Online documentation}
      */
     show_hotkey_suggestions?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GameViewSettings.html#show_surface_list Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GameViewSettings.html#show_surface_list Online documentation}
      */
     show_surface_list?: boolean
   }
@@ -6833,12 +6832,12 @@ declare module "factorio:prototype" {
     world_uv_modulo: int32
     /**
      * The array must have at least 6 elements.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GhostShimmerConfig.html#overlay_layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GhostShimmerConfig.html#overlay_layers Online documentation}
      */
     overlay_layers: readonly GhostShimmerOverlayData[]
     /**
      * The array must have at least 6 elements.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GhostShimmerConfig.html#distortion_layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GhostShimmerConfig.html#distortion_layers Online documentation}
      */
     distortion_layers: readonly GhostShimmerDistortionData[]
   }
@@ -6863,7 +6862,7 @@ declare module "factorio:prototype" {
     tile_ghost_delivery_tint: Color
     /**
      * Wires are hard to read when the ghost_tint is very saturated, so they use a separate tint color for better fine tuning.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GhostTintSet.html#wire_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GhostTintSet.html#wire_tint Online documentation}
      */
     wire_tint: Color
   }
@@ -6872,29 +6871,29 @@ declare module "factorio:prototype" {
     hatch_graphics_front?: Animation
     /**
      * **Default:** `"higher-object-under"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GigaCargoHatchDefinition.html#hatch_render_layer_back Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GigaCargoHatchDefinition.html#hatch_render_layer_back Online documentation}
      */
     hatch_render_layer_back?: RenderLayer
     /**
      * **Default:** `"higher-object-above"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GigaCargoHatchDefinition.html#hatch_render_layer_front Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GigaCargoHatchDefinition.html#hatch_render_layer_front Online documentation}
      */
     hatch_render_layer_front?: RenderLayer
     covered_hatches: readonly uint32[]
     /**
      * Cannot use `fade_ticks`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GigaCargoHatchDefinition.html#opening_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GigaCargoHatchDefinition.html#opening_sound Online documentation}
      */
     opening_sound?: InterruptibleSound
     /**
      * Cannot use `fade_ticks`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GigaCargoHatchDefinition.html#closing_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GigaCargoHatchDefinition.html#closing_sound Online documentation}
      */
     closing_sound?: InterruptibleSound
   }
   /**
    * Note that when any technology prototype changes (regardless of which mod it belongs to), the game re-applies all researched technology effects, including `"give-item"` modifiers. This means that players will receive the item again, even if they already received it previously. This can be undesirable.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/GiveItemModifier.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/GiveItemModifier.html Online documentation}
    */
   export interface GiveItemModifier extends BaseModifier {
     readonly type: "give-item"
@@ -6902,40 +6901,40 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GiveItemModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GiveItemModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     item: ItemID
     /**
      * **Default:** `"normal"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GiveItemModifier.html#quality Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GiveItemModifier.html#quality Online documentation}
      */
     quality?: QualityID
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GiveItemModifier.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GiveItemModifier.html#count Online documentation}
      */
     count?: ItemCountType
   }
   export interface GlobalRecipeTints {
     /**
      * **Default:** ``{1, 1, 1, 1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GlobalRecipeTints.html#primary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GlobalRecipeTints.html#primary Online documentation}
      */
     primary?: Color
     /**
      * **Default:** ``{1, 1, 1, 1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GlobalRecipeTints.html#secondary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GlobalRecipeTints.html#secondary Online documentation}
      */
     secondary?: Color
     /**
      * **Default:** ``{1, 1, 1, 1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GlobalRecipeTints.html#tertiary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GlobalRecipeTints.html#tertiary Online documentation}
      */
     tertiary?: Color
     /**
      * **Default:** ``{1, 1, 1, 1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GlobalRecipeTints.html#quaternary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GlobalRecipeTints.html#quaternary Online documentation}
      */
     quaternary?: Color
   }
@@ -6972,7 +6971,7 @@ declare module "factorio:prototype" {
     guide_lines_color?: Color
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GraphStyleSpecification.html#font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GraphStyleSpecification.html#font Online documentation}
      */
     font?: string
   }
@@ -6981,7 +6980,7 @@ declare module "factorio:prototype" {
   }
   /**
    * @see StreamAttackParameters.gun_center_shift
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/StreamAttackParameters.html#gun_center_shift Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/StreamAttackParameters.html#gun_center_shift Online documentation}
    */
   export interface GunShift4Way {
     north: Vector
@@ -6995,59 +6994,59 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GunSpeedModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GunSpeedModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GunSpeedModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GunSpeedModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     /**
      * Name of the {@link AmmoCategory} that is affected.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GunSpeedModifier.html#ammo_category Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GunSpeedModifier.html#ammo_category Online documentation}
      */
     ammo_category: AmmoCategoryID
     /**
      * Modification value, which will be added to the current gun speed modifier upon researching.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/GunSpeedModifier.html#modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/GunSpeedModifier.html#modifier Online documentation}
      */
     modifier: double
   }
   /**
    * Used to specify heat capacity properties without a {@link HeatEnergySource heat energy source}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatBuffer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatBuffer.html Online documentation}
    */
   export interface HeatBuffer {
     /**
      * Must be >= `default_temperature`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatBuffer.html#max_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatBuffer.html#max_temperature Online documentation}
      */
     max_temperature: double
     specific_heat: Energy
     max_transfer: Energy
     /**
      * **Default:** `15`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatBuffer.html#default_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatBuffer.html#default_temperature Online documentation}
      */
     default_temperature?: double
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatBuffer.html#min_temperature_gradient Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatBuffer.html#min_temperature_gradient Online documentation}
      */
     min_temperature_gradient?: double
     /**
      * **Default:** `15`
      *
      * Must be >= `default_temperature` and <= `max_temperature`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatBuffer.html#min_working_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatBuffer.html#min_working_temperature Online documentation}
      */
     min_working_temperature?: double
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatBuffer.html#minimum_glow_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatBuffer.html#minimum_glow_temperature Online documentation}
      */
     minimum_glow_temperature?: float
     pipe_covers?: Sprite4Way
@@ -7056,23 +7055,23 @@ declare module "factorio:prototype" {
     heat_glow?: Sprite4Way
     /**
      * May contain up to 32 connections.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatBuffer.html#connections Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatBuffer.html#connections Online documentation}
      */
     connections?: readonly HeatConnection[]
   }
   /**
    * Defines the connections for {@link HeatEnergySource} and {@link HeatBuffer}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatConnection.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatConnection.html Online documentation}
    */
   export interface HeatConnection {
     /**
      * The location of the heat pipe connection, relative to the center of the entity in the north-facing direction.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatConnection.html#position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatConnection.html#position Online documentation}
      */
     position: MapPosition
     /**
      * The "outward" direction of this heat connection. For a connection to succeed, the other heat connection must face the opposite direction (a south-facing connection needs a north-facing connection to succeed). A connection rotates with the entity.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatConnection.html#direction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatConnection.html#direction Online documentation}
      */
     direction: Direction
   }
@@ -7080,31 +7079,31 @@ declare module "factorio:prototype" {
     readonly type: "heat"
     /**
      * Must be >= `default_temperature`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatEnergySource.html#max_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatEnergySource.html#max_temperature Online documentation}
      */
     max_temperature: double
     specific_heat: Energy
     max_transfer: Energy
     /**
      * **Default:** `15`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatEnergySource.html#default_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatEnergySource.html#default_temperature Online documentation}
      */
     default_temperature?: double
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatEnergySource.html#min_temperature_gradient Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatEnergySource.html#min_temperature_gradient Online documentation}
      */
     min_temperature_gradient?: double
     /**
      * **Default:** `15`
      *
      * Must be >= `default_temperature` and <= `max_temperature`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatEnergySource.html#min_working_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatEnergySource.html#min_working_temperature Online documentation}
      */
     min_working_temperature?: double
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatEnergySource.html#minimum_glow_temperature Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatEnergySource.html#minimum_glow_temperature Online documentation}
      */
     minimum_glow_temperature?: float
     pipe_covers?: Sprite4Way
@@ -7113,12 +7112,12 @@ declare module "factorio:prototype" {
     heat_glow?: Sprite4Way
     /**
      * May contain up to 32 connections.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatEnergySource.html#connections Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatEnergySource.html#connections Online documentation}
      */
     connections?: readonly HeatConnection[]
     /**
      * Heat energy sources do not support producing pollution.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/HeatEnergySource.html#emissions_per_minute Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/HeatEnergySource.html#emissions_per_minute Online documentation}
      */
     emissions_per_minute?: Record<AirbornePollutantID, double>
   }
@@ -7127,7 +7126,7 @@ declare module "factorio:prototype" {
    * - `"left"`
    * - `"center"`
    * - `"right"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/HorizontalAlign.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/HorizontalAlign.html Online documentation}
    */
   export type HorizontalAlign = "left" | "center" | "right"
   export interface HorizontalFlowStyleSpecification extends BaseStyleSpecification {
@@ -7186,33 +7185,33 @@ declare module "factorio:prototype" {
    *     shift = {7, 8}
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/IconData.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/IconData.html Online documentation}
    */
   export interface IconData {
     /**
      * Path to the icon file.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconData.html#icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconData.html#icon Online documentation}
      */
     icon: FileName
     /**
      * **Default:** `64`
      *
      * The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconData.html#icon_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconData.html#icon_size Online documentation}
      */
     icon_size?: SpriteSizeType
     /**
      * **Default:** ``{r=1, g=1, b=1, a=1}``
      *
      * The tint to apply to the icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconData.html#tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconData.html#tint Online documentation}
      */
     tint?: Color
     /**
      * **Default:** ``{0, 0}``
      *
      * Used to offset the icon "layer" from the overall icon. The shift is applied from the center (so negative shifts are left and up, respectively). Shift values are "in pixels" where the overall icon is assumed to be `expected_icon_size / 2` pixels in width and height, meaning shift `{0, expected_icon_size/2}` will shift it by entire icon height down.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconData.html#shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconData.html#shift Online documentation}
      */
     shift?: Vector
     /**
@@ -7231,88 +7230,88 @@ declare module "factorio:prototype" {
      * - `32` for {@link ShortcutPrototype#icons ShortcutPrototype::icons} and `24` for {@link ShortcutPrototype#small_icons ShortcutPrototype::small_icons}.
      *
      * - `64` for the rest of the prototypes that use icons.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconData.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconData.html#scale Online documentation}
      */
     scale?: double
     /**
      * **Default:** ``true` for the first layer, `false` otherwise`
      *
      * Outline is drawn using signed distance field generated on load. One icon image, will have only one SDF generated. But if the image is used in multiple icon with different scales, outline width won't match the desired width in all the scales but the largest one.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconData.html#draw_background Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconData.html#draw_background Online documentation}
      */
     draw_background?: boolean
     /**
      * **Default:** `false`
      *
      * When `true` the layer is not considered for calculating bounds of the icon, so it can go out of bounds of rectangle into which the icon is drawn in GUI.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconData.html#floating Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconData.html#floating Online documentation}
      */
     floating?: boolean
   }
   /**
    * Specification of where and how should be the alt-mode icons of entities be drawn.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/IconDrawSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/IconDrawSpecification.html Online documentation}
    */
   export interface IconDrawSpecification {
     /**
      * **Default:** ``{0, 0}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconDrawSpecification.html#shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconDrawSpecification.html#shift Online documentation}
      */
     shift?: Vector
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconDrawSpecification.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconDrawSpecification.html#scale Online documentation}
      */
     scale?: float
     /**
      * **Default:** `1`
      *
      * Scale of the icon when there are many items.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconDrawSpecification.html#scale_for_many Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconDrawSpecification.html#scale_for_many Online documentation}
      */
     scale_for_many?: float
     /**
      * **Default:** `"entity-info-icon-below"`
      *
      * Render layer of the icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconDrawSpecification.html#renderLayer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconDrawSpecification.html#renderLayer Online documentation}
      */
     renderLayer?: "entity-info-icon-below" | "entity-info-icon-above" | "air-entity-info-icon"
   }
   /**
    * Specification of where and how should be the icons of individual inventories be drawn.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/IconSequencePositioning.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/IconSequencePositioning.html Online documentation}
    */
   export interface IconSequencePositioning {
     inventory_index: defines.inventory
     /**
      * **Default:** `width of entity selection box / 0.75`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconSequencePositioning.html#max_icons_per_row Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconSequencePositioning.html#max_icons_per_row Online documentation}
      */
     max_icons_per_row?: uint8
     /**
      * **Default:** `width of entity selection box / 1.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconSequencePositioning.html#max_icon_rows Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconSequencePositioning.html#max_icon_rows Online documentation}
      */
     max_icon_rows?: uint8
     /**
      * **Default:** `{0, 0.7}`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconSequencePositioning.html#shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconSequencePositioning.html#shift Online documentation}
      */
     shift?: Vector
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconSequencePositioning.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconSequencePositioning.html#scale Online documentation}
      */
     scale?: float
     /**
      * **Default:** `1.1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconSequencePositioning.html#separation_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconSequencePositioning.html#separation_multiplier Online documentation}
      */
     separation_multiplier?: float
     /**
      * **Default:** `-0.1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/IconSequencePositioning.html#multi_row_initial_height_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/IconSequencePositioning.html#multi_row_initial_height_modifier Online documentation}
      */
     multi_row_initial_height_modifier?: float
   }
@@ -7325,7 +7324,7 @@ declare module "factorio:prototype" {
    *   horizontally_stretchable = "on",
    *   stretch_image_to_widget_size = true,
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ImageStyleSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ImageStyleSpecification.html Online documentation}
    */
   export interface ImageStyleSpecification extends BaseStyleSpecification {
     readonly type: "image_style"
@@ -7343,24 +7342,24 @@ declare module "factorio:prototype" {
    * {type="item", name="steel-plate", amount=8} -- item ingredient
    * @example
    * {type="fluid", name="water", amount=50} -- fluid ingredient
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/IngredientPrototype.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/IngredientPrototype.html Online documentation}
    */
   export type IngredientPrototype = ItemIngredientPrototype | FluidIngredientPrototype
   export interface InsertItemTriggerEffectItem extends TriggerEffectItem {
     readonly type: "insert-item"
     /**
      * Name of the {@link ItemPrototype} that should be created.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InsertItemTriggerEffectItem.html#item Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InsertItemTriggerEffectItem.html#item Online documentation}
      */
     item: ItemID
     /**
      * **Default:** `"normal"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InsertItemTriggerEffectItem.html#quality Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InsertItemTriggerEffectItem.html#quality Online documentation}
      */
     quality?: QualityID
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InsertItemTriggerEffectItem.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InsertItemTriggerEffectItem.html#count Online documentation}
      */
     count?: ItemCountType
   }
@@ -7370,14 +7369,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InserterStackSizeBonusModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InserterStackSizeBonusModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InserterStackSizeBonusModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InserterStackSizeBonusModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -7387,29 +7386,29 @@ declare module "factorio:prototype" {
   export interface InterruptibleSound {
     /**
      * At least one of sound and stopped_sound has to be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InterruptibleSound.html#sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InterruptibleSound.html#sound Online documentation}
      */
     sound?: Sound
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InterruptibleSound.html#minimal_change_per_tick Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InterruptibleSound.html#minimal_change_per_tick Online documentation}
      */
     minimal_change_per_tick?: float
     /**
      * At least one of sound and stopped_sound has to be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InterruptibleSound.html#stopped_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InterruptibleSound.html#stopped_sound Online documentation}
      */
     stopped_sound?: Sound
     /**
      * **Default:** `1`
      *
      * Has to be greater or equal to `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InterruptibleSound.html#minimal_sound_duration_for_stopped_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InterruptibleSound.html#minimal_sound_duration_for_stopped_sound Online documentation}
      */
     minimal_sound_duration_for_stopped_sound?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/InterruptibleSound.html#fade_ticks Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/InterruptibleSound.html#fade_ticks Online documentation}
      */
     fade_ticks?: uint32
   }
@@ -7424,17 +7423,17 @@ declare module "factorio:prototype" {
    * "logistics"
    * @example
    * "production"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemGroupID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemGroupID.html Online documentation}
    */
   export type ItemGroupID = string
   /**
    * @see UtilityConstants.item_health_bar_colors
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilityConstants.html#item_health_bar_colors Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilityConstants.html#item_health_bar_colors Online documentation}
    */
   export interface ItemHealthColorData {
     /**
      * Cannot be negative.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemHealthColorData.html#threshold Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemHealthColorData.html#threshold Online documentation}
      */
     threshold: float
     color: Color
@@ -7445,20 +7444,20 @@ declare module "factorio:prototype" {
    * "iron-plate"
    * @example
    * "blueprint-book"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemID.html Online documentation}
    */
   export type ItemID = string
   /**
    * Struct type for {@link ItemIDFilter}
    * @see ItemIDFilter
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemIDFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemIDFilter.html Online documentation}
    */
   export interface ItemIDFilterStruct {
     name: ItemID
     quality?: QualityID
     /**
      * Only loaded if `quality` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemIDFilter.html#comparator Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemIDFilter.html#comparator Online documentation}
      */
     comparator?: ComparatorString
   }
@@ -7469,46 +7468,46 @@ declare module "factorio:prototype" {
    * {type="item", name="steel-plate", amount=8}
    * @example
    * {type="item", name="iron-plate", amount=12}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemIngredientPrototype.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemIngredientPrototype.html Online documentation}
    */
   export interface ItemIngredientPrototype {
     readonly type: "item"
     name: ItemID
     /**
      * Cannot be `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemIngredientPrototype.html#amount Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemIngredientPrototype.html#amount Online documentation}
      */
     amount: uint16
     /**
      * **Default:** `0`
      *
      * Amount that should not be included in the consumption statistics, typically with a matching product having the same amount set as {@link ItemProductPrototype#ignored_by_stats ignored_by_stats}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemIngredientPrototype.html#ignored_by_stats Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemIngredientPrototype.html#ignored_by_stats Online documentation}
      */
     ignored_by_stats?: uint16
   }
   /**
    * An item product definition.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html Online documentation}
    */
   export interface ItemProductPrototype {
     readonly type: "item"
     /**
      * The name of an {@link ItemPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#name Online documentation}
      */
     name: ItemID
     amount?: uint16
     /**
      * Only loaded, and mandatory if `amount` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#amount_min Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#amount_min Online documentation}
      */
     amount_min?: uint16
     /**
      * Only loaded, and mandatory if `amount` is not defined.
      *
      * If set to a number that is less than `amount_min`, the game will use `amount_min` instead.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#amount_max Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#amount_max Online documentation}
      */
     amount_max?: uint16
     /**
@@ -7519,7 +7518,7 @@ declare module "factorio:prototype" {
      * The effect of probability is no product, or a linear distribution on [min, max]. For a recipe with probability `p`, amount_min `min`, and amount_max `max`, the Expected Value of this product can be expressed as `p * (0.5 * (max + min))`. This is what will be shown in a recipe tooltip. The effect of `ignored_by_productivity` on the product is not shown.
      *
      * When `amount_min` and `amount_max` are not provided, `amount` applies as min and max. The Expected Value simplifies to `p * amount`, providing `0` product, or `amount` product, on recipe completion.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#probability Online documentation}
      */
     probability?: double
     /**
@@ -7530,7 +7529,7 @@ declare module "factorio:prototype" {
      * If `ignored_by_stats` is larger than the amount crafted (for instance due to probability) it will instead show as consumed.
      *
      * Products with `ignored_by_stats` defined will not be set as recipe through the circuit network when using the product's item-signal.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#ignored_by_stats Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#ignored_by_stats Online documentation}
      */
     ignored_by_stats?: uint16
     /**
@@ -7541,28 +7540,28 @@ declare module "factorio:prototype" {
      * This value can safely be set larger than the maximum expected craft amount, any excess is ignored.
      *
      * This value is ignored when {@link RecipePrototype#allow_productivity allow_productivity} is `false`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#ignored_by_productivity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#ignored_by_productivity Online documentation}
      */
     ignored_by_productivity?: uint16
     /**
      * **Default:** `true`
      *
      * When hovering over a recipe in the crafting menu the recipe tooltip will be shown. An additional item tooltip will be shown for every product, as a separate tooltip, if the item tooltip has a description and/or properties to show and if `show_details_in_recipe_tooltip` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#show_details_in_recipe_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#show_details_in_recipe_tooltip Online documentation}
      */
     show_details_in_recipe_tooltip?: boolean
     /**
      * **Default:** `0`
      *
      * Probability that a craft will yield one additional product. Also applies to bonus crafts caused by productivity.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#extra_count_fraction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#extra_count_fraction Online documentation}
      */
     extra_count_fraction?: float
     /**
      * **Default:** `0`
      *
      * Must be >= `0` and < `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemProductPrototype.html#percent_spoiled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemProductPrototype.html#percent_spoiled Online documentation}
      */
     percent_spoiled?: float
   }
@@ -7582,7 +7581,7 @@ declare module "factorio:prototype" {
    * - `"spawnable"`: Item is able to be spawned by a {@link ShortcutPrototype} or {@link CustomInputPrototype}.
    * - `"spoil-result"`
    * - `"ignore-spoil-time-modifier"`: Controls whether the spoil time ignores the spoil time modifier in the {@link DifficultySettings}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemPrototypeFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemPrototypeFlags.html Online documentation}
    */
   export type ItemPrototypeFlags = readonly (
     | "draw-logistic-overlay"
@@ -7605,24 +7604,24 @@ declare module "factorio:prototype" {
    * "capsule"
    * @example
    * "military-equipment"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemSubGroupID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemSubGroupID.html Online documentation}
    */
   export type ItemSubGroupID = string
   /**
    * Item that when placed creates this entity/tile.
    * @example
    * {item = "iron-chest", count = 1}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemToPlace.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemToPlace.html Online documentation}
    */
   export interface ItemToPlace {
     /**
      * The item used to place this entity/tile.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemToPlace.html#item Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemToPlace.html#item Online documentation}
      */
     item: ItemID
     /**
      * How many items are used to place one of this entity/tile. Can't be larger than the stack size of the item.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ItemToPlace.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ItemToPlace.html#count Online documentation}
      */
     count: ItemCountType
   }
@@ -7631,7 +7630,7 @@ declare module "factorio:prototype" {
     entity?: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/KillTipTrigger.html#match_type_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/KillTipTrigger.html#match_type_only Online documentation}
      */
     match_type_only?: boolean
     damage_type?: DamageTypeID
@@ -7640,7 +7639,7 @@ declare module "factorio:prototype" {
     readonly type: "label_style"
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LabelStyleSpecification.html#font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LabelStyleSpecification.html#font Online documentation}
      */
     font?: string
     font_color?: Color
@@ -7662,14 +7661,14 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LaboratoryProductivityModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LaboratoryProductivityModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LaboratoryProductivityModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LaboratoryProductivityModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -7679,21 +7678,21 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LaboratorySpeedModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LaboratorySpeedModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LaboratorySpeedModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LaboratorySpeedModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   /**
    * Struct type for {@link LayeredSound}
    * @see LayeredSound
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LayeredSound.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LayeredSound.html Online documentation}
    */
   export interface LayeredSoundStruct {
     layers: readonly Sound[]
@@ -7702,7 +7701,7 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link LayeredSprite}
    * @see LayeredSprite
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LayeredSprite.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LayeredSprite.html Online documentation}
    */
   export interface LayeredSpriteStruct extends Sprite {
     render_layer: RenderLayer
@@ -7712,66 +7711,66 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link LightDefinition}
    * @see LightDefinition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html Online documentation}
    */
   export interface LightDefinitionStruct {
     /**
      * **Default:** `"basic"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#type Online documentation}
      */
     readonly type?: "basic" | "oriented"
     /**
      * Only loaded, and mandatory if `type` is `"oriented"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#picture Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#picture Online documentation}
      */
     picture?: Sprite
     /**
      * **Default:** `0`
      *
      * Only loaded if `type` is `"oriented"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#rotation_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#rotation_shift Online documentation}
      */
     rotation_shift?: RealOrientation
     /**
      * Brightness of the light in the range `[0, 1]`, where `0` is no light and `1` is the maximum light.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#intensity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#intensity Online documentation}
      */
     intensity: float
     /**
      * The radius of the light in tiles. Note that the light gets darker near the edges, so the effective size of the light will appear to be smaller.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#size Online documentation}
      */
     size: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#source_orientation_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#source_orientation_offset Online documentation}
      */
     source_orientation_offset?: RealOrientation
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#add_perspective Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#add_perspective Online documentation}
      */
     add_perspective?: boolean
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#flicker_interval Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#flicker_interval Online documentation}
      */
     flicker_interval?: uint8
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#flicker_min_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#flicker_min_modifier Online documentation}
      */
     flicker_min_modifier?: float
     /**
      * **Default:** `Value of `flicker_min_modifier``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#flicker_max_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#flicker_max_modifier Online documentation}
      */
     flicker_max_modifier?: float
     /**
      * **Default:** `false`
      *
      * Offsets tick used to calculate flicker by position hash. Useful to desynchronize flickering of multiple stationary lights.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#offset_flicker Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#offset_flicker Online documentation}
      */
     offset_flicker?: boolean
     shift?: Vector
@@ -7779,12 +7778,12 @@ declare module "factorio:prototype" {
      * **Default:** ``{r=1, g=1, b=1}``
      *
      * Color of the light.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#color Online documentation}
      */
     color?: Color
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#minimum_darkness Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#minimum_darkness Online documentation}
      */
     minimum_darkness?: float
   }
@@ -7832,68 +7831,68 @@ declare module "factorio:prototype" {
    *     color = {r = 0.92, g = 0.77, b = 0.3}
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html Online documentation}
    */
   export type LightDefinition =
     | LightDefinitionStruct
     | readonly {
         /**
          * **Default:** `"basic"`
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#type Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#type Online documentation}
          */
         readonly type?: "basic" | "oriented"
         /**
          * Only loaded, and mandatory if `type` is `"oriented"`.
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#picture Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#picture Online documentation}
          */
         picture?: Sprite
         /**
          * **Default:** `0`
          *
          * Only loaded if `type` is `"oriented"`.
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#rotation_shift Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#rotation_shift Online documentation}
          */
         rotation_shift?: RealOrientation
         /**
          * Brightness of the light in the range `[0, 1]`, where `0` is no light and `1` is the maximum light.
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#intensity Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#intensity Online documentation}
          */
         intensity: float
         /**
          * The radius of the light in tiles. Note that the light gets darker near the edges, so the effective size of the light will appear to be smaller.
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#size Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#size Online documentation}
          */
         size: float
         /**
          * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#source_orientation_offset Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#source_orientation_offset Online documentation}
          */
         source_orientation_offset?: RealOrientation
         /**
          * **Default:** `false`
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#add_perspective Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#add_perspective Online documentation}
          */
         add_perspective?: boolean
         /**
          * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#flicker_interval Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#flicker_interval Online documentation}
          */
         flicker_interval?: uint8
         /**
          * **Default:** `1`
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#flicker_min_modifier Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#flicker_min_modifier Online documentation}
          */
         flicker_min_modifier?: float
         /**
          * **Default:** `Value of `flicker_min_modifier``
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#flicker_max_modifier Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#flicker_max_modifier Online documentation}
          */
         flicker_max_modifier?: float
         /**
          * **Default:** `false`
          *
          * Offsets tick used to calculate flicker by position hash. Useful to desynchronize flickering of multiple stationary lights.
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#offset_flicker Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#offset_flicker Online documentation}
          */
         offset_flicker?: boolean
         shift?: Vector
@@ -7901,171 +7900,171 @@ declare module "factorio:prototype" {
          * **Default:** ``{r=1, g=1, b=1}``
          *
          * Color of the light.
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#color Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#color Online documentation}
          */
         color?: Color
         /**
          * **Default:** `0`
-         * @see {@link https://lua-api.factorio.com/2.0.49/types/LightDefinition.html#minimum_darkness Online documentation}
+         * @see {@link https://lua-api.factorio.com/2.0.50/types/LightDefinition.html#minimum_darkness Online documentation}
          */
         minimum_darkness?: float
       }[]
   /**
    * Specifies the light flicker. Note that this defaults to "showing a white light" instead of the usually expected "showing nothing".
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html Online documentation}
    */
   export interface LightFlickeringDefinition {
     /**
      * **Default:** `0.2`
      *
      * Brightness of the light in the range `[0, 1]` where `0` is no light and `1` is the maximum light.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html#minimum_intensity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html#minimum_intensity Online documentation}
      */
     minimum_intensity?: float
     /**
      * **Default:** `0.8`
      *
      * Brightness of the light in the range `[0, 1]` where `0` is no light and `1` is the maximum light.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html#maximum_intensity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html#maximum_intensity Online documentation}
      */
     maximum_intensity?: float
     /**
      * **Default:** `0.3`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html#derivation_change_frequency Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html#derivation_change_frequency Online documentation}
      */
     derivation_change_frequency?: float
     /**
      * **Default:** `0.06`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html#derivation_change_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html#derivation_change_deviation Online documentation}
      */
     derivation_change_deviation?: float
     /**
      * **Default:** `0.02`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html#border_fix_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html#border_fix_speed Online documentation}
      */
     border_fix_speed?: float
     /**
      * **Default:** `0.5`
      *
      * The radius of the light in tiles. Note, that the light gets darker near the edges, so the effective size of the light seems to be smaller.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html#minimum_light_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html#minimum_light_size Online documentation}
      */
     minimum_light_size?: float
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html#light_intensity_to_size_coefficient Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html#light_intensity_to_size_coefficient Online documentation}
      */
     light_intensity_to_size_coefficient?: float
     /**
      * **Default:** `{r=1, g=1, b=1} (White)`
      *
      * Color of the light.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightFlickeringDefinition.html#color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightFlickeringDefinition.html#color Online documentation}
      */
     color?: Color
   }
   export interface LightProperties {
     /**
      * **Default:** `{1, 1, 1, 1}`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightProperties.html#color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightProperties.html#color Online documentation}
      */
     color?: Color
     /**
      * **Default:** `{1, 1, 1}`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightProperties.html#direction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightProperties.html#direction Online documentation}
      */
     direction?: Vector3D
   }
   export interface LightningGraphicsSet {
     /**
      * If not empty, enables the lightning shader.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#shader_configuration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#shader_configuration Online documentation}
      */
     shader_configuration?: readonly LightningShaderConfiguration[]
     /**
      * **Default:** `0.005`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#bolt_half_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#bolt_half_width Online documentation}
      */
     bolt_half_width?: float
     /**
      * **Default:** `0.05`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#bolt_midpoint_variance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#bolt_midpoint_variance Online documentation}
      */
     bolt_midpoint_variance?: float
     /**
      * **Default:** `0.35`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#max_bolt_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#max_bolt_offset Online documentation}
      */
     max_bolt_offset?: float
     /**
      * **Default:** `0.9`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#max_fork_probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#max_fork_probability Online documentation}
      */
     max_fork_probability?: float
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#min_relative_fork_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#min_relative_fork_length Online documentation}
      */
     min_relative_fork_length?: float
     /**
      * **Default:** `0.7`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#max_relative_fork_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#max_relative_fork_length Online documentation}
      */
     max_relative_fork_length?: float
     /**
      * **Default:** `0.05`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#fork_orientation_variance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#fork_orientation_variance Online documentation}
      */
     fork_orientation_variance?: float
     /**
      * **Default:** `0.7`
      *
      * Cannot be 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#fork_intensity_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#fork_intensity_multiplier Online documentation}
      */
     fork_intensity_multiplier?: float
     /**
      * **Default:** `0.2`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#relative_cloud_fork_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#relative_cloud_fork_length Online documentation}
      */
     relative_cloud_fork_length?: float
     /**
      * **Default:** `0.015`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#cloud_fork_orientation_variance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#cloud_fork_orientation_variance Online documentation}
      */
     cloud_fork_orientation_variance?: float
     /**
      * **Default:** `2`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#min_ground_streamer_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#min_ground_streamer_distance Online documentation}
      */
     min_ground_streamer_distance?: float
     /**
      * **Default:** `4`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#max_ground_streamer_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#max_ground_streamer_distance Online documentation}
      */
     max_ground_streamer_distance?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#ground_streamer_variance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#ground_streamer_variance Online documentation}
      */
     ground_streamer_variance?: float
     /**
      * **Default:** `5`
      *
      * Cannot be 255.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#cloud_forks Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#cloud_forks Online documentation}
      */
     cloud_forks?: uint8
     /**
      * **Default:** `3`
      *
      * Must be less than or equal to `bolt_detail_level`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#cloud_detail_level Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#cloud_detail_level Online documentation}
      */
     cloud_detail_level?: uint8
     /**
      * **Default:** `6`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#bolt_detail_level Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#bolt_detail_level Online documentation}
      */
     bolt_detail_level?: uint8
     cloud_background?: Animation
@@ -8082,7 +8081,7 @@ declare module "factorio:prototype" {
     search_radius: double
     /**
      * Cannot be an empty array. Names of {@link LightningPrototype lightning entities}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningProperties.html#lightning_types Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningProperties.html#lightning_types Online documentation}
      */
     lightning_types: readonly EntityID[]
     priority_rules: readonly LightningPriorityRule[]
@@ -8091,26 +8090,26 @@ declare module "factorio:prototype" {
      * **Default:** `0`
      *
      * Must be in range [0,1].
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningProperties.html#lightning_multiplier_at_day Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningProperties.html#lightning_multiplier_at_day Online documentation}
      */
     lightning_multiplier_at_day?: double
     /**
      * **Default:** `1`
      *
      * Must be in range [0,1].
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningProperties.html#lightning_multiplier_at_night Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningProperties.html#lightning_multiplier_at_night Online documentation}
      */
     lightning_multiplier_at_night?: double
     /**
      * When set, value of that surface property will be used as an additional multiplier to the lightning frequency.
      *
      * Value of that surface property is divided by {@link SurfacePropertyPrototype#default_value default_value} which means a default value must be positive (cannot be 0). When surface property has value at default, then this additional multiplier has value of 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningProperties.html#multiplier_surface_property Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningProperties.html#multiplier_surface_property Online documentation}
      */
     multiplier_surface_property?: SurfacePropertyID
     /**
      * Icon to render on top of entities that are endangered by lightning. When not provided, a {@link UtilitySprites#lightning_warning_icon UtilitySprites::lightning_warning_icon} will be used instead.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningProperties.html#lightning_warning_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningProperties.html#lightning_warning_icon Online documentation}
      */
     lightning_warning_icon?: Sprite
   }
@@ -8120,7 +8119,7 @@ declare module "factorio:prototype" {
   }
   /**
    * @see LightningGraphicsSet.shader_configuration
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LightningGraphicsSet.html#shader_configuration Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LightningGraphicsSet.html#shader_configuration Online documentation}
    */
   export interface LightningShaderConfiguration {
     color: Color
@@ -8159,7 +8158,7 @@ declare module "factorio:prototype" {
    *     }
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LineTriggerItem.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LineTriggerItem.html Online documentation}
    */
   export interface LineTriggerItem extends TriggerItem {
     readonly type: "line"
@@ -8169,7 +8168,7 @@ declare module "factorio:prototype" {
   }
   /**
    * @see LinkedBeltPrototype.structure
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/LinkedBeltPrototype.html#structure Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/LinkedBeltPrototype.html#structure Online documentation}
    */
   export interface LinkedBeltStructure {
     direction_in?: Sprite4Way
@@ -8370,7 +8369,7 @@ declare module "factorio:prototype" {
    * - `"play-previous-track"`
    * - `"pause-resume-music"`
    * - `""`: Indicates no linked game control.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LinkedGameControl.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LinkedGameControl.html Online documentation}
    */
   export type LinkedGameControl =
     | "move-up"
@@ -8606,37 +8605,37 @@ declare module "factorio:prototype" {
    * -- If "entity-description.furnace" exists, it is concatenated with "\n" and returned. Otherwise, if
    * -- "item-description.furnace" exists, it is returned as-is. Otherwise, "optional fallback" is returned. If this
    * -- value wasn't specified, the translation result would be "Unknown key: 'item-description.furnace'".
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LocalisedString.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LocalisedString.html Online documentation}
    */
   export type LocalisedString = string | number | boolean | undefined | readonly [string, ...LocalisedString[]]
   export type LogisticFilterIndex = uint16
   /**
    * The items generated when an {@link EntityWithHealthPrototype} is killed.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/LootItem.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/LootItem.html Online documentation}
    */
   export interface LootItem {
     /**
      * The item to spawn.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LootItem.html#item Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LootItem.html#item Online documentation}
      */
     item: ItemID
     /**
      * **Default:** `1`
      *
      * `0` is 0% and `1` is 100%. Must be `> 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LootItem.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LootItem.html#probability Online documentation}
      */
     probability?: double
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LootItem.html#count_min Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LootItem.html#count_min Online documentation}
      */
     count_min?: double
     /**
      * **Default:** `1`
      *
      * Must be `> 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/LootItem.html#count_max Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/LootItem.html#count_max Online documentation}
      */
     count_max?: double
   }
@@ -8646,7 +8645,7 @@ declare module "factorio:prototype" {
   export interface MainSound {
     /**
      * Cannot be empty.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#sound Online documentation}
      */
     sound?: Sound
     /**
@@ -8659,21 +8658,21 @@ declare module "factorio:prototype" {
      * Unused when {@link WorkingSound#persistent WorkingSound::persistent} is `true`.
      * @example
      * probability = 1 / (3 * 60) -- average pause between the sound is 3 seconds
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#probability Online documentation}
      */
     probability?: double
     /**
      * **Default:** `0`
      *
      * Can't be used when `match_progress_to_activity` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#fade_in_ticks Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#fade_in_ticks Online documentation}
      */
     fade_in_ticks?: uint32
     /**
      * **Default:** `0`
      *
      * Can't be used when `match_progress_to_activity` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#fade_out_ticks Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#fade_out_ticks Online documentation}
      */
     fade_out_ticks?: uint32
     activity_to_volume_modifiers?: ActivityMatchingModifiers
@@ -8682,17 +8681,17 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * Unused when {@link WorkingSound#persistent WorkingSound::persistent} is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#match_progress_to_activity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#match_progress_to_activity Online documentation}
      */
     match_progress_to_activity?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#match_volume_to_activity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#match_volume_to_activity Online documentation}
      */
     match_volume_to_activity?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#match_speed_to_activity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#match_speed_to_activity Online documentation}
      */
     match_speed_to_activity?: boolean
     /**
@@ -8701,14 +8700,14 @@ declare module "factorio:prototype" {
      * The `sound` is played when at least one of the specified working visualisations is drawn.
      *
      * Unused when {@link WorkingSound#persistent WorkingSound::persistent} is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#play_for_working_visualisations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#play_for_working_visualisations Online documentation}
      */
     play_for_working_visualisations?: readonly string[]
     /**
      * **Default:** `0`
      *
      * Only used if {@link WorkingSound#persistent WorkingSound::persistent} is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MainSound.html#volume_smoothing_window_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MainSound.html#volume_smoothing_window_size Online documentation}
      */
     volume_smoothing_window_size?: uint32
   }
@@ -8721,14 +8720,14 @@ declare module "factorio:prototype" {
     target?: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ManualWireDragTipTrigger.html#match_type_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ManualWireDragTipTrigger.html#match_type_only Online documentation}
      */
     match_type_only?: boolean
     wire_type?: "red" | "green" | "copper"
   }
   /**
    * @see UtilityConstants.map_editor
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilityConstants.html#map_editor Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilityConstants.html#map_editor Online documentation}
    */
   export interface MapEditorConstants {
     clone_editor_copy_source_color: Color
@@ -8751,7 +8750,7 @@ declare module "factorio:prototype" {
   export interface MapGenPreset {
     /**
      * Specifies the ordering in the {@linkplain https://wiki.factorio.com/Map_generator map generator GUI}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPreset.html#order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPreset.html#order Online documentation}
      */
     order: Order
     /**
@@ -8760,17 +8759,17 @@ declare module "factorio:prototype" {
      * Whether this is the default preset. If `true`, this preset may not have any other properties besides this and order.
      *
      * If no MapGenPreset has `default = true`, the preset selector will have a blank preset label, with default settings. The "blank" preset goes away when another preset is selected.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPreset.html#default Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPreset.html#default Online documentation}
      */
     default?: boolean
     /**
      * If any setting is not set, it will use the default values.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPreset.html#basic_settings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPreset.html#basic_settings Online documentation}
      */
     basic_settings?: MapGenSettings
     /**
      * If any setting is not set, it will use the default values.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPreset.html#advanced_settings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPreset.html#advanced_settings Online documentation}
      */
     advanced_settings?: AdvancedMapGenSettings
   }
@@ -8785,17 +8784,17 @@ declare module "factorio:prototype" {
     enabled?: boolean
     /**
      * Percentual increase in the evolution factor for every second (60 ticks)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetEnemyEvolutionSettings.html#time_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetEnemyEvolutionSettings.html#time_factor Online documentation}
      */
     time_factor?: double
     /**
      * Percentual increase in the evolution factor for every destroyed spawner
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetEnemyEvolutionSettings.html#destroy_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetEnemyEvolutionSettings.html#destroy_factor Online documentation}
      */
     destroy_factor?: double
     /**
      * Percentual increase in the evolution factor for 1 pollution unit
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetEnemyEvolutionSettings.html#pollution_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetEnemyEvolutionSettings.html#pollution_factor Online documentation}
      */
     pollution_factor?: double
   }
@@ -8803,46 +8802,46 @@ declare module "factorio:prototype" {
     enabled?: boolean
     /**
      * Distance in chunks from the furthest base around. This prevents expansions from reaching too far into the player's territory.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetEnemyExpansionSettings.html#max_expansion_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetEnemyExpansionSettings.html#max_expansion_distance Online documentation}
      */
     max_expansion_distance?: uint32
     /**
      * Size of the group that goes to build new base (the game interpolates between min size and max size based on evolution factor).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetEnemyExpansionSettings.html#settler_group_min_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetEnemyExpansionSettings.html#settler_group_min_size Online documentation}
      */
     settler_group_min_size?: uint32
     settler_group_max_size?: uint32
     /**
      * Ticks to expand to a single position for a base is used. Cooldown is calculated as follows: `cooldown = lerp(max_expansion_cooldown, min_expansion_cooldown, -e^2 + 2 * e)` where `lerp` is the linear interpolation function, and e is the current evolution factor.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetEnemyExpansionSettings.html#min_expansion_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetEnemyExpansionSettings.html#min_expansion_cooldown Online documentation}
      */
     min_expansion_cooldown?: uint32
     /**
      * In ticks.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetEnemyExpansionSettings.html#max_expansion_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetEnemyExpansionSettings.html#max_expansion_cooldown Online documentation}
      */
     max_expansion_cooldown?: uint32
   }
   /**
    * The pollution settings, the values are for 60 ticks (1 second).
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetPollutionSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetPollutionSettings.html Online documentation}
    */
   export interface MapGenPresetPollutionSettings {
     enabled?: boolean
     /**
      * Must be <= 0.25. Amount that is diffused to neighboring chunks.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetPollutionSettings.html#diffusion_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetPollutionSettings.html#diffusion_ratio Online documentation}
      */
     diffusion_ratio?: double
     /**
      * Must be >= 0.1. Also known as absorption modifier.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetPollutionSettings.html#ageing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetPollutionSettings.html#ageing Online documentation}
      */
     ageing?: double
     min_pollution_to_damage_trees?: double
     /**
      * Must be >= 0.1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenPresetPollutionSettings.html#enemy_attack_pollution_consumption_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenPresetPollutionSettings.html#enemy_attack_pollution_consumption_modifier Online documentation}
      */
     enemy_attack_pollution_consumption_modifier?: double
     pollution_restored_per_tree_damage?: double
@@ -8852,53 +8851,53 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * Whether undefined `autoplace_controls` should fall back to the default controls or not.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#default_enable_all_autoplace_controls Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#default_enable_all_autoplace_controls Online documentation}
      */
     default_enable_all_autoplace_controls?: boolean
     autoplace_controls?: Record<AutoplaceControlID, FrequencySizeRichness>
     /**
      * Each setting in this table maps the string type to the settings for that type.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#autoplace_settings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#autoplace_settings Online documentation}
      */
     autoplace_settings?: Record<"entity" | "tile" | "decorative", AutoplaceSettings>
     /**
      * Map of property name (`"elevation"`, etc) to name of noise expression that will provide it. Entries may be omitted. A notable usage is changing autoplace behavior of an entity based on the preset, which cannot be read from a noise expression.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#property_expression_names Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#property_expression_names Online documentation}
      */
     property_expression_names?: Record<string, string | boolean | double>
     /**
      * Array of the positions of the starting areas.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#starting_points Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#starting_points Online documentation}
      */
     starting_points?: readonly MapPosition[]
     /**
      * Read by the game, but not used or set in the GUI.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#seed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#seed Online documentation}
      */
     seed?: uint32
     /**
      * Width of the map in tiles. Silently limited to 2 000 000, ie. +/- 1 million tiles from the center in both directions.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#width Online documentation}
      */
     width?: uint32
     /**
      * Height of the map in tiles. Silently limited to 2 000 000, ie. +/- 1 million tiles from the center in both directions.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#height Online documentation}
      */
     height?: uint32
     /**
      * Size of the starting area. The starting area only effects enemy placement, and has no effect on resources.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#starting_area Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#starting_area Online documentation}
      */
     starting_area?: MapGenSize
     /**
      * If true, enemy creatures will not attack unless the player first attacks them.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#peaceful_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#peaceful_mode Online documentation}
      */
     peaceful_mode?: boolean
     /**
      * If true, enemy creatures will not naturally spawn from spawners, map gen, or trigger effects.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSettings.html#no_enemies_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSettings.html#no_enemies_mode Online documentation}
      */
     no_enemies_mode?: boolean
     cliff_settings?: CliffPlacementSettings
@@ -8907,9 +8906,9 @@ declare module "factorio:prototype" {
   /**
    * A floating point number specifying an amount.
    *
-   * For backwards compatibility, MapGenSizes can also be specified as one of the following strings, which will be converted to a number:
+   * For backwards compatibility, MapGenSizes can also be specified as a string, which will be converted to a number (when queried, a number will always be returned).
    *
-   * Each of the values in a triplet (such as "low", "small", and "poor") are synonymous. In-game the values can be set from `0.166` to `6` via the GUI (respective to the percentages), while `0` is used to disable the autoplace control.
+   * The map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.
    *
    * ## Union members
    * - {@link float}: Specifying a map gen dimension.
@@ -8929,7 +8928,7 @@ declare module "factorio:prototype" {
    * - `"very-high"`: equivalent to `2`.
    * - `"very-big"`: equivalent to `2`.
    * - `"very-good"`: equivalent to `2`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MapGenSize.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MapGenSize.html Online documentation}
    */
   export type MapGenSize =
     | float
@@ -8951,24 +8950,24 @@ declare module "factorio:prototype" {
     | "very-good"
   /**
    * @see NeighbourConnectableConnectionDefinition.location
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectableConnectionDefinition.html#location Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectableConnectionDefinition.html#location Online documentation}
    */
   export interface MapLocation {
     /**
      * Position relative to entity's position where the connection point will be located at.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapLocation.html#position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapLocation.html#position Online documentation}
      */
     position: MapPosition
     /**
      * Direction this connection point will be facing to.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MapLocation.html#direction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MapLocation.html#direction Online documentation}
      */
     direction: Direction
   }
   /**
    * Struct type for {@link MapPosition}
    * @see MapPosition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MapPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MapPosition.html Online documentation}
    */
   export interface MapPositionStruct {
     x: double
@@ -8985,50 +8984,50 @@ declare module "factorio:prototype" {
    * @example
    * -- Shorthand
    * {1.625, 2.375}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MapPosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MapPosition.html Online documentation}
    */
   export type MapPosition = MapPositionStruct | readonly [double, double]
   /**
    * `math.huge` represents the maximum possible tick.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MapTick.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MapTick.html Online documentation}
    */
   export type MapTick = uint64
   export type MaterialAmountType = double
   /**
    * Used by {@link TilePrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MaterialTextureParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MaterialTextureParameters.html Online documentation}
    */
   export interface MaterialTextureParameters {
     /**
      * Frame count.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaterialTextureParameters.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaterialTextureParameters.html#count Online documentation}
      */
     count: uint32
     picture: FileName
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaterialTextureParameters.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaterialTextureParameters.html#scale Online documentation}
      */
     scale?: float
     /**
      * **Default:** `0`
      *
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaterialTextureParameters.html#x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaterialTextureParameters.html#x Online documentation}
      */
     x?: SpriteSizeType
     /**
      * **Default:** `0`
      *
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaterialTextureParameters.html#y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaterialTextureParameters.html#y Online documentation}
      */
     y?: SpriteSizeType
     /**
      * **Default:** `0`
      *
      * Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having longer animations in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. 0 means that all the pictures are in one horizontal line.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaterialTextureParameters.html#line_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaterialTextureParameters.html#line_length Online documentation}
      */
     line_length?: uint32
   }
@@ -9062,7 +9061,7 @@ declare module "factorio:prototype" {
    * "2500 * (L - 3)"
    * @example
    * "(4e5 * (abs(speed) + 10.5)) / weight"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MathExpression.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MathExpression.html Online documentation}
    */
   export type MathExpression = string
   export interface MaxFailedAttemptsPerTickPerConstructionQueueModifier extends SimpleModifier {
@@ -9071,7 +9070,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaxFailedAttemptsPerTickPerConstructionQueueModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaxFailedAttemptsPerTickPerConstructionQueueModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -9081,7 +9080,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaxSuccessfulAttemptsPerTickPerConstructionQueueModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaxSuccessfulAttemptsPerTickPerConstructionQueueModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -9091,14 +9090,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaximumFollowingRobotsCountModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaximumFollowingRobotsCountModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MaximumFollowingRobotsCountModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MaximumFollowingRobotsCountModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -9119,47 +9118,47 @@ declare module "factorio:prototype" {
    *     }
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html Online documentation}
    */
   export interface MinableProperties {
     /**
      * How many seconds are required to mine this object at 1 mining speed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html#mining_time Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html#mining_time Online documentation}
      */
     mining_time: double
     include_in_show_counts?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html#transfer_entity_health_to_products Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html#transfer_entity_health_to_products Online documentation}
      */
     transfer_entity_health_to_products?: boolean
     /**
      * The items or fluids that are returned when this object is mined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html#results Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html#results Online documentation}
      */
     results?: readonly ProductPrototype[]
     /**
      * Only loaded if `results` is not defined.
      *
      * Which item is dropped when this is mined. Cannot be empty. If you want the entity to not be minable, don't specify the minable properties, if you want it to be minable with no result item, don't specify the result at all.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html#result Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html#result Online documentation}
      */
     result?: ItemID
     /**
      * **Default:** `0`
      *
      * The amount of fluid that is used up when this object is mined. If this is > 0, this object cannot be mined by hand.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html#fluid_amount Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html#fluid_amount Online documentation}
      */
     fluid_amount?: FluidAmount
     /**
      * Name of a {@link ParticlePrototype}. Which set of particles to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html#mining_particle Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html#mining_particle Online documentation}
      */
     mining_particle?: ParticleID
     /**
      * Name of a {@link FluidPrototype}. The fluid that is used up when this object is mined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html#required_fluid Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html#required_fluid Online documentation}
      */
     required_fluid?: FluidID
     /**
@@ -9168,7 +9167,7 @@ declare module "factorio:prototype" {
      * Only loaded if `results` is not defined.
      *
      * How many of result are dropped.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MinableProperties.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MinableProperties.html#count Online documentation}
      */
     count?: uint16
     mining_trigger?: Trigger
@@ -9185,37 +9184,37 @@ declare module "factorio:prototype" {
   }
   /**
    * Used by {@link MiningDrillPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningDrillGraphicsSet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningDrillGraphicsSet.html Online documentation}
    */
   export interface MiningDrillGraphicsSet extends WorkingVisualisations {
     frozen_patch?: Sprite4Way
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningDrillGraphicsSet.html#reset_animation_when_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningDrillGraphicsSet.html#reset_animation_when_frozen Online documentation}
      */
     reset_animation_when_frozen?: boolean
     /**
      * **Default:** `"object"`
      *
      * Render layer(s) for all directions of the circuit connectors.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningDrillGraphicsSet.html#circuit_connector_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningDrillGraphicsSet.html#circuit_connector_layer Online documentation}
      */
     circuit_connector_layer?: RenderLayer | CircuitConnectorLayer
     /**
      * **Default:** `100`
      *
      * Secondary draw order(s) for all directions of the circuit connectors.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningDrillGraphicsSet.html#circuit_connector_secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningDrillGraphicsSet.html#circuit_connector_secondary_draw_order Online documentation}
      */
     circuit_connector_secondary_draw_order?: int8 | CircuitConnectorSecondaryDrawOrder
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningDrillGraphicsSet.html#drilling_vertical_movement_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningDrillGraphicsSet.html#drilling_vertical_movement_duration Online documentation}
      */
     drilling_vertical_movement_duration?: uint16
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningDrillGraphicsSet.html#animation_progress Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningDrillGraphicsSet.html#animation_progress Online documentation}
      */
     animation_progress?: float
   }
@@ -9225,14 +9224,14 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningDrillProductivityBonusModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningDrillProductivityBonusModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningDrillProductivityBonusModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningDrillProductivityBonusModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -9242,7 +9241,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/MiningWithFluidModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/MiningWithFluidModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -9252,17 +9251,17 @@ declare module "factorio:prototype" {
    * - `"vertical"`
    * - `"diagonal-pos"`
    * - `"diagonal-neg"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Mirroring.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Mirroring.html Online documentation}
    */
   export type Mirroring = "horizontal" | "vertical" | "diagonal-pos" | "diagonal-neg"
   /**
    * The user-set value of a startup {@linkplain https://wiki.factorio.com/Tutorial:Mod_settings mod setting}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ModSetting.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ModSetting.html Online documentation}
    */
   export interface ModSetting {
     /**
      * The value of the mod setting. The type depends on the kind of setting.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ModSetting.html#value Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ModSetting.html#value Online documentation}
      */
     value: int32 | double | boolean | string | Color
   }
@@ -9320,7 +9319,7 @@ declare module "factorio:prototype" {
    * - {@link BeaconDistributionModifier}: Loaded when the `type` is `"beacon-distribution"`.
    * - {@link CreateGhostOnEntityDeathModifier}: Loaded when the `type` is `"create-ghost-on-entity-death"`.
    * - {@link BeltStackSizeBonusModifier}: Loaded when the `type` is `"belt-stack-size-bonus"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Modifier.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Modifier.html Online documentation}
    */
   export type Modifier =
     | InserterStackSizeBonusModifier
@@ -9384,7 +9383,7 @@ declare module "factorio:prototype" {
    * for name, version in pairs(mods) do
    *   log(name .. " version " .. version) -- => space-age version 1.2.0
    * end
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Mods.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Mods.html Online documentation}
    */
   export type Mods = Record<string, string>
   /**
@@ -9393,7 +9392,7 @@ declare module "factorio:prototype" {
    * "productivity"
    * @example
    * "efficiency"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ModuleCategoryID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ModuleCategoryID.html Online documentation}
    */
   export type ModuleCategoryID = string
   /**
@@ -9403,7 +9402,7 @@ declare module "factorio:prototype" {
    * - `"tertiary"`
    * - `"quaternary"`
    * - `"none"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ModuleTint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ModuleTint.html Online documentation}
    */
   export type ModuleTint = "primary" | "secondary" | "tertiary" | "quaternary" | "none"
   export interface ModuleTransferTipTrigger extends CountBasedTipTrigger {
@@ -9414,54 +9413,54 @@ declare module "factorio:prototype" {
    * The name of a {@link MouseCursor}.
    * @example
    * "selection-tool-cursor"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/MouseCursorID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/MouseCursorID.html Online documentation}
    */
   export type MouseCursorID = string
   /**
    * Defines how this entity connects to its neighbours
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectable.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectable.html Online documentation}
    */
   export interface NeighbourConnectable {
     /**
      * **Default:** `true`
      *
      * If the connection positions and directions will be affected by entity's direction.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectable.html#affected_by_direction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectable.html#affected_by_direction Online documentation}
      */
     affected_by_direction?: boolean
     /**
      * **Default:** `0.7`
      *
      * Distance by which connection point is shifted along its direction to select a position where neighbor will be searched.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectable.html#neighbour_search_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectable.html#neighbour_search_distance Online documentation}
      */
     neighbour_search_distance?: float
     /**
      * Definitions of the connection points.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectable.html#connections Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectable.html#connections Online documentation}
      */
     connections: readonly NeighbourConnectableConnectionDefinition[]
   }
   export type NeighbourConnectableConnectionCategory = string
   /**
    * In order for 2 NeighbourConnectable to connect they need to share a connection point at the same position with opposite direction and both accept neighbor's category.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectableConnectionDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectableConnectionDefinition.html Online documentation}
    */
   export interface NeighbourConnectableConnectionDefinition {
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectableConnectionDefinition.html#location Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectableConnectionDefinition.html#location Online documentation}
      */
     location: MapLocation
     /**
      * Name of a category this connection should belong to. Used when deciding which connections are allowed to connect to this.
      *
      * Cannot be an empty string.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectableConnectionDefinition.html#category Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectableConnectionDefinition.html#category Online documentation}
      */
     category: NeighbourConnectableConnectionCategory
     /**
      * Table of neighbor categories this connection will connect to.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NeighbourConnectableConnectionDefinition.html#neighbour_category Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NeighbourConnectableConnectionDefinition.html#neighbour_category Online documentation}
      */
     neighbour_category?: readonly NeighbourConnectableConnectionCategory[]
   }
@@ -9482,7 +9481,7 @@ declare module "factorio:prototype" {
    *
    * - **Operator:** See the list below
    *
-   * Identifiers are used to name functions and variables. The built-in functions and variables are documented in the {@linkplain https://lua-api.factorio.com/2.0.49/auxiliary/noise-expressions.html auxiliary docs}. Mods can define their own noise expressions which can be used as variables and functions. The entry points for this are {@link NamedNoiseFunction} and {@link NamedNoiseExpression} as well as local functions and expressions.
+   * Identifiers are used to name functions and variables. The built-in functions and variables are documented in the {@linkplain https://lua-api.factorio.com/2.0.50/auxiliary/noise-expressions.html auxiliary docs}. Mods can define their own noise expressions which can be used as variables and functions. The entry points for this are {@link NamedNoiseFunction} and {@link NamedNoiseExpression} as well as local functions and expressions.
    *
    * All functions accept both named and positional arguments. To differentiate between these function calls, positional arguments start/end with `(`/`)` and named arguments with `{`/`}`, e.g. `clamp(x, -1, 1)` and `clamp{min = -1, max = 1, value = x}` are the same function call. Because of this, positional arguments can't be mixed with named arguments. A function can't have more than 255 parameters.
    *
@@ -9515,19 +9514,19 @@ declare module "factorio:prototype" {
    * "distance_from_nearest_point{x = x, y = y, points = starting_positions}"
    * @example
    * "clamp(x, -1, 1)"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/NoiseExpression.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/NoiseExpression.html Online documentation}
    */
   export type NoiseExpression = string | boolean | double
   /**
    * The advantage of noise functions over {@link NoiseExpression noise expressions} is that they have parameters.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/NoiseFunction.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/NoiseFunction.html Online documentation}
    */
   export interface NoiseFunction {
     /**
      * The order of the parameters matters because functions can also be called with positional arguments.
      *
      * A function can't have more than 255 parameters.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NoiseFunction.html#parameters Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NoiseFunction.html#parameters Online documentation}
      */
     parameters: readonly string[]
     expression: NoiseExpression
@@ -9535,14 +9534,14 @@ declare module "factorio:prototype" {
      * A map of expression name to expression.
      *
      * Local expressions are meant to store data locally similar to local variables in Lua. Their purpose is to hold noise expressions used multiple times in the named noise expression, or just to tell the reader that the local expression has a specific purpose. Local expressions can access other local definitions and also function parameters, but recursive definitions aren't supported.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NoiseFunction.html#local_expressions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NoiseFunction.html#local_expressions Online documentation}
      */
     local_expressions?: Record<string, NoiseExpression>
     /**
      * A map of function name to function.
      *
      * Local functions serve the same purpose as local expressions - they aren't visible outside of the specific prototype and they have access to other local definitions.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NoiseFunction.html#local_functions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NoiseFunction.html#local_functions Online documentation}
      */
     local_functions?: Record<string, NoiseFunction>
   }
@@ -9552,7 +9551,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/NothingModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/NothingModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     effect_description?: LocalisedString
@@ -9560,37 +9559,37 @@ declare module "factorio:prototype" {
   export interface OffshorePumpGraphicsSet {
     /**
      * Rendered in "object" layer, with secondary draw order 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/OffshorePumpGraphicsSet.html#animation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/OffshorePumpGraphicsSet.html#animation Online documentation}
      */
     animation?: Animation4Way
     /**
      * **Default:** `"ground-patch"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/OffshorePumpGraphicsSet.html#base_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/OffshorePumpGraphicsSet.html#base_render_layer Online documentation}
      */
     base_render_layer?: RenderLayer
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/OffshorePumpGraphicsSet.html#underwater_layer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/OffshorePumpGraphicsSet.html#underwater_layer_offset Online documentation}
      */
     underwater_layer_offset?: int8
     /**
      * Rendered in "object" layer, with secondary draw order 20.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/OffshorePumpGraphicsSet.html#fluid_animation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/OffshorePumpGraphicsSet.html#fluid_animation Online documentation}
      */
     fluid_animation?: Animation4Way
     /**
      * Rendered in "object" layer, with secondary draw order 40.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/OffshorePumpGraphicsSet.html#glass_pictures Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/OffshorePumpGraphicsSet.html#glass_pictures Online documentation}
      */
     glass_pictures?: Sprite4Way
     /**
      * Rendered in layer specified by `base_render_layer`, with secondary draw order 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/OffshorePumpGraphicsSet.html#base_pictures Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/OffshorePumpGraphicsSet.html#base_pictures Online documentation}
      */
     base_pictures?: Sprite4Way
     /**
      * Drawn by tile renderer when water animation is enabled.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/OffshorePumpGraphicsSet.html#underwater_pictures Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/OffshorePumpGraphicsSet.html#underwater_pictures Online documentation}
      */
     underwater_pictures?: Sprite4Way
   }
@@ -9598,7 +9597,7 @@ declare module "factorio:prototype" {
     readonly type: "or"
     /**
      * If at least one of the triggers is fulfilled, this trigger is considered fulfilled.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/OrTipTrigger.html#triggers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/OrTipTrigger.html#triggers Online documentation}
      */
     triggers: readonly TipTrigger[]
   }
@@ -9638,7 +9637,7 @@ declare module "factorio:prototype" {
    * "b[aaa]" -- "[" is sorted after "-" in UTF-8
    * "bb"  -- "b" is sorted after "[" in UTF-8
    * ]
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Order.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Order.html Online documentation}
    */
   export type Order = string
   export interface OrientedCliffPrototype {
@@ -9649,7 +9648,7 @@ declare module "factorio:prototype" {
   }
   /**
    * @see CliffPrototype.orientations
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/CliffPrototype.html#orientations Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/CliffPrototype.html#orientations Online documentation}
    */
   export interface OrientedCliffPrototypeSet {
     west_to_east: OrientedCliffPrototype
@@ -9675,7 +9674,7 @@ declare module "factorio:prototype" {
   }
   /**
    * @see ProgressBarStyleSpecification.other_colors
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProgressBarStyleSpecification.html#other_colors Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProgressBarStyleSpecification.html#other_colors Online documentation}
    */
   export interface OtherColors {
     less_than: double
@@ -9688,7 +9687,7 @@ declare module "factorio:prototype" {
    * "beacon-metal-particle-small"
    * @example
    * "wooden-particle"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ParticleID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ParticleID.html Online documentation}
    */
   export type ParticleID = string
   export interface PasteEntitySettingsTipTrigger extends CountBasedTipTrigger {
@@ -9697,147 +9696,147 @@ declare module "factorio:prototype" {
     target?: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PasteEntitySettingsTipTrigger.html#match_type_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PasteEntitySettingsTipTrigger.html#match_type_only Online documentation}
      */
     match_type_only?: boolean
   }
   export interface PathFinderSettings {
     /**
      * The pathfinder performs a step of the backward search every `fwd2bwd_ratio`'th step. The minimum allowed value is 2, which means symmetric search.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#fwd2bwd_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#fwd2bwd_ratio Online documentation}
      */
     fwd2bwd_ratio: uint32
     /**
      * When comparing nodes in open which one to check next, heuristic value is multiplied by this ratio. The higher the number the more is the search directed directly towards the goal.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#goal_pressure_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#goal_pressure_ratio Online documentation}
      */
     goal_pressure_ratio: double
     use_path_cache: boolean
     /**
      * When this is exhausted no more requests are allowed, at the moment the first path to exhaust this will be finished (even if it is hundreds of steps).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#max_steps_worked_per_tick Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#max_steps_worked_per_tick Online documentation}
      */
     max_steps_worked_per_tick: double
     max_work_done_per_tick: uint32
     /**
      * Number of elements in the cache.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#short_cache_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#short_cache_size Online documentation}
      */
     short_cache_size: uint32
     long_cache_size: uint32
     /**
      * Minimal distance to goal for path to be searched in short path cache.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#short_cache_min_cacheable_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#short_cache_min_cacheable_distance Online documentation}
      */
     short_cache_min_cacheable_distance: double
     /**
      * Minimal number of algorithm steps for path to be inserted into the short path cache.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#short_cache_min_algo_steps_to_cache Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#short_cache_min_algo_steps_to_cache Online documentation}
      */
     short_cache_min_algo_steps_to_cache: uint32
     /**
      * Minimal distance to goal for path to be searched in long path cache.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#long_cache_min_cacheable_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#long_cache_min_cacheable_distance Online documentation}
      */
     long_cache_min_cacheable_distance: double
     /**
      * When searching for connection to path cache path, search at most for this number of steps times the initial estimate.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#cache_max_connect_to_cache_steps_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#cache_max_connect_to_cache_steps_multiplier Online documentation}
      */
     cache_max_connect_to_cache_steps_multiplier: uint32
     /**
      * When looking for path from cache make sure it doesn't start too far from requested start in relative distance terms.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#cache_accept_path_start_distance_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#cache_accept_path_start_distance_ratio Online documentation}
      */
     cache_accept_path_start_distance_ratio: double
     /**
      * When looking for path from cache make sure it doesn't end too far from requested end. This is typically higher than accept value for the start because the end target can be moving.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#cache_accept_path_end_distance_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#cache_accept_path_end_distance_ratio Online documentation}
      */
     cache_accept_path_end_distance_ratio: double
     /**
      * Same as cache_accept_path_start_distance_ratio, but used for negative cache queries.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#negative_cache_accept_path_start_distance_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#negative_cache_accept_path_start_distance_ratio Online documentation}
      */
     negative_cache_accept_path_start_distance_ratio: double
     /**
      * Same as cache_accept_path_end_distance_ratio, but used for negative cache queries.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#negative_cache_accept_path_end_distance_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#negative_cache_accept_path_end_distance_ratio Online documentation}
      */
     negative_cache_accept_path_end_distance_ratio: double
     /**
      * When assigning rating to the best path this * start distances is considered.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#cache_path_start_distance_rating_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#cache_path_start_distance_rating_multiplier Online documentation}
      */
     cache_path_start_distance_rating_multiplier: double
     /**
      * When assigning rating to the best path this * end distances is considered. This is typically higher than value for the start to achieve better path end quality.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#cache_path_end_distance_rating_multiplier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#cache_path_end_distance_rating_multiplier Online documentation}
      */
     cache_path_end_distance_rating_multiplier: double
     /**
      * Somewhere along the path is stuck enemy we need to avoid. This is mainly to handle situations when units have arrived and are attacking the target then units further in the back will use this and run around the target.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#stale_enemy_with_same_destination_collision_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#stale_enemy_with_same_destination_collision_penalty Online documentation}
      */
     stale_enemy_with_same_destination_collision_penalty: double
     /**
      * If there is a moving unit further than this we don't really care.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#ignore_moving_enemy_collision_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#ignore_moving_enemy_collision_distance Online documentation}
      */
     ignore_moving_enemy_collision_distance: double
     /**
      * Enemy is not moving/or is too close and has different destination.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#enemy_with_different_destination_collision_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#enemy_with_different_destination_collision_penalty Online documentation}
      */
     enemy_with_different_destination_collision_penalty: double
     /**
      * Simplification for now; collision with everything else is this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#general_entity_collision_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#general_entity_collision_penalty Online documentation}
      */
     general_entity_collision_penalty: double
     /**
      * Collision penalty for successors of positions that require destroy to reach.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#general_entity_subsequent_collision_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#general_entity_subsequent_collision_penalty Online documentation}
      */
     general_entity_subsequent_collision_penalty: double
     /**
      * Collision penalty for collisions in the extended bounding box but outside the entity's actual bounding box.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#extended_collision_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#extended_collision_penalty Online documentation}
      */
     extended_collision_penalty: double
     /**
      * Up until this amount any client will be served by the path finder (no estimate on the path length).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#max_clients_to_accept_any_new_request Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#max_clients_to_accept_any_new_request Online documentation}
      */
     max_clients_to_accept_any_new_request: uint32
     /**
      * From max_clients_to_accept_any_new_request till this one only those that have a short estimate will be served.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#max_clients_to_accept_short_new_request Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#max_clients_to_accept_short_new_request Online documentation}
      */
     max_clients_to_accept_short_new_request: uint32
     /**
      * This is the "threshold" to decide what is short and what is not.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#direct_distance_to_consider_short_request Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#direct_distance_to_consider_short_request Online documentation}
      */
     direct_distance_to_consider_short_request: uint32
     /**
      * If a short request takes more than this many steps, it will be rescheduled as a long request.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#short_request_max_steps Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#short_request_max_steps Online documentation}
      */
     short_request_max_steps: uint32
     /**
      * How many steps will be allocated to short requests each tick, as a ratio of all available steps per tick.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#short_request_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#short_request_ratio Online documentation}
      */
     short_request_ratio: double
     /**
      * Absolute minimum of steps that will be performed for every path find request no matter what.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#min_steps_to_check_path_find_termination Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#min_steps_to_check_path_find_termination Online documentation}
      */
     min_steps_to_check_path_find_termination: uint32
     /**
      * If the current actual cost from start is higher than this times estimate of start to goal then path finding is terminated.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PathFinderSettings.html#start_to_goal_cost_multiplier_to_terminate_path_find Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PathFinderSettings.html#start_to_goal_cost_multiplier_to_terminate_path_find Online documentation}
      */
     start_to_goal_cost_multiplier_to_terminate_path_find: double
     overload_levels: readonly uint32[]
@@ -9846,7 +9845,7 @@ declare module "factorio:prototype" {
   }
   /**
    * Not all prototypes that use this type are affected by all properties.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PerceivedPerformance.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PerceivedPerformance.html Online documentation}
    */
   export interface PerceivedPerformance {
     /**
@@ -9855,28 +9854,28 @@ declare module "factorio:prototype" {
      * Affects animation speed.
      *
      * Must be less than or equal to `maximum`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PerceivedPerformance.html#minimum Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PerceivedPerformance.html#minimum Online documentation}
      */
     minimum?: double
     /**
      * **Default:** `Max double`
      *
      * Affects animation speed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PerceivedPerformance.html#maximum Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PerceivedPerformance.html#maximum Online documentation}
      */
     maximum?: double
     /**
      * **Default:** `1`
      *
      * Affects {@link MainSound} if {@link MainSound#match_progress_to_activity MainSound::match_progress_to_activity}, {@link MainSound#match_volume_to_activity MainSound::match_volume_to_activity} or {@link MainSound#match_speed_to_activity MainSound::match_speed_to_activity} is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PerceivedPerformance.html#performance_to_activity_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PerceivedPerformance.html#performance_to_activity_rate Online documentation}
      */
     performance_to_activity_rate?: double
   }
   /**
    * Struct type for {@link PersistentWorldAmbientSoundDefinition}
    * @see PersistentWorldAmbientSoundDefinition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PersistentWorldAmbientSoundDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PersistentWorldAmbientSoundDefinition.html Online documentation}
    */
   export interface PersistentWorldAmbientSoundDefinitionStruct {
     sound: Sound
@@ -9885,12 +9884,12 @@ declare module "factorio:prototype" {
   export interface PersistentWorldAmbientSoundsDefinition {
     /**
      * Mandatory if `crossfade` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PersistentWorldAmbientSoundsDefinition.html#base_ambience Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PersistentWorldAmbientSoundsDefinition.html#base_ambience Online documentation}
      */
     base_ambience?: PersistentWorldAmbientSoundDefinition | readonly PersistentWorldAmbientSoundDefinition[]
     /**
      * Mandatory if `crossfade` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PersistentWorldAmbientSoundsDefinition.html#wind Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PersistentWorldAmbientSoundsDefinition.html#wind Online documentation}
      */
     wind?: PersistentWorldAmbientSoundDefinition | readonly PersistentWorldAmbientSoundDefinition[]
     crossfade?: PersistentWorldAmbientSoundsDefinitionCrossfade
@@ -9904,35 +9903,35 @@ declare module "factorio:prototype" {
      * **Default:** `"input-output"`
      *
      * Allowed direction of fluid flow at this connection. Pipeline entities (`pipe`, `pipe-to-ground`, and `storage-tank`) do not support this property.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#flow_direction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#flow_direction Online documentation}
      */
     flow_direction?: FluidFlowDirection
     /**
      * **Default:** `"normal"`
      *
      * Selects set of rules to follow when looking for other FluidBox this connection should connect to.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#connection_type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#connection_type Online documentation}
      */
     connection_type?: PipeConnectionType
     /**
      * Array of the {@link WorkingVisualisation#name WorkingVisualisation::name} of working visualisations to enable when this pipe connection is present.
      *
      * If the owning fluidbox has {@link FluidBox#draw_only_when_connected draw_only_when_connected} set to `true`, then the working visualisation is only enabled if this pipe connection is *connected*.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#enable_working_visualisations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#enable_working_visualisations Online documentation}
      */
     enable_working_visualisations?: readonly string[]
     /**
      * Primary direction this connection points to when entity direction is north and the entity is not mirrored. When entity is rotated or mirrored, effective direction will be computed based on this value.
      *
      * Only loaded, and mandatory if `connection_type` is `"normal"` or `"underground"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#direction Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#direction Online documentation}
      */
     direction?: Direction
     /**
      * Position relative to entity's center where pipes can connect to this fluidbox regardless the directions of entity.
      *
      * Only loaded if `connection_type` is `"normal"` or `"underground"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#position Online documentation}
      */
     position?: MapPosition
     /**
@@ -9941,7 +9940,7 @@ declare module "factorio:prototype" {
      * This is used for example by "pumpjack" where connections are consistently near bottom-left corner (2 directions) or near top-right corner (2 directions).
      *
      * Only loaded, and mandatory if `position` is not defined and if `connection_type` is `"normal"` or `"underground"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#positions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#positions Online documentation}
      */
     positions?: readonly [MapPosition, MapPosition, MapPosition, MapPosition]
     /**
@@ -9956,19 +9955,19 @@ declare module "factorio:prototype" {
      * May have at most one category when `connection_type` is `"underground"`.
      *
      * Only loaded if `connection_type` is `"normal"` or `"underground"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#connection_category Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#connection_category Online documentation}
      */
     connection_category?: string | readonly string[]
     /**
      * **Default:** `0`
      *
      * Only loaded if `connection_type` is `"underground"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#max_underground_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#max_underground_distance Online documentation}
      */
     max_underground_distance?: uint8
     /**
      * Only loaded if `connection_type` is `"underground"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#max_distance_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#max_distance_tint Online documentation}
      */
     max_distance_tint?: Color
     /**
@@ -9977,14 +9976,14 @@ declare module "factorio:prototype" {
      * In order to connect, both ends must have the same collision mask specified.
      *
      * Only loaded if `connection_type` is `"underground"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#underground_collision_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#underground_collision_mask Online documentation}
      */
     underground_collision_mask?: CollisionMaskConnector
     /**
      * Expected to be unique inside of a single entity. Used to uniquely identify where a linked connection should connect to.
      *
      * Only loaded, and mandatory if `connection_type` is `"linked"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#linked_connection_id Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#linked_connection_id Online documentation}
      */
     linked_connection_id?: FluidBoxLinkedConnectionID
   }
@@ -9994,7 +9993,7 @@ declare module "factorio:prototype" {
    * - `"underground"`: Allows distant connection up to a certain limit. Those connections may be blocked by tiles.
    * - `"linked"`: For mods, connections between entities have to be explicitly requested by script.
    * @see PipeConnectionDefinition.connection_type
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PipeConnectionDefinition.html#connection_type Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PipeConnectionDefinition.html#connection_type Online documentation}
    */
   export type PipeConnectionType = "normal" | "underground" | "linked"
   export interface PipePictures {
@@ -10075,35 +10074,35 @@ declare module "factorio:prototype" {
     fluid_background?: Sprite
     /**
      * Visualizes the flow of the fluid in the pipe. Drawn when `(fluid_temp - fluid_min_temp) / (fluid_max_temp - fluid_min_temp)` is less than or equal to `1/3` and the fluid's temperature is below {@link FluidPrototype#gas_temperature FluidPrototype::gas_temperature}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipePictures.html#low_temperature_flow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipePictures.html#low_temperature_flow Online documentation}
      */
     low_temperature_flow?: Sprite
     /**
      * Visualizes the flow of the fluid in the pipe. Drawn when `(fluid_temp - fluid_min_temp) / (fluid_max_temp - fluid_min_temp)` is larger than `1/3` and less than or equal to `2/3` and the fluid's temperature is below {@link FluidPrototype#gas_temperature FluidPrototype::gas_temperature}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipePictures.html#middle_temperature_flow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipePictures.html#middle_temperature_flow Online documentation}
      */
     middle_temperature_flow?: Sprite
     /**
      * Visualizes the flow of the fluid in the pipe. Drawn when `(fluid_temp - fluid_min_temp) / (fluid_max_temp - fluid_min_temp)` is larger than `2/3` and the fluid's temperature is below {@link FluidPrototype#gas_temperature FluidPrototype::gas_temperature}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipePictures.html#high_temperature_flow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipePictures.html#high_temperature_flow Online documentation}
      */
     high_temperature_flow?: Sprite
     /**
      * Visualizes the flow of the fluid in the pipe. Drawn when the fluid's temperature is above {@link FluidPrototype#gas_temperature FluidPrototype::gas_temperature}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PipePictures.html#gas_flow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PipePictures.html#gas_flow Online documentation}
      */
     gas_flow?: Animation
   }
   /**
    * @see ItemPrototype.place_as_tile
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/ItemPrototype.html#place_as_tile Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/ItemPrototype.html#place_as_tile Online documentation}
    */
   export interface PlaceAsTile {
     result: TileID
     condition: CollisionMaskConnector
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlaceAsTile.html#invert Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlaceAsTile.html#invert Online documentation}
      */
     invert?: boolean
     condition_size: uint32
@@ -10123,26 +10122,26 @@ declare module "factorio:prototype" {
     autoplace_controls?: Record<AutoplaceControlID, FrequencySizeRichness>
     /**
      * Each setting in this table maps the string type to the settings for that type.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlanetPrototypeMapGenSettings.html#autoplace_settings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlanetPrototypeMapGenSettings.html#autoplace_settings Online documentation}
      */
     autoplace_settings?: Record<"entity" | "tile" | "decorative", AutoplaceSettings>
     /**
      * Map of property name (e.g. "elevation") to name of noise expression that will provide it. Entries may be omitted. A notable usage is changing autoplace behavior of an entity based on the preset, which cannot be read from a noise expression.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlanetPrototypeMapGenSettings.html#property_expression_names Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlanetPrototypeMapGenSettings.html#property_expression_names Online documentation}
      */
     property_expression_names?: Record<string, string | boolean | double>
     /**
      * **Default:** `false`
      *
      * Used for showing the planet icon in map generator GUI next to moisture climate control.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlanetPrototypeMapGenSettings.html#moisture_climate_control Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlanetPrototypeMapGenSettings.html#moisture_climate_control Online documentation}
      */
     moisture_climate_control?: boolean
     /**
      * **Default:** `false`
      *
      * Used for showing the planet icon in map generator GUI next to aux climate control.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlanetPrototypeMapGenSettings.html#aux_climate_control Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlanetPrototypeMapGenSettings.html#aux_climate_control Online documentation}
      */
     aux_climate_control?: boolean
   }
@@ -10153,7 +10152,7 @@ declare module "factorio:prototype" {
    * - `"character_actions"`: Play the vibration only if it was caused by the player. For example when shooting a gun, vibration will play when the character shoots but not when a turret shoots.
    * - `"everything"`: Always play the vibration. Useful for example for explosions.
    * @see GameControllerVibrationData.play_for
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/GameControllerVibrationData.html#play_for Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/GameControllerVibrationData.html#play_for Online documentation}
    */
   export type PlayFor = "character_actions" | "everything"
   export interface PlaySoundTriggerEffectItem extends TriggerEffectItem {
@@ -10163,25 +10162,25 @@ declare module "factorio:prototype" {
      * **Default:** `0`
      *
      * Negative values are silently clamped to 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlaySoundTriggerEffectItem.html#min_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlaySoundTriggerEffectItem.html#min_distance Online documentation}
      */
     min_distance?: float
     /**
      * **Default:** `1e21`
      *
      * Negative values are silently clamped to 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlaySoundTriggerEffectItem.html#max_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlaySoundTriggerEffectItem.html#max_distance Online documentation}
      */
     max_distance?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlaySoundTriggerEffectItem.html#play_on_target_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlaySoundTriggerEffectItem.html#play_on_target_position Online documentation}
      */
     play_on_target_position?: boolean
   }
   /**
    * @see UtilityConstants.player_colors
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilityConstants.html#player_colors Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilityConstants.html#player_colors Online documentation}
    */
   export interface PlayerColorData {
     name: string
@@ -10193,60 +10192,60 @@ declare module "factorio:prototype" {
    * - `"all"`
    * - `"keyboard_and_mouse"`
    * - `"game_controller"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PlayerInputMethodFilter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PlayerInputMethodFilter.html Online documentation}
    */
   export type PlayerInputMethodFilter = "all" | "keyboard_and_mouse" | "game_controller"
   export interface PlumeEffect extends StatelessVisualisation {
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlumeEffect.html#age_discrimination Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlumeEffect.html#age_discrimination Online documentation}
      */
     age_discrimination?: int8
   }
   export interface PlumesSpecification {
     /**
      * If given, the plumes will only render if this area is on screen (relative to the thruster)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlumesSpecification.html#render_box Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlumesSpecification.html#render_box Online documentation}
      */
     render_box?: BoundingBox
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlumesSpecification.html#min_probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlumesSpecification.html#min_probability Online documentation}
      */
     min_probability?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlumesSpecification.html#max_probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlumesSpecification.html#max_probability Online documentation}
      */
     max_probability?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlumesSpecification.html#min_y_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlumesSpecification.html#min_y_offset Online documentation}
      */
     min_y_offset?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlumesSpecification.html#max_y_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlumesSpecification.html#max_y_offset Online documentation}
      */
     max_y_offset?: float
     /**
      * Array may not be empty and may at most have 255 elements.
      *
      * Non-zero `period` needs to be provided. May not have `positions` or `particle_tick_offset`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PlumesSpecification.html#stateless_visualisations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PlumesSpecification.html#stateless_visualisations Online documentation}
      */
     stateless_visualisations?: PlumeEffect | readonly PlumeEffect[]
   }
   /**
    * One frame in time for a Bezier interpolation.
    * @see PodAnimationProcessionLayer.frames
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PodAnimationProcessionLayer.html#frames Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PodAnimationProcessionLayer.html#frames Online documentation}
    */
   export interface PodAnimationProcessionBezierControlPoint {
     timestamp: MapTick
     /**
      * the frame of the pod animation played.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodAnimationProcessionBezierControlPoint.html#frame Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodAnimationProcessionBezierControlPoint.html#frame Online documentation}
      */
     frame: float
   }
@@ -10254,29 +10253,29 @@ declare module "factorio:prototype" {
     readonly type: "pod-animation"
     graphic?: ProcessionGraphic
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodAnimationProcessionLayer.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodAnimationProcessionLayer.html#frames Online documentation}
      */
     frames: readonly PodAnimationProcessionBezierControlPoint[]
   }
   /**
    * One frame in time for a Bezier interpolation.
    * @see PodDistanceTraveledProcessionLayer.frames
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PodDistanceTraveledProcessionLayer.html#frames Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PodDistanceTraveledProcessionLayer.html#frames Online documentation}
    */
   export interface PodDistanceTraveledProcessionBezierControlPoint {
     /**
      * Mandatory if `distance` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodDistanceTraveledProcessionBezierControlPoint.html#timestamp Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodDistanceTraveledProcessionBezierControlPoint.html#timestamp Online documentation}
      */
     timestamp?: MapTick
     /**
      * `distance` and `distance_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodDistanceTraveledProcessionBezierControlPoint.html#distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodDistanceTraveledProcessionBezierControlPoint.html#distance Online documentation}
      */
     distance?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodDistanceTraveledProcessionBezierControlPoint.html#distance_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodDistanceTraveledProcessionBezierControlPoint.html#distance_t Online documentation}
      */
     distance_t?: double
   }
@@ -10284,65 +10283,65 @@ declare module "factorio:prototype" {
     readonly type: "pod-distance-traveled"
     /**
      * The group this layer belongs to, for inheritance.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodDistanceTraveledProcessionLayer.html#reference_group Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodDistanceTraveledProcessionLayer.html#reference_group Online documentation}
      */
     reference_group?: ProcessionLayerInheritanceGroupID
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodDistanceTraveledProcessionLayer.html#contribute_to_distance_traveled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodDistanceTraveledProcessionLayer.html#contribute_to_distance_traveled Online documentation}
      */
     contribute_to_distance_traveled?: boolean
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodDistanceTraveledProcessionLayer.html#distance_traveled_contribution Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodDistanceTraveledProcessionLayer.html#distance_traveled_contribution Online documentation}
      */
     distance_traveled_contribution?: float
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodDistanceTraveledProcessionLayer.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodDistanceTraveledProcessionLayer.html#frames Online documentation}
      */
     frames: readonly PodDistanceTraveledProcessionBezierControlPoint[]
   }
   /**
    * One frame in time for a Bezier interpolation.
    * @see PodMovementProcessionLayer.frames
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionLayer.html#frames Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionLayer.html#frames Online documentation}
    */
   export interface PodMovementProcessionBezierControlPoint {
     /**
      * Mandatory if `tilt` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionBezierControlPoint.html#timestamp Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionBezierControlPoint.html#timestamp Online documentation}
      */
     timestamp?: MapTick
     /**
      * `tilt` and `tilt_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionBezierControlPoint.html#tilt Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionBezierControlPoint.html#tilt Online documentation}
      */
     tilt?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionBezierControlPoint.html#tilt_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionBezierControlPoint.html#tilt_t Online documentation}
      */
     tilt_t?: double
     /**
      * `offset` and `offset_t` interpolate a vector smoothly over time using `offset_rate` and `offset_rate_t` for a 0-1 rate curve.
      *
      * Vector value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionBezierControlPoint.html#offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionBezierControlPoint.html#offset Online documentation}
      */
     offset?: Vector
     /**
      * Vector tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionBezierControlPoint.html#offset_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionBezierControlPoint.html#offset_t Online documentation}
      */
     offset_t?: Vector
     /**
      * Rate 0-1 value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionBezierControlPoint.html#offset_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionBezierControlPoint.html#offset_rate Online documentation}
      */
     offset_rate?: double
     /**
      * Rate tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionBezierControlPoint.html#offset_rate_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionBezierControlPoint.html#offset_rate_t Online documentation}
      */
     offset_rate_t?: double
   }
@@ -10364,76 +10363,76 @@ declare module "factorio:prototype" {
    *     { timestamp = 1050, offset_rate = 1.0 }
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionLayer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionLayer.html Online documentation}
    */
   export interface PodMovementProcessionLayer {
     readonly type: "pod-movement"
     /**
      * The group this layer belongs to, for inheritance.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionLayer.html#reference_group Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionLayer.html#reference_group Online documentation}
      */
     reference_group?: ProcessionLayerInheritanceGroupID
     /**
      * Adds the final position value from given layer to this one.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionLayer.html#inherit_from Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionLayer.html#inherit_from Online documentation}
      */
     inherit_from?: ProcessionLayerInheritanceGroupID
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionLayer.html#contribute_to_distance_traveled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionLayer.html#contribute_to_distance_traveled Online documentation}
      */
     contribute_to_distance_traveled?: boolean
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionLayer.html#distance_traveled_contribution Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionLayer.html#distance_traveled_contribution Online documentation}
      */
     distance_traveled_contribution?: float
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodMovementProcessionLayer.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodMovementProcessionLayer.html#frames Online documentation}
      */
     frames: readonly PodMovementProcessionBezierControlPoint[]
   }
   /**
    * One frame in time for a Bezier interpolation.
    * @see PodOpacityProcessionLayer.frames
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionLayer.html#frames Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionLayer.html#frames Online documentation}
    */
   export interface PodOpacityProcessionBezierControlPoint {
     /**
      * Mandatory if `cutscene_opacity` or `outside_opacity` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionBezierControlPoint.html#timestamp Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionBezierControlPoint.html#timestamp Online documentation}
      */
     timestamp?: MapTick
     /**
      * `cutscene_opacity` and `cutscene_opacity_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionBezierControlPoint.html#cutscene_opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionBezierControlPoint.html#cutscene_opacity Online documentation}
      */
     cutscene_opacity?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionBezierControlPoint.html#cutscene_opacity_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionBezierControlPoint.html#cutscene_opacity_t Online documentation}
      */
     cutscene_opacity_t?: double
     /**
      * `outside_opacity` and `outside_opacity_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionBezierControlPoint.html#outside_opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionBezierControlPoint.html#outside_opacity Online documentation}
      */
     outside_opacity?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionBezierControlPoint.html#outside_opacity_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionBezierControlPoint.html#outside_opacity_t Online documentation}
      */
     outside_opacity_t?: double
     /**
      * `lut_blend` and `lut_blend_t` interpolate a double smoothly over time.
      *
      * LUT won't be overridden however, until the pod is drawn above the game via `draw_switch_tick`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionBezierControlPoint.html#lut_blend Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionBezierControlPoint.html#lut_blend Online documentation}
      */
     lut_blend?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionBezierControlPoint.html#lut_blend_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionBezierControlPoint.html#lut_blend_t Online documentation}
      */
     lut_blend_t?: double
   }
@@ -10452,39 +10451,39 @@ declare module "factorio:prototype" {
      * - environment_volume : 1.0
      *
      * - environment_muffle_intensity : 0.0
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PodOpacityProcessionLayer.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PodOpacityProcessionLayer.html#frames Online documentation}
      */
     frames: readonly PodOpacityProcessionBezierControlPoint[]
   }
   /**
    * The pollution settings, the values are for 60 ticks (1 second).
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PollutionSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PollutionSettings.html Online documentation}
    */
   export interface PollutionSettings {
     enabled: boolean
     /**
      * Amount that is diffused to neighboring chunks.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PollutionSettings.html#diffusion_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PollutionSettings.html#diffusion_ratio Online documentation}
      */
     diffusion_ratio: double
     /**
      * This much pollution units must be on the chunk to start diffusing.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PollutionSettings.html#min_to_diffuse Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PollutionSettings.html#min_to_diffuse Online documentation}
      */
     min_to_diffuse: double
     /**
      * Constant modifier a percentage of 1; the pollution eaten by a chunks tiles. Also known as absorption modifier.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PollutionSettings.html#ageing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PollutionSettings.html#ageing Online documentation}
      */
     ageing: double
     /**
      * Anything bigger than this is visualized as this value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PollutionSettings.html#expected_max_per_chunk Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PollutionSettings.html#expected_max_per_chunk Online documentation}
      */
     expected_max_per_chunk: double
     /**
      * Anything lower than this (but > 0) is visualized as this value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PollutionSettings.html#min_to_show_per_chunk Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PollutionSettings.html#min_to_show_per_chunk Online documentation}
      */
     min_to_show_per_chunk: double
     min_pollution_to_damage_trees: double
@@ -10496,71 +10495,71 @@ declare module "factorio:prototype" {
   }
   /**
    * Probabilities of all items must add up to 100.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProbabilityTable.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProbabilityTable.html Online documentation}
    */
   export type ProbabilityTable = readonly ProbabilityTableItem[]
   /**
    * The first number is the value.
    *
    * The second number is the probability in percents. It must be in the `(0, 100]` interval.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProbabilityTableItem.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProbabilityTableItem.html Online documentation}
    */
   export type ProbabilityTableItem = readonly [uint8, uint8]
   export interface ProcessionAudio {
     readonly type: ProcessionAudioType
     /**
      * Mandatory if `type` is `"sound"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudio.html#sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudio.html#sound Online documentation}
      */
     sound?: Sound
     /**
      * Mandatory if `type` is `"looped-sound"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudio.html#looped_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudio.html#looped_sound Online documentation}
      */
     looped_sound?: InterruptibleSound
     /**
      * Mandatory if `type` is `"pod_catalogue"` or `type` is `"location_catalogue"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudio.html#catalogue_id Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudio.html#catalogue_id Online documentation}
      */
     catalogue_id?: uint32
   }
   /**
    * Allows a prototype to load variable amount of sounds which may be referenced by index.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioCatalogue.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioCatalogue.html Online documentation}
    */
   export type ProcessionAudioCatalogue = readonly ProcessionAudioCatalogueItem[]
   export interface ProcessionAudioCatalogueItem {
     index: uint32
     /**
      * One or the other.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioCatalogueItem.html#sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioCatalogueItem.html#sound Online documentation}
      */
     sound?: Sound
     /**
      * One or the other.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioCatalogueItem.html#looped_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioCatalogueItem.html#looped_sound Online documentation}
      */
     looped_sound?: InterruptibleSound
   }
   /**
    * Controls sounds during procession.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioEvent.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioEvent.html Online documentation}
    */
   export interface ProcessionAudioEvent {
     readonly type: ProcessionAudioEventType
     /**
      * Has to be defined unless the type is "stop-looped-sound".
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioEvent.html#usage Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioEvent.html#usage Online documentation}
      */
     usage?: ProcessionAudioUsage
     /**
      * Has to be defined unless the type is "stop-looped-sound".
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioEvent.html#audio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioEvent.html#audio Online documentation}
      */
     audio?: ProcessionAudio
     /**
      * Has to be defined unless the type is "play-sound".
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioEvent.html#loop_id Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioEvent.html#loop_id Online documentation}
      */
     loop_id?: uint32
   }
@@ -10571,7 +10570,7 @@ declare module "factorio:prototype" {
    * - `"play-sound"`: Plays a single sound once.
    * - `"start-looped-sound"`: Starts a looping sound under a specified index until "stop-looped-sound" is triggered or the procession ends. Starting a second looped sound will stop the first.
    * - `"stop-looped-sound"`: Ends a looping sound under a specified index.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioEventType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioEventType.html Online documentation}
    */
   export type ProcessionAudioEventType = "play-sound" | "start-looped-sound" | "stop-looped-sound"
   /**
@@ -10583,7 +10582,7 @@ declare module "factorio:prototype" {
    * - `"looped-sound"`: {@link Sound}.
    * - `"pod-catalogue"`: Defined inside {@link CargoPodPrototype}.
    * - `"location-catalogue"`: Defined inside {@link SpaceLocationPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioType.html Online documentation}
    */
   export type ProcessionAudioType = "none" | "sound" | "looped-sound" | "pod-catalogue" | "location-catalogue"
   /**
@@ -10593,35 +10592,35 @@ declare module "factorio:prototype" {
    * - `"both"`: The player inside a pod and an outside viewer.
    * - `"passenger"`: Only the player inside a pod.
    * - `"outside"`: Only an outside viewer.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionAudioUsage.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionAudioUsage.html Online documentation}
    */
   export type ProcessionAudioUsage = "both" | "passenger" | "outside"
   export interface ProcessionGraphic {
     readonly type: ProcessionGraphicType
     /**
      * Mandatory if `type` is `"sprite"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionGraphic.html#sprite Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionGraphic.html#sprite Online documentation}
      */
     sprite?: Sprite
     /**
      * Mandatory if `type` is `"animation"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionGraphic.html#animation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionGraphic.html#animation Online documentation}
      */
     animation?: Animation
     /**
      * Mandatory if `type` is `"pod-catalogue"` or `type` is `"location-catalogue"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionGraphic.html#catalogue_id Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionGraphic.html#catalogue_id Online documentation}
      */
     catalogue_id?: uint32
   }
   /**
    * Allows a prototype to load variable amount of sprites which may be referenced by index.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionGraphicCatalogue.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionGraphicCatalogue.html Online documentation}
    */
   export type ProcessionGraphicCatalogue = readonly ProcessionGraphicCatalogueItem[]
   /**
    * Either picture or animation must be provided.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionGraphicCatalogueItem.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionGraphicCatalogueItem.html Online documentation}
    */
   export interface ProcessionGraphicCatalogueItem {
     index: uint32
@@ -10638,7 +10637,7 @@ declare module "factorio:prototype" {
    * - `"pod-catalogue"`: Defined inside {@link CargoPodPrototype}.
    * - `"location-catalogue"`: Defined inside {@link SpaceLocationPrototype}.
    * - `"hatch-location-catalogue-index"`: Uses index from {@link CargoHatchDefinition} to address catalogue inside {@link SpaceLocationPrototype}. Only works for graphics drawn in-world such as 'single-graphic'.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionGraphicType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionGraphicType.html Online documentation}
    */
   export type ProcessionGraphicType =
     | "none"
@@ -10649,7 +10648,7 @@ declare module "factorio:prototype" {
     | "hatch-location-catalogue-index"
   /**
    * The name of a {@link ProcessionPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionID.html Online documentation}
    */
   export type ProcessionID = string
   /**
@@ -10682,7 +10681,7 @@ declare module "factorio:prototype" {
    *     { timestamp = 1050, offset_rate = 1.0 }
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionLayer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionLayer.html Online documentation}
    */
   export type ProcessionLayer =
     | PodDistanceTraveledProcessionLayer
@@ -10694,12 +10693,12 @@ declare module "factorio:prototype" {
     | PodAnimationProcessionLayer
   /**
    * The name of an {@link ProcessionLayerInheritanceGroup}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionLayerInheritanceGroupID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionLayerInheritanceGroupID.html Online documentation}
    */
   export type ProcessionLayerInheritanceGroupID = string
   /**
    * Lists arrivals and departures available for travel to a given surface.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionSet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionSet.html Online documentation}
    */
   export interface ProcessionSet {
     arrival: readonly ProcessionID[]
@@ -10707,12 +10706,12 @@ declare module "factorio:prototype" {
   }
   /**
    * A wrapper for a collection of {@link ProcessionLayer ProcessionLayers}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionTimeline.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionTimeline.html Online documentation}
    */
   export interface ProcessionTimeline {
     /**
      * The time to play this cutscene regardless of individual layer durations.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionTimeline.html#duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionTimeline.html#duration Online documentation}
      */
     duration: MapTick
     /**
@@ -10723,7 +10722,7 @@ declare module "factorio:prototype" {
      * - Ascending animation will detach from rocket on this tick.
      *
      * - Descending animation will request hatch to be opened.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionTimeline.html#special_action_tick Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionTimeline.html#special_action_tick Online documentation}
      */
     special_action_tick?: MapTick
     /**
@@ -10736,21 +10735,21 @@ declare module "factorio:prototype" {
      * - When descending this tick will go from above to world.
      *
      * Notably, LUT override won't be applied until the pod is drawn above the game.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionTimeline.html#draw_switch_tick Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionTimeline.html#draw_switch_tick Online documentation}
      */
     draw_switch_tick?: MapTick
     /**
      * **Default:** `0`
      *
      * The real duration of the intermezzo playing will be above this value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionTimeline.html#intermezzo_min_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionTimeline.html#intermezzo_min_duration Online documentation}
      */
     intermezzo_min_duration?: MapTick
     /**
      * **Default:** `0`
      *
      * The real duration of the intermezzo playing will be below this value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProcessionTimeline.html#intermezzo_max_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProcessionTimeline.html#intermezzo_max_duration Online documentation}
      */
     intermezzo_max_duration?: MapTick
     layers: readonly ProcessionLayer[]
@@ -10761,18 +10760,18 @@ declare module "factorio:prototype" {
    * - {@link ItemProductPrototype}: Loaded when the `type` is `"item"`.
    * - {@link FluidProductPrototype}: Loaded when the `type` is `"fluid"`.
    * - {@link ResearchProgressProductPrototype}: Loaded when the `type` is `"research-progress"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ProductPrototype.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ProductPrototype.html Online documentation}
    */
   export type ProductPrototype = ItemProductPrototype | FluidProductPrototype | ResearchProgressProductPrototype
   export interface ProductionHealthEffect {
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProductionHealthEffect.html#producing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProductionHealthEffect.html#producing Online documentation}
      */
     producing?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProductionHealthEffect.html#not_producing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProductionHealthEffect.html#not_producing Online documentation}
      */
     not_producing?: float
   }
@@ -10785,18 +10784,18 @@ declare module "factorio:prototype" {
    * - `"input-output"`
    * - `"output"`
    * @see FluidBox.production_type
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/FluidBox.html#production_type Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/FluidBox.html#production_type Online documentation}
    */
   export type ProductionType = "none" | "input" | "input-output" | "output"
   /**
    * @see ProgrammableSpeakerPrototype.instruments
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/ProgrammableSpeakerPrototype.html#instruments Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/ProgrammableSpeakerPrototype.html#instruments Online documentation}
    */
   export interface ProgrammableSpeakerInstrument {
     name: string
     /**
      * Cannot be an empty array.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProgrammableSpeakerInstrument.html#notes Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProgrammableSpeakerInstrument.html#notes Online documentation}
      */
     notes: readonly ProgrammableSpeakerNote[]
   }
@@ -10806,14 +10805,14 @@ declare module "factorio:prototype" {
      * Cannot contain aggregation.
      *
      * One of `sound` or `cyclic_sound` must be defined. Both cannot be defined together.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProgrammableSpeakerNote.html#sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProgrammableSpeakerNote.html#sound Online documentation}
      */
     sound?: Sound
     /**
      * Cannot contain aggregations.
      *
      * One of `sound` or `cyclic_sound` must be defined. Both cannot be defined together.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProgrammableSpeakerNote.html#cyclic_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProgrammableSpeakerNote.html#cyclic_sound Online documentation}
      */
     cyclic_sound?: CyclicSound
   }
@@ -10822,14 +10821,14 @@ declare module "factorio:prototype" {
     bar_width?: uint32
     color?: Color
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProgressBarStyleSpecification.html#other_colors Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProgressBarStyleSpecification.html#other_colors Online documentation}
      */
     other_colors?: readonly OtherColors[]
     bar?: ElementImageSet
     bar_background?: ElementImageSet
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProgressBarStyleSpecification.html#font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProgressBarStyleSpecification.html#font Online documentation}
      */
     font?: string
     font_color?: Color
@@ -10841,7 +10840,7 @@ declare module "factorio:prototype" {
     readonly type: "projectile"
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileAttackParameters.html#apply_projection_to_projectile_creation_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileAttackParameters.html#apply_projection_to_projectile_creation_position Online documentation}
      */
     apply_projection_to_projectile_creation_position?: boolean
     /**
@@ -10850,34 +10849,34 @@ declare module "factorio:prototype" {
      * When used with `projectile_creation_parameters`, this offsets what the turret's sprite looks at. Setting to `{0,1}` will cause the turret to aim one tile up from the target but the projectile will still aim for the entity. Can be used to give the illusion of height but can also confuse aim logic when set too high.
      *
      * When used without `projectile_creation_parameters`, this sets the turret's rotation axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileAttackParameters.html#projectile_center Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileAttackParameters.html#projectile_center Online documentation}
      */
     projectile_center?: Vector
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileAttackParameters.html#projectile_creation_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileAttackParameters.html#projectile_creation_distance Online documentation}
      */
     projectile_creation_distance?: float
     /**
      * Used to show bullet shells/casings being ejected from the gun, see {@linkplain https://factorio.com/blog/post/fff-345 artillery shell casings}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileAttackParameters.html#shell_particle Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileAttackParameters.html#shell_particle Online documentation}
      */
     shell_particle?: CircularParticleCreationSpecification
     /**
      * Used to shoot projectiles from arbitrary points. Used by worms. If not set then the launch positions are calculated using `projectile_center` and `projectile_creation_distance`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileAttackParameters.html#projectile_creation_parameters Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileAttackParameters.html#projectile_creation_parameters Online documentation}
      */
     projectile_creation_parameters?: CircularProjectileCreationSpecification
     /**
      * **Default:** `0`
      *
      * Used to shoot from different sides of the turret. Setting to `0.25` shoots from the right side, `0.5` shoots from the back, and `0.75` shoots from the left. The turret will look at the enemy as normal but the bullet will spawn from the offset position. Can be used to create right-handed weapons.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileAttackParameters.html#projectile_orientation_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileAttackParameters.html#projectile_orientation_offset Online documentation}
      */
     projectile_orientation_offset?: RealOrientation
     /**
      * Used to shoot from multiple points. The turret will look at the enemy as normal but the bullet will spawn from a random offset position. Can be used to create multi-barreled weapons.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileAttackParameters.html#projectile_creation_offsets Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileAttackParameters.html#projectile_creation_offsets Online documentation}
      */
     projectile_creation_offsets?: readonly Vector[]
   }
@@ -10885,101 +10884,101 @@ declare module "factorio:prototype" {
     readonly type: "projectile"
     /**
      * Name of a {@link ProjectilePrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileTriggerDelivery.html#projectile Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileTriggerDelivery.html#projectile Online documentation}
      */
     projectile: EntityID
     /**
      * Starting speed in tiles per tick.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileTriggerDelivery.html#starting_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileTriggerDelivery.html#starting_speed Online documentation}
      */
     starting_speed: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileTriggerDelivery.html#starting_speed_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileTriggerDelivery.html#starting_speed_deviation Online documentation}
      */
     starting_speed_deviation?: float
     /**
      * **Default:** `0`
      *
      * Maximum deviation of the projectile from source orientation, in +/- (`x radians / 2`). Example: `3.14 radians -> +/- (180° / 2)`, meaning up to 90° deviation in either direction of rotation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileTriggerDelivery.html#direction_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileTriggerDelivery.html#direction_deviation Online documentation}
      */
     direction_deviation?: float
     /**
      * **Default:** `0`
      *
      * The maximum deviation of the projectile maximum range from `max_range` is `max_range × range_deviation ÷ 2`. This means a deviation of `0.5` will appear as a maximum of `0.25` (25%) deviation of an initial range goal. Post-deviation range may exceed `max_range` or be less than `min_range`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileTriggerDelivery.html#range_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileTriggerDelivery.html#range_deviation Online documentation}
      */
     range_deviation?: float
     /**
      * **Default:** `1000`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileTriggerDelivery.html#max_range Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileTriggerDelivery.html#max_range Online documentation}
      */
     max_range?: double
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ProjectileTriggerDelivery.html#min_range Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ProjectileTriggerDelivery.html#min_range Online documentation}
      */
     min_range?: double
   }
   /**
    * Used by {@link UnitPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html Online documentation}
    */
   export interface PrototypeStrafeSettings {
     /**
      * **Default:** `20`
      *
      * Must be >= `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html#max_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html#max_distance Online documentation}
      */
     max_distance?: double
     /**
      * **Default:** `10`
      *
      * Must be between 0 and max_distance inclusive.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html#ideal_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html#ideal_distance Online documentation}
      */
     ideal_distance?: double
     /**
      * **Default:** `0.5`
      *
      * Must be >= `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html#ideal_distance_tolerance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html#ideal_distance_tolerance Online documentation}
      */
     ideal_distance_tolerance?: double
     /**
      * **Default:** `1`
      *
      * Must be >= `0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html#ideal_distance_variance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html#ideal_distance_variance Online documentation}
      */
     ideal_distance_variance?: double
     /**
      * **Default:** `0.5`
      *
      * Must be between between 0 and 1 inclusive.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html#ideal_distance_importance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html#ideal_distance_importance Online documentation}
      */
     ideal_distance_importance?: float
     /**
      * **Default:** `0.1`
      *
      * Must be between 0 and ideal_distance_importance inclusive.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html#ideal_distance_importance_variance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html#ideal_distance_importance_variance Online documentation}
      */
     ideal_distance_importance_variance?: float
     /**
      * **Default:** `0.5`
      *
      * Must be between 0 and 1 inclusive.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html#clockwise_chance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html#clockwise_chance Online documentation}
      */
     clockwise_chance?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PrototypeStrafeSettings.html#face_target Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PrototypeStrafeSettings.html#face_target Online documentation}
      */
     face_target?: boolean
   }
@@ -10988,7 +10987,7 @@ declare module "factorio:prototype" {
     water_effect_parameters?: WaterTileEffectParameters
     /**
      * Only loaded, and mandatory if `water_effect_parameters` is not defined. Must be name of a {@link TileEffectDefinition} which has `shader` set to `"water"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PuddleTileEffectParameters.html#water_effect Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PuddleTileEffectParameters.html#water_effect Online documentation}
      */
     water_effect?: TileEffectDefinitionID
   }
@@ -11037,27 +11036,27 @@ declare module "factorio:prototype" {
    *   east = { ... },
    *   south = { ... },
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PumpConnectorGraphics.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PumpConnectorGraphics.html Online documentation}
    */
   export interface PumpConnectorGraphics {
     /**
      * Size of the array must be 6 or more.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PumpConnectorGraphics.html#north Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PumpConnectorGraphics.html#north Online documentation}
      */
     north: readonly PumpConnectorGraphicsAnimation[]
     /**
      * Size of the array must be 6 or more.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PumpConnectorGraphics.html#east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PumpConnectorGraphics.html#east Online documentation}
      */
     east: readonly PumpConnectorGraphicsAnimation[]
     /**
      * Size of the array must be 6 or more.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PumpConnectorGraphics.html#south Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PumpConnectorGraphics.html#south Online documentation}
      */
     south: readonly PumpConnectorGraphicsAnimation[]
     /**
      * Size of the array must be 6 or more.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/PumpConnectorGraphics.html#west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/PumpConnectorGraphics.html#west Online documentation}
      */
     west: readonly PumpConnectorGraphicsAnimation[]
   }
@@ -11072,7 +11071,7 @@ declare module "factorio:prototype" {
    * The push back effect used by the {@linkplain https://wiki.factorio.com/Discharge_defense discharge defense}.
    *
    * Aims to push the target entity away from the source entity by the `distance` from the target entity's current position. Searches within double the `distance` from the pushed to position for the nearest non-colliding position for the target entity to be teleported too. If no valid non-colliding position is found or the target is not teleportable, then no push back occurs.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/PushBackTriggerEffectItem.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/PushBackTriggerEffectItem.html Online documentation}
    */
   export interface PushBackTriggerEffectItem extends TriggerEffectItem {
     readonly type: "push-back"
@@ -11084,14 +11083,14 @@ declare module "factorio:prototype" {
    * "rare"
    * @example
    * "legendary"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/QualityID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/QualityID.html Online documentation}
    */
   export type QualityID = string
   export interface RadioButtonStyleSpecification extends StyleWithClickableGraphicalSetSpecification {
     readonly type: "radiobutton_style"
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RadioButtonStyleSpecification.html#font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RadioButtonStyleSpecification.html#font Online documentation}
      */
     font?: string
     font_color?: Color
@@ -11100,7 +11099,7 @@ declare module "factorio:prototype" {
   }
   /**
    * Sprite to be shown around the entity when it is selected/held in the cursor.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RadiusVisualisationSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RadiusVisualisationSpecification.html Online documentation}
    */
   export interface RadiusVisualisationSpecification {
     sprite?: Sprite
@@ -11108,18 +11107,18 @@ declare module "factorio:prototype" {
      * **Default:** `0`
      *
      * Must be greater than or equal to 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RadiusVisualisationSpecification.html#distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RadiusVisualisationSpecification.html#distance Online documentation}
      */
     distance?: double
     offset?: Vector
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RadiusVisualisationSpecification.html#draw_in_cursor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RadiusVisualisationSpecification.html#draw_in_cursor Online documentation}
      */
     draw_in_cursor?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RadiusVisualisationSpecification.html#draw_on_selection Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RadiusVisualisationSpecification.html#draw_on_selection Online documentation}
      */
     draw_on_selection?: boolean
   }
@@ -11135,32 +11134,32 @@ declare module "factorio:prototype" {
   }
   /**
    * Used for graphics by {@link RailPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RailFenceGraphicsSet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RailFenceGraphicsSet.html Online documentation}
    */
   export interface RailFenceGraphicsSet {
     /**
      * Must be 2 or 4.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailFenceGraphicsSet.html#segment_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailFenceGraphicsSet.html#segment_count Online documentation}
      */
     segment_count: uint8
     /**
      * **Default:** `"elevated-lower-object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailFenceGraphicsSet.html#back_fence_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailFenceGraphicsSet.html#back_fence_render_layer Online documentation}
      */
     back_fence_render_layer?: RenderLayer
     /**
      * **Default:** `"elevated-higher-object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailFenceGraphicsSet.html#front_fence_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailFenceGraphicsSet.html#front_fence_render_layer Online documentation}
      */
     front_fence_render_layer?: RenderLayer
     /**
      * **Default:** `"elevated-lower-object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailFenceGraphicsSet.html#back_fence_render_layer_secondary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailFenceGraphicsSet.html#back_fence_render_layer_secondary Online documentation}
      */
     back_fence_render_layer_secondary?: RenderLayer
     /**
      * **Default:** `"elevated-higher-object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailFenceGraphicsSet.html#front_fence_render_layer_secondary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailFenceGraphicsSet.html#front_fence_render_layer_secondary Online documentation}
      */
     front_fence_render_layer_secondary?: RenderLayer
     side_A: RailFencePictureSet
@@ -11183,69 +11182,69 @@ declare module "factorio:prototype" {
     northwest: RailPieceLayers
     /**
      * **Default:** `Value of `rail_endings``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#front_rail_endings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#front_rail_endings Online documentation}
      */
     front_rail_endings?: Sprite16Way
     /**
      * **Default:** `Value of `rail_endings``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#back_rail_endings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#back_rail_endings Online documentation}
      */
     back_rail_endings?: Sprite16Way
     /**
      * Can be used to load rail endings instead of the front and back variants.
      *
      * Only loaded if `front_rail_endings` or `back_rail_endings` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#rail_endings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#rail_endings Online documentation}
      */
     rail_endings?: Sprite16Way
     /**
      * Must contain exactly 16 directions and 6 frames.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#segment_visualisation_endings Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#segment_visualisation_endings Online documentation}
      */
     segment_visualisation_endings?: RotatedAnimation
     render_layers: RailRenderLayers
     /**
      * **Default:** `Value of `render_layers``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#secondary_render_layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#secondary_render_layers Online documentation}
      */
     secondary_render_layers?: RailRenderLayers
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#slice_origin Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#slice_origin Online documentation}
      */
     slice_origin?: RailsSliceOffsets
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#fog_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#fog_mask Online documentation}
      */
     fog_mask?: RailsFogMaskDefinitions
   }
   /**
    * Used for graphics by {@link RailPrototype} and {@link RailRemnantsPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPieceLayers.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPieceLayers.html Online documentation}
    */
   export interface RailPieceLayers {
     /**
      * May not have more than 16 variations.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPieceLayers.html#metals Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPieceLayers.html#metals Online documentation}
      */
     metals?: SpriteVariations
     /**
      * Must have same number of variations as `metals` or be empty.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPieceLayers.html#backplates Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPieceLayers.html#backplates Online documentation}
      */
     backplates?: SpriteVariations
     /**
      * May not have more than 16 variations.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPieceLayers.html#ties Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPieceLayers.html#ties Online documentation}
      */
     ties?: SpriteVariations
     /**
      * May not have more than 16 variations.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPieceLayers.html#stone_path Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPieceLayers.html#stone_path Online documentation}
      */
     stone_path?: SpriteVariations
     /**
      * May not have more than 16 variations.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPieceLayers.html#stone_path_background Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPieceLayers.html#stone_path_background Online documentation}
      */
     stone_path_background?: SpriteVariations
     segment_visualisation_middle?: Sprite
@@ -11260,76 +11259,76 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPlannerAllowElevatedRailsModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPlannerAllowElevatedRailsModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   export interface RailRenderLayers {
     /**
      * **Default:** `"rail-stone-path-lower"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailRenderLayers.html#stone_path_lower Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailRenderLayers.html#stone_path_lower Online documentation}
      */
     stone_path_lower?: RenderLayer
     /**
      * **Default:** `"rail-stone-path"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailRenderLayers.html#stone_path Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailRenderLayers.html#stone_path Online documentation}
      */
     stone_path?: RenderLayer
     /**
      * **Default:** `"rail-tie"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailRenderLayers.html#tie Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailRenderLayers.html#tie Online documentation}
      */
     tie?: RenderLayer
     /**
      * **Default:** `"rail-screw"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailRenderLayers.html#screw Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailRenderLayers.html#screw Online documentation}
      */
     screw?: RenderLayer
     /**
      * **Default:** `"rail-metal"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailRenderLayers.html#metal Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailRenderLayers.html#metal Online documentation}
      */
     metal?: RenderLayer
     /**
      * **Default:** `Value of `screw``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailRenderLayers.html#front_end Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailRenderLayers.html#front_end Online documentation}
      */
     front_end?: RenderLayer
     /**
      * **Default:** `Value of `screw``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailRenderLayers.html#back_end Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailRenderLayers.html#back_end Online documentation}
      */
     back_end?: RenderLayer
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailRenderLayers.html#underwater_layer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailRenderLayers.html#underwater_layer_offset Online documentation}
      */
     underwater_layer_offset?: int8
   }
   export interface RailSignalColorToFrameIndex {
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalColorToFrameIndex.html#none Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalColorToFrameIndex.html#none Online documentation}
      */
     none?: uint8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalColorToFrameIndex.html#red Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalColorToFrameIndex.html#red Online documentation}
      */
     red?: uint8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalColorToFrameIndex.html#green Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalColorToFrameIndex.html#green Online documentation}
      */
     green?: uint8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalColorToFrameIndex.html#blue Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalColorToFrameIndex.html#blue Online documentation}
      */
     blue?: uint8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalColorToFrameIndex.html#yellow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalColorToFrameIndex.html#yellow Online documentation}
      */
     yellow?: uint8
   }
@@ -11347,7 +11346,7 @@ declare module "factorio:prototype" {
     structure: RotatedAnimation
     /**
      * **Default:** `"floor-mechanics"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalPictureSet.html#structure_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalPictureSet.html#structure_render_layer Online documentation}
      */
     structure_render_layer?: RenderLayer
     signal_color_to_structure_frame_index: RailSignalColorToFrameIndex
@@ -11357,7 +11356,7 @@ declare module "factorio:prototype" {
     circuit_connector?: readonly CircuitConnectorDefinition[]
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalPictureSet.html#circuit_connector_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalPictureSet.html#circuit_connector_render_layer Online documentation}
      */
     circuit_connector_render_layer?: RenderLayer
     structure_align_to_animation_index?: readonly uint8[]
@@ -11367,41 +11366,41 @@ declare module "factorio:prototype" {
     sprites: Animation
     /**
      * **Default:** `"rail-chain-signal-metal"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalStaticSpriteLayer.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalStaticSpriteLayer.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalStaticSpriteLayer.html#hide_if_simulation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalStaticSpriteLayer.html#hide_if_simulation Online documentation}
      */
     hide_if_simulation?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalStaticSpriteLayer.html#hide_if_not_connected_to_rails Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalStaticSpriteLayer.html#hide_if_not_connected_to_rails Online documentation}
      */
     hide_if_not_connected_to_rails?: boolean
     /**
      * Must be an empty array or contain exactly 16 values.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSignalStaticSpriteLayer.html#shifts Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSignalStaticSpriteLayer.html#shifts Online documentation}
      */
     shifts?: readonly MapPosition[]
     align_to_frame_index?: readonly uint8[]
   }
   /**
    * @see RailSupportPrototype.graphics_set
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/RailSupportPrototype.html#graphics_set Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/RailSupportPrototype.html#graphics_set Online documentation}
    */
   export interface RailSupportGraphicsSet {
     underwater_structure?: RotatedSprite
     structure: RotatedSprite
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSupportGraphicsSet.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSupportGraphicsSet.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSupportGraphicsSet.html#underwater_layer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSupportGraphicsSet.html#underwater_layer_offset Online documentation}
      */
     underwater_layer_offset?: int8
   }
@@ -11411,13 +11410,13 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RailSupportOnDeepOilOceanModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RailSupportOnDeepOilOceanModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   /**
    * @see RailPictureSet.fog_mask
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#fog_mask Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#fog_mask Online documentation}
    */
   export interface RailsFogMaskDefinitions {
     north?: FogMaskShapeDefinition
@@ -11427,7 +11426,7 @@ declare module "factorio:prototype" {
   }
   /**
    * @see RailPictureSet.slice_origin
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RailPictureSet.html#slice_origin Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RailPictureSet.html#slice_origin Online documentation}
    */
   export interface RailsSliceOffsets {
     north?: Vector
@@ -11443,7 +11442,7 @@ declare module "factorio:prototype" {
    * ## Union members
    * - [{@link uint8}, {@link uint8}]: First number is the minimum, second is the maximum.
    * - {@link uint8}: The same minimum and maximum.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RandomRange.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RandomRange.html Online documentation}
    */
   export type RandomRange = readonly [uint8, uint8] | uint8
   /**
@@ -11451,7 +11450,7 @@ declare module "factorio:prototype" {
    * - `"center-to-center"`
    * - `"bounding-box-to-bounding-box"`
    * - `"center-to-bounding-box"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RangeMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RangeMode.html Online documentation}
    */
   export type RangeMode = "center-to-center" | "bounding-box-to-bounding-box" | "center-to-bounding-box"
   export type RangedValue = readonly [float, float] | float
@@ -11459,7 +11458,7 @@ declare module "factorio:prototype" {
    * The smooth orientation. It is a `float` in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise.
    *
    * This means a value of `0` indicates "north", a value of `0.5` indicates "south". For example then, a value of `0.625` would indicate "south-west", and a value of `0.875` would indicate "north-west".
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RealOrientation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RealOrientation.html Online documentation}
    */
   export type RealOrientation = float
   /**
@@ -11468,7 +11467,7 @@ declare module "factorio:prototype" {
    * "crafting"
    * @example
    * "smelting"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RecipeCategoryID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RecipeCategoryID.html Online documentation}
    */
   export type RecipeCategoryID = string
   /**
@@ -11477,32 +11476,32 @@ declare module "factorio:prototype" {
    * "electronic-circuit"
    * @example
    * "kovarex-enrichment-process"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RecipeID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RecipeID.html Online documentation}
    */
   export type RecipeID = string
   /**
    * If no tint is specified, the machine falls back to {@link WorkingVisualisations#default_recipe_tint WorkingVisualisations::default_recipe_tint}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RecipeTints.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RecipeTints.html Online documentation}
    */
   export interface RecipeTints {
     /**
      * **Default:** `no tint`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RecipeTints.html#primary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RecipeTints.html#primary Online documentation}
      */
     primary?: Color
     /**
      * **Default:** `no tint`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RecipeTints.html#secondary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RecipeTints.html#secondary Online documentation}
      */
     secondary?: Color
     /**
      * **Default:** `no tint`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RecipeTints.html#tertiary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RecipeTints.html#tertiary Online documentation}
      */
     tertiary?: Color
     /**
      * **Default:** `no tint`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RecipeTints.html#quaternary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RecipeTints.html#quaternary Online documentation}
      */
     quaternary?: Color
   }
@@ -11583,7 +11582,7 @@ declare module "factorio:prototype" {
    * - `"collision-selection-box"`
    * - `"arrow"`
    * - `"cursor"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RenderLayer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RenderLayer.html Online documentation}
    */
   export type RenderLayer =
     | "zero"
@@ -11661,18 +11660,18 @@ declare module "factorio:prototype" {
    * Defines the amount of an item required to research one unit of a {@link TechnologyPrototype technology}. The first member of the tuple is the name of a {@link ToolPrototype} and the second is the amount. Amount must not be 0.
    * @example
    * {"automation-science-pack", 1}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ResearchIngredient.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ResearchIngredient.html Online documentation}
    */
   export type ResearchIngredient = readonly [ItemID, uint16]
   /**
    * A research progress product definition.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ResearchProgressProductPrototype.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ResearchProgressProductPrototype.html Online documentation}
    */
   export interface ResearchProgressProductPrototype {
     readonly type: "research-progress"
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ResearchProgressProductPrototype.html#amount Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ResearchProgressProductPrototype.html#amount Online documentation}
      */
     amount?: double
     research_item: ItemID
@@ -11711,7 +11710,7 @@ declare module "factorio:prototype" {
    *     percent = 30
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Resistance.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Resistance.html Online documentation}
    */
   export interface Resistance {
     readonly type: DamageTypeID
@@ -11719,14 +11718,14 @@ declare module "factorio:prototype" {
      * **Default:** `0`
      *
      * The {@linkplain https://wiki.factorio.com/Damage#Decrease.2C_or_.22flat.22_resistance flat resistance} to the given damage type. (Higher is better)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Resistance.html#decrease Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Resistance.html#decrease Online documentation}
      */
     decrease?: float
     /**
      * **Default:** `0`
      *
      * The {@linkplain https://wiki.factorio.com/Damage#Percentage_resistance percentage resistance} to the given damage type. (Higher is better)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Resistance.html#percent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Resistance.html#percent Online documentation}
      */
     percent?: float
   }
@@ -11736,7 +11735,7 @@ declare module "factorio:prototype" {
    * "basic-solid"
    * @example
    * "basic-fluid"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ResourceCategoryID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ResourceCategoryID.html Online documentation}
    */
   export type ResourceCategoryID = string
   /**
@@ -11744,7 +11743,7 @@ declare module "factorio:prototype" {
    * - `"enabled"`
    * - `"disabled"`
    * - `"highlight"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RichTextSetting.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RichTextSetting.html Online documentation}
    */
   export type RichTextSetting = "enabled" | "disabled" | "highlight"
   export interface RollingStockRotatedSlopedGraphics {
@@ -11752,12 +11751,12 @@ declare module "factorio:prototype" {
     sloped?: RotatedSprite
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RollingStockRotatedSlopedGraphics.html#slope_back_equals_front Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RollingStockRotatedSlopedGraphics.html#slope_back_equals_front Online documentation}
      */
     slope_back_equals_front?: boolean
     /**
      * **Default:** `1.333`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RollingStockRotatedSlopedGraphics.html#slope_angle_between_frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RollingStockRotatedSlopedGraphics.html#slope_angle_between_frames Online documentation}
      */
     slope_angle_between_frames?: double
   }
@@ -11769,7 +11768,7 @@ declare module "factorio:prototype" {
      * If this property is present, all RotatedAnimation definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
      *
      * If this property is present, all other properties, including those inherited from AnimationParameters, are ignored.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#layers Online documentation}
      */
     layers?: readonly RotatedAnimation[]
     /**
@@ -11788,36 +11787,36 @@ declare module "factorio:prototype" {
      * - `4`: North (1), East (2), South (3), West (4)
      *
      * - `8`: North (1), Northeast (2), East (3), Southeast (4), South (5), Southwest (6), West (7), Northwest (8)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#direction_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#direction_count Online documentation}
      */
     direction_count?: uint32
     /**
      * Only loaded, and mandatory if `layers`, `stripes`, and `filenames` are not defined.
      *
      * The path to the sprite file to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#filename Online documentation}
      */
     filename?: FileName
     /**
      * Only loaded if both `layers` and `stripes` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#filenames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#filenames Online documentation}
      */
     filenames?: readonly FileName[]
     /**
      * Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#lines_per_file Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#lines_per_file Online documentation}
      */
     lines_per_file?: uint32
     /**
      * Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#slice Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#slice Online documentation}
      */
     slice?: uint32
     /**
      * **Default:** `0`
      *
      * Only loaded if `layers` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#still_frame Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#still_frame Online documentation}
      */
     still_frame?: uint32
     /**
@@ -11826,21 +11825,21 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      *
      * If `true`, `direction_count` must be greater than `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#axially_symmetrical Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#axially_symmetrical Online documentation}
      */
     axially_symmetrical?: boolean
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#counterclockwise Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#counterclockwise Online documentation}
      */
     counterclockwise?: boolean
     /**
      * **Default:** `0.5`
      *
      * Only loaded if `layers` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#middle_orientation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#middle_orientation Online documentation}
      */
     middle_orientation?: RealOrientation
     /**
@@ -11849,26 +11848,26 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      *
      * Automatically clamped to be between `0` and `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#orientation_range Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#orientation_range Online documentation}
      */
     orientation_range?: float
     /**
      * **Default:** `true`
      *
      * Only loaded if `layers` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#apply_projection Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#apply_projection Online documentation}
      */
     apply_projection?: boolean
     /**
      * Only loaded if `layers` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation.html#stripes Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation.html#stripes Online documentation}
      */
     stripes?: readonly Stripe[]
   }
   /**
    * Struct type for {@link RotatedAnimation8Way}
    * @see RotatedAnimation8Way
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation8Way.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation8Way.html Online documentation}
    */
   export interface RotatedAnimation8WayStruct {
     north: RotatedAnimation
@@ -11884,7 +11883,7 @@ declare module "factorio:prototype" {
    * A map of rotated animations for all 8 directions of the entity. If this is loaded as a single RotatedAnimation, it applies to all directions.
    *
    * Any direction that is not defined defaults to the rotated animation of the opposite direction. If that is also not defined, it defaults to the north rotated animation.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedAnimation8Way.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedAnimation8Way.html Online documentation}
    */
   export type RotatedAnimation8Way = RotatedAnimation8WayStruct | RotatedAnimation
   export type RotatedAnimationVariations = RotatedAnimation | readonly RotatedAnimation[]
@@ -11920,61 +11919,61 @@ declare module "factorio:prototype" {
    *     }
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html Online documentation}
    */
   export interface RotatedSprite extends Omit<SpriteParameters, "filename"> {
     /**
      * If this property is present, all RotatedSprite definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
      *
      * If this property is present, all other properties, including those inherited from SpriteParameters, are ignored.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#layers Online documentation}
      */
     layers?: readonly RotatedSprite[]
     /**
      * Only loaded, and mandatory if `layers` is not defined.
      *
      * Count of direction (frames) specified.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#direction_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#direction_count Online documentation}
      */
     direction_count?: uint16
     /**
      * Only loaded if `layers` is not defined.
      *
      * The path to the sprite file to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#filename Online documentation}
      */
     filename?: FileName
     /**
      * Only loaded, and mandatory if both `layers` and `filename` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#filenames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#filenames Online documentation}
      */
     filenames?: readonly FileName[]
     /**
      * **Default:** `0`
      *
      * Only loaded if `layers` is not defined. Mandatory if `filenames` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#lines_per_file Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#lines_per_file Online documentation}
      */
     lines_per_file?: uint64
     /**
      * Only loaded if `layers` is not defined.
      *
      * Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4x4 grid.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#dice Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#dice Online documentation}
      */
     dice?: SpriteSizeType
     /**
      * Only loaded if `layers` is not defined.
      *
      * Same as `dice` above, but this specifies only how many slices there are on the x axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#dice_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#dice_x Online documentation}
      */
     dice_x?: SpriteSizeType
     /**
      * Only loaded if `layers` is not defined.
      *
      * Same as `dice` above, but this specifies only how many slices there are on the y axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#dice_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#dice_y Online documentation}
      */
     dice_y?: SpriteSizeType
     /**
@@ -11983,7 +11982,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      *
      * Unused.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#generate_sdf Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#generate_sdf Online documentation}
      */
     generate_sdf?: boolean
     /**
@@ -11992,14 +11991,14 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      *
      * When `true`, the same picture is used for left/right direction, just flipped, which can save half of the space required, but is not usable once the picture contains shadows, etc.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#axially_symmetrical Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#axially_symmetrical Online documentation}
      */
     axially_symmetrical?: boolean
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#back_equals_front Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#back_equals_front Online documentation}
      */
     back_equals_front?: boolean
     /**
@@ -12008,7 +12007,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      *
      * Used to fix the inconsistency of direction of the entity in 3d when rendered and direction on the screen (where the 45 degree angle for projection is used).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#apply_projection Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#apply_projection Online documentation}
      */
     apply_projection?: boolean
     /**
@@ -12017,7 +12016,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      *
      * Set to `true` to indicate sprites in the spritesheet are in counterclockwise order.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#counterclockwise Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#counterclockwise Online documentation}
      */
     counterclockwise?: boolean
     /**
@@ -12026,60 +12025,60 @@ declare module "factorio:prototype" {
      * Only loaded if `layers` is not defined.
      *
      * Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having more sprites in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. 0 means that all the pictures are in one horizontal line.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#line_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#line_length Online documentation}
      */
     line_length?: uint32
     /**
      * **Default:** `false`
      *
      * Only loaded if `layers` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#allow_low_quality_rotation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#allow_low_quality_rotation Online documentation}
      */
     allow_low_quality_rotation?: boolean
     /**
      * A list of overrides and customizations for each specific frame within the rotated sprite. This can be used to adjust each individual frame's width, height, and other properties. If this property is present, then it must contain at least as many `RotatedSpriteFrame` as there are sprites in this RotatedSprite.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSprite.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSprite.html#frames Online documentation}
      */
     frames?: readonly RotatedSpriteFrame[]
   }
   /**
    * Specifies frame-specific properties of an individual sprite within a RotatedSprite set. Some properties are absolute values, and some are relative and inherited from the parent RotatedSprite prototype definition.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSpriteFrame.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSpriteFrame.html Online documentation}
    */
   export interface RotatedSpriteFrame {
     /**
      * **Default:** `inherited width`
      *
      * Width of the sprite in pixels, from 0-4096. If not defined, inherits the width of the parent RotatedSprite.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSpriteFrame.html#width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSpriteFrame.html#width Online documentation}
      */
     width?: SpriteSizeType
     /**
      * **Default:** `inherited height`
      *
      * Height of the sprite in pixels, from 0-4096. If not defined, inherits the height of the parent RotatedSprite.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSpriteFrame.html#height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSpriteFrame.html#height Online documentation}
      */
     height?: SpriteSizeType
     /**
      * **Default:** `0`
      *
      * The horizontal offset of the sprite relative to its specific frame within the parent RotatedSprite.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSpriteFrame.html#x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSpriteFrame.html#x Online documentation}
      */
     x?: SpriteSizeType
     /**
      * **Default:** `0`
      *
      * The vertical offset of the sprite relative to its specific frame within the parent RotatedSprite.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSpriteFrame.html#y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSpriteFrame.html#y Online documentation}
      */
     y?: SpriteSizeType
     /**
      * **Default:** ``{0, 0}``
      *
      * The shift in tiles of this specific frame, relative to the shift of the parent RotatedSprite. `util.by_pixel()` can be used to divide the shift by 32 which is the usual pixel height/width of 1 tile in normal resolution. Note that 32 pixel tile height/width is not enforced anywhere - any other tile height or width is also possible.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/RotatedSpriteFrame.html#shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/RotatedSpriteFrame.html#shift Online documentation}
      */
     shift?: Vector
   }
@@ -12087,7 +12086,7 @@ declare module "factorio:prototype" {
     readonly type: "script"
     /**
      * The effect ID that will be provided in {@link import("factorio:runtime").on_script_trigger_effect on_script_trigger_effect}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ScriptTriggerEffectItem.html#effect_id Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ScriptTriggerEffectItem.html#effect_id Online documentation}
      */
     effect_id: string
   }
@@ -12104,7 +12103,7 @@ declare module "factorio:prototype" {
     background_graphical_set?: ElementImageSet
     /**
      * Sets `extra_top_padding_when_activated`, `extra_bottom_padding_when_activated`, `extra_left_padding_when_activated` and `extra_right_padding_when_activated`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ScrollPaneStyleSpecification.html#extra_padding_when_activated Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ScrollPaneStyleSpecification.html#extra_padding_when_activated Online documentation}
      */
     extra_padding_when_activated?: int32
     extra_top_padding_when_activated?: int32
@@ -12113,7 +12112,7 @@ declare module "factorio:prototype" {
     extra_right_padding_when_activated?: int32
     /**
      * Sets `extra_top_margin_when_activated`, `extra_bottom_margin_when_activated`, `extra_left_margin_when_activated` and `extra_right_margin_when_activated`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ScrollPaneStyleSpecification.html#extra_margin_when_activated Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ScrollPaneStyleSpecification.html#extra_margin_when_activated Online documentation}
      */
     extra_margin_when_activated?: int32
     extra_top_margin_when_activated?: int32
@@ -12126,23 +12125,23 @@ declare module "factorio:prototype" {
   }
   /**
    * Used by {@link SegmentedUnitPrototype} to define and manage the segments that make up the body of the entity.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SegmentEngineSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SegmentEngineSpecification.html Online documentation}
    */
   export interface SegmentEngineSpecification {
     /**
      * The segments that compose the entity's body. Must contain no more than 63 entries.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SegmentEngineSpecification.html#segments Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SegmentEngineSpecification.html#segments Online documentation}
      */
     segments: readonly SegmentSpecification[]
   }
   /**
    * A container for an individual instance of a {@link SegmentPrototype} within a {@link SegmentEngineSpecification}. May contain context-specific customizations unique to the associated segment instance.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SegmentSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SegmentSpecification.html Online documentation}
    */
   export interface SegmentSpecification {
     /**
      * Name of the {@link SegmentPrototype} to use in this position.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SegmentSpecification.html#segment Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SegmentSpecification.html#segment Online documentation}
      */
     segment: EntityID
   }
@@ -12150,12 +12149,12 @@ declare module "factorio:prototype" {
     border_color: Color
     /**
      * **Default:** `Value of border_color`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SelectionModeData.html#count_button_color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SelectionModeData.html#count_button_color Online documentation}
      */
     count_button_color?: Color
     /**
      * **Default:** `Value of border_color`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SelectionModeData.html#chart_color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SelectionModeData.html#chart_color Online documentation}
      */
     chart_color?: Color
     cursor_box_type: CursorBoxType
@@ -12167,17 +12166,17 @@ declare module "factorio:prototype" {
     ended_sound?: Sound
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SelectionModeData.html#play_ended_sound_when_nothing_selected Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SelectionModeData.html#play_ended_sound_when_nothing_selected Online documentation}
      */
     play_ended_sound_when_nothing_selected?: boolean
     /**
      * **Default:** `"whitelist"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SelectionModeData.html#entity_filter_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SelectionModeData.html#entity_filter_mode Online documentation}
      */
     entity_filter_mode?: "whitelist" | "blacklist"
     /**
      * **Default:** `"whitelist"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SelectionModeData.html#tile_filter_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SelectionModeData.html#tile_filter_mode Online documentation}
      */
     tile_filter_mode?: "whitelist" | "blacklist"
   }
@@ -12212,7 +12211,7 @@ declare module "factorio:prototype" {
    * - `"controllable-remove"`
    * - `"entity-ghost"`: Selects entities that are an {@link EntityGhostPrototype}.
    * - `"tile-ghost"`: Selects entities that are a {@link TileGhostPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SelectionModeFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SelectionModeFlags.html Online documentation}
    */
   export type SelectionModeFlags =
     | (
@@ -12276,18 +12275,18 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link SemiPersistentWorldAmbientSoundDefinition}
    * @see SemiPersistentWorldAmbientSoundDefinition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SemiPersistentWorldAmbientSoundDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SemiPersistentWorldAmbientSoundDefinition.html Online documentation}
    */
   export interface SemiPersistentWorldAmbientSoundDefinitionStruct {
     sound: Sound
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SemiPersistentWorldAmbientSoundDefinition.html#delay_mean_seconds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SemiPersistentWorldAmbientSoundDefinition.html#delay_mean_seconds Online documentation}
      */
     delay_mean_seconds?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SemiPersistentWorldAmbientSoundDefinition.html#delay_variance_seconds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SemiPersistentWorldAmbientSoundDefinition.html#delay_variance_seconds Online documentation}
      */
     delay_variance_seconds?: float
   }
@@ -12300,7 +12299,7 @@ declare module "factorio:prototype" {
     readonly type: "send-spidertron"
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SendSpidertronTipTrigger.html#append Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SendSpidertronTipTrigger.html#append Online documentation}
      */
     append?: boolean
   }
@@ -12309,14 +12308,14 @@ declare module "factorio:prototype" {
    * - `"not-sendable"`
    * - `"manual"`
    * - `"automated"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SendToOrbitMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SendToOrbitMode.html Online documentation}
    */
   export type SendToOrbitMode = "not-sendable" | "manual" | "automated"
   export interface SequenceTipTrigger {
     readonly type: "sequence"
     /**
      * List of triggers to fulfill.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SequenceTipTrigger.html#triggers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SequenceTipTrigger.html#triggers Online documentation}
      */
     triggers: readonly TipTrigger[]
   }
@@ -12325,12 +12324,12 @@ declare module "factorio:prototype" {
     entity?: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SetFilterTipTrigger.html#match_type_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SetFilterTipTrigger.html#match_type_only Online documentation}
      */
     match_type_only?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SetFilterTipTrigger.html#consecutive Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SetFilterTipTrigger.html#consecutive Online documentation}
      */
     consecutive?: boolean
   }
@@ -12338,7 +12337,7 @@ declare module "factorio:prototype" {
     readonly type: "set-logistic-request"
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SetLogisticRequestTipTrigger.html#logistic_chest_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SetLogisticRequestTipTrigger.html#logistic_chest_only Online documentation}
      */
     logistic_chest_only?: boolean
     entity?: EntityID
@@ -12349,17 +12348,17 @@ declare module "factorio:prototype" {
     machine?: EntityID
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SetRecipeTipTrigger.html#consecutive Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SetRecipeTipTrigger.html#consecutive Online documentation}
      */
     consecutive?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SetRecipeTipTrigger.html#any_quality Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SetRecipeTipTrigger.html#any_quality Online documentation}
      */
     any_quality?: boolean
     /**
      * **Default:** `any`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SetRecipeTipTrigger.html#uses_fluid Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SetRecipeTipTrigger.html#uses_fluid Online documentation}
      */
     uses_fluid?: boolean
   }
@@ -12369,12 +12368,12 @@ declare module "factorio:prototype" {
     radius: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SetTileTriggerEffectItem.html#apply_projection Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SetTileTriggerEffectItem.html#apply_projection Online documentation}
      */
     apply_projection?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SetTileTriggerEffectItem.html#apply_on_space_platform Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SetTileTriggerEffectItem.html#apply_on_space_platform Online documentation}
      */
     apply_on_space_platform?: boolean
     tile_collision_mask?: CollisionMaskConnector
@@ -12384,12 +12383,12 @@ declare module "factorio:prototype" {
    * @example
    * -- Accessing the value of a mod setting
    * local val = settings.startup["my-mod-setting-name"].value
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Settings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Settings.html Online documentation}
    */
   export interface Settings {
     /**
      * All startup mod settings, indexed by the name of the setting.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Settings.html#startup Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Settings.html#startup Online documentation}
      */
     startup: Record<string, ModSetting>
   }
@@ -12421,19 +12420,19 @@ declare module "factorio:prototype" {
      * - `"space-location"`
      * - `"asteroid-chunk"`
      * - `"quality"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SignalIDConnector.html#type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SignalIDConnector.html#type Online documentation}
      */
     readonly type: "virtual" | "item" | "fluid" | "recipe" | "entity" | "space-location" | "asteroid-chunk" | "quality"
     /**
      * Name of the signal.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SignalIDConnector.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SignalIDConnector.html#name Online documentation}
      */
     name: VirtualSignalID | ItemID | FluidID | RecipeID | EntityID | SpaceLocationID | AsteroidChunkID | QualityID
   }
   /**
    * Struct type for {@link SimpleBoundingBox}
    * @see SimpleBoundingBox
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SimpleBoundingBox.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SimpleBoundingBox.html Online documentation}
    */
   export interface SimpleBoundingBoxStruct {
     left_top: MapPosition
@@ -12450,35 +12449,35 @@ declare module "factorio:prototype" {
    * @example
    * -- long definition
    * {left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SimpleBoundingBox.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SimpleBoundingBox.html Online documentation}
    */
   export type SimpleBoundingBox = SimpleBoundingBoxStruct | readonly [MapPosition, MapPosition]
   export interface SimpleModifier extends BaseModifier {
     /**
      * Modification value, which will be added to the variable it modifies.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimpleModifier.html#modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimpleModifier.html#modifier Online documentation}
      */
     modifier: double
   }
   /**
    * Used by tips and tricks and main menu simulations. Simulations can be controlled at runtime via {@link import("factorio:runtime").LuaSimulation LuaSimulation}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html Online documentation}
    */
   export interface SimulationDefinition {
     /**
      * **Default:** `"nauvis"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#planet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#planet Online documentation}
      */
     planet?: SpaceLocationID
     game_view_settings?: GameViewSettings
     /**
      * The save file that is used for this simulation. If not given and `generate_map` is `true`, a map is generated by the game.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#save Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#save Online documentation}
      */
     save?: FileName
     /**
-     * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.49/auxiliary/libraries.html here}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#init_file Online documentation}
+     * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.50/auxiliary/libraries.html here}.
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#init_file Online documentation}
      */
     init_file?: FileName
     /**
@@ -12486,13 +12485,13 @@ declare module "factorio:prototype" {
      *
      * Only loaded if `init_file` is not defined.
      *
-     * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.49/auxiliary/libraries.html here}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#init Online documentation}
+     * This code is run as a (silent) console command inside the simulation when it is first initialized. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.50/auxiliary/libraries.html here}.
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#init Online documentation}
      */
     init?: string
     /**
-     * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.49/auxiliary/libraries.html here}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#update_file Online documentation}
+     * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.50/auxiliary/libraries.html here}.
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#update_file Online documentation}
      */
     update_file?: FileName
     /**
@@ -12500,73 +12499,73 @@ declare module "factorio:prototype" {
      *
      * Only loaded if `update_file` is not defined.
      *
-     * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.49/auxiliary/libraries.html here}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#update Online documentation}
+     * This code is run as a (silent) console command inside the simulation every time the simulation is updated. Since this is run as a console command, the restrictions of console commands apply, e.g. `require` is not available, see {@linkplain https://lua-api.factorio.com/2.0.50/auxiliary/libraries.html here}.
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#update Online documentation}
      */
     update?: string
     /**
      * An array of mods whose runtime scripts will be loaded for this simulation, if they are present and enabled.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#mods Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#mods Online documentation}
      */
     mods?: readonly string[]
     /**
      * **Default:** `0`
      *
      * Amount of ticks that this simulation should run for before the simulation is shown to the player. These updates happen after init/init_file has been run and at the highest possible rate (> 60 UPS).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#init_update_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#init_update_count Online documentation}
      */
     init_update_count?: uint32
     /**
      * **Default:** `0`
      *
      * How long this simulation takes. In the main menu simulations, another simulation will start after this simulation ends.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#length Online documentation}
      */
     length?: uint32
     /**
      * **Default:** `false`
      *
      * If `save` is not given and this is true, a map gets generated by the game for use in the simulation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#generate_map Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#generate_map Online documentation}
      */
     generate_map?: boolean
     /**
      * **Default:** `true`
      *
      * If this is true, the map of the simulation is set to be a lab-tile checkerboard in the area of `{{-20, -15},{20, 15}}` when the scenario is first initialized (before init/init_file run).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#checkboard Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#checkboard Online documentation}
      */
     checkboard?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#hide_health_bars Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#hide_health_bars Online documentation}
      */
     hide_health_bars?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#mute_technology_finished_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#mute_technology_finished_sound Online documentation}
      */
     mute_technology_finished_sound?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#mute_alert_sounds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#mute_alert_sounds Online documentation}
      */
     mute_alert_sounds?: boolean
     /**
      * Multiplier for the simulation volume set by the player in the sound settings.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#volume_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#volume_modifier Online documentation}
      */
     volume_modifier?: float
     /**
      * If true, overrides the simulation volume set by the player in the sound settings, simply setting the volume modifier to `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#override_volume Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#override_volume Online documentation}
      */
     override_volume?: boolean
     /**
      * Overrides whether a simulation has its wind sounds muted.
      *
      * Tips and Tricks simulations and Factoriopedia simulations have their wind sounds muted by default, other simulations don't.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SimulationDefinition.html#mute_wind_sounds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SimulationDefinition.html#mute_wind_sounds Online documentation}
      */
     mute_wind_sounds?: boolean
     hide_factoriopedia_gradient?: boolean
@@ -12574,60 +12573,60 @@ declare module "factorio:prototype" {
   /**
    * One frame in time for a Bezier interpolation.
    * @see SingleGraphicProcessionLayer.frames
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#frames Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#frames Online documentation}
    */
   export interface SingleGraphicLayerProcessionBezierControlPoint {
     /**
      * Mandatory if `opacity` or `tint` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#timestamp Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#timestamp Online documentation}
      */
     timestamp?: MapTick
     /**
      * **Default:** `1`
      *
      * `opacity` and `opacity_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#opacity Online documentation}
      */
     opacity?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#opacity_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#opacity_t Online documentation}
      */
     opacity_t?: double
     /**
      * **Default:** `{1.0, 1.0, 1.0, 1.0}`
      *
      * `tint` and `tint_t` interpolate a color smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#tint Online documentation}
      */
     tint?: Color
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#tint_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#tint_t Online documentation}
      */
     tint_t?: Color
     /**
      * **Default:** `0`
      *
      * `rotation` and `rotation_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#rotation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#rotation Online documentation}
      */
     rotation?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#rotation_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#rotation_t Online documentation}
      */
     rotation_t?: double
     /**
      * **Default:** `1`
      *
      * `scale` and `scale_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#scale Online documentation}
      */
     scale?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#scale_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#scale_t Online documentation}
      */
     scale_t?: double
     /**
@@ -12636,29 +12635,29 @@ declare module "factorio:prototype" {
      * `shift` and `shift_t` interpolate a vector smoothly over time using `shift_rate` and `shift_rate_t` for a 0-1 rate curve.
      *
      * Vector value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#shift Online documentation}
      */
     shift?: Vector
     /**
      * Vector tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#shift_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#shift_t Online documentation}
      */
     shift_t?: Vector
     /**
      * Rate 0-1 value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#shift_rate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#shift_rate Online documentation}
      */
     shift_rate?: double
     /**
      * Rate tangent.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#shift_rate_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#shift_rate_t Online documentation}
      */
     shift_rate_t?: double
     /**
      * **Default:** `0`
      *
      * the frame of the pod animation played. Used only when 'animation_driven_by_curve' is enabled.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicLayerProcessionBezierControlPoint.html#frame Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicLayerProcessionBezierControlPoint.html#frame Online documentation}
      */
     frame?: float
   }
@@ -12667,57 +12666,57 @@ declare module "factorio:prototype" {
     graphic: ProcessionGraphic
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#secondary_draw_order Online documentation}
      */
     secondary_draw_order?: int8
     /**
      * **Default:** `"pod"`
      *
      * Where the sprite is centered.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#relative_to Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#relative_to Online documentation}
      */
     relative_to?: EffectRelativeTo
     /**
      * **Default:** `true`
      *
      * Swaps the order of sprite shift and rotation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#compensated_pivot Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#compensated_pivot Online documentation}
      */
     compensated_pivot?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#rotates_with_pod Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#rotates_with_pod Online documentation}
      */
     rotates_with_pod?: boolean
     /**
      * **Default:** `true`
      *
      * Only applied when the `relative_to` is `pod`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#shift_rotates_with_pod Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#shift_rotates_with_pod Online documentation}
      */
     shift_rotates_with_pod?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#is_passenger_only Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#is_passenger_only Online documentation}
      */
     is_passenger_only?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#clip_with_hatches Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#clip_with_hatches Online documentation}
      */
     clip_with_hatches?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#animation_driven_by_curve Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#animation_driven_by_curve Online documentation}
      */
     animation_driven_by_curve?: boolean
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SingleGraphicProcessionLayer.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SingleGraphicProcessionLayer.html#frames Online documentation}
      */
     frames: readonly SingleGraphicLayerProcessionBezierControlPoint[]
   }
@@ -12734,125 +12733,125 @@ declare module "factorio:prototype" {
   }
   /**
    * Definition of the smoke of an entity.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html Online documentation}
    */
   export interface SmokeSource {
     name: TrivialSmokeID
     /**
      * Number of smokes generated per entity animation cycle (or per tick for some entities). Can't be negative or infinite.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#frequency Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#frequency Online documentation}
      */
     frequency: float
     /**
      * **Default:** `0`
      *
      * Offsets animation cycle, to move at which points of the cycle the smoke gets emitted.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#offset Online documentation}
      */
     offset?: float
     /**
      * Positional offset of smoke source relative to owner entity position. The vector is rotated by orientation of the entity.
      *
      * If any of `north_position`, `north_east_position`, `east_position`, `south_east_position`, `south_position`, `south_west_position`, `west_position`, `north_west_position` is defined, `position` is used only as default value for directional positions. Orientation of the owner entity will be rounded to 4 or 8 directions and one of the directional positions will be used as the offset instead of `position`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#position Online documentation}
      */
     position?: Vector
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#has_8_directions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#has_8_directions Online documentation}
      */
     has_8_directions?: boolean
     /**
      * **Default:** `Value of `position``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#north_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#north_position Online documentation}
      */
     north_position?: Vector
     /**
      * **Default:** `Value of `position` rotated north-east`
      *
      * Only loaded if `has_8_directions` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#north_east_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#north_east_position Online documentation}
      */
     north_east_position?: Vector
     /**
      * **Default:** `Value of `position` rotated east`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#east_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#east_position Online documentation}
      */
     east_position?: Vector
     /**
      * **Default:** `Value of `position` rotated south-east`
      *
      * Only loaded if `has_8_directions` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#south_east_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#south_east_position Online documentation}
      */
     south_east_position?: Vector
     /**
      * **Default:** `Value of `position` rotated south`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#south_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#south_position Online documentation}
      */
     south_position?: Vector
     /**
      * **Default:** `Value of `position` rotated south-west`
      *
      * Only loaded if `has_8_directions` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#south_west_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#south_west_position Online documentation}
      */
     south_west_position?: Vector
     /**
      * **Default:** `Value of `position` rotated west`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#west_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#west_position Online documentation}
      */
     west_position?: Vector
     /**
      * **Default:** `Value of `position` rotated north-west`
      *
      * Only loaded if `has_8_directions` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#north_west_position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#north_west_position Online documentation}
      */
     north_west_position?: Vector
     deviation?: Vector
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#starting_frame Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#starting_frame Online documentation}
      */
     starting_frame?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#starting_frame_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#starting_frame_deviation Online documentation}
      */
     starting_frame_deviation?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#height Online documentation}
      */
     height?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#height_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#height_deviation Online documentation}
      */
     height_deviation?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#starting_vertical_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#starting_vertical_speed Online documentation}
      */
     starting_vertical_speed?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#starting_vertical_speed_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#starting_vertical_speed_deviation Online documentation}
      */
     starting_vertical_speed_deviation?: float
     /**
      * **Default:** `0.965`
      *
      * A value between `0` and `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SmokeSource.html#vertical_speed_slowdown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SmokeSource.html#vertical_speed_slowdown Online documentation}
      */
     vertical_speed_slowdown?: float
   }
   /**
    * Struct type for {@link Sound}
    * @see Sound
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html Online documentation}
    */
   export interface SoundStruct {
     category?: SoundType
@@ -12862,27 +12861,27 @@ declare module "factorio:prototype" {
      * Sounds with higher priority will replace a sound with lower priority if the maximum sounds limit is reached.
      *
      * 0 is the highest priority, 255 is the lowest priority.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#priority Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#priority Online documentation}
      */
     priority?: uint8
     aggregation?: AggregationSpecification
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#allow_random_repeat Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#allow_random_repeat Online documentation}
      */
     allow_random_repeat?: boolean
     /**
      * **Default:** `1`
      *
      * Modifies how far a sound can be heard. Cannot be less than zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#audible_distance_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#audible_distance_modifier Online documentation}
      */
     audible_distance_modifier?: double
     game_controller_vibration_data?: GameControllerVibrationData
     advanced_volume_control?: AdvancedVolumeControl
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#speed_smoothing_window_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#speed_smoothing_window_size Online documentation}
      */
     speed_smoothing_window_size?: uint32
     variations?: SoundDefinition | readonly SoundDefinition[]
@@ -12890,7 +12889,7 @@ declare module "factorio:prototype" {
      * Supported sound file formats are `.ogg` (Vorbis and Opus) and `.wav`.
      *
      * Only loaded, and mandatory if `variations` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#filename Online documentation}
      */
     filename?: FileName
     /**
@@ -12901,7 +12900,7 @@ declare module "factorio:prototype" {
      * This sets both min and max volumes.
      *
      * Must be `>= 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#volume Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#volume Online documentation}
      */
     volume?: float
     /**
@@ -12910,7 +12909,7 @@ declare module "factorio:prototype" {
      * Only loaded if `variations` and `volume` are not defined.
      *
      * Must be `>= 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#min_volume Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#min_volume Online documentation}
      */
     min_volume?: float
     /**
@@ -12921,12 +12920,12 @@ declare module "factorio:prototype" {
      * Only loaded if `min_volume` is defined.
      *
      * Must be `>= min_volume`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#max_volume Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#max_volume Online documentation}
      */
     max_volume?: float
     /**
      * Only loaded if `variations` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#preload Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#preload Online documentation}
      */
     preload?: boolean
     /**
@@ -12935,7 +12934,7 @@ declare module "factorio:prototype" {
      * Speed must be `>= 1 / 64`. This sets both min and max speeds.
      *
      * Only loaded if `variations` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#speed Online documentation}
      */
     speed?: float
     /**
@@ -12944,7 +12943,7 @@ declare module "factorio:prototype" {
      * Must be `>= 1 / 64`.
      *
      * Only loaded if both `variations` and `speed` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#min_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#min_speed Online documentation}
      */
     min_speed?: float
     /**
@@ -12953,12 +12952,12 @@ declare module "factorio:prototype" {
      * Must be `>= min_speed`.
      *
      * Only loaded if `variations` is not defined. Only loaded, and mandatory if `min_speed` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#max_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#max_speed Online documentation}
      */
     max_speed?: float
     /**
      * Only loaded if `variations` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html#modifiers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html#modifiers Online documentation}
      */
     modifiers?: SoundModifier | readonly SoundModifier[]
   }
@@ -12968,33 +12967,33 @@ declare module "factorio:prototype" {
    *   filename = "__base__/sound/ambient/world-ambience-3.ogg",
    *   volume = 1.2
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Sound.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Sound.html Online documentation}
    */
   export type Sound = SoundStruct | SoundDefinition | readonly SoundDefinition[]
   export interface SoundAccent {
     sound?: Sound
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundAccent.html#frame Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundAccent.html#frame Online documentation}
      */
     frame?: uint16
     /**
      * Play the `sound` for a working visualisation of a given {@link WorkingVisualisation#name WorkingVisualisation::name}.
      *
      * The name cannot be empty.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundAccent.html#play_for_working_visualisation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundAccent.html#play_for_working_visualisation Online documentation}
      */
     play_for_working_visualisation?: string
   }
   /**
    * Struct type for {@link SoundDefinition}
    * @see SoundDefinition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundDefinition.html Online documentation}
    */
   export interface SoundDefinitionStruct {
     /**
      * Supported sound file formats are `.ogg` (Vorbis) and `.wav`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundDefinition.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundDefinition.html#filename Online documentation}
      */
     filename: FileName
     /**
@@ -13003,7 +13002,7 @@ declare module "factorio:prototype" {
      * This sets both min and max volumes.
      *
      * Must be `>= 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundDefinition.html#volume Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundDefinition.html#volume Online documentation}
      */
     volume?: float
     /**
@@ -13012,7 +13011,7 @@ declare module "factorio:prototype" {
      * Only loaded if `volume` is not defined.
      *
      * Must be `>= 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundDefinition.html#min_volume Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundDefinition.html#min_volume Online documentation}
      */
     min_volume?: float
     /**
@@ -13021,7 +13020,7 @@ declare module "factorio:prototype" {
      * Only loaded if `min_volume` is defined.
      *
      * Must be `>= min_volume`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundDefinition.html#max_volume Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundDefinition.html#max_volume Online documentation}
      */
     max_volume?: float
     preload?: boolean
@@ -13029,7 +13028,7 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * Speed must be `>= 1 / 64`. This sets both min and max speeds.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundDefinition.html#speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundDefinition.html#speed Online documentation}
      */
     speed?: float
     /**
@@ -13038,7 +13037,7 @@ declare module "factorio:prototype" {
      * Only loaded if `speed` is not defined.
      *
      * Must be `>= 1 / 64`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundDefinition.html#min_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundDefinition.html#min_speed Online documentation}
      */
     min_speed?: float
     /**
@@ -13047,7 +13046,7 @@ declare module "factorio:prototype" {
      * Only loaded, and mandatory, if `min_speed` is defined.
      *
      * Must be `>= min_speed`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundDefinition.html#max_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundDefinition.html#max_speed Online documentation}
      */
     max_speed?: float
     modifiers?: SoundModifier | readonly SoundModifier[]
@@ -13065,7 +13064,7 @@ declare module "factorio:prototype" {
    * - `"driving"`
    * - `"elevation"`
    * - `"space-platform"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundModifierType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundModifierType.html Online documentation}
    */
   export type SoundModifierType = "game" | "main-menu" | "tips-and-tricks" | "driving" | "elevation" | "space-platform"
   /**
@@ -13083,7 +13082,7 @@ declare module "factorio:prototype" {
    * - `"weapon"`
    * - `"explosion"`
    * - `"enemy"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SoundType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SoundType.html Online documentation}
    */
   export type SoundType =
     | "game-effect"
@@ -13100,17 +13099,17 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link SpaceConnectionAsteroidSpawnDefinition}
    * @see SpaceConnectionAsteroidSpawnDefinition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceConnectionAsteroidSpawnDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceConnectionAsteroidSpawnDefinition.html Online documentation}
    */
   export interface SpaceConnectionAsteroidSpawnDefinitionStruct {
     /**
      * **Default:** `"entity"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceConnectionAsteroidSpawnDefinition.html#type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceConnectionAsteroidSpawnDefinition.html#type Online documentation}
      */
     readonly type?: "entity" | "asteroid-chunk"
     /**
      * The type this is loaded as depends on `type`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceConnectionAsteroidSpawnDefinition.html#asteroid Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceConnectionAsteroidSpawnDefinition.html#asteroid Online documentation}
      */
     asteroid: EntityID | AsteroidChunkID
     spawn_points: readonly SpaceConnectionAsteroidSpawnPoint[]
@@ -13127,7 +13126,7 @@ declare module "factorio:prototype" {
    * "nauvis-vulcanus"
    * @example
    * "fulgora-aquilo"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceConnectionID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceConnectionID.html Online documentation}
    */
   export type SpaceConnectionID = string
   export interface SpaceDustEffectProperties {
@@ -13136,19 +13135,19 @@ declare module "factorio:prototype" {
     asteroid_normal_texture: EffectTexture
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceDustEffectProperties.html#animation_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceDustEffectProperties.html#animation_speed Online documentation}
      */
     animation_speed?: float
   }
   export interface SpaceLocationAsteroidSpawnDefinition extends AsteroidSpawnPoint {
     /**
      * **Default:** `"entity"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceLocationAsteroidSpawnDefinition.html#type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceLocationAsteroidSpawnDefinition.html#type Online documentation}
      */
     readonly type?: "entity" | "asteroid-chunk"
     /**
      * The type this is loaded as depends on `type`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceLocationAsteroidSpawnDefinition.html#asteroid Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceLocationAsteroidSpawnDefinition.html#asteroid Online documentation}
      */
     asteroid: EntityID | AsteroidChunkID
   }
@@ -13158,7 +13157,7 @@ declare module "factorio:prototype" {
    * "shattered-planet"
    * @example
    * "solar-system-edge"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceLocationID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceLocationID.html Online documentation}
    */
   export type SpaceLocationID = string
   export interface SpacePlatformTileDefinition {
@@ -13171,7 +13170,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpacePlatformsModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpacePlatformsModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -13179,107 +13178,107 @@ declare module "factorio:prototype" {
    * Nebulae are rendered only behind tiles with the effect, but stars are rendered behind entire terrain. For that reason using two or more tile types with different space effect on one surface is not supported. The game will allow this to happen, but rendering will chose one star configuration for entire screen.
    *
    * Zoom is recalculated using formula `max(1/1024, pow(max(0, zoom * base_factor + base_offset), exponent) * factor + offset)`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html Online documentation}
    */
   export interface SpaceTileEffectParameters {
     /**
      * **Default:** `0.25`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#scroll_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#scroll_factor Online documentation}
      */
     scroll_factor?: float
     /**
      * **Default:** `0.25`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#zoom_base_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#zoom_base_factor Online documentation}
      */
     zoom_base_factor?: float
     /**
      * **Default:** `0.75`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#zoom_base_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#zoom_base_offset Online documentation}
      */
     zoom_base_offset?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#zoom_exponent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#zoom_exponent Online documentation}
      */
     zoom_exponent?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#zoom_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#zoom_factor Online documentation}
      */
     zoom_factor?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#zoom_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#zoom_offset Online documentation}
      */
     zoom_offset?: float
     /**
      * **Default:** `0.9`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#nebula_scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#nebula_scale Online documentation}
      */
     nebula_scale?: float
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#nebula_brightness Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#nebula_brightness Online documentation}
      */
     nebula_brightness?: float
     /**
      * **Default:** `0.9`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#nebula_saturation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#nebula_saturation Online documentation}
      */
     nebula_saturation?: float
     /**
      * **Default:** `0.01`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#star_density Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#star_density Online documentation}
      */
     star_density?: float
     /**
      * **Default:** `100`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#star_scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#star_scale Online documentation}
      */
     star_scale?: float
     /**
      * **Default:** `0.06`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#star_parallax Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#star_parallax Online documentation}
      */
     star_parallax?: float
     /**
      * **Default:** `1.666`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#star_shape Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#star_shape Online documentation}
      */
     star_shape?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#star_brightness Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#star_brightness Online documentation}
      */
     star_brightness?: float
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpaceTileEffectParameters.html#star_saturations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpaceTileEffectParameters.html#star_saturations Online documentation}
      */
     star_saturations?: float
   }
   export interface SpacingItem {
     /**
      * The index of the row or column after which to insert `spacing`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpacingItem.html#index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpacingItem.html#index Online documentation}
      */
     index: uint32
     /**
      * The spacing in scaled pixels between columns `column` and `column + 1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpacingItem.html#spacing Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpacingItem.html#spacing Online documentation}
      */
     spacing: int32
   }
   /**
    * Struct type for {@link SpawnPoint}
    * @see SpawnPoint
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpawnPoint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpawnPoint.html Online documentation}
    */
   export interface SpawnPointStruct {
     evolution_factor: double
     /**
      * Must be `>= 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpawnPoint.html#spawn_weight Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpawnPoint.html#spawn_weight Online documentation}
      */
     spawn_weight: double
   }
@@ -13287,7 +13286,7 @@ declare module "factorio:prototype" {
    * The definition of a evolution and probability weights for a {@link UnitSpawnDefinition spawnable unit} for a {@link EnemySpawnerPrototype}.
    *
    * It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the evolution factor and the second is the spawn weight.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpawnPoint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpawnPoint.html Online documentation}
    */
   export type SpawnPoint = SpawnPointStruct | readonly [double, double]
   export interface SpeechBubbleStyleSpecification extends BaseStyleSpecification {
@@ -13301,7 +13300,7 @@ declare module "factorio:prototype" {
   }
   /**
    * Used by {@link SpiderVehiclePrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderEngineSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderEngineSpecification.html Online documentation}
    */
   export interface SpiderEngineSpecification {
     legs: SpiderLegSpecification | readonly SpiderLegSpecification[]
@@ -13309,23 +13308,23 @@ declare module "factorio:prototype" {
      * **Default:** `0`
      *
      * The amount of overlap allowed between spider leg walking groups. Valid values are between 0.0 and 1.0. Default is 0.0 (no overlap); all legs in the current walking group must complete their step before the next walking group is allowed to move. 0.5 means the next walking group is allowed to start when the time remaining in the current walking group's step is about half of the time that the next group's step is predicted to take.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderEngineSpecification.html#walking_group_overlap Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderEngineSpecification.html#walking_group_overlap Online documentation}
      */
     walking_group_overlap?: float
   }
   /**
    * @see SpiderLegPrototype.graphics_set
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/SpiderLegPrototype.html#graphics_set Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/SpiderLegPrototype.html#graphics_set Online documentation}
    */
   export interface SpiderLegGraphicsSet {
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegGraphicsSet.html#joint_turn_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegGraphicsSet.html#joint_turn_offset Online documentation}
      */
     joint_turn_offset?: float
     /**
      * **Default:** `"train-stop-top"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegGraphicsSet.html#joint_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegGraphicsSet.html#joint_render_layer Online documentation}
      */
     joint_render_layer?: RenderLayer
     joint?: RotatedSprite
@@ -13345,78 +13344,78 @@ declare module "factorio:prototype" {
     bottom_end?: RotatedSprite
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegPart.html#middle_offset_from_top Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegPart.html#middle_offset_from_top Online documentation}
      */
     middle_offset_from_top?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegPart.html#middle_offset_from_bottom Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegPart.html#middle_offset_from_bottom Online documentation}
      */
     middle_offset_from_bottom?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegPart.html#top_end_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegPart.html#top_end_length Online documentation}
      */
     top_end_length?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegPart.html#bottom_end_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegPart.html#bottom_end_length Online documentation}
      */
     bottom_end_length?: float
     /**
      * **Default:** `0`
      *
      * The number of tiles in screen space to shift the top end of the leg part AWAY from the top joint.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegPart.html#top_end_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegPart.html#top_end_offset Online documentation}
      */
     top_end_offset?: float
     /**
      * **Default:** `0`
      *
      * The number of tiles in screen space to shift the bottom end of the leg part AWAY from the bottom joint.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegPart.html#bottom_end_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegPart.html#bottom_end_offset Online documentation}
      */
     bottom_end_offset?: float
     /**
      * **Default:** `"higher-object-above"`
      *
      * The sprite layer in which to draw this leg part.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegPart.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegPart.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
   }
   /**
    * Used by {@link SpiderEngineSpecification} for {@link SpiderVehiclePrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegSpecification.html Online documentation}
    */
   export interface SpiderLegSpecification {
     /**
      * Name of a {@link SpiderLegPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegSpecification.html#leg Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegSpecification.html#leg Online documentation}
      */
     leg: EntityID
     mount_position: Vector
     ground_position: Vector
     /**
      * Triggers to activate whenever the leg hits the ground, even if the owning spider is actively attacking an entity. For triggers, the source is the leg entity and the target is the leg's current position. Certain effects may not raise as desired, e.g. `"push-back"` does nothing.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegSpecification.html#leg_hit_the_ground_trigger Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegSpecification.html#leg_hit_the_ground_trigger Online documentation}
      */
     leg_hit_the_ground_trigger?: TriggerEffect
     /**
      * Triggers to activate whenever the leg hits the ground and the owning spider is actively attacking an entity. These effects will trigger after `leg_hit_the_ground_trigger` have triggered. For triggers, the source is the let entity and the target is the leg's current position. Certain effects may not raise as desired.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegSpecification.html#leg_hit_the_ground_when_attacking_trigger Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegSpecification.html#leg_hit_the_ground_when_attacking_trigger Online documentation}
      */
     leg_hit_the_ground_when_attacking_trigger?: TriggerEffect
     /**
      * The walking group this leg belongs to. Legs in the same walking group move or stay still at the same time, according to the engine that drives them. Walking groups must start at 1 and increment upward without skipping any numbers. If all legs are part of the same walking_group, they will all move simultaneously.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegSpecification.html#walking_group Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegSpecification.html#walking_group Online documentation}
      */
     walking_group: uint8
   }
   export interface SpiderLegTriggerEffect {
     /**
      * A number between 0 and 1 (inclusive) representing the distance from the upper end of the leg (0) to the lower end of the leg (1) where the effects will be triggered. For the upper leg, position 0 represents the point that the leg connects to the entity's hip and position 1 represents the knee. For the lower leg, position 0 represents the knee and position 1 represents the foot.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderLegTriggerEffect.html#position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderLegTriggerEffect.html#position Online documentation}
      */
     position: float
     effect: TriggerEffect
@@ -13428,29 +13427,29 @@ declare module "factorio:prototype" {
     shadow_animation?: RotatedAnimation
     /**
      * **Default:** `"higher-object-under"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderTorsoGraphicsSet.html#base_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderTorsoGraphicsSet.html#base_render_layer Online documentation}
      */
     base_render_layer?: RenderLayer
     /**
      * **Default:** `"under-elevated"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderTorsoGraphicsSet.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderTorsoGraphicsSet.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
   }
   /**
    * Used to specify the graphics for {@link SpiderVehiclePrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderVehicleGraphicsSet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderVehicleGraphicsSet.html Online documentation}
    */
   export interface SpiderVehicleGraphicsSet extends SpiderTorsoGraphicsSet {
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderVehicleGraphicsSet.html#autopilot_destination_visualisation_render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderVehicleGraphicsSet.html#autopilot_destination_visualisation_render_layer Online documentation}
      */
     autopilot_destination_visualisation_render_layer?: RenderLayer
     light?: LightDefinition
     /**
      * Placed in multiple positions, as determined by `light_positions`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderVehicleGraphicsSet.html#eye_light Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderVehicleGraphicsSet.html#eye_light Online documentation}
      */
     eye_light?: LightDefinition
     autopilot_destination_on_map_visualisation?: Animation
@@ -13459,22 +13458,22 @@ declare module "factorio:prototype" {
     autopilot_destination_queue_visualisation?: Animation
     /**
      * **Default:** `0.125`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderVehicleGraphicsSet.html#autopilot_path_visualisation_line_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderVehicleGraphicsSet.html#autopilot_path_visualisation_line_width Online documentation}
      */
     autopilot_path_visualisation_line_width?: float
     /**
      * **Default:** `2`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderVehicleGraphicsSet.html#autopilot_path_visualisation_on_map_line_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderVehicleGraphicsSet.html#autopilot_path_visualisation_on_map_line_width Online documentation}
      */
     autopilot_path_visualisation_on_map_line_width?: float
     /**
      * Defines where each `eye_light` is placed. One array per eye and each of those arrays should contain one position per body direction.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderVehicleGraphicsSet.html#light_positions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderVehicleGraphicsSet.html#light_positions Online documentation}
      */
     light_positions?: readonly (readonly Vector[])[]
     /**
      * The default mask color for the spider vehicle. Defaults to orange.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpiderVehicleGraphicsSet.html#default_color Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpiderVehicleGraphicsSet.html#default_color Online documentation}
      */
     default_color?: float
   }
@@ -13482,7 +13481,7 @@ declare module "factorio:prototype" {
     trigger: Trigger
     /**
      * Must be positive (larger than 0).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpoilToTriggerResult.html#items_per_trigger Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpoilToTriggerResult.html#items_per_trigger Online documentation}
      */
     items_per_trigger: ItemCountType
   }
@@ -13524,173 +13523,173 @@ declare module "factorio:prototype" {
    *     }
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite.html Online documentation}
    */
   export interface Sprite extends Omit<SpriteParameters, "filename"> {
     /**
      * If this property is present, all Sprite definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
      *
      * If this property is present, all other properties, including those inherited from SpriteParameters, are ignored.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite.html#layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite.html#layers Online documentation}
      */
     layers?: readonly Sprite[]
     /**
      * Only loaded, and mandatory if `layers` is not defined.
      *
      * The path to the sprite file to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite.html#filename Online documentation}
      */
     filename?: FileName
     /**
      * Only loaded if `layers` is not defined.
      *
      * Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4x4 grid.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite.html#dice Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite.html#dice Online documentation}
      */
     dice?: SpriteSizeType
     /**
      * Only loaded if `layers` is not defined.
      *
      * Same as `dice` above, but this specifies only how many slices there are on the x axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite.html#dice_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite.html#dice_x Online documentation}
      */
     dice_x?: SpriteSizeType
     /**
      * Only loaded if `layers` is not defined.
      *
      * Same as `dice` above, but this specifies only how many slices there are on the y axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite.html#dice_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite.html#dice_y Online documentation}
      */
     dice_y?: SpriteSizeType
   }
   /**
    * A map of sprites for all 16 directions of the entity.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html Online documentation}
    */
   export interface Sprite16Way {
     sheets?: readonly SpriteNWaySheet[]
     /**
      * Only loaded if `sheets` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#sheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#sheet Online documentation}
      */
     sheet?: SpriteNWaySheet
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#north Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#north Online documentation}
      */
     north?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#north_north_east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#north_north_east Online documentation}
      */
     north_north_east?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#north_east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#north_east Online documentation}
      */
     north_east?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#east_north_east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#east_north_east Online documentation}
      */
     east_north_east?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#east Online documentation}
      */
     east?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#east_south_east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#east_south_east Online documentation}
      */
     east_south_east?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#south_east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#south_east Online documentation}
      */
     south_east?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#south_south_east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#south_south_east Online documentation}
      */
     south_south_east?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#south Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#south Online documentation}
      */
     south?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#south_south_west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#south_south_west Online documentation}
      */
     south_south_west?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#south_west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#south_west Online documentation}
      */
     south_west?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#west_south_west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#west_south_west Online documentation}
      */
     west_south_west?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#west Online documentation}
      */
     west?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#west_north_west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#west_north_west Online documentation}
      */
     west_north_west?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#north_west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#north_west Online documentation}
      */
     north_west?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite16Way.html#north_north_west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite16Way.html#north_north_west Online documentation}
      */
     north_north_west?: Sprite
   }
   /**
    * Struct type for {@link Sprite4Way}
    * @see Sprite4Way
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite4Way.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite4Way.html Online documentation}
    */
   export interface Sprite4WayStruct {
     sheets?: readonly SpriteNWaySheet[]
     /**
      * Only loaded if `sheets` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite4Way.html#sheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite4Way.html#sheet Online documentation}
      */
     sheet?: SpriteNWaySheet
     /**
      * Only loaded if both `sheets` and `sheet` are not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite4Way.html#north Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite4Way.html#north Online documentation}
      */
     north?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
      *
      * Only loaded if `north` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite4Way.html#east Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite4Way.html#east Online documentation}
      */
     east?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
      *
      * Only loaded if `north` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite4Way.html#south Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite4Way.html#south Online documentation}
      */
     south?: Sprite
     /**
      * Only loaded, and mandatory if both `sheets` and `sheet` are not defined.
      *
      * Only loaded if `north` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite4Way.html#west Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite4Way.html#west Online documentation}
      */
     west?: Sprite
   }
@@ -13738,7 +13737,7 @@ declare module "factorio:prototype" {
    *     scale = 0.5
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Sprite4Way.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Sprite4Way.html Online documentation}
    */
   export type Sprite4Way = Sprite4WayStruct | Sprite
   /**
@@ -13780,7 +13779,7 @@ declare module "factorio:prototype" {
    * - `"group=effect-texture"`
    * @example
    * flags = { "linear-minification", "linear-magnification" }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteFlags.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteFlags.html Online documentation}
    */
   export type SpriteFlags = readonly (
     | "no-crop"
@@ -13828,28 +13827,28 @@ declare module "factorio:prototype" {
    *   shift = util.by_pixel(1.5, 7.5-1),
    *   scale = 0.5
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteNWaySheet.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteNWaySheet.html Online documentation}
    */
   export interface SpriteNWaySheet extends SpriteParameters {
     /**
      * **Default:** `4 if used in Sprite4Way, 8 if used in Sprite8Way`
      *
      * Specifies how many of the directions of the SpriteNWay are filled up with this sheet.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteNWaySheet.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteNWaySheet.html#frames Online documentation}
      */
     frames?: uint32
     /**
      * **Default:** `false`
      *
      * Unused.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteNWaySheet.html#generate_sdf Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteNWaySheet.html#generate_sdf Online documentation}
      */
     generate_sdf?: boolean
   }
   export interface SpriteParameters extends SpriteSource {
     /**
      * **Default:** `"medium"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#priority Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#priority Online documentation}
      */
     priority?: SpritePriority
     flags?: SpriteFlags
@@ -13857,33 +13856,33 @@ declare module "factorio:prototype" {
      * **Default:** ``{0, 0}``
      *
      * The shift in tiles. `util.by_pixel()` can be used to divide the shift by 32 which is the usual pixel height/width of 1 tile in normal resolution. Note that 32 pixel tile height/width is not enforced anywhere - any other tile height or width is also possible.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#shift Online documentation}
      */
     shift?: Vector
     /**
      * **Default:** `false`
      *
      * Whether to rotate the `shift` alongside the sprite's rotation. This only applies to sprites which are procedurally rotated by the game engine (like projectiles, wires, inserter hands, etc).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#rotate_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#rotate_shift Online documentation}
      */
     rotate_shift?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#apply_special_effect Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#apply_special_effect Online documentation}
      */
     apply_special_effect?: boolean
     /**
      * **Default:** `1`
      *
      * Values other than `1` specify the scale of the sprite on default zoom. A scale of `2` means that the picture will be two times bigger on screen (and thus more pixelated).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#scale Online documentation}
      */
     scale?: double
     /**
      * **Default:** `false`
      *
      * Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_glow` and `draw_as_light`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#draw_as_shadow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#draw_as_shadow Online documentation}
      */
     draw_as_shadow?: boolean
     /**
@@ -13892,53 +13891,53 @@ declare module "factorio:prototype" {
      * Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true. This takes precedence over `draw_as_light`.
      *
      * Draws first as a normal sprite, then again as a light layer. See {@linkplain https://forums.factorio.com/91682}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#draw_as_glow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#draw_as_glow Online documentation}
      */
     draw_as_glow?: boolean
     /**
      * **Default:** `false`
      *
      * Only one of `draw_as_shadow`, `draw_as_glow` and `draw_as_light` can be true.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#draw_as_light Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#draw_as_light Online documentation}
      */
     draw_as_light?: boolean
     /**
      * **Default:** `true`
      *
-     * Loaded only if `draw_as_shadow`, `draw_as_glow` and `draw_as_light` are `false`, and only by sprites used by tile renderer (decals and underwater patches). Purspose of setting this to `false` is to preserve water mask from sprites that are supposed to be drawn under the water.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#occludes_light Online documentation}
+     * Loaded only if `draw_as_shadow`, `draw_as_glow` and `draw_as_light` are `false`, and only by sprites used by tile renderer (decals and underwater patches). The purpose of setting this to `false` is to preserve water mask from sprites that are supposed to be drawn under the water.
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#occludes_light Online documentation}
      */
     occludes_light?: boolean
     /**
      * **Default:** `0`
      *
      * Only loaded if this is an icon, that is it has the flag `"group=icon"` or `"group=gui"`. Will be clamped to range `[0, 5]`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#mipmap_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#mipmap_count Online documentation}
      */
     mipmap_count?: uint8
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#apply_runtime_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#apply_runtime_tint Online documentation}
      */
     apply_runtime_tint?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#tint_as_overlay Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#tint_as_overlay Online documentation}
      */
     tint_as_overlay?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#invert_colors Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#invert_colors Online documentation}
      */
     invert_colors?: boolean
     /**
      * **Default:** ``{r=1, g=1, b=1, a=1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#tint Online documentation}
      */
     tint?: Color
     /**
      * **Default:** `"normal"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#blend_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#blend_mode Online documentation}
      */
     blend_mode?: BlendMode
     /**
@@ -13948,22 +13947,22 @@ declare module "factorio:prototype" {
      *
      * If this is set to `true`, the game will generate an icon shadow (using signed distance fields) for the sprite.
      *
-     * ![Example of the icon shadow in the character modifier icon used by the steel axe research](https://lua-api.factorio.com/2.0.49/static/images/Generate_sdf_example.png)
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#generate_sdf Online documentation}
+     * ![Example of the icon shadow in the character modifier icon used by the steel axe research](https://lua-api.factorio.com/2.0.50/static/images/Generate_sdf_example.png)
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#generate_sdf Online documentation}
      */
     generate_sdf?: boolean
     /**
      * **Default:** `"any"`
      *
      * Provides hint to sprite atlas system, so it can try to put sprites that are intended to be used at the same locations to the same sprite atlas.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#surface Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#surface Online documentation}
      */
     surface?: SpriteUsageSurfaceHint
     /**
      * **Default:** `"any"`
      *
      * Provides hint to sprite atlas system, so it can pack sprites that are related to each other to the same sprite atlas.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteParameters.html#usage Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteParameters.html#usage Online documentation}
      */
     usage?: SpriteUsageHint
   }
@@ -13978,7 +13977,7 @@ declare module "factorio:prototype" {
    * - `"low"`
    * - `"very-low"`
    * - `"no-atlas"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpritePriority.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpritePriority.html Online documentation}
    */
   export type SpritePriority =
     | "extra-high-no-scale"
@@ -13993,43 +13992,43 @@ declare module "factorio:prototype" {
      * If this property is present, all SpriteSheet definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
      *
      * If this property is present, all other properties, including those inherited from SpriteParameters, are ignored.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSheet.html#layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSheet.html#layers Online documentation}
      */
     layers?: readonly SpriteSheet[]
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSheet.html#variation_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSheet.html#variation_count Online documentation}
      */
     variation_count?: uint32
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSheet.html#repeat_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSheet.html#repeat_count Online documentation}
      */
     repeat_count?: uint32
     /**
      * **Default:** `Value of `variation_count``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSheet.html#line_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSheet.html#line_length Online documentation}
      */
     line_length?: uint32
     filenames?: readonly FileName[]
     /**
      * Mandatory if `filenames` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSheet.html#lines_per_file Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSheet.html#lines_per_file Online documentation}
      */
     lines_per_file?: uint32
     /**
      * Number of slices this is sliced into when using the "optimized atlas packing" option. If you are a modder, you can just ignore this property. Example: If this is 4, the sprite will be sliced into a 4x4 grid.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSheet.html#dice Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSheet.html#dice Online documentation}
      */
     dice?: SpriteSizeType
     /**
      * Same as `dice` above, but this specifies only how many slices there are on the x axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSheet.html#dice_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSheet.html#dice_x Online documentation}
      */
     dice_x?: SpriteSizeType
     /**
      * Same as `dice` above, but this specifies only how many slices there are on the y axis.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSheet.html#dice_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSheet.html#dice_y Online documentation}
      */
     dice_y?: SpriteSizeType
   }
@@ -14037,66 +14036,66 @@ declare module "factorio:prototype" {
   export interface SpriteSource {
     /**
      * The path to the sprite file to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#filename Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#filename Online documentation}
      */
     filename: FileName
     /**
      * The width and height of the sprite. If this is a tuple, the first member of the tuple is the width and the second is the height. Otherwise the size is both width and height. Width and height may only be in the range of 0-4096.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#size Online documentation}
      */
     size?: SpriteSizeType | readonly [SpriteSizeType, SpriteSizeType]
     /**
      * Mandatory if `size` is not defined.
      *
      * Width of the picture in pixels, from 0-4096.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#width Online documentation}
      */
     width?: SpriteSizeType
     /**
      * Mandatory if `size` is not defined.
      *
      * Height of the picture in pixels, from 0-4096.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#height Online documentation}
      */
     height?: SpriteSizeType
     /**
      * **Default:** `0`
      *
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#x Online documentation}
      */
     x?: SpriteSizeType
     /**
      * **Default:** `0`
      *
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#y Online documentation}
      */
     y?: SpriteSizeType
     /**
      * Loaded only when `x` and `y` are both `0`. The first member of the tuple is `x` and the second is `y`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#position Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#position Online documentation}
      */
     position?: readonly [SpriteSizeType, SpriteSizeType]
     /**
      * **Default:** `false`
      *
      * Minimal mode is entered when mod loading fails. You are in it when you see the gray box after (part of) the loading screen that tells you a mod error. Modders can ignore this property.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#load_in_minimal_mode Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#load_in_minimal_mode Online documentation}
      */
     load_in_minimal_mode?: boolean
     /**
      * **Default:** `true`
      *
      * Whether alpha should be pre-multiplied.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#premul_alpha Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#premul_alpha Online documentation}
      */
     premul_alpha?: boolean
     /**
      * **Default:** `false`
      *
      * If `true`, the sprite may be downsampled to half its size on load even when 'Sprite quality' graphics setting is set to 'High'. Whether downsampling happens depends on detected hardware and other graphics settings.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteSource.html#allow_forced_downscale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteSource.html#allow_forced_downscale Online documentation}
      */
     allow_forced_downscale?: boolean
   }
@@ -14118,7 +14117,7 @@ declare module "factorio:prototype" {
    * - `"air"`
    * - `"remnant"`
    * - `"decorative"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteUsageHint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteUsageHint.html Online documentation}
    */
   export type SpriteUsageHint =
     | "any"
@@ -14146,13 +14145,13 @@ declare module "factorio:prototype" {
    * - `"fulgora"`
    * - `"aquilo"`
    * - `"space"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteUsageSurfaceHint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteUsageSurfaceHint.html Online documentation}
    */
   export type SpriteUsageSurfaceHint = "any" | "nauvis" | "vulcanus" | "gleba" | "fulgora" | "aquilo" | "space"
   /**
    * Struct type for {@link SpriteVariations}
    * @see SpriteVariations
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteVariations.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteVariations.html Online documentation}
    */
   export interface SpriteVariationsStruct {
     sheet: SpriteSheet
@@ -14180,7 +14179,7 @@ declare module "factorio:prototype" {
    *     scale = 0.5
    *   }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SpriteVariations.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SpriteVariations.html Online documentation}
    */
   export type SpriteVariations = SpriteVariationsStruct | SpriteSheet | readonly Sprite[]
   export interface StackTransferTipTrigger extends CountBasedTipTrigger {
@@ -14192,40 +14191,40 @@ declare module "factorio:prototype" {
      * - `"stack"`
      * - `"inventory"`
      * - `"whole-inventory"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StackTransferTipTrigger.html#transfer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StackTransferTipTrigger.html#transfer Online documentation}
      */
     transfer?: "stack" | "inventory" | "whole-inventory"
   }
   export interface StateSteeringSettings {
     /**
      * Not including the radius of the unit.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StateSteeringSettings.html#radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StateSteeringSettings.html#radius Online documentation}
      */
     radius: double
     separation_factor: double
     separation_force: double
     /**
      * Used only for special "to look good" purposes (like in trailer).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StateSteeringSettings.html#force_unit_fuzzy_goto_behavior Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StateSteeringSettings.html#force_unit_fuzzy_goto_behavior Online documentation}
      */
     force_unit_fuzzy_goto_behavior: boolean
   }
   export interface StatelessVisualisation {
     /**
      * One of `nested_visualisations`, `animation` and `light` needs to be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#animation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#animation Online documentation}
      */
     animation?: AnimationVariations
     /**
      * Shadow variation count must be equal to animation variation count.
      *
      * Only loaded if `animation` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#shadow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#shadow Online documentation}
      */
     shadow?: AnimationVariations
     /**
      * One of `nested_visualisations`, `animation` and `light` needs to be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#light Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#light Online documentation}
      */
     light?: LightDefinition
     count?: uint16
@@ -14233,27 +14232,27 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * Only loaded if `count` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#min_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#min_count Online documentation}
      */
     min_count?: uint16
     /**
      * **Default:** `Value of `min_count``
      *
      * Only loaded if `count` is not defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#max_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#max_count Online documentation}
      */
     max_count?: uint16
     period?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#particle_tick_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#particle_tick_offset Online documentation}
      */
     particle_tick_offset?: float
     /**
      * **Default:** `1`
      *
      * Silently clamped to be between 0 and 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#probability Online documentation}
      */
     probability?: float
     offset_x?: RangedValue
@@ -14267,73 +14266,73 @@ declare module "factorio:prototype" {
     acceleration_z?: float
     /**
      * Silently clamped to be between 0 and 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#movement_slowdown_factor_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#movement_slowdown_factor_x Online documentation}
      */
     movement_slowdown_factor_x?: float
     /**
      * Silently clamped to be between 0 and 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#movement_slowdown_factor_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#movement_slowdown_factor_y Online documentation}
      */
     movement_slowdown_factor_y?: float
     /**
      * Silently clamped to be between 0 and 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#movement_slowdown_factor_z Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#movement_slowdown_factor_z Online documentation}
      */
     movement_slowdown_factor_z?: float
     scale?: RangedValue
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#begin_scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#begin_scale Online documentation}
      */
     begin_scale?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#end_scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#end_scale Online documentation}
      */
     end_scale?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#fade_in_progress_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#fade_in_progress_duration Online documentation}
      */
     fade_in_progress_duration?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#fade_out_progress_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#fade_out_progress_duration Online documentation}
      */
     fade_out_progress_duration?: float
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#spread_progress_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#spread_progress_duration Online documentation}
      */
     spread_progress_duration?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#adjust_animation_speed_by_base_scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#adjust_animation_speed_by_base_scale Online documentation}
      */
     adjust_animation_speed_by_base_scale?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#affected_by_wind Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#affected_by_wind Online documentation}
      */
     affected_by_wind?: boolean
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * Array may be at most 32 elements.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#positions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#positions Online documentation}
      */
     positions?: readonly Vector[]
     /**
      * One of `nested_visualisations`, `animation` and `light` needs to be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#nested_visualisations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#nested_visualisations Online documentation}
      */
     nested_visualisations?: StatelessVisualisation | readonly StatelessVisualisation[]
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatelessVisualisation.html#can_lay_on_the_ground Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatelessVisualisation.html#can_lay_on_the_ground Online documentation}
      */
     can_lay_on_the_ground?: boolean
   }
@@ -14341,48 +14340,48 @@ declare module "factorio:prototype" {
   export interface StatusColors {
     /**
      * **Default:** ``{1, 1, 1, 1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatusColors.html#idle Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatusColors.html#idle Online documentation}
      */
     idle?: Color
     /**
      * **Default:** `idle`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatusColors.html#no_minable_resources Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatusColors.html#no_minable_resources Online documentation}
      */
     no_minable_resources?: Color
     /**
      * **Default:** `idle`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatusColors.html#full_output Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatusColors.html#full_output Online documentation}
      */
     full_output?: Color
     /**
      * **Default:** `idle`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatusColors.html#insufficient_input Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatusColors.html#insufficient_input Online documentation}
      */
     insufficient_input?: Color
     /**
      * **Default:** `idle`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatusColors.html#disabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatusColors.html#disabled Online documentation}
      */
     disabled?: Color
     /**
      * **Default:** `No color`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatusColors.html#no_power Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatusColors.html#no_power Online documentation}
      */
     no_power?: Color
     /**
      * **Default:** ``{1, 1, 1, 1}``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatusColors.html#working Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatusColors.html#working Online documentation}
      */
     working?: Color
     /**
      * **Default:** `working`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StatusColors.html#low_power Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StatusColors.html#low_power Online documentation}
      */
     low_power?: Color
   }
   /**
    * @see MapSettings.steering
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/MapSettings.html#steering Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/MapSettings.html#steering Online documentation}
    */
   export interface SteeringSettings {
     default: StateSteeringSettings
@@ -14390,7 +14389,7 @@ declare module "factorio:prototype" {
   }
   /**
    * @see StorageTankPrototype.pictures
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/StorageTankPrototype.html#pictures Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/StorageTankPrototype.html#pictures Online documentation}
    */
   export interface StorageTankPictures {
     picture?: Sprite4Way
@@ -14404,34 +14403,34 @@ declare module "factorio:prototype" {
     readonly type: "stream"
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StreamAttackParameters.html#fluid_consumption Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StreamAttackParameters.html#fluid_consumption Online documentation}
      */
     fluid_consumption?: FluidAmount
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StreamAttackParameters.html#gun_barrel_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StreamAttackParameters.html#gun_barrel_length Online documentation}
      */
     gun_barrel_length?: float
     projectile_creation_parameters?: CircularProjectileCreationSpecification
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StreamAttackParameters.html#gun_center_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StreamAttackParameters.html#gun_center_shift Online documentation}
      */
     gun_center_shift?: Vector | GunShift4Way
     /**
      * Controls which fluids can fuel this stream attack and their potential damage bonuses.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StreamAttackParameters.html#fluids Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StreamAttackParameters.html#fluids Online documentation}
      */
     fluids?: readonly StreamFluidProperties[]
   }
   /**
    * @see StreamAttackParameters.fluids
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/StreamAttackParameters.html#fluids Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/StreamAttackParameters.html#fluids Online documentation}
    */
   export interface StreamFluidProperties {
     readonly type: FluidID
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StreamFluidProperties.html#damage_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StreamFluidProperties.html#damage_modifier Online documentation}
      */
     damage_modifier?: double
   }
@@ -14439,7 +14438,7 @@ declare module "factorio:prototype" {
     readonly type: "stream"
     /**
      * Name of a {@link FluidStreamPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/StreamTriggerDelivery.html#stream Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/StreamTriggerDelivery.html#stream Online documentation}
      */
     stream: EntityID
     source_offset?: Vector
@@ -14452,12 +14451,12 @@ declare module "factorio:prototype" {
    * - `"off"`: Stretching/squashing is disabled even when the container contains stretchable/squashable elements.
    * - `"auto"`: Stretching/squashing depends on the contents of the layout, for example a flow with stretchable element gets stretchable.
    * - `"stretch_and_expand"`: Used only for stretchable (not squashable) properties on scroll panes, labels, check boxes and radio buttons. The element this is set on expands its size to maximum and is stretched at the same time. This means the element takes up its maximum size even before its contents require it.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/StretchRule.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/StretchRule.html Online documentation}
    */
   export type StretchRule = "on" | "off" | "auto" | "stretch_and_expand"
   /**
    * Used as an alternative way to specify animations.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Stripe.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Stripe.html Online documentation}
    */
   export interface Stripe {
     width_in_frames: uint32
@@ -14465,18 +14464,18 @@ declare module "factorio:prototype" {
      * Mandatory when Stripe is used in {@link Animation}.
      *
      * Optional when it is used in {@link RotatedAnimation}, where it defaults to {@link RotatedAnimation#direction_count RotatedAnimation::direction_count}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Stripe.html#height_in_frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Stripe.html#height_in_frames Online documentation}
      */
     height_in_frames: uint32
     filename: FileName
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Stripe.html#x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Stripe.html#x Online documentation}
      */
     x?: uint32
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/Stripe.html#y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/Stripe.html#y Online documentation}
      */
     y?: uint32
   }
@@ -14515,7 +14514,7 @@ declare module "factorio:prototype" {
    * - {@link GlowStyleSpecification}: Loaded when the `type` is `"glow_style"`.
    * - {@link SpeechBubbleStyleSpecification}: Loaded when the `type` is `"speech_bubble_style"`.
    * - {@link DoubleSliderStyleSpecification}: Loaded when the `type` is `"double_slider_style"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/StyleSpecification.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/StyleSpecification.html Online documentation}
    */
   export type StyleSpecification =
     | ActivityBarStyleSpecification
@@ -14562,18 +14561,18 @@ declare module "factorio:prototype" {
   }
   /**
    * Requires Space Age to use.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceCondition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceCondition.html Online documentation}
    */
   export interface SurfaceCondition {
     property: SurfacePropertyID
     /**
      * **Default:** `Lowest double`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceCondition.html#min Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceCondition.html#min Online documentation}
      */
     min?: double
     /**
      * **Default:** `Max double`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceCondition.html#max Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceCondition.html#max Online documentation}
      */
     max?: double
   }
@@ -14581,7 +14580,7 @@ declare module "factorio:prototype" {
    * The name of a {@link SurfacePrototype}.
    * @example
    * "space-platform"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceID.html Online documentation}
    */
   export type SurfaceID = string
   /**
@@ -14590,42 +14589,42 @@ declare module "factorio:prototype" {
    * "solar-power"
    * @example
    * "magnetic-field"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfacePropertyID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfacePropertyID.html Online documentation}
    */
   export type SurfacePropertyID = string
   export interface SurfaceRenderParameters {
     day_night_cycle_color_lookup?: DaytimeColorLookupTable
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceRenderParameters.html#shadow_opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceRenderParameters.html#shadow_opacity Online documentation}
      */
     shadow_opacity?: float
     /**
      * **Default:** `false`
      *
      * When set to `true` and `clouds` property is not set, the legacy sprite clouds will be rendered on the surface.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceRenderParameters.html#draw_sprite_clouds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceRenderParameters.html#draw_sprite_clouds Online documentation}
      */
     draw_sprite_clouds?: boolean
     clouds?: CloudsEffectProperties
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceRenderParameters.html#fog Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceRenderParameters.html#fog Online documentation}
      */
     fog?: FogEffectProperties
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceRenderParameters.html#terrain_tint_effect Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceRenderParameters.html#terrain_tint_effect Online documentation}
      */
     terrain_tint_effect?: GlobalTintEffectProperties
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceRenderParameters.html#space_dust_background Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceRenderParameters.html#space_dust_background Online documentation}
      */
     space_dust_background?: SpaceDustEffectProperties
     /**
      * ![Space Age](https://wiki.factorio.com/images/thumb/Space_age_icon.png/16px-Space_age_icon.png) ***Space Age*** required to use.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/SurfaceRenderParameters.html#space_dust_foreground Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/SurfaceRenderParameters.html#space_dust_foreground Online documentation}
      */
     space_dust_foreground?: SpaceDustEffectProperties
   }
@@ -14645,12 +14644,12 @@ declare module "factorio:prototype" {
     readonly type: "tab_style"
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TabStyleSpecification.html#font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TabStyleSpecification.html#font Online documentation}
      */
     font?: string
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TabStyleSpecification.html#badge_font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TabStyleSpecification.html#badge_font Online documentation}
      */
     badge_font?: string
     badge_horizontal_spacing?: int16
@@ -14683,7 +14682,7 @@ declare module "factorio:prototype" {
     vertical_spacing?: int32 | readonly SpacingItem[]
     /**
      * Sets `top_cell_padding`, `right_cell_padding`, `bottom_cell_padding` and `left_cell_padding` to the same value.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TableStyleSpecification.html#cell_padding Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TableStyleSpecification.html#cell_padding Online documentation}
      */
     cell_padding?: int16
     top_cell_padding?: int16
@@ -14720,7 +14719,7 @@ declare module "factorio:prototype" {
    * "automated-rail-transportation"
    * @example
    * "steel-axe"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologyID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologyID.html Online documentation}
    */
   export type TechnologyID = string
   export interface TechnologySlotStyleSpecification extends Omit<ButtonStyleSpecification, "type"> {
@@ -14735,12 +14734,12 @@ declare module "factorio:prototype" {
     level_band_height?: uint32
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologySlotStyleSpecification.html#level_font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologySlotStyleSpecification.html#level_font Online documentation}
      */
     level_font?: string
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologySlotStyleSpecification.html#level_range_font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologySlotStyleSpecification.html#level_range_font Online documentation}
      */
     level_range_font?: string
     level_font_color?: Color
@@ -14779,7 +14778,7 @@ declare module "factorio:prototype" {
    * - {@link CaptureSpawnerTechnologyTrigger}: Loaded when the `type` is `"capture-spawner"`.
    * - {@link BuildEntityTechnologyTrigger}: Loaded when the `type` is `"build-entity"`.
    * - {@link CreateSpacePlatformTechnologyTrigger}: Loaded when the `type` is `"create-space-platform"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologyTrigger.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologyTrigger.html Online documentation}
    */
   export type TechnologyTrigger =
     | MineEntityTechnologyTrigger
@@ -14806,12 +14805,12 @@ declare module "factorio:prototype" {
    *   },
    *   time = 60
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologyUnit.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologyUnit.html Online documentation}
    */
   export interface TechnologyUnit {
     /**
      * How many units are needed. Must be `> 0`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologyUnit.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologyUnit.html#count Online documentation}
      */
     count?: uint64
     /**
@@ -14826,43 +14825,43 @@ declare module "factorio:prototype" {
      * This formula can also be used at {@link import("factorio:runtime").LuaHelpers#evaluate_expression runtime}.
      * @example
      * count_formula = "2500*(L - 3)"
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologyUnit.html#count_formula Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologyUnit.html#count_formula Online documentation}
      */
     count_formula?: MathExpression
     /**
      * How much time one unit takes to research. In a lab with a crafting speed of `1`, it corresponds to the number of seconds.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologyUnit.html#time Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologyUnit.html#time Online documentation}
      */
     time: double
     /**
      * List of ingredients needed for one unit of research. The items must all be {@link ToolPrototype ToolPrototypes}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TechnologyUnit.html#ingredients Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TechnologyUnit.html#ingredients Online documentation}
      */
     ingredients: readonly ResearchIngredient[]
   }
   export interface TerritorySettings {
     /**
      * Names of the {@link SegmentedUnitPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TerritorySettings.html#units Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TerritorySettings.html#units Online documentation}
      */
     units?: readonly EntityID[]
     /**
      * Mandatory if `units` is not empty.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TerritorySettings.html#territory_index_expression Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TerritorySettings.html#territory_index_expression Online documentation}
      */
     territory_index_expression?: string
     /**
      * **Default:** `0`
      *
      * The result will be converted to integer, clamped and used as an index for `units` array. Negative values will result in empty spawn location.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TerritorySettings.html#territory_variation_expression Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TerritorySettings.html#territory_variation_expression Online documentation}
      */
     territory_variation_expression?: string
     /**
      * **Default:** `0`
      *
      * Minimum number of chunks a territory must have. Below this, it will get deleted.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TerritorySettings.html#minimum_territory_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TerritorySettings.html#minimum_territory_size Online documentation}
      */
     minimum_territory_size?: uint32
   }
@@ -14870,7 +14869,7 @@ declare module "factorio:prototype" {
     readonly type: "textbox_style"
     /**
      * Name of a {@link FontPrototype}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TextBoxStyleSpecification.html#font Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TextBoxStyleSpecification.html#font Online documentation}
      */
     font?: string
     font_color?: Color
@@ -14895,7 +14894,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * Whether using the capsule consumes an item from the stack.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ThrowCapsuleAction.html#uses_stack Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ThrowCapsuleAction.html#uses_stack Online documentation}
      */
     uses_stack?: boolean
   }
@@ -14905,29 +14904,29 @@ declare module "factorio:prototype" {
     flame_position?: Vector
     /**
      * **Default:** `31.25`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ThrusterGraphicsSet.html#flame_effect_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ThrusterGraphicsSet.html#flame_effect_height Online documentation}
      */
     flame_effect_height?: float
     /**
      * **Default:** `6`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ThrusterGraphicsSet.html#flame_effect_width Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ThrusterGraphicsSet.html#flame_effect_width Online documentation}
      */
     flame_effect_width?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ThrusterGraphicsSet.html#flame_half_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ThrusterGraphicsSet.html#flame_half_height Online documentation}
      */
     flame_half_height?: float
     /**
      * **Default:** `1.5625`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/ThrusterGraphicsSet.html#flame_effect_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/ThrusterGraphicsSet.html#flame_effect_offset Online documentation}
      */
     flame_effect_offset?: float
   }
   /**
    * Struct type for {@link ThrusterPerformancePoint}
    * @see ThrusterPerformancePoint
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ThrusterPerformancePoint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ThrusterPerformancePoint.html Online documentation}
    */
   export interface ThrusterPerformancePointStruct {
     fluid_volume: double
@@ -14937,7 +14936,7 @@ declare module "factorio:prototype" {
   export type ThrusterPerformancePoint = ThrusterPerformancePointStruct | readonly [double, double, double]
   /**
    * @see FireFlamePrototype.burnt_patch_alpha_variations
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/FireFlamePrototype.html#burnt_patch_alpha_variations Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/FireFlamePrototype.html#burnt_patch_alpha_variations Online documentation}
    */
   export interface TileAndAlpha {
     tile: TileID
@@ -14945,23 +14944,23 @@ declare module "factorio:prototype" {
   }
   /**
    * Used for particles created with {@link CreateParticleTriggerEffectItem#apply_tile_tint apply_tile_tint} defined.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TileBasedParticleTints.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TileBasedParticleTints.html Online documentation}
    */
   export interface TileBasedParticleTints {
     /**
      * **Default:** `{1,1,1,1} (white)`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileBasedParticleTints.html#primary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileBasedParticleTints.html#primary Online documentation}
      */
     primary?: Color
     /**
      * **Default:** `Value of `primary``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileBasedParticleTints.html#secondary Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileBasedParticleTints.html#secondary Online documentation}
      */
     secondary?: Color
   }
   /**
    * @see TilePrototype.build_sound
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/TilePrototype.html#build_sound Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/TilePrototype.html#build_sound Online documentation}
    */
   export interface TileBuildSound {
     small?: Sound
@@ -14973,17 +14972,17 @@ declare module "factorio:prototype" {
     area: SimpleBoundingBox
     /**
      * **Default:** `No masks`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileBuildabilityRule.html#required_tiles Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileBuildabilityRule.html#required_tiles Online documentation}
      */
     required_tiles?: CollisionMaskConnector
     /**
      * **Default:** `No masks`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileBuildabilityRule.html#colliding_tiles Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileBuildabilityRule.html#colliding_tiles Online documentation}
      */
     colliding_tiles?: CollisionMaskConnector
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileBuildabilityRule.html#remove_on_collision Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileBuildabilityRule.html#remove_on_collision Online documentation}
      */
     remove_on_collision?: boolean
   }
@@ -14991,7 +14990,7 @@ declare module "factorio:prototype" {
    * The name of an {@link TileEffectDefinition}.
    * @example
    * "water"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TileEffectDefinitionID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TileEffectDefinitionID.html Online documentation}
    */
   export type TileEffectDefinitionID = string
   /**
@@ -15000,33 +14999,33 @@ declare module "factorio:prototype" {
    * "grass-2"
    * @example
    * "landfill"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TileID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TileID.html Online documentation}
    */
   export type TileID = string
   /**
    * Name of an allowed tile, or a list of two tile names for entities allowed on transitions.
    * @see AutoplaceSpecification.tile_restriction
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AutoplaceSpecification.html#tile_restriction Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AutoplaceSpecification.html#tile_restriction Online documentation}
    */
   export type TileIDRestriction = TileID | readonly [TileID, TileID]
   export interface TileLightPictures extends TileSpriteLayout {
     /**
      * Only powers of 2 from 1 to 128 can be used. Square size of the tile arrangement this sprite is used for. Used to calculate the `width` and `height` of the sprite which cannot be set directly. (width or height) = size * 32 / scale.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileLightPictures.html#size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileLightPictures.html#size Online documentation}
      */
     size: uint32
   }
   export interface TileMainPictures extends TileSpriteLayout {
     /**
      * Only powers of 2 from 1 to 128 can be used. Square size of the tile arrangement this sprite is used for. Used to calculate the `width` and `height` of the sprite which cannot be set directly. (width or height) = size * 32 / scale.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileMainPictures.html#size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileMainPictures.html#size Online documentation}
      */
     size: uint32
     /**
      * **Default:** `1`
      *
      * Probability of 1x1 (size = 1) version of tile must be 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileMainPictures.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileMainPictures.html#probability Online documentation}
      */
     probability?: double
     weights?: readonly double[]
@@ -15034,7 +15033,7 @@ declare module "factorio:prototype" {
   /**
    * Struct type for {@link TilePosition}
    * @see TilePosition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TilePosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TilePosition.html Online documentation}
    */
   export interface TilePositionStruct {
     x: int32
@@ -15042,7 +15041,7 @@ declare module "factorio:prototype" {
   }
   /**
    * Coordinates of a tile on a map where each integer `x`/`y` represents a different tile. This uses the same format as {@link MapPosition}, except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TilePosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TilePosition.html Online documentation}
    */
   export type TilePosition = TilePositionStruct | readonly [int32, int32]
   /**
@@ -15053,42 +15052,42 @@ declare module "factorio:prototype" {
    * - `"ground-natural"`: 256 layers. Used for natural tile sprites above water. Global tile tint shaders are rendered above these layers.
    * - `"ground-artificial"`: 128 layers. Used for tile sprites which are intended to be above natural ground. Like tiles that player can build.
    * - `"top"`: 1 layer. The top most tile render layer.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TileRenderLayer.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TileRenderLayer.html Online documentation}
    */
   export type TileRenderLayer = "zero" | "water" | "water-overlay" | "ground-natural" | "ground-artificial" | "top"
   export interface TileSpriteLayout {
     picture: FileName
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayout.html#scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayout.html#scale Online documentation}
      */
     scale?: float
     /**
      * **Default:** `0`
      *
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayout.html#x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayout.html#x Online documentation}
      */
     x?: SpriteSizeType
     /**
      * **Default:** `0`
      *
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayout.html#y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayout.html#y Online documentation}
      */
     y?: SpriteSizeType
     /**
      * **Default:** `0`
      *
      * Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having longer animations in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. 0 means that all the pictures are in one horizontal line.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayout.html#line_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayout.html#line_length Online documentation}
      */
     line_length?: uint8
     /**
      * **Default:** `0`
      *
      * Frame count.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayout.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayout.html#count Online documentation}
      */
     count?: uint8
   }
@@ -15097,12 +15096,12 @@ declare module "factorio:prototype" {
     scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayoutVariant.html#x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayoutVariant.html#x Online documentation}
      */
     x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayoutVariant.html#y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayoutVariant.html#y Online documentation}
      */
     y?: SpriteSizeType
     /**
@@ -15115,19 +15114,19 @@ declare module "factorio:prototype" {
      * ```
      *
      * ) It can be anything between 1 to 8 for `background` layer if `draw_background_layer_under_tiles` is set to true.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayoutVariant.html#tile_height Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayoutVariant.html#tile_height Online documentation}
      */
     tile_height?: uint8
     /**
      * **Default:** `0`
      *
      * Once the specified number of pictures is loaded, other pictures are loaded on other line. This is to allow having longer animations in matrix, to input files with too high width. The game engine limits the width of any input files to 8192px, so it is compatible with most graphics cards. 0 means that all the pictures are in one horizontal line.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayoutVariant.html#line_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayoutVariant.html#line_length Online documentation}
      */
     line_length?: uint8
     /**
      * Frame count.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileSpriteLayoutVariant.html#count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileSpriteLayoutVariant.html#count Online documentation}
      */
     count?: uint8
   }
@@ -15150,53 +15149,53 @@ declare module "factorio:prototype" {
    *   mask = { y_offset = 512 },
    *   background = { y_offset = 1024 }
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html Online documentation}
    */
   export interface TileTransitionSpritesheetLayout extends TileSpriteLayoutVariant {
     /**
      * Only loaded if {@link TileTransitions#overlay_layout TileTransitions::overlay_layout} is not defined in the TileTransitions that load this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#overlay Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#overlay Online documentation}
      */
     overlay?: TileTransitionVariantLayout
     /**
      * Only loaded if {@link TileTransitions#mask_layout TileTransitions::mask_layout} is not defined in the TileTransitions that load this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#mask Online documentation}
      */
     mask?: TileTransitionVariantLayout
     /**
      * Only loaded if {@link TileTransitions#background_layout TileTransitions::background_layout} is not defined in the TileTransitions that load this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#background Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#background Online documentation}
      */
     background?: TileTransitionVariantLayout
     /**
      * Only loaded if {@link TileTransitions#background_mask_layout TileTransitions::background_mask_layout} is not defined in the TileTransitions that load this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#background_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#background_mask Online documentation}
      */
     background_mask?: TileTransitionVariantLayout
     /**
      * Only loaded if {@link TileTransitions#effect_map_layout TileTransitions::effect_map_layout} is not defined in the TileTransitions that load this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#effect_map Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#effect_map Online documentation}
      */
     effect_map?: TileTransitionVariantLayout
     /**
      * Only loaded if {@link TileTransitions#lightmap_layout TileTransitions::lightmap_layout} is not defined in the TileTransitions that load this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#lightmap Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#lightmap Online documentation}
      */
     lightmap?: TileTransitionVariantLayout
     /**
      * Only loaded if {@link TileTransitions#auxiliary_effect_mask_layout TileTransitions::auxiliary_effect_mask_layout} is not defined in the TileTransitions that load this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#auxiliary_effect_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#auxiliary_effect_mask Online documentation}
      */
     auxiliary_effect_mask?: TileTransitionVariantLayout
     inner_corner_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#inner_corner_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#inner_corner_x Online documentation}
      */
     inner_corner_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#inner_corner_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#inner_corner_y Online documentation}
      */
     inner_corner_y?: SpriteSizeType
     inner_corner_tile_height?: uint8
@@ -15205,12 +15204,12 @@ declare module "factorio:prototype" {
     outer_corner_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#outer_corner_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#outer_corner_x Online documentation}
      */
     outer_corner_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#outer_corner_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#outer_corner_y Online documentation}
      */
     outer_corner_y?: SpriteSizeType
     outer_corner_tile_height?: uint8
@@ -15219,12 +15218,12 @@ declare module "factorio:prototype" {
     side_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#side_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#side_x Online documentation}
      */
     side_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#side_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#side_y Online documentation}
      */
     side_y?: SpriteSizeType
     side_tile_height?: uint8
@@ -15233,12 +15232,12 @@ declare module "factorio:prototype" {
     double_side_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#double_side_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#double_side_x Online documentation}
      */
     double_side_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#double_side_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#double_side_y Online documentation}
      */
     double_side_y?: SpriteSizeType
     double_side_tile_height?: uint8
@@ -15247,12 +15246,12 @@ declare module "factorio:prototype" {
     u_transition_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#u_transition_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#u_transition_x Online documentation}
      */
     u_transition_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#u_transition_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#u_transition_y Online documentation}
      */
     u_transition_y?: SpriteSizeType
     u_transition_tile_height?: uint8
@@ -15261,12 +15260,12 @@ declare module "factorio:prototype" {
     o_transition_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#o_transition_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#o_transition_x Online documentation}
      */
     o_transition_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionSpritesheetLayout.html#o_transition_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionSpritesheetLayout.html#o_transition_y Online documentation}
      */
     o_transition_y?: SpriteSizeType
     o_transition_tile_height?: uint8
@@ -15333,58 +15332,58 @@ declare module "factorio:prototype" {
    *   u_transition_x = 1728,
    *   [...]
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html Online documentation}
    */
   export interface TileTransitionVariantLayout extends TileSpriteLayoutVariant {
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#x_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#x_offset Online documentation}
      */
     x_offset?: SpriteSizeType
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#y_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#y_offset Online documentation}
      */
     y_offset?: SpriteSizeType
     /**
      * Defaults to the values set in the `inner_corner_*` properties.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#inner_corner Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#inner_corner Online documentation}
      */
     inner_corner?: TileSpriteLayoutVariant
     /**
      * Defaults to the values set in the `outer_corner_*` properties.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#outer_corner Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#outer_corner Online documentation}
      */
     outer_corner?: TileSpriteLayoutVariant
     /**
      * Defaults to the values set in the `side_*` properties.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#side Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#side Online documentation}
      */
     side?: TileSpriteLayoutVariant
     /**
      * Defaults to the values set in the `double_side_*` properties.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#double_side Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#double_side Online documentation}
      */
     double_side?: TileSpriteLayoutVariant
     /**
      * Defaults to the values set in the `u_transition_*` properties.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#u_transition Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#u_transition Online documentation}
      */
     u_transition?: TileSpriteLayoutVariant
     /**
      * Defaults to the values set in the `o_transition_*` properties.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#o_transition Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#o_transition Online documentation}
      */
     o_transition?: TileSpriteLayoutVariant
     inner_corner_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#inner_corner_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#inner_corner_x Online documentation}
      */
     inner_corner_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#inner_corner_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#inner_corner_y Online documentation}
      */
     inner_corner_y?: SpriteSizeType
     inner_corner_tile_height?: uint8
@@ -15393,12 +15392,12 @@ declare module "factorio:prototype" {
     outer_corner_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#outer_corner_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#outer_corner_x Online documentation}
      */
     outer_corner_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#outer_corner_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#outer_corner_y Online documentation}
      */
     outer_corner_y?: SpriteSizeType
     outer_corner_tile_height?: uint8
@@ -15407,12 +15406,12 @@ declare module "factorio:prototype" {
     side_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#side_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#side_x Online documentation}
      */
     side_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#side_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#side_y Online documentation}
      */
     side_y?: SpriteSizeType
     side_tile_height?: uint8
@@ -15421,12 +15420,12 @@ declare module "factorio:prototype" {
     double_side_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#double_side_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#double_side_x Online documentation}
      */
     double_side_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#double_side_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#double_side_y Online documentation}
      */
     double_side_y?: SpriteSizeType
     double_side_tile_height?: uint8
@@ -15435,12 +15434,12 @@ declare module "factorio:prototype" {
     u_transition_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#u_transition_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#u_transition_x Online documentation}
      */
     u_transition_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#u_transition_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#u_transition_y Online documentation}
      */
     u_transition_y?: SpriteSizeType
     u_transition_tile_height?: uint8
@@ -15449,12 +15448,12 @@ declare module "factorio:prototype" {
     o_transition_scale?: float
     /**
      * Horizontal position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#o_transition_x Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#o_transition_x Online documentation}
      */
     o_transition_x?: SpriteSizeType
     /**
      * Vertical position of the sprite in the source file in pixels.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionVariantLayout.html#o_transition_y Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionVariantLayout.html#o_transition_y Online documentation}
      */
     o_transition_y?: SpriteSizeType
     o_transition_tile_height?: uint8
@@ -15465,83 +15464,83 @@ declare module "factorio:prototype" {
    * Used for {@link TilePrototype} graphics.
    *
    * Use `layout` with `spritesheet` to define all the tile layers inside the `layout` property. The `*_enabled`, `*_layout` and `*_spritesheet` properties can be used to override specific layers of a reused layout.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html Online documentation}
    */
   export interface TileTransitions {
     layout?: TileTransitionSpritesheetLayout
     /**
      * Default spritesheet for all TileSpriteLayouts.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#spritesheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#spritesheet Online documentation}
      */
     spritesheet?: FileName
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#overlay_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#overlay_enabled Online documentation}
      */
     overlay_enabled?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#mask_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#mask_enabled Online documentation}
      */
     mask_enabled?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#background_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#background_enabled Online documentation}
      */
     background_enabled?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#background_mask_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#background_mask_enabled Online documentation}
      */
     background_mask_enabled?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#effect_map_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#effect_map_enabled Online documentation}
      */
     effect_map_enabled?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#lightmap_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#lightmap_enabled Online documentation}
      */
     lightmap_enabled?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#auxiliary_effect_mask_enabled Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#auxiliary_effect_mask_enabled Online documentation}
      */
     auxiliary_effect_mask_enabled?: boolean
     /**
      * Overrides the `overlay` definition inside `layout`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#overlay_layout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#overlay_layout Online documentation}
      */
     overlay_layout?: TileTransitionVariantLayout
     /**
      * Overrides the `mask` definition inside `layout`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#mask_layout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#mask_layout Online documentation}
      */
     mask_layout?: TileTransitionVariantLayout
     /**
      * Overrides the `background` definition inside `layout`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#background_layout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#background_layout Online documentation}
      */
     background_layout?: TileTransitionVariantLayout
     /**
      * Overrides the `background_mask` definition inside `layout`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#background_mask_layout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#background_mask_layout Online documentation}
      */
     background_mask_layout?: TileTransitionVariantLayout
     /**
      * Overrides the `effect_map` definition inside `layout`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#effect_map_layout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#effect_map_layout Online documentation}
      */
     effect_map_layout?: TileTransitionVariantLayout
     /**
      * Overrides the `lightmap` definition inside `layout`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#lightmap_layout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#lightmap_layout Online documentation}
      */
     lightmap_layout?: TileTransitionVariantLayout
     /**
      * Overrides the `auxiliary_effect_mask` definition inside `layout`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#auxiliary_effect_mask_layout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#auxiliary_effect_mask_layout Online documentation}
      */
     auxiliary_effect_mask_layout?: TileTransitionVariantLayout
     /**
@@ -15550,7 +15549,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layout` or `mask_layout` is defined.
      *
      * Default spritesheet for `mask_layout` and `layout.mask`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#mask_spritesheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#mask_spritesheet Online documentation}
      */
     mask_spritesheet?: FileName
     /**
@@ -15559,7 +15558,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layout` or `background_layout` is defined.
      *
      * Default spritesheet for `background_layout` and `layout.background`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#background_spritesheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#background_spritesheet Online documentation}
      */
     background_spritesheet?: FileName
     /**
@@ -15568,7 +15567,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layout` or `background_mask_layout` is defined.
      *
      * Default spritesheet for `background_mask_layout` and `layout.background_mask`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#background_mask_spritesheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#background_mask_spritesheet Online documentation}
      */
     background_mask_spritesheet?: FileName
     /**
@@ -15577,7 +15576,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layout` or `effect_map_layout` is defined.
      *
      * Default spritesheet for `effect_map_layout` and `layout.effect_map`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#effect_map_spritesheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#effect_map_spritesheet Online documentation}
      */
     effect_map_spritesheet?: FileName
     /**
@@ -15586,7 +15585,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layout` or `lightmap_layout` is defined.
      *
      * Default spritesheet for `lightmap_layout` and `layout.lightmap`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#lightmap_spritesheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#lightmap_spritesheet Online documentation}
      */
     lightmap_spritesheet?: FileName
     /**
@@ -15595,7 +15594,7 @@ declare module "factorio:prototype" {
      * Only loaded if `layout` or `auxiliary_effect_mask_layout` is defined.
      *
      * Default spritesheet for `auxiliary_effect_mask_layout` and `layout.auxiliary_effect_mask`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#auxiliary_effect_mask_spritesheet Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#auxiliary_effect_mask_spritesheet Online documentation}
      */
     auxiliary_effect_mask_spritesheet?: FileName
     water_patch?: Sprite
@@ -15603,60 +15602,60 @@ declare module "factorio:prototype" {
     background_layer_group?: TileRenderLayer
     /**
      * **Default:** `0.15`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#waving_effect_time_scale Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#waving_effect_time_scale Online documentation}
      */
     waving_effect_time_scale?: float
     overlay_layer_offset?: int8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#masked_overlay_layer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#masked_overlay_layer_offset Online documentation}
      */
     masked_overlay_layer_offset?: int8
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#background_layer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#background_layer_offset Online documentation}
      */
     background_layer_offset?: int8
     /**
      * **Default:** `Value of `background_layer_offset``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#masked_background_layer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#masked_background_layer_offset Online documentation}
      */
     masked_background_layer_offset?: int8
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#draw_background_layer_under_tiles Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#draw_background_layer_under_tiles Online documentation}
      */
     draw_background_layer_under_tiles?: boolean
     /**
      * **Default:** `true`
      *
      * If drawing under water which is supposed to yield water mask, set this to `false` to not mess up the water mask.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#background_layer_occludes_light Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#background_layer_occludes_light Online documentation}
      */
     background_layer_occludes_light?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#apply_effect_color_to_overlay Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#apply_effect_color_to_overlay Online documentation}
      */
     apply_effect_color_to_overlay?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#apply_waving_effect_on_masks Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#apply_waving_effect_on_masks Online documentation}
      */
     apply_waving_effect_on_masks?: boolean
     /**
      * **Default:** `Value of `apply_waving_effect_on_masks``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#apply_waving_effect_on_background_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#apply_waving_effect_on_background_mask Online documentation}
      */
     apply_waving_effect_on_background_mask?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#draw_simple_outer_corner_over_diagonal Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#draw_simple_outer_corner_over_diagonal Online documentation}
      */
     draw_simple_outer_corner_over_diagonal?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitions.html#offset_background_layer_by_tile_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitions.html#offset_background_layer_by_tile_layer Online documentation}
      */
     offset_background_layer_by_tile_layer?: boolean
     inner_corner_weights?: readonly float[]
@@ -15679,29 +15678,29 @@ declare module "factorio:prototype" {
     main?: readonly TileMainPictures[]
     /**
      * **Default:** `8`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionsVariants.html#material_texture_width_in_tiles Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionsVariants.html#material_texture_width_in_tiles Online documentation}
      */
     material_texture_width_in_tiles?: uint8
     /**
      * **Default:** `8`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionsVariants.html#material_texture_height_in_tiles Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionsVariants.html#material_texture_height_in_tiles Online documentation}
      */
     material_texture_height_in_tiles?: uint8
     material_background?: MaterialTextureParameters
     light?: readonly TileLightPictures[]
     /**
      * Must have the same `count` as material_background.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionsVariants.html#material_light Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionsVariants.html#material_light Online documentation}
      */
     material_light?: MaterialTextureParameters
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionsVariants.html#empty_transitions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionsVariants.html#empty_transitions Online documentation}
      */
     empty_transitions?: boolean
     /**
      * Only loaded, and mandatory if `empty_transitions` is `false`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TileTransitionsVariants.html#transition Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TileTransitionsVariants.html#transition Online documentation}
      */
     transition?: TileTransitions
   }
@@ -15716,58 +15715,58 @@ declare module "factorio:prototype" {
   /**
    * One frame in time for a Bezier interpolation.
    * @see TintProcessionLayer.frames
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionLayer.html#frames Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionLayer.html#frames Online documentation}
    */
   export interface TintProcessionBezierControlPoint {
     /**
      * Mandatory if `opacity` or `tint_upper` or `tint_lower` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionBezierControlPoint.html#timestamp Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionBezierControlPoint.html#timestamp Online documentation}
      */
     timestamp?: MapTick
     /**
      * `opacity` and `opacity_t` interpolate a double smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionBezierControlPoint.html#opacity Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionBezierControlPoint.html#opacity Online documentation}
      */
     opacity?: double
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionBezierControlPoint.html#opacity_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionBezierControlPoint.html#opacity_t Online documentation}
      */
     opacity_t?: double
     /**
      * `tint_upper` and `tint_upper_t` interpolate a color smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionBezierControlPoint.html#tint_upper Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionBezierControlPoint.html#tint_upper Online documentation}
      */
     tint_upper?: Color
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionBezierControlPoint.html#tint_upper_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionBezierControlPoint.html#tint_upper_t Online documentation}
      */
     tint_upper_t?: Color
     /**
      * `tint_lower` and `tint_lower_t` interpolate a color smoothly over time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionBezierControlPoint.html#tint_lower Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionBezierControlPoint.html#tint_lower Online documentation}
      */
     tint_lower?: Color
     /**
      * Bidirectional tangent at the given timestamp.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionBezierControlPoint.html#tint_lower_t Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionBezierControlPoint.html#tint_lower_t Online documentation}
      */
     tint_lower_t?: Color
   }
   /**
-   * Fullscreen overlay which blends gradient from top to bottom edge of the screen using {@link BlendMode#normal premultiplied alpha blending}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionLayer.html Online documentation}
+   * Fullscreen overlay which blends gradient from top to bottom edge of the screen using {@link BlendMode#normal pre-multiplied alpha blending}.
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionLayer.html Online documentation}
    */
   export interface TintProcessionLayer {
     readonly type: "tint"
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionLayer.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionLayer.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TintProcessionLayer.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TintProcessionLayer.html#frames Online documentation}
      */
     frames: readonly TintProcessionBezierControlPoint[]
   }
@@ -15783,7 +15782,7 @@ declare module "factorio:prototype" {
    * - `"not-to-be-suggested"`
    * - `"completed-without-tutorial"`: The tip is considered completed.
    * - `"completed"`: The tip is considered completed.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TipStatus.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TipStatus.html Online documentation}
    */
   export type TipStatus =
     | "locked"
@@ -15847,7 +15846,7 @@ declare module "factorio:prototype" {
    * - {@link SendSpidertronTipTrigger}: Loaded when the `type` is `"send-spidertron"`.
    * - {@link ActivatePasteTipTrigger}: Loaded when the `type` is `"activate-paste"`.
    * - {@link KillTipTrigger}: Loaded when the `type` is `"kill"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TipTrigger.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TipTrigger.html Online documentation}
    */
   export type TipTrigger =
     | OrTipTrigger
@@ -15911,20 +15910,20 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TrainBrakingForceBonusModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TrainBrakingForceBonusModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TrainBrakingForceBonusModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TrainBrakingForceBonusModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   /**
    * @see UtilityConstants.train_path_finding
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UtilityConstants.html#train_path_finding Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UtilityConstants.html#train_path_finding Online documentation}
    */
   export interface TrainPathFinderConstants {
     train_stop_penalty: uint32
@@ -15938,7 +15937,7 @@ declare module "factorio:prototype" {
     train_waiting_at_signal_penalty: uint32
     /**
      * Must be >= 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TrainPathFinderConstants.html#train_waiting_at_signal_tick_multiplier_penalty Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TrainPathFinderConstants.html#train_waiting_at_signal_tick_multiplier_penalty Online documentation}
      */
     train_waiting_at_signal_tick_multiplier_penalty: float
     train_with_no_path_penalty: uint32
@@ -15946,7 +15945,7 @@ declare module "factorio:prototype" {
   }
   /**
    * @see TrainStopPrototype.drawing_boxes
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/TrainStopPrototype.html#drawing_boxes Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/TrainStopPrototype.html#drawing_boxes Online documentation}
    */
   export interface TrainStopDrawingBoxes {
     north: BoundingBox
@@ -15972,17 +15971,17 @@ declare module "factorio:prototype" {
   export interface TransitionApplication {
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransitionApplication.html#offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransitionApplication.html#offset Online documentation}
      */
     offset?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransitionApplication.html#pod_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransitionApplication.html#pod_offset Online documentation}
      */
     pod_offset?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransitionApplication.html#rotation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransitionApplication.html#rotation Online documentation}
      */
     rotation?: boolean
   }
@@ -15990,62 +15989,62 @@ declare module "factorio:prototype" {
     animation_set: RotatedAnimation
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#east_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#east_index Online documentation}
      */
     east_index?: uint8
     /**
      * **Default:** `2`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#west_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#west_index Online documentation}
      */
     west_index?: uint8
     /**
      * **Default:** `3`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#north_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#north_index Online documentation}
      */
     north_index?: uint8
     /**
      * **Default:** `4`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#south_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#south_index Online documentation}
      */
     south_index?: uint8
     /**
      * **Default:** `13`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#starting_south_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#starting_south_index Online documentation}
      */
     starting_south_index?: uint8
     /**
      * **Default:** `14`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#ending_south_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#ending_south_index Online documentation}
      */
     ending_south_index?: uint8
     /**
      * **Default:** `15`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#starting_west_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#starting_west_index Online documentation}
      */
     starting_west_index?: uint8
     /**
      * **Default:** `16`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#ending_west_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#ending_west_index Online documentation}
      */
     ending_west_index?: uint8
     /**
      * **Default:** `17`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#starting_north_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#starting_north_index Online documentation}
      */
     starting_north_index?: uint8
     /**
      * **Default:** `18`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#ending_north_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#ending_north_index Online documentation}
      */
     ending_north_index?: uint8
     /**
      * **Default:** `19`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#starting_east_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#starting_east_index Online documentation}
      */
     starting_east_index?: uint8
     /**
      * **Default:** `20`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#ending_east_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#ending_east_index Online documentation}
      */
     ending_east_index?: uint8
     frozen_patch?: RotatedSprite
@@ -16053,89 +16052,89 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#east_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#east_index_frozen Online documentation}
      */
     east_index_frozen?: uint8
     /**
      * **Default:** `2`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#west_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#west_index_frozen Online documentation}
      */
     west_index_frozen?: uint8
     /**
      * **Default:** `3`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#north_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#north_index_frozen Online documentation}
      */
     north_index_frozen?: uint8
     /**
      * **Default:** `4`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#south_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#south_index_frozen Online documentation}
      */
     south_index_frozen?: uint8
     /**
      * **Default:** `13`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#starting_south_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#starting_south_index_frozen Online documentation}
      */
     starting_south_index_frozen?: uint8
     /**
      * **Default:** `14`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#ending_south_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#ending_south_index_frozen Online documentation}
      */
     ending_south_index_frozen?: uint8
     /**
      * **Default:** `15`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#starting_west_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#starting_west_index_frozen Online documentation}
      */
     starting_west_index_frozen?: uint8
     /**
      * **Default:** `16`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#ending_west_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#ending_west_index_frozen Online documentation}
      */
     ending_west_index_frozen?: uint8
     /**
      * **Default:** `17`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#starting_north_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#starting_north_index_frozen Online documentation}
      */
     starting_north_index_frozen?: uint8
     /**
      * **Default:** `18`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#ending_north_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#ending_north_index_frozen Online documentation}
      */
     ending_north_index_frozen?: uint8
     /**
      * **Default:** `19`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#starting_east_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#starting_east_index_frozen Online documentation}
      */
     starting_east_index_frozen?: uint8
     /**
      * **Default:** `20`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#ending_east_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#ending_east_index_frozen Online documentation}
      */
     ending_east_index_frozen?: uint8
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSet.html#alternate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSet.html#alternate Online documentation}
      */
     alternate?: boolean
     belt_reader?: readonly BeltReaderLayer[]
@@ -16143,104 +16142,104 @@ declare module "factorio:prototype" {
   export interface TransportBeltAnimationSetWithCorners extends TransportBeltAnimationSet {
     /**
      * **Default:** `5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#east_to_north_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#east_to_north_index Online documentation}
      */
     east_to_north_index?: uint8
     /**
      * **Default:** `6`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#north_to_east_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#north_to_east_index Online documentation}
      */
     north_to_east_index?: uint8
     /**
      * **Default:** `7`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#west_to_north_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#west_to_north_index Online documentation}
      */
     west_to_north_index?: uint8
     /**
      * **Default:** `8`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#north_to_west_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#north_to_west_index Online documentation}
      */
     north_to_west_index?: uint8
     /**
      * **Default:** `9`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#south_to_east_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#south_to_east_index Online documentation}
      */
     south_to_east_index?: uint8
     /**
      * **Default:** `10`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#east_to_south_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#east_to_south_index Online documentation}
      */
     east_to_south_index?: uint8
     /**
      * **Default:** `11`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#south_to_west_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#south_to_west_index Online documentation}
      */
     south_to_west_index?: uint8
     /**
      * **Default:** `12`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#west_to_south_index Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#west_to_south_index Online documentation}
      */
     west_to_south_index?: uint8
     /**
      * **Default:** `5`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#east_to_north_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#east_to_north_index_frozen Online documentation}
      */
     east_to_north_index_frozen?: uint8
     /**
      * **Default:** `6`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#north_to_east_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#north_to_east_index_frozen Online documentation}
      */
     north_to_east_index_frozen?: uint8
     /**
      * **Default:** `7`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#west_to_north_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#west_to_north_index_frozen Online documentation}
      */
     west_to_north_index_frozen?: uint8
     /**
      * **Default:** `8`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#north_to_west_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#north_to_west_index_frozen Online documentation}
      */
     north_to_west_index_frozen?: uint8
     /**
      * **Default:** `9`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#south_to_east_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#south_to_east_index_frozen Online documentation}
      */
     south_to_east_index_frozen?: uint8
     /**
      * **Default:** `10`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#east_to_south_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#east_to_south_index_frozen Online documentation}
      */
     east_to_south_index_frozen?: uint8
     /**
      * **Default:** `11`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#south_to_west_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#south_to_west_index_frozen Online documentation}
      */
     south_to_west_index_frozen?: uint8
     /**
      * **Default:** `12`
      *
      * Only loaded if `frozen_patch` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltAnimationSetWithCorners.html#west_to_south_index_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltAnimationSetWithCorners.html#west_to_south_index_frozen Online documentation}
      */
     west_to_south_index_frozen?: uint8
   }
   /**
    * Used to define the graphics for the (in vanilla) yellow frame that is used when a {@link TransportBeltPrototype} is connected to the circuit network.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TransportBeltConnectorFrame.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TransportBeltConnectorFrame.html Online documentation}
    */
   export interface TransportBeltConnectorFrame {
     frame_main: AnimationVariations
@@ -16270,12 +16269,12 @@ declare module "factorio:prototype" {
   }
   /**
    * Tree has number of "dying" stages, which is deduced from frame count of `shadow` if shadow is defined, otherwise from frame count of `trunk`. Frame count of `leaves` has to be one less than deduced number stages, as last stage is always assumed to be leafless.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html Online documentation}
    */
   export interface TreeVariation {
     /**
      * If `shadow` is not specified, this has to have one more frame than `leaves`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#trunk Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#trunk Online documentation}
      */
     trunk: Animation
     leaves: Animation
@@ -16283,72 +16282,72 @@ declare module "factorio:prototype" {
     branch_generation: CreateParticleTriggerEffectItem
     /**
      * Shadow must have 1 more `frame_count` than `leaves`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#shadow Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#shadow Online documentation}
      */
     shadow?: Animation
     /**
      * Only loaded if `shadow` is present. Defaults to `shadow.frame_count - 1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#disable_shadow_distortion_beginning_at_frame Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#disable_shadow_distortion_beginning_at_frame Online documentation}
      */
     disable_shadow_distortion_beginning_at_frame?: uint32
     /**
      * Normal must have the same frame_count as `leaves`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#normal Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#normal Online documentation}
      */
     normal?: Animation
     /**
      * Overlay must have the same frame_count as `leaves`. Won't be tinted by the tree color unless `apply_runtime_tint` is set to `true` in the sprite definition. See {@linkplain https://forums.factorio.com/viewtopic.php?p=547758#p547758 here}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#overlay Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#overlay Online documentation}
      */
     overlay?: Animation
     underwater?: Animation
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#underwater_layer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#underwater_layer_offset Online documentation}
      */
     underwater_layer_offset?: int8
     /**
      * **Default:** `40`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#leaves_when_mined_manually Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#leaves_when_mined_manually Online documentation}
      */
     leaves_when_mined_manually?: uint8
     /**
      * **Default:** `20`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#leaves_when_mined_automatically Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#leaves_when_mined_automatically Online documentation}
      */
     leaves_when_mined_automatically?: uint8
     /**
      * **Default:** `200`
      *
      * This value is multiplied with the percent of health lost.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#leaves_when_damaged Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#leaves_when_damaged Online documentation}
      */
     leaves_when_damaged?: uint8
     /**
      * **Default:** `40`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#leaves_when_destroyed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#leaves_when_destroyed Online documentation}
      */
     leaves_when_destroyed?: uint8
     /**
      * **Default:** `15`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#branches_when_mined_manually Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#branches_when_mined_manually Online documentation}
      */
     branches_when_mined_manually?: uint8
     /**
      * **Default:** `8`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#branches_when_mined_automatically Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#branches_when_mined_automatically Online documentation}
      */
     branches_when_mined_automatically?: uint8
     /**
      * **Default:** `0`
      *
      * This value is multiplied with the percent of health lost.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#branches_when_damaged Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#branches_when_damaged Online documentation}
      */
     branches_when_damaged?: uint8
     /**
      * **Default:** `15`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TreeVariation.html#branches_when_destroyed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TreeVariation.html#branches_when_destroyed Online documentation}
      */
     branches_when_destroyed?: uint8
     water_reflection?: WaterReflectionDefinition
@@ -16361,7 +16360,7 @@ declare module "factorio:prototype" {
    * - {@link AreaTriggerItem}: Loaded when the `type` is `"area"`.
    * - {@link LineTriggerItem}: Loaded when the `type` is `"line"`.
    * - {@link ClusterTriggerItem}: Loaded when the `type` is `"cluster"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Trigger.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Trigger.html Online documentation}
    */
   export type Trigger =
     | (DirectTriggerItem | AreaTriggerItem | LineTriggerItem | ClusterTriggerItem)
@@ -16377,7 +16376,7 @@ declare module "factorio:prototype" {
    * - {@link ArtilleryTriggerDelivery}: Loaded when the `type` is `"artillery"`.
    * - {@link ChainTriggerDelivery}: Loaded when the `type` is `"chain"`.
    * - {@link DelayedTriggerDelivery}: Loaded when the `type` is `"delayed"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerDelivery.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerDelivery.html Online documentation}
    */
   export type TriggerDelivery =
     | InstantTriggerDelivery
@@ -16389,12 +16388,12 @@ declare module "factorio:prototype" {
     | DelayedTriggerDelivery
   /**
    * The abstract base of all {@link TriggerDelivery TriggerDeliveries}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerDeliveryItem.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerDeliveryItem.html Online documentation}
    */
   export interface TriggerDeliveryItem {
     /**
      * Provides the source of the TriggerDelivery as as both the source and target of the effect.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerDeliveryItem.html#source_effects Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerDeliveryItem.html#source_effects Online documentation}
      */
     source_effects?: TriggerEffect
     target_effects?: TriggerEffect
@@ -16426,7 +16425,7 @@ declare module "factorio:prototype" {
    * - {@link DestroyDecorativesTriggerEffectItem}: Loaded when the `type` is `"destroy-decoratives"`.
    * - {@link CameraEffectTriggerEffectItem}: Loaded when the `type` is `"camera-effect"`.
    * - {@link ActivateImpactTriggerEffectItem}: Loaded when the `type` is `"activate-impact"`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffect.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffect.html Online documentation}
    */
   export type TriggerEffect =
     | (
@@ -16481,118 +16480,118 @@ declare module "factorio:prototype" {
       )[]
   /**
    * The abstract base of all {@link TriggerEffect TriggerEffects}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectItem.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectItem.html Online documentation}
    */
   export interface TriggerEffectItem {
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectItem.html#repeat_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectItem.html#repeat_count Online documentation}
      */
     repeat_count?: uint16
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectItem.html#repeat_count_deviation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectItem.html#repeat_count_deviation Online documentation}
      */
     repeat_count_deviation?: uint16
     /**
      * **Default:** `1`
      *
      * Must be greater than `0` and less than or equal to `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectItem.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectItem.html#probability Online documentation}
      */
     probability?: float
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectItem.html#affects_target Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectItem.html#affects_target Online documentation}
      */
     affects_target?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectItem.html#show_in_tooltip Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectItem.html#show_in_tooltip Online documentation}
      */
     show_in_tooltip?: boolean
     /**
      * Guaranteed to work with {@link EntityWithHealthPrototype#damaged_trigger_effect EntityWithHealthPrototype::damaged_trigger_effect} and {@link EntityWithHealthPrototype#dying_trigger_effect EntityWithHealthPrototype::dying_trigger_effect}. Unknown if it works with other properties that use {@link TriggerEffect}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectItem.html#damage_type_filters Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectItem.html#damage_type_filters Online documentation}
      */
     damage_type_filters?: DamageTypeFilters
   }
   /**
    * A {@link TriggerEffect} with cooldown conditions, used to limit the frequency of trigger effects that would otherwise fire every single tick. If multiple cooldown conditions are defined, then all cooldowns must be satisfied before the effect can be triggered.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectWithCooldown.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectWithCooldown.html Online documentation}
    */
   export interface TriggerEffectWithCooldown {
     /**
      * **Default:** `0`
      *
      * The travel distance between triggers that the triggerer must travel between effects. Negative values will mean there is no cooldown.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectWithCooldown.html#distance_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectWithCooldown.html#distance_cooldown Online documentation}
      */
     distance_cooldown?: double
     /**
      * **Default:** `0`
      *
      * The initial state of the distance cooldown. In other words, the distance the triggerer must travel before the first effect can be triggered. Useful for staggering multiple effects.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectWithCooldown.html#initial_distance_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectWithCooldown.html#initial_distance_cooldown Online documentation}
      */
     initial_distance_cooldown?: double
     /**
      * **Default:** `0`
      *
      * The number of ticks that elapse between triggers.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectWithCooldown.html#time_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectWithCooldown.html#time_cooldown Online documentation}
      */
     time_cooldown?: MapTick
     /**
      * **Default:** `0`
      *
      * The initial amount of time to wait before triggering the effect for the first time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerEffectWithCooldown.html#initial_time_cooldown Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerEffectWithCooldown.html#initial_time_cooldown Online documentation}
      */
     initial_time_cooldown?: MapTick
     effect: TriggerEffect
   }
   /**
    * The abstract base of all {@link Trigger Triggers}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerItem.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerItem.html Online documentation}
    */
   export interface TriggerItem {
     /**
      * **Default:** `All flags`
      *
      * Only prototypes with these flags are affected by the trigger item.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerItem.html#entity_flags Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerItem.html#entity_flags Online documentation}
      */
     entity_flags?: EntityPrototypeFlags
     /**
      * **Default:** `All masks`
      *
      * Only prototypes with these collision masks are affected by the trigger item.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerItem.html#collision_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerItem.html#collision_mask Online documentation}
      */
     collision_mask?: CollisionMaskConnector
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerItem.html#ignore_collision_condition Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerItem.html#ignore_collision_condition Online documentation}
      */
     ignore_collision_condition?: boolean
     /**
      * **Default:** `Everything`
      *
      * The trigger affects only prototypes with these masks.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerItem.html#trigger_target_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerItem.html#trigger_target_mask Online documentation}
      */
     trigger_target_mask?: TriggerTargetMask
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerItem.html#repeat_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerItem.html#repeat_count Online documentation}
      */
     repeat_count?: uint32
     /**
      * **Default:** `1`
      *
      * Must be greater than 0 and less than or equal to 1.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerItem.html#probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerItem.html#probability Online documentation}
      */
     probability?: float
     action_delivery?: TriggerDelivery | readonly TriggerDelivery[]
@@ -16600,13 +16599,13 @@ declare module "factorio:prototype" {
      * **Default:** `All forces`
      *
      * Only entities meeting the force condition are affected by the trigger item.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerItem.html#force Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerItem.html#force Online documentation}
      */
     force?: ForceCondition
   }
   /**
    * An array of names of {@link TriggerTargetType}. See {@linkplain https://forums.factorio.com/71657 Design discussion: Trigger target type} and {@linkplain https://forums.factorio.com/86164 Blacklist for prototypes turrets shouldn't attack}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TriggerTargetMask.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TriggerTargetMask.html Online documentation}
    */
   export type TriggerTargetMask = readonly string[]
   /**
@@ -16615,7 +16614,7 @@ declare module "factorio:prototype" {
    * "smoke-building"
    * @example
    * "nuclear-smoke"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TrivialSmokeID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TrivialSmokeID.html Online documentation}
    */
   export type TrivialSmokeID = string
   export interface TurretAttackModifier extends BaseModifier {
@@ -16624,71 +16623,71 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretAttackModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretAttackModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretAttackModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretAttackModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     /**
      * Name of the {@link EntityPrototype} that is affected. This also works for non-turrets such as tanks, however, the bonus does not appear in the entity's tooltips.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretAttackModifier.html#turret_id Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretAttackModifier.html#turret_id Online documentation}
      */
     turret_id: EntityID
     /**
      * Modification value, which will be added to the current turret attack modifier upon researching.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretAttackModifier.html#modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretAttackModifier.html#modifier Online documentation}
      */
     modifier: double
   }
   export interface TurretBaseVisualisation {
     /**
      * **Default:** `"lower-object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#secondary_draw_order Online documentation}
      */
     secondary_draw_order?: int8
     /**
      * If not defined, visualisation will be drawn in all states.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#enabled_states Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#enabled_states Online documentation}
      */
     enabled_states?: readonly TurretState[]
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#draw_when_has_energy Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#draw_when_has_energy Online documentation}
      */
     draw_when_has_energy?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#draw_when_no_energy Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#draw_when_no_energy Online documentation}
      */
     draw_when_no_energy?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#draw_when_has_ammo Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#draw_when_has_ammo Online documentation}
      */
     draw_when_has_ammo?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#draw_when_no_ammo Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#draw_when_no_ammo Online documentation}
      */
     draw_when_no_ammo?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#draw_when_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#draw_when_frozen Online documentation}
      */
     draw_when_frozen?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretBaseVisualisation.html#draw_when_not_frozen Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretBaseVisualisation.html#draw_when_not_frozen Online documentation}
      */
     draw_when_not_frozen?: boolean
     animation: Animation4Way
@@ -16703,41 +16702,41 @@ declare module "factorio:prototype" {
      * **Default:** `0`
      *
      * Only loaded if `type` is `"mask-by-circle"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretSpecialEffect.html#min_radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretSpecialEffect.html#min_radius Online documentation}
      */
     min_radius?: float
     /**
      * Only loaded, and mandatory if `type` is `"mask-by-circle"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretSpecialEffect.html#max_radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretSpecialEffect.html#max_radius Online documentation}
      */
     max_radius?: float
     /**
      * **Default:** `0`
      *
      * Only loaded if `type` is `"mask-by-circle"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretSpecialEffect.html#falloff Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretSpecialEffect.html#falloff Online documentation}
      */
     falloff?: float
     /**
      * Only loaded if `type` is `"mask-by-circle"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretSpecialEffect.html#attacking_min_radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretSpecialEffect.html#attacking_min_radius Online documentation}
      */
     attacking_min_radius?: float
     /**
      * Only loaded if `type` is `"mask-by-circle"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretSpecialEffect.html#attacking_max_radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretSpecialEffect.html#attacking_max_radius Online documentation}
      */
     attacking_max_radius?: float
     /**
      * Only loaded if `type` is `"mask-by-circle"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretSpecialEffect.html#attacking_falloff Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretSpecialEffect.html#attacking_falloff Online documentation}
      */
     attacking_falloff?: float
   }
   /**
    * Struct type for {@link TurretSpecialEffectCenter}
    * @see TurretSpecialEffectCenter
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretSpecialEffectCenter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretSpecialEffectCenter.html Online documentation}
    */
   export interface TurretSpecialEffectCenterStruct {
     default?: Vector
@@ -16752,7 +16751,7 @@ declare module "factorio:prototype" {
   }
   /**
    * If this is loaded as a single Vector, it is used for all directions.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretSpecialEffectCenter.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretSpecialEffectCenter.html Online documentation}
    */
   export type TurretSpecialEffectCenter = TurretSpecialEffectCenterStruct | Vector
   /**
@@ -16765,7 +16764,7 @@ declare module "factorio:prototype" {
    * - `"ending-attack"`
    * - `"rotate-for-folding"`
    * - `"folding"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/TurretState.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/TurretState.html Online documentation}
    */
   export type TurretState =
     | "folded"
@@ -16778,7 +16777,7 @@ declare module "factorio:prototype" {
     | "folding"
   /**
    * @see UndergroundBeltPrototype.structure
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/UndergroundBeltPrototype.html#structure Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/UndergroundBeltPrototype.html#structure Online documentation}
    */
   export interface UndergroundBeltStructure {
     direction_in?: Sprite4Way
@@ -16792,35 +16791,35 @@ declare module "factorio:prototype" {
   }
   /**
    * Used by {@link UnitPrototype} and {@link SpiderUnitPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAISettings.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAISettings.html Online documentation}
    */
   export interface UnitAISettings {
     /**
      * **Default:** `false`
      *
      * If enabled, units that repeatedly fail to succeed at commands will be destroyed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAISettings.html#destroy_when_commands_fail Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAISettings.html#destroy_when_commands_fail Online documentation}
      */
     destroy_when_commands_fail?: boolean
     /**
      * **Default:** `false`
      *
      * If enabled, units that have nothing else to do will attempt to return to a spawner.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAISettings.html#allow_try_return_to_spawner Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAISettings.html#allow_try_return_to_spawner Online documentation}
      */
     allow_try_return_to_spawner?: boolean
     /**
      * **Default:** `true`
      *
      * If enabled, units will try to separate themselves from nearby friendly units.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAISettings.html#do_separation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAISettings.html#do_separation Online documentation}
      */
     do_separation?: boolean
     /**
      * **Default:** `0`
      *
      * Must be between -8 and 8.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAISettings.html#path_resolution_modifier Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAISettings.html#path_resolution_modifier Online documentation}
      */
     path_resolution_modifier?: int8
     strafe_settings?: PrototypeStrafeSettings
@@ -16828,46 +16827,46 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * The amount of slots in a unit group this unit takes up. For example, a unit with `groupingSize` of 2 will count as 2 normal-sized units when filling up a unit group. Must be greater than 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAISettings.html#size_in_group Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAISettings.html#size_in_group Online documentation}
      */
     size_in_group?: float
     /**
      * **Default:** `true`
      *
      * If enabled, the unit is permitted to join attack groups.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAISettings.html#join_attacks Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAISettings.html#join_attacks Online documentation}
      */
     join_attacks?: boolean
   }
   export interface UnitAlternativeFrameSequence {
     /**
      * Indices of frames from the attack parameter animation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAlternativeFrameSequence.html#warmup_frame_sequence Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAlternativeFrameSequence.html#warmup_frame_sequence Online documentation}
      */
     warmup_frame_sequence: readonly uint16[]
     /**
      * Indices of frames from the attack parameter animation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAlternativeFrameSequence.html#warmup2_frame_sequence Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAlternativeFrameSequence.html#warmup2_frame_sequence Online documentation}
      */
     warmup2_frame_sequence: readonly uint16[]
     /**
      * Indices of frames from the attack parameter animation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAlternativeFrameSequence.html#attacking_frame_sequence Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAlternativeFrameSequence.html#attacking_frame_sequence Online documentation}
      */
     attacking_frame_sequence: readonly uint16[]
     /**
      * Indices of frames from the attack parameter animation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAlternativeFrameSequence.html#cooldown_frame_sequence Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAlternativeFrameSequence.html#cooldown_frame_sequence Online documentation}
      */
     cooldown_frame_sequence: readonly uint16[]
     /**
      * Indices of frames from the attack parameter animation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAlternativeFrameSequence.html#prepared_frame_sequence Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAlternativeFrameSequence.html#prepared_frame_sequence Online documentation}
      */
     prepared_frame_sequence: readonly uint16[]
     /**
      * Indices of frames from the attack parameter animation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitAlternativeFrameSequence.html#back_to_walk_frame_sequence Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitAlternativeFrameSequence.html#back_to_walk_frame_sequence Online documentation}
      */
     back_to_walk_frame_sequence: readonly uint16[]
     warmup_animation_speed: float
@@ -16879,62 +16878,62 @@ declare module "factorio:prototype" {
   export interface UnitGroupSettings {
     /**
      * Pollution triggered group waiting time is a random time between min and max gathering time
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#min_group_gathering_time Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#min_group_gathering_time Online documentation}
      */
     min_group_gathering_time: uint32
     max_group_gathering_time: uint32
     /**
      * After the gathering is finished the group can still wait for late members, but it doesn't accept new ones anymore.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#max_wait_time_for_late_members Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#max_wait_time_for_late_members Online documentation}
      */
     max_wait_time_for_late_members: uint32
     /**
      * Limits for group radius (calculated by number of numbers).
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#max_group_radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#max_group_radius Online documentation}
      */
     max_group_radius: double
     min_group_radius: double
     /**
      * When a member falls behind the group he can speedup up till this much of his regular speed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#max_member_speedup_when_behind Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#max_member_speedup_when_behind Online documentation}
      */
     max_member_speedup_when_behind: double
     /**
      * When a member gets ahead of its group, it will slow down to at most this factor of its speed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#max_member_slowdown_when_ahead Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#max_member_slowdown_when_ahead Online documentation}
      */
     max_member_slowdown_when_ahead: double
     /**
      * When members of a group are behind, the entire group will slow down to at most this factor of its max speed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#max_group_slowdown_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#max_group_slowdown_factor Online documentation}
      */
     max_group_slowdown_factor: double
     /**
      * If a member falls behind more than this times the group radius, the group will slow down to max_group_slowdown_factor.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#max_group_member_fallback_factor Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#max_group_member_fallback_factor Online documentation}
      */
     max_group_member_fallback_factor: double
     /**
      * If a member falls behind more than this time the group radius, it will be removed from the group.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#member_disown_distance Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#member_disown_distance Online documentation}
      */
     member_disown_distance: double
     tick_tolerance_when_member_arrives: uint32
     /**
      * Maximum number of automatically created unit groups gathering for attack at any time.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#max_gathering_unit_groups Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#max_gathering_unit_groups Online documentation}
      */
     max_gathering_unit_groups: uint32
     /**
      * Maximum size of an attack unit group. This only affects automatically-created unit groups; manual groups created through the API are unaffected.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitGroupSettings.html#max_unit_group_size Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitGroupSettings.html#max_unit_group_size Online documentation}
      */
     max_unit_group_size: uint32
   }
   /**
    * Struct type for {@link UnitSpawnDefinition}
    * @see UnitSpawnDefinition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitSpawnDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitSpawnDefinition.html Online documentation}
    */
   export interface UnitSpawnDefinitionStruct {
     unit: EntityID
@@ -16948,13 +16947,13 @@ declare module "factorio:prototype" {
      * - Weights are linearly interpolated between entries.
      *
      * - Individual weights are scaled linearly so that the cumulative weight is `1`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitSpawnDefinition.html#spawn_points Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitSpawnDefinition.html#spawn_points Online documentation}
      */
     spawn_points: readonly SpawnPoint[]
   }
   /**
    * It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the unit and the second is the spawn points.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/UnitSpawnDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/UnitSpawnDefinition.html Online documentation}
    */
   export type UnitSpawnDefinition = UnitSpawnDefinitionStruct | readonly [EntityID, readonly SpawnPoint[]]
   export interface UnlockQualityModifier extends BaseModifier {
@@ -16963,7 +16962,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnlockQualityModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnlockQualityModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     quality: QualityID
@@ -16974,12 +16973,12 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnlockRecipeModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnlockRecipeModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     /**
      * Prototype name of the {@link RecipePrototype} that is unlocked upon researching.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnlockRecipeModifier.html#recipe Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnlockRecipeModifier.html#recipe Online documentation}
      */
     recipe: RecipeID
   }
@@ -16993,7 +16992,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UnlockSpaceLocationModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UnlockSpaceLocationModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
     space_location: SpaceLocationID
@@ -17008,7 +17007,7 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * Whether using the capsule consumes an item from the stack.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/UseOnSelfCapsuleAction.html#uses_stack Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/UseOnSelfCapsuleAction.html#uses_stack Online documentation}
      */
     uses_stack?: boolean
   }
@@ -17026,7 +17025,7 @@ declare module "factorio:prototype" {
    * - `"one-way"`: Fluid will flow if input level > output level.
    * - `"overflow"`: Fluid will flow if input level > {@link ValvePrototype#threshold ValvePrototype::threshold} and input level > output level.
    * - `"top-up"`: Fluid will flow if output level < {@link ValvePrototype#threshold ValvePrototype::threshold} and input level > output level.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/ValveMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/ValveMode.html Online documentation}
    */
   export type ValveMode = "one-way" | "overflow" | "top-up"
   /**
@@ -17037,13 +17036,13 @@ declare module "factorio:prototype" {
    * - `"semi-randomized"`: Samples are selected in a repeating randomly selected sequence of a given length. The sequence is generated on each state transition. The same sample cannot be repeated twice in a row.
    * - `"shuffled"`: Samples are selected in a repeating sequence in which each sample is played once.
    * - `"layer-controlled"`: Samples are selected based on a sample currently playing in a different layer.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundCompositionMode.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundCompositionMode.html Online documentation}
    */
   export type VariableAmbientSoundCompositionMode = "randomized" | "semi-randomized" | "shuffled" | "layer-controlled"
   export interface VariableAmbientSoundLayer {
     /**
      * Name has to be unique across all layers.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#name Online documentation}
      */
     name: string
     /**
@@ -17054,7 +17053,7 @@ declare module "factorio:prototype" {
      * Number of samples must be the same across all variants.
      *
      * Samples cannot have variable volume and all samples must have the same default volume.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#variants Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#variants Online documentation}
      */
     variants: readonly Sound[]
     composition_mode: VariableAmbientSoundCompositionMode
@@ -17062,28 +17061,28 @@ declare module "factorio:prototype" {
      * Name of a layer which controls this layer, a layer cannot control itself.
      *
      * Only loaded, and mandatory if `composition_mode` is `"layer-controlled"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#control_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#control_layer Online documentation}
      */
     control_layer?: string
     /**
      * Defines a mapping between controlling layer's samples and this (controlled) layer's samples. The number of items in the mapping must be the same as the number of samples in the controlling layer. Item in the mapping with index N defines which samples of this layer can play when the sample N is playing in the controlling layer.
      *
      * Only loaded, and mandatory if `composition_mode` is `"layer-controlled"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#control_layer_sample_mapping Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#control_layer_sample_mapping Online documentation}
      */
     control_layer_sample_mapping?: readonly (readonly uint8[])[]
     /**
      * **Default:** `false`
      *
      * If `true`, the first of {@link Sound#variations Sound::variations} is played at the start of a sequence. The start sample counts towards the {@link VariableAmbientSoundLayerStateProperties#sequence_length VariableAmbientSoundLayerStateProperties::sequence_length}
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#has_start_sample Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#has_start_sample Online documentation}
      */
     has_start_sample?: boolean
     /**
      * **Default:** `false`
      *
      * If `true`, the last of {@link Sound#variations Sound::variations} is played at the end of a sequence (if the sequence is long enough). The end sample counts towards the {@link VariableAmbientSoundLayerStateProperties#sequence_length VariableAmbientSoundLayerStateProperties::sequence_length}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#has_end_sample Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#has_end_sample Online documentation}
      */
     has_end_sample?: boolean
     /**
@@ -17096,7 +17095,7 @@ declare module "factorio:prototype" {
      * Cannot be defined for layers with `"shuffled"` `composition_mode`.
      *
      * Cannot be zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#number_of_sublayers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#number_of_sublayers Online documentation}
      */
     number_of_sublayers?: uint8
     /**
@@ -17107,7 +17106,7 @@ declare module "factorio:prototype" {
      * Cannot be defined together with `sublayer_offset`.
      *
      * The minimum of {@link RandomRange} variant cannot be zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#sublayer_starting_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#sublayer_starting_offset Online documentation}
      */
     sublayer_starting_offset?: RandomRange | ProbabilityTable
     /**
@@ -17120,7 +17119,7 @@ declare module "factorio:prototype" {
      * Cannot be defined together with `sublayer_starting_offset`.
      *
      * The minimum of {@link RandomRange} variant cannot be zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#sublayer_offset Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#sublayer_offset Online documentation}
      */
     sublayer_offset?: RandomRange | ProbabilityTable
     /**
@@ -17129,7 +17128,7 @@ declare module "factorio:prototype" {
      * Cannot be defined together with `sublayer_offset`.
      *
      * The minimum cannot be zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayer.html#sample_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayer.html#sample_length Online documentation}
      */
     sample_length?: RandomRange
   }
@@ -17137,7 +17136,7 @@ declare module "factorio:prototype" {
    * First property is the name of a layer.
    *
    * Second property is the sample index.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerSample.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerSample.html Online documentation}
    */
   export type VariableAmbientSoundLayerSample = readonly [string, uint32]
   export interface VariableAmbientSoundLayerStateProperties {
@@ -17146,7 +17145,7 @@ declare module "factorio:prototype" {
      * Index of a layer's variant.
      *
      * Cannot be zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerStateProperties.html#variant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerStateProperties.html#variant Online documentation}
      */
     variant?: uint8
     /**
@@ -17159,7 +17158,7 @@ declare module "factorio:prototype" {
      * Applicable for layers with `"randomized"` {@link VariableAmbientSoundCompositionMode}.
      *
      * Cannot be defined for layers with `"shuffled"` {@link VariableAmbientSoundCompositionMode}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerStateProperties.html#sequence_length Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerStateProperties.html#sequence_length Online documentation}
      */
     sequence_length?: RandomRange
     /**
@@ -17176,12 +17175,12 @@ declare module "factorio:prototype" {
      * If `number_of_repetitions` of {@link VariableAmbientSoundLayer#control_layer VariableAmbientSoundLayer::control_layer} of `"layer-controlled"` layer is smaller than `number_of_repetitions` of the controlled layer, `number_of_repetitions` of the control layer is used for the purposes of `pause_between_repetitions` and `end_pause`.
      *
      * Cannot be zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerStateProperties.html#number_of_repetitions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerStateProperties.html#number_of_repetitions Online documentation}
      */
     number_of_repetitions?: RandomRange | ProbabilityTable
     /**
      * Pause before a layer starts playing.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerStateProperties.html#start_pause Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerStateProperties.html#start_pause Online documentation}
      */
     start_pause?: RandomRange
     /**
@@ -17190,17 +17189,17 @@ declare module "factorio:prototype" {
      * Cannot be defined for `"randomized"` layers without defining `sequence_length` as well. Alternatively, use `pause_between_repetitions` instead.
      *
      * Cannot be defined for layers with `sublayer_offset` defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerStateProperties.html#pause_between_samples Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerStateProperties.html#pause_between_samples Online documentation}
      */
     pause_between_samples?: RandomRange
     /**
      * Pause between each repetition of a layer. The repetition is not counted until the pause finishes.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerStateProperties.html#pause_between_repetitions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerStateProperties.html#pause_between_repetitions Online documentation}
      */
     pause_between_repetitions?: RandomRange
     /**
      * Pause before a layer finishes playing. The last repetition and consequently the layer being finished is not counted until the pause finishes.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerStateProperties.html#end_pause Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerStateProperties.html#end_pause Online documentation}
      */
     end_pause?: RandomRange
     /**
@@ -17209,19 +17208,19 @@ declare module "factorio:prototype" {
      * A sample replaced by silence still counts as played for the purposes of sequence count, repetition count, pauses, etc.
      *
      * Must be in the `[0.0, 1.0]` interval.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundLayerStateProperties.html#silence_instead_of_sample_probability Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundLayerStateProperties.html#silence_instead_of_sample_probability Online documentation}
      */
     silence_instead_of_sample_probability?: float
   }
   export interface VariableAmbientSoundNextStateConditions {
     /**
      * Cannot be zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundNextStateConditions.html#weight Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundNextStateConditions.html#weight Online documentation}
      */
     weight: uint32
     /**
      * Specified sample must be playing in the specified layer.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundNextStateConditions.html#layer_sample Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundNextStateConditions.html#layer_sample Online documentation}
      */
     layer_sample?: VariableAmbientSoundLayerSample
     previous_state?: string
@@ -17229,12 +17228,12 @@ declare module "factorio:prototype" {
   export interface VariableAmbientSoundNextStateItem {
     /**
      * Name of the state.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundNextStateItem.html#state Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundNextStateItem.html#state Online documentation}
      */
     state: string
     /**
      * Transition to `state` is possible only if all conditions are met.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundNextStateItem.html#conditions Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundNextStateItem.html#conditions Online documentation}
      */
     conditions: VariableAmbientSoundNextStateConditions
   }
@@ -17244,25 +17243,25 @@ declare module "factorio:prototype" {
    * ## Union members
    * - `"layers-finished"`: Next state is triggered when all specified layers finish playing.
    * - `"duration"`: Next state is triggered after a set time.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundNextStateTrigger.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundNextStateTrigger.html Online documentation}
    */
   export type VariableAmbientSoundNextStateTrigger = "layers-finished" | "duration"
   export interface VariableAmbientSoundState {
     /**
      * Name has to be unique across all states.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#name Online documentation}
      */
     name: string
     /**
      * **Default:** `"regular"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#type Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#type Online documentation}
      */
     readonly type?: VariableAmbientSoundStateType
     /**
      * Cannot be defined if `next_states` is defined.
      *
      * Doesn't need to be defined if there is only one state.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#next_state Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#next_state Online documentation}
      */
     next_state?: string
     /**
@@ -17271,21 +17270,21 @@ declare module "factorio:prototype" {
      * Cannot be defined if there is only one state.
      *
      * Cannot be empty.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#next_states Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#next_states Online documentation}
      */
     next_states?: readonly VariableAmbientSoundNextStateItem[]
     /**
      * Mandatory if there is more than one state or if the only state transitions to itself.
      *
      * Can be defined for `regular` states only.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#next_state_trigger Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#next_state_trigger Online documentation}
      */
     next_state_trigger?: VariableAmbientSoundNextStateTrigger
     /**
      * List of name of layers used to trigger state transition.
      *
      * Only loaded, and mandatory if `next_state_trigger` is `"layers-finished"`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#next_state_layers_finished_layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#next_state_layers_finished_layers Online documentation}
      */
     next_state_layers_finished_layers?: readonly string[]
     /**
@@ -17294,7 +17293,7 @@ declare module "factorio:prototype" {
      * Mandatory if `next_state_trigger` is `"duration"`.
      *
      * Optionally loaded for `intermezzo` states.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#state_duration_seconds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#state_duration_seconds Online documentation}
      */
     state_duration_seconds?: uint32
     /**
@@ -17303,21 +17302,21 @@ declare module "factorio:prototype" {
      * Mandatory for `regular` and `final` states.
      *
      * Cannot be defined for `intermezzo` or `stop` states.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#layers_properties Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#layers_properties Online documentation}
      */
     layers_properties?: readonly VariableAmbientSoundLayerStateProperties[]
     /**
      * Pause before a layer starts playing.
      *
      * Optionally loaded for `intermezzo` states.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#start_pause Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#start_pause Online documentation}
      */
     start_pause?: RandomRange
     /**
      * Pause before a layer finishes playing. The layer being finished is not counted until the pause finishes.
      *
      * Optionally loaded for `intermezzo` states.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#end_pause Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#end_pause Online documentation}
      */
     end_pause?: RandomRange
     /**
@@ -17328,7 +17327,7 @@ declare module "factorio:prototype" {
      * Cannot be defined if any of `layers_properties` define the `enabled` property.
      *
      * Cannot be defined for `intermezzo` or `stop` states.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundState.html#number_of_enabled_layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundState.html#number_of_enabled_layers Online documentation}
      */
     number_of_enabled_layers?: RandomRange
   }
@@ -17338,13 +17337,13 @@ declare module "factorio:prototype" {
    * - `"intermezzo"`: Only special intermezzo layer plays in this state, the rest is paused.
    * - `"final"`: The track will stay in this state for the remainder of the track's duration.
    * - `"stop"`: Transitioning into this state stops the track.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundStateType.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundStateType.html Online documentation}
    */
   export type VariableAmbientSoundStateType = "regular" | "intermezzo" | "final" | "stop"
   export interface VariableAmbientSoundVariableSound {
     /**
      * Cannot be empty.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundVariableSound.html#layers Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundVariableSound.html#layers Online documentation}
      */
     layers: readonly VariableAmbientSoundLayer[]
     intermezzo?: Sound
@@ -17352,26 +17351,26 @@ declare module "factorio:prototype" {
      * The first state is used as the starting state and cannot be an intermezzo state.
      *
      * Cannot be empty.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundVariableSound.html#states Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundVariableSound.html#states Online documentation}
      */
     states: readonly VariableAmbientSoundState[]
     /**
      * Cannot be zero.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundVariableSound.html#length_seconds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundVariableSound.html#length_seconds Online documentation}
      */
     length_seconds: uint32
     /**
      * **Default:** `12600`
      *
      * Number of audio signal samples (default sampling frequency is 44.1kHz) defining a time grid. Music samples are aligned with this grid when queued.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VariableAmbientSoundVariableSound.html#alignment_samples Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VariableAmbientSoundVariableSound.html#alignment_samples Online documentation}
      */
     alignment_samples?: uint32
   }
   /**
    * Struct type for {@link Vector}
    * @see Vector
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Vector.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Vector.html Online documentation}
    */
   export interface VectorStruct {
     x: double
@@ -17385,13 +17384,13 @@ declare module "factorio:prototype" {
    * right = {1.0, 0.5}
    * @example
    * vector = {x = 2.3, y = 3.4}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Vector.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Vector.html Online documentation}
    */
   export type Vector = VectorStruct | readonly [double, double]
   /**
    * Struct type for {@link Vector3D}
    * @see Vector3D
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Vector3D.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Vector3D.html Online documentation}
    */
   export interface Vector3DStruct {
     x: float
@@ -17400,13 +17399,13 @@ declare module "factorio:prototype" {
   }
   /**
    * If this is specified as a three-element array then the array items are x, y and z, in that order.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Vector3D.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Vector3D.html Online documentation}
    */
   export type Vector3D = Vector3DStruct | readonly [float, float, float]
   /**
    * Struct type for {@link Vector4f}
    * @see Vector4f
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Vector4f.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Vector4f.html Online documentation}
    */
   export interface Vector4fStruct {
     x: float
@@ -17417,12 +17416,12 @@ declare module "factorio:prototype" {
   export type Vector4f = Vector4fStruct | readonly [float, float, float, float]
   /**
    * @see AnimatedVector.rotations
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/AnimatedVector.html#rotations Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/AnimatedVector.html#rotations Online documentation}
    */
   export interface VectorRotation {
     /**
      * The size of all `frames` must be the same.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VectorRotation.html#frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VectorRotation.html#frames Online documentation}
      */
     frames: readonly Vector[]
     render_layer?: RenderLayer
@@ -17433,7 +17432,7 @@ declare module "factorio:prototype" {
      * **Default:** `false`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/VehicleLogisticsModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/VehicleLogisticsModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -17442,7 +17441,7 @@ declare module "factorio:prototype" {
    * - `"top"`
    * - `"center"`
    * - `"bottom"`
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/VerticalAlign.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/VerticalAlign.html Online documentation}
    */
   export type VerticalAlign = "top" | "center" | "bottom"
   export interface VerticalFlowStyleSpecification extends BaseStyleSpecification {
@@ -17458,7 +17457,7 @@ declare module "factorio:prototype" {
    * "signal-red"
    * @example
    * "signal-each"
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/VirtualSignalID.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/VirtualSignalID.html Online documentation}
    */
   export type VirtualSignalID = string
   export interface VisualState {
@@ -17472,14 +17471,14 @@ declare module "factorio:prototype" {
    * Void energy sources provide unlimited free energy.
    * @example
    * energy_source = {type = "void"}
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/VoidEnergySource.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/VoidEnergySource.html Online documentation}
    */
   export interface VoidEnergySource extends BaseEnergySource {
     readonly type: "void"
   }
   /**
    * @see WallPrototype.pictures
-   * @see {@link https://lua-api.factorio.com/2.0.49/prototypes/WallPrototype.html#pictures Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/prototypes/WallPrototype.html#pictures Online documentation}
    */
   export interface WallPictures {
     single?: SpriteVariations
@@ -17496,18 +17495,18 @@ declare module "factorio:prototype" {
   }
   /**
    * Entity water reflection. {@linkplain https://forums.factorio.com/100703 Currently only renders} for {@link EntityWithHealthPrototype}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterReflectionDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterReflectionDefinition.html Online documentation}
    */
   export interface WaterReflectionDefinition {
     pictures?: SpriteVariations
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterReflectionDefinition.html#orientation_to_variation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterReflectionDefinition.html#orientation_to_variation Online documentation}
      */
     orientation_to_variation?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterReflectionDefinition.html#rotate Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterReflectionDefinition.html#rotate Online documentation}
      */
     rotate?: boolean
   }
@@ -17523,17 +17522,17 @@ declare module "factorio:prototype" {
     specular_threshold: float | readonly [float, float]
     /**
      * Texture size must be 512x512. Shader variant `"water"` must have 1 texture, `"lava"` and `"wetland-water"` must have 2 textures and `"oil"` must have 4 textures.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#textures Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#textures Online documentation}
      */
     textures: readonly EffectTexture[]
     /**
      * **Default:** `2`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#near_zoom Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#near_zoom Online documentation}
      */
     near_zoom?: float
     /**
      * **Default:** `0.5`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#far_zoom Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#far_zoom Online documentation}
      */
     far_zoom?: float
     /**
@@ -17542,43 +17541,43 @@ declare module "factorio:prototype" {
      * **Default:** `1`
      *
      * Value 0 makes water appear as water in water mask, but does not occlude lights, and doesn't overwrite lightmap alpha drawn to pixel previously (by background layer of tile transition, or underwater sprite). Light emitted by water-like-tile (for example lava) will blend additively with previously rendered light. Value 1 makes water occlude lights, but won't be recognized as water in water mask used for masking decals by water.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#lightmap_alpha Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#lightmap_alpha Online documentation}
      */
     lightmap_alpha?: float
     /**
      * **Default:** `"water"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#shader_variation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#shader_variation Online documentation}
      */
     shader_variation?: EffectVariation
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#texture_variations_rows Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#texture_variations_rows Online documentation}
      */
     texture_variations_rows?: uint8
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#texture_variations_columns Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#texture_variations_columns Online documentation}
      */
     texture_variations_columns?: uint8
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#secondary_texture_variations_rows Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#secondary_texture_variations_rows Online documentation}
      */
     secondary_texture_variations_rows?: uint8
     /**
      * **Default:** `1`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WaterTileEffectParameters.html#secondary_texture_variations_columns Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WaterTileEffectParameters.html#secondary_texture_variations_columns Online documentation}
      */
     secondary_texture_variations_columns?: uint8
   }
   /**
    * Weight of an object. The weight is stored as a fixed-size 64 bit integer, with 16 bits reserved for decimal precision, meaning the smallest value step is `1/2^16`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/Weight.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/Weight.html Online documentation}
    */
   export type Weight = double
   /**
    * Definition of a point where circuit network wires can be connected to an entity.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/WireConnectionPoint.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/WireConnectionPoint.html Online documentation}
    */
   export interface WireConnectionPoint {
     wire: WirePosition
@@ -17586,7 +17585,7 @@ declare module "factorio:prototype" {
   }
   /**
    * Used by {@link WireConnectionPoint}.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/WirePosition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/WirePosition.html Online documentation}
    */
   export interface WirePosition {
     copper?: Vector
@@ -17599,14 +17598,14 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkerRobotBatteryModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkerRobotBatteryModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkerRobotBatteryModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkerRobotBatteryModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -17616,14 +17615,14 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkerRobotSpeedModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkerRobotSpeedModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkerRobotSpeedModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkerRobotSpeedModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
@@ -17633,26 +17632,26 @@ declare module "factorio:prototype" {
      * **Default:** `true`
      *
      * If set to `false`, use the icon from {@link UtilitySprites} for this technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkerRobotStorageModifier.html#infer_icon Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkerRobotStorageModifier.html#infer_icon Online documentation}
      */
     infer_icon?: boolean
     /**
      * **Default:** `true`
      *
      * If `false`, do not draw the small "constant" icon over the technology effect icon.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkerRobotStorageModifier.html#use_icon_overlay_constant Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkerRobotStorageModifier.html#use_icon_overlay_constant Online documentation}
      */
     use_icon_overlay_constant?: boolean
   }
   /**
    * Struct type for {@link WorkingSound}
    * @see WorkingSound
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html Online documentation}
    */
   export interface WorkingSoundStruct extends MainSound {
     /**
      * If this property is defined, all properties inherited from MainSound (and not overridden here) are ignored.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#main_sounds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#main_sounds Online documentation}
      */
     main_sounds?: MainSound | readonly MainSound[]
     /**
@@ -17663,7 +17662,7 @@ declare module "factorio:prototype" {
      * Entities with their working sound fading out don't count towards this limit.
      *
      * Unused when `persistent` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#max_sounds_per_prototype Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#max_sounds_per_prototype Online documentation}
      */
     max_sounds_per_prototype?: uint8
     /**
@@ -17672,45 +17671,45 @@ declare module "factorio:prototype" {
      * If `true`, entities playing their extra sound don't count towards `max_sounds_per_prototype` limit. 'extra sound' refers to `idle_sound`, `activate_sound` or `deactivate_sound`.
      *
      * Unused when `persistent` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#extra_sounds_ignore_limit Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#extra_sounds_ignore_limit Online documentation}
      */
     extra_sounds_ignore_limit?: boolean
     /**
      * **Default:** `false`
      *
      * When `true`, working sounds for all entities of the same prototype are combined into one.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#persistent Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#persistent Online documentation}
      */
     persistent?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#use_doppler_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#use_doppler_shift Online documentation}
      */
     use_doppler_shift?: boolean
     /**
      * The sound to be played when the entity is idle. Might not work with all entities that use working_sound.
      *
      * Unused when `persistent` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#idle_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#idle_sound Online documentation}
      */
     idle_sound?: Sound
     /**
      * Might not work with all entities that use working_sound.
      *
      * Unused when `persistent` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#activate_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#activate_sound Online documentation}
      */
     activate_sound?: Sound
     /**
      * Might not work with all entities that use working_sound.
      *
      * Unused when `persistent` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#deactivate_sound Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#deactivate_sound Online documentation}
      */
     deactivate_sound?: Sound
     /**
      * Unused when `persistent` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html#sound_accents Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html#sound_accents Online documentation}
      */
     sound_accents?: SoundAccent | readonly SoundAccent[]
   }
@@ -17731,73 +17730,73 @@ declare module "factorio:prototype" {
    *   max_sounds_per_prototype = 3,
    *   probability = 1 / (5 * 60) -- average pause between the sound is 5 seconds
    * }
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingSound.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingSound.html Online documentation}
    */
   export type WorkingSound = WorkingSoundStruct | Sound
   /**
    * Used by crafting machines to display different graphics when the machine is running.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html Online documentation}
    */
   export interface WorkingVisualisation {
     /**
      * **Default:** `"object"`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#render_layer Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#render_layer Online documentation}
      */
     render_layer?: RenderLayer
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#fadeout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#fadeout Online documentation}
      */
     fadeout?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#synced_fadeout Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#synced_fadeout Online documentation}
      */
     synced_fadeout?: boolean
     /**
      * **Default:** `false`
      *
      * Whether the animations are always played at the same speed, not adjusted to the machine speed.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#constant_speed Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#constant_speed Online documentation}
      */
     constant_speed?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#always_draw Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#always_draw Online documentation}
      */
     always_draw?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#animated_shift Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#animated_shift Online documentation}
      */
     animated_shift?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#align_to_waypoint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#align_to_waypoint Online documentation}
      */
     align_to_waypoint?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#mining_drill_scorch_mark Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#mining_drill_scorch_mark Online documentation}
      */
     mining_drill_scorch_mark?: boolean
     /**
      * Used to determine render order for sprites with the same `render_layer` in the same position. Sprites with a higher `secondary_draw_order` are drawn on top.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#secondary_draw_order Online documentation}
      */
     secondary_draw_order?: int8
     light?: LightDefinition
     effect?: "flicker" | "uranium-glow" | "none"
     /**
      * Used by {@link CraftingMachinePrototype}. Has precedence over `apply_tint`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#apply_recipe_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#apply_recipe_tint Online documentation}
      */
     apply_recipe_tint?: "primary" | "secondary" | "tertiary" | "quaternary" | "none"
     /**
      * Used by {@link CraftingMachinePrototype} ("status" and "visual-state-color" only) and {@link MiningDrillPrototype}.
      *
      * For "status" on CraftingMachine and MiningDrill, the colors are specified via {@link WorkingVisualisations#status_colors WorkingVisualisations::status_colors}. For "resource-color", the colors are specified via {@link ResourceEntityPrototype#mining_visualisation_tint ResourceEntityPrototype::mining_visualisation_tint}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#apply_tint Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#apply_tint Online documentation}
      */
     apply_tint?:
       | "resource-color"
@@ -17816,102 +17815,102 @@ declare module "factorio:prototype" {
     west_position?: Vector
     /**
      * **Default:** `Value of `secondary_draw_order``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#north_secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#north_secondary_draw_order Online documentation}
      */
     north_secondary_draw_order?: int8
     /**
      * **Default:** `Value of `secondary_draw_order``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#east_secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#east_secondary_draw_order Online documentation}
      */
     east_secondary_draw_order?: int8
     /**
      * **Default:** `Value of `secondary_draw_order``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#south_secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#south_secondary_draw_order Online documentation}
      */
     south_secondary_draw_order?: int8
     /**
      * **Default:** `Value of `secondary_draw_order``
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#west_secondary_draw_order Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#west_secondary_draw_order Online documentation}
      */
     west_secondary_draw_order?: int8
     /**
      * If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#north_fog_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#north_fog_mask Online documentation}
      */
     north_fog_mask?: FogMaskShapeDefinition
     /**
      * If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#east_fog_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#east_fog_mask Online documentation}
      */
     east_fog_mask?: FogMaskShapeDefinition
     /**
      * If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#south_fog_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#south_fog_mask Online documentation}
      */
     south_fog_mask?: FogMaskShapeDefinition
     /**
      * If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#west_fog_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#west_fog_mask Online documentation}
      */
     west_fog_mask?: FogMaskShapeDefinition
     /**
      * Loaded only if at least one of north_fog_mask, east_fog_mask, south_fog_mask, west_fog_mask is not specified.
      *
      * If defined, animation in this visualisation layer will be used only as mask for fog effect and will not render in world.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#fog_mask Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#fog_mask Online documentation}
      */
     fog_mask?: FogMaskShapeDefinition
     animation?: Animation
     /**
      * Only loaded if {@link WorkingVisualisations#states WorkingVisualisations::states} is defined in the WorkingVisualisations that loads this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#draw_in_states Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#draw_in_states Online documentation}
      */
     draw_in_states?: readonly string[]
     /**
      * **Default:** `true`
      *
      * Only loaded if {@link WorkingVisualisations#states WorkingVisualisations::states} is defined in the WorkingVisualisations that loads this.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#draw_when_state_filter_matches Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#draw_when_state_filter_matches Online documentation}
      */
     draw_when_state_filter_matches?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#enabled_by_name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#enabled_by_name Online documentation}
      */
     enabled_by_name?: boolean
     /**
      * **Default:** `""`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#name Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#name Online documentation}
      */
     name?: string
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#enabled_in_animated_shift_during_waypoint_stop Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#enabled_in_animated_shift_during_waypoint_stop Online documentation}
      */
     enabled_in_animated_shift_during_waypoint_stop?: boolean
     /**
      * **Default:** `true`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#enabled_in_animated_shift_during_transition Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#enabled_in_animated_shift_during_transition Online documentation}
      */
     enabled_in_animated_shift_during_transition?: boolean
     /**
      * **Default:** `false`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#frame_based_on_shift_animation_progress Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#frame_based_on_shift_animation_progress Online documentation}
      */
     frame_based_on_shift_animation_progress?: boolean
     /**
      * Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`. Cannot be larger than `scorch_mark_lifetime`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#scorch_mark_fade_out_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#scorch_mark_fade_out_duration Online documentation}
      */
     scorch_mark_fade_out_duration?: uint16
     /**
      * Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#scorch_mark_lifetime Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#scorch_mark_lifetime Online documentation}
      */
     scorch_mark_lifetime?: uint16
     /**
      * Only loaded, and mandatory if `mining_drill_scorch_mark` is `true`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisation.html#scorch_mark_fade_in_frames Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisation.html#scorch_mark_fade_in_frames Online documentation}
      */
     scorch_mark_fade_in_frames?: uint8
   }
@@ -17919,85 +17918,85 @@ declare module "factorio:prototype" {
     animation?: Animation4Way
     /**
      * Idle animation must have the same frame count as animation.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisations.html#idle_animation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisations.html#idle_animation Online documentation}
      */
     idle_animation?: Animation4Way
     /**
      * **Default:** `false`
      *
      * Only loaded if `idle_animation` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisations.html#always_draw_idle_animation Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisations.html#always_draw_idle_animation Online documentation}
      */
     always_draw_idle_animation?: boolean
     default_recipe_tint?: GlobalRecipeTints
     recipe_not_set_tint?: GlobalRecipeTints
     /**
      * At least 2 visual states must be defined or no states at all. At most 32 states may be defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisations.html#states Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisations.html#states Online documentation}
      */
     states?: readonly VisualState[]
     /**
      * Used to display different animations when the machine is running, for example tinted based on the current recipe.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisations.html#working_visualisations Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisations.html#working_visualisations Online documentation}
      */
     working_visualisations?: readonly WorkingVisualisation[]
     /**
      * Only loaded if one of `shift_animation_waypoint_stop_duration` or `shift_animation_transition_duration` is not 0.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisations.html#shift_animation_waypoints Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisations.html#shift_animation_waypoints Online documentation}
      */
     shift_animation_waypoints?: ShiftAnimationWaypoints
     /**
      * **Default:** `0`
      *
      * Only loaded if `shift_animation_waypoints` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisations.html#shift_animation_waypoint_stop_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisations.html#shift_animation_waypoint_stop_duration Online documentation}
      */
     shift_animation_waypoint_stop_duration?: uint16
     /**
      * **Default:** `0`
      *
      * Only loaded if `shift_animation_waypoints` is defined.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisations.html#shift_animation_transition_duration Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisations.html#shift_animation_transition_duration Online documentation}
      */
     shift_animation_transition_duration?: uint16
     /**
      * Used by {@link WorkingVisualisation#apply_tint WorkingVisualisation::apply_tint}.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorkingVisualisations.html#status_colors Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorkingVisualisations.html#status_colors Online documentation}
      */
     status_colors?: StatusColors
   }
   /**
    * Struct type for {@link WorldAmbientSoundDefinition}
    * @see WorldAmbientSoundDefinition
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/WorldAmbientSoundDefinition.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/WorldAmbientSoundDefinition.html Online documentation}
    */
   export interface WorldAmbientSoundDefinitionStruct {
     sound?: Sound
     /**
      * **Default:** `10`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorldAmbientSoundDefinition.html#radius Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorldAmbientSoundDefinition.html#radius Online documentation}
      */
     radius?: double
     /**
      * **Default:** `5`
      *
      * Has to be less than or equal to `max_entity_count`.
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorldAmbientSoundDefinition.html#min_entity_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorldAmbientSoundDefinition.html#min_entity_count Online documentation}
      */
     min_entity_count?: uint32
     /**
      * **Default:** `15`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorldAmbientSoundDefinition.html#max_entity_count Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorldAmbientSoundDefinition.html#max_entity_count Online documentation}
      */
     max_entity_count?: uint32
     /**
      * **Default:** `0.2`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorldAmbientSoundDefinition.html#entity_to_sound_ratio Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorldAmbientSoundDefinition.html#entity_to_sound_ratio Online documentation}
      */
     entity_to_sound_ratio?: float
     /**
      * **Default:** `0`
-     * @see {@link https://lua-api.factorio.com/2.0.49/types/WorldAmbientSoundDefinition.html#average_pause_seconds Online documentation}
+     * @see {@link https://lua-api.factorio.com/2.0.50/types/WorldAmbientSoundDefinition.html#average_pause_seconds Online documentation}
      */
     average_pause_seconds?: double
   }
@@ -18009,7 +18008,7 @@ declare module "factorio:prototype" {
    * @example
    * 7.5
    * 6
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/double.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/double.html Online documentation}
    */
   export type double = number
   /**
@@ -18019,56 +18018,56 @@ declare module "factorio:prototype" {
    * @example
    * 7.5
    * 6
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/float.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/float.html Online documentation}
    */
   export type float = number
   /**
    * 16 bit signed integer. Ranges from `-32 768` to `32 767`, or `[-2^15, 2^15-1]`.
    *
    * Decimal numbers are automatically truncated when used in place of `int16`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/int16.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/int16.html Online documentation}
    */
   export type int16 = number
   /**
    * 32 bit signed integer. Ranges from `-2 147 483 648` to `2 147 483 647`, or `[-2^31, 2^31-1]`.
    *
    * Decimal numbers are automatically truncated when used in place of `int32`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/int32.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/int32.html Online documentation}
    */
   export type int32 = number
   /**
    * 8 bit signed integer. Ranges from `-128` to `127`, or `[-2^7, 2^7-1]`.
    *
    * Decimal numbers are automatically truncated when used in place of `int8`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/int8.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/int8.html Online documentation}
    */
   export type int8 = number
   /**
    * 16 bit unsigned integer. Ranges from `0` to `65 535`, or `[0, 2^16-1]`.
    *
    * Decimal numbers are automatically truncated when used in place of `uint16`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/uint16.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/uint16.html Online documentation}
    */
   export type uint16 = number
   /**
    * 32 bit unsigned integer. Ranges from `0` to `4 294 967 295`, or `[0, 2^32-1]`.
    *
    * Decimal numbers are automatically truncated when used in place of `uint32`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/uint32.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/uint32.html Online documentation}
    */
   export type uint32 = number
   /**
    * 64 bit unsigned integer. Ranges from `0` to `18 446 744 073 709 551 615`, or `[0, 2^64-1]`.
    *
    * Decimal numbers are automatically truncated when used in place of `uint64`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/uint64.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/uint64.html Online documentation}
    */
   export type uint64 = number
   /**
    * 8 bit unsigned integer. Ranges from `0` to `255`, or `[0, 2^8-1]`.
    *
    * Decimal numbers are automatically truncated when used in place of `uint8`.
-   * @see {@link https://lua-api.factorio.com/2.0.49/types/uint8.html Online documentation}
+   * @see {@link https://lua-api.factorio.com/2.0.50/types/uint8.html Online documentation}
    */
   export type uint8 = number
 }
