@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.52",
+  "application_version": "2.0.54",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -8767,7 +8767,7 @@
         {
           "name": "set_passenger",
           "order": 74,
-          "description": "Sets the passenger of this car or spidertron.\n\nThis differs from [LuaEntity::get_driver](runtime:LuaEntity::get_driver) in that the passenger can't drive the car.",
+          "description": "Sets the passenger of this car, spidertron, or cargo pod.\n\nThis differs from [LuaEntity::get_driver](runtime:LuaEntity::get_driver) in that the passenger can't drive the car.",
           "raises": [
             {
               "name": "on_player_driving_changed_state",
@@ -8779,7 +8779,8 @@
           ],
           "subclasses": [
             "Car",
-            "SpiderVehicle"
+            "SpiderVehicle",
+            "CargoPod"
           ],
           "parameters": [
             {
@@ -16035,7 +16036,7 @@
         },
         {
           "name": "object_name",
-          "order": 13,
+          "order": 16,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -16076,6 +16077,36 @@
           "optional": false
         },
         {
+          "name": "solar_panel_performance_at_day",
+          "order": 12,
+          "description": "",
+          "subclasses": [
+            "SolarPanelEquipment"
+          ],
+          "read_type": "double",
+          "optional": false
+        },
+        {
+          "name": "solar_panel_performance_at_night",
+          "order": 13,
+          "description": "",
+          "subclasses": [
+            "SolarPanelEquipment"
+          ],
+          "read_type": "double",
+          "optional": false
+        },
+        {
+          "name": "solar_panel_solar_coefficient_property",
+          "order": 14,
+          "description": "",
+          "subclasses": [
+            "SolarPanelEquipment"
+          ],
+          "read_type": "LuaSurfacePropertyPrototype",
+          "optional": false
+        },
+        {
           "name": "take_result",
           "order": 1,
           "description": "The result item when taking this equipment out of an equipment grid, if any.",
@@ -16084,7 +16115,7 @@
         },
         {
           "name": "valid",
-          "order": 12,
+          "order": 15,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -25573,7 +25604,7 @@
         {
           "name": "get_mapper",
           "order": 25,
-          "description": "Gets the filter at the given index for this upgrade item.\n\nIn contrast to [LuaItemCommon::set_mapper](runtime:LuaItemCommon::set_mapper), indices past the upgrade item's current size are considered to be out of bounds.",
+          "description": "Gets the filter at the given index for this upgrade item. Note that sources (`\"from\"` type) that are undefined will read as `{type = \"item\"}`, while destinations (`\"to\"` type) that are undefined will read as `nil`.\n\nIn contrast to [LuaItemCommon::set_mapper](runtime:LuaItemCommon::set_mapper), indices past the upgrade item's current size are considered to be out of bounds.",
           "subclasses": [
             "UpgradeItem"
           ],
@@ -25621,7 +25652,7 @@
                 ],
                 "full_format": false
               },
-              "optional": false
+              "optional": true
             }
           ]
         },
@@ -29178,7 +29209,14 @@
           "format": {
             "takes_table": false
           },
-          "return_values": []
+          "return_values": [
+            {
+              "order": 0,
+              "description": "The existing index for the given filter or nil if the filter was successfully set.",
+              "type": "LogisticFilterIndex",
+              "optional": true
+            }
+          ]
         }
       ],
       "attributes": [
@@ -35246,7 +35284,7 @@
         {
           "name": "get_mapper",
           "order": 22,
-          "description": "Gets the filter at the given index for this upgrade item.\n\nIn contrast to [LuaRecord::set_mapper](runtime:LuaRecord::set_mapper), indices past the upgrade item's current size are considered to be out of bounds.",
+          "description": "Gets the filter at the given index for this upgrade item. Note that sources (`\"from\"` type) that are undefined will read as `{type = \"item\"}`, while destinations (`\"to\"` type) that are undefined will read as `nil`.\n\nIn contrast to [LuaRecord::set_mapper](runtime:LuaRecord::set_mapper), indices past the upgrade item's current size are considered to be out of bounds.",
           "subclasses": [
             "UpgradeRecord"
           ],
@@ -42512,9 +42550,9 @@
                   "description": "",
                   "type": {
                     "complex_type": "array",
-                    "value": "InventoryFilter"
+                    "value": "InserterItemFilter"
                   },
-                  "optional": false
+                  "optional": true
                 }
               ]
             },
@@ -57664,7 +57702,7 @@
   "concepts": [
     {
       "name": "AchievementPrototypeFilter",
-      "order": 310,
+      "order": 311,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -57914,7 +57952,7 @@
     },
     {
       "name": "Alignment",
-      "order": 271,
+      "order": 272,
       "description": "A string that specifies where a GUI element should be.",
       "type": {
         "complex_type": "union",
@@ -58042,7 +58080,7 @@
     },
     {
       "name": "Any",
-      "order": 300,
+      "order": 301,
       "description": "Any basic type (string, number, boolean), table, or LuaObject.",
       "type": {
         "complex_type": "union",
@@ -58058,7 +58096,7 @@
     },
     {
       "name": "AnyBasic",
-      "order": 299,
+      "order": 300,
       "description": "Any basic type (string, number, boolean) or table.",
       "type": {
         "complex_type": "union",
@@ -58257,7 +58295,7 @@
     },
     {
       "name": "AsteroidChunkPrototypeFilter",
-      "order": 306,
+      "order": 307,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58312,7 +58350,7 @@
     {
       "name": "AsteroidMapSettings",
       "order": 157,
-      "description": "Used by [MapSettings](runtime:MapSettings) and [MapAndDifficultySettings](runtime:MapAndDifficultySettings).",
+      "description": "",
       "type": {
         "complex_type": "table",
         "parameters": [
@@ -58335,7 +58373,7 @@
     },
     {
       "name": "AttackParameterFluid",
-      "order": 272,
+      "order": 273,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58359,7 +58397,7 @@
     },
     {
       "name": "AttackParameters",
-      "order": 282,
+      "order": 283,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -58867,7 +58905,7 @@
     },
     {
       "name": "BlueprintInsertPlan",
-      "order": 256,
+      "order": 257,
       "description": "Defines an item type that a blueprint entity will request.",
       "type": {
         "complex_type": "table",
@@ -58891,7 +58929,7 @@
     },
     {
       "name": "BlueprintLogisticFilter",
-      "order": 266,
+      "order": 267,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -59733,7 +59771,7 @@
     },
     {
       "name": "CircularProjectileCreationSpecification",
-      "order": 275,
+      "order": 276,
       "description": "",
       "type": {
         "complex_type": "array",
@@ -60401,7 +60439,7 @@
     },
     {
       "name": "CompiledLogisticFilter",
-      "order": 265,
+      "order": 266,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60658,7 +60696,7 @@
     },
     {
       "name": "CustomEntityStatus",
-      "order": 259,
+      "order": 260,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60734,7 +60772,7 @@
     },
     {
       "name": "DamageTypeFilters",
-      "order": 279,
+      "order": 280,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -60958,7 +60996,7 @@
     },
     {
       "name": "DecorativePrototypeFilter",
-      "order": 304,
+      "order": 305,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -61675,7 +61713,7 @@
     },
     {
       "name": "EntityPrototypeFilter",
-      "order": 313,
+      "order": 314,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -62546,7 +62584,7 @@
     },
     {
       "name": "EquipmentPrototypeFilter",
-      "order": 311,
+      "order": 312,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -62862,7 +62900,7 @@
     },
     {
       "name": "FactoriopediaID",
-      "order": 269,
+      "order": 270,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -63207,7 +63245,7 @@
     },
     {
       "name": "FluidPrototypeFilter",
-      "order": 312,
+      "order": 313,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -63906,7 +63944,7 @@
     },
     {
       "name": "GuiDirection",
-      "order": 270,
+      "order": 271,
       "description": "Direction of a [LuaGuiElement's](runtime:LuaGuiElement::direction) layout.",
       "type": {
         "complex_type": "union",
@@ -64100,7 +64138,7 @@
     },
     {
       "name": "GunShift4Way",
-      "order": 273,
+      "order": 274,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64211,7 +64249,7 @@
     },
     {
       "name": "InfinityInventoryFilter",
-      "order": 252,
+      "order": 253,
       "description": "A single filter used by an infinity-filters instance.",
       "type": {
         "complex_type": "table",
@@ -64448,6 +64486,44 @@
       }
     },
     {
+      "name": "InserterItemFilter",
+      "order": 252,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "comparator",
+            "order": 3,
+            "description": "Quality comparator to use for the quality filter.",
+            "type": "string",
+            "optional": true
+          },
+          {
+            "name": "index",
+            "order": 0,
+            "description": "Position of the corresponding filter slot.",
+            "type": "uint",
+            "optional": false
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "Item prototype name of the item to filter.",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "name": "quality",
+            "order": 2,
+            "description": "Quality prototype name of the item to filter.",
+            "type": "string",
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
       "name": "InventoryFilter",
       "order": 206,
       "description": "",
@@ -64479,7 +64555,7 @@
     },
     {
       "name": "InventoryPosition",
-      "order": 255,
+      "order": 256,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64640,7 +64716,7 @@
     },
     {
       "name": "ItemInventoryPositions",
-      "order": 254,
+      "order": 255,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64799,7 +64875,7 @@
     },
     {
       "name": "ItemPrototypeFilter",
-      "order": 307,
+      "order": 308,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66549,7 +66625,7 @@
     },
     {
       "name": "LogisticSection",
-      "order": 267,
+      "order": 268,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66597,7 +66673,7 @@
     },
     {
       "name": "LogisticSections",
-      "order": 268,
+      "order": 269,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66750,7 +66826,7 @@
     },
     {
       "name": "LuaEntityClonedEventFilter",
-      "order": 324,
+      "order": 325,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66918,7 +66994,7 @@
     },
     {
       "name": "LuaEntityDamagedEventFilter",
-      "order": 335,
+      "order": 336,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67179,7 +67255,7 @@
     },
     {
       "name": "LuaEntityDeconstructionCancelledEventFilter",
-      "order": 320,
+      "order": 321,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67347,7 +67423,7 @@
     },
     {
       "name": "LuaEntityDiedEventFilter",
-      "order": 336,
+      "order": 337,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67515,7 +67591,7 @@
     },
     {
       "name": "LuaEntityMarkedForDeconstructionEventFilter",
-      "order": 331,
+      "order": 332,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67683,7 +67759,7 @@
     },
     {
       "name": "LuaEntityMarkedForUpgradeEventFilter",
-      "order": 337,
+      "order": 338,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -67882,7 +67958,7 @@
     },
     {
       "name": "LuaObject",
-      "order": 298,
+      "order": 299,
       "description": "Any LuaObject listed on the [Classes](runtime:classes) page.",
       "type": {
         "complex_type": "builtin"
@@ -67890,7 +67966,7 @@
     },
     {
       "name": "LuaPlatformBuiltEntityEventFilter",
-      "order": 322,
+      "order": 323,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68076,7 +68152,7 @@
     },
     {
       "name": "LuaPlatformMinedEntityEventFilter",
-      "order": 317,
+      "order": 318,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68244,7 +68320,7 @@
     },
     {
       "name": "LuaPlayerBuiltEntityEventFilter",
-      "order": 333,
+      "order": 334,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68430,7 +68506,7 @@
     },
     {
       "name": "LuaPlayerMinedEntityEventFilter",
-      "order": 328,
+      "order": 329,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68598,7 +68674,7 @@
     },
     {
       "name": "LuaPlayerRepairedEntityEventFilter",
-      "order": 325,
+      "order": 326,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68766,7 +68842,7 @@
     },
     {
       "name": "LuaPostEntityDiedEventFilter",
-      "order": 326,
+      "order": 327,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68836,7 +68912,7 @@
     },
     {
       "name": "LuaPreGhostDeconstructedEventFilter",
-      "order": 327,
+      "order": 328,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69004,7 +69080,7 @@
     },
     {
       "name": "LuaPreGhostUpgradedEventFilter",
-      "order": 321,
+      "order": 322,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69172,7 +69248,7 @@
     },
     {
       "name": "LuaPrePlatformMinedEntityEventFilter",
-      "order": 323,
+      "order": 324,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69340,7 +69416,7 @@
     },
     {
       "name": "LuaPrePlayerMinedEntityEventFilter",
-      "order": 319,
+      "order": 320,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69508,7 +69584,7 @@
     },
     {
       "name": "LuaPreRobotMinedEntityEventFilter",
-      "order": 315,
+      "order": 316,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69676,7 +69752,7 @@
     },
     {
       "name": "LuaRobotBuiltEntityEventFilter",
-      "order": 318,
+      "order": 319,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69862,7 +69938,7 @@
     },
     {
       "name": "LuaRobotMinedEntityEventFilter",
-      "order": 330,
+      "order": 331,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70030,7 +70106,7 @@
     },
     {
       "name": "LuaScriptRaisedBuiltEventFilter",
-      "order": 316,
+      "order": 317,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70198,7 +70274,7 @@
     },
     {
       "name": "LuaScriptRaisedDestroyEventFilter",
-      "order": 338,
+      "order": 339,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70366,7 +70442,7 @@
     },
     {
       "name": "LuaScriptRaisedReviveEventFilter",
-      "order": 332,
+      "order": 333,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70534,7 +70610,7 @@
     },
     {
       "name": "LuaScriptRaisedTeleportedEventFilter",
-      "order": 314,
+      "order": 315,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70702,7 +70778,7 @@
     },
     {
       "name": "LuaSectorScannedEventFilter",
-      "order": 329,
+      "order": 330,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70870,7 +70946,7 @@
     },
     {
       "name": "LuaUpgradeCancelledEventFilter",
-      "order": 334,
+      "order": 335,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71651,7 +71727,7 @@
     },
     {
       "name": "MarketIngredient",
-      "order": 257,
+      "order": 258,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71815,7 +71891,7 @@
     },
     {
       "name": "ModSettingPrototypeFilter",
-      "order": 302,
+      "order": 303,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -72346,7 +72422,7 @@
     },
     {
       "name": "Offer",
-      "order": 258,
+      "order": 259,
       "description": "A single offer on a market entity.",
       "type": {
         "complex_type": "table",
@@ -73413,7 +73489,7 @@
     },
     {
       "name": "PropertyExpressionNames",
-      "order": 301,
+      "order": 302,
       "description": "All other MapGenSettings feed into named noise expressions, and therefore placement can be overridden by including the name of a property in this dictionary. The probability and richness functions for placing specific tiles, entities, and decoratives can be overridden by including an entry named `{tile|entity|decorative}:(prototype name):{probability|richness}`.",
       "lists": [
         "Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `5`). All other controls can be overridden by a property expression names. Notable properties:\n\n- `moisture` - a value between 0 and 1 that determines whether a tile becomes sandy (low moisture) or grassy (high moisture).\n- `aux` - a value between 0 and 1 that determines whether low-moisture tiles become sand or red desert.\n- `temperature` - provides a value (vaguely representing degrees Celsius, varying between -20 and 50) that is used (together with moisture and aux) as part of tree and decorative placement.\n- `elevation` - tiles values less than zero become water. Cliffs are placed along certain contours according to [CliffPlacementSettings](runtime:CliffPlacementSettings).\n- `cliffiness` - determines whether (when >0.5) or not (when <0.5) a cliff will be placed at an otherwise suitable (according to [CliffPlacementSettings](runtime:CliffPlacementSettings)) location.\n- `enemy-base-intensity` - a number that is referenced by both `enemy-base-frequency` and `enemy-base-radius`. i.e. if this is overridden, enemy base frequency and size will both be affected and do something reasonable. By default, this expression returns a value proportional to distance from any starting point, clamped at about 7.\n- `enemy-base-frequency` - a number representing average number of enemy bases per tile for a region, by default in terms of `enemy-base-intensity`.\n- `enemy-base-radius` - a number representing the radius of an enemy base, if one were to be placed on the given tile, by default proportional to a constant plus `enemy-base-intensity`.",
@@ -73630,7 +73706,7 @@
     },
     {
       "name": "RadiusVisualisationSpecification",
-      "order": 261,
+      "order": 262,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -73916,7 +73992,7 @@
     },
     {
       "name": "RecipePrototypeFilter",
-      "order": 309,
+      "order": 310,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74927,7 +75003,7 @@
     },
     {
       "name": "Resistance",
-      "order": 262,
+      "order": 263,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75979,7 +76055,7 @@
     },
     {
       "name": "SmokeSource",
-      "order": 260,
+      "order": 261,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76129,7 +76205,7 @@
     },
     {
       "name": "SoundPath",
-      "order": 263,
+      "order": 264,
       "description": "It can be either the name of a [SoundPrototype](prototype:SoundPrototype) defined in the data stage, or a path in the form `\"type/name\"`. The latter option can be sorted into three categories.\n\nThe validity of a SoundPath can be verified at runtime using [LuaHelpers::is_valid_sound_path](runtime:LuaHelpers::is_valid_sound_path).",
       "lists": [
         "The utility and ambient types each contain general use sound prototypes defined by the game itself.\n\n- `\"utility\"` - Uses [UtilitySounds](prototype:UtilitySounds). Example: `\"utility/wire_connect_pole\"`\n- `\"ambient\"` - Uses [AmbientSound](prototype:AmbientSound). Example: `\"ambient/resource-deficiency\"`",
@@ -76140,7 +76216,7 @@
     },
     {
       "name": "SoundType",
-      "order": 264,
+      "order": 265,
       "description": "Defines which slider in the game's sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.",
       "type": {
         "complex_type": "union",
@@ -76358,7 +76434,7 @@
     },
     {
       "name": "SpaceLocationPrototypeFilter",
-      "order": 303,
+      "order": 304,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76733,7 +76809,7 @@
     },
     {
       "name": "Tags",
-      "order": 283,
+      "order": 284,
       "description": "A dictionary of string to the four basic Lua types: `string`, `boolean`, `number`, `table`.\n\nNote that the API returns tags as a simple table, meaning any modifications to it will not propagate back to the game. Thus, to modify a set of tags, the whole table needs to be written back to the respective property.",
       "examples": [
         "```\n{a = 1, b = true, c = \"three\", d = {e = \"f\"}}\n```"
@@ -76944,7 +77020,7 @@
     },
     {
       "name": "TechnologyPrototypeFilter",
-      "order": 308,
+      "order": 309,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77198,7 +77274,7 @@
     },
     {
       "name": "Tile",
-      "order": 284,
+      "order": 285,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77285,7 +77361,7 @@
     },
     {
       "name": "TilePrototypeFilter",
-      "order": 305,
+      "order": 306,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78037,7 +78113,7 @@
     },
     {
       "name": "TriggerDelivery",
-      "order": 278,
+      "order": 279,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78107,7 +78183,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 281,
+      "order": 282,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78166,7 +78242,7 @@
     },
     {
       "name": "TriggerEffectItemType",
-      "order": 280,
+      "order": 281,
       "description": "Used by [TriggerEffectItem](runtime:TriggerEffectItem).",
       "type": {
         "complex_type": "union",
@@ -78292,7 +78368,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 274,
+      "order": 275,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78389,7 +78465,7 @@
     },
     {
       "name": "TriggerModifierData",
-      "order": 276,
+      "order": 277,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78420,7 +78496,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 277,
+      "order": 278,
       "description": "A set of trigger target masks.",
       "type": {
         "complex_type": "dictionary",
@@ -78870,31 +78946,54 @@
         "complex_type": "table",
         "parameters": [
           {
-            "name": "count",
+            "name": "module_limit",
             "order": 3,
-            "description": "when type is `\"item\"` and the mapper is configured to install modules the limit per machine. If `0` then no limit.",
-            "type": "uint",
+            "description": "When upgrading modules, this defines the maximum number of this module to be installed in the destination entity. `0` or `nil` means no limit.",
+            "type": "uint16",
+            "optional": true
+          },
+          {
+            "name": "module_slots",
+            "order": 4,
+            "description": "When upgrading entities, this defines explicit modules to be installed in the destination entity. Lists empty slots as `{}`.",
+            "type": {
+              "complex_type": "array",
+              "value": "ItemIDAndQualityIDPair"
+            },
             "optional": true
           },
           {
             "name": "name",
             "order": 1,
-            "description": "Name of the item, or entity.",
+            "description": "Name of the item or entity.",
             "type": "string",
             "optional": true
           },
           {
             "name": "quality",
             "order": 2,
-            "description": "Name of the quality.",
+            "description": "Name of the quality prototype.",
             "type": "string",
             "optional": true
           },
           {
             "name": "type",
             "order": 0,
-            "description": "`\"item\"`, or `\"entity\"`.",
-            "type": "string",
+            "description": "",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "item"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "entity"
+                }
+              ],
+              "full_format": false
+            },
             "optional": false
           }
         ]
@@ -78915,9 +79014,16 @@
             "optional": true
           },
           {
+            "name": "module_filter",
+            "order": 4,
+            "description": "When upgrading modules, this defines the specific entities to apply the upgrade to. `nil` applies it to all entities.",
+            "type": "EntityIDFilter",
+            "optional": true
+          },
+          {
             "name": "name",
             "order": 1,
-            "description": "Name of the item, or entity.",
+            "description": "Name of the item or entity.",
             "type": "string",
             "optional": true
           },
@@ -79064,7 +79170,7 @@
     },
     {
       "name": "VehicleAutomaticTargetingParameters",
-      "order": 253,
+      "order": 254,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79511,7 +79617,7 @@
     },
     {
       "name": "boolean",
-      "order": 295,
+      "order": 296,
       "description": "Either `true` or `false`.",
       "type": {
         "complex_type": "builtin"
@@ -79519,7 +79625,7 @@
     },
     {
       "name": "double",
-      "order": 286,
+      "order": 287,
       "description": "A double-precision floating-point number. This is the same data type as all Lua numbers use.",
       "type": {
         "complex_type": "builtin"
@@ -79527,7 +79633,7 @@
     },
     {
       "name": "float",
-      "order": 285,
+      "order": 286,
       "description": "A floating-point number. This is a single-precision floating point number. Whilst Lua only uses double-precision numbers, when a function takes a float, the game engine will immediately convert the double-precision number to single-precision.",
       "type": {
         "complex_type": "builtin"
@@ -79535,7 +79641,7 @@
     },
     {
       "name": "int",
-      "order": 287,
+      "order": 288,
       "description": "32-bit signed integer. Possible values are `-2 147 483 648` to `2 147 483 647`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `int` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -79543,7 +79649,7 @@
     },
     {
       "name": "int8",
-      "order": 288,
+      "order": 289,
       "description": "8-bit signed integer. Possible values are `-128` to `127`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `int8` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -79551,7 +79657,7 @@
     },
     {
       "name": "nil",
-      "order": 296,
+      "order": 297,
       "description": "Nil is the type of the value `nil`, whose main property is to be different from any other value. It usually represents the absence of a useful value.",
       "type": {
         "complex_type": "builtin"
@@ -79559,7 +79665,7 @@
     },
     {
       "name": "number",
-      "order": 293,
+      "order": 294,
       "description": "Any kind of integer or floating point number.",
       "type": {
         "complex_type": "builtin"
@@ -79567,7 +79673,7 @@
     },
     {
       "name": "string",
-      "order": 294,
+      "order": 295,
       "description": "Strings are enclosed in double-quotes, like this `\"hi\"`.",
       "type": {
         "complex_type": "builtin"
@@ -79575,7 +79681,7 @@
     },
     {
       "name": "table",
-      "order": 297,
+      "order": 298,
       "description": "Tables are enclosed in curly brackets, like this `{}`.\n\nThroughout the API docs, the terms \"array\" and \"dictionary\" are used. These are fundamentally just [Lua tables](http://www.lua.org/pil/2.5.html), but have a limitation on which kind of table keys can be used. An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.",
       "type": {
         "complex_type": "builtin"
@@ -79583,7 +79689,7 @@
     },
     {
       "name": "uint",
-      "order": 289,
+      "order": 290,
       "description": "32-bit unsigned integer. Possible values are `0` to `4 294 967 295`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `uint` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -79591,7 +79697,7 @@
     },
     {
       "name": "uint16",
-      "order": 291,
+      "order": 292,
       "description": "16-bit unsigned integer. Possible values are `0` to `65 535`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `uint16` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -79599,7 +79705,7 @@
     },
     {
       "name": "uint64",
-      "order": 292,
+      "order": 293,
       "description": "64-bit unsigned integer. Possible values are `0` to `18 446 744 073 709 551 615`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `uint64` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -79607,7 +79713,7 @@
     },
     {
       "name": "uint8",
-      "order": 290,
+      "order": 291,
       "description": "8-bit unsigned integer. Possible values are `0` to `255`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `uint8` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -80690,7 +80796,7 @@
         {
           "name": "broken",
           "order": 3,
-          "description": "Only used if set through [LuaEntity::status](runtime:LuaEntity::status) or [ContainerPrototype::default_status](prototype:ContainerPrototype::default_status)."
+          "description": "Only used if set through [ContainerPrototype::default_status](prototype:ContainerPrototype::default_status)."
         },
         {
           "name": "cant_divide_segments",
@@ -83728,27 +83834,27 @@
         {
           "name": "assembling_machine_dump",
           "order": 26,
-          "description": "Used when items are ejected or items held by inserters cannot be inserted due to changing the recipe with the circuit network."
+          "description": "Used for ejected items, or items held by inserters that can't be inserted due the recipe being changed with the circuit network."
         },
         {
           "name": "assembling_machine_input",
           "order": 23,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_input\"`."
         },
         {
           "name": "assembling_machine_modules",
           "order": 25,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_modules\"`."
         },
         {
           "name": "assembling_machine_output",
           "order": 24,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_output\"`."
         },
         {
           "name": "assembling_machine_trash",
           "order": 27,
-          "description": "Used for spoil result items that do not fit into the recipe slots and for items that are ejected when changing the recipe via remote view."
+          "description": "Deprecated, replaced by `\"crafter_trash\"`."
         },
         {
           "name": "asteroid_collector_output",
@@ -83858,7 +83964,7 @@
         {
           "name": "crafter_trash",
           "order": 62,
-          "description": ""
+          "description": "Used for spoil result items that do not fit into the recipe slots, and for items that are ejected when changing the recipe via remote view."
         },
         {
           "name": "editor_ammo",
@@ -83888,22 +83994,22 @@
         {
           "name": "furnace_modules",
           "order": 6,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_modules\"`."
         },
         {
           "name": "furnace_result",
           "order": 5,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_output\"`."
         },
         {
           "name": "furnace_source",
           "order": 4,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_input\"`."
         },
         {
           "name": "furnace_trash",
           "order": 7,
-          "description": "Used for spoil result items that do not fit into the recipe slots."
+          "description": "Deprecated, replaced by `\"crafter_trash\"`."
         },
         {
           "name": "god_main",
@@ -83983,17 +84089,17 @@
         {
           "name": "rocket_silo_input",
           "order": 35,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_input\"`."
         },
         {
           "name": "rocket_silo_modules",
           "order": 37,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_modules\"`."
         },
         {
           "name": "rocket_silo_output",
           "order": 36,
-          "description": ""
+          "description": "Deprecated, replaced by `\"crafter_output\"`."
         },
         {
           "name": "rocket_silo_rocket",
@@ -87144,17 +87250,17 @@
         {
           "name": "player",
           "order": 0,
-          "description": ""
+          "description": "These wires can be modified by players, scripts, and the game. They are visible to the player if the entity's `draw_circuit_wires` prototype property is set to `true` and both ends of it are on the same surface."
         },
         {
           "name": "radars",
           "order": 2,
-          "description": ""
+          "description": "These wires can only be modified by the game. They are not visible to the player, irrespective of the `draw_circuit_wires` prototype property."
         },
         {
           "name": "script",
           "order": 1,
-          "description": ""
+          "description": "These wires can be modified by scripts and the game. They are not visible to the player, irrespective of the `draw_circuit_wires` prototype property."
         }
       ]
     },
