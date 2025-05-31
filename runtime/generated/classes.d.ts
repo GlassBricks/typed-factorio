@@ -23263,7 +23263,7 @@ declare module "factorio:runtime" {
      * @param index The index of the mapper to read.
      * @see {@link https://lua-api.factorio.com/2.0.54/classes/LuaRecord.html#get_mapper Online documentation}
      */
-    get_mapper(index: uint, type: "from" | "to"): UpgradeMapperSource | UpgradeMapperDestination
+    get_mapper(index: uint, type: "from" | "to"): UpgradeMapperSource | UpgradeMapperDestination | nil
     /**
      * Sets the module filter at the given index for this upgrade item.
      *
@@ -23887,7 +23887,7 @@ declare module "factorio:runtime" {
      * @param index The index of the mapper to read.
      * @see {@link https://lua-api.factorio.com/2.0.54/classes/LuaRecord.html#get_mapper Online documentation}
      */
-    get_mapper(index: uint, type: "from" | "to"): UpgradeMapperSource | UpgradeMapperDestination
+    get_mapper(index: uint, type: "from" | "to"): UpgradeMapperSource | UpgradeMapperDestination | nil
     /**
      * Sets the module filter at the given index for this upgrade item.
      *
