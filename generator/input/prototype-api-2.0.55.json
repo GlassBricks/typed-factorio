@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.54",
+  "application_version": "2.0.55",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -14884,7 +14884,7 @@
         {
           "name": "trigger_interval",
           "order": 5,
-          "description": "Time between checks to detonate due to nearby enemies. A larger time will be more performant.",
+          "description": "Time between checks to detonate due to nearby enemies, in ticks. A larger time will be more performant.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -53050,7 +53050,7 @@
     {
       "name": "FeatureFlags",
       "order": 223,
-      "description": "A dictionary of feature flags and their status. It can be used to adjust prototypes based on whether the feature flags are enabled.",
+      "description": "A dictionary of feature flags and their status. It can be used to adjust prototypes based on whether the feature flags are enabled. It is accessible through the global object named `feature_flags`.",
       "examples": [
         "```\n-- sets coal to spoil only when the spoiling feature flag is enabled\nif feature_flags[\"spoiling\"] then\n  data.raw.item.coal.spoil_ticks = 600\nend\n```"
       ],
@@ -61515,7 +61515,7 @@
       "description": "A dictionary of mod names to mod versions of all active mods. It can be used to adjust mod functionality based on the presence of other mods.",
       "examples": [
         "```\n-- executes pineapple only when the pizza mod is active\nif mods[\"pizza\"] then\n  pineapple()\nend\n```",
-        "```\n-- when the only active mod is the space-age mod with version 1.2.0\n-- then this logs\nfor name, version in pairs(mods) do\n  log(name .. \" version \" .. version) -- => space-age version 1.2.0\nend\n```"
+        "```\n-- when the only active mod is the space-age mod with version 2.0.7\n-- then this logs\nfor name, version in pairs(mods) do\n  log(name .. \" version \" .. version) -- => space-age version 2.0.7\nend\n```"
       ],
       "abstract": true,
       "inline": false,
@@ -69660,7 +69660,7 @@
     {
       "name": "Settings",
       "order": 488,
-      "description": "A struct that provides access to the user-set values of startup [mod settings](https://wiki.factorio.com/Tutorial:Mod_settings).",
+      "description": "A struct that provides access to the user-set values of startup [mod settings](https://wiki.factorio.com/Tutorial:Mod_settings). It is accessible through the global object named `settings`.",
       "examples": [
         "```\n-- Accessing the value of a mod setting\nlocal val = settings.startup[\"my-mod-setting-name\"].value\n```"
       ],

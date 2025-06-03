@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.54",
+  "application_version": "2.0.55",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -24012,13 +24012,13 @@
     {
       "name": "LuaHelpers",
       "order": 61,
-      "description": "Provides various helper and utility functions. It is accessible through the global object named `helpers`.",
+      "description": "Provides various helper and utility functions. It is accessible through the global object named `helpers` in all stages (settings, prototype and runtime).",
       "abstract": false,
       "methods": [
         {
           "name": "check_prototype_translations",
           "order": 9,
-          "description": "Goes over all items, entities, tiles, recipes, technologies among other things and logs if the locale is incorrect.\n\nAlso prints true/false if called from the console.",
+          "description": "Goes over all items, entities, tiles, recipes, technologies among other things and logs if the locale is incorrect.\n\nAlso prints true/false if called from the console.\n\nNot available in settings and prototype stages.",
           "parameters": [],
           "format": {
             "takes_table": false
@@ -24026,9 +24026,41 @@
           "return_values": []
         },
         {
+          "name": "compare_versions",
+          "order": 13,
+          "description": "Compares 2 version strings.",
+          "parameters": [
+            {
+              "name": "first",
+              "order": 0,
+              "description": "First version string to compare.",
+              "type": "string",
+              "optional": false
+            },
+            {
+              "name": "second",
+              "order": 1,
+              "description": "Second version string to compare.",
+              "type": "string",
+              "optional": false
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "-1 if first is smaller than second, 0 if first equal second, 1 if first is greater than second.",
+              "type": "int",
+              "optional": false
+            }
+          ]
+        },
+        {
           "name": "create_profiler",
           "order": 12,
-          "description": "Creates a [LuaProfiler](runtime:LuaProfiler), which is used for measuring script performance.\n\nLuaProfiler cannot be serialized.",
+          "description": "Creates a [LuaProfiler](runtime:LuaProfiler), which is used for measuring script performance.\n\nLuaProfiler cannot be serialized.\n\nNot available in settings and prototype stages.",
           "parameters": [
             {
               "name": "stopped",
@@ -24167,7 +24199,7 @@
         {
           "name": "is_valid_sound_path",
           "order": 10,
-          "description": "Checks if the given SoundPath is valid.",
+          "description": "Checks if the given SoundPath is valid.\n\nNot available in settings and prototype stages.",
           "parameters": [
             {
               "name": "sound_path",
@@ -24192,7 +24224,7 @@
         {
           "name": "is_valid_sprite_path",
           "order": 11,
-          "description": "Checks if the given SpritePath is valid and contains a loaded sprite. The existence of the image is not checked for paths of type `file`.",
+          "description": "Checks if the given SpritePath is valid and contains a loaded sprite. The existence of the image is not checked for paths of type `file`.\n\nNot available in settings and prototype stages.",
           "parameters": [
             {
               "name": "sprite_path",
@@ -24242,7 +24274,7 @@
         {
           "name": "parse_map_exchange_string",
           "order": 8,
-          "description": "Convert a map exchange string to map gen settings and map settings.",
+          "description": "Convert a map exchange string to map gen settings and map settings.\n\nNot available in settings and prototype stages.",
           "parameters": [
             {
               "name": "map_exchange_string",
@@ -24336,7 +24368,7 @@
             {
               "name": "for_player",
               "order": 3,
-              "description": "If given, the file will only be written for this `player_index`. Providing `0` will only write to the server's output if present.",
+              "description": "If given, the file will only be written for this `player_index`. Providing `0` will only write to the server's output if present. `for_player` cannot be used in settings and prototype stages.",
               "type": "uint",
               "optional": true
             }
@@ -24348,6 +24380,13 @@
         }
       ],
       "attributes": [
+        {
+          "name": "game_version",
+          "order": 1,
+          "description": "Current version of game",
+          "read_type": "string",
+          "optional": false
+        },
         {
           "name": "object_name",
           "order": 0,
