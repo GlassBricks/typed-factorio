@@ -6,7 +6,6 @@ import type {
   LuaBootstrap,
   LuaCommandProcessor,
   LuaGameScript,
-  LuaHelpers,
   LuaPrototypes,
   LuaRCON,
   LuaRemote,
@@ -24,11 +23,7 @@ declare global {
    * @see {@link https://lua-api.factorio.com/2.0.55/index-runtime.html Online documentation}
    */
   const game: LuaGameScript
-  /**
-   * Provides access to various helper and utility functions.
-   * @see {@link https://lua-api.factorio.com/2.0.55/index-runtime.html Online documentation}
-   */
-  const helpers: LuaHelpers
+  //The "settings" and "helpers" globals are declared in common/settings-global.d.ts and common/helpers.d.ts.
   /**
    * Allows read-only access to prototypes.
    * @see {@link https://lua-api.factorio.com/2.0.55/index-runtime.html Online documentation}
@@ -54,5 +49,5 @@ declare global {
    * @see {@link https://lua-api.factorio.com/2.0.55/index-runtime.html Online documentation}
    */
   const script: LuaBootstrap
-  //The "settings" global is declared in common/settings-global.d.ts; its runtime type is handled below.
+  //The "settings" and "helpers" globals are declared in common/settings-global.d.ts and common/helpers.d.ts.
 }

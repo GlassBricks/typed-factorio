@@ -21,5 +21,6 @@ and factorio:runtime modules.
 
 // common globals
 /// <reference path="common/serpent.d.ts" />
+/// <reference path="common/helpers-global.d.ts" />
 /// <reference path="runtime/generated/defines.d.ts" />
 /// <reference path="runtime/generated/global-functions.d.ts" />

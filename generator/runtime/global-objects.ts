@@ -3,8 +3,6 @@ import { FactorioModule } from "../OutputFile.js"
 import { createComment, createConst } from "../genUtil.js"
 import { mapRuntimeType, RWUsage } from "../types.js"
 import { addJsDoc } from "../documentation.js"
-import assert from "assert"
-import { Parameter } from "../FactorioRuntimeApiJson"
 import { recordUsage } from "./concept-usage-analysis"
 
 export function preprocessGlobalObjects(context: RuntimeGenerationContext): void {
@@ -16,8 +14,8 @@ export function preprocessGlobalObjects(context: RuntimeGenerationContext): void
 export function generateGlobalObjects(context: RuntimeGenerationContext): void {
   context.addFile("global-objects", FactorioModule.Global, () => {
     for (const globalObject of context.globalObjects.values()) {
-      if (globalObject.name === "settings") {
-        handleSettingsGlobal(context, globalObject)
+      if (globalObject.name === "settings" || globalObject.name === "helpers") {
+        handleOtherGlobals(context)
         continue
       }
       const definition = createConst(
@@ -30,11 +28,10 @@ export function generateGlobalObjects(context: RuntimeGenerationContext): void {
   })
 }
 
-function handleSettingsGlobal(context: RuntimeGenerationContext, globalObject: Parameter) {
-  assert(globalObject.name === "settings")
-  assert(globalObject.type === "LuaSettings")
-  const statement = createComment(
-    'The "settings" global is declared in common/settings-global.d.ts; its runtime type is handled below.',
+function handleOtherGlobals(context: RuntimeGenerationContext) {
+  context.currentFile.add(
+    createComment(
+      'The "settings" and "helpers" globals are declared in common/settings-global.d.ts and common/helpers.d.ts.',
+    ),
   )
-  context.currentFile.add(statement)
 }
