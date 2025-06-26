@@ -2,6 +2,7 @@ import { AnyPrototype, CustomInputName } from "factorio:common"
 
 export type double = number
 export type float = number
+export type table = object
 export type int8 = number
 export type int16 = number
 export type int32 = number
