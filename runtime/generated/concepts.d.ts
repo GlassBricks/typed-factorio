@@ -8661,6 +8661,13 @@ declare module "factorio:runtime" {
    */
   export type uint16 = number
   /**
+   * 16 bit signed integer. Possible values are `-32 768` to `32 767`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `int16` will floor the given double.
+   * @see {@link https://lua-api.factorio.com/2.0.58/concepts/int16.html Online documentation}
+   */
+  export type int16 = number
+  /**
    * 32-bit unsigned integer. Possible values are `0` to `4 294 967 295`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint` will floor the given double.

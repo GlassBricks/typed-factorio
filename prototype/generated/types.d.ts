@@ -18088,6 +18088,13 @@ declare module "factorio:prototype" {
    */
   export type int8 = number
   /**
+   * A simple {@linkplain http://www.lua.org/pil/2.5.html Lua table}. An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.
+   *
+   * Tables used by prototypes may be parsed via an internal class called "property tree". Errors that reference this class treat tables as 0-indexed. For example `Value must be a number in property tree at ROOT.technology.steel-plate-productivity.effects[0].change` refers to element 0 of the property tree array which in Lua is at index 1.
+   * @see {@link https://lua-api.factorio.com/2.0.58/types/table.html Online documentation}
+   */
+  export type table = object
+  /**
    * 16 bit unsigned integer. Ranges from `0` to `65 535`, or `[0, 2^16-1]`.
    *
    * Decimal numbers are automatically truncated when used in place of `uint16`.

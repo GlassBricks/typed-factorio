@@ -26,6 +26,7 @@ export type float = number
 export type table = object
 export type int = number
 export type int8 = number
+export type int16 = number
 export type uint = number
 export type uint8 = number
 export type uint16 = number
