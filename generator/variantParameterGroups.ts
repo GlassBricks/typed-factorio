@@ -35,7 +35,9 @@ export function createVariantParameterTypes(
   const baseHasAttributes = baseProperties.length > (discriminantProperty ? 1 : 0)
 
   {
-    assert(!baseProperties.some((p) => p.member.altWriteProperty)) // not supported for now
+    if (baseProperties.some((p) => p.member.altWriteProperty)) {
+      context.warning("Variant parameter alt write not yet supported for", name)
+    }
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
       [Modifiers.export],
       baseName,
@@ -56,7 +58,7 @@ export function createVariantParameterTypes(
     context.currentFile.add(baseDeclaration)
   }
 
-  addOtherVariant(context, value, variants)
+  addOtherVariant(context, name, value, variants)
 
   const writeTypeNames: string[] = []
   let hasSeparateWrite = false
@@ -321,6 +323,7 @@ function tryGetStringUnionValuesFromTsType(
 
 function addOtherVariant(
   context: RuntimeGenerationContext,
+  name: string,
   variants: WithVariantParameterGroups,
   allVariants: Set<string> | undefined,
 ): void {
@@ -332,7 +335,7 @@ function addOtherVariant(
   if (!allVariants) return
   variants.variant_parameter_groups!.forEach((x) => {
     if (!allVariants.delete(x.name) && x !== otherTypes) {
-      context.warning(`Group ${x.name} is not in known variants`)
+      context.warning(`Group ${x.name} is not in known variants for ${name}`)
     }
   })
   if (!otherTypes && allVariants.size > 0)

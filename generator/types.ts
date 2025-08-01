@@ -901,7 +901,7 @@ function isNullableFromDescription(
   parent: string,
 ): boolean {
   const nullableRegex =
-    /(specify|passing|returns?|or|be|possibly|otherwise|else|writing|set(ting)?(( this)?|( the name)?)( to)?|read as) [`']?nil[`']?|`?nil`? (if|when|otherwise|erases|is returned)/i
+    /(specify|passing|returns?|or|be|possibly|otherwise|else|writing|set(ting)?(( this)?( field)?|( the name)?)( to)?|read as) [`']?nil[`']?|`?nil`? (if|when|otherwise|erases|is returned)/i
   const nullable = member.description.match(nullableRegex)
   if (nullable) {
     if (!member.description.match(/[`' ]nil/i)) {
