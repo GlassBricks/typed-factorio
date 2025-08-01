@@ -34,10 +34,10 @@ export function createVariantParameterTypes(
   const { isDefine, variants, discriminantProperty } = getAllVariants(context, value, baseProperties, name)
   const baseHasAttributes = baseProperties.length > (discriminantProperty ? 1 : 0)
 
+  const baseHasAltWriteProperties = baseProperties.some((p) => p.member.altWriteProperty)
+  let baseWriteName: string | undefined
+
   {
-    if (baseProperties.some((p) => p.member.altWriteProperty)) {
-      context.warning("Variant parameter alt write not yet supported for", name)
-    }
     const baseDeclaration = ts.factory.createInterfaceDeclaration(
       [Modifiers.export],
       baseName,
@@ -56,6 +56,29 @@ export function createVariantParameterTypes(
       )
     }
     context.currentFile.add(baseDeclaration)
+
+    if (baseHasAltWriteProperties) {
+      baseWriteName = baseName + "Write"
+      context.tsToFactorioType.set(baseWriteName, name)
+      const baseWriteDeclaration = ts.factory.createInterfaceDeclaration(
+        [Modifiers.export],
+        baseWriteName,
+        undefined,
+        undefined,
+        baseProperties.map((g) => g.member.altWriteProperty ?? g.member.mainProperty),
+      )
+      if (baseHasAttributes) {
+        addJsDoc(
+          context,
+          baseWriteDeclaration,
+          {
+            description: `Write form of common attributes to all variants of {@link ${name}}.`,
+          },
+          undefined,
+        )
+      }
+      context.currentFile.add(baseWriteDeclaration)
+    }
   }
 
   addOtherVariant(context, name, value, variants)
@@ -115,7 +138,7 @@ export function createVariantParameterTypes(
             [Modifiers.export],
             variantName + "Write",
             undefined,
-            createExtendsClause(baseName),
+            createExtendsClause(baseWriteName ?? baseName),
             writeMembers,
           ),
         )
