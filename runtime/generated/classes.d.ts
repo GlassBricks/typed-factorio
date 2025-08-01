@@ -5102,7 +5102,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is SpiderVehicle_
      * @see {@link https://lua-api.factorio.com/2.0.62/classes/LuaEntity.html#follow_offset Online documentation}
      */
-    follow_offset?: Vector
+    get follow_offset(): Vector | nil
+    set follow_offset(value: Vector | VectorTable | nil)
     /**
      * Type of linked belt. Changing type will also flip direction so the belt is out of the same side.
      *
@@ -7480,7 +7481,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is SpiderVehicle_
      * @see {@link https://lua-api.factorio.com/2.0.62/classes/LuaEntity.html#follow_offset Online documentation}
      */
-    follow_offset?: Vector
+    get follow_offset(): Vector | nil
+    set follow_offset(value: Vector | VectorTable | nil)
   }
   /**
    * @noSelf
@@ -25554,7 +25556,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is Sprite or Animation_
      * @see {@link https://lua-api.factorio.com/2.0.62/classes/LuaRenderObject.html#oriented_offset Online documentation}
      */
-    oriented_offset: Vector
+    get oriented_offset(): Vector
+    set oriented_offset(value: Vector | VectorTable)
     /**
      * Intensity of this light.
      *
@@ -26151,7 +26154,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is Sprite or Animation_
      * @see {@link https://lua-api.factorio.com/2.0.62/classes/LuaRenderObject.html#oriented_offset Online documentation}
      */
-    oriented_offset: Vector
+    get oriented_offset(): Vector
+    set oriented_offset(value: Vector | VectorTable)
   }
   export interface AnimationRenderObject extends BaseRenderObject {
     /**
@@ -26225,7 +26229,8 @@ declare module "factorio:runtime" {
      * _Can only be used if this is Sprite or Animation_
      * @see {@link https://lua-api.factorio.com/2.0.62/classes/LuaRenderObject.html#oriented_offset Online documentation}
      */
-    oriented_offset: Vector
+    get oriented_offset(): Vector
+    set oriented_offset(value: Vector | VectorTable)
     /**
      * Animation prototype name of this animation.
      *
@@ -26717,7 +26722,7 @@ declare module "factorio:runtime" {
       /**
        * Offsets the center of the sprite if `orientation_target` is given. This offset will rotate together with the sprite.
        */
-      readonly oriented_offset?: Vector
+      readonly oriented_offset?: Vector | VectorTable
       /**
        * Center of the sprite.
        */
@@ -26859,7 +26864,7 @@ declare module "factorio:runtime" {
       /**
        * Offsets the center of the animation if `orientation_target` is given. This offset will rotate together with the animation.
        */
-      readonly oriented_offset?: Vector
+      readonly oriented_offset?: Vector | VectorTable
       /**
        * Center of the animation.
        */
@@ -27854,7 +27859,11 @@ declare module "factorio:runtime" {
      * @param movement When inserters drop items into space, the {@link import("factorio:prototype").InserterPrototype#insert_position InserterPrototype::insert_position} rotated to the inserter direction is used.
      * @see {@link https://lua-api.factorio.com/2.0.62/classes/LuaSpacePlatform.html#eject_item Online documentation}
      */
-    eject_item(item: ItemStackIdentification, position: MapPosition | MapPositionArray, movement: Vector): void
+    eject_item(
+      item: ItemStackIdentification,
+      position: MapPosition | MapPositionArray,
+      movement: Vector | VectorTable,
+    ): void
     /**
      * Removes all ejected items from this space platform.
      * @see {@link https://lua-api.factorio.com/2.0.62/classes/LuaSpacePlatform.html#clear_ejected_items Online documentation}
@@ -28962,7 +28971,7 @@ declare module "factorio:runtime" {
     /**
      * Source position will be offset by this value when rendering the beam.
      */
-    readonly source_offset?: Vector
+    readonly source_offset?: Vector | VectorTable
   }
   /**
    * `"stream"` variant of {@link SurfaceCreateEntity}.
@@ -29109,7 +29118,7 @@ declare module "factorio:runtime" {
    * `"particle"` variant of {@link SurfaceCreateEntity}.
    */
   export interface ParticleSurfaceCreateEntity extends BaseSurfaceCreateEntity {
-    readonly movement: Vector
+    readonly movement: Vector | VectorTable
     readonly height: float
     readonly vertical_speed: float
     readonly frame_speed: float
@@ -29118,7 +29127,7 @@ declare module "factorio:runtime" {
    * `"artillery-flare"` variant of {@link SurfaceCreateEntity}.
    */
   export interface ArtilleryFlareSurfaceCreateEntity extends BaseSurfaceCreateEntity {
-    readonly movement: Vector
+    readonly movement: Vector | VectorTable
     readonly height: float
     readonly vertical_speed: float
     readonly frame_speed: float
@@ -29874,7 +29883,7 @@ declare module "factorio:runtime" {
        * Where to create the particle.
        */
       readonly position: MapPosition | MapPositionArray
-      readonly movement: Vector
+      readonly movement: Vector | VectorTable
       readonly height: float
       readonly vertical_speed: float
       readonly frame_speed: float
@@ -30448,7 +30457,7 @@ declare module "factorio:runtime" {
      */
     clone_entities(params: {
       readonly entities: readonly LuaEntity[]
-      readonly destination_offset: Vector
+      readonly destination_offset: Vector | VectorTable
       readonly destination_surface?: SurfaceIdentification
       readonly destination_force?: ForceID
       readonly snap_to_grid?: boolean

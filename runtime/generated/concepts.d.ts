@@ -670,11 +670,21 @@ declare module "factorio:runtime" {
   }
   /**
    * A vector is a two-element array or dictionary containing the `x` and `y` components. The game will always provide the array format. Positive x goes east, positive y goes south.
+   * @see VectorTable
    * @example
    * right = {1.0, 0.0}
    * @see {@link https://lua-api.factorio.com/2.0.62/concepts/Vector.html Online documentation}
    */
-  export type Vector = MapPositionArray
+  export type Vector = readonly [float, float]
+  /**
+   * Table form of {@link Vector}.
+   * @see Vector
+   * @see {@link https://lua-api.factorio.com/2.0.62/concepts/Vector.html Online documentation}
+   */
+  export interface VectorTable {
+    readonly x: float
+    readonly y: float
+  }
   /**
    * Coordinates of a chunk in a {@link LuaSurface} where each integer `x`/`y` represents a different chunk. This uses the same format as {@link MapPosition}, meaning it can be specified either with or without explicit keys. A {@link MapPosition} can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.
    * @see ChunkPositionArray
@@ -1911,7 +1921,7 @@ declare module "factorio:runtime" {
     /**
      * Only used if `entity` was given.
      */
-    readonly offset?: Vector
+    readonly offset?: Vector | VectorTable
     /**
      * Only used, and mandatory if `entity` is not given.
      */
@@ -2319,12 +2329,53 @@ declare module "factorio:runtime" {
     readonly wires?: BlueprintWire[]
   }
   /**
+   * Write form of common attributes to all variants of {@link BlueprintEntity}.
+   */
+  export interface BaseBlueprintEntityWrite {
+    /**
+     * The entity's unique identifier in the blueprint.
+     */
+    readonly entity_number: uint
+    /**
+     * The prototype name of the entity.
+     */
+    readonly name: string
+    /**
+     * The position of the entity.
+     */
+    readonly position: MapPosition | MapPositionArray
+    /**
+     * The direction the entity is facing. Only present for entities that can face in different directions and when the entity is not facing north.
+     */
+    readonly direction?: defines.direction
+    /**
+     * Whether this entity is mirrored.
+     */
+    readonly mirror?: boolean
+    /**
+     * The prototype name of the entity's quality.
+     */
+    readonly quality?: string
+    /**
+     * The items that the entity will request when revived, if any.
+     */
+    readonly items?: readonly BlueprintInsertPlanWrite[]
+    /**
+     * The entity tags of the entity, if there are any.
+     */
+    readonly tags?: Tags
+    /**
+     * Wires connected to this entity in the blueprint.
+     */
+    readonly wires?: BlueprintWire[]
+  }
+  /**
    * `"accumulator"` variant of {@link BlueprintEntity}.
    */
   export interface AccumulatorBlueprintEntity extends BaseBlueprintEntity {
     readonly control_behavior?: AccumulatorBlueprintControlBehavior
   }
-  export interface AccumulatorBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface AccumulatorBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly control_behavior?: AccumulatorBlueprintControlBehaviorWrite
   }
   /**
@@ -2333,7 +2384,7 @@ declare module "factorio:runtime" {
   export interface AgriculturalTowerBlueprintEntity extends BaseBlueprintEntity {
     readonly control_behavior?: AgriculturalTowerBlueprintControlBehavior
   }
-  export interface AgriculturalTowerBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface AgriculturalTowerBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly control_behavior?: AgriculturalTowerBlueprintControlBehaviorWrite
   }
   /**
@@ -2347,7 +2398,7 @@ declare module "factorio:runtime" {
     readonly ignore_unprioritised?: boolean
     readonly control_behavior?: TurretBlueprintControlBehavior
   }
-  export interface AmmoTurretBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface AmmoTurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly priority_list?: SlotFilter
     /**
      * Defaults to `false`.
@@ -2362,7 +2413,7 @@ declare module "factorio:runtime" {
     readonly description?: string
     readonly control_behavior?: ArithmeticCombinatorBlueprintControlBehavior
   }
-  export interface ArithmeticCombinatorBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface ArithmeticCombinatorBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly description?: string
     readonly control_behavior?: ArithmeticCombinatorBlueprintControlBehaviorWrite
   }
@@ -2376,7 +2427,7 @@ declare module "factorio:runtime" {
     readonly artillery_auto_targeting?: boolean
     readonly control_behavior?: ArtilleryTurretBlueprintControlBehavior
   }
-  export interface ArtilleryTurretBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface ArtilleryTurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     /**
      * Defaults to `true`.
      */
@@ -2397,7 +2448,7 @@ declare module "factorio:runtime" {
     readonly orientation: RealOrientation
     readonly copy_color_from_train_stop: boolean
   }
-  export interface ArtilleryWagonBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface ArtilleryWagonBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     /**
      * Defaults to `true`.
      */
@@ -2416,7 +2467,7 @@ declare module "factorio:runtime" {
     readonly recipe_quality?: string
     readonly control_behavior?: AssemblingMachineBlueprintControlBehavior
   }
-  export interface AssemblingMachineBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface AssemblingMachineBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly recipe?: string
     readonly recipe_quality?: string
     readonly control_behavior?: AssemblingMachineBlueprintControlBehaviorWrite
@@ -2429,7 +2480,7 @@ declare module "factorio:runtime" {
     readonly "chunk-filter"?: SlotFilter[]
     readonly control_behavior?: AsteroidCollectorBlueprintControlBehavior
   }
-  export interface AsteroidCollectorBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface AsteroidCollectorBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly "result-inventory": BlueprintInventory
     readonly "chunk-filter"?: SlotFilter[]
     readonly control_behavior?: AsteroidCollectorBlueprintControlBehaviorWrite
@@ -2447,7 +2498,7 @@ declare module "factorio:runtime" {
     readonly selected_gun_index: ItemStackIndex
     readonly orientation: RealOrientation
   }
-  export interface CarBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface CarBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly request_filters: BlueprintLogisticSectionsWrite
     readonly enable_logistics_while_moving: boolean
     readonly grid?: readonly BlueprintEquipmentWrite[]
@@ -2465,7 +2516,7 @@ declare module "factorio:runtime" {
     readonly request_filters: BlueprintLogisticSections
     readonly control_behavior?: CargoLandingPadBlueprintControlBehavior
   }
-  export interface CargoLandingPadBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface CargoLandingPadBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly bar?: uint
     readonly request_filters: BlueprintLogisticSectionsWrite
     readonly control_behavior?: CargoLandingPadBlueprintControlBehavior
@@ -2481,7 +2532,7 @@ declare module "factorio:runtime" {
     readonly copy_color_from_train_stop: boolean
     readonly inventory: BlueprintInventoryWithFilters
   }
-  export interface CargoWagonBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface CargoWagonBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly color?: Color | ColorArray
     readonly enable_logistics_while_moving: boolean
     readonly grid?: readonly BlueprintEquipmentWrite[]
@@ -2496,7 +2547,7 @@ declare module "factorio:runtime" {
     readonly description?: string
     readonly control_behavior?: ConstantCombinatorBlueprintControlBehavior
   }
-  export interface ConstantCombinatorBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface ConstantCombinatorBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly description?: string
     readonly control_behavior?: ConstantCombinatorBlueprintControlBehaviorWrite
   }
@@ -2508,7 +2559,7 @@ declare module "factorio:runtime" {
     readonly bar?: uint
     readonly control_behavior?: ContainerBlueprintControlBehavior
   }
-  export interface ContainerBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface ContainerBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filters?: readonly BlueprintItemFilterWrite[]
     readonly bar?: uint
     readonly control_behavior?: ContainerBlueprintControlBehavior
@@ -2520,7 +2571,7 @@ declare module "factorio:runtime" {
     readonly description?: string
     readonly control_behavior?: DeciderCombinatorBlueprintControlBehavior
   }
-  export interface DeciderCombinatorBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface DeciderCombinatorBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly description?: string
     readonly control_behavior?: DeciderCombinatorBlueprintControlBehaviorWrite
   }
@@ -2540,7 +2591,7 @@ declare module "factorio:runtime" {
     readonly show_in_chart?: boolean
     readonly control_behavior?: DisplayPanelBlueprintControlBehavior
   }
-  export interface DisplayPanelBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface DisplayPanelBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly text?: string
     readonly icon?: SignalIDWrite
     /**
@@ -2572,7 +2623,7 @@ declare module "factorio:runtime" {
     readonly ignore_unprioritised?: boolean
     readonly control_behavior?: TurretBlueprintControlBehavior
   }
-  export interface ElectricTurretBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface ElectricTurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly priority_list?: SlotFilter
     /**
      * Defaults to `false`.
@@ -2591,7 +2642,7 @@ declare module "factorio:runtime" {
     readonly ignore_unprioritised?: boolean
     readonly control_behavior?: TurretBlueprintControlBehavior
   }
-  export interface FluidTurretBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface FluidTurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly priority_list?: SlotFilter
     /**
      * Defaults to `false`.
@@ -2609,7 +2660,7 @@ declare module "factorio:runtime" {
     readonly orientation: RealOrientation
     readonly copy_color_from_train_stop: boolean
   }
-  export interface FluidWagonBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface FluidWagonBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly color?: Color | ColorArray
     readonly enable_logistics_while_moving: boolean
     readonly grid?: readonly BlueprintEquipmentWrite[]
@@ -2622,7 +2673,7 @@ declare module "factorio:runtime" {
   export interface FurnaceBlueprintEntity extends BaseBlueprintEntity {
     readonly control_behavior?: FurnaceBlueprintControlBehavior
   }
-  export interface FurnaceBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface FurnaceBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly control_behavior?: FurnaceBlueprintControlBehaviorWrite
   }
   /**
@@ -2643,7 +2694,7 @@ declare module "factorio:runtime" {
     readonly orientation: RealOrientation
     readonly copy_color_from_train_stop: boolean
   }
-  export interface InfinityCargoWagonBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface InfinityCargoWagonBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly infinity_settings: BlueprintInfinityInventorySettingsWrite
     readonly color?: Color | ColorArray
     readonly enable_logistics_while_moving: boolean
@@ -2661,7 +2712,7 @@ declare module "factorio:runtime" {
     readonly infinity_settings: BlueprintInfinityInventorySettings
     readonly control_behavior?: LogisticContainerBlueprintControlBehavior
   }
-  export interface InfinityContainerBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface InfinityContainerBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filters?: readonly BlueprintItemFilterWrite[]
     readonly bar?: uint
     readonly request_filters: BlueprintLogisticSectionsWrite
@@ -2699,7 +2750,7 @@ declare module "factorio:runtime" {
     readonly pickup_position?: Vector
     readonly control_behavior?: InserterBlueprintControlBehavior
   }
-  export interface InserterBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface InserterBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filters?: readonly BlueprintItemFilterWrite[]
     /**
      * Defaults to `"whitelist"`.
@@ -2714,11 +2765,11 @@ declare module "factorio:runtime" {
     /**
      * Present if position is non-default.
      */
-    readonly drop_position?: Vector
+    readonly drop_position?: Vector | VectorTable
     /**
      * Present if position is non-default.
      */
-    readonly pickup_position?: Vector
+    readonly pickup_position?: Vector | VectorTable
     readonly control_behavior?: InserterBlueprintControlBehaviorWrite
   }
   /**
@@ -2731,7 +2782,7 @@ declare module "factorio:runtime" {
      */
     readonly always_on?: boolean
   }
-  export interface LampBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface LampBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly color?: Color | ColorArray
     /**
      * Defaults to `false`.
@@ -2746,7 +2797,7 @@ declare module "factorio:runtime" {
     readonly input_priority?: SplitterPriority
     readonly output_priority?: SplitterPriority
   }
-  export interface LaneSplitterBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface LaneSplitterBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filter?: ItemFilterWrite
     readonly input_priority?: SplitterPriority
     readonly output_priority?: SplitterPriority
@@ -2776,7 +2827,7 @@ declare module "factorio:runtime" {
     readonly type: BeltConnectionType
     readonly belt_stack_size_override?: uint8
   }
-  export interface LoaderBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface LoaderBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filters?: readonly BlueprintItemFilterWrite[]
     /**
      * Defaults to `"none"`.
@@ -2797,7 +2848,7 @@ declare module "factorio:runtime" {
     readonly type: BeltConnectionType
     readonly belt_stack_size_override?: uint8
   }
-  export interface Loader1x1BlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface Loader1x1BlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filters?: readonly BlueprintItemFilterWrite[]
     /**
      * Defaults to `"none"`.
@@ -2817,7 +2868,7 @@ declare module "factorio:runtime" {
     readonly orientation: RealOrientation
     readonly copy_color_from_train_stop: boolean
   }
-  export interface LocomotiveBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface LocomotiveBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly schedule?: BlueprintScheduleWrite
     readonly color?: Color | ColorArray
     readonly enable_logistics_while_moving: boolean
@@ -2834,7 +2885,7 @@ declare module "factorio:runtime" {
     readonly request_filters: BlueprintLogisticSections
     readonly control_behavior?: LogisticContainerBlueprintControlBehavior
   }
-  export interface LogisticContainerBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface LogisticContainerBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filters?: readonly BlueprintItemFilterWrite[]
     readonly bar?: uint
     readonly request_filters: BlueprintLogisticSectionsWrite
@@ -2847,7 +2898,7 @@ declare module "factorio:runtime" {
     readonly filter?: BlueprintMiningDrillFilter
     readonly control_behavior?: MiningDrillBlueprintControlBehavior
   }
-  export interface MiningDrillBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface MiningDrillBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filter?: BlueprintMiningDrillFilter
     readonly control_behavior?: MiningDrillBlueprintControlBehaviorWrite
   }
@@ -2858,7 +2909,7 @@ declare module "factorio:runtime" {
     readonly switch_state?: boolean
     readonly control_behavior?: PowerSwitchBlueprintControlBehavior
   }
-  export interface PowerSwitchBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface PowerSwitchBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly switch_state?: boolean
     readonly control_behavior?: PowerSwitchBlueprintControlBehaviorWrite
   }
@@ -2870,7 +2921,7 @@ declare module "factorio:runtime" {
     readonly alert_parameters: ProgrammableSpeakerAlertParameters
     readonly control_behavior?: ProgrammableSpeakerBlueprintControlBehavior
   }
-  export interface ProgrammableSpeakerBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface ProgrammableSpeakerBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly parameters: ProgrammableSpeakerParametersWrite
     readonly alert_parameters: ProgrammableSpeakerAlertParametersWrite
     readonly control_behavior?: ProgrammableSpeakerBlueprintControlBehaviorWrite
@@ -2888,7 +2939,7 @@ declare module "factorio:runtime" {
     readonly fluid_filter?: string
     readonly control_behavior?: PumpBlueprintControlBehavior
   }
-  export interface PumpBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface PumpBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly fluid_filter?: string
     readonly control_behavior?: PumpBlueprintControlBehaviorWrite
   }
@@ -2898,7 +2949,7 @@ declare module "factorio:runtime" {
   export interface RailChainSignalBlueprintEntity extends BaseBlueprintEntity {
     readonly control_behavior?: RailSignalBaseBlueprintControlBehavior
   }
-  export interface RailChainSignalBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface RailChainSignalBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly control_behavior?: RailSignalBaseBlueprintControlBehaviorWrite
   }
   /**
@@ -2907,7 +2958,7 @@ declare module "factorio:runtime" {
   export interface RailSignalBlueprintEntity extends BaseBlueprintEntity {
     readonly control_behavior?: RailSignalBaseBlueprintControlBehavior
   }
-  export interface RailSignalBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface RailSignalBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly control_behavior?: RailSignalBaseBlueprintControlBehaviorWrite
   }
   /**
@@ -2916,7 +2967,7 @@ declare module "factorio:runtime" {
   export interface ReactorBlueprintEntity extends BaseBlueprintEntity {
     readonly control_behavior?: ReactorBlueprintControlBehavior
   }
-  export interface ReactorBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface ReactorBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly control_behavior?: ReactorBlueprintControlBehaviorWrite
   }
   /**
@@ -2926,7 +2977,7 @@ declare module "factorio:runtime" {
     readonly request_filters: BlueprintLogisticSections
     readonly control_behavior?: RoboportBlueprintControlBehavior
   }
-  export interface RoboportBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface RoboportBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly request_filters: BlueprintLogisticSectionsWrite
     readonly control_behavior?: RoboportBlueprintControlBehaviorWrite
   }
@@ -2937,7 +2988,7 @@ declare module "factorio:runtime" {
     readonly description?: string
     readonly control_behavior?: SelectorCombinatorParameters
   }
-  export interface SelectorCombinatorBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface SelectorCombinatorBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly description?: string
     readonly control_behavior?: SelectorCombinatorParametersWrite
   }
@@ -2950,7 +3001,7 @@ declare module "factorio:runtime" {
     readonly request_missing_construction_materials: boolean
     readonly control_behavior?: SpacePlatformHubBlueprintControlBehavior
   }
-  export interface SpacePlatformHubBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface SpacePlatformHubBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly bar?: uint
     readonly request_filters: BlueprintLogisticSectionsWrite
     readonly request_missing_construction_materials: boolean
@@ -2964,7 +3015,7 @@ declare module "factorio:runtime" {
     readonly input_priority?: SplitterPriority
     readonly output_priority?: SplitterPriority
   }
-  export interface SplitterBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface SplitterBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly filter?: ItemFilterWrite
     readonly input_priority?: SplitterPriority
     readonly output_priority?: SplitterPriority
@@ -2983,7 +3034,7 @@ declare module "factorio:runtime" {
     readonly selected_gun_index: ItemStackIndex
     readonly label?: string
   }
-  export interface SpiderVehicleBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface SpiderVehicleBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly request_filters: BlueprintLogisticSectionsWrite
     readonly color?: Color | ColorArray
     readonly enable_logistics_while_moving: boolean
@@ -3009,7 +3060,7 @@ declare module "factorio:runtime" {
     readonly priority?: uint8
     readonly control_behavior?: TrainStopBlueprintControlBehavior
   }
-  export interface TrainStopBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface TrainStopBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly color?: Color | ColorArray
     readonly manual_trains_limit?: uint
     readonly priority?: uint8
@@ -3021,7 +3072,7 @@ declare module "factorio:runtime" {
   export interface TransportBeltBlueprintEntity extends BaseBlueprintEntity {
     readonly control_behavior?: TransportBeltBlueprintControlBehavior
   }
-  export interface TransportBeltBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface TransportBeltBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly control_behavior?: TransportBeltBlueprintControlBehaviorWrite
   }
   /**
@@ -3035,7 +3086,7 @@ declare module "factorio:runtime" {
     readonly ignore_unprioritised?: boolean
     readonly control_behavior?: TurretBlueprintControlBehavior
   }
-  export interface TurretBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface TurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly priority_list?: SlotFilter
     /**
      * Defaults to `false`.
@@ -3061,7 +3112,7 @@ declare module "factorio:runtime" {
   export interface WallBlueprintEntity extends BaseBlueprintEntity {
     readonly control_behavior?: WallBlueprintControlBehavior
   }
-  export interface WallBlueprintEntityWrite extends BaseBlueprintEntity {
+  export interface WallBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly control_behavior?: WallBlueprintControlBehaviorWrite
   }
   /**
@@ -3258,7 +3309,12 @@ declare module "factorio:runtime" {
    * - `target_wire_connector_id`
    * @see {@link https://lua-api.factorio.com/2.0.62/concepts/BlueprintWire.html Online documentation}
    */
-  export type BlueprintWire = readonly [uint, defines.wire_connector_id, uint, defines.wire_connector_id]
+  export type BlueprintWire = [
+    source_entity_number: uint,
+    source_wire_connector_id: defines.wire_connector_id,
+    target_entity_number: uint,
+    target_wire_connector_id: defines.wire_connector_id,
+  ]
   /**
    * A string that represents a math expression. The expression parser recognizes four basic token types (with their regex):
    *
@@ -8335,7 +8391,7 @@ declare module "factorio:runtime" {
      */
     readonly name: string
     readonly position: MapPosition | MapPositionArray
-    readonly movement: Vector
+    readonly movement: Vector | VectorTable
   }
   /**
    * The data that can be extracted from a map exchange string, as a plain table.
@@ -9945,14 +10001,14 @@ declare module "factorio:runtime" {
     readonly name: string
     readonly frequency: float
     readonly offset: float
-    readonly position?: MapPosition
-    readonly north_position?: MapPosition
+    readonly position?: Vector
+    readonly north_position?: Vector
     readonly north_east_position?: Vector
-    readonly east_position?: MapPosition
+    readonly east_position?: Vector
     readonly south_east_position?: Vector
-    readonly south_position?: MapPosition
+    readonly south_position?: Vector
     readonly south_west_position?: Vector
-    readonly west_position?: MapPosition
+    readonly west_position?: Vector
     readonly north_west_position?: Vector
     readonly deviation?: MapPosition
     readonly starting_frame: uint16
