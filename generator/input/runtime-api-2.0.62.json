@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.61",
+  "application_version": "2.0.62",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -8379,17 +8379,17 @@
               "optional": false
             },
             {
-              "name": "item_index",
-              "order": 2,
-              "description": "The index of the undo item to add this action to. An index of `0` creates a new undo item for it. An index of `1` adds the action to the latest undo action on the stack. Defaults to putting it into the appropriate undo item automatically if one is not specified.",
-              "type": "uint",
-              "optional": true
-            },
-            {
               "name": "player",
               "order": 1,
               "description": "The player to set the last_user to, if any. Also the player whose undo queue this action should be added to.",
               "type": "PlayerIdentification",
+              "optional": true
+            },
+            {
+              "name": "undo_index",
+              "order": 2,
+              "description": "The index of the undo item to add this action to. An index of `0` creates a new undo item for it. An index of `1` adds the action to the latest undo action on the stack. Defaults to putting it into the appropriate undo item automatically if one is not specified.",
+              "type": "uint",
               "optional": true
             }
           ],
@@ -43792,13 +43792,6 @@
               "optional": true
             },
             {
-              "name": "item_index",
-              "order": 5,
-              "description": "The index of the undo item to add this action to. An index of `0` creates a new undo item for it. Defaults to putting it into the appropriate undo item automatically if not specified.",
-              "type": "uint",
-              "optional": true
-            },
-            {
               "name": "player",
               "order": 2,
               "description": "The player to set the last_user to, if any.  Also the player whose undo queue this action should be added to.",
@@ -43817,6 +43810,13 @@
               "order": 6,
               "description": "If the cancel deconstruction is super-forced. Defaults to `false`.",
               "type": "boolean",
+              "optional": true
+            },
+            {
+              "name": "undo_index",
+              "order": 5,
+              "description": "The index of the undo item to add this action to. An index of `0` creates a new undo item for it. Defaults to putting it into the appropriate undo item automatically if not specified.",
+              "type": "uint",
               "optional": true
             }
           ],
@@ -44466,13 +44466,6 @@
               "optional": true
             },
             {
-              "name": "item_index",
-              "order": 10,
-              "description": "The index of the undo item to add this action to. An index of `0` creates a new undo item for it. Defaults to putting it into the appropriate undo item automatically if not specified.",
-              "type": "uint",
-              "optional": true
-            },
-            {
               "name": "move_stuck_players",
               "order": 17,
               "description": "If true, any characters that are in the way of the entity are teleported out of the way.",
@@ -44575,6 +44568,13 @@
                 ],
                 "full_format": false
               },
+              "optional": true
+            },
+            {
+              "name": "undo_index",
+              "order": 10,
+              "description": "The index of the undo item to add this action to. An index of `0` creates a new undo item for it. Defaults to putting it into the appropriate undo item automatically if not specified.",
+              "type": "uint",
               "optional": true
             }
           ],
