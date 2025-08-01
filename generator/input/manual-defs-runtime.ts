@@ -15,12 +15,6 @@ export interface LuaObject {
   readonly object_name: string
 }
 
-export interface LogisticSections {}
-
-export interface LogisticSection {}
-
-export interface BlueprintLogisticFilter {}
-
 export type double = number
 export type float = number
 export type table = object
@@ -152,13 +146,9 @@ export interface LuaStyle {
 
 export interface GuiElementType {}
 
-export interface BaseGuiSpec {}
-
 export interface SignalID {}
 
 export interface SignalIDWrite {}
-
-export interface ItemIDAndQualityIDPair {}
 
 // stub only
 export interface GuiSpec {
@@ -232,10 +222,6 @@ export interface LuaEquipment {}
 export interface LuaEquipmentGrid {}
 
 export interface LuaTechnology {}
-
-export interface CraftingQueueItem {}
-
-export interface LuaPrototypeBase {}
 
 export interface LuaControl {
   set opened(
@@ -454,9 +440,6 @@ export interface Color {}
 export type ColorArray = readonly [r: double, g: double, b: double, a?: double]
 export type ColorModifierArray = readonly [r: double, g: double, b: double, a?: double]
 
-/** @replace */
-export type Vector = MapPositionArray
-
 /** @readType float */
 export interface MapGenSize {}
 
@@ -530,16 +513,6 @@ export type SoundPath = (string & { _?: never }) | `${SoundCategory}/${string}`
 /** @unionReplace type */
 export type RenderLayer = `${bigint}`
 
-// where a vector is supposed to be a position table instead
-
-export interface SmokeSource {
-  readonly position?: MapPosition
-  readonly north_position?: MapPosition
-  readonly east_position?: MapPosition
-  readonly south_position?: MapPosition
-  readonly west_position?: MapPosition
-}
-
 /** @writeType BoundingBoxWrite BoundingBoxArray */
 export interface BoundingBox {}
 
@@ -564,10 +537,6 @@ export interface TechnologyID {}
 
 /** @readType LuaSurface */
 export interface SurfaceIdentification {}
-
-export interface EntityID {}
-
-export interface QualityID {}
 
 /** @readType LuaPlayer */
 export interface PlayerIdentification {}
