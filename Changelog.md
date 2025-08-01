@@ -1,6 +1,7 @@
-# v3.27.0
+# v3.28.0
 
-- Updated to factorio version 2.0.61
+- Updated to factorio version 2.0.62. Comes with more accurate BlueprintEntity types.
+- Fixed typing of Vector; Vector is now an Array on read, and an Array or Table on write.
 
 # v3.26.0
 
