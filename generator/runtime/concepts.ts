@@ -107,7 +107,8 @@ function generateConcept(context: RuntimeGenerationContext, concept: Concept): v
 
   const tableOrArray = context.conceptUsageAnalysis.tableOrArrayConcepts.get(concept)
   if (tableOrArray) {
-    return createTableOrArrayConcept(context, concept, tableOrArray)
+    const inverted = !!manualDef?.annotations.invertTableOrArray
+    return createTableOrArrayConcept(context, concept, tableOrArray, inverted)
   }
   if (typeof concept.type === "object" && concept.type.complex_type === "builtin") {
     return generateBuiltinType(context, concept)
@@ -124,6 +125,7 @@ function createTableOrArrayConcept(
   context: RuntimeGenerationContext,
   concept: Concept,
   tableOrArray: { table: TableType; array: TupleType },
+  inverted: boolean,
 ): void {
   // /** description */
   // interface Concept { ...table read }
@@ -134,31 +136,40 @@ function createTableOrArrayConcept(
   const name = concept.name
   const arrayName = `${concept.name}Array`
 
-  // slightly hardcoded for now
-  const existingArrayForm = context.manualDefs.getDeclaration(arrayName)
-
   const tableForm = mapRuntimeType(context, tableOrArray.table, concept.name, RWUsage.ReadWrite)
+
+  const existingArrayForm = context.manualDefs.getDeclaration(arrayName)
   const arrayForm =
     existingArrayForm && ts.isTypeAliasDeclaration(existingArrayForm.node)
       ? existingArrayForm.node.type
       : mapRuntimeType(context, tableOrArray.array, concept.name, RWUsage.Write).mainType
-  assert(ts.isTypeLiteralNode(tableForm.mainType))
-  assert(tableOrArray.array.complex_type === "tuple")
 
-  const conceptInterface = ts.factory.createInterfaceDeclaration(
-    [Modifiers.export],
-    name,
-    undefined,
-    undefined,
-    tableForm.mainType.members,
-  )
-  addJsDoc(context, conceptInterface, concept, concept.name, { tags: [createSeeTag(arrayName)] })
-  context.currentFile.add(conceptInterface)
+  function createTableForm(name: string) {
+    assert(ts.isTypeLiteralNode(tableForm.mainType))
+    return ts.factory.createInterfaceDeclaration(
+      [Modifiers.export],
+      name,
+      undefined,
+      undefined,
+      tableForm.mainType.members,
+    )
+  }
 
-  const conceptArray = ts.factory.createTypeAliasDeclaration([Modifiers.export], arrayName, undefined, arrayForm)
-  const arrayDescription = `Array form of {@link ${concept.name}}.`
-  addJsDoc(context, conceptArray, { description: arrayDescription }, name, { tags: [createSeeTag(name)] })
-  context.currentFile.add(conceptArray)
+  function createArrayForm(name: string) {
+    return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, arrayForm)
+  }
+
+  const mainForm = !inverted ? createTableForm(name) : createArrayForm(name)
+  const altName = !inverted ? arrayName : name + "Table"
+  addJsDoc(context, mainForm, concept, name, { tags: [createSeeTag(altName)] })
+  context.currentFile.add(mainForm)
+
+  const altForm = !inverted ? createArrayForm(altName) : createTableForm(altName)
+  const altFormName = `${!inverted ? "Array" : "Table"} form of {@link ${concept.name}}.`
+  addJsDoc(context, altForm, { description: altFormName }, name, {
+    tags: [createSeeTag(name)],
+  })
+  context.currentFile.add(altForm)
 
   context.tsToFactorioType.set(arrayName, name)
 }

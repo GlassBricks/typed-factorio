@@ -516,6 +516,9 @@ export type RenderLayer = `${bigint}`
 /** @writeType BoundingBoxWrite BoundingBoxArray */
 export interface BoundingBox {}
 
+/** @invertTableOrArray */
+export interface Vector {}
+
 /** @addTo concepts after BoundingBox */
 /**
  * Write form of {@link BoundingBox}, as a table, where positions are allowed to take an array form.
@@ -566,3 +569,11 @@ export interface BaseUndoRedoAction {
     | "rotated-entity"
     | "copy-entity-settings"
 }
+
+/** @replace */
+export type BlueprintWire = readonly [
+  source_entity_number: uint,
+  source_wire_connector_id: defines.wire_connector_id,
+  target_entity_number: uint,
+  target_wire_connector_id: defines.wire_connector_id,
+]

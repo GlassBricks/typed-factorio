@@ -31,6 +31,8 @@ export enum AnnotationKind {
   Usage = "usage",
 
   Overload = "overload",
+
+  InvertTableOrArray = "invertTableOrArray",
 }
 
 const annotationValues = new Set<string>(Object.values(AnnotationKind))

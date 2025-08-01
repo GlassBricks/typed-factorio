@@ -180,10 +180,12 @@ function maybeOverrideReadWriteType(context: RuntimeGenerationContext, concept: 
   const usageAnalysis = context.conceptUsageAnalysis
   if (tableOrArray) {
     usageAnalysis.tableOrArrayConcepts.set(concept, tableOrArray)
+    const inverted = context.manualDefs.getInterface(concept.name)?.annotations?.invertTableOrArray
     const readName = concept.name
+    const altName = !inverted ? `${readName}Array` : `${readName}Table`
     const writeName: UnionType = {
       complex_type: "union",
-      options: [readName, `${readName}Array`],
+      options: [readName, altName],
       full_format: false,
     }
     overrideReadWriteType(context, concept, { read: readName, write: writeName })
