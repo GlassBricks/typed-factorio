@@ -74,7 +74,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     return this.docUrlBase() + relative_link
   }
 
-  private modifyBlueprintEntityConcept() {
+  private manualFixes() {
     if (this.apiDocs.application_version !== "2.0.62") {
       this.warning("TODO: check if manual defs is still needed", this.apiDocs.application_version)
     }
@@ -127,7 +127,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
     )
     this.concepts = associateByName(concepts)
 
-    this.modifyBlueprintEntityConcept()
+    this.manualFixes()
 
     this.globalObjects = associateByName(this.apiDocs.global_objects)
     this.globalFunctions = associateByName(this.apiDocs.global_functions)

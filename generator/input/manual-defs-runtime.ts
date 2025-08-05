@@ -545,15 +545,11 @@ export interface SurfaceIdentification {}
 export interface PlayerIdentification {}
 
 export interface SpaceLocationAsteroidSpawnDefinition {
-  type: "asteroid-chunk" | "entity"
+  readonly type: "asteroid-chunk" | "entity"
 }
 
 export interface SpaceConnectionAsteroidSpawnDefinition {
-  type: "asteroid-chunk" | "entity"
-}
-
-export interface BasePostEntityDiedEventFilter {
-  filter: "ghost" | "type"
+  readonly type: "asteroid-chunk" | "entity"
 }
 
 export interface BaseUndoRedoAction {

@@ -6090,7 +6090,7 @@ declare module "factorio:runtime" {
     /**
      * `asteroid-chunk` or `entity`
      */
-    type: "asteroid-chunk" | "entity"
+    readonly type: "asteroid-chunk" | "entity"
     /**
      * The asteroid chunk or entity name.
      */
@@ -6106,7 +6106,7 @@ declare module "factorio:runtime" {
     /**
      * `asteroid-chunk` or `entity`
      */
-    type: "asteroid-chunk" | "entity"
+    readonly type: "asteroid-chunk" | "entity"
     /**
      * The asteroid chunk or entity name.
      */
@@ -13815,7 +13815,7 @@ declare module "factorio:runtime" {
     /**
      * The condition to filter on.
      */
-    filter: "ghost" | "type"
+    readonly filter: "type"
     /**
      * How to combine this with the previous filter. Defaults to `"or"`. When evaluating the filters, `"and"` has higher precedence than `"or"`.
      */
@@ -13836,19 +13836,13 @@ declare module "factorio:runtime" {
     readonly type: EntityType
   }
   /**
-   * Variants of {@link LuaPostEntityDiedEventFilter} with no additional attributes.
-   */
-  export interface OtherPostEntityDiedEventFilter extends BasePostEntityDiedEventFilter {
-    readonly filter: "ghost"
-  }
-  /**
    * Base attributes: {@link BasePostEntityDiedEventFilter}
    *
    * Other attributes may be specified depending on `filter`:
    * - `"type"`: {@link TypePostEntityDiedEventFilter}
    * @see {@link https://lua-api.factorio.com/2.0.62/concepts/LuaPostEntityDiedEventFilter.html Online documentation}
    */
-  export type LuaPostEntityDiedEventFilter = TypePostEntityDiedEventFilter | OtherPostEntityDiedEventFilter
+  export type LuaPostEntityDiedEventFilter = TypePostEntityDiedEventFilter
   /**
    * Common attributes to all variants of {@link LuaScriptRaisedDestroySegmentedUnitEventFilter}.
    */

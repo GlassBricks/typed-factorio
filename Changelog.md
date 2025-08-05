@@ -1,3 +1,7 @@
+# v3.28.1
+
+- Removed nonexistent "ghost" type from PostEntityDiedEventFilter
+
 # v3.28.0
 
 - Updated to factorio version 2.0.62. Comes with more accurate BlueprintEntity types.
