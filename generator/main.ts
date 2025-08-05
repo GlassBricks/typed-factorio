@@ -81,21 +81,22 @@ function generateFiles(context: GenerationContext) {
 
 async function writeFiles(fileResults: Map<string, string>) {
   const outDir = path.resolve(__dirname, "..")
-  for (const [name, content] of fileResults) {
+  async function writeFile(file: string, content: string) {
     let printContent = content
     if (!noFormat) {
-      console.log(`  formatting ${name}`)
+      console.log(`  formatting ${file}`)
       printContent = await prettier.format(content, {
         parser: "typescript",
         semi: false,
         printWidth: 120,
       })
     }
-    const fileName = path.join(outDir, name)
+    const fileName = path.join(outDir, file)
     // make sure the directory exists
-    fs.mkdirSync(path.dirname(fileName), { recursive: true })
-    fs.writeFileSync(fileName, printContent)
+    await fs.promises.mkdir(path.dirname(fileName), { recursive: true })
+    await fs.promises.writeFile(fileName, printContent)
   }
+  await Promise.all(Array.from(fileResults).map(([name, content]) => writeFile(name, content)))
 }
 const options: Options = {
   noLink,
