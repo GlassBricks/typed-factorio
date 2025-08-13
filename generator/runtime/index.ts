@@ -75,44 +75,7 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   }
 
   private manualFixes() {
-    if (this.apiDocs.application_version !== "2.0.62") {
-      this.warning("TODO: check if manual defs is still needed", this.apiDocs.application_version)
-    }
-    const bpEntity = this.concepts.get("BlueprintEntity")!.type
-    if (typeof bpEntity !== "object" || bpEntity.complex_type !== "table") {
-      this.warning(`BlueprintEntity concept is not a table`)
-      return
-    }
-    bpEntity.variant_parameter_groups!.push({
-      name: "rocket-silo",
-      description: "",
-      order: 1000,
-      manuallyAdded: true,
-      parameters: [
-        {
-          name: "control_behavior",
-          description: "",
-          order: 1,
-          type: "RocketSiloBlueprintControlBehavior",
-          optional: true,
-        },
-      ],
-    })
-
-    const type = this.concepts.get("TechnologyModifier")!.type
-    if (typeof type !== "object" || type.complex_type !== "table") {
-      this.warning(`TechnologyModifier concept is not a table`)
-      return
-    }
-    const problemType = type.variant_parameter_groups!.find((group) => group.name === "vehicle-logistics")!
-    problemType.name = "train-braking-force-bonus"
-    problemType.parameters[0] = {
-      name: "modifier",
-      description: "",
-      order: 1,
-      type: "double",
-      optional: false,
-    }
+    // none needed as of 2.0.64
   }
 
   generateAll(): void {

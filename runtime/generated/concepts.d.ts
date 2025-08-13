@@ -3144,12 +3144,6 @@ declare module "factorio:runtime" {
     readonly control_behavior?: WallBlueprintControlBehaviorWrite
   }
   /**
-   * `"rocket-silo"` variant of {@link BlueprintEntity}.
-   */
-  export interface RocketSiloBlueprintEntity extends BaseBlueprintEntity {
-    readonly control_behavior?: RocketSiloBlueprintControlBehavior
-  }
-  /**
    * The representation of an entity inside of a blueprint.
    *
    * Base attributes: {@link BaseBlueprintEntity}
@@ -3209,7 +3203,6 @@ declare module "factorio:runtime" {
    * - `"underground-belt"`: {@link UndergroundBeltBlueprintEntity}
    * - `"valve"`: {@link ValveBlueprintEntity}
    * - `"wall"`: {@link WallBlueprintEntity}
-   * - `"rocket-silo"`: {@link RocketSiloBlueprintEntity}
    * @see {@link https://lua-api.factorio.com/2.0.64/concepts/BlueprintEntity.html Online documentation}
    */
   export type BlueprintEntity =
@@ -3267,7 +3260,6 @@ declare module "factorio:runtime" {
     | UndergroundBeltBlueprintEntity
     | ValveBlueprintEntity
     | WallBlueprintEntity
-    | RocketSiloBlueprintEntity
   /**
    * Write form of {@link BlueprintEntity}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.0.64/concepts/BlueprintEntity.html Online documentation}
@@ -3327,7 +3319,6 @@ declare module "factorio:runtime" {
     | UndergroundBeltBlueprintEntity
     | ValveBlueprintEntity
     | WallBlueprintEntityWrite
-    | RocketSiloBlueprintEntity
   /**
    * Describes a single wire in the blueprint. The members of the tuple are, in order:
    *
@@ -3386,17 +3377,17 @@ declare module "factorio:runtime" {
     /**
      * The type of action that was undone or redone.
      */
-    type:
+    readonly type:
       | "built-entity"
-      | "removed-entity"
       | "built-tile"
+      | "copy-entity-settings"
+      | "removed-entity"
       | "removed-tile"
       | "upgraded-entity"
       | "upgraded-modules"
       | "wire-added"
       | "wire-removed"
       | "rotated-entity"
-      | "copy-entity-settings"
     /**
      * The tags attached to the undo action, if any.
      */
@@ -7136,11 +7127,14 @@ declare module "factorio:runtime" {
     readonly modifier: boolean
   }
   /**
-   * `"train-braking-force-bonus"` variant of {@link TechnologyModifier}.
+   * `"vehicle-logistics"` variant of {@link TechnologyModifier}.
    */
-  export interface TrainBrakingForceBonusTechnologyModifier extends BaseTechnologyModifier {
-    readonly type: "train-braking-force-bonus"
-    readonly modifier: double
+  export interface VehicleLogisticsTechnologyModifier extends BaseTechnologyModifier {
+    readonly type: "vehicle-logistics"
+    /**
+     * The state this modifier will be in upon researching.
+     */
+    readonly modifier: boolean
   }
   /**
    * `"worker-robot-battery"` variant of {@link TechnologyModifier}.
@@ -7171,12 +7165,6 @@ declare module "factorio:runtime" {
      * The amount to increase the current worker robot storage by upon researching.
      */
     readonly modifier: double
-  }
-  /**
-   * Variants of {@link TechnologyModifier} with no additional attributes.
-   */
-  export interface OtherTechnologyModifier extends BaseTechnologyModifier {
-    readonly type: "vehicle-logistics"
   }
   /**
    * The effect that is applied when a technology is researched.
@@ -7226,7 +7214,7 @@ declare module "factorio:runtime" {
    * - `"unlock-recipe"`: {@link UnlockRecipeTechnologyModifier}
    * - `"unlock-space-location"`: {@link UnlockSpaceLocationTechnologyModifier}
    * - `"unlock-space-platforms"`: {@link UnlockSpacePlatformsTechnologyModifier}
-   * - `"train-braking-force-bonus"`: {@link TrainBrakingForceBonusTechnologyModifier}
+   * - `"vehicle-logistics"`: {@link VehicleLogisticsTechnologyModifier}
    * - `"worker-robot-battery"`: {@link WorkerRobotBatteryTechnologyModifier}
    * - `"worker-robot-speed"`: {@link WorkerRobotSpeedTechnologyModifier}
    * - `"worker-robot-storage"`: {@link WorkerRobotStorageTechnologyModifier}
@@ -7277,11 +7265,10 @@ declare module "factorio:runtime" {
     | UnlockRecipeTechnologyModifier
     | UnlockSpaceLocationTechnologyModifier
     | UnlockSpacePlatformsTechnologyModifier
-    | TrainBrakingForceBonusTechnologyModifier
+    | VehicleLogisticsTechnologyModifier
     | WorkerRobotBatteryTechnologyModifier
     | WorkerRobotSpeedTechnologyModifier
     | WorkerRobotStorageTechnologyModifier
-    | OtherTechnologyModifier
   export interface BaseResearchTrigger {
     readonly type:
       | "craft-item"
@@ -10143,10 +10130,14 @@ declare module "factorio:runtime" {
     | "entity-build"
     | "entity-mined"
     | "entity-mining"
-    | "entity-vehicle_impact"
     | "entity-rotated"
     | "entity-open"
     | "entity-close"
+    | "item-open"
+    | "item-close"
+    | "item-pick"
+    | "item-drop"
+    | "item-move"
   /**
    * It can be either the name of a {@link import("factorio:prototype").SoundPrototype SoundPrototype} defined in the data stage, or a path in the form `"type/name"`. The latter option can be sorted into four categories.
    *
