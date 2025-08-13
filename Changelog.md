@@ -1,3 +1,9 @@
+# v3.29.0
+
+- Updated to factorio version 2.0.64
+- Fixed RocketSiloBlueprintEntity handling
+- Include added SoundPath types
+
 # v3.28.1
 
 - Removed nonexistent "ghost" type from PostEntityDiedEventFilter

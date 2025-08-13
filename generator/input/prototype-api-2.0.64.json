@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.62",
+  "application_version": "2.0.64",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -3665,7 +3665,7 @@
         {
           "name": "mode",
           "order": 9,
-          "description": "In the `\"heat-fluid-inside\"` mode, fluid in the `fluid_box` is continuously heated from the input temperature up to its [FluidPrototype::max_temperature](prototype:FluidPrototype::max_temperature).\n\nIn the `\"output-to-separate-pipe\"` mode, fluid is transferred from the `fluid_box` to the `output_fluid_box` when enough energy is available to [heat](prototype:FluidPrototype::heat_capacity) the input fluid to the `target_temperature`. Setting a filter on the `output_fluid_box` means that instead of the heated input fluid getting moved to the output, it is converted to the filtered fluid in a 1:1 ratio.",
+          "description": "In the `\"output-to-separate-pipe\"` mode, fluid is transferred from the `fluid_box` to the `output_fluid_box` when enough energy is available to [heat](prototype:FluidPrototype::heat_capacity) the input fluid to the `target_temperature`. Setting a filter on the `output_fluid_box` means that instead of the heated input fluid getting moved to the output, it is converted to the filtered fluid in a ratio based on the heat capacity of the fluids: `output_fluid_amount = input_fluid_amount * (output_fluid_heat_capacity / input_fluid_heat_capacity)`\n\nIn the `\"heat-fluid-inside\"` mode, fluid in the `fluid_box` is continuously heated from the input temperature up to its [FluidPrototype::max_temperature](prototype:FluidPrototype::max_temperature).",
           "override": false,
           "type": {
             "complex_type": "union",
@@ -3690,7 +3690,7 @@
         {
           "name": "output_fluid_box",
           "order": 3,
-          "description": "The output fluid box.\n\nIf `mode` is `\"output-to-separate-pipe\"` and this has a [filter](prototype:FluidBox::filter), the heated input fluid is converted to the output fluid that is set in the filter (in a 1:1 ratio).\n\nIf `mode` is `\"heat-fluid-inside\"`, this fluidbox is unused.",
+          "description": "The output fluid box.\n\nIf `mode` is `\"output-to-separate-pipe\"` and this has a [filter](prototype:FluidBox::filter), the heated input fluid is converted to the output fluid that is set in the filter. The conversion ratio is based on the heat capacity of the fluids: `output_fluid_amount = input_fluid_amount * (output_fluid_heat_capacity / input_fluid_heat_capacity)`\n\nIf `mode` is `\"heat-fluid-inside\"`, this fluidbox is unused.",
           "override": false,
           "type": "FluidBox",
           "optional": false
@@ -8500,7 +8500,16 @@
       "abstract": false,
       "typename": "elevated-curved-rail-a",
       "deprecated": false,
-      "properties": []
+      "properties": [
+        {
+          "name": "name",
+          "order": 0,
+          "description": "Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.\n\nRequires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.",
+          "override": true,
+          "type": "string",
+          "optional": false
+        }
+      ]
     },
     {
       "name": "ElevatedCurvedRailBPrototype",
@@ -8510,7 +8519,16 @@
       "abstract": false,
       "typename": "elevated-curved-rail-b",
       "deprecated": false,
-      "properties": []
+      "properties": [
+        {
+          "name": "name",
+          "order": 0,
+          "description": "Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.\n\nRequires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.",
+          "override": true,
+          "type": "string",
+          "optional": false
+        }
+      ]
     },
     {
       "name": "ElevatedHalfDiagonalRailPrototype",
@@ -8520,7 +8538,16 @@
       "abstract": false,
       "typename": "elevated-half-diagonal-rail",
       "deprecated": false,
-      "properties": []
+      "properties": [
+        {
+          "name": "name",
+          "order": 0,
+          "description": "Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.\n\nRequires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.",
+          "override": true,
+          "type": "string",
+          "optional": false
+        }
+      ]
     },
     {
       "name": "ElevatedStraightRailPrototype",
@@ -8530,7 +8557,16 @@
       "abstract": false,
       "typename": "elevated-straight-rail",
       "deprecated": false,
-      "properties": []
+      "properties": [
+        {
+          "name": "name",
+          "order": 0,
+          "description": "Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.\n\nRequires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.",
+          "override": true,
+          "type": "string",
+          "optional": false
+        }
+      ]
     },
     {
       "name": "EnemySpawnerPrototype",
@@ -8967,7 +9003,7 @@
         {
           "name": "build_grid_size",
           "order": 17,
-          "description": "Supported values are 1 (for 1x1 grid) and 2 (for 2x2 grid, like rails).\n\nInternally forced to be `2` for [RailPrototype](prototype:RailPrototype), [RailRemnantsPrototype](prototype:RailRemnantsPrototype) and [TrainStopPrototype](prototype:TrainStopPrototype).",
+          "description": "Supported values are 1 (for 1x1 grid) and 2 (for 2x2 grid, like rails).\n\nInternally forced to be `2` for [RailPrototype](prototype:RailPrototype), [RailRemnantsPrototype](prototype:RailRemnantsPrototype), [TrainStopPrototype](prototype:TrainStopPrototype), [RailSupportPrototype](prototype:RailSupportPrototype) and [CargoBayPrototype](prototype:CargoBayPrototype).\n\nInternally forced to be `256` for [SpacePlatformHubPrototype](prototype:SpacePlatformHubPrototype).",
           "override": false,
           "type": "uint8",
           "optional": true,
@@ -12833,6 +12869,18 @@
           "override": false,
           "type": "HeatBuffer",
           "optional": false
+        },
+        {
+          "name": "heating_radius",
+          "order": 3,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 1
+          }
         },
         {
           "name": "picture",
@@ -19662,6 +19710,14 @@
           "optional": true
         },
         {
+          "name": "name",
+          "order": 3,
+          "description": "Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.\n\nRequires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.",
+          "override": true,
+          "type": "string",
+          "optional": false
+        },
+        {
           "name": "support_range",
           "order": 0,
           "description": "Must be lower than 500 and at least 1.",
@@ -19924,6 +19980,14 @@
           "description": "",
           "override": false,
           "type": "RailSupportGraphicsSet",
+          "optional": false
+        },
+        {
+          "name": "name",
+          "order": 7,
+          "description": "Unique textual identification of the prototype. May only contain alphanumeric characters, dashes and underscores. May not exceed a length of 200 characters.\n\nRequires Space Age to create prototypes with name not starting with `dummy-`. Dummy prototypes cannot be built.",
+          "override": true,
+          "type": "string",
           "optional": false
         },
         {
@@ -24872,7 +24936,7 @@
         {
           "name": "draw_orbit",
           "order": 6,
-          "description": "If `false`, an orbital ring will not be drawn for this location.",
+          "description": "If `false`, the orbital ring around the sun will not be drawn for this location.",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -48928,7 +48992,7 @@
       "properties": [
         {
           "name": "abort_if_over_space",
-          "order": 11,
+          "order": 12,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -48940,7 +49004,7 @@
         },
         {
           "name": "as_enemy",
-          "order": 8,
+          "order": 9,
           "description": "If true, creates the entity as a member of the enemy force. If the surface.no_enemies_mode is true, the entity will not be created.",
           "override": false,
           "type": "boolean",
@@ -48972,7 +49036,7 @@
         },
         {
           "name": "find_non_colliding_position",
-          "order": 10,
+          "order": 11,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -48984,7 +49048,7 @@
         },
         {
           "name": "ignore_no_enemies_mode",
-          "order": 9,
+          "order": 10,
           "description": "If true and `as_enemy` is true, allows the entity to be created even if the current surface.no_enemies_mode is true.",
           "override": false,
           "type": "boolean",
@@ -48996,7 +49060,7 @@
         },
         {
           "name": "non_colliding_fail_result",
-          "order": 14,
+          "order": 15,
           "description": "Only loaded if `find_non_colliding_position` is defined.",
           "override": false,
           "type": "Trigger",
@@ -49004,7 +49068,7 @@
         },
         {
           "name": "non_colliding_search_precision",
-          "order": 13,
+          "order": 14,
           "description": "",
           "override": false,
           "type": "double",
@@ -49016,7 +49080,7 @@
         },
         {
           "name": "non_colliding_search_radius",
-          "order": 12,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "double",
@@ -49036,7 +49100,7 @@
         },
         {
           "name": "offsets",
-          "order": 7,
+          "order": 8,
           "description": "If multiple offsets are specified, multiple entities are created. The projectile of the [Distractor capsule](https://wiki.factorio.com/Distractor_capsule) uses this property to spawn three Distractors.",
           "override": false,
           "type": {
@@ -49046,8 +49110,20 @@
           "optional": true
         },
         {
+          "name": "only_when_visible",
+          "order": 6,
+          "description": "Create the entity only when they are within a 200 tile range of any connected player.",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
           "name": "protected",
-          "order": 15,
+          "order": 16,
           "description": "The result entity will be protected from automated attacks of enemies.",
           "override": false,
           "type": "boolean",
@@ -49071,7 +49147,7 @@
         },
         {
           "name": "tile_collision_mask",
-          "order": 6,
+          "order": 7,
           "description": "Entity creation will not occur if any tile matches the collision condition. Defaults to no collisions.",
           "override": false,
           "type": "CollisionMaskConnector",
@@ -49377,7 +49453,7 @@
         {
           "name": "only_when_visible",
           "order": 19,
-          "description": "Create particles only when they are in 200 tiles range of any connected player.",
+          "description": "Create the particle only when they are within a 200 tile range of any connected player.",
           "override": false,
           "type": "boolean",
           "optional": true,

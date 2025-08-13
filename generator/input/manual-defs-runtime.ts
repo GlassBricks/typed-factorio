@@ -499,10 +499,14 @@ export type SoundCategory =
   | "entity-build"
   | "entity-mined"
   | "entity-mining"
-  | "entity-vehicle_impact"
   | "entity-rotated"
   | "entity-open"
   | "entity-close"
+  | "item-open"
+  | "item-close"
+  | "item-pick"
+  | "item-drop"
+  | "item-move"
 
 /**
  * @replace
@@ -550,20 +554,6 @@ export interface SpaceLocationAsteroidSpawnDefinition {
 
 export interface SpaceConnectionAsteroidSpawnDefinition {
   readonly type: "asteroid-chunk" | "entity"
-}
-
-export interface BaseUndoRedoAction {
-  type:
-    | "built-entity"
-    | "removed-entity"
-    | "built-tile"
-    | "removed-tile"
-    | "upgraded-entity"
-    | "upgraded-modules"
-    | "wire-added"
-    | "wire-removed"
-    | "rotated-entity"
-    | "copy-entity-settings"
 }
 
 /** @replace */
