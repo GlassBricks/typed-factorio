@@ -50,14 +50,14 @@ function generateEventsDefine(context: RuntimeGenerationContext, define: Define)
     const eventType = getMappedEventName(m.name)
     const typeArguments = [eventType]
     const event = context.events.get(m.name)!
-    const eventFilterName = event.description.match(/Lua[A-Za-z]+?EventFilter/)?.[0]
-    if (eventFilterName) {
-      typeArguments.push(eventFilterName)
+
+    if (event.filter) {
+      typeArguments.push(event.filter)
     }
 
     let description = `Event type: {@link ${eventType}}`
-    if (eventFilterName) {
-      description += `\nEvent filter: {@link ${eventFilterName}}`
+    if (event.filter) {
+      description += `\nEvent filter: {@link ${event.filter}}`
     }
 
     for (const typeArg of typeArguments) {

@@ -4,6 +4,36 @@
 
 import type {
   EventId,
+  LuaEntityClonedEventFilter,
+  LuaEntityDamagedEventFilter,
+  LuaEntityDeconstructionCancelledEventFilter,
+  LuaEntityDiedEventFilter,
+  LuaEntityMarkedForDeconstructionEventFilter,
+  LuaEntityMarkedForUpgradeEventFilter,
+  LuaPlatformBuiltEntityEventFilter,
+  LuaPlatformMinedEntityEventFilter,
+  LuaPlayerBuiltEntityEventFilter,
+  LuaPlayerMinedEntityEventFilter,
+  LuaPlayerRepairedEntityEventFilter,
+  LuaPostEntityDiedEventFilter,
+  LuaPostSegmentedUnitDiedEventFilter,
+  LuaPreGhostDeconstructedEventFilter,
+  LuaPreGhostUpgradedEventFilter,
+  LuaPrePlatformMinedEntityEventFilter,
+  LuaPrePlayerMinedEntityEventFilter,
+  LuaPreRobotMinedEntityEventFilter,
+  LuaRobotBuiltEntityEventFilter,
+  LuaRobotMinedEntityEventFilter,
+  LuaScriptRaisedBuiltEventFilter,
+  LuaScriptRaisedDestroyEventFilter,
+  LuaScriptRaisedDestroySegmentedUnitEventFilter,
+  LuaScriptRaisedReviveEventFilter,
+  LuaScriptRaisedTeleportedEventFilter,
+  LuaSectorScannedEventFilter,
+  LuaSegmentedUnitCreatedEventFilter,
+  LuaSegmentedUnitDamagedEventFilter,
+  LuaSegmentedUnitDiedEventFilter,
+  LuaUpgradeCancelledEventFilter,
   OnAchievementGainedEvent,
   OnAiCommandCompletedEvent,
   OnAreaClonedEvent,
@@ -1054,16 +1084,25 @@ declare global {
       const on_build_base_arrived: EventId<OnBuildBaseArrivedEvent>
       /**
        * Event type: {@link OnBuiltEntityEvent}
+       *
+       * Event filter: {@link LuaPlayerBuiltEntityEventFilter}
        */
-      const on_built_entity: EventId<OnBuiltEntityEvent>
+      const on_built_entity: EventId<OnBuiltEntityEvent, LuaPlayerBuiltEntityEventFilter>
       /**
        * Event type: {@link OnCancelledDeconstructionEvent}
+       *
+       * Event filter: {@link LuaEntityDeconstructionCancelledEventFilter}
        */
-      const on_cancelled_deconstruction: EventId<OnCancelledDeconstructionEvent>
+      const on_cancelled_deconstruction: EventId<
+        OnCancelledDeconstructionEvent,
+        LuaEntityDeconstructionCancelledEventFilter
+      >
       /**
        * Event type: {@link OnCancelledUpgradeEvent}
+       *
+       * Event filter: {@link LuaUpgradeCancelledEventFilter}
        */
-      const on_cancelled_upgrade: EventId<OnCancelledUpgradeEvent>
+      const on_cancelled_upgrade: EventId<OnCancelledUpgradeEvent, LuaUpgradeCancelledEventFilter>
       /**
        * Event type: {@link OnCargoPodDeliveredCargoEvent}
        */
@@ -1134,20 +1173,26 @@ declare global {
       const on_cutscene_waypoint_reached: EventId<OnCutsceneWaypointReachedEvent>
       /**
        * Event type: {@link OnEntityClonedEvent}
+       *
+       * Event filter: {@link LuaEntityClonedEventFilter}
        */
-      const on_entity_cloned: EventId<OnEntityClonedEvent>
+      const on_entity_cloned: EventId<OnEntityClonedEvent, LuaEntityClonedEventFilter>
       /**
        * Event type: {@link OnEntityColorChangedEvent}
        */
       const on_entity_color_changed: EventId<OnEntityColorChangedEvent>
       /**
        * Event type: {@link OnEntityDamagedEvent}
+       *
+       * Event filter: {@link LuaEntityDamagedEventFilter}
        */
-      const on_entity_damaged: EventId<OnEntityDamagedEvent>
+      const on_entity_damaged: EventId<OnEntityDamagedEvent, LuaEntityDamagedEventFilter>
       /**
        * Event type: {@link OnEntityDiedEvent}
+       *
+       * Event filter: {@link LuaEntityDiedEventFilter}
        */
-      const on_entity_died: EventId<OnEntityDiedEvent>
+      const on_entity_died: EventId<OnEntityDiedEvent, LuaEntityDiedEventFilter>
       /**
        * Event type: {@link OnEntityLogisticSlotChangedEvent}
        */
@@ -1266,12 +1311,19 @@ declare global {
       const on_lua_shortcut: EventId<OnLuaShortcutEvent>
       /**
        * Event type: {@link OnMarkedForDeconstructionEvent}
+       *
+       * Event filter: {@link LuaEntityMarkedForDeconstructionEventFilter}
        */
-      const on_marked_for_deconstruction: EventId<OnMarkedForDeconstructionEvent>
+      const on_marked_for_deconstruction: EventId<
+        OnMarkedForDeconstructionEvent,
+        LuaEntityMarkedForDeconstructionEventFilter
+      >
       /**
        * Event type: {@link OnMarkedForUpgradeEvent}
+       *
+       * Event filter: {@link LuaEntityMarkedForUpgradeEventFilter}
        */
-      const on_marked_for_upgrade: EventId<OnMarkedForUpgradeEvent>
+      const on_marked_for_upgrade: EventId<OnMarkedForUpgradeEvent, LuaEntityMarkedForUpgradeEventFilter>
       /**
        * Event type: {@link OnMarketItemPurchasedEvent}
        */
@@ -1454,8 +1506,10 @@ declare global {
       const on_player_main_inventory_changed: EventId<OnPlayerMainInventoryChangedEvent>
       /**
        * Event type: {@link OnPlayerMinedEntityEvent}
+       *
+       * Event filter: {@link LuaPlayerMinedEntityEventFilter}
        */
-      const on_player_mined_entity: EventId<OnPlayerMinedEntityEvent>
+      const on_player_mined_entity: EventId<OnPlayerMinedEntityEvent, LuaPlayerMinedEntityEventFilter>
       /**
        * Event type: {@link OnPlayerMinedItemEvent}
        */
@@ -1490,8 +1544,10 @@ declare global {
       const on_player_removed_equipment: EventId<OnPlayerRemovedEquipmentEvent>
       /**
        * Event type: {@link OnPlayerRepairedEntityEvent}
+       *
+       * Event filter: {@link LuaPlayerRepairedEntityEventFilter}
        */
-      const on_player_repaired_entity: EventId<OnPlayerRepairedEntityEvent>
+      const on_player_repaired_entity: EventId<OnPlayerRepairedEntityEvent, LuaPlayerRepairedEntityEventFilter>
       /**
        * Event type: {@link OnPlayerRespawnedEvent}
        */
@@ -1546,12 +1602,16 @@ declare global {
       const on_player_used_spidertron_remote: EventId<OnPlayerUsedSpidertronRemoteEvent>
       /**
        * Event type: {@link OnPostEntityDiedEvent}
+       *
+       * Event filter: {@link LuaPostEntityDiedEventFilter}
        */
-      const on_post_entity_died: EventId<OnPostEntityDiedEvent>
+      const on_post_entity_died: EventId<OnPostEntityDiedEvent, LuaPostEntityDiedEventFilter>
       /**
        * Event type: {@link OnPostSegmentedUnitDiedEvent}
+       *
+       * Event filter: {@link LuaPostSegmentedUnitDiedEventFilter}
        */
-      const on_post_segmented_unit_died: EventId<OnPostSegmentedUnitDiedEvent>
+      const on_post_segmented_unit_died: EventId<OnPostSegmentedUnitDiedEvent, LuaPostSegmentedUnitDiedEventFilter>
       /**
        * Event type: {@link OnPreBuildEvent}
        */
@@ -1566,12 +1626,16 @@ declare global {
       const on_pre_entity_settings_pasted: EventId<OnPreEntitySettingsPastedEvent>
       /**
        * Event type: {@link OnPreGhostDeconstructedEvent}
+       *
+       * Event filter: {@link LuaPreGhostDeconstructedEventFilter}
        */
-      const on_pre_ghost_deconstructed: EventId<OnPreGhostDeconstructedEvent>
+      const on_pre_ghost_deconstructed: EventId<OnPreGhostDeconstructedEvent, LuaPreGhostDeconstructedEventFilter>
       /**
        * Event type: {@link OnPreGhostUpgradedEvent}
+       *
+       * Event filter: {@link LuaPreGhostUpgradedEventFilter}
        */
-      const on_pre_ghost_upgraded: EventId<OnPreGhostUpgradedEvent>
+      const on_pre_ghost_upgraded: EventId<OnPreGhostUpgradedEvent, LuaPreGhostUpgradedEventFilter>
       /**
        * Event type: {@link OnPrePermissionGroupDeletedEvent}
        */
@@ -1594,8 +1658,10 @@ declare global {
       const on_pre_player_left_game: EventId<OnPrePlayerLeftGameEvent>
       /**
        * Event type: {@link OnPrePlayerMinedItemEvent}
+       *
+       * Event filter: {@link LuaPrePlayerMinedEntityEventFilter}
        */
-      const on_pre_player_mined_item: EventId<OnPrePlayerMinedItemEvent>
+      const on_pre_player_mined_item: EventId<OnPrePlayerMinedItemEvent, LuaPrePlayerMinedEntityEventFilter>
       /**
        * Event type: {@link OnPrePlayerRemovedEvent}
        */
@@ -1658,8 +1724,10 @@ declare global {
       const on_resource_depleted: EventId<OnResourceDepletedEvent>
       /**
        * Event type: {@link OnRobotBuiltEntityEvent}
+       *
+       * Event filter: {@link LuaRobotBuiltEntityEventFilter}
        */
-      const on_robot_built_entity: EventId<OnRobotBuiltEntityEvent>
+      const on_robot_built_entity: EventId<OnRobotBuiltEntityEvent, LuaRobotBuiltEntityEventFilter>
       /**
        * Event type: {@link OnRobotBuiltTileEvent}
        */
@@ -1674,16 +1742,20 @@ declare global {
       const on_robot_mined: EventId<OnRobotMinedEvent>
       /**
        * Event type: {@link OnRobotMinedEntityEvent}
+       *
+       * Event filter: {@link LuaRobotMinedEntityEventFilter}
        */
-      const on_robot_mined_entity: EventId<OnRobotMinedEntityEvent>
+      const on_robot_mined_entity: EventId<OnRobotMinedEntityEvent, LuaRobotMinedEntityEventFilter>
       /**
        * Event type: {@link OnRobotMinedTileEvent}
        */
       const on_robot_mined_tile: EventId<OnRobotMinedTileEvent>
       /**
        * Event type: {@link OnRobotPreMinedEvent}
+       *
+       * Event filter: {@link LuaPreRobotMinedEntityEventFilter}
        */
-      const on_robot_pre_mined: EventId<OnRobotPreMinedEvent>
+      const on_robot_pre_mined: EventId<OnRobotPreMinedEvent, LuaPreRobotMinedEntityEventFilter>
       /**
        * Event type: {@link OnRocketLaunchOrderedEvent}
        */
@@ -1710,24 +1782,32 @@ declare global {
       const on_script_trigger_effect: EventId<OnScriptTriggerEffectEvent>
       /**
        * Event type: {@link OnSectorScannedEvent}
+       *
+       * Event filter: {@link LuaSectorScannedEventFilter}
        */
-      const on_sector_scanned: EventId<OnSectorScannedEvent>
+      const on_sector_scanned: EventId<OnSectorScannedEvent, LuaSectorScannedEventFilter>
       /**
        * Event type: {@link OnSegmentEntityCreatedEvent}
        */
       const on_segment_entity_created: EventId<OnSegmentEntityCreatedEvent>
       /**
        * Event type: {@link OnSegmentedUnitCreatedEvent}
+       *
+       * Event filter: {@link LuaSegmentedUnitCreatedEventFilter}
        */
-      const on_segmented_unit_created: EventId<OnSegmentedUnitCreatedEvent>
+      const on_segmented_unit_created: EventId<OnSegmentedUnitCreatedEvent, LuaSegmentedUnitCreatedEventFilter>
       /**
        * Event type: {@link OnSegmentedUnitDamagedEvent}
+       *
+       * Event filter: {@link LuaSegmentedUnitDamagedEventFilter}
        */
-      const on_segmented_unit_damaged: EventId<OnSegmentedUnitDamagedEvent>
+      const on_segmented_unit_damaged: EventId<OnSegmentedUnitDamagedEvent, LuaSegmentedUnitDamagedEventFilter>
       /**
        * Event type: {@link OnSegmentedUnitDiedEvent}
+       *
+       * Event filter: {@link LuaSegmentedUnitDiedEventFilter}
        */
-      const on_segmented_unit_died: EventId<OnSegmentedUnitDiedEvent>
+      const on_segmented_unit_died: EventId<OnSegmentedUnitDiedEvent, LuaSegmentedUnitDiedEventFilter>
       /**
        * Event type: {@link OnSelectedEntityChangedEvent}
        */
@@ -1738,8 +1818,10 @@ declare global {
       const on_singleplayer_init: EventId<OnSingleplayerInitEvent>
       /**
        * Event type: {@link OnSpacePlatformBuiltEntityEvent}
+       *
+       * Event filter: {@link LuaPlatformBuiltEntityEventFilter}
        */
-      const on_space_platform_built_entity: EventId<OnSpacePlatformBuiltEntityEvent>
+      const on_space_platform_built_entity: EventId<OnSpacePlatformBuiltEntityEvent, LuaPlatformBuiltEntityEventFilter>
       /**
        * Event type: {@link OnSpacePlatformBuiltTileEvent}
        */
@@ -1750,8 +1832,10 @@ declare global {
       const on_space_platform_changed_state: EventId<OnSpacePlatformChangedStateEvent>
       /**
        * Event type: {@link OnSpacePlatformMinedEntityEvent}
+       *
+       * Event filter: {@link LuaPlatformMinedEntityEventFilter}
        */
-      const on_space_platform_mined_entity: EventId<OnSpacePlatformMinedEntityEvent>
+      const on_space_platform_mined_entity: EventId<OnSpacePlatformMinedEntityEvent, LuaPlatformMinedEntityEventFilter>
       /**
        * Event type: {@link OnSpacePlatformMinedItemEvent}
        */
@@ -1762,8 +1846,10 @@ declare global {
       const on_space_platform_mined_tile: EventId<OnSpacePlatformMinedTileEvent>
       /**
        * Event type: {@link OnSpacePlatformPreMinedEvent}
+       *
+       * Event filter: {@link LuaPrePlatformMinedEntityEventFilter}
        */
-      const on_space_platform_pre_mined: EventId<OnSpacePlatformPreMinedEvent>
+      const on_space_platform_pre_mined: EventId<OnSpacePlatformPreMinedEvent, LuaPrePlatformMinedEntityEventFilter>
       /**
        * Event type: {@link OnSpiderCommandCompletedEvent}
        */
@@ -1870,28 +1956,41 @@ declare global {
       const on_worker_robot_expired: EventId<OnWorkerRobotExpiredEvent>
       /**
        * Event type: {@link ScriptRaisedBuiltEvent}
+       *
+       * Event filter: {@link LuaScriptRaisedBuiltEventFilter}
        */
-      const script_raised_built: EventId<ScriptRaisedBuiltEvent>
+      const script_raised_built: EventId<ScriptRaisedBuiltEvent, LuaScriptRaisedBuiltEventFilter>
       /**
        * Event type: {@link ScriptRaisedDestroyEvent}
+       *
+       * Event filter: {@link LuaScriptRaisedDestroyEventFilter}
        */
-      const script_raised_destroy: EventId<ScriptRaisedDestroyEvent>
+      const script_raised_destroy: EventId<ScriptRaisedDestroyEvent, LuaScriptRaisedDestroyEventFilter>
       /**
        * Event type: {@link ScriptRaisedDestroySegmentedUnitEvent}
+       *
+       * Event filter: {@link LuaScriptRaisedDestroySegmentedUnitEventFilter}
        */
-      const script_raised_destroy_segmented_unit: EventId<ScriptRaisedDestroySegmentedUnitEvent>
+      const script_raised_destroy_segmented_unit: EventId<
+        ScriptRaisedDestroySegmentedUnitEvent,
+        LuaScriptRaisedDestroySegmentedUnitEventFilter
+      >
       /**
        * Event type: {@link ScriptRaisedReviveEvent}
+       *
+       * Event filter: {@link LuaScriptRaisedReviveEventFilter}
        */
-      const script_raised_revive: EventId<ScriptRaisedReviveEvent>
+      const script_raised_revive: EventId<ScriptRaisedReviveEvent, LuaScriptRaisedReviveEventFilter>
       /**
        * Event type: {@link ScriptRaisedSetTilesEvent}
        */
       const script_raised_set_tiles: EventId<ScriptRaisedSetTilesEvent>
       /**
        * Event type: {@link ScriptRaisedTeleportedEvent}
+       *
+       * Event filter: {@link LuaScriptRaisedTeleportedEventFilter}
        */
-      const script_raised_teleported: EventId<ScriptRaisedTeleportedEvent>
+      const script_raised_teleported: EventId<ScriptRaisedTeleportedEvent, LuaScriptRaisedTeleportedEventFilter>
     }
     /**
      * See the {@linkplain https://lua-api.factorio.com/2.0.64/events.html events page} for more info on what events contain and when they get raised.

@@ -1,3 +1,7 @@
+# v3.29.1
+
+- Fixed that events were missing filters on their declaration
+
 # v3.29.0
 
 - Updated to factorio version 2.0.64
