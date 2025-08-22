@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.64",
+  "application_version": "2.0.65",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -5318,7 +5318,7 @@
           "name": "render_layer",
           "order": 3,
           "description": "",
-          "read_type": "string",
+          "read_type": "RenderLayer",
           "optional": false
         },
         {
@@ -10133,7 +10133,7 @@
           ],
           "read_type": "SignalID",
           "write_type": "SignalID",
-          "optional": false
+          "optional": true
         },
         {
           "name": "display_panel_show_in_chart",
@@ -10859,7 +10859,7 @@
         {
           "name": "minable",
           "order": 11,
-          "description": "Not minable entities can still be destroyed.\n\nTells if entity reports as being minable right now. This takes into account minable_flag and entity specific conditions (for example rail under rolling stocks is not minable, vehicle with passenger is not minable).\n\nWrite to this field since 2.0.26 is deprecated and it will result in write to minable_flag instead.",
+          "description": "Not minable entities can still be destroyed.\n\nTells if entity reports as being minable right now. This takes into account `minable_flag` and entity specific conditions (for example rail under rolling stocks is not minable, vehicle with passenger is not minable).\n\nWrite to this field since 2.0.26 is deprecated and it will result in write to `minable_flag` instead.",
           "read_type": "boolean",
           "write_type": "boolean",
           "optional": false
@@ -12597,7 +12597,7 @@
       "attributes": [
         {
           "name": "absorptions_to_join_attack",
-          "order": 179,
+          "order": 180,
           "description": "A table of pollutions amounts that has to be absorbed by the unit's spawner before the unit will leave the spawner and attack the source of the pollution, indexed by the name of each absorbed pollution type.",
           "subclasses": [
             "SpiderUnit",
@@ -12612,7 +12612,7 @@
         },
         {
           "name": "acceleration_rate",
-          "order": 262,
+          "order": 263,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -12622,7 +12622,7 @@
         },
         {
           "name": "accepted_seeds",
-          "order": 241,
+          "order": 242,
           "description": "",
           "subclasses": [
             "AgriculturalTower"
@@ -12635,7 +12635,7 @@
         },
         {
           "name": "active_energy_usage",
-          "order": 215,
+          "order": 216,
           "description": "The active energy usage of this rocket silo or combinator prototype.",
           "subclasses": [
             "RocketSilo",
@@ -12656,7 +12656,7 @@
         },
         {
           "name": "affected_by_tiles",
-          "order": 185,
+          "order": 186,
           "description": "Whether this unit prototype is affected by tile walking speed modifiers.",
           "subclasses": [
             "Unit"
@@ -12666,7 +12666,7 @@
         },
         {
           "name": "agricultural_tower_radius",
-          "order": 229,
+          "order": 230,
           "description": "",
           "subclasses": [
             "AgriculturalTower"
@@ -12686,21 +12686,21 @@
         },
         {
           "name": "alert_icon_scale",
-          "order": 189,
+          "order": 190,
           "description": "The alert icon scale of this entity prototype.",
           "read_type": "float",
           "optional": false
         },
         {
           "name": "alert_icon_shift",
-          "order": 188,
+          "order": 189,
           "description": "The alert icon shift of this entity prototype.",
           "read_type": "Vector",
           "optional": false
         },
         {
           "name": "alert_when_attacking",
-          "order": 128,
+          "order": 129,
           "description": "Whether this turret raises an alert when attacking",
           "subclasses": [
             "Turret"
@@ -12710,7 +12710,7 @@
         },
         {
           "name": "alert_when_damaged",
-          "order": 127,
+          "order": 128,
           "description": "Whether this entity raises an alert when damaged.",
           "subclasses": [
             "EntityWithHealth"
@@ -12720,7 +12720,7 @@
         },
         {
           "name": "allow_access_to_all_forces",
-          "order": 193,
+          "order": 194,
           "description": "Whether this market allows access to all forces or just friendly ones.",
           "subclasses": [
             "Market"
@@ -12757,7 +12757,7 @@
         },
         {
           "name": "allow_passengers",
-          "order": 196,
+          "order": 197,
           "description": "Whether this vehicle allows passengers.",
           "subclasses": [
             "Vehicle"
@@ -12767,7 +12767,7 @@
         },
         {
           "name": "allow_run_time_change_of_is_military_target",
-          "order": 204,
+          "order": 205,
           "description": "True if this entity-with-owner's is_military_target can be changed run-time (on the entity, not on the prototype itself)",
           "subclasses": [
             "EntityWithOwner"
@@ -12777,7 +12777,7 @@
         },
         {
           "name": "allowed_effects",
-          "order": 133,
+          "order": 134,
           "description": "The allowed module effects for this entity, if any.",
           "read_type": {
             "complex_type": "dictionary",
@@ -12788,7 +12788,7 @@
         },
         {
           "name": "allowed_module_categories",
-          "order": 134,
+          "order": 135,
           "description": "The allowed module categories for this entity, if any.",
           "read_type": {
             "complex_type": "dictionary",
@@ -12802,7 +12802,7 @@
         },
         {
           "name": "always_on",
-          "order": 164,
+          "order": 165,
           "description": "Whether the lamp is always on (except when out of power or turned off by the circuit network).",
           "subclasses": [
             "Lamp"
@@ -12812,7 +12812,7 @@
         },
         {
           "name": "ammo_category",
-          "order": 150,
+          "order": 151,
           "description": "Name of the ammo category of this land mine.",
           "subclasses": [
             "LandMine"
@@ -12822,7 +12822,7 @@
         },
         {
           "name": "animation_speed_coefficient",
-          "order": 212,
+          "order": 213,
           "description": "The animation speed coefficient of this belt connectable prototype.",
           "subclasses": [
             "BeltConnectable"
@@ -12832,16 +12832,6 @@
         },
         {
           "name": "arm_angular_speed_cap_base",
-          "order": 296,
-          "description": "",
-          "subclasses": [
-            "AsteroidCollector"
-          ],
-          "read_type": "float",
-          "optional": true
-        },
-        {
-          "name": "arm_angular_speed_cap_quality_scaling",
           "order": 297,
           "description": "",
           "subclasses": [
@@ -12851,8 +12841,18 @@
           "optional": true
         },
         {
+          "name": "arm_angular_speed_cap_quality_scaling",
+          "order": 298,
+          "description": "",
+          "subclasses": [
+            "AsteroidCollector"
+          ],
+          "read_type": "float",
+          "optional": true
+        },
+        {
           "name": "arm_color_gradient",
-          "order": 304,
+          "order": 305,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -12865,16 +12865,6 @@
         },
         {
           "name": "arm_count_base",
-          "order": 289,
-          "description": "",
-          "subclasses": [
-            "AsteroidCollector"
-          ],
-          "read_type": "uint",
-          "optional": true
-        },
-        {
-          "name": "arm_count_quality_scaling",
           "order": 290,
           "description": "",
           "subclasses": [
@@ -12884,18 +12874,8 @@
           "optional": true
         },
         {
-          "name": "arm_energy_usage",
-          "order": 286,
-          "description": "",
-          "subclasses": [
-            "AsteroidCollector"
-          ],
-          "read_type": "double",
-          "optional": true
-        },
-        {
-          "name": "arm_inventory_size_quality_increase",
-          "order": 283,
+          "name": "arm_count_quality_scaling",
+          "order": 291,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -12904,7 +12884,7 @@
           "optional": true
         },
         {
-          "name": "arm_slow_energy_usage",
+          "name": "arm_energy_usage",
           "order": 287,
           "description": "",
           "subclasses": [
@@ -12914,8 +12894,28 @@
           "optional": true
         },
         {
+          "name": "arm_inventory_size_quality_increase",
+          "order": 284,
+          "description": "",
+          "subclasses": [
+            "AsteroidCollector"
+          ],
+          "read_type": "uint",
+          "optional": true
+        },
+        {
+          "name": "arm_slow_energy_usage",
+          "order": 288,
+          "description": "",
+          "subclasses": [
+            "AsteroidCollector"
+          ],
+          "read_type": "double",
+          "optional": true
+        },
+        {
           "name": "arm_speed_base",
-          "order": 294,
+          "order": 295,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -12925,7 +12925,7 @@
         },
         {
           "name": "arm_speed_quality_scaling",
-          "order": 295,
+          "order": 296,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -12942,7 +12942,7 @@
         },
         {
           "name": "attack_reaction",
-          "order": 251,
+          "order": 252,
           "description": "",
           "subclasses": [
             "EntityWithHealth"
@@ -12965,7 +12965,7 @@
         },
         {
           "name": "attacking_speed",
-          "order": 260,
+          "order": 261,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -12975,7 +12975,7 @@
         },
         {
           "name": "auto_setup_collision_box",
-          "order": 235,
+          "order": 236,
           "description": "",
           "subclasses": [
             "Corpse"
@@ -12985,7 +12985,7 @@
         },
         {
           "name": "automated_ammo_count",
-          "order": 160,
+          "order": 161,
           "description": "The amount of ammo that inserters automatically insert into this ammo-turret or artillery-turret.",
           "subclasses": [
             "ArtilleryTurret",
@@ -12996,7 +12996,7 @@
         },
         {
           "name": "automatic_weapon_cycling",
-          "order": 209,
+          "order": 210,
           "description": "Whether this spider vehicle prototype automatically cycles weapons.",
           "subclasses": [
             "SpiderVehicle"
@@ -13013,7 +13013,7 @@
         },
         {
           "name": "beacon_counter",
-          "order": 123,
+          "order": 124,
           "description": "The beacon counter used by effect receiver when deciding which sample to take from beacon profile.",
           "subclasses": [
             "Beacon"
@@ -13036,7 +13036,7 @@
         },
         {
           "name": "belt_distance",
-          "order": 156,
+          "order": 157,
           "description": "",
           "subclasses": [
             "Loader"
@@ -13046,7 +13046,7 @@
         },
         {
           "name": "belt_length",
-          "order": 157,
+          "order": 158,
           "description": "",
           "subclasses": [
             "Loader"
@@ -13106,7 +13106,7 @@
         },
         {
           "name": "build_distance",
-          "order": 270,
+          "order": 271,
           "description": "",
           "subclasses": [
             "Character"
@@ -13150,7 +13150,7 @@
         },
         {
           "name": "call_for_help_radius",
-          "order": 167,
+          "order": 168,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -13160,7 +13160,7 @@
         },
         {
           "name": "can_open_gates",
-          "order": 184,
+          "order": 185,
           "description": "Whether this unit prototype can open gates.",
           "subclasses": [
             "Unit"
@@ -13170,7 +13170,7 @@
         },
         {
           "name": "captured_spawner_entity",
-          "order": 242,
+          "order": 243,
           "description": "",
           "subclasses": [
             "EnemySpawnerPrototype"
@@ -13180,7 +13180,7 @@
         },
         {
           "name": "chain_shooting_cooldown_modifier",
-          "order": 210,
+          "order": 211,
           "description": "The chain shooting cooldown modifier of this spider vehicle prototype.",
           "subclasses": [
             "SpiderVehicle"
@@ -13190,7 +13190,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 282,
+          "order": 283,
           "description": "",
           "subclasses": [
             "Character"
@@ -13200,7 +13200,7 @@
         },
         {
           "name": "chunk_exploration_radius",
-          "order": 211,
+          "order": 212,
           "description": "The chunk exploration radius of this vehicle prototype.",
           "subclasses": [
             "Vehicle"
@@ -13210,7 +13210,7 @@
         },
         {
           "name": "cliff_explosive_prototype",
-          "order": 175,
+          "order": 176,
           "description": "The item prototype name used to destroy this cliff.",
           "subclasses": [
             "Cliff"
@@ -13220,7 +13220,7 @@
         },
         {
           "name": "collection_box_offset",
-          "order": 292,
+          "order": 293,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13244,35 +13244,35 @@
         },
         {
           "name": "collision_mask_collides_with_self",
-          "order": 130,
+          "order": 131,
           "description": "Does this prototype collision mask collide with itself?",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "collision_mask_collides_with_tiles_only",
-          "order": 131,
+          "order": 132,
           "description": "Does this prototype collision mask collide with tiles only?",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "collision_mask_considers_tile_transitions",
-          "order": 132,
+          "order": 133,
           "description": "Does this prototype collision mask consider tile transitions?",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "color",
-          "order": 129,
+          "order": 130,
           "description": "The color of the prototype, if any.",
           "read_type": "Color",
           "optional": true
         },
         {
           "name": "connection_distance",
-          "order": 224,
+          "order": 225,
           "description": "",
           "subclasses": [
             "RollingStock"
@@ -13282,7 +13282,7 @@
         },
         {
           "name": "construction_radius",
-          "order": 146,
+          "order": 147,
           "description": "The construction radius for this roboport prototype.",
           "subclasses": [
             "Roboport"
@@ -13302,7 +13302,7 @@
         },
         {
           "name": "container_distance",
-          "order": 155,
+          "order": 156,
           "description": "",
           "subclasses": [
             "Loader"
@@ -13326,7 +13326,7 @@
         },
         {
           "name": "count_as_rock_for_filtered_deconstruction",
-          "order": 117,
+          "order": 118,
           "description": "If this simple-entity is counted as a rock for the deconstruction planner \"trees and rocks only\" filter.",
           "subclasses": [
             "SimpleEntity"
@@ -13354,7 +13354,7 @@
         },
         {
           "name": "crane_energy_usage",
-          "order": 217,
+          "order": 218,
           "description": "The crane energy usage of this agricultural tower prototype.",
           "subclasses": [
             "AgriculturalTower"
@@ -13364,7 +13364,7 @@
         },
         {
           "name": "create_ghost_on_death",
-          "order": 149,
+          "order": 150,
           "description": "If this prototype will attempt to create a ghost of itself on death.\n\nIf this is false then a ghost will never be made, if it's true a ghost may be made.",
           "read_type": "boolean",
           "optional": false
@@ -13479,7 +13479,7 @@
         },
         {
           "name": "damage_hit_tint",
-          "order": 281,
+          "order": 282,
           "description": "",
           "subclasses": [
             "Character"
@@ -13489,7 +13489,7 @@
         },
         {
           "name": "damaged_trigger_effect",
-          "order": 250,
+          "order": 251,
           "description": "",
           "subclasses": [
             "EntityWithHealth"
@@ -13502,7 +13502,7 @@
         },
         {
           "name": "darkness_for_all_lamps_off",
-          "order": 163,
+          "order": 164,
           "description": "Value between 0 and 1 darkness where all lamps of this lamp prototype are off.",
           "subclasses": [
             "Lamp"
@@ -13512,7 +13512,7 @@
         },
         {
           "name": "darkness_for_all_lamps_on",
-          "order": 162,
+          "order": 163,
           "description": "Value between 0 and 1 darkness where all lamps of this lamp prototype are on.",
           "subclasses": [
             "Lamp"
@@ -13522,7 +13522,7 @@
         },
         {
           "name": "deposit_radius",
-          "order": 293,
+          "order": 294,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13542,7 +13542,7 @@
         },
         {
           "name": "distraction_cooldown",
-          "order": 186,
+          "order": 187,
           "description": "The distraction cooldown of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -13553,7 +13553,7 @@
         },
         {
           "name": "distribution_effectivity",
-          "order": 120,
+          "order": 121,
           "description": "The distribution effectivity for this beacon prototype.",
           "subclasses": [
             "Beacon"
@@ -13563,7 +13563,7 @@
         },
         {
           "name": "distribution_effectivity_bonus_per_quality_level",
-          "order": 121,
+          "order": 122,
           "description": "The distribution effectivity bonus per quality level for this beacon prototype.",
           "subclasses": [
             "Beacon"
@@ -13573,7 +13573,7 @@
         },
         {
           "name": "door_opening_speed",
-          "order": 139,
+          "order": 140,
           "description": "The door opening speed for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -13600,7 +13600,7 @@
         },
         {
           "name": "drop_item_distance",
-          "order": 271,
+          "order": 272,
           "description": "",
           "subclasses": [
             "Character"
@@ -13610,7 +13610,7 @@
         },
         {
           "name": "dying_explosion",
-          "order": 248,
+          "order": 249,
           "description": "",
           "subclasses": [
             "EntityWithHealth"
@@ -13623,7 +13623,7 @@
         },
         {
           "name": "dying_speed",
-          "order": 214,
+          "order": 215,
           "description": "The dying time of this corpse prototype.",
           "subclasses": [
             "Corpse"
@@ -13633,7 +13633,7 @@
         },
         {
           "name": "dying_trigger_effect",
-          "order": 249,
+          "order": 250,
           "description": "",
           "subclasses": [
             "EntityWithHealth"
@@ -13646,7 +13646,7 @@
         },
         {
           "name": "effect_receiver",
-          "order": 192,
+          "order": 193,
           "description": "Effect receiver prototype of this crafting machine, lab, or mining drill.",
           "subclasses": [
             "CraftingMachine",
@@ -13694,7 +13694,7 @@
         },
         {
           "name": "energy_per_hit_point",
-          "order": 148,
+          "order": 149,
           "description": "The energy used per hit point taken for this vehicle during collisions.",
           "subclasses": [
             "Vehicle"
@@ -13731,7 +13731,7 @@
         },
         {
           "name": "energy_usage_quality_scaling",
-          "order": 288,
+          "order": 289,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13741,7 +13741,7 @@
         },
         {
           "name": "engine_starting_speed",
-          "order": 142,
+          "order": 143,
           "description": "The engine starting speed for this rocket silo rocket prototype.",
           "subclasses": [
             "RocketSiloRocket"
@@ -13751,7 +13751,7 @@
         },
         {
           "name": "enraged_duration",
-          "order": 257,
+          "order": 258,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -13761,7 +13761,7 @@
         },
         {
           "name": "enraged_speed",
-          "order": 261,
+          "order": 262,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -13771,7 +13771,7 @@
         },
         {
           "name": "enter_vehicle_distance",
-          "order": 276,
+          "order": 277,
           "description": "",
           "subclasses": [
             "Character"
@@ -13781,7 +13781,7 @@
         },
         {
           "name": "explosion_beam",
-          "order": 124,
+          "order": 125,
           "description": "Whether this explosion has a beam.",
           "subclasses": [
             "Explosion"
@@ -13791,7 +13791,7 @@
         },
         {
           "name": "explosion_rotate",
-          "order": 125,
+          "order": 126,
           "description": "Whether this explosion rotates.",
           "subclasses": [
             "Explosion"
@@ -13801,7 +13801,7 @@
         },
         {
           "name": "factoriopedia_alternative",
-          "order": 236,
+          "order": 237,
           "description": "An alternative prototype that will be used to display info about this prototype in Factoriopedia.",
           "read_type": "LuaEntityPrototype",
           "optional": true
@@ -13815,7 +13815,7 @@
         },
         {
           "name": "filter_count",
-          "order": 118,
+          "order": 119,
           "description": "The filter count of this inserter, loader, mining drill or logistic chest. For logistic containers, `nil` means no limit.",
           "subclasses": [
             "Inserter",
@@ -13841,7 +13841,7 @@
         },
         {
           "name": "fixed_recipe",
-          "order": 145,
+          "order": 146,
           "description": "The fixed recipe name for this assembling machine prototype, if any.",
           "subclasses": [
             "AssemblingMachine"
@@ -13902,7 +13902,7 @@
         },
         {
           "name": "fluidbox_prototypes",
-          "order": 153,
+          "order": 154,
           "description": "The fluidbox prototypes for this entity.",
           "read_type": {
             "complex_type": "array",
@@ -13912,7 +13912,7 @@
         },
         {
           "name": "flying_acceleration",
-          "order": 144,
+          "order": 145,
           "description": "The flying acceleration for this rocket silo rocket prototype.",
           "subclasses": [
             "RocketSiloRocket"
@@ -13922,7 +13922,7 @@
         },
         {
           "name": "flying_speed",
-          "order": 143,
+          "order": 144,
           "description": "The flying speed for this rocket silo rocket prototype.",
           "subclasses": [
             "RocketSiloRocket"
@@ -13949,14 +13949,14 @@
         },
         {
           "name": "grid_prototype",
-          "order": 197,
+          "order": 198,
           "description": "The equipment grid prototype for this entity, if any.",
           "read_type": "LuaEquipmentGridPrototype",
           "optional": true
         },
         {
           "name": "growth_area_radius",
-          "order": 230,
+          "order": 231,
           "description": "",
           "subclasses": [
             "AgriculturalTower"
@@ -13966,7 +13966,7 @@
         },
         {
           "name": "growth_grid_tile_size",
-          "order": 231,
+          "order": 232,
           "description": "",
           "subclasses": [
             "AgriculturalTower"
@@ -13976,7 +13976,7 @@
         },
         {
           "name": "growth_ticks",
-          "order": 227,
+          "order": 228,
           "description": "",
           "subclasses": [
             "Plant"
@@ -13997,7 +13997,7 @@
         },
         {
           "name": "harvest_emissions",
-          "order": 228,
+          "order": 229,
           "description": "A table of pollutants that this plant will release when it is harvested.",
           "subclasses": [
             "Plant"
@@ -14011,7 +14011,7 @@
         },
         {
           "name": "has_belt_immunity",
-          "order": 177,
+          "order": 178,
           "description": "Whether this unit, car, or character prototype has belt immunity.",
           "subclasses": [
             "Unit",
@@ -14023,7 +14023,7 @@
         },
         {
           "name": "head_collection_radius",
-          "order": 291,
+          "order": 292,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14054,14 +14054,14 @@
         },
         {
           "name": "heating_energy",
-          "order": 234,
+          "order": 235,
           "description": "The energy required to keep this entity from freezing. Zero energy means it doesn't freeze.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "height",
-          "order": 206,
+          "order": 207,
           "description": "The height of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -14072,7 +14072,7 @@
         },
         {
           "name": "held_items_display_count",
-          "order": 303,
+          "order": 304,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14082,16 +14082,6 @@
         },
         {
           "name": "held_items_offset",
-          "order": 301,
-          "description": "",
-          "subclasses": [
-            "AsteroidCollector"
-          ],
-          "read_type": "float",
-          "optional": true
-        },
-        {
-          "name": "held_items_spread",
           "order": 302,
           "description": "",
           "subclasses": [
@@ -14101,8 +14091,18 @@
           "optional": true
         },
         {
+          "name": "held_items_spread",
+          "order": 303,
+          "description": "",
+          "subclasses": [
+            "AsteroidCollector"
+          ],
+          "read_type": "float",
+          "optional": true
+        },
+        {
           "name": "hide_resistances",
-          "order": 252,
+          "order": 253,
           "description": "",
           "subclasses": [
             "EntityWithHealth"
@@ -14188,7 +14188,7 @@
         },
         {
           "name": "inserter_stack_size_bonus",
-          "order": 200,
+          "order": 201,
           "description": "The built-in stack size bonus of this inserter prototype.",
           "subclasses": [
             "Inserter"
@@ -14222,7 +14222,7 @@
         },
         {
           "name": "inventory_size_quality_increase",
-          "order": 284,
+          "order": 285,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14283,7 +14283,7 @@
         },
         {
           "name": "investigating_speed",
-          "order": 259,
+          "order": 260,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -14293,7 +14293,7 @@
         },
         {
           "name": "is_building",
-          "order": 159,
+          "order": 160,
           "description": "",
           "lists": [
             "These are the objects that are considered buildings:\n\n- AccumulatorPrototype\n- AgriculturalTowerPrototype\n- ArtilleryTurretPrototype\n- AsteroidCollectorPrototype\n- BeaconPrototype\n- BoilerPrototype\n- BurnerGeneratorPrototype\n- CargoBayPrototype\n- CargoLandingPadPrototype\n- CombinatorPrototype → ArithmeticCombinator, DeciderCombinator, SelectorCombinator\n- ConstantCombinatorPrototype\n- ContainerPrototype → LogisticContainer, InfinityContainer, TemporaryContainer\n- CraftingMachinePrototype → AssemblingMachine, RocketSilo, Furnace\n- DisplayPanelPrototype\n- ElectricEnergyInterfacePrototype\n- ElectricPolePrototype\n- EnemySpawnerPrototype\n- FusionGeneratorPrototype\n- FusionReactorPrototype\n- GatePrototype\n- GeneratorPrototype\n- HeatInterfacePrototype\n- HeatPipePrototype\n- InserterPrototype\n- LabPrototype\n- LampPrototype\n- LightningAttractorPrototype\n- LinkedContainerPrototype\n- MarketPrototype\n- MiningDrillPrototype\n- OffshorePumpPrototype\n- PipePrototype → InfinityPipe\n- PipeToGroundPrototype\n- PowerSwitchPrototype\n- ProgrammableSpeakerPrototype\n- ProxyContainerPrototype\n- PumpPrototype\n- RadarPrototype\n- RailPrototype → CurvedRailA, ElevatedCurvedRailA, CurvedRailB, ElevatedCurvedRailB, HalfDiagonalRail, ElevatedHalfDiagonalRail, LegacyCurvedRail, LegacyStraightRail, RailRamp, StraightRail, ElevatedStraightRail\n- RailSignalBasePrototype → RailChainSignal, RailSignal\n- RailSupportPrototype\n- ReactorPrototype\n- RoboportPrototype\n- SimpleEntityPrototype\n- SimpleEntityWithOwnerPrototype → SimpleEntityWithForce\n- SolarPanelPrototype\n- SpacePlatformHubPrototype\n- StorageTankPrototype\n- ThrusterPrototype\n- TrainStopPrototype\n- TransportBeltConnectablePrototype → LaneSplitter, LinkedBelt, Loader1x1, Loader1x2, Splitter, TransportBelt, UndergroundBelt\n- TurretPrototype → AmmoTurret, ElectricTurret, FluidTurret\n- ValvePrototype\n- WallPrototype"
@@ -14303,14 +14303,14 @@
         },
         {
           "name": "is_entity_with_owner",
-          "order": 202,
+          "order": 203,
           "description": "True if this is entity-with-owner",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_military_target",
-          "order": 203,
+          "order": 204,
           "description": "True if this entity-with-owner is military target",
           "subclasses": [
             "EntityWithOwner"
@@ -14320,7 +14320,7 @@
         },
         {
           "name": "item_pickup_distance",
-          "order": 274,
+          "order": 275,
           "description": "",
           "subclasses": [
             "Character"
@@ -14340,7 +14340,7 @@
         },
         {
           "name": "joint_distance",
-          "order": 225,
+          "order": 226,
           "description": "",
           "subclasses": [
             "RollingStock"
@@ -14350,7 +14350,7 @@
         },
         {
           "name": "lab_inputs",
-          "order": 190,
+          "order": 191,
           "description": "The item prototype names that are the inputs of this lab prototype.",
           "subclasses": [
             "Lab"
@@ -14363,7 +14363,7 @@
         },
         {
           "name": "lamp_energy_usage",
-          "order": 216,
+          "order": 217,
           "description": "The lamp energy usage of this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -14373,7 +14373,7 @@
         },
         {
           "name": "launch_to_space_platforms",
-          "order": 140,
+          "order": 141,
           "description": "",
           "subclasses": [
             "RocketSilo"
@@ -14383,7 +14383,7 @@
         },
         {
           "name": "launch_wait_time",
-          "order": 137,
+          "order": 138,
           "description": "The rocket launch delay for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -14393,7 +14393,7 @@
         },
         {
           "name": "light_blinking_speed",
-          "order": 138,
+          "order": 139,
           "description": "The light blinking speed for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -14419,6 +14419,16 @@
             "Loader"
           ],
           "read_type": "uint8",
+          "optional": true
+        },
+        {
+          "name": "loader_respect_insert_limits",
+          "order": 117,
+          "description": "",
+          "subclasses": [
+            "Loader"
+          ],
+          "read_type": "boolean",
           "optional": true
         },
         {
@@ -14472,7 +14482,7 @@
         },
         {
           "name": "logistic_parameters",
-          "order": 205,
+          "order": 206,
           "description": "The logistic parameters for this roboport.",
           "subclasses": [
             "Roboport"
@@ -14598,7 +14608,7 @@
         },
         {
           "name": "logistic_radius",
-          "order": 147,
+          "order": 148,
           "description": "The logistic radius for this roboport prototype.",
           "subclasses": [
             "Roboport"
@@ -14621,7 +14631,7 @@
         },
         {
           "name": "loot_pickup_distance",
-          "order": 275,
+          "order": 276,
           "description": "",
           "subclasses": [
             "Character"
@@ -14631,7 +14641,7 @@
         },
         {
           "name": "manual_range_modifier",
-          "order": 213,
+          "order": 214,
           "description": "The manual range modifier for this artillery turret or wagon prototype.",
           "subclasses": [
             "ArtilleryWagon",
@@ -14656,7 +14666,7 @@
         },
         {
           "name": "max_count_of_owned_defensive_units",
-          "order": 169,
+          "order": 170,
           "description": "Count of defensive enemies this spawner can sustain.",
           "subclasses": [
             "Spawner"
@@ -14666,7 +14676,7 @@
         },
         {
           "name": "max_count_of_owned_units",
-          "order": 168,
+          "order": 169,
           "description": "Count of enemies this spawner can sustain.",
           "subclasses": [
             "Spawner"
@@ -14676,7 +14686,7 @@
         },
         {
           "name": "max_darkness_to_spawn",
-          "order": 166,
+          "order": 167,
           "description": "The maximum darkness at which this unit spawner can spawn entities.",
           "subclasses": [
             "Spawner"
@@ -14686,7 +14696,7 @@
         },
         {
           "name": "max_defensive_friends_around_to_spawn",
-          "order": 171,
+          "order": 172,
           "description": "How many defensive friendly units are required within the spawning_radius of this spawner for it to stop producing more units.",
           "subclasses": [
             "Spawner"
@@ -14696,7 +14706,7 @@
         },
         {
           "name": "max_friends_around_to_spawn",
-          "order": 170,
+          "order": 171,
           "description": "How many friendly units are required within the spawning_radius of this spawner for it to stop producing more units.",
           "subclasses": [
             "Spawner"
@@ -14726,7 +14736,7 @@
         },
         {
           "name": "max_performance",
-          "order": 244,
+          "order": 245,
           "description": "",
           "subclasses": [
             "ThrusterPrototype"
@@ -14757,7 +14767,7 @@
         },
         {
           "name": "max_pursue_distance",
-          "order": 181,
+          "order": 182,
           "description": "The maximum pursue distance of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -14768,7 +14778,7 @@
         },
         {
           "name": "max_speed",
-          "order": 161,
+          "order": 162,
           "description": "The max speed of this projectile or flying robot prototype.",
           "subclasses": [
             "Projectile",
@@ -14800,7 +14810,7 @@
         },
         {
           "name": "maximum_corner_sliding_distance",
-          "order": 269,
+          "order": 270,
           "description": "",
           "subclasses": [
             "Character"
@@ -14820,7 +14830,7 @@
         },
         {
           "name": "min_darkness_to_spawn",
-          "order": 165,
+          "order": 166,
           "description": "The minimum darkness at which this unit spawner can spawn entities.",
           "subclasses": [
             "Spawner"
@@ -14830,7 +14840,7 @@
         },
         {
           "name": "min_performance",
-          "order": 243,
+          "order": 244,
           "description": "",
           "subclasses": [
             "ThrusterPrototype"
@@ -14840,7 +14850,7 @@
         },
         {
           "name": "min_pursue_time",
-          "order": 180,
+          "order": 181,
           "description": "The minimum pursue time of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -14868,7 +14878,7 @@
         },
         {
           "name": "minimal_arm_swing_segment_retraction",
-          "order": 300,
+          "order": 301,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14916,7 +14926,7 @@
         },
         {
           "name": "move_while_shooting",
-          "order": 183,
+          "order": 184,
           "description": "Whether this unit prototype can move while shooting.",
           "subclasses": [
             "Unit"
@@ -14926,7 +14936,7 @@
         },
         {
           "name": "neighbour_bonus",
-          "order": 154,
+          "order": 155,
           "description": "",
           "subclasses": [
             "Reactor",
@@ -14937,7 +14947,7 @@
         },
         {
           "name": "neighbour_connectable",
-          "order": 254,
+          "order": 255,
           "description": "",
           "subclasses": [
             "FusionReactor"
@@ -14964,14 +14974,14 @@
         },
         {
           "name": "object_name",
-          "order": 306,
+          "order": 307,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "overkill_fraction",
-          "order": 247,
+          "order": 248,
           "description": "",
           "subclasses": [
             "EntityWithHealth"
@@ -14981,7 +14991,7 @@
         },
         {
           "name": "passive_energy_usage",
-          "order": 285,
+          "order": 286,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14991,7 +15001,7 @@
         },
         {
           "name": "patrolling_speed",
-          "order": 258,
+          "order": 259,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15001,7 +15011,7 @@
         },
         {
           "name": "patrolling_turn_radius",
-          "order": 264,
+          "order": 265,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15011,7 +15021,7 @@
         },
         {
           "name": "per_lane_filters",
-          "order": 158,
+          "order": 159,
           "description": "",
           "subclasses": [
             "Loader"
@@ -15021,7 +15031,7 @@
         },
         {
           "name": "perceived_performance",
-          "order": 246,
+          "order": 247,
           "description": "",
           "subclasses": [
             "FusionReactor"
@@ -15031,7 +15041,7 @@
         },
         {
           "name": "profile",
-          "order": 122,
+          "order": 123,
           "description": "The beacon profile: extra multiplier applied to the effects received from beacon by the effect receiver based on amount of beacons that reach that effect receiver",
           "subclasses": [
             "Beacon"
@@ -15044,7 +15054,7 @@
         },
         {
           "name": "protected_from_tile_building",
-          "order": 201,
+          "order": 202,
           "description": "True if this entity prototype should be included during tile collision checks with [LuaTilePrototype::check_collision_with_entities](runtime:LuaTilePrototype::check_collision_with_entities) enabled.",
           "read_type": "boolean",
           "optional": false
@@ -15085,7 +15095,7 @@
         },
         {
           "name": "radar_range",
-          "order": 182,
+          "order": 183,
           "description": "The radar range of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -15096,21 +15106,21 @@
         },
         {
           "name": "radius",
-          "order": 174,
+          "order": 175,
           "description": "The radius of this entity prototype.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "radius_visualisation_specification",
-          "order": 226,
+          "order": 227,
           "description": "",
           "read_type": "RadiusVisualisationSpecification",
           "optional": true
         },
         {
           "name": "random_corpse_variation",
-          "order": 253,
+          "order": 254,
           "description": "",
           "subclasses": [
             "EntityWithHealth"
@@ -15120,7 +15130,7 @@
         },
         {
           "name": "reach_distance",
-          "order": 272,
+          "order": 273,
           "description": "",
           "subclasses": [
             "Character"
@@ -15130,7 +15140,7 @@
         },
         {
           "name": "reach_resource_distance",
-          "order": 273,
+          "order": 274,
           "description": "",
           "subclasses": [
             "Character"
@@ -15140,7 +15150,7 @@
         },
         {
           "name": "related_underground_belt",
-          "order": 199,
+          "order": 200,
           "description": "",
           "subclasses": [
             "TransportBelt"
@@ -15160,7 +15170,7 @@
         },
         {
           "name": "remove_decoratives",
-          "order": 198,
+          "order": 199,
           "description": "Whether this entity should remove decoratives that collide with it when this entity is built.",
           "read_type": {
             "complex_type": "union",
@@ -15246,7 +15256,7 @@
         },
         {
           "name": "respawn_time",
-          "order": 280,
+          "order": 281,
           "description": "",
           "subclasses": [
             "Character"
@@ -15279,7 +15289,7 @@
         },
         {
           "name": "rewire_neighbours_when_destroying",
-          "order": 237,
+          "order": 238,
           "description": "",
           "subclasses": [
             "ElectricPole"
@@ -15289,7 +15299,7 @@
         },
         {
           "name": "rising_speed",
-          "order": 141,
+          "order": 142,
           "description": "The rising speed for this rocket silo rocket prototype.",
           "subclasses": [
             "RocketSiloRocket"
@@ -15299,7 +15309,7 @@
         },
         {
           "name": "rocket_entity_prototype",
-          "order": 176,
+          "order": 177,
           "description": "The rocket entity prototype associated with this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -15309,7 +15319,7 @@
         },
         {
           "name": "rocket_parts_required",
-          "order": 135,
+          "order": 136,
           "description": "The rocket parts required for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -15319,7 +15329,7 @@
         },
         {
           "name": "rocket_rising_delay",
-          "order": 136,
+          "order": 137,
           "description": "The rocket rising delay for this rocket silo prototype.",
           "subclasses": [
             "RocketSilo"
@@ -15349,7 +15359,7 @@
         },
         {
           "name": "running_speed",
-          "order": 268,
+          "order": 269,
           "description": "The movement speed of this character prototype.",
           "subclasses": [
             "Character"
@@ -15369,7 +15379,7 @@
         },
         {
           "name": "science_pack_drain_rate_percent",
-          "order": 191,
+          "order": 192,
           "description": "How much science pack durability is required to research one science point.",
           "subclasses": [
             "Lab"
@@ -15386,7 +15396,7 @@
         },
         {
           "name": "segment_engine",
-          "order": 267,
+          "order": 268,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15424,16 +15434,6 @@
         },
         {
           "name": "solar_panel_performance_at_day",
-          "order": 238,
-          "description": "",
-          "subclasses": [
-            "SolarPanel"
-          ],
-          "read_type": "double",
-          "optional": false
-        },
-        {
-          "name": "solar_panel_performance_at_night",
           "order": 239,
           "description": "",
           "subclasses": [
@@ -15443,8 +15443,18 @@
           "optional": false
         },
         {
-          "name": "solar_panel_solar_coefficient_property",
+          "name": "solar_panel_performance_at_night",
           "order": 240,
+          "description": "",
+          "subclasses": [
+            "SolarPanel"
+          ],
+          "read_type": "double",
+          "optional": false
+        },
+        {
+          "name": "solar_panel_solar_coefficient_property",
+          "order": 241,
           "description": "",
           "subclasses": [
             "SolarPanel"
@@ -15482,7 +15492,7 @@
         },
         {
           "name": "spawn_decoration",
-          "order": 222,
+          "order": 223,
           "description": "",
           "subclasses": [
             "Spawner",
@@ -15496,7 +15506,7 @@
         },
         {
           "name": "spawn_decorations_on_expansion",
-          "order": 223,
+          "order": 224,
           "description": "",
           "subclasses": [
             "Spawner",
@@ -15507,7 +15517,7 @@
         },
         {
           "name": "spawning_radius",
-          "order": 172,
+          "order": 173,
           "description": "How far from the spawner can the units be spawned.",
           "subclasses": [
             "Spawner"
@@ -15517,7 +15527,7 @@
         },
         {
           "name": "spawning_spacing",
-          "order": 173,
+          "order": 174,
           "description": "What spaces should be between the spawned units.",
           "subclasses": [
             "Spawner"
@@ -15527,7 +15537,7 @@
         },
         {
           "name": "spawning_time_modifier",
-          "order": 187,
+          "order": 188,
           "description": "The spawning time modifier of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -15567,14 +15577,14 @@
         },
         {
           "name": "supports_direction",
-          "order": 194,
+          "order": 195,
           "description": "Whether this entity prototype could possibly ever be rotated.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "surface_conditions",
-          "order": 233,
+          "order": 234,
           "description": "The surface conditions required to build this entity.",
           "read_type": {
             "complex_type": "array",
@@ -15605,7 +15615,7 @@
         },
         {
           "name": "terrain_friction_modifier",
-          "order": 195,
+          "order": 196,
           "description": "The terrain friction modifier for this vehicle.",
           "subclasses": [
             "Vehicle"
@@ -15615,7 +15625,7 @@
         },
         {
           "name": "territory_radius",
-          "order": 256,
+          "order": 257,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15625,7 +15635,7 @@
         },
         {
           "name": "tether_size",
-          "order": 298,
+          "order": 299,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -15635,7 +15645,7 @@
         },
         {
           "name": "ticks_per_scan",
-          "order": 266,
+          "order": 267,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15645,26 +15655,6 @@
         },
         {
           "name": "ticks_to_keep_aiming_direction",
-          "order": 278,
-          "description": "",
-          "subclasses": [
-            "Character"
-          ],
-          "read_type": "uint",
-          "optional": true
-        },
-        {
-          "name": "ticks_to_keep_gun",
-          "order": 277,
-          "description": "",
-          "subclasses": [
-            "Character"
-          ],
-          "read_type": "uint",
-          "optional": true
-        },
-        {
-          "name": "ticks_to_stay_in_combat",
           "order": 279,
           "description": "",
           "subclasses": [
@@ -15674,8 +15664,28 @@
           "optional": true
         },
         {
+          "name": "ticks_to_keep_gun",
+          "order": 278,
+          "description": "",
+          "subclasses": [
+            "Character"
+          ],
+          "read_type": "uint",
+          "optional": true
+        },
+        {
+          "name": "ticks_to_stay_in_combat",
+          "order": 280,
+          "description": "",
+          "subclasses": [
+            "Character"
+          ],
+          "read_type": "uint",
+          "optional": true
+        },
+        {
           "name": "tile_buildability_rules",
-          "order": 255,
+          "order": 256,
           "description": "The tile buildability rules of this entity prototype.",
           "read_type": {
             "complex_type": "array",
@@ -15685,28 +15695,28 @@
         },
         {
           "name": "tile_height",
-          "order": 220,
+          "order": 221,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "tile_width",
-          "order": 219,
+          "order": 220,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension)",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "time_to_live",
-          "order": 119,
+          "order": 120,
           "description": "The time to live for this prototype or `0` if prototype doesn't have time_to_live or time_before_removed.",
           "read_type": "uint",
           "optional": false
         },
         {
           "name": "timeout",
-          "order": 151,
+          "order": 152,
           "description": "The time it takes this land mine to arm.",
           "subclasses": [
             "LandMine"
@@ -15716,7 +15726,7 @@
         },
         {
           "name": "torso_bob_speed",
-          "order": 208,
+          "order": 209,
           "description": "The torso bob speed of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -15727,7 +15737,7 @@
         },
         {
           "name": "torso_rotation_speed",
-          "order": 207,
+          "order": 208,
           "description": "The torso rotation speed of this spider vehicle prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -15738,7 +15748,7 @@
         },
         {
           "name": "tree_color_count",
-          "order": 126,
+          "order": 127,
           "description": "If it is a tree, return the number of colors it supports.",
           "subclasses": [
             "Tree"
@@ -15748,7 +15758,7 @@
         },
         {
           "name": "trigger_collision_mask",
-          "order": 152,
+          "order": 153,
           "description": "The collision mask entities must collide with to make this landmine blow up.",
           "subclasses": [
             "LandMine"
@@ -15769,7 +15779,7 @@
         },
         {
           "name": "turn_radius",
-          "order": 263,
+          "order": 264,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15779,7 +15789,7 @@
         },
         {
           "name": "turn_smoothing",
-          "order": 265,
+          "order": 266,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15809,7 +15819,7 @@
         },
         {
           "name": "two_direction_only",
-          "order": 245,
+          "order": 246,
           "description": "",
           "subclasses": [
             "FusionReactor"
@@ -15819,7 +15829,7 @@
         },
         {
           "name": "unpowered_arm_speed_scale",
-          "order": 299,
+          "order": 300,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -15855,7 +15865,7 @@
         },
         {
           "name": "use_exact_mode",
-          "order": 218,
+          "order": 219,
           "description": "Whether this logistic container prototype uses exact mode",
           "subclasses": [
             "LogisticContainer"
@@ -15885,7 +15895,7 @@
         },
         {
           "name": "valid",
-          "order": 305,
+          "order": 306,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -15912,7 +15922,7 @@
         },
         {
           "name": "vector_to_place_result",
-          "order": 232,
+          "order": 233,
           "description": "",
           "subclasses": [
             "MiningDrill",
@@ -15923,7 +15933,7 @@
         },
         {
           "name": "vertical_selection_shift",
-          "order": 221,
+          "order": 222,
           "description": "Vertical selection shift used by rolling stocks. It affects selection box vertical position but is also used to shift rolling stock graphics along the rails to fine tune train's look.",
           "subclasses": [
             "RollingStock"
@@ -15933,7 +15943,7 @@
         },
         {
           "name": "vision_distance",
-          "order": 178,
+          "order": 179,
           "description": "The vision distance of this unit prototype.",
           "subclasses": [
             "SpiderUnit",
@@ -18058,7 +18068,7 @@
           "name": "render_layer",
           "order": 9,
           "description": "The render layer.",
-          "read_type": "string",
+          "read_type": "RenderLayer",
           "optional": false
         },
         {
@@ -84613,8 +84623,8 @@
               {
                 "name": "quality_source_static",
                 "order": 1,
-                "description": "Defaults to normal quality.",
-                "type": "QualityID",
+                "description": "The name of the quality prototype. Defaults to `\"normal\"`.",
+                "type": "string",
                 "optional": true
               },
               {
@@ -84649,7 +84659,7 @@
                 "name": "index_constant",
                 "order": 2,
                 "description": "The signal index to use if not using a specific `index_signal`. Defaults to `0`.",
-                "type": "uint",
+                "type": "int",
                 "optional": true
               },
               {

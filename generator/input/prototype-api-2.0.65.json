@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.64",
+  "application_version": "2.0.65",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -6176,7 +6176,7 @@
         {
           "name": "direction_shuffle",
           "order": 31,
-          "description": "An array of arrays of integers. The inner arrays are called \"groups\" and must all have the same size.",
+          "description": "May not be an empty array. May not be used if there is no `animation` defined.\n\nThe inner arrays are called \"groups\" and must all have the same size.\n\nThe indices map to the directions of `animation` and they are 1-indexed. After the `shuffle_directions_at_frame` frame of the `animation`, these indices are used as the direction when choosing which frame to render. The chosen shuffled direction can be any direction in the same group as the non-shuffled direction. Which direction is chosen from the group depends on the shuffle variation which is `dying_graphics_variation % group_size`.",
           "override": false,
           "type": {
             "complex_type": "array",
@@ -6185,7 +6185,8 @@
               "value": "uint16"
             }
           },
-          "optional": true
+          "optional": true,
+          "default": "No direction shuffle"
         },
         {
           "name": "dying_speed",
@@ -6334,7 +6335,7 @@
         {
           "name": "shuffle_directions_at_frame",
           "order": 14,
-          "description": "",
+          "description": "Defines after which frame in the `animation` the `direction_shuffle` should be applied. Can be set to `0`, frames are 1-indexed.",
           "override": false,
           "type": "uint8",
           "optional": true,
@@ -8913,7 +8914,7 @@
       "properties": [
         {
           "name": "additional_pastable_entities",
-          "order": 45,
+          "order": 46,
           "description": "Names of the entity prototypes this entity prototype can be pasted on to in addition to the standard supported types.\n\nThis is used to allow copying between types that aren't compatible on the C++ code side, by allowing mods to receive the [on_entity_settings_pasted](runtime:on_entity_settings_pasted) event for the given entity and do the setting pasting via script.",
           "examples": [
             "```\nadditional_pastable_entities = {\"steel-chest\", \"iron-chest\"}\n```"
@@ -8927,7 +8928,7 @@
         },
         {
           "name": "alert_icon_scale",
-          "order": 36,
+          "order": 37,
           "description": "",
           "override": false,
           "type": "float",
@@ -8935,7 +8936,7 @@
         },
         {
           "name": "alert_icon_shift",
-          "order": 35,
+          "order": 36,
           "description": "",
           "override": false,
           "type": "Vector",
@@ -8943,7 +8944,7 @@
         },
         {
           "name": "allow_copy_paste",
-          "order": 41,
+          "order": 42,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -8955,7 +8956,7 @@
         },
         {
           "name": "ambient_sounds",
-          "order": 55,
+          "order": 56,
           "description": "",
           "override": false,
           "type": {
@@ -8973,7 +8974,7 @@
         },
         {
           "name": "ambient_sounds_group",
-          "order": 54,
+          "order": 55,
           "description": "",
           "override": false,
           "type": "EntityID",
@@ -8981,7 +8982,7 @@
         },
         {
           "name": "autoplace",
-          "order": 49,
+          "order": 50,
           "description": "Used to specify the rules for placing this entity during map generation.",
           "override": false,
           "type": "AutoplaceSpecification",
@@ -8990,7 +8991,7 @@
         },
         {
           "name": "build_base_evolution_requirement",
-          "order": 34,
+          "order": 35,
           "description": "",
           "override": false,
           "type": "double",
@@ -9075,11 +9076,23 @@
         },
         {
           "name": "diagonal_tile_grid_size",
-          "order": 48,
+          "order": 49,
           "description": "",
           "override": false,
           "type": "TilePosition",
           "optional": true
+        },
+        {
+          "name": "draw_stateless_visualisations_in_ghost",
+          "order": 34,
+          "description": "",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
         },
         {
           "name": "drawing_box_vertical_extension",
@@ -9110,7 +9123,7 @@
         },
         {
           "name": "enemy_map_color",
-          "order": 52,
+          "order": 53,
           "description": "",
           "override": false,
           "type": "Color",
@@ -9118,7 +9131,7 @@
         },
         {
           "name": "fast_replaceable_group",
-          "order": 37,
+          "order": 38,
           "description": "This allows you to replace an entity that's already placed, with a different one in your inventory. For example, replacing a burner inserter with a fast inserter. The replacement entity can be a different rotation to the replaced entity and you can replace an entity with the same type.\n\nThis is simply a string, so any string can be used here. The entity that should be replaced simply has to use the same string here.",
           "override": false,
           "type": "string",
@@ -9138,7 +9151,7 @@
         },
         {
           "name": "friendly_map_color",
-          "order": 51,
+          "order": 52,
           "description": "",
           "override": false,
           "type": "Color",
@@ -9146,7 +9159,7 @@
         },
         {
           "name": "heating_energy",
-          "order": 40,
+          "order": 41,
           "description": "This entity can freeze if heating_energy is larger than zero.",
           "visibility": [
             "space_age"
@@ -9181,7 +9194,7 @@
         },
         {
           "name": "icon_draw_specification",
-          "order": 56,
+          "order": 57,
           "description": "Used to specify where and how should be the alt-mode icons of entities should be drawn.",
           "examples": [
             "```\nicon_draw_specification = {shift = {0, 0.5}, scale = 0.75, scale_for_many = 0.5, render_layer = \"entity-info-icon\"}\n```"
@@ -9215,7 +9228,7 @@
         },
         {
           "name": "icons_positioning",
-          "order": 57,
+          "order": 58,
           "description": "",
           "examples": [
             "```\nicons_positioning =\n{\n  {inventory_index = defines.inventory.lab_modules, shift = {0, 0.9}},\n  {inventory_index = defines.inventory.lab_input, shift = {0, 0.0}, max_icons_per_row = 6, separation_multiplier = 0.9}\n}\n```"
@@ -9241,7 +9254,7 @@
         },
         {
           "name": "map_color",
-          "order": 50,
+          "order": 51,
           "description": "",
           "override": false,
           "type": "Color",
@@ -9286,7 +9299,7 @@
         },
         {
           "name": "next_upgrade",
-          "order": 38,
+          "order": 39,
           "description": "Name of the entity that will be automatically selected as the upgrade of this entity when using the [upgrade planner](https://wiki.factorio.com/Upgrade_planner) without configuration.\n\nThis entity may not have \"not-upgradable\" flag set and must be minable. This entity mining result must not contain item product with \"hidden\" flag set. Mining results with no item products are allowed. This entity may not be a [RollingStockPrototype](prototype:RollingStockPrototype).\n\nThe upgrade target entity needs to have the same bounding box, collision mask, and fast replaceable group as this entity. The upgrade target entity must have least 1 item that builds it that isn't hidden.",
           "examples": [
             "```\nnext_upgrade = \"fast-inserter\"\n```"
@@ -9305,7 +9318,7 @@
         },
         {
           "name": "order",
-          "order": 58,
+          "order": 59,
           "description": "Used to order prototypes in inventory, recipes and GUIs. May not exceed a length of 200 characters.\n\nThe order string is taken from the items in `placeable_by` if they exist, or from an item that has its [place_result](prototype:ItemPrototype::place_result) set to this entity.",
           "override": true,
           "type": "Order",
@@ -9313,7 +9326,7 @@
         },
         {
           "name": "placeable_by",
-          "order": 43,
+          "order": 44,
           "description": "Item that when placed creates this entity. Determines which item is picked when \"Q\" (smart pipette) is used on this entity. Determines which item and item amount is needed in a blueprint of this entity and to revive a ghost of this entity.\n\nThe item count specified here can't be larger than the stack size of that item.",
           "examples": [
             "```\nplaceable_by = {item = \"rail\", count = 4}\n```"
@@ -9342,7 +9355,7 @@
         },
         {
           "name": "protected_from_tile_building",
-          "order": 39,
+          "order": 40,
           "description": "When this is true, this entity prototype should be included during tile collision checks with tiles that have [TilePrototype::check_collision_with_entities](prototype:TilePrototype::check_collision_with_entities) set to true.",
           "override": false,
           "type": "boolean",
@@ -9362,7 +9375,7 @@
         },
         {
           "name": "remains_when_mined",
-          "order": 44,
+          "order": 45,
           "description": "The entity that remains when this one is mined, deconstructed or fast-replaced. The entity wont actually be spawned if it would collide with the entity that is in the process of being mined.",
           "override": false,
           "type": {
@@ -9417,7 +9430,7 @@
         },
         {
           "name": "selectable_in_game",
-          "order": 42,
+          "order": 43,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -9506,7 +9519,7 @@
         },
         {
           "name": "tile_height",
-          "order": 47,
+          "order": 48,
           "description": "",
           "override": false,
           "type": "int32",
@@ -9515,7 +9528,7 @@
         },
         {
           "name": "tile_width",
-          "order": 46,
+          "order": 47,
           "description": "Used to determine how the center of the entity should be positioned when building (unless the off-grid [flag](prototype:EntityPrototypeFlags) is specified).\n\nWhen the tile width is odd, the center will be in the center of the tile, when it is even, the center is on the tile transition.",
           "override": false,
           "type": "int32",
@@ -9532,7 +9545,7 @@
         },
         {
           "name": "water_reflection",
-          "order": 53,
+          "order": 54,
           "description": "May also be defined inside `graphics_set` instead of directly in the entity prototype. This is useful for entities that use a `graphics_set` property to define their graphics, because then all graphics can be defined in one place.\n\n[Currently only renders](https://forums.factorio.com/100703) for [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype) and [CorpsePrototype](prototype:CorpsePrototype).",
           "override": false,
           "type": "WaterReflectionDefinition",
@@ -15656,7 +15669,7 @@
         },
         {
           "name": "belt_length",
-          "order": 11,
+          "order": 12,
           "description": "How long this loader's belt is. Should be the same as belt_distance, which is hardcoded to `0.5` for [Loader1x2Prototype](prototype:Loader1x2Prototype) and to 0 for [Loader1x1Prototype](prototype:Loader1x1Prototype). See the linked prototypes for an explanation of belt_distance.",
           "override": false,
           "type": "double",
@@ -15668,7 +15681,7 @@
         },
         {
           "name": "circuit_connector",
-          "order": 17,
+          "order": 18,
           "description": "First the four cardinal directions for `direction_out`, followed by the four directions for `direction_in`.",
           "override": false,
           "type": {
@@ -15691,7 +15704,7 @@
         },
         {
           "name": "circuit_wire_max_distance",
-          "order": 14,
+          "order": 15,
           "description": "The maximum circuit wire distance for this entity.",
           "override": false,
           "type": "double",
@@ -15715,7 +15728,7 @@
         },
         {
           "name": "draw_circuit_wires",
-          "order": 16,
+          "order": 17,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -15727,7 +15740,7 @@
         },
         {
           "name": "draw_copper_wires",
-          "order": 15,
+          "order": 16,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -15739,7 +15752,7 @@
         },
         {
           "name": "energy_per_item",
-          "order": 13,
+          "order": 14,
           "description": "Energy in Joules. Can't be negative.",
           "override": false,
           "type": "Energy",
@@ -15751,7 +15764,7 @@
         },
         {
           "name": "energy_source",
-          "order": 12,
+          "order": 13,
           "description": "",
           "override": false,
           "type": {
@@ -15793,6 +15806,18 @@
           "name": "per_lane_filters",
           "order": 7,
           "description": "If filters are per lane. Can only be set to true if filter_count is equal to 2.",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
+          "name": "respect_insert_limits",
+          "order": 11,
+          "description": "",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -19291,7 +19316,7 @@
         {
           "name": "tool_durability_multiplier",
           "order": 20,
-          "description": "Must be >= 0.01.",
+          "description": "Must be >= 0.01.\n\nAffects the durability of [tool items](prototype:ToolPrototype) like science packs, repair tools and armor.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -29742,7 +29767,7 @@
         {
           "name": "scenario",
           "order": 0,
-          "description": "Name of the folder for this tutorial scenario in the [`tutorials` folder](https://wiki.factorio.com/Tutorial:Mod_structure#Subfolders).",
+          "description": "Name of the folder for this tutorial scenario in the [`tutorials` folder](runtime:mod-structure).",
           "override": false,
           "type": "string",
           "optional": false
@@ -55112,7 +55137,7 @@
         {
           "name": "fluid_input_graphics",
           "order": 3,
-          "description": "",
+          "description": "The amount of items in this array has to match the amount of [input fluid connections](prototype:FusionGeneratorPrototype::input_fluid_box). Empty tables can be used as items to fulfill this requirement without defining graphics.",
           "override": false,
           "type": {
             "complex_type": "array",
@@ -56734,7 +56759,7 @@
         {
           "name": "emissions_per_minute",
           "order": 13,
-          "description": "Heat energy sources do not support producing pollution.",
+          "description": "",
           "override": true,
           "type": {
             "complex_type": "dictionary",
@@ -77350,7 +77375,7 @@
           "override": false,
           "type": "CollisionMaskConnector",
           "optional": true,
-          "default": "No masks"
+          "default": "Any mask"
         }
       ]
     },
