@@ -2,10 +2,7 @@ name: Check code
 
 on:
   pull_request:
-    branches: ["main"]
   push:
-    branches: ["main"]
-
 jobs:
   check-lint-and-format:
     runs-on: ubuntu-latest
