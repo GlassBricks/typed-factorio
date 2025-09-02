@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.65",
+  "application_version": "2.0.66",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -4757,7 +4757,7 @@
       "properties": [
         {
           "name": "animations",
-          "order": 22,
+          "order": 21,
           "description": "",
           "override": false,
           "type": {
@@ -4768,7 +4768,7 @@
         },
         {
           "name": "build_distance",
-          "order": 9,
+          "order": 8,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -4776,7 +4776,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 32,
+          "order": 31,
           "description": "Name of the character corpse that is spawned when this character dies.",
           "override": false,
           "type": "EntityID",
@@ -4784,7 +4784,7 @@
         },
         {
           "name": "crafting_categories",
-          "order": 23,
+          "order": 22,
           "description": "Names of the crafting categories the character can craft recipes from. The built-in categories can be found [here](https://wiki.factorio.com/Data.raw#recipe-category). See also [RecipeCategory](prototype:RecipeCategory).",
           "override": false,
           "type": {
@@ -4807,7 +4807,7 @@
         },
         {
           "name": "damage_hit_tint",
-          "order": 18,
+          "order": 17,
           "description": "",
           "override": false,
           "type": "Color",
@@ -4823,23 +4823,15 @@
         },
         {
           "name": "drop_item_distance",
-          "order": 10,
+          "order": 9,
           "description": "",
           "override": false,
           "type": "uint32",
           "optional": false
         },
         {
-          "name": "eat",
-          "order": 6,
-          "description": "The sound played when the character eats (fish for example).",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
           "name": "enter_vehicle_distance",
-          "order": 28,
+          "order": 27,
           "description": "Must be >= 0.",
           "override": false,
           "type": "double",
@@ -4851,7 +4843,7 @@
         },
         {
           "name": "flying_bob_speed",
-          "order": 26,
+          "order": 25,
           "description": "",
           "override": false,
           "type": "float",
@@ -4863,7 +4855,7 @@
         },
         {
           "name": "flying_collision_mask",
-          "order": 33,
+          "order": 32,
           "description": "This collision mask is used when the character is flying.\n\nDefaults to the mask from [UtilityConstants::default_collision_masks](prototype:UtilityConstants::default_collision_masks) when indexed by `\"character/flying\"`.",
           "override": false,
           "type": "CollisionMaskConnector",
@@ -4871,7 +4863,7 @@
         },
         {
           "name": "footprint_particles",
-          "order": 37,
+          "order": 36,
           "description": "Triggered when the running animation (`animations`) rolls over the frames defined in `right_footprint_frames` and `left_footprint_frames`.",
           "override": false,
           "type": {
@@ -4882,7 +4874,7 @@
         },
         {
           "name": "footstep_particle_triggers",
-          "order": 35,
+          "order": 34,
           "description": "Triggered every tick of the running animation.",
           "override": false,
           "type": "FootstepTriggerEffectList",
@@ -4890,7 +4882,7 @@
         },
         {
           "name": "grounded_landing_search_radius",
-          "order": 27,
+          "order": 26,
           "description": "The search radius for a non-colliding position to move the player to if they are grounded mid-flight. Must be >= 0.",
           "override": false,
           "type": "double",
@@ -4902,7 +4894,7 @@
         },
         {
           "name": "guns_inventory_size",
-          "order": 8,
+          "order": 7,
           "description": "Must be between 1 and 15.",
           "override": false,
           "type": "ItemStackIndex",
@@ -4914,7 +4906,7 @@
         },
         {
           "name": "has_belt_immunity",
-          "order": 31,
+          "order": 30,
           "description": "Whether this character is moved by belts when standing on them.",
           "override": false,
           "type": "boolean",
@@ -4930,11 +4922,11 @@
           "description": "The sound played when the character's health is low.",
           "override": false,
           "type": "Sound",
-          "optional": false
+          "optional": true
         },
         {
           "name": "inventory_size",
-          "order": 7,
+          "order": 6,
           "description": "Number of slots in the main inventory. May be 0.",
           "override": false,
           "type": "ItemStackIndex",
@@ -4942,7 +4934,7 @@
         },
         {
           "name": "is_military_target",
-          "order": 42,
+          "order": 41,
           "description": "Whether this prototype should be a high priority target for enemy forces. See [Military units and structures](https://wiki.factorio.com/Military_units_and_structures).",
           "override": true,
           "type": "boolean",
@@ -4954,7 +4946,7 @@
         },
         {
           "name": "item_pickup_distance",
-          "order": 13,
+          "order": 12,
           "description": "",
           "override": false,
           "type": "double",
@@ -4962,7 +4954,7 @@
         },
         {
           "name": "left_footprint_frames",
-          "order": 41,
+          "order": 40,
           "description": "The frames in the running animation (`animations`) where the left foot touches the ground.",
           "override": false,
           "type": {
@@ -4973,7 +4965,7 @@
         },
         {
           "name": "left_footprint_offset",
-          "order": 38,
+          "order": 37,
           "description": "Offset from the center of the entity for the left footprint. Used by `footprint_particles`.",
           "override": false,
           "type": "Vector",
@@ -4981,7 +4973,7 @@
         },
         {
           "name": "light",
-          "order": 25,
+          "order": 24,
           "description": "",
           "override": false,
           "type": "LightDefinition",
@@ -4989,7 +4981,7 @@
         },
         {
           "name": "loot_pickup_distance",
-          "order": 14,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "double",
@@ -5005,7 +4997,7 @@
         },
         {
           "name": "mining_categories",
-          "order": 24,
+          "order": 23,
           "description": "Names of the resource categories the character can mine resources from.",
           "override": false,
           "type": {
@@ -5024,7 +5016,7 @@
         },
         {
           "name": "mining_with_tool_particles_animation_positions",
-          "order": 19,
+          "order": 18,
           "description": "List of positions in the mining with tool animation when the mining sound and mining particles are created.",
           "examples": [
             "```\nmining_with_tool_particles_animation_positions = {28}\n```"
@@ -5038,7 +5030,7 @@
         },
         {
           "name": "moving_sound_animation_positions",
-          "order": 21,
+          "order": 20,
           "description": "",
           "override": false,
           "type": {
@@ -5049,7 +5041,7 @@
         },
         {
           "name": "reach_distance",
-          "order": 11,
+          "order": 10,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -5057,7 +5049,7 @@
         },
         {
           "name": "reach_resource_distance",
-          "order": 12,
+          "order": 11,
           "description": "",
           "override": false,
           "type": "double",
@@ -5065,7 +5057,7 @@
         },
         {
           "name": "respawn_time",
-          "order": 30,
+          "order": 29,
           "description": "Time in seconds. Must be positive",
           "override": false,
           "type": "uint32",
@@ -5077,7 +5069,7 @@
         },
         {
           "name": "right_footprint_frames",
-          "order": 40,
+          "order": 39,
           "description": "The frames in the running animation (`animations`) where the right foot touches the ground.",
           "override": false,
           "type": {
@@ -5088,7 +5080,7 @@
         },
         {
           "name": "right_footprint_offset",
-          "order": 39,
+          "order": 38,
           "description": "Offset from the center of the entity for the right footprint. Used by `footprint_particles`.",
           "override": false,
           "type": "Vector",
@@ -5096,7 +5088,7 @@
         },
         {
           "name": "running_sound_animation_positions",
-          "order": 20,
+          "order": 19,
           "description": "List of positions in the running animation when the walking sound is played.",
           "examples": [
             "```\nrunning_sound_animation_positions = {14, 29}\n```"
@@ -5118,7 +5110,7 @@
         },
         {
           "name": "synced_footstep_particle_triggers",
-          "order": 36,
+          "order": 35,
           "description": "Triggered when the running animation (`animations`) rolls over the frames defined in `right_footprint_frames` and `left_footprint_frames`.",
           "override": false,
           "type": "FootstepTriggerEffectList",
@@ -5126,14 +5118,6 @@
         },
         {
           "name": "ticks_to_keep_aiming_direction",
-          "order": 16,
-          "description": "",
-          "override": false,
-          "type": "uint32",
-          "optional": false
-        },
-        {
-          "name": "ticks_to_keep_gun",
           "order": 15,
           "description": "",
           "override": false,
@@ -5141,8 +5125,16 @@
           "optional": false
         },
         {
+          "name": "ticks_to_keep_gun",
+          "order": 14,
+          "description": "",
+          "override": false,
+          "type": "uint32",
+          "optional": false
+        },
+        {
           "name": "ticks_to_stay_in_combat",
-          "order": 17,
+          "order": 16,
           "description": "",
           "override": false,
           "type": "uint32",
@@ -5150,7 +5142,7 @@
         },
         {
           "name": "tool_attack_distance",
-          "order": 29,
+          "order": 28,
           "description": "",
           "override": false,
           "type": "double",
@@ -5162,7 +5154,7 @@
         },
         {
           "name": "tool_attack_result",
-          "order": 34,
+          "order": 33,
           "description": "",
           "override": false,
           "type": "Trigger",
@@ -6569,7 +6561,7 @@
         {
           "name": "fluid_boxes",
           "order": 5,
-          "description": "The crafting machine's fluid boxes. If an assembling machine has fluid boxes *and* [AssemblingMachinePrototype::fluid_boxes_off_when_no_fluid_recipe](prototype:AssemblingMachinePrototype::fluid_boxes_off_when_no_fluid_recipe) is true, the assembling machine can only be rotated when a recipe consuming or producing fluid is set, or if it has one of the other properties listed at the top of this page.",
+          "description": "The crafting machine's fluid boxes. If an assembling machine has fluid boxes *and* [AssemblingMachinePrototype::fluid_boxes_off_when_no_fluid_recipe](prototype:AssemblingMachinePrototype::fluid_boxes_off_when_no_fluid_recipe) is true, the assembling machine can only be rotated when a recipe consuming or producing fluid is set, or if it has one of the other properties listed at the top of this page.\n\nFor assembling machines, any [filters](prototype:FluidBox::filter) set on the fluidboxes are ignored.",
           "examples": [
             "```\nfluid_boxes =\n{\n  {\n    production_type = \"input\",\n    pipe_picture = assembler2pipepictures(),\n    pipe_covers = pipecoverspictures(),\n    volume = 1000,\n    pipe_connections = {{ flow_direction = \"input\", direction = defines.direction.north, position = {0, -1} }},\n    secondary_draw_orders = { north = -1 }\n  },\n  {\n    production_type = \"output\",\n    pipe_picture = assembler2pipepictures(),\n    pipe_covers = pipecoverspictures(),\n    volume = 1000,\n    pipe_connections = {{ flow_direction = \"output\", direction = defines.direction.south, position = {0, 1} }},\n    secondary_draw_orders = { north = -1 }\n  },\n}\n```"
           ],
@@ -9195,7 +9187,7 @@
         {
           "name": "icon_draw_specification",
           "order": 57,
-          "description": "Used to specify where and how should be the alt-mode icons of entities should be drawn.",
+          "description": "Used to specify where and how the alt-mode icons should be drawn.",
           "examples": [
             "```\nicon_draw_specification = {shift = {0, 0.5}, scale = 0.75, scale_for_many = 0.5, render_layer = \"entity-info-icon\"}\n```"
           ],
@@ -14736,7 +14728,7 @@
         {
           "name": "uses_quality_drain_modifier",
           "order": 10,
-          "description": "Whether the [QualityPrototype::science_pack_drain_multiplier](prototype:QualityPrototype::science_pack_drain_multiplier) of the quality of the science pack should be considered by the lab.",
+          "description": "Whether the [QualityPrototype::science_pack_drain_multiplier](prototype:QualityPrototype::science_pack_drain_multiplier) of the quality of this lab should affect how much science is consumed to research one unit of technology.",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -15817,7 +15809,7 @@
         {
           "name": "respect_insert_limits",
           "order": 11,
-          "description": "",
+          "description": "When set, this loader will respect the same automated insertion limits as inserters do, instead of inserting up to the full ingredient stack capacity.",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -15849,7 +15841,7 @@
         {
           "name": "wait_for_full_stack",
           "order": 10,
-          "description": "When set, loader will ignore items for which there is not enough to create a full belt stack. Relevant only when loader can create belt stacks.",
+          "description": "When set, this loader will ignore items for which there is not enough to create a full belt stack. Relevant only when loader can create belt stacks.",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -19304,7 +19296,7 @@
         {
           "name": "science_pack_drain_multiplier",
           "order": 10,
-          "description": "Must be in range `[0, 1]`.",
+          "description": "Must be in range `[0, 1]`.\n\nOnly affects labs with [LabPrototype::uses_quality_drain_modifier](prototype:LabPrototype::uses_quality_drain_modifier) set.",
           "override": false,
           "type": "float",
           "optional": true,
@@ -24953,7 +24945,7 @@
         {
           "name": "distance",
           "order": 1,
-          "description": "Distance from the location's parent body in map coordinates.",
+          "description": "Distance from the sun in map coordinates.",
           "override": false,
           "type": "double",
           "optional": false
@@ -25052,7 +25044,7 @@
         {
           "name": "orientation",
           "order": 2,
-          "description": "Angle in relation to the parent body.",
+          "description": "Angle in relation to the sun.",
           "override": false,
           "type": "RealOrientation",
           "optional": false
@@ -25124,7 +25116,7 @@
         {
           "name": "starmap_icon_orientation",
           "order": 21,
-          "description": "Orientation of the starmap icon, defaults to pointing towards the parent body.",
+          "description": "Orientation of the starmap icon, defaults to pointing towards the sun.",
           "override": false,
           "type": "RealOrientation",
           "optional": true
@@ -27615,7 +27607,7 @@
           "order": 20,
           "description": "",
           "override": false,
-          "type": "Sound",
+          "type": "InterruptibleSound",
           "optional": true
         },
         {
@@ -57043,7 +57035,7 @@
     {
       "name": "IconDrawSpecification",
       "order": 278,
-      "description": "Specification of where and how should be the alt-mode icons of entities be drawn.",
+      "description": "Specification of where and how the alt-mode icons of entities should be drawn.",
       "abstract": false,
       "inline": false,
       "type": {
@@ -57898,7 +57890,7 @@
             {
               "complex_type": "literal",
               "value": "mod-openable",
-              "description": "Only works for [SelectionToolPrototype](prototype:SelectionToolPrototype) and derived classes. Corresponds to the runtime [on_mod_item_opened](runtime:on_mod_item_opened) event."
+              "description": "Allows the item to be opened by the player, firing the [on_mod_item_opened](runtime:on_mod_item_opened) event."
             },
             {
               "complex_type": "literal",
@@ -74183,6 +74175,14 @@
           "description": "Same as `dice` above, but this specifies only how many slices there are on the y axis.",
           "override": false,
           "type": "SpriteSizeType",
+          "optional": true
+        },
+        {
+          "name": "filename",
+          "order": 9,
+          "description": "Only loaded, and mandatory if `layers` and `filenames` are not defined.\n\nThe path to the sprite file to use.",
+          "override": true,
+          "type": "FileName",
           "optional": true
         },
         {
