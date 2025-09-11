@@ -1,5 +1,6 @@
 # v3.30.1
--
+
+- Added method overload: LuaSurface::get_tile(TilePosition)
 
 # v3.30.0
 
