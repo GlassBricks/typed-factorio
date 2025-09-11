@@ -1,6 +1,6 @@
 {
   "name": "typed-factorio",
-  "version": "3.30.0",
+  "version": "3.30.1",
   "description": "Featureful typescript definitions for the Factorio modding api.",
   "keywords": [
     "factorio",
