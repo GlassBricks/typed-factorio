@@ -30586,6 +30586,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.0.66/classes/LuaSurface.html#get_tile Online documentation}
      */
     get_tile(x: int, y: int): LuaTile
+    get_tile(position: TilePosition): LuaTile
     /**
      * Set tiles at specified locations. Can automatically correct the edges around modified tiles.
      *

@@ -391,7 +391,13 @@ export interface LuaBootstrap {
   readonly active_mods: ActiveMods
 }
 
-export interface LuaSurface {}
+interface LuaTile {}
+interface TilePosition {}
+
+export interface LuaSurface {
+  /** @overload */
+  get_tile(position: TilePosition): LuaTile
+}
 
 export interface LuaForce {}
 
