@@ -1,3 +1,7 @@
+# v3.31.0
+
+- Updated to factorio version 2.0.68
+
 # v3.30.1
 
 - Added method overload: LuaSurface::get_tile(TilePosition)
