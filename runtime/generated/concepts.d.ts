@@ -3351,9 +3351,9 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.0.68/concepts/BlueprintWire.html Online documentation}
    */
   export type BlueprintWire = [
-    source_entity_number: uint,
+    source_entity_number: uint32,
     source_wire_connector_id: defines.wire_connector_id,
-    target_entity_number: uint,
+    target_entity_number: uint32,
     target_wire_connector_id: defines.wire_connector_id,
   ]
   /**
@@ -10845,6 +10845,20 @@ declare module "factorio:runtime" {
    */
   export type int16 = number
   /**
+   * 32-bit unsigned integer. Possible values are `0` to `4 294 967 295`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `uint` will floor the given double.
+   * @see {@link https://lua-api.factorio.com/2.0.68/concepts/uint32.html Online documentation}
+   */
+  export type uint32 = number
+  /**
+   * 32-bit signed integer. Possible values are `-2 147 483 648` to `2 147 483 647`.
+   *
+   * Since Lua 5.2 only uses doubles, any API that asks for `int` will floor the given double.
+   * @see {@link https://lua-api.factorio.com/2.0.68/concepts/int32.html Online documentation}
+   */
+  export type int32 = number
+  /**
    * 64-bit unsigned integer. Possible values are `0` to `18 446 744 073 709 551 615`.
    *
    * Since Lua 5.2 only uses doubles, any API that asks for `uint64` will floor the given double.
@@ -15558,8 +15572,10 @@ declare module "factorio:runtime" {
     | GhostTypeScriptRaisedDestroyEventFilter
     | GhostNameScriptRaisedDestroyEventFilter
     | OtherScriptRaisedDestroyEventFilter
-  export type StyleValuesArray = [topBottom: int, leftRight: int] | [top: int, right: int, bottom: int, left: int]
-  export type SizeArray = [width: int, height: int]
+  export type StyleValuesArray =
+    | [topBottom: int32, leftRight: int32]
+    | [top: int32, right: int32, bottom: int32, left: int32]
+  export type SizeArray = [width: int32, height: int32]
   export type EventTypeOf<T extends LuaEventType> = T extends string | LuaCustomInputPrototype
     ? CustomInputEvent
     : T extends EventId<infer E, any>

@@ -15689,7 +15689,7 @@ declare module "factorio:runtime" {
      * This will include platforms that are pending deletion.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaForce.html#platforms Online documentation}
      */
-    readonly platforms: LuaTable<uint32, LuaSpacePlatform>
+    readonly platforms: Record<uint32, LuaSpacePlatform>
     /**
      * Custom color for this force. If specified, will take priority over other sources of the force color. Writing `nil` clears custom color. Will return `nil` if it was not specified or if was set to `{0,0,0,0}`.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaForce.html#custom_color Online documentation}
@@ -19143,7 +19143,7 @@ declare module "factorio:runtime" {
        * When true, train fuel is included in the blueprint, Defaults to true.
        */
       readonly include_fuel?: boolean
-    }): LuaTable<uint32, LuaEntity>
+    }): Record<uint32, LuaEntity>
     /**
      * Gets the tags for the given blueprint entity index in this blueprint item.
      *
@@ -19856,7 +19856,7 @@ declare module "factorio:runtime" {
        * When true, train fuel is included in the blueprint, Defaults to true.
        */
       readonly include_fuel?: boolean
-    }): LuaTable<uint32, LuaEntity>
+    }): Record<uint32, LuaEntity>
     /**
      * Gets the tags for the given blueprint entity index in this blueprint item.
      *
@@ -22874,7 +22874,7 @@ declare module "factorio:runtime" {
       readonly position?: MapPosition | MapPositionArray
       readonly type?: defines.alert_type
       readonly surface?: SurfaceIdentification
-    }): LuaTable<uint32, Record<defines.alert_type, Alert[]>>
+    }): Record<uint32, Record<defines.alert_type, Alert[]>>
     /**
      * Mutes alerts for the given alert category.
      * @returns Whether the alert type was muted (false if it was already muted).
@@ -24897,7 +24897,7 @@ declare module "factorio:runtime" {
        * When true, train fuel is included in the blueprint, Defaults to true.
        */
       readonly include_fuel?: boolean
-    }): LuaTable<uint32, LuaEntity>
+    }): Record<uint32, LuaEntity>
     /**
      * Gets the tags for the given blueprint entity index in this blueprint.
      *
@@ -25424,7 +25424,7 @@ declare module "factorio:runtime" {
        * When true, train fuel is included in the blueprint, Defaults to true.
        */
       readonly include_fuel?: boolean
-    }): LuaTable<uint32, LuaEntity>
+    }): Record<uint32, LuaEntity>
     /**
      * Gets the tags for the given blueprint entity index in this blueprint.
      *
@@ -29020,14 +29020,14 @@ declare module "factorio:runtime" {
      * An array with two values sets top/bottom padding to the first value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding respectively.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#extra_padding_when_activated Online documentation}
      */
-    set extra_padding_when_activated(value: int | StyleValuesArray)
+    set extra_padding_when_activated(value: int32 | StyleValuesArray)
     /**
      * Sets `extra_top/right/bottom/left_margin_when_activated` to this value.
      *
      * An array with two values sets top/bottom margin to the first value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin respectively.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#extra_margin_when_activated Online documentation}
      */
-    set extra_margin_when_activated(value: int | StyleValuesArray)
+    set extra_margin_when_activated(value: int32 | StyleValuesArray)
     /**
      * _Can only be used if this is ImageStyle_
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#stretch_image_to_widget_size Online documentation}
@@ -29075,21 +29075,21 @@ declare module "factorio:runtime" {
      * Sets both width and height to the given value. Also accepts an array with two values, setting width to the first and height to the second one.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#size Online documentation}
      */
-    set size(value: int | SizeArray)
+    set size(value: int32 | SizeArray)
     /**
      * Sets top/right/bottom/left paddings to this value.
      *
      * An array with two values sets top/bottom padding to the first value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding respectively.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#padding Online documentation}
      */
-    set padding(value: int | StyleValuesArray)
+    set padding(value: int32 | StyleValuesArray)
     /**
      * Sets top/right/bottom/left margins to this value.
      *
      * An array with two values sets top/bottom margin to the first value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin respectively.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#margin Online documentation}
      */
-    set margin(value: int | StyleValuesArray)
+    set margin(value: int32 | StyleValuesArray)
     /**
      * Space between the table cell contents and border. Sets top/right/bottom/left cell paddings to this value.
      *
@@ -29213,21 +29213,21 @@ declare module "factorio:runtime" {
      * Sets both width and height to the given value. Also accepts an array with two values, setting width to the first and height to the second one.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#size Online documentation}
      */
-    set size(value: int | SizeArray)
+    set size(value: int32 | SizeArray)
     /**
      * Sets top/right/bottom/left paddings to this value.
      *
      * An array with two values sets top/bottom padding to the first value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding respectively.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#padding Online documentation}
      */
-    set padding(value: int | StyleValuesArray)
+    set padding(value: int32 | StyleValuesArray)
     /**
      * Sets top/right/bottom/left margins to this value.
      *
      * An array with two values sets top/bottom margin to the first value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin respectively.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#margin Online documentation}
      */
-    set margin(value: int | StyleValuesArray)
+    set margin(value: int32 | StyleValuesArray)
     /**
      * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
      */
@@ -29541,14 +29541,14 @@ declare module "factorio:runtime" {
      * An array with two values sets top/bottom padding to the first value and left/right padding to the second value. An array with four values sets top, right, bottom, left padding respectively.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#extra_padding_when_activated Online documentation}
      */
-    set extra_padding_when_activated(value: int | StyleValuesArray)
+    set extra_padding_when_activated(value: int32 | StyleValuesArray)
     /**
      * Sets `extra_top/right/bottom/left_margin_when_activated` to this value.
      *
      * An array with two values sets top/bottom margin to the first value and left/right margin to the second value. An array with four values sets top, right, bottom, left margin respectively.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaStyle.html#extra_margin_when_activated Online documentation}
      */
-    set extra_margin_when_activated(value: int | StyleValuesArray)
+    set extra_margin_when_activated(value: int32 | StyleValuesArray)
   }
   export interface ImageStyle extends BaseStyle {
     /**
@@ -32878,7 +32878,7 @@ declare module "factorio:runtime" {
      * The keys are the player indices, the values are how often this train killed that player.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaTrain.html#killed_players Online documentation}
      */
-    readonly killed_players: LuaTable<uint32, uint32>
+    readonly killed_players: Record<uint32, uint32>
     /**
      * The total number of kills by this train.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaTrain.html#kill_count Online documentation}
