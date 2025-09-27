@@ -539,15 +539,6 @@ export interface BoundingBoxWrite {
   readonly orientation?: RealOrientation
 }
 
-// /** @readType Fluid */
-// export interface FluidID {}
-
-/** @readType LuaForce */
-export interface ForceID {}
-
-/** @readType LuaTechnology */
-export interface TechnologyID {}
-
 /** @readType LuaSurface */
 export interface SurfaceIdentification {}
 
