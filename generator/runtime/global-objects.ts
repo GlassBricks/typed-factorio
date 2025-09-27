@@ -1,9 +1,9 @@
-import { RuntimeGenerationContext } from "./index.js"
 import { FactorioModule } from "../OutputFile.js"
-import { createComment, createConst } from "../genUtil.js"
-import { mapRuntimeType, RWUsage } from "../types.js"
 import { addJsDoc } from "../documentation.js"
+import { createComment, createConst } from "../genUtil.js"
+import { RWUsage, mapRuntimeType } from "../types.js"
 import { recordUsage } from "./concept-usage-analysis"
+import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessGlobalObjects(context: RuntimeGenerationContext): void {
   for (const globalObject of context.globalObjects.values()) {

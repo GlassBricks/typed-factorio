@@ -1,12 +1,12 @@
 import ts from "typescript"
+import { FactorioModule } from "../OutputFile.js"
 import { addJsDoc } from "../documentation.js"
 import { createExtendsClause, toPascalCase } from "../genUtil.js"
-import { mapParameterToProperty } from "./members.js"
-import { byOrder } from "../util.js"
-import { FactorioModule } from "../OutputFile.js"
-import { RuntimeGenerationContext } from "./index.js"
 import { RWUsage } from "../types"
+import { byOrder } from "../util.js"
 import { recordUsage } from "./concept-usage-analysis"
+import { RuntimeGenerationContext } from "./index.js"
+import { mapParameterToProperty } from "./members.js"
 
 export function preprocessEvents(context: RuntimeGenerationContext): void {
   for (const event of context.events.values()) {

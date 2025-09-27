@@ -1,12 +1,12 @@
 import assert from "assert"
 import ts from "typescript"
-import { addJsDoc, processDescription } from "./documentation.js"
 import { LiteralType, Parameter, ParameterGroup, Type, WithVariantParameterGroups } from "./FactorioRuntimeApiJson.js"
-import { createExtendsClause, Modifiers, removeLuaPrefix, toPascalCase, Types } from "./genUtil.js"
-import { mapParameterToProperty } from "./runtime/members.js"
-import { byOrder } from "./util.js"
+import { addJsDoc, processDescription } from "./documentation.js"
+import { Modifiers, Types, createExtendsClause, removeLuaPrefix, toPascalCase } from "./genUtil.js"
 import { RuntimeGenerationContext } from "./runtime"
+import { mapParameterToProperty } from "./runtime/members.js"
 import { RWUsage } from "./types"
+import { byOrder } from "./util.js"
 
 export function createVariantParameterTypes(
   context: RuntimeGenerationContext,

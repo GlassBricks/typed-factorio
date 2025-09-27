@@ -1,8 +1,8 @@
 import ts from "typescript"
-import { FactorioModule, OutputFile, OutputFileBuilder } from "./OutputFile.js"
-import { checkManualDefinitions, ManualDefinitions, processManualDefinitions } from "./ManualDefinitions"
-import * as runtime from "./FactorioRuntimeApiJson.js"
 import * as prototype from "./FactorioPrototypeApiJson.js"
+import * as runtime from "./FactorioRuntimeApiJson.js"
+import { ManualDefinitions, checkManualDefinitions, processManualDefinitions } from "./ManualDefinitions"
+import { FactorioModule, OutputFile, OutputFileBuilder } from "./OutputFile.js"
 
 export interface AnyApiJson {
   application: "factorio"

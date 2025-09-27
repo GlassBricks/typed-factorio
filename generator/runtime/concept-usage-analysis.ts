@@ -1,9 +1,9 @@
-import { Attribute, Concept, TableType, TupleType, Type, UnionType } from "../FactorioRuntimeApiJson"
-import { RuntimeGenerationContext } from "./index"
-import { assertNever } from "../util"
-import ts from "typescript"
-import { getInnerType, RWUsage } from "../types"
 import assert from "assert"
+import ts from "typescript"
+import { Attribute, Concept, TableType, TupleType, Type, UnionType } from "../FactorioRuntimeApiJson"
+import { RWUsage, getInnerType } from "../types"
+import { assertNever } from "../util"
+import { RuntimeGenerationContext } from "./index"
 
 export class ConceptUsageAnalysis {
   usages

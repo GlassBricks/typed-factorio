@@ -5,9 +5,9 @@ import * as prettier from "prettier"
 import ts from "typescript"
 import { fileURLToPath } from "url"
 import { AnyApiJson, GenerationContext, Options } from "./GenerationContext.js"
+import { printer } from "./genUtil.js"
 import { PrototypeGenerationContext } from "./prototype"
 import { RuntimeGenerationContext } from "./runtime"
-import { printer } from "./genUtil.js"
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)

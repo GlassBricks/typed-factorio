@@ -3,9 +3,9 @@ import { addJsDoc } from "../documentation.js"
 import { Define } from "../FactorioRuntimeApiJson.js"
 import { createConst, createNamespace, escapePropertyName, Types } from "../genUtil.js"
 import { AnyDef } from "../ManualDefinitions"
+import { FactorioModule } from "../OutputFile.js"
 import { byOrder } from "../util.js"
 import { getMappedEventName } from "./events.js"
-import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessDefines(context: RuntimeGenerationContext): void {

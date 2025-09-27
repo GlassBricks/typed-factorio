@@ -1,7 +1,7 @@
 import ts from "typescript"
+import { FactorioModule } from "../OutputFile.js"
 import { addJsDoc } from "../documentation.js"
 import { decapitalize } from "../genUtil.js"
-import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
 
 export interface IndexType {
