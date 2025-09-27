@@ -1704,22 +1704,22 @@ declare module "factorio:runtime" {
    * A surface may be specified in one of three ways.
    *
    * ## Union members
-   * - {@link uint32}: It will be the index of the surface. `nauvis` has index `1`, the first surface-created surface will have index `2` and so on.
+   * - SurfaceIndex: It will be the index of the surface. `nauvis` has index `1`, the first surface-created surface will have index `2` and so on.
    * - `string`: It will be the surface name. E.g. `"nauvis"`.
    * - {@link LuaSurface}: A reference to {@link LuaSurface} may be passed directly.
    * @see {@link https://lua-api.factorio.com/2.0.68/concepts/SurfaceIdentification.html Online documentation}
    */
-  export type SurfaceIdentification = uint32 | string | LuaSurface
+  export type SurfaceIdentification = SurfaceIndex | string | LuaSurface
   /**
    * A player may be specified in one of three ways.
    *
    * ## Union members
-   * - {@link uint32}: The player index.
+   * - PlayerIndex: The player index.
    * - `string`: The player name.
    * - {@link LuaPlayer}: A reference to {@link LuaPlayer} may be passed directly.
    * @see {@link https://lua-api.factorio.com/2.0.68/concepts/PlayerIdentification.html Online documentation}
    */
-  export type PlayerIdentification = uint32 | string | LuaPlayer
+  export type PlayerIdentification = PlayerIndex | string | LuaPlayer
   /**
    * Set of forces. Can be specified in one of two ways.
    *
@@ -3424,7 +3424,7 @@ declare module "factorio:runtime" {
     /**
      * The surface of the built entity.
      */
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
   }
   /**
    * `"removed-entity"` variant of {@link UndoRedoAction}.
@@ -3438,7 +3438,7 @@ declare module "factorio:runtime" {
     /**
      * The surface from which the entity was removed. Not present for entities the game can't restore, like trees or rocks.
      */
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
     /**
      * The items that the entity will request when revived, if there are any. It's a mapping of prototype names to amounts. Not present for entities the game can't restore, like trees or rocks.
      */
@@ -3460,7 +3460,7 @@ declare module "factorio:runtime" {
     /**
      * The surface on which the tile was built.
      */
-    readonly surface_index: uint32
+    readonly surface_index: SurfaceIndex
     /**
      * The prototype name of the replaced tile, if any was replaced.
      */
@@ -3482,7 +3482,7 @@ declare module "factorio:runtime" {
     /**
      * The surface from which the tile was removed.
      */
-    readonly surface_index: uint32
+    readonly surface_index: SurfaceIndex
     /**
      * The prototype name of the removed tile.
      */
@@ -3500,7 +3500,7 @@ declare module "factorio:runtime" {
     /**
      * The surface of the upgraded entity.
      */
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
     /**
      * The prototype name of the upgraded entity.
      */
@@ -3522,7 +3522,7 @@ declare module "factorio:runtime" {
     /**
      * The surface of the upgraded entity.
      */
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
     /**
      * The modules present in the target before the upgrade.
      */
@@ -3556,7 +3556,7 @@ declare module "factorio:runtime" {
     /**
      * The surface of the rotated entity.
      */
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
     /**
      * The direction of the entity before upgrading.
      */
@@ -3575,7 +3575,7 @@ declare module "factorio:runtime" {
     /**
      * The surface of the entity the settings were pasted onto.
      */
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
     readonly entity_with_previous_settings?: BlueprintEntity
   }
   /**
@@ -3607,7 +3607,7 @@ declare module "factorio:runtime" {
     | CopyEntitySettingsUndoRedoAction
   export interface BlueprintWireEnd {
     readonly entity: BlueprintEntity
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
     readonly connector: defines.wire_connector_id
   }
   /**
@@ -4066,7 +4066,7 @@ declare module "factorio:runtime" {
     /**
      * Only supplied if `connection_type` is `"linked"`.
      */
-    linked_connection_id: uint
+    linked_connection_id: uint32
   }
   /**
    * A fluid amount. The amount is stored as a fixed-size signed 64 bit integer, with 24 bits reserved for decimal precision, meaning the smallest value step is `1/2^24`.
@@ -4607,7 +4607,7 @@ declare module "factorio:runtime" {
     /**
      * The value of the mod setting. The type depends on the kind of setting.
      */
-    readonly value: int | double | boolean | string | Color | ColorArray
+    readonly value: int32 | double | boolean | string | Color | ColorArray
   }
   /**
    * An actual signal transmitted by the network.
@@ -8250,7 +8250,7 @@ declare module "factorio:runtime" {
     | typeof defines.events.script_raised_revive
     | typeof defines.events.script_raised_teleported
     | typeof defines.events.script_raised_set_tiles
-  export type EventId<T extends object, F = unknown> = uint & {
+  export type EventId<T extends object, F = unknown> = uint32 & {
     readonly _eventData: T & EventData
     readonly _filter: F
   }
@@ -8521,7 +8521,7 @@ declare module "factorio:runtime" {
     /**
      * The player who issued the command, or `nil` if it was issued from the server console.
      */
-    readonly player_index?: uint32
+    readonly player_index?: PlayerIndex
     /**
      * The parameter passed after the command, if there is one.
      */

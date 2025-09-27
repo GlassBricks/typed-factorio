@@ -11,7 +11,7 @@ declare module "factorio:runtime" {
    *
    * You can cast a raw number to this type, e.g. `1 as PlayerIndex`.
    */
-  type PlayerIndex = uint & {
+  type PlayerIndex = uint32 & {
     _playerIndexBrand: void
   }
   /**
@@ -19,7 +19,7 @@ declare module "factorio:runtime" {
    *
    * You can cast a raw number to this type, e.g. `1 as SurfaceIndex`.
    */
-  type SurfaceIndex = uint & {
+  type SurfaceIndex = uint32 & {
     _surfaceIndexBrand: void
   }
   /**
@@ -27,7 +27,7 @@ declare module "factorio:runtime" {
    *
    * You can cast a raw number to this type, e.g. `1 as ForceIndex`.
    */
-  type ForceIndex = uint & {
+  type ForceIndex = uint32 & {
     _forceIndexBrand: void
   }
   /**
@@ -43,7 +43,7 @@ declare module "factorio:runtime" {
    *
    * You can cast a raw number to this type, e.g. `1 as GuiElementIndex`.
    */
-  type GuiElementIndex = uint & {
+  type GuiElementIndex = uint32 & {
     _guiElementIndexBrand: void
   }
   /**
