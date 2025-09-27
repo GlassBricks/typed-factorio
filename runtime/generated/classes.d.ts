@@ -623,7 +623,7 @@ declare module "factorio:runtime" {
       /**
        * The player doing the chatting.
        */
-      readonly player_index: uint32
+      readonly player_index: PlayerIndex
       /**
        * The chat message to send.
        */
@@ -642,7 +642,7 @@ declare module "factorio:runtime" {
       /**
        * The player doing the crafting.
        */
-      readonly player_index: uint32
+      readonly player_index: PlayerIndex
       /**
        * The recipe used to craft this item.
        */
@@ -657,7 +657,7 @@ declare module "factorio:runtime" {
       /**
        * The player transferred from or to.
        */
-      readonly player_index: uint32
+      readonly player_index: PlayerIndex
       /**
        * The entity transferred from or to.
        */
@@ -691,7 +691,7 @@ declare module "factorio:runtime" {
       /**
        * The player who did the purchasing.
        */
-      readonly player_index: uint32
+      readonly player_index: PlayerIndex
       /**
        * The market entity.
        */
@@ -770,7 +770,7 @@ declare module "factorio:runtime" {
       /**
        * The surface whose tiles have been changed.
        */
-      readonly surface_index: uint32
+      readonly surface_index: SurfaceIndex
       /**
        * The tiles that have been changed.
        */
@@ -1920,7 +1920,7 @@ declare module "factorio:runtime" {
      * Unique {@link LuaSurface#index index} (ID) associated with the surface this entity is currently on.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaControl.html#surface_index Online documentation}
      */
-    readonly surface_index: uint32
+    readonly surface_index: SurfaceIndex
     /**
      * The current position of the entity.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaControl.html#position Online documentation}
@@ -1970,7 +1970,7 @@ declare module "factorio:runtime" {
      * Unique {@link LuaForce#index index} (ID) associated with the force of this entity.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaControl.html#force_index Online documentation}
      */
-    readonly force_index: uint32
+    readonly force_index: ForceIndex
     /**
      * The currently selected entity. Assigning an entity will select it if is selectable, otherwise the selection is cleared.
      *
@@ -15667,7 +15667,7 @@ declare module "factorio:runtime" {
      * This force's index in {@link LuaGameScript#forces LuaGameScript::forces} (unique ID). It is assigned when a force is created, and remains so until it is {@link OnForcesMergedEvent merged} (ie. deleted). Indexes of merged forces can be reused.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaForce.html#index Online documentation}
      */
-    readonly index: uint32
+    readonly index: ForceIndex
     /**
      * The research queue of this force. The first technology in the array is the currently active one. Reading this attribute gives an array of {@link LuaTechnology}.
      *
@@ -16247,7 +16247,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaGameScript.html#get_vehicles Online documentation}
      */
     get_vehicles(params: {
-      readonly unit_number?: uint32
+      readonly unit_number?: UnitNumber
       readonly force?: ForceID
       readonly surface?: SurfaceIdentification
       readonly type?: EntityID | readonly EntityID[]
@@ -16258,7 +16258,7 @@ declare module "factorio:runtime" {
      * Returns entity with a specified unit number or nil if entity with such number was not found or prototype does not have {@link EntityPrototypeFlags#get_by_unit_number EntityPrototypeFlags::get-by-unit-number} flag set.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaGameScript.html#get_entity_by_unit_number Online documentation}
      */
-    get_entity_by_unit_number(unit_number: uint32): LuaEntity | nil
+    get_entity_by_unit_number(unit_number: UnitNumber): LuaEntity | nil
     /**
      * Whether players who are not {@link LuaPlayer#admin admins} can access all debug settings. Set this to false to disallow access to most debug settings for non-admins.
      *
@@ -16930,7 +16930,7 @@ declare module "factorio:runtime" {
     /**
      * The surface that the camera will render. Defaults to the player's current surface.
      */
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
     /**
      * The initial camera zoom. Defaults to `0.75`.
      */
@@ -17070,7 +17070,7 @@ declare module "factorio:runtime" {
     /**
      * The surface the camera will render. Defaults to the player's current surface.
      */
-    readonly surface_index?: uint32
+    readonly surface_index?: SurfaceIndex
     /**
      * The player index the map should use. Defaults to the current player.
      */
@@ -17245,7 +17245,7 @@ declare module "factorio:runtime" {
      * The index of this GUI element (unique amongst the GUI elements of a LuaPlayer).
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaGuiElement.html#index Online documentation}
      */
-    readonly index: uint32
+    readonly index: GuiElementIndex
     /**
      * The GUI this element is a child of.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaGuiElement.html#gui Online documentation}
@@ -17290,7 +17290,7 @@ declare module "factorio:runtime" {
      * Index into {@link LuaGameScript#players LuaGameScript::players} specifying the player who owns this element.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaGuiElement.html#player_index Online documentation}
      */
-    readonly player_index: uint32
+    readonly player_index: PlayerIndex
     /**
      * The text to display when hovering over this element. Writing `""` or `nil` will disable the tooltip.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaGuiElement.html#tooltip Online documentation}
@@ -18012,7 +18012,7 @@ declare module "factorio:runtime" {
      * _Can only be used if this is camera or minimap_
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaGuiElement.html#surface_index Online documentation}
      */
-    surface_index: uint32
+    surface_index: SurfaceIndex
     /**
      * The zoom this camera or minimap is using. This value must be positive.
      *
@@ -18265,7 +18265,7 @@ declare module "factorio:runtime" {
      * _Can only be used if this is camera or minimap_
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaGuiElement.html#surface_index Online documentation}
      */
-    surface_index: uint32
+    surface_index: SurfaceIndex
     /**
      * The zoom this camera or minimap is using. This value must be positive.
      *
@@ -23370,7 +23370,7 @@ declare module "factorio:runtime" {
      * This player's index in {@link LuaGameScript#players LuaGameScript::players} (unique ID). It is assigned when a player is created, and remains so (even when the player is not {@link LuaPlayer#connected connected}) until the player is irreversibly {@link OnPlayerRemovedEvent removed}. Indexes of removed players can be reused.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaPlayer.html#index Online documentation}
      */
-    readonly index: uint32
+    readonly index: PlayerIndex
     readonly gui: LuaGui
     /**
      * `true` if the player opened itself. I.e. if they opened the character or god-controller GUI.
@@ -29812,7 +29812,7 @@ declare module "factorio:runtime" {
    */
   export interface CharacterCorpseSurfaceCreateEntity extends BaseSurfaceCreateEntity {
     readonly inventory_size?: uint32
-    readonly player_index?: uint32
+    readonly player_index?: PlayerIndex
     readonly color?: Color | ColorArray
   }
   /**
@@ -31935,7 +31935,7 @@ declare module "factorio:runtime" {
      * This surface's index in {@link LuaGameScript#surfaces LuaGameScript::surfaces} (unique ID). It is assigned when a surface is created, and remains so until it is {@link OnSurfaceDeletedEvent deleted}. Indexes of deleted surfaces can be reused.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaSurface.html#index Online documentation}
      */
-    readonly index: uint32
+    readonly index: SurfaceIndex
     /**
      * The generation settings for this surface. These can be modified after surface generation, but note that this will not retroactively update the surface. To manually regenerate it, {@link LuaSurface#regenerate_entity LuaSurface::regenerate_entity}, {@link LuaSurface#regenerate_decorative LuaSurface::regenerate_decorative}, and {@link LuaSurface#delete_chunk LuaSurface::delete_chunk} can be used.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaSurface.html#map_gen_settings Online documentation}
@@ -33404,7 +33404,7 @@ declare module "factorio:runtime" {
      * The index of the player to whom this stack belongs to.
      * @see {@link https://lua-api.factorio.com/2.0.68/classes/LuaUndoRedoStack.html#player_index Online documentation}
      */
-    readonly player_index: uint32
+    readonly player_index: PlayerIndex
     /**
      * Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.
      */

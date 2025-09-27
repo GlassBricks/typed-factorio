@@ -321,7 +321,7 @@ export interface ConfigurationChangedData {
  * @usage rw
  */
 /** An event id. */
-export type EventId<T extends object, F = unknown> = uint & {
+export type EventId<T extends object, F = unknown> = uint32 & {
   readonly _eventData: T & EventData
   readonly _filter: F
 }
@@ -402,12 +402,12 @@ export interface LuaSurface {
 export interface LuaForce {}
 
 export interface PipeConnectionDefinition {
-  linked_connection_id: uint
+  linked_connection_id: uint32
 }
 
-export type PlayerIndex = uint
-export type SurfaceIndex = uint
-export type ForceIndex = uint
+export type PlayerIndex = uint32
+export type SurfaceIndex = uint32
+export type ForceIndex = uint32
 
 export interface LuaGameScript {
   get_player(player: PlayerIndex | string): LuaPlayer | nil
@@ -420,7 +420,7 @@ export interface LuaGameScript {
 }
 
 export interface ModSetting {
-  readonly value: int | double | boolean | string | Color | ColorArray
+  readonly value: int32 | double | boolean | string | Color | ColorArray
 }
 
 export interface LuaSettings {

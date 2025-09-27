@@ -4,6 +4,8 @@ import { addJsDoc } from "../documentation.js"
 import { decapitalize } from "../genUtil.js"
 import { RuntimeGenerationContext } from "./index.js"
 
+export type IntName = `${"" | "u"}int${number}`
+
 export interface IndexType {
   name: string
   mainAttributePath: {
@@ -12,12 +14,13 @@ export interface IndexType {
   }
   identificationConcept?: string
   attributePattern?: RegExp
-  expectedTypes?: string[] // default uint
+  expectedTypes: IntName[]
 }
 
-export const IndexTypes: IndexType[] = [
+export const INDEX_TYPES: IndexType[] = [
   {
     name: "PlayerIndex",
+    expectedTypes: ["uint32"],
     mainAttributePath: {
       parent: "LuaPlayer",
       name: "index",
@@ -27,6 +30,7 @@ export const IndexTypes: IndexType[] = [
   },
   {
     name: "SurfaceIndex",
+    expectedTypes: ["uint32"],
     mainAttributePath: {
       parent: "LuaSurface",
       name: "index",
@@ -36,7 +40,7 @@ export const IndexTypes: IndexType[] = [
   },
   {
     name: "ForceIndex",
-    expectedTypes: ["uint", "uint8"],
+    expectedTypes: ["uint32", "uint8"],
     mainAttributePath: {
       parent: "LuaForce",
       name: "index",
@@ -46,15 +50,16 @@ export const IndexTypes: IndexType[] = [
   },
   {
     name: "UnitNumber",
+    expectedTypes: ["uint64", "uint32"],
     mainAttributePath: {
       parent: "LuaEntity",
       name: "unit_number",
     },
     attributePattern: /^(ghost_)?unit_number$/,
-    expectedTypes: ["uint64", "uint"],
   },
   {
     name: "GuiElementIndex",
+    expectedTypes: ["uint32"],
     mainAttributePath: {
       parent: "LuaGuiElement",
       name: "index",
@@ -72,17 +77,17 @@ export const IndexTypes: IndexType[] = [
 ]
 
 export function preprocessIndexTypes(context: RuntimeGenerationContext): void {
-  for (const indexType of IndexTypes) {
+  for (const indexType of INDEX_TYPES) {
     context.tsToFactorioType.set(indexType.name, indexType.name)
   }
 }
 
 export function generateIndexTypesFile(context: RuntimeGenerationContext): void {
   context.addFile("index-types", FactorioModule.Runtime, () => {
-    for (const indexType of IndexTypes) {
-      // type ${name} = uint & { _${name}Brand: void }
+    for (const indexType of INDEX_TYPES) {
+      // type ${name} = uint32 & { _${name}Brand: void }
       const typeNode = ts.factory.createIntersectionTypeNode([
-        ts.factory.createTypeReferenceNode(indexType.expectedTypes?.[0] ?? "uint"),
+        ts.factory.createTypeReferenceNode(indexType.expectedTypes[0]),
         ts.factory.createTypeLiteralNode([
           ts.factory.createPropertySignature(
             undefined,

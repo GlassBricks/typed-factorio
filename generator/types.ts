@@ -11,7 +11,7 @@ import { InterfaceDef, TypeAliasDef } from "./ManualDefinitions"
 import { PrototypeGenerationContext } from "./prototype"
 import { mapProperty } from "./prototype/properties.js"
 import { RuntimeGenerationContext } from "./runtime"
-import { IndexTypes } from "./runtime/index-types.js"
+import { INDEX_TYPES } from "./runtime/index-types.js"
 import { mapAttribute, mapParameterToProperty } from "./runtime/members.js"
 import { getSpecificPrototypeTypeForTypeAttribute } from "./runtime/prototype-subclass-types"
 import { assertNever, byOrder } from "./util.js"
@@ -308,16 +308,6 @@ function mapBasicType(
       }
     }
   }
-  // Dear factorio devs: Lua is not C++...
-  if (type === "bool") {
-    type = "boolean"
-  }
-  if (type === "uint32_t") {
-    type = "uint"
-  }
-  if (type === "int32_t") {
-    type = "int"
-  }
   return createBasicType(context, type)
 }
 
@@ -327,8 +317,8 @@ function tryUseIndexTypeFromBasicType(
   typeContext: TypeContext | undefined,
 ): IntermediateType | undefined {
   if (!typeContext || !type.startsWith("uint")) return undefined
-  for (const indexType of IndexTypes) {
-    const expectedType = indexType.expectedTypes ?? ["uint", "uint64"]
+  for (const indexType of INDEX_TYPES) {
+    const expectedType: string[] = indexType.expectedTypes ?? ["uint32", "uint64"]
     if (!expectedType.includes(type)) continue
     if (typeContext.contextName === indexType.identificationConcept) {
       return {
@@ -832,8 +822,8 @@ function tryUseIndexType(
   type: runtime.Type,
 ): RWType | undefined {
   if (!(typeof type === "string" && type.startsWith("uint"))) return
-  for (const indexType of IndexTypes) {
-    const expectedType = indexType.expectedTypes ?? ["uint", "uint64"]
+  for (const indexType of INDEX_TYPES) {
+    const expectedType: string[] = indexType.expectedTypes
     if (!expectedType.includes(type)) continue
     if (
       (indexType.mainAttributePath.parent === parent && member.name === indexType.mainAttributePath.name) ||
