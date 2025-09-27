@@ -18,12 +18,12 @@ export interface LuaObject {
 export type double = number
 export type float = number
 export type table = object
-export type int = number
 export type int8 = number
 export type int16 = number
-export type uint = number
+export type int32 = number
 export type uint8 = number
 export type uint16 = number
+export type uint32 = number
 export type uint64 = number
 export type nil = undefined
 
@@ -122,26 +122,26 @@ export interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
  * @usage w
  */
 export type StyleValuesArray =
-  | readonly [topBottom: int, leftRight: int]
-  | readonly [top: int, right: int, bottom: int, left: int]
+  | readonly [topBottom: int32, leftRight: int32]
+  | readonly [top: int32, right: int32, bottom: int32, left: int32]
 /**
  * @addTo concepts
  * @usage w
  */
-export type SizeArray = readonly [width: int, height: int]
+export type SizeArray = readonly [width: int32, height: int32]
 
 export interface LuaStyle {
-  set size(value: int | SizeArray)
+  set size(value: int32 | SizeArray)
 
-  set padding(value: int | StyleValuesArray)
+  set padding(value: int32 | StyleValuesArray)
 
-  set margin(value: int | StyleValuesArray)
-
-  /** @subclasses scroll-pane */
-  set extra_padding_when_activated(value: int | StyleValuesArray)
+  set margin(value: int32 | StyleValuesArray)
 
   /** @subclasses scroll-pane */
-  set extra_margin_when_activated(value: int | StyleValuesArray)
+  set extra_padding_when_activated(value: int32 | StyleValuesArray)
+
+  /** @subclasses scroll-pane */
+  set extra_margin_when_activated(value: int32 | StyleValuesArray)
 }
 
 export interface GuiElementType {}
@@ -564,8 +564,8 @@ export interface SpaceConnectionAsteroidSpawnDefinition {
 
 /** @replace */
 export type BlueprintWire = readonly [
-  source_entity_number: uint,
+  source_entity_number: uint32,
   source_wire_connector_id: defines.wire_connector_id,
-  target_entity_number: uint,
+  target_entity_number: uint32,
   target_wire_connector_id: defines.wire_connector_id,
 ]

@@ -3014,7 +3014,7 @@ declare module "factorio:runtime" {
     /**
      * The blueprint entity index to source entity mapping. Note: if any mod changes the blueprint this will be incorrect.
      */
-    readonly mapping: LuaLazyLoadedValue<LuaTable<uint32, LuaEntity>>
+    readonly mapping: LuaLazyLoadedValue<Record<uint32, LuaEntity>>
     /**
      * Identifier of the event
      */
