@@ -1,14 +1,14 @@
 import assert from "assert"
 import ts from "typescript"
-import { addJsDoc, processDescription } from "../documentation.js"
 import { Attribute, Method, Parameter } from "../FactorioRuntimeApiJson.js"
-import { escapePropertyName, Modifiers, removeLuaPrefix, Tokens, toPascalCase, Types } from "../genUtil.js"
-import { getAnnotations, InterfaceDef, TypeAliasDef } from "../ManualDefinitions"
-import { makeNullable, mapAttributeType, mapMemberType, mapRuntimeType, RWType, RWUsage } from "../types.js"
+import { InterfaceDef, TypeAliasDef, getAnnotations } from "../ManualDefinitions"
+import { addJsDoc, processDescription } from "../documentation.js"
+import { Modifiers, Tokens, Types, escapePropertyName, removeLuaPrefix, toPascalCase } from "../genUtil.js"
+import { RWType, RWUsage, makeNullable, mapAttributeType, mapMemberType, mapRuntimeType } from "../types.js"
 import { byOrder, getFirst } from "../util.js"
 import { createVariantParameterTypes } from "../variantParameterGroups.js"
-import { RuntimeGenerationContext } from "./index.js"
 import { recordUsage } from "./concept-usage-analysis"
+import { RuntimeGenerationContext } from "./index.js"
 
 export function analyzeMethod(context: RuntimeGenerationContext, method: Method): void {
   for (const parameter of method.parameters) {

@@ -1,11 +1,11 @@
-import { BasicMember, Concept, Parameter, Type } from "./FactorioRuntimeApiJson"
 import assert from "assert"
 import ts, { TypeElement } from "typescript"
-import { RuntimeGenerationContext } from "./runtime"
-import { DeclarationDef } from "./ManualDefinitions"
-import { byOrder } from "./util"
-import { GenerationContext } from "./GenerationContext"
 import { PrototypeConcept } from "./FactorioPrototypeApiJson"
+import { BasicMember, Concept, Parameter, Type } from "./FactorioRuntimeApiJson"
+import { GenerationContext } from "./GenerationContext"
+import { DeclarationDef } from "./ManualDefinitions"
+import { RuntimeGenerationContext } from "./runtime"
+import { byOrder } from "./util"
 
 function manualDefMembersToTypeElements(
   context: GenerationContext,

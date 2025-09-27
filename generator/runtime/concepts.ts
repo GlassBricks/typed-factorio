@@ -1,15 +1,15 @@
 import assert from "assert"
 import ts from "typescript"
-import { addJsDoc, createSeeTag } from "../documentation.js"
 import { Concept, TableType, TupleType } from "../FactorioRuntimeApiJson.js"
-import { Modifiers } from "../genUtil.js"
-import { mapConceptType, mapRuntimeType, RWUsage, typeToDeclaration } from "../types.js"
-import { createVariantParameterTypes } from "../variantParameterGroups.js"
-import { FactorioModule } from "../OutputFile.js"
-import { RuntimeGenerationContext } from "./index.js"
-import { generateBuiltinType } from "../builtin.js"
-import { analyzeConcept } from "./concept-usage-analysis"
 import { DeclarationDef } from "../ManualDefinitions"
+import { FactorioModule } from "../OutputFile.js"
+import { generateBuiltinType } from "../builtin.js"
+import { addJsDoc, createSeeTag } from "../documentation.js"
+import { Modifiers } from "../genUtil.js"
+import { RWUsage, mapConceptType, mapRuntimeType, typeToDeclaration } from "../types.js"
+import { createVariantParameterTypes } from "../variantParameterGroups.js"
+import { analyzeConcept } from "./concept-usage-analysis"
+import { RuntimeGenerationContext } from "./index.js"
 
 export function preprocessConcepts(context: RuntimeGenerationContext): void {
   for (const concept of context.concepts.values()) {

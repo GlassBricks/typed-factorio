@@ -1,8 +1,8 @@
-import { RuntimeGenerationContext } from "./index"
-import { Type } from "../FactorioRuntimeApiJson"
-import { capitalize } from "../genUtil"
 import ts from "typescript"
+import { Type } from "../FactorioRuntimeApiJson"
 import { FactorioModule } from "../OutputFile"
+import { capitalize } from "../genUtil"
+import { RuntimeGenerationContext } from "./index"
 
 export const nameToToPrototypeType = {
   // hardcoded for now; could possibly instead get from prototype definitions, but this is unlikely to change

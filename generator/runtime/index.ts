@@ -8,18 +8,18 @@ import {
   Parameter,
   Type,
 } from "../FactorioRuntimeApiJson.js"
-import { associateByName, GenerationContext } from "../GenerationContext.js"
-import { generateGlobalFunctions, preprocessGlobalFunctions } from "./others.js"
-import { generateDefines, preprocessDefines } from "./defines.js"
-import { generateEvents, preprocessEvents } from "./events.js"
-import { generateClasses, preprocessClasses } from "./classes.js"
-import { generateConcepts, preprocessConcepts } from "./concepts.js"
-import { generateIndexTypesFile, preprocessIndexTypes } from "./index-types.js"
-import { generateGlobalObjects, preprocessGlobalObjects } from "./global-objects.js"
+import { GenerationContext, associateByName } from "../GenerationContext.js"
 import { FactorioModule } from "../OutputFile"
 import { addPropertiesToConcept, manualDefToRuntimeConcept, preprocessTypesWithManualDefs } from "../added-types"
-import { ConceptUsageAnalysis, finalizeConceptUsageAnalysis } from "./concept-usage-analysis"
 import { byOrder } from "../util"
+import { generateClasses, preprocessClasses } from "./classes.js"
+import { ConceptUsageAnalysis, finalizeConceptUsageAnalysis } from "./concept-usage-analysis"
+import { generateConcepts, preprocessConcepts } from "./concepts.js"
+import { generateDefines, preprocessDefines } from "./defines.js"
+import { generateEvents, preprocessEvents } from "./events.js"
+import { generateGlobalObjects, preprocessGlobalObjects } from "./global-objects.js"
+import { generateIndexTypesFile, preprocessIndexTypes } from "./index-types.js"
+import { generateGlobalFunctions, preprocessGlobalFunctions } from "./others.js"
 
 export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeApiJson> {
   stageName = FactorioModule.Runtime

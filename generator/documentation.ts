@@ -1,11 +1,11 @@
-import ts from "typescript"
-import { EventRaised, Expansions } from "./FactorioRuntimeApiJson.js"
-import { getMappedEventName } from "./runtime/events.js"
-import { addFakeJSDoc } from "./genUtil.js"
-import { byOrder } from "./util.js"
-import { LiteralType, PrototypeWithExamples } from "./FactorioPrototypeApiJson.js"
-import { GenerationContext } from "./GenerationContext.js"
 import assert from "assert"
+import ts from "typescript"
+import { LiteralType, PrototypeWithExamples } from "./FactorioPrototypeApiJson.js"
+import { EventRaised, Expansions } from "./FactorioRuntimeApiJson.js"
+import { GenerationContext } from "./GenerationContext.js"
+import { addFakeJSDoc } from "./genUtil.js"
+import { getMappedEventName } from "./runtime/events.js"
+import { byOrder } from "./util.js"
 
 export interface Documentable extends PrototypeWithExamples {
   description: string

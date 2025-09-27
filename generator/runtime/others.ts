@@ -1,6 +1,6 @@
-import { analyzeMethod, mapFunction } from "./members.js"
 import { FactorioModule } from "../OutputFile.js"
 import { RuntimeGenerationContext } from "./index.js"
+import { analyzeMethod, mapFunction } from "./members.js"
 
 export function preprocessGlobalFunctions(context: RuntimeGenerationContext): void {
   for (const globalFunction of context.globalFunctions.values()) {

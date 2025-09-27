@@ -1,6 +1,6 @@
-import { GenerationContext } from "./GenerationContext"
-import type * as runtime from "./FactorioRuntimeApiJson"
 import type * as prototype from "./FactorioPrototypeApiJson"
+import type * as runtime from "./FactorioRuntimeApiJson"
+import { GenerationContext } from "./GenerationContext"
 import { addJsDoc } from "./documentation"
 
 export function generateBuiltinType(
