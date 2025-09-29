@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.68",
+  "application_version": "2.0.69",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -9500,7 +9500,7 @@
       "attributes": [
         {
           "name": "absorbed_pollution",
-          "order": 119,
+          "order": 120,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -9511,14 +9511,14 @@
         {
           "name": "active",
           "order": 10,
-          "description": "Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).\n\nEntities that are not active naturally can't be set to be active (setting it to be active will do nothing)\n\nGhosts, simple smoke, and corpses can't be modified at this time.\n\nIt is even possible to set the character to not be active, so he can't move and perform most of the tasks.",
+          "description": "Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).\n\nWriting to this is deprecated and affects only the [disabled_by_script](runtime:LuaEntity::disabled_by_script) state.\n\nReading from this returns `false` if the entity is deactivated in at least one of the following ways: [by script](runtime:LuaEntity::disabled_by_script), [by circuit network](runtime:LuaEntity::disabled_by_control_behavior), [by recipe](runtime:LuaEntity::disabled_by_recipe), [by freezing](runtime:LuaEntity::frozen), or by deconstruction.\n\nEntities that are not active naturally can't be set to be active (setting it to be active will do nothing). Some entities (Corpse, FireFlame, Roboport, RollingStock, dying entities) need to remain active and will ignore writes.",
           "read_type": "boolean",
           "write_type": "boolean",
           "optional": false
         },
         {
           "name": "ai_settings",
-          "order": 149,
+          "order": 150,
           "description": "The ai settings of this unit.",
           "subclasses": [
             "Unit",
@@ -9529,7 +9529,7 @@
         },
         {
           "name": "alert_parameters",
-          "order": 113,
+          "order": 114,
           "description": "",
           "subclasses": [
             "ProgrammableSpeaker"
@@ -9540,7 +9540,7 @@
         },
         {
           "name": "allow_dispatching_robots",
-          "order": 160,
+          "order": 161,
           "description": "Whether this character's personal roboports are allowed to dispatch robots.",
           "subclasses": [
             "Character"
@@ -9551,7 +9551,7 @@
         },
         {
           "name": "always_on",
-          "order": 203,
+          "order": 204,
           "description": "If the lamp is always on when not driven by control behavior.",
           "subclasses": [
             "Lamp"
@@ -9573,7 +9573,7 @@
         },
         {
           "name": "armed",
-          "order": 142,
+          "order": 143,
           "description": "Whether this land mine is armed.",
           "subclasses": [
             "LandMine"
@@ -9583,7 +9583,7 @@
         },
         {
           "name": "artillery_auto_targeting",
-          "order": 204,
+          "order": 205,
           "description": "If this artillery auto-targets enemies.",
           "subclasses": [
             "ArtilleryWagon",
@@ -9595,7 +9595,7 @@
         },
         {
           "name": "associated_player",
-          "order": 131,
+          "order": 132,
           "description": "The player this character is associated with, if any. Set to `nil` to clear.\n\nThe player will be automatically disassociated when a controller is set on the character. Also, all characters associated to a player will be logged off when the player logs off in multiplayer.\n\nA character associated with a player is not directly controlled by any player.",
           "subclasses": [
             "Character"
@@ -9606,7 +9606,7 @@
         },
         {
           "name": "attached_cargo_pod",
-          "order": 217,
+          "order": 218,
           "description": "The cargo pod attached to this rocket silo rocket if any.",
           "subclasses": [
             "RocketSiloRocket"
@@ -9616,7 +9616,7 @@
         },
         {
           "name": "autopilot_destination",
-          "order": 168,
+          "order": 169,
           "description": "Destination of this spidertron's autopilot, if any. Writing `nil` clears all destinations.",
           "subclasses": [
             "SpiderVehicle"
@@ -9627,7 +9627,7 @@
         },
         {
           "name": "autopilot_destinations",
-          "order": 169,
+          "order": 170,
           "description": "The queued destination positions of spidertron's autopilot.",
           "subclasses": [
             "SpiderVehicle"
@@ -9657,7 +9657,7 @@
         },
         {
           "name": "base_damage_modifiers",
-          "order": 220,
+          "order": 221,
           "description": "",
           "subclasses": [
             "Projectile"
@@ -9668,7 +9668,7 @@
         },
         {
           "name": "beacons_count",
-          "order": 125,
+          "order": 126,
           "description": "Number of beacons affecting this effect receiver. Can only be used when the entity has an effect receiver (AssemblingMachine, Furnace, Lab, MiningDrills)",
           "read_type": "uint32",
           "optional": true
@@ -9709,7 +9709,7 @@
         },
         {
           "name": "belt_shape",
-          "order": 198,
+          "order": 199,
           "description": "Gives what is the current shape of a transport-belt.",
           "subclasses": [
             "TransportBelt"
@@ -9746,7 +9746,7 @@
         },
         {
           "name": "bonus_damage_modifiers",
-          "order": 221,
+          "order": 222,
           "description": "",
           "subclasses": [
             "Projectile"
@@ -9776,21 +9776,21 @@
         },
         {
           "name": "bounding_box",
-          "order": 91,
+          "order": 92,
           "description": "[LuaEntityPrototype::collision_box](runtime:LuaEntityPrototype::collision_box) around entity's given position and respecting the current entity orientation.",
           "read_type": "BoundingBox",
           "optional": false
         },
         {
           "name": "burner",
-          "order": 106,
+          "order": 107,
           "description": "The burner energy source for this entity, if any.",
           "read_type": "LuaBurner",
           "optional": true
         },
         {
           "name": "cargo_bay_connection_owner",
-          "order": 222,
+          "order": 223,
           "description": "The space platform hub or cargo landing pad this cargo bay is connected to if any.",
           "subclasses": [
             "CargoBay"
@@ -9800,7 +9800,7 @@
         },
         {
           "name": "cargo_hatches",
-          "order": 213,
+          "order": 214,
           "description": "The cargo hatches owned by this entity if any.",
           "read_type": {
             "complex_type": "array",
@@ -9810,7 +9810,7 @@
         },
         {
           "name": "cargo_pod_destination",
-          "order": 215,
+          "order": 216,
           "description": "The destination of this cargo pod entity.\n\nUse [force_finish_ascending](runtime:LuaEntity::force_finish_ascending) if you want it to only descend from orbit.",
           "subclasses": [
             "CargoPod"
@@ -9821,7 +9821,7 @@
         },
         {
           "name": "cargo_pod_origin",
-          "order": 216,
+          "order": 217,
           "description": "The origin of this cargo pod entity. (Must be a silo, hub or pad)",
           "subclasses": [
             "CargoPod"
@@ -9832,7 +9832,7 @@
         },
         {
           "name": "cargo_pod_state",
-          "order": 214,
+          "order": 215,
           "description": "The state of this cargo pod entity.",
           "subclasses": [
             "CargoPod"
@@ -9877,7 +9877,7 @@
         },
         {
           "name": "character_corpse_death_cause",
-          "order": 130,
+          "order": 131,
           "description": "The reason this character corpse character died. `\"\"` if there is no reason.",
           "subclasses": [
             "CharacterCorpse"
@@ -9888,7 +9888,7 @@
         },
         {
           "name": "character_corpse_player_index",
-          "order": 128,
+          "order": 129,
           "description": "The player index associated with this character corpse.\n\nThe index is not guaranteed to be valid so it should always be checked first if a player with that index actually exists.",
           "subclasses": [
             "CharacterCorpse"
@@ -9899,7 +9899,7 @@
         },
         {
           "name": "character_corpse_tick_of_death",
-          "order": 129,
+          "order": 130,
           "description": "The tick this character corpse died at.",
           "subclasses": [
             "CharacterCorpse"
@@ -9928,7 +9928,7 @@
         },
         {
           "name": "combat_robot_owner",
-          "order": 175,
+          "order": 176,
           "description": "The owner of this combat robot, if any.",
           "subclasses": [
             "CombatRobot"
@@ -9939,7 +9939,7 @@
         },
         {
           "name": "combinator_description",
-          "order": 123,
+          "order": 124,
           "description": "The description on this combinator.",
           "subclasses": [
             "ArithmeticCombinator",
@@ -9953,14 +9953,14 @@
         },
         {
           "name": "commandable",
-          "order": 200,
+          "order": 201,
           "description": "Returns a LuaCommandable for this entity or nil if entity is not commandable. Units and SpiderUnits are commandable.",
           "read_type": "LuaCommandable",
           "optional": true
         },
         {
           "name": "connected_rail",
-          "order": 144,
+          "order": 145,
           "description": "The rail entity this train stop is connected to, if any.",
           "subclasses": [
             "TrainStop"
@@ -9970,7 +9970,7 @@
         },
         {
           "name": "connected_rail_direction",
-          "order": 145,
+          "order": 146,
           "description": "Rail direction to which this train stop is binding. This returns a value even when no rails are present.",
           "subclasses": [
             "TrainStop"
@@ -9998,7 +9998,7 @@
         },
         {
           "name": "copy_color_from_train_stop",
-          "order": 194,
+          "order": 195,
           "description": "If this rolling stock has 'copy color from train stop' enabled.",
           "subclasses": [
             "RollingStock"
@@ -10009,7 +10009,7 @@
         },
         {
           "name": "corpse_expires",
-          "order": 164,
+          "order": 165,
           "description": "Whether this corpse will ever fade away.",
           "subclasses": [
             "Corpse"
@@ -10020,7 +10020,7 @@
         },
         {
           "name": "corpse_immune_to_entity_placement",
-          "order": 165,
+          "order": 166,
           "description": "If true, corpse won't be destroyed when entities are placed over it. If false, whether corpse will be removed or not depends on value of [CorpsePrototype::remove_on_entity_placement](prototype:CorpsePrototype::remove_on_entity_placement).",
           "subclasses": [
             "Corpse"
@@ -10053,7 +10053,7 @@
         },
         {
           "name": "crane_destination",
-          "order": 189,
+          "order": 190,
           "description": "Destination of the crane of this entity. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -10064,7 +10064,7 @@
         },
         {
           "name": "crane_destination_3d",
-          "order": 190,
+          "order": 191,
           "description": "Destination of the crane of this entity in 3D. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -10075,7 +10075,7 @@
         },
         {
           "name": "crane_end_position_3d",
-          "order": 188,
+          "order": 189,
           "description": "Returns current position in 3D for the end of the crane of this entity.",
           "subclasses": [
             "AgriculturalTower"
@@ -10085,7 +10085,7 @@
         },
         {
           "name": "crane_grappler_destination",
-          "order": 191,
+          "order": 192,
           "description": "Will set destination for the grappler of crane of this entity. The crane grappler will start moving to reach the destination, but the rest of the arm will remain stationary. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -10095,7 +10095,7 @@
         },
         {
           "name": "crane_grappler_destination_3d",
-          "order": 192,
+          "order": 193,
           "description": "Will set destination in 3D for the grappler of crane of this entity. The crane grappler will start moving to reach the destination, but the rest of the arm will remain stationary. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -10105,7 +10105,7 @@
         },
         {
           "name": "created_by_corpse",
-          "order": 227,
+          "order": 228,
           "description": "The corpse that caused this entity ghost to be created, if any.",
           "subclasses": [
             "EntityGhost"
@@ -10115,7 +10115,7 @@
         },
         {
           "name": "custom_status",
-          "order": 153,
+          "order": 154,
           "description": "A custom status for this entity that will be displayed in the GUI.",
           "read_type": "CustomEntityStatus",
           "write_type": "CustomEntityStatus",
@@ -10150,7 +10150,7 @@
         },
         {
           "name": "disabled_by_control_behavior",
-          "order": 209,
+          "order": 210,
           "description": "If the updatable entity is disabled by control behavior.",
           "subclasses": [
             "UpdatableEntity"
@@ -10160,8 +10160,8 @@
         },
         {
           "name": "disabled_by_recipe",
-          "order": 210,
-          "description": "If the updatable entity is disabled by recipe.",
+          "order": 211,
+          "description": "If the assembling machine is disabled by recipe, e.g. due to [AssemblingMachinePrototype::disabled_when_recipe_not_researched](prototype:AssemblingMachinePrototype::disabled_when_recipe_not_researched).",
           "subclasses": [
             "UpdatableEntity"
           ],
@@ -10170,7 +10170,7 @@
         },
         {
           "name": "disabled_by_script",
-          "order": 208,
+          "order": 209,
           "description": "If the updatable entity is disabled by script.\n\nNote: Some entities (Corpse, FireFlame, Roboport, RollingStock, dying entities) need to remain active and will ignore writes.",
           "subclasses": [
             "UpdatableEntity"
@@ -10181,28 +10181,6 @@
         },
         {
           "name": "display_panel_always_show",
-          "order": 233,
-          "description": "",
-          "subclasses": [
-            "DisplayPanel"
-          ],
-          "read_type": "boolean",
-          "write_type": "boolean",
-          "optional": false
-        },
-        {
-          "name": "display_panel_icon",
-          "order": 232,
-          "description": "Icon visible on the display panel. Can be written only when it is not set by control behavior.",
-          "subclasses": [
-            "DisplayPanel"
-          ],
-          "read_type": "SignalID",
-          "write_type": "SignalID",
-          "optional": true
-        },
-        {
-          "name": "display_panel_show_in_chart",
           "order": 234,
           "description": "",
           "subclasses": [
@@ -10213,8 +10191,30 @@
           "optional": false
         },
         {
+          "name": "display_panel_icon",
+          "order": 233,
+          "description": "Icon visible on the display panel. Can be written only when it is not set by control behavior.",
+          "subclasses": [
+            "DisplayPanel"
+          ],
+          "read_type": "SignalID",
+          "write_type": "SignalID",
+          "optional": true
+        },
+        {
+          "name": "display_panel_show_in_chart",
+          "order": 235,
+          "description": "",
+          "subclasses": [
+            "DisplayPanel"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
           "name": "display_panel_text",
-          "order": 231,
+          "order": 232,
           "description": "Text visible on the display panel. Can be written only when it is not set by control behavior.",
           "subclasses": [
             "DisplayPanel"
@@ -10225,7 +10225,7 @@
         },
         {
           "name": "draw_data",
-          "order": 196,
+          "order": 197,
           "description": "Gives a draw data of the given entity if it supports such data.",
           "subclasses": [
             "RollingStock"
@@ -10274,7 +10274,7 @@
         {
           "name": "effectivity_modifier",
           "order": 27,
-          "description": "Multiplies the acceleration the vehicle can create for one unit of energy. Defaults to `1`.",
+          "description": "Multiplies the acceleration the car can create for one unit of energy. Defaults to `1`.",
           "subclasses": [
             "Car"
           ],
@@ -10284,7 +10284,7 @@
         },
         {
           "name": "effects",
-          "order": 124,
+          "order": 125,
           "description": "The effects being applied to this entity, if any. For beacons, this is the effect the beacon is broadcasting.",
           "read_type": "ModuleEffects",
           "optional": true
@@ -10317,14 +10317,14 @@
         },
         {
           "name": "electric_network_id",
-          "order": 159,
+          "order": 160,
           "description": "Returns the id of the electric network that this entity is connected to, if any.",
           "read_type": "uint32",
           "optional": true
         },
         {
           "name": "electric_network_statistics",
-          "order": 114,
+          "order": 115,
           "description": "The electric network statistics for this electric pole.",
           "subclasses": [
             "ElectricPole"
@@ -10334,7 +10334,7 @@
         },
         {
           "name": "enable_logistics_while_moving",
-          "order": 154,
+          "order": 155,
           "description": "Whether equipment grid logistics are enabled while this vehicle is moving.",
           "subclasses": [
             "Vehicle"
@@ -10356,7 +10356,7 @@
         },
         {
           "name": "energy_generated_last_tick",
-          "order": 161,
+          "order": 162,
           "description": "How much energy this generator generated in the last tick.",
           "subclasses": [
             "Generator"
@@ -10383,7 +10383,7 @@
         },
         {
           "name": "filter_slot_count",
-          "order": 96,
+          "order": 97,
           "description": "The number of filter slots this inserter, loader, mining drill, asteroid collector or logistic storage container has. 0 if not one of those entities.",
           "read_type": "uint32",
           "optional": false
@@ -10397,14 +10397,14 @@
         },
         {
           "name": "fluids_count",
-          "order": 201,
+          "order": 202,
           "description": "Returns count of fluid storages. This includes fluid storages provided by fluidboxes but also covers other fluid storages like fluid turret's internal buffer and fluid wagon's fluid since they are not fluidbox and cannot be exposed through [LuaFluidBox](runtime:LuaFluidBox).",
           "read_type": "uint32",
           "optional": false
         },
         {
           "name": "follow_offset",
-          "order": 178,
+          "order": 179,
           "description": "The follow offset of this spidertron, if any entity is being followed. This is randomized each time the follow entity is set.",
           "subclasses": [
             "SpiderVehicle"
@@ -10415,7 +10415,7 @@
         },
         {
           "name": "follow_target",
-          "order": 177,
+          "order": 178,
           "description": "The follow target of this spidertron, if any.",
           "subclasses": [
             "SpiderVehicle"
@@ -10440,7 +10440,7 @@
         },
         {
           "name": "frozen",
-          "order": 212,
+          "order": 213,
           "description": "If the freezable entity is currently frozen.",
           "subclasses": [
             "FreezableEntity"
@@ -10517,7 +10517,7 @@
         },
         {
           "name": "gps_tag",
-          "order": 199,
+          "order": 200,
           "description": "Returns a [rich text](https://wiki.factorio.com/Rich_text) string containing this entity's position and surface name as a gps tag. [Printing](runtime:LuaGameScript::print) it will ping the location of the entity.",
           "examples": [
             "```\n-- called on a LuaEntity on the default surface it returns:\nentity.gps_tag -- => \"[gps=-4,-9]\"\n\n-- called on a LuaEntity on \"custom-surface\" it returns:\ndifferent_entity.gps_tag -- => \"[gps=1,-5,custom-surface]\"\n```"
@@ -10527,7 +10527,7 @@
         },
         {
           "name": "graphics_variation",
-          "order": 99,
+          "order": 100,
           "description": "The graphics variation for this entity. `nil` if this entity doesn't use graphics variations.",
           "read_type": "uint8",
           "write_type": "uint8",
@@ -10535,7 +10535,7 @@
         },
         {
           "name": "grid",
-          "order": 98,
+          "order": 99,
           "description": "This entity's equipment grid, if any.",
           "read_type": "LuaEquipmentGrid",
           "optional": true
@@ -10580,7 +10580,7 @@
         },
         {
           "name": "highlight_box_blink_interval",
-          "order": 151,
+          "order": 152,
           "description": "The blink interval of this highlight box entity. `0` indicates no blink.",
           "subclasses": [
             "HighlightBox"
@@ -10591,7 +10591,7 @@
         },
         {
           "name": "highlight_box_type",
-          "order": 150,
+          "order": 151,
           "description": "The highlight box type of this highlight box entity.",
           "subclasses": [
             "HighlightBox"
@@ -10613,7 +10613,7 @@
         },
         {
           "name": "infinity_container_filters",
-          "order": 126,
+          "order": 127,
           "description": "The filters for this infinity container.",
           "subclasses": [
             "InfinityContainer",
@@ -10660,7 +10660,7 @@
         },
         {
           "name": "inserter_filter_mode",
-          "order": 135,
+          "order": 136,
           "description": "The filter mode for this filter inserter. `nil` if this inserter doesn't use filters.",
           "subclasses": [
             "Inserter"
@@ -10697,7 +10697,7 @@
         },
         {
           "name": "inserter_spoil_priority",
-          "order": 141,
+          "order": 142,
           "description": "The spoil priority for this inserter.",
           "subclasses": [
             "Inserter"
@@ -10708,7 +10708,7 @@
         },
         {
           "name": "inserter_stack_size_override",
-          "order": 116,
+          "order": 117,
           "description": "Sets the stack size limit on this inserter.\n\nSet to `0` to reset.",
           "subclasses": [
             "Inserter"
@@ -10719,7 +10719,7 @@
         },
         {
           "name": "inserter_target_pickup_count",
-          "order": 115,
+          "order": 116,
           "description": "Returns the current target pickup count of the inserter.\n\nThis considers the circuit network, manual override and the inserter stack size limit based on technology.",
           "subclasses": [
             "Inserter"
@@ -10729,28 +10729,28 @@
         },
         {
           "name": "is_entity_with_health",
-          "order": 174,
+          "order": 175,
           "description": "If this entity is EntityWithHealth",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_entity_with_owner",
-          "order": 173,
+          "order": 174,
           "description": "If this entity is EntityWithOwner",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_freezable",
-          "order": 211,
+          "order": 212,
           "description": "If the entity is freezable.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_headed_to_trains_front",
-          "order": 195,
+          "order": 196,
           "description": "If the rolling stock is facing train's front.",
           "subclasses": [
             "RollingStock"
@@ -10760,7 +10760,7 @@
         },
         {
           "name": "is_military_target",
-          "order": 172,
+          "order": 173,
           "description": "Whether this entity is a MilitaryTarget. Can be written to if [LuaEntityPrototype::allow_run_time_change_of_is_military_target](runtime:LuaEntityPrototype::allow_run_time_change_of_is_military_target) returns `true`.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -10768,14 +10768,14 @@
         },
         {
           "name": "is_updatable",
-          "order": 207,
+          "order": 208,
           "description": "If the entity is updatable.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "item_request_proxy",
-          "order": 219,
+          "order": 220,
           "description": "The first found item request proxy targeting this entity.",
           "read_type": "LuaEntity",
           "optional": true
@@ -10813,7 +10813,7 @@
         },
         {
           "name": "link_id",
-          "order": 176,
+          "order": 177,
           "description": "The link ID this linked container is using.",
           "subclasses": [
             "LinkedContainer"
@@ -10824,7 +10824,7 @@
         },
         {
           "name": "linked_belt_neighbour",
-          "order": 180,
+          "order": 181,
           "description": "Neighbour to which this linked belt is connected to, if any.\n\nMay return entity ghost which contains linked belt to which connection is made.",
           "subclasses": [
             "LinkedBelt"
@@ -10834,7 +10834,7 @@
         },
         {
           "name": "linked_belt_type",
-          "order": 179,
+          "order": 180,
           "description": "Type of linked belt. Changing type will also flip direction so the belt is out of the same side.\n\nCan only be changed when linked belt is disconnected (has no neighbour set).",
           "subclasses": [
             "LinkedBelt"
@@ -10845,7 +10845,7 @@
         },
         {
           "name": "loader_belt_stack_size_override",
-          "order": 137,
+          "order": 138,
           "description": "The belt stack size override for this loader. Set to `0` to disable. Writing this value requires [LoaderPrototype::adjustable_belt_stack_size](prototype:LoaderPrototype::adjustable_belt_stack_size) to be `true`.",
           "subclasses": [
             "Loader"
@@ -10856,7 +10856,7 @@
         },
         {
           "name": "loader_container",
-          "order": 97,
+          "order": 98,
           "description": "The container entity this loader is pointing at/pulling from depending on the [LuaEntity::loader_type](runtime:LuaEntity::loader_type), if any.",
           "subclasses": [
             "Loader"
@@ -10866,7 +10866,7 @@
         },
         {
           "name": "loader_filter_mode",
-          "order": 136,
+          "order": 137,
           "description": "The filter mode for this loader. `nil` if this loader does not support filters.",
           "subclasses": [
             "Loader"
@@ -10939,8 +10939,18 @@
           "optional": false
         },
         {
+          "name": "mining_area",
+          "order": 89,
+          "description": "Area in which this mining drill looks for resources to mine.",
+          "subclasses": [
+            "MiningDrill"
+          ],
+          "read_type": "BoundingBox",
+          "optional": false
+        },
+        {
           "name": "mining_drill_filter_mode",
-          "order": 138,
+          "order": 139,
           "description": "The filter mode for this mining drill. `nil` if this mining drill doesn't have filters.",
           "subclasses": [
             "MiningDrill"
@@ -10985,7 +10995,7 @@
         },
         {
           "name": "mining_target",
-          "order": 95,
+          "order": 96,
           "description": "The mining target, if any.",
           "subclasses": [
             "MiningDrill"
@@ -10996,7 +11006,7 @@
         {
           "name": "mirroring",
           "order": 19,
-          "description": "If the entity is currently mirrored. This state is referred to as `flipped` elsewhere, such as on the [on_player_flipped_entity](runtime:on_player_flipped_entity) event.",
+          "description": "Whether the entity is currently mirrored. This state is referred to as `flipped` elsewhere, such as on the [on_player_flipped_entity](runtime:on_player_flipped_entity) event.\n\nIf an entity is mirrored, it is flipped over the axis that is pointing in the entity's direction. For example if a mirrored entity is facing north, everything that was defined to be facing east in the prototype now faces west.",
           "read_type": "boolean",
           "write_type": "boolean",
           "optional": false
@@ -11010,7 +11020,7 @@
         },
         {
           "name": "name_tag",
-          "order": 184,
+          "order": 185,
           "description": "Name tag of this entity. Returns `nil` if entity has no name tag. When name tag is already used by other entity, the name will be removed from the other entity. Entity name tags can also be set in the entity \"extra settings\" GUI in the map editor.",
           "read_type": "string",
           "write_type": "string",
@@ -11018,7 +11028,7 @@
         },
         {
           "name": "neighbour_bonus",
-          "order": 148,
+          "order": 149,
           "description": "The current total neighbour bonus of this reactor.",
           "subclasses": [
             "Reactor"
@@ -11059,7 +11069,7 @@
         },
         {
           "name": "object_name",
-          "order": 236,
+          "order": 237,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -11082,7 +11092,7 @@
         },
         {
           "name": "owned_plants",
-          "order": 193,
+          "order": 194,
           "description": "Plants registered by this agricultural tower. One plant can be registered in multiple agricultural towers.",
           "subclasses": [
             "AgriculturalTower"
@@ -11095,7 +11105,7 @@
         },
         {
           "name": "parameters",
-          "order": 112,
+          "order": 113,
           "description": "",
           "subclasses": [
             "ProgrammableSpeaker"
@@ -11106,7 +11116,7 @@
         },
         {
           "name": "pickup_from_left_lane",
-          "order": 223,
+          "order": 224,
           "description": "For inserters taking items from transport belt connectables, this determines whether the inserter is allowed to take items from the left lane.",
           "subclasses": [
             "Inserter"
@@ -11117,7 +11127,7 @@
         },
         {
           "name": "pickup_from_right_lane",
-          "order": 224,
+          "order": 225,
           "description": "For inserters taking items from transport belt connectables, this determines whether the inserter is allowed to take items from the right lane.",
           "subclasses": [
             "Inserter"
@@ -11167,7 +11177,7 @@
         },
         {
           "name": "power_production",
-          "order": 89,
+          "order": 90,
           "description": "The power production specific to the ElectricEnergyInterface entity type.",
           "subclasses": [
             "ElectricEnergyInterface"
@@ -11178,7 +11188,7 @@
         },
         {
           "name": "power_switch_state",
-          "order": 122,
+          "order": 123,
           "description": "The state of this power switch.",
           "subclasses": [
             "PowerSwitch"
@@ -11189,7 +11199,7 @@
         },
         {
           "name": "power_usage",
-          "order": 90,
+          "order": 91,
           "description": "The power usage specific to the ElectricEnergyInterface entity type.",
           "subclasses": [
             "ElectricEnergyInterface"
@@ -11210,7 +11220,7 @@
         },
         {
           "name": "priority_targets",
-          "order": 228,
+          "order": 229,
           "description": "The priority targets for this turret (if any).",
           "subclasses": [
             "Turret"
@@ -11223,7 +11233,7 @@
         },
         {
           "name": "procession_tick",
-          "order": 206,
+          "order": 207,
           "description": "how far into the current procession the cargo pod is.",
           "subclasses": [
             "CargoPod"
@@ -11241,7 +11251,7 @@
         },
         {
           "name": "products_finished",
-          "order": 117,
+          "order": 118,
           "description": "The number of products this machine finished crafting in its lifetime.",
           "subclasses": [
             "CraftingMachine"
@@ -11259,7 +11269,7 @@
         },
         {
           "name": "proxy_target",
-          "order": 108,
+          "order": 109,
           "description": "The target entity for this item-request-proxy, if any.",
           "subclasses": [
             "ItemRequestProxy"
@@ -11269,7 +11279,7 @@
         },
         {
           "name": "proxy_target_entity",
-          "order": 229,
+          "order": 230,
           "description": "Entity of which inventory is exposed by this ProxyContainer",
           "subclasses": [
             "ProxyContainer"
@@ -11280,7 +11290,7 @@
         },
         {
           "name": "proxy_target_inventory",
-          "order": 230,
+          "order": 231,
           "description": "Inventory index of the inventory that is exposed by this ProxyContainer",
           "subclasses": [
             "ProxyContainer"
@@ -11291,7 +11301,7 @@
         },
         {
           "name": "pump_rail_target",
-          "order": 157,
+          "order": 158,
           "description": "The rail target of this pump, if any.",
           "subclasses": [
             "Pump"
@@ -11301,7 +11311,7 @@
         },
         {
           "name": "pumped_last_tick",
-          "order": 226,
+          "order": 227,
           "description": "The amount of fluid moved by this offshore pump or normal pump in the last tick.",
           "subclasses": [
             "OffshorePump",
@@ -11312,14 +11322,14 @@
         },
         {
           "name": "quality",
-          "order": 181,
+          "order": 182,
           "description": "The quality of this entity.\n\nNot all entities support quality and will give the \"normal\" quality back if they don't.",
           "read_type": "LuaQualityPrototype",
           "optional": false
         },
         {
           "name": "radar_scan_progress",
-          "order": 183,
+          "order": 184,
           "description": "The current radar scan progress, as a number in range `[0, 1]`.",
           "subclasses": [
             "Radar"
@@ -11329,7 +11339,7 @@
         },
         {
           "name": "rail_layer",
-          "order": 182,
+          "order": 183,
           "description": "Gets rail layer of a given signal",
           "subclasses": [
             "RailSignal",
@@ -11350,7 +11360,7 @@
         },
         {
           "name": "recipe_locked",
-          "order": 143,
+          "order": 144,
           "description": "When locked; the recipe in this assembling machine can't be changed by the player.",
           "subclasses": [
             "AssemblingMachine"
@@ -11386,7 +11396,7 @@
         },
         {
           "name": "remove_unfiltered_items",
-          "order": 127,
+          "order": 128,
           "description": "Whether items not included in this infinity container filters should be removed from the container.",
           "subclasses": [
             "InfinityContainer",
@@ -11398,7 +11408,7 @@
         },
         {
           "name": "render_player",
-          "order": 155,
+          "order": 156,
           "description": "The player that this `simple-entity-with-owner`, `simple-entity-with-force`, or `highlight-box` is visible to. `nil` when this entity is rendered for all players.",
           "read_type": "LuaPlayer",
           "write_type": "PlayerIdentification",
@@ -11406,7 +11416,7 @@
         },
         {
           "name": "render_to_forces",
-          "order": 156,
+          "order": 157,
           "description": "The forces that this `simple-entity-with-owner` or `simple-entity-with-force` is visible to. `nil` or an empty array when this entity is rendered for all forces.\n\nReading will always give an array of [LuaForce](runtime:LuaForce)",
           "read_type": "ForceSet",
           "write_type": "ForceSet",
@@ -11414,7 +11424,7 @@
         },
         {
           "name": "request_from_buffers",
-          "order": 163,
+          "order": 164,
           "description": "Whether this requester chest is set to also request from buffer chests.\n\nUseable only on entities that have requester slots.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -11433,7 +11443,7 @@
         },
         {
           "name": "robot_order_queue",
-          "order": 205,
+          "order": 206,
           "description": "Get the current queue of robot orders.",
           "subclasses": [
             "ConstructionRobot",
@@ -11447,7 +11457,7 @@
         },
         {
           "name": "rocket",
-          "order": 218,
+          "order": 219,
           "description": "The rocket silo rocket this cargo pod is attached to, or rocket silo rocket attached to this rocket silo - if any.",
           "read_type": "LuaEntity",
           "optional": true
@@ -11465,7 +11475,7 @@
         },
         {
           "name": "rocket_silo_status",
-          "order": 185,
+          "order": 186,
           "description": "The status of this rocket silo entity.",
           "subclasses": [
             "RocketSilo"
@@ -11483,21 +11493,21 @@
         },
         {
           "name": "secondary_bounding_box",
-          "order": 92,
+          "order": 93,
           "description": "The secondary bounding box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.",
           "read_type": "BoundingBox",
           "optional": true
         },
         {
           "name": "secondary_selection_box",
-          "order": 94,
+          "order": 95,
           "description": "The secondary selection box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.",
           "read_type": "BoundingBox",
           "optional": true
         },
         {
           "name": "segmented_unit",
-          "order": 225,
+          "order": 226,
           "description": "The segmented unit object that the segment entity is a part of.",
           "subclasses": [
             "Segment"
@@ -11520,14 +11530,14 @@
         },
         {
           "name": "selection_box",
-          "order": 93,
+          "order": 94,
           "description": "[LuaEntityPrototype::selection_box](runtime:LuaEntityPrototype::selection_box) around entity's given position and respecting the current entity orientation.",
           "read_type": "BoundingBox",
           "optional": false
         },
         {
           "name": "shooting_target",
-          "order": 107,
+          "order": 108,
           "description": "The shooting target for this turret, if any. Can't be set to `nil` via script.",
           "subclasses": [
             "Turret"
@@ -11549,7 +11559,7 @@
         },
         {
           "name": "spawn_shift",
-          "order": 120,
+          "order": 121,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -11559,7 +11569,7 @@
         },
         {
           "name": "spawning_cooldown",
-          "order": 118,
+          "order": 119,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -11584,7 +11594,7 @@
         },
         {
           "name": "splitter_filter",
-          "order": 134,
+          "order": 135,
           "description": "The filter for this splitter, if any is set.",
           "subclasses": [
             "Splitter",
@@ -11596,7 +11606,7 @@
         },
         {
           "name": "splitter_input_priority",
-          "order": 139,
+          "order": 140,
           "description": "The input priority for this splitter.",
           "subclasses": [
             "Splitter",
@@ -11642,7 +11652,7 @@
         },
         {
           "name": "splitter_output_priority",
-          "order": 140,
+          "order": 141,
           "description": "The output priority for this splitter.",
           "subclasses": [
             "Splitter",
@@ -11698,14 +11708,14 @@
         },
         {
           "name": "status",
-          "order": 152,
+          "order": 153,
           "description": "The status of this entity, if any.\n\nThis is always the actual status of the entity, even if [LuaEntity::custom_status](runtime:LuaEntity::custom_status) is set.",
           "read_type": "defines.entity_status",
           "optional": true
         },
         {
           "name": "sticked_to",
-          "order": 110,
+          "order": 111,
           "description": "The entity this sticker is sticked to.",
           "subclasses": [
             "Sticker"
@@ -11715,7 +11725,7 @@
         },
         {
           "name": "sticker_vehicle_modifiers",
-          "order": 111,
+          "order": 112,
           "description": "The vehicle modifiers applied to this entity through the attached stickers.",
           "read_type": {
             "complex_type": "table",
@@ -11747,7 +11757,7 @@
         },
         {
           "name": "stickers",
-          "order": 109,
+          "order": 110,
           "description": "The sticker entities attached to this entity, if any.",
           "read_type": {
             "complex_type": "array",
@@ -11757,7 +11767,7 @@
         },
         {
           "name": "storage_filter",
-          "order": 162,
+          "order": 163,
           "description": "The storage filter for this logistic storage container.\n\nUseable only on logistic containers with the `\"storage\"` [logistic_mode](runtime:LuaEntityPrototype::logistic_mode).",
           "read_type": "ItemIDAndQualityIDPair",
           "write_type": "ItemWithQualityID",
@@ -11772,7 +11782,7 @@
         },
         {
           "name": "tags",
-          "order": 166,
+          "order": 167,
           "description": "The tags associated with this entity ghost. `nil` if this is not an entity ghost or when the ghost has no tags.",
           "read_type": "Tags",
           "write_type": "Tags",
@@ -11788,7 +11798,7 @@
         },
         {
           "name": "tick_grown",
-          "order": 202,
+          "order": 203,
           "description": "The tick when this plant is fully grown.",
           "subclasses": [
             "Plant"
@@ -11799,7 +11809,7 @@
         },
         {
           "name": "tick_of_last_attack",
-          "order": 132,
+          "order": 133,
           "description": "The last tick this character entity was attacked.",
           "subclasses": [
             "Character"
@@ -11810,7 +11820,7 @@
         },
         {
           "name": "tick_of_last_damage",
-          "order": 133,
+          "order": 134,
           "description": "The last tick this character entity was damaged.",
           "subclasses": [
             "Character"
@@ -11821,14 +11831,14 @@
         },
         {
           "name": "tile_height",
-          "order": 187,
+          "order": 188,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.",
           "read_type": "uint32",
           "optional": false
         },
         {
           "name": "tile_width",
-          "order": 186,
+          "order": 187,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.",
           "read_type": "uint32",
           "optional": false
@@ -11849,7 +11859,7 @@
         },
         {
           "name": "time_to_next_effect",
-          "order": 167,
+          "order": 168,
           "description": "The ticks until the next trigger effect of this smoke-with-trigger.",
           "subclasses": [
             "SmokeWithTrigger"
@@ -11860,7 +11870,7 @@
         },
         {
           "name": "timeout",
-          "order": 147,
+          "order": 148,
           "description": "The timeout that's left on this landmine in ticks. It describes the time between the landmine being placed and it being armed.",
           "subclasses": [
             "LandMine"
@@ -11900,7 +11910,7 @@
         },
         {
           "name": "train_stop_priority",
-          "order": 197,
+          "order": 198,
           "description": "Priority of this train stop.",
           "subclasses": [
             "TrainStop"
@@ -11911,7 +11921,7 @@
         },
         {
           "name": "trains_count",
-          "order": 170,
+          "order": 171,
           "description": "Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint.\n\nTrain may be included multiple times when braking distance covers this train stop multiple times.\n\nValue may be read even when train stop has no control behavior.",
           "subclasses": [
             "TrainStop"
@@ -11921,7 +11931,7 @@
         },
         {
           "name": "trains_in_block",
-          "order": 146,
+          "order": 147,
           "description": "The number of trains in this rail block for this rail entity.",
           "subclasses": [
             "Rail"
@@ -11931,7 +11941,7 @@
         },
         {
           "name": "trains_limit",
-          "order": 171,
+          "order": 172,
           "description": "Amount of trains above which no new trains will be sent to this train stop. Writing nil will disable the limit (will set a maximum possible value).\n\nWhen a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it.",
           "subclasses": [
             "TrainStop"
@@ -11952,7 +11962,7 @@
         },
         {
           "name": "tree_color_index",
-          "order": 100,
+          "order": 101,
           "description": "Index of the tree color.",
           "subclasses": [
             "Tree"
@@ -11963,7 +11973,7 @@
         },
         {
           "name": "tree_color_index_max",
-          "order": 101,
+          "order": 102,
           "description": "Maximum index of the tree colors.",
           "subclasses": [
             "Tree"
@@ -11973,7 +11983,7 @@
         },
         {
           "name": "tree_gray_stage_index",
-          "order": 104,
+          "order": 105,
           "description": "Index of the tree gray stage",
           "subclasses": [
             "Tree"
@@ -11984,7 +11994,7 @@
         },
         {
           "name": "tree_gray_stage_index_max",
-          "order": 105,
+          "order": 106,
           "description": "Maximum index of the tree gray stages.",
           "subclasses": [
             "Tree"
@@ -11994,7 +12004,7 @@
         },
         {
           "name": "tree_stage_index",
-          "order": 102,
+          "order": 103,
           "description": "Index of the tree stage.",
           "subclasses": [
             "Tree"
@@ -12005,7 +12015,7 @@
         },
         {
           "name": "tree_stage_index_max",
-          "order": 103,
+          "order": 104,
           "description": "Maximum index of the tree stages.",
           "subclasses": [
             "Tree"
@@ -12029,7 +12039,7 @@
         },
         {
           "name": "units",
-          "order": 121,
+          "order": 122,
           "description": "The units associated with this spawner entity.",
           "subclasses": [
             "Spawner"
@@ -12064,14 +12074,14 @@
         },
         {
           "name": "valid",
-          "order": 235,
+          "order": 236,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "valve_threshold_override",
-          "order": 158,
+          "order": 159,
           "description": "The threshold override of this valve, or `nil` if an override is not defined.\n\nIf no override is defined, the threshold is taken from [LuaEntityPrototype::valve_threshold](runtime:LuaEntityPrototype::valve_threshold).",
           "subclasses": [
             "Valve"
@@ -13445,6 +13455,19 @@
           ],
           "read_type": "double",
           "optional": true
+        },
+        {
+          "name": "connection_category",
+          "order": 322,
+          "description": "",
+          "subclasses": [
+            "FluidWagon"
+          ],
+          "read_type": {
+            "complex_type": "array",
+            "value": "string"
+          },
+          "optional": false
         },
         {
           "name": "connection_distance",
@@ -15241,7 +15264,7 @@
         },
         {
           "name": "object_name",
-          "order": 323,
+          "order": 324,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -16207,7 +16230,7 @@
         },
         {
           "name": "valid",
-          "order": 322,
+          "order": 323,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -20141,6 +20164,24 @@
             }
           ],
           "parameters": [],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": []
+        },
+        {
+          "name": "script_trigger_research",
+          "order": 81,
+          "description": "Trigger the \"scripted\" [research trigger](runtime:ResearchTrigger) of a technology, researching it. Does nothing if the technology does not have a \"scripted\" research trigger.",
+          "parameters": [
+            {
+              "name": "technology",
+              "order": 0,
+              "description": "",
+              "type": "TechnologyID",
+              "optional": false
+            }
+          ],
           "format": {
             "takes_table": false
           },
@@ -27810,7 +27851,7 @@
         },
         {
           "name": "ammo",
-          "order": 43,
+          "order": 48,
           "description": "Number of bullets left in the magazine.",
           "subclasses": [
             "AmmoItem"
@@ -27876,7 +27917,7 @@
         },
         {
           "name": "custom_description",
-          "order": 32,
+          "order": 37,
           "description": "The custom description this item-with-tags. This is shown over the normal item description if this is set to a non-empty value.",
           "subclasses": [
             "ItemWithTags"
@@ -27900,13 +27941,35 @@
         },
         {
           "name": "durability",
-          "order": 42,
+          "order": 47,
           "description": "Durability of the contained item. Automatically capped at the item's maximum durability.",
           "subclasses": [
             "Tool"
           ],
           "read_type": "double",
           "write_type": "double",
+          "optional": false
+        },
+        {
+          "name": "entity_auto_target_with_gunner",
+          "order": 35,
+          "description": "If this is an item with entity data, get the stored auto target with gunner state.",
+          "subclasses": [
+            "ItemWithEntityData"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "entity_auto_target_without_gunner",
+          "order": 34,
+          "description": "If this is an item with entity data, get the stored auto target without gunner state.",
+          "subclasses": [
+            "ItemWithEntityData"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
           "optional": false
         },
         {
@@ -27921,8 +27984,30 @@
           "optional": true
         },
         {
-          "name": "entity_filter_count",
+          "name": "entity_driver_is_gunner",
           "order": 33,
+          "description": "If this is an item with entity data, get the stored driver is gunner state.",
+          "subclasses": [
+            "ItemWithEntityData"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "entity_enable_logistics_while_moving",
+          "order": 32,
+          "description": "If this is an item with entity data, get the stored enable logistics while moving state.",
+          "subclasses": [
+            "ItemWithEntityData"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "entity_filter_count",
+          "order": 38,
           "description": "The number of entity filters this deconstruction item supports.",
           "subclasses": [
             "DeconstructionItem"
@@ -27932,7 +28017,7 @@
         },
         {
           "name": "entity_filter_mode",
-          "order": 37,
+          "order": 42,
           "description": "The blacklist/whitelist entity filter mode for this deconstruction item.",
           "subclasses": [
             "DeconstructionItem"
@@ -27943,7 +28028,7 @@
         },
         {
           "name": "entity_filters",
-          "order": 34,
+          "order": 39,
           "description": "The entity filters for this deconstruction item. The attribute is a sparse array with the keys representing the index of the filter. All prototypes in this array must not have the `\"not-deconstructable\"` flag set and are either a `cliff` or marked as `minable`.",
           "subclasses": [
             "DeconstructionItem"
@@ -27978,6 +28063,17 @@
           ],
           "read_type": "LogisticSections",
           "write_type": "LogisticSections",
+          "optional": false
+        },
+        {
+          "name": "entity_logistics_enabled",
+          "order": 31,
+          "description": "If this is an item with entity data, get the stored vehicle logistics enabled state.",
+          "subclasses": [
+            "ItemWithEntityData"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
           "optional": false
         },
         {
@@ -28120,7 +28216,7 @@
         },
         {
           "name": "mapper_count",
-          "order": 41,
+          "order": 46,
           "description": "The current count of mappers in the upgrade item.",
           "subclasses": [
             "UpgradeItem"
@@ -28151,7 +28247,7 @@
         },
         {
           "name": "tags",
-          "order": 31,
+          "order": 36,
           "description": "",
           "subclasses": [
             "ItemWithTags"
@@ -28162,7 +28258,7 @@
         },
         {
           "name": "tile_filter_count",
-          "order": 35,
+          "order": 40,
           "description": "The number of tile filters this deconstruction item supports.",
           "subclasses": [
             "DeconstructionItem"
@@ -28172,7 +28268,7 @@
         },
         {
           "name": "tile_filter_mode",
-          "order": 38,
+          "order": 43,
           "description": "The blacklist/whitelist tile filter mode for this deconstruction item.",
           "subclasses": [
             "DeconstructionItem"
@@ -28183,7 +28279,7 @@
         },
         {
           "name": "tile_filters",
-          "order": 36,
+          "order": 41,
           "description": "The tile filters for this deconstruction item. The attribute is a sparse array with the keys representing the index of the filter. Reading filters always returns an array of strings which are the tile prototype names.",
           "subclasses": [
             "DeconstructionItem"
@@ -28200,7 +28296,7 @@
         },
         {
           "name": "tile_selection_mode",
-          "order": 39,
+          "order": 44,
           "description": "The tile selection mode for this deconstruction item.",
           "subclasses": [
             "DeconstructionItem"
@@ -28211,7 +28307,7 @@
         },
         {
           "name": "trees_and_rocks_only",
-          "order": 40,
+          "order": 45,
           "description": "If this deconstruction item is set to allow trees and rocks only.",
           "subclasses": [
             "DeconstructionItem"
@@ -37508,7 +37604,7 @@
         {
           "name": "get_blueprint_entity_tag",
           "order": 7,
-          "description": "Gets the given tag on the given blueprint entity index in this blueprint blueprint.",
+          "description": "Gets the given tag on the given blueprint entity index in this blueprint.",
           "subclasses": [
             "BlueprintRecord"
           ],
@@ -37777,7 +37873,7 @@
         {
           "name": "set_blueprint_entity_tag",
           "order": 8,
-          "description": "Sets the given tag on the given blueprint entity index in this blueprint blueprint.",
+          "description": "Sets the given tag on the given blueprint entity index in this blueprint.",
           "subclasses": [
             "BlueprintRecord"
           ],
@@ -38018,7 +38114,7 @@
         {
           "name": "blueprint_description",
           "order": 8,
-          "description": "The description for this blueprint or blueprint book",
+          "description": "The description for this blueprint or blueprint book.",
           "subclasses": [
             "BlueprintRecord",
             "BlueprintBookRecord"
@@ -40132,7 +40228,7 @@
           "description": "Create a sprite.",
           "examples": [
             "```\n-- This will draw an iron plate icon at the character's feet. The sprite will move together with the character.\nrendering.draw_sprite{sprite = \"item.iron-plate\", target = game.player.character, surface = game.player.surface}\n```",
-            "```\n-- This will draw an iron plate icon at the character's head. The sprite will move together with the character.\nrendering.draw_sprite{sprite = \"item.iron-plate\", target = {entity = game.player.character, offset = {0, -2}}, surface = game.player.surface}\n$field(render_mode, ScriptRenderMode, $optional) Mode which this object should render in. Defaults to \"game\".\n```"
+            "```\n-- This will draw an iron plate icon at the character's head. The sprite will move together with the character.\nrendering.draw_sprite{sprite = \"item.iron-plate\", target = {entity = game.player.character, offset = {0, -2}}, surface = game.player.surface}\n```"
           ],
           "parameters": [
             {
@@ -40192,6 +40288,13 @@
               "order": 5,
               "description": "Render layer of the sprite. Defaults to `\"arrow\"`.",
               "type": "RenderLayer",
+              "optional": true
+            },
+            {
+              "name": "render_mode",
+              "order": 17,
+              "description": "Mode which this object should render in. Defaults to \"game\".",
+              "type": "ScriptRenderMode",
               "optional": true
             },
             {
@@ -58463,8 +58566,43 @@
       ]
     },
     {
-      "name": "on_player_fast_transferred",
+      "name": "on_player_dropped_item_into_entity",
       "order": 98,
+      "description": "Called when a player drops a single item into an entity.",
+      "data": [
+        {
+          "name": "entity",
+          "order": 1,
+          "description": "The entity the item was dropped into.",
+          "type": "LuaEntity",
+          "optional": false
+        },
+        {
+          "name": "name",
+          "order": 2,
+          "description": "Identifier of the event",
+          "type": "defines.events",
+          "optional": false
+        },
+        {
+          "name": "player_index",
+          "order": 0,
+          "description": "",
+          "type": "uint32",
+          "optional": false
+        },
+        {
+          "name": "tick",
+          "order": 3,
+          "description": "Tick the event was generated.",
+          "type": "uint32",
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "on_player_fast_transferred",
+      "order": 99,
       "description": "Called when a player fast-transfers something to or from an entity.",
       "data": [
         {
@@ -58513,7 +58651,7 @@
     },
     {
       "name": "on_player_flipped_entity",
-      "order": 99,
+      "order": 100,
       "description": "Called when the player flips an entity. This event is only fired when the entity actually changes its orientation or mirroring, so it won't be triggered when pressing the flip keys on an entity that can't be flipped.\n\nThis event reflects a change in the [LuaEntity::mirroring](runtime:LuaEntity::mirroring) property.",
       "data": [
         {
@@ -58555,7 +58693,7 @@
     },
     {
       "name": "on_player_flushed_fluid",
-      "order": 100,
+      "order": 101,
       "description": "Called after player flushed fluid",
       "data": [
         {
@@ -58611,7 +58749,7 @@
     },
     {
       "name": "on_player_gun_inventory_changed",
-      "order": 101,
+      "order": 102,
       "description": "Called after a players gun inventory changed in some way.",
       "data": [
         {
@@ -58639,7 +58777,7 @@
     },
     {
       "name": "on_player_input_method_changed",
-      "order": 102,
+      "order": 103,
       "description": "Called when a player's input method changes. See [LuaPlayer::input_method](runtime:LuaPlayer::input_method).",
       "data": [
         {
@@ -58667,7 +58805,7 @@
     },
     {
       "name": "on_player_joined_game",
-      "order": 103,
+      "order": 104,
       "description": "Called after a player joins the game. This is not called when loading a save file in singleplayer, as the player doesn't actually leave the game, and the save is just on pause until they rejoin.",
       "data": [
         {
@@ -58695,7 +58833,7 @@
     },
     {
       "name": "on_player_kicked",
-      "order": 104,
+      "order": 105,
       "description": "Called when a player is kicked.",
       "data": [
         {
@@ -58737,7 +58875,7 @@
     },
     {
       "name": "on_player_left_game",
-      "order": 105,
+      "order": 106,
       "description": "Called after a player leaves the game. This is not called when closing a save file in singleplayer, as the player doesn't actually leave the game, and the save is just on pause until they rejoin.",
       "data": [
         {
@@ -58772,7 +58910,7 @@
     },
     {
       "name": "on_player_locale_changed",
-      "order": 106,
+      "order": 107,
       "description": "Called when a player's active locale changes. See [LuaPlayer::locale](runtime:LuaPlayer::locale).",
       "data": [
         {
@@ -58807,7 +58945,7 @@
     },
     {
       "name": "on_player_main_inventory_changed",
-      "order": 107,
+      "order": 108,
       "description": "Called after a players main inventory changed in some way.",
       "data": [
         {
@@ -58835,7 +58973,7 @@
     },
     {
       "name": "on_player_mined_entity",
-      "order": 108,
+      "order": 109,
       "description": "Called after the results of an entity being mined are collected just before the entity is destroyed.\n\nAfter this event any items in the buffer will be transferred into the player as if they came from mining the entity.\n\nThe buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.",
       "data": [
         {
@@ -58878,7 +59016,7 @@
     },
     {
       "name": "on_player_mined_item",
-      "order": 109,
+      "order": 110,
       "description": "Called when the player mines something.",
       "data": [
         {
@@ -58913,7 +59051,7 @@
     },
     {
       "name": "on_player_mined_tile",
-      "order": 110,
+      "order": 111,
       "description": "Called after a player mines tiles.",
       "data": [
         {
@@ -58958,7 +59096,7 @@
     },
     {
       "name": "on_player_muted",
-      "order": 111,
+      "order": 112,
       "description": "Called when a player is muted.",
       "data": [
         {
@@ -58986,7 +59124,7 @@
     },
     {
       "name": "on_player_pipette",
-      "order": 112,
+      "order": 113,
       "description": "Called when a player invokes the \"smart pipette\" over an entity.",
       "data": [
         {
@@ -59035,7 +59173,7 @@
     },
     {
       "name": "on_player_placed_equipment",
-      "order": 113,
+      "order": 114,
       "description": "Called after the player puts equipment in an equipment grid",
       "data": [
         {
@@ -59077,7 +59215,7 @@
     },
     {
       "name": "on_player_promoted",
-      "order": 114,
+      "order": 115,
       "description": "Called when a player is promoted.",
       "data": [
         {
@@ -59105,7 +59243,7 @@
     },
     {
       "name": "on_player_removed",
-      "order": 115,
+      "order": 116,
       "description": "Called when a player is removed (deleted) from the game. This is markedly different from a player temporarily [leaving](runtime:on_player_left_game) the game, and instead behaves like the player never existed in the save file.",
       "data": [
         {
@@ -59133,7 +59271,7 @@
     },
     {
       "name": "on_player_removed_equipment",
-      "order": 116,
+      "order": 117,
       "description": "Called after the player removes equipment from an equipment grid",
       "data": [
         {
@@ -59189,7 +59327,7 @@
     },
     {
       "name": "on_player_repaired_entity",
-      "order": 117,
+      "order": 118,
       "description": "Called when a player repairs an entity.",
       "data": [
         {
@@ -59225,7 +59363,7 @@
     },
     {
       "name": "on_player_respawned",
-      "order": 118,
+      "order": 119,
       "description": "Called after a player respawns.",
       "data": [
         {
@@ -59260,7 +59398,7 @@
     },
     {
       "name": "on_player_reverse_selected_area",
-      "order": 119,
+      "order": 120,
       "description": "Called after a player reverse-selects an area with a selection-tool item.",
       "data": [
         {
@@ -59329,7 +59467,7 @@
     },
     {
       "name": "on_player_rotated_entity",
-      "order": 120,
+      "order": 121,
       "description": "Called when the player rotates an entity. This event is only fired when the entity actually changes its orientation -- pressing the rotate key on an entity that can't be rotated won't fire this event.\n\nEntities being flipped will not fire this event, even if the flip involves rotating. See [on_player_flipped_entity](runtime:on_player_flipped_entity).",
       "data": [
         {
@@ -59371,7 +59509,7 @@
     },
     {
       "name": "on_player_selected_area",
-      "order": 121,
+      "order": 122,
       "description": "Called after a player selects an area with a selection-tool item.",
       "data": [
         {
@@ -59447,7 +59585,7 @@
     },
     {
       "name": "on_player_set_quick_bar_slot",
-      "order": 122,
+      "order": 123,
       "description": "Called when a player sets a quickbar slot to anything (new value, or set to empty).",
       "data": [
         {
@@ -59475,7 +59613,7 @@
     },
     {
       "name": "on_player_setup_blueprint",
-      "order": 123,
+      "order": 124,
       "description": "Called when a player selects an area with a blueprint.",
       "data": [
         {
@@ -59566,7 +59704,7 @@
     },
     {
       "name": "on_player_toggled_alt_mode",
-      "order": 124,
+      "order": 125,
       "description": "Called when a player toggles alt mode, also known as \"show entity info\".",
       "data": [
         {
@@ -59601,7 +59739,7 @@
     },
     {
       "name": "on_player_toggled_map_editor",
-      "order": 125,
+      "order": 126,
       "description": "Called when a player toggles the map editor on or off.",
       "data": [
         {
@@ -59629,7 +59767,7 @@
     },
     {
       "name": "on_player_trash_inventory_changed",
-      "order": 126,
+      "order": 127,
       "description": "Called after a players trash inventory changed in some way.",
       "data": [
         {
@@ -59657,7 +59795,7 @@
     },
     {
       "name": "on_player_unbanned",
-      "order": 127,
+      "order": 128,
       "description": "Called when a player is un-banned.",
       "data": [
         {
@@ -59706,7 +59844,7 @@
     },
     {
       "name": "on_player_unmuted",
-      "order": 128,
+      "order": 129,
       "description": "Called when a player is unmuted.",
       "data": [
         {
@@ -59734,7 +59872,7 @@
     },
     {
       "name": "on_player_used_capsule",
-      "order": 129,
+      "order": 130,
       "description": "Called when a player uses a capsule that results in some game action.",
       "data": [
         {
@@ -59783,7 +59921,7 @@
     },
     {
       "name": "on_player_used_spidertron_remote",
-      "order": 130,
+      "order": 131,
       "description": "Called when a player uses spidertron remote to send all selected units to a given position",
       "data": [
         {
@@ -59818,7 +59956,7 @@
     },
     {
       "name": "on_post_entity_died",
-      "order": 131,
+      "order": 132,
       "description": "Called after an entity dies.",
       "data": [
         {
@@ -59906,7 +60044,7 @@
     },
     {
       "name": "on_post_segmented_unit_died",
-      "order": 132,
+      "order": 133,
       "description": "Called after a segmented unit dies.",
       "data": [
         {
@@ -59977,7 +60115,7 @@
     },
     {
       "name": "on_pre_build",
-      "order": 133,
+      "order": 134,
       "description": "Called when players uses an item to build something. Called before [on_built_entity](runtime:on_built_entity).",
       "data": [
         {
@@ -60054,7 +60192,7 @@
     },
     {
       "name": "on_pre_chunk_deleted",
-      "order": 134,
+      "order": 135,
       "description": "Called before one or more chunks are deleted using [LuaSurface::delete_chunk](runtime:LuaSurface::delete_chunk).",
       "data": [
         {
@@ -60092,7 +60230,7 @@
     },
     {
       "name": "on_pre_entity_settings_pasted",
-      "order": 135,
+      "order": 136,
       "description": "Called before entity copy-paste is done.",
       "data": [
         {
@@ -60134,7 +60272,7 @@
     },
     {
       "name": "on_pre_ghost_deconstructed",
-      "order": 136,
+      "order": 137,
       "description": "Called before a ghost entity is destroyed as a result of being marked for deconstruction.\n\nAlso called for item request proxies before they are destroyed as a result of being marked for deconstruction.",
       "data": [
         {
@@ -60170,7 +60308,7 @@
     },
     {
       "name": "on_pre_ghost_upgraded",
-      "order": 137,
+      "order": 138,
       "description": "Called before a ghost entity is upgraded.",
       "data": [
         {
@@ -60220,7 +60358,7 @@
     },
     {
       "name": "on_pre_permission_group_deleted",
-      "order": 138,
+      "order": 139,
       "description": "Called directly before a permission group is deleted.",
       "data": [
         {
@@ -60255,7 +60393,7 @@
     },
     {
       "name": "on_pre_permission_string_imported",
-      "order": 139,
+      "order": 140,
       "description": "Called directly before a permission string is imported.",
       "data": [
         {
@@ -60283,7 +60421,7 @@
     },
     {
       "name": "on_pre_player_crafted_item",
-      "order": 140,
+      "order": 141,
       "description": "Called when a player queues something to be crafted.",
       "data": [
         {
@@ -60332,7 +60470,7 @@
     },
     {
       "name": "on_pre_player_died",
-      "order": 141,
+      "order": 142,
       "description": "Called before a players dies.",
       "data": [
         {
@@ -60367,7 +60505,7 @@
     },
     {
       "name": "on_pre_player_left_game",
-      "order": 142,
+      "order": 143,
       "description": "Called before a player leaves the game.",
       "data": [
         {
@@ -60402,7 +60540,7 @@
     },
     {
       "name": "on_pre_player_mined_item",
-      "order": 143,
+      "order": 144,
       "description": "Called when the player completes a mining action, but before the entity is potentially removed from the map. This is called even if the entity does not end up being removed.",
       "data": [
         {
@@ -60438,7 +60576,7 @@
     },
     {
       "name": "on_pre_player_removed",
-      "order": 144,
+      "order": 145,
       "description": "Called before a player is removed (deleted) from the game. This is markedly different from a player temporarily [leaving](runtime:on_player_left_game) the game, and instead behaves like the player never existed in the save file.",
       "data": [
         {
@@ -60466,7 +60604,7 @@
     },
     {
       "name": "on_pre_player_toggled_map_editor",
-      "order": 145,
+      "order": 146,
       "description": "Called before a player toggles the map editor on or off.",
       "data": [
         {
@@ -60494,7 +60632,7 @@
     },
     {
       "name": "on_pre_robot_exploded_cliff",
-      "order": 146,
+      "order": 147,
       "description": "Called directly before a robot explodes cliffs.",
       "data": [
         {
@@ -60543,7 +60681,7 @@
     },
     {
       "name": "on_pre_scenario_finished",
-      "order": 147,
+      "order": 148,
       "description": "Called just before the scenario finishes.",
       "data": [
         {
@@ -60571,7 +60709,7 @@
     },
     {
       "name": "on_pre_script_inventory_resized",
-      "order": 148,
+      "order": 149,
       "description": "Called just before a script inventory is resized.",
       "data": [
         {
@@ -60627,7 +60765,7 @@
     },
     {
       "name": "on_pre_surface_cleared",
-      "order": 149,
+      "order": 150,
       "description": "Called just before a surface is cleared (all entities removed and all chunks deleted).",
       "data": [
         {
@@ -60655,7 +60793,7 @@
     },
     {
       "name": "on_pre_surface_deleted",
-      "order": 150,
+      "order": 151,
       "description": "Called just before a surface is deleted.",
       "data": [
         {
@@ -60683,7 +60821,7 @@
     },
     {
       "name": "on_redo_applied",
-      "order": 151,
+      "order": 152,
       "description": "Called when the player triggers \"redo\".",
       "data": [
         {
@@ -60721,7 +60859,7 @@
     },
     {
       "name": "on_research_cancelled",
-      "order": 152,
+      "order": 153,
       "description": "Called when research is cancelled.",
       "data": [
         {
@@ -60767,7 +60905,7 @@
     },
     {
       "name": "on_research_finished",
-      "order": 153,
+      "order": 154,
       "description": "Called when a research finishes.",
       "data": [
         {
@@ -60802,7 +60940,7 @@
     },
     {
       "name": "on_research_moved",
-      "order": 154,
+      "order": 155,
       "description": "Called when research is moved forwards or backwards in the research queue.",
       "data": [
         {
@@ -60837,7 +60975,7 @@
     },
     {
       "name": "on_research_queued",
-      "order": 155,
+      "order": 156,
       "description": "Called when research is queued.",
       "data": [
         {
@@ -60879,7 +61017,7 @@
     },
     {
       "name": "on_research_reversed",
-      "order": 156,
+      "order": 157,
       "description": "Called when a research is reversed (unresearched).",
       "data": [
         {
@@ -60914,7 +61052,7 @@
     },
     {
       "name": "on_research_started",
-      "order": 157,
+      "order": 158,
       "description": "Called when a technology research starts.",
       "data": [
         {
@@ -60949,7 +61087,7 @@
     },
     {
       "name": "on_resource_depleted",
-      "order": 158,
+      "order": 159,
       "description": "Called when a resource entity reaches 0 or its minimum yield for infinite resources.",
       "data": [
         {
@@ -60977,7 +61115,7 @@
     },
     {
       "name": "on_robot_built_entity",
-      "order": 159,
+      "order": 160,
       "description": "Called when a construction robot builds an entity.",
       "data": [
         {
@@ -61027,7 +61165,7 @@
     },
     {
       "name": "on_robot_built_tile",
-      "order": 160,
+      "order": 161,
       "description": "Called after a robot builds tiles.",
       "data": [
         {
@@ -61100,7 +61238,7 @@
     },
     {
       "name": "on_robot_exploded_cliff",
-      "order": 161,
+      "order": 162,
       "description": "Called directly after a robot explodes cliffs.",
       "data": [
         {
@@ -61142,7 +61280,7 @@
     },
     {
       "name": "on_robot_mined",
-      "order": 162,
+      "order": 163,
       "description": "Called when a robot mines an entity.",
       "data": [
         {
@@ -61177,7 +61315,7 @@
     },
     {
       "name": "on_robot_mined_entity",
-      "order": 163,
+      "order": 164,
       "description": "Called after the results of an entity being mined are collected just before the entity is destroyed.\n\nAfter this event any items in the buffer will be transferred into the robot as if they came from mining the entity.\n\nThe buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.",
       "data": [
         {
@@ -61220,7 +61358,7 @@
     },
     {
       "name": "on_robot_mined_tile",
-      "order": 164,
+      "order": 165,
       "description": "Called after a robot mines tiles.",
       "data": [
         {
@@ -61265,7 +61403,7 @@
     },
     {
       "name": "on_robot_pre_mined",
-      "order": 165,
+      "order": 166,
       "description": "Called before a robot mines an entity.",
       "data": [
         {
@@ -61301,7 +61439,7 @@
     },
     {
       "name": "on_rocket_launch_ordered",
-      "order": 166,
+      "order": 167,
       "description": "Called when a rocket silo is ordered to be launched.",
       "data": [
         {
@@ -61343,7 +61481,7 @@
     },
     {
       "name": "on_rocket_launched",
-      "order": 167,
+      "order": 168,
       "description": "Called when a rocket finishes ascending. (Triggers listening for finished rocket launch past 2.0 have been moved to 'on_cargo_pod_finished_ascending' as rocket and cargo pod are two separate entities)",
       "data": [
         {
@@ -61378,7 +61516,7 @@
     },
     {
       "name": "on_runtime_mod_setting_changed",
-      "order": 168,
+      "order": 169,
       "description": "Called when a runtime mod setting is changed by a player.",
       "data": [
         {
@@ -61433,7 +61571,7 @@
     },
     {
       "name": "on_script_inventory_resized",
-      "order": 169,
+      "order": 170,
       "description": "Called just after a script inventory is resized.",
       "data": [
         {
@@ -61496,7 +61634,7 @@
     },
     {
       "name": "on_script_path_request_finished",
-      "order": 170,
+      "order": 171,
       "description": "Called when a [LuaSurface::request_path](runtime:LuaSurface::request_path) call completes.",
       "data": [
         {
@@ -61541,7 +61679,7 @@
     },
     {
       "name": "on_script_trigger_effect",
-      "order": 171,
+      "order": 172,
       "description": "Called when a script trigger effect is triggered.",
       "data": [
         {
@@ -61618,7 +61756,7 @@
     },
     {
       "name": "on_sector_scanned",
-      "order": 172,
+      "order": 173,
       "description": "Called when an entity of type `radar` finishes scanning a sector.",
       "data": [
         {
@@ -61661,7 +61799,7 @@
     },
     {
       "name": "on_segment_entity_created",
-      "order": 173,
+      "order": 174,
       "description": "Called when an individual segment of a SegmentedUnit is created.",
       "data": [
         {
@@ -61689,7 +61827,7 @@
     },
     {
       "name": "on_segmented_unit_created",
-      "order": 174,
+      "order": 175,
       "description": "Called when a segmented unit is created for any reason.",
       "data": [
         {
@@ -61732,7 +61870,7 @@
     },
     {
       "name": "on_segmented_unit_damaged",
-      "order": 175,
+      "order": 176,
       "description": "Called when a segmented unit is damaged. This is not called when a segmented unit's health is set directly by another mod.",
       "data": [
         {
@@ -61810,7 +61948,7 @@
     },
     {
       "name": "on_segmented_unit_died",
-      "order": 176,
+      "order": 177,
       "description": "Called when a segmented unit dies.",
       "data": [
         {
@@ -61860,7 +61998,7 @@
     },
     {
       "name": "on_selected_entity_changed",
-      "order": 177,
+      "order": 178,
       "description": "Called after the selected entity changes for a given player.",
       "data": [
         {
@@ -61895,7 +62033,7 @@
     },
     {
       "name": "on_singleplayer_init",
-      "order": 178,
+      "order": 179,
       "description": "Called when [LuaGameScript::is_multiplayer](runtime:LuaGameScript::is_multiplayer) changes to false. May also be raised when it was already false but a game was loaded from a save file without hosting.",
       "data": [
         {
@@ -61916,7 +62054,7 @@
     },
     {
       "name": "on_space_platform_built_entity",
-      "order": 179,
+      "order": 180,
       "description": "Called when a space platform builds an entity.",
       "data": [
         {
@@ -61966,7 +62104,7 @@
     },
     {
       "name": "on_space_platform_built_tile",
-      "order": 180,
+      "order": 181,
       "description": "Called after a space platform builds tiles.",
       "data": [
         {
@@ -62039,7 +62177,7 @@
     },
     {
       "name": "on_space_platform_changed_state",
-      "order": 181,
+      "order": 182,
       "description": "Called when a space platform changes state",
       "data": [
         {
@@ -62074,7 +62212,7 @@
     },
     {
       "name": "on_space_platform_mined_entity",
-      "order": 182,
+      "order": 183,
       "description": "Called after the results of an entity being mined are collected just before the entity is destroyed.\n\nAfter this event any items in the buffer will be transferred into the platform as if they came from mining the entity.\n\nThe buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.",
       "data": [
         {
@@ -62117,7 +62255,7 @@
     },
     {
       "name": "on_space_platform_mined_item",
-      "order": 183,
+      "order": 184,
       "description": "Called when a platform mines an entity.",
       "data": [
         {
@@ -62152,7 +62290,7 @@
     },
     {
       "name": "on_space_platform_mined_tile",
-      "order": 184,
+      "order": 185,
       "description": "Called after a platform mines tiles.",
       "data": [
         {
@@ -62197,7 +62335,7 @@
     },
     {
       "name": "on_space_platform_pre_mined",
-      "order": 185,
+      "order": 186,
       "description": "Called before a platform mines an entity.",
       "data": [
         {
@@ -62233,7 +62371,7 @@
     },
     {
       "name": "on_spider_command_completed",
-      "order": 186,
+      "order": 187,
       "description": "Called when a spider finishes moving to its autopilot position.",
       "data": [
         {
@@ -62261,7 +62399,7 @@
     },
     {
       "name": "on_string_translated",
-      "order": 187,
+      "order": 188,
       "description": "Called when a translation request generated through [LuaPlayer::request_translation](runtime:LuaPlayer::request_translation) or [LuaPlayer::request_translations](runtime:LuaPlayer::request_translations) has been completed.",
       "data": [
         {
@@ -62317,7 +62455,7 @@
     },
     {
       "name": "on_surface_cleared",
-      "order": 188,
+      "order": 189,
       "description": "Called just after a surface is cleared (all entities removed and all chunks deleted).",
       "data": [
         {
@@ -62345,7 +62483,7 @@
     },
     {
       "name": "on_surface_created",
-      "order": 189,
+      "order": 190,
       "description": "Called when a surface is created.\n\nThis is not called when the default surface is created as it will always exist.",
       "data": [
         {
@@ -62373,7 +62511,7 @@
     },
     {
       "name": "on_surface_deleted",
-      "order": 190,
+      "order": 191,
       "description": "Called after a surface is deleted.",
       "data": [
         {
@@ -62401,7 +62539,7 @@
     },
     {
       "name": "on_surface_imported",
-      "order": 191,
+      "order": 192,
       "description": "Called after a surface is imported via the map editor.",
       "data": [
         {
@@ -62436,7 +62574,7 @@
     },
     {
       "name": "on_surface_renamed",
-      "order": 192,
+      "order": 193,
       "description": "Called when a surface is renamed.",
       "data": [
         {
@@ -62478,7 +62616,7 @@
     },
     {
       "name": "on_technology_effects_reset",
-      "order": 193,
+      "order": 194,
       "description": "Called when [LuaForce::reset_technology_effects](runtime:LuaForce::reset_technology_effects) is finished.",
       "data": [
         {
@@ -62506,7 +62644,7 @@
     },
     {
       "name": "on_territory_created",
-      "order": 194,
+      "order": 195,
       "description": "Called when a territory is created for any reason.",
       "data": [
         {
@@ -62541,7 +62679,7 @@
     },
     {
       "name": "on_territory_destroyed",
-      "order": 195,
+      "order": 196,
       "description": "Called when a territory is destroyed from a surface.",
       "data": [
         {
@@ -62569,7 +62707,7 @@
     },
     {
       "name": "on_tick",
-      "order": 196,
+      "order": 197,
       "description": "It is fired once every tick. Since this event is fired every tick, its handler shouldn't include performance heavy code.",
       "data": [
         {
@@ -62590,7 +62728,7 @@
     },
     {
       "name": "on_tower_mined_plant",
-      "order": 197,
+      "order": 198,
       "description": "Called after the results of an entity being mined are collected just before the entity is destroyed.\n\nAfter this event any items in the buffer will be transferred into the tower as if they came from mining the entity.\n\nThe buffer inventory is special in that it's only valid during this event and has a dynamic size expanding as more items are transferred into it.",
       "data": [
         {
@@ -62632,7 +62770,7 @@
     },
     {
       "name": "on_tower_planted_seed",
-      "order": 198,
+      "order": 199,
       "description": "Called before an agricultural tower plants a seed.",
       "data": [
         {
@@ -62674,7 +62812,7 @@
     },
     {
       "name": "on_tower_pre_mined_plant",
-      "order": 199,
+      "order": 200,
       "description": "Called before an agricultural tower mines a plant.",
       "data": [
         {
@@ -62709,7 +62847,7 @@
     },
     {
       "name": "on_train_changed_state",
-      "order": 200,
+      "order": 201,
       "description": "Called when a train changes state (started to stopped and vice versa)",
       "data": [
         {
@@ -62744,7 +62882,7 @@
     },
     {
       "name": "on_train_created",
-      "order": 201,
+      "order": 202,
       "description": "Called when a new train is created either through disconnecting/connecting an existing one or building a new one.",
       "data": [
         {
@@ -62786,7 +62924,7 @@
     },
     {
       "name": "on_train_schedule_changed",
-      "order": 202,
+      "order": 203,
       "description": "Called when a trains schedule is changed either by the player or through script.",
       "data": [
         {
@@ -62821,7 +62959,7 @@
     },
     {
       "name": "on_trigger_created_entity",
-      "order": 203,
+      "order": 204,
       "description": "Called when an entity with a trigger prototype (such as capsules) create an entity AND that trigger prototype defined `trigger_created_entity=true`.",
       "data": [
         {
@@ -62856,7 +62994,7 @@
     },
     {
       "name": "on_trigger_fired_artillery",
-      "order": 204,
+      "order": 205,
       "description": "Called when an entity with a trigger prototype (such as capsules) fire an artillery projectile AND that trigger prototype defined `trigger_fired_artillery=true`.",
       "data": [
         {
@@ -62891,7 +63029,7 @@
     },
     {
       "name": "on_udp_packet_received",
-      "order": 205,
+      "order": 206,
       "description": "Called when new packets are processed by [LuaHelpers::recv_udp](runtime:LuaHelpers::recv_udp).",
       "data": [
         {
@@ -62933,7 +63071,7 @@
     },
     {
       "name": "on_undo_applied",
-      "order": 206,
+      "order": 207,
       "description": "Called when the player triggers \"undo\".",
       "data": [
         {
@@ -62971,7 +63109,7 @@
     },
     {
       "name": "on_unit_added_to_group",
-      "order": 207,
+      "order": 208,
       "description": "Called when a unit is added to a unit group.",
       "data": [
         {
@@ -63006,7 +63144,7 @@
     },
     {
       "name": "on_unit_group_created",
-      "order": 208,
+      "order": 209,
       "description": "Called when a new unit group is created, before any members are added to it.",
       "data": [
         {
@@ -63034,7 +63172,7 @@
     },
     {
       "name": "on_unit_group_finished_gathering",
-      "order": 209,
+      "order": 210,
       "description": "Called when a unit group finishes gathering and starts executing its command.",
       "data": [
         {
@@ -63062,7 +63200,7 @@
     },
     {
       "name": "on_unit_removed_from_group",
-      "order": 210,
+      "order": 211,
       "description": "Called when a unit is removed from a unit group.",
       "data": [
         {
@@ -63097,7 +63235,7 @@
     },
     {
       "name": "on_worker_robot_expired",
-      "order": 211,
+      "order": 212,
       "description": "Called when a worker (construction or logistic) robot expires through a lack of energy.",
       "data": [
         {
@@ -63125,7 +63263,7 @@
     },
     {
       "name": "script_raised_built",
-      "order": 212,
+      "order": 213,
       "description": "A static event mods can use to tell other mods they built something by script. This event is only raised if a mod does so with [LuaBootstrap::raise_event](runtime:LuaBootstrap::raise_event) or [LuaBootstrap::raise_script_built](runtime:LuaBootstrap::raise_script_built), or when `raise_built` is passed to [LuaSurface::create_entity](runtime:LuaSurface::create_entity).",
       "data": [
         {
@@ -63154,7 +63292,7 @@
     },
     {
       "name": "script_raised_destroy",
-      "order": 213,
+      "order": 214,
       "description": "A static event mods can use to tell other mods they destroyed something by script. This event is only raised if a mod does so with [LuaBootstrap::raise_event](runtime:LuaBootstrap::raise_event) or [LuaBootstrap::raise_script_destroy](runtime:LuaBootstrap::raise_script_destroy), or when `raise_destroy` is passed to [LuaEntity::destroy](runtime:LuaEntity::destroy).",
       "data": [
         {
@@ -63183,7 +63321,7 @@
     },
     {
       "name": "script_raised_destroy_segmented_unit",
-      "order": 214,
+      "order": 215,
       "description": "A static event that mods can use to tell other mods they destroyed a segmented unit by script. This event is only raised if a mod does so with [LuaBootstrap::raise_event](runtime:LuaBootstrap::raise_event), or [LuaBootstrap::raise_script_destroy_segmented_unit](runtime:LuaBootstrap::raise_script_destroy_segmented_unit), or when `raise_destroy` is passed to [LuaSegmentedUnit::destroy](runtime:LuaSegmentedUnit::destroy).",
       "data": [
         {
@@ -63212,7 +63350,7 @@
     },
     {
       "name": "script_raised_revive",
-      "order": 215,
+      "order": 216,
       "description": "A static event mods can use to tell other mods they revived something by script. This event is only raised if a mod does so with [LuaBootstrap::raise_event](runtime:LuaBootstrap::raise_event) or [LuaBootstrap::raise_script_revive](runtime:LuaBootstrap::raise_script_revive), or when `raise_revive` is passed to [LuaEntity::revive](runtime:LuaEntity::revive).",
       "data": [
         {
@@ -63248,7 +63386,7 @@
     },
     {
       "name": "script_raised_set_tiles",
-      "order": 216,
+      "order": 217,
       "description": "A static event mods can use to tell other mods they changed tiles on a surface by script. This event is only raised if a mod does so with [LuaBootstrap::raise_event](runtime:LuaBootstrap::raise_event) or [LuaBootstrap::raise_script_set_tiles](runtime:LuaBootstrap::raise_script_set_tiles), or when `raise_event` is passed to [LuaSurface::set_tiles](runtime:LuaSurface::set_tiles).",
       "data": [
         {
@@ -63286,7 +63424,7 @@
     },
     {
       "name": "script_raised_teleported",
-      "order": 217,
+      "order": 218,
       "description": "A static event mods can use to tell other mods they teleported something by script. This event is only raised if a mod does so with [LuaBootstrap::raise_event](runtime:LuaBootstrap::raise_event) or [LuaBootstrap::raise_script_teleported](runtime:LuaBootstrap::raise_script_teleported), or when `raise_teleported` is passed to [LuaControl::teleport](runtime:LuaControl::teleport).",
       "data": [
         {
@@ -84539,6 +84677,10 @@
                 {
                   "complex_type": "literal",
                   "value": "create-space-platform"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "scripted"
                 }
               ],
               "full_format": false
@@ -84627,6 +84769,20 @@
                 "order": 0,
                 "description": "",
                 "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "scripted",
+            "order": 6,
+            "description": "",
+            "parameters": [
+              {
+                "name": "trigger_description",
+                "order": 0,
+                "description": "",
+                "type": "LocalisedString",
                 "optional": false
               }
             ]
@@ -92925,603 +93081,608 @@
           "description": ""
         },
         {
-          "name": "on_player_fast_transferred",
+          "name": "on_player_dropped_item_into_entity",
           "order": 97,
           "description": ""
         },
         {
-          "name": "on_player_flipped_entity",
+          "name": "on_player_fast_transferred",
           "order": 98,
           "description": ""
         },
         {
-          "name": "on_player_flushed_fluid",
+          "name": "on_player_flipped_entity",
           "order": 99,
           "description": ""
         },
         {
-          "name": "on_player_gun_inventory_changed",
+          "name": "on_player_flushed_fluid",
           "order": 100,
           "description": ""
         },
         {
-          "name": "on_player_input_method_changed",
+          "name": "on_player_gun_inventory_changed",
           "order": 101,
           "description": ""
         },
         {
-          "name": "on_player_joined_game",
+          "name": "on_player_input_method_changed",
           "order": 102,
           "description": ""
         },
         {
-          "name": "on_player_kicked",
+          "name": "on_player_joined_game",
           "order": 103,
           "description": ""
         },
         {
-          "name": "on_player_left_game",
+          "name": "on_player_kicked",
           "order": 104,
           "description": ""
         },
         {
-          "name": "on_player_locale_changed",
+          "name": "on_player_left_game",
           "order": 105,
           "description": ""
         },
         {
-          "name": "on_player_main_inventory_changed",
+          "name": "on_player_locale_changed",
           "order": 106,
           "description": ""
         },
         {
-          "name": "on_player_mined_entity",
+          "name": "on_player_main_inventory_changed",
           "order": 107,
           "description": ""
         },
         {
-          "name": "on_player_mined_item",
+          "name": "on_player_mined_entity",
           "order": 108,
           "description": ""
         },
         {
-          "name": "on_player_mined_tile",
+          "name": "on_player_mined_item",
           "order": 109,
           "description": ""
         },
         {
-          "name": "on_player_muted",
+          "name": "on_player_mined_tile",
           "order": 110,
           "description": ""
         },
         {
-          "name": "on_player_pipette",
+          "name": "on_player_muted",
           "order": 111,
           "description": ""
         },
         {
-          "name": "on_player_placed_equipment",
+          "name": "on_player_pipette",
           "order": 112,
           "description": ""
         },
         {
-          "name": "on_player_promoted",
+          "name": "on_player_placed_equipment",
           "order": 113,
           "description": ""
         },
         {
-          "name": "on_player_removed",
+          "name": "on_player_promoted",
           "order": 114,
           "description": ""
         },
         {
-          "name": "on_player_removed_equipment",
+          "name": "on_player_removed",
           "order": 115,
           "description": ""
         },
         {
-          "name": "on_player_repaired_entity",
+          "name": "on_player_removed_equipment",
           "order": 116,
           "description": ""
         },
         {
-          "name": "on_player_respawned",
+          "name": "on_player_repaired_entity",
           "order": 117,
           "description": ""
         },
         {
-          "name": "on_player_reverse_selected_area",
+          "name": "on_player_respawned",
           "order": 118,
           "description": ""
         },
         {
-          "name": "on_player_rotated_entity",
+          "name": "on_player_reverse_selected_area",
           "order": 119,
           "description": ""
         },
         {
-          "name": "on_player_selected_area",
+          "name": "on_player_rotated_entity",
           "order": 120,
           "description": ""
         },
         {
-          "name": "on_player_set_quick_bar_slot",
+          "name": "on_player_selected_area",
           "order": 121,
           "description": ""
         },
         {
-          "name": "on_player_setup_blueprint",
+          "name": "on_player_set_quick_bar_slot",
           "order": 122,
           "description": ""
         },
         {
-          "name": "on_player_toggled_alt_mode",
+          "name": "on_player_setup_blueprint",
           "order": 123,
           "description": ""
         },
         {
-          "name": "on_player_toggled_map_editor",
+          "name": "on_player_toggled_alt_mode",
           "order": 124,
           "description": ""
         },
         {
-          "name": "on_player_trash_inventory_changed",
+          "name": "on_player_toggled_map_editor",
           "order": 125,
           "description": ""
         },
         {
-          "name": "on_player_unbanned",
+          "name": "on_player_trash_inventory_changed",
           "order": 126,
           "description": ""
         },
         {
-          "name": "on_player_unmuted",
+          "name": "on_player_unbanned",
           "order": 127,
           "description": ""
         },
         {
-          "name": "on_player_used_capsule",
+          "name": "on_player_unmuted",
           "order": 128,
           "description": ""
         },
         {
-          "name": "on_player_used_spidertron_remote",
+          "name": "on_player_used_capsule",
           "order": 129,
           "description": ""
         },
         {
-          "name": "on_post_entity_died",
+          "name": "on_player_used_spidertron_remote",
           "order": 130,
           "description": ""
         },
         {
-          "name": "on_post_segmented_unit_died",
+          "name": "on_post_entity_died",
           "order": 131,
           "description": ""
         },
         {
-          "name": "on_pre_build",
+          "name": "on_post_segmented_unit_died",
           "order": 132,
           "description": ""
         },
         {
-          "name": "on_pre_chunk_deleted",
+          "name": "on_pre_build",
           "order": 133,
           "description": ""
         },
         {
-          "name": "on_pre_entity_settings_pasted",
+          "name": "on_pre_chunk_deleted",
           "order": 134,
           "description": ""
         },
         {
-          "name": "on_pre_ghost_deconstructed",
+          "name": "on_pre_entity_settings_pasted",
           "order": 135,
           "description": ""
         },
         {
-          "name": "on_pre_ghost_upgraded",
+          "name": "on_pre_ghost_deconstructed",
           "order": 136,
           "description": ""
         },
         {
-          "name": "on_pre_permission_group_deleted",
+          "name": "on_pre_ghost_upgraded",
           "order": 137,
           "description": ""
         },
         {
-          "name": "on_pre_permission_string_imported",
+          "name": "on_pre_permission_group_deleted",
           "order": 138,
           "description": ""
         },
         {
-          "name": "on_pre_player_crafted_item",
+          "name": "on_pre_permission_string_imported",
           "order": 139,
           "description": ""
         },
         {
-          "name": "on_pre_player_died",
+          "name": "on_pre_player_crafted_item",
           "order": 140,
           "description": ""
         },
         {
-          "name": "on_pre_player_left_game",
+          "name": "on_pre_player_died",
           "order": 141,
           "description": ""
         },
         {
-          "name": "on_pre_player_mined_item",
+          "name": "on_pre_player_left_game",
           "order": 142,
           "description": ""
         },
         {
-          "name": "on_pre_player_removed",
+          "name": "on_pre_player_mined_item",
           "order": 143,
           "description": ""
         },
         {
-          "name": "on_pre_player_toggled_map_editor",
+          "name": "on_pre_player_removed",
           "order": 144,
           "description": ""
         },
         {
-          "name": "on_pre_robot_exploded_cliff",
+          "name": "on_pre_player_toggled_map_editor",
           "order": 145,
           "description": ""
         },
         {
-          "name": "on_pre_scenario_finished",
+          "name": "on_pre_robot_exploded_cliff",
           "order": 146,
           "description": ""
         },
         {
-          "name": "on_pre_script_inventory_resized",
+          "name": "on_pre_scenario_finished",
           "order": 147,
           "description": ""
         },
         {
-          "name": "on_pre_surface_cleared",
+          "name": "on_pre_script_inventory_resized",
           "order": 148,
           "description": ""
         },
         {
-          "name": "on_pre_surface_deleted",
+          "name": "on_pre_surface_cleared",
           "order": 149,
           "description": ""
         },
         {
-          "name": "on_redo_applied",
+          "name": "on_pre_surface_deleted",
           "order": 150,
           "description": ""
         },
         {
-          "name": "on_research_cancelled",
+          "name": "on_redo_applied",
           "order": 151,
           "description": ""
         },
         {
-          "name": "on_research_finished",
+          "name": "on_research_cancelled",
           "order": 152,
           "description": ""
         },
         {
-          "name": "on_research_moved",
+          "name": "on_research_finished",
           "order": 153,
           "description": ""
         },
         {
-          "name": "on_research_queued",
+          "name": "on_research_moved",
           "order": 154,
           "description": ""
         },
         {
-          "name": "on_research_reversed",
+          "name": "on_research_queued",
           "order": 155,
           "description": ""
         },
         {
-          "name": "on_research_started",
+          "name": "on_research_reversed",
           "order": 156,
           "description": ""
         },
         {
-          "name": "on_resource_depleted",
+          "name": "on_research_started",
           "order": 157,
           "description": ""
         },
         {
-          "name": "on_robot_built_entity",
+          "name": "on_resource_depleted",
           "order": 158,
           "description": ""
         },
         {
-          "name": "on_robot_built_tile",
+          "name": "on_robot_built_entity",
           "order": 159,
           "description": ""
         },
         {
-          "name": "on_robot_exploded_cliff",
+          "name": "on_robot_built_tile",
           "order": 160,
           "description": ""
         },
         {
-          "name": "on_robot_mined",
+          "name": "on_robot_exploded_cliff",
           "order": 161,
           "description": ""
         },
         {
-          "name": "on_robot_mined_entity",
+          "name": "on_robot_mined",
           "order": 162,
           "description": ""
         },
         {
-          "name": "on_robot_mined_tile",
+          "name": "on_robot_mined_entity",
           "order": 163,
           "description": ""
         },
         {
-          "name": "on_robot_pre_mined",
+          "name": "on_robot_mined_tile",
           "order": 164,
           "description": ""
         },
         {
-          "name": "on_rocket_launch_ordered",
+          "name": "on_robot_pre_mined",
           "order": 165,
           "description": ""
         },
         {
-          "name": "on_rocket_launched",
+          "name": "on_rocket_launch_ordered",
           "order": 166,
           "description": ""
         },
         {
-          "name": "on_runtime_mod_setting_changed",
+          "name": "on_rocket_launched",
           "order": 167,
           "description": ""
         },
         {
-          "name": "on_script_inventory_resized",
+          "name": "on_runtime_mod_setting_changed",
           "order": 168,
           "description": ""
         },
         {
-          "name": "on_script_path_request_finished",
+          "name": "on_script_inventory_resized",
           "order": 169,
           "description": ""
         },
         {
-          "name": "on_script_trigger_effect",
+          "name": "on_script_path_request_finished",
           "order": 170,
           "description": ""
         },
         {
-          "name": "on_sector_scanned",
+          "name": "on_script_trigger_effect",
           "order": 171,
           "description": ""
         },
         {
-          "name": "on_segment_entity_created",
+          "name": "on_sector_scanned",
           "order": 172,
           "description": ""
         },
         {
-          "name": "on_segmented_unit_created",
+          "name": "on_segment_entity_created",
           "order": 173,
           "description": ""
         },
         {
-          "name": "on_segmented_unit_damaged",
+          "name": "on_segmented_unit_created",
           "order": 174,
           "description": ""
         },
         {
-          "name": "on_segmented_unit_died",
+          "name": "on_segmented_unit_damaged",
           "order": 175,
           "description": ""
         },
         {
-          "name": "on_selected_entity_changed",
+          "name": "on_segmented_unit_died",
           "order": 176,
           "description": ""
         },
         {
-          "name": "on_singleplayer_init",
+          "name": "on_selected_entity_changed",
           "order": 177,
           "description": ""
         },
         {
-          "name": "on_space_platform_built_entity",
+          "name": "on_singleplayer_init",
           "order": 178,
           "description": ""
         },
         {
-          "name": "on_space_platform_built_tile",
+          "name": "on_space_platform_built_entity",
           "order": 179,
           "description": ""
         },
         {
-          "name": "on_space_platform_changed_state",
+          "name": "on_space_platform_built_tile",
           "order": 180,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_entity",
+          "name": "on_space_platform_changed_state",
           "order": 181,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_item",
+          "name": "on_space_platform_mined_entity",
           "order": 182,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_tile",
+          "name": "on_space_platform_mined_item",
           "order": 183,
           "description": ""
         },
         {
-          "name": "on_space_platform_pre_mined",
+          "name": "on_space_platform_mined_tile",
           "order": 184,
           "description": ""
         },
         {
-          "name": "on_spider_command_completed",
+          "name": "on_space_platform_pre_mined",
           "order": 185,
           "description": ""
         },
         {
-          "name": "on_string_translated",
+          "name": "on_spider_command_completed",
           "order": 186,
           "description": ""
         },
         {
-          "name": "on_surface_cleared",
+          "name": "on_string_translated",
           "order": 187,
           "description": ""
         },
         {
-          "name": "on_surface_created",
+          "name": "on_surface_cleared",
           "order": 188,
           "description": ""
         },
         {
-          "name": "on_surface_deleted",
+          "name": "on_surface_created",
           "order": 189,
           "description": ""
         },
         {
-          "name": "on_surface_imported",
+          "name": "on_surface_deleted",
           "order": 190,
           "description": ""
         },
         {
-          "name": "on_surface_renamed",
+          "name": "on_surface_imported",
           "order": 191,
           "description": ""
         },
         {
-          "name": "on_technology_effects_reset",
+          "name": "on_surface_renamed",
           "order": 192,
           "description": ""
         },
         {
-          "name": "on_territory_created",
+          "name": "on_technology_effects_reset",
           "order": 193,
           "description": ""
         },
         {
-          "name": "on_territory_destroyed",
+          "name": "on_territory_created",
           "order": 194,
           "description": ""
         },
         {
-          "name": "on_tick",
+          "name": "on_territory_destroyed",
           "order": 195,
           "description": ""
         },
         {
-          "name": "on_tower_mined_plant",
+          "name": "on_tick",
           "order": 196,
           "description": ""
         },
         {
-          "name": "on_tower_planted_seed",
+          "name": "on_tower_mined_plant",
           "order": 197,
           "description": ""
         },
         {
-          "name": "on_tower_pre_mined_plant",
+          "name": "on_tower_planted_seed",
           "order": 198,
           "description": ""
         },
         {
-          "name": "on_train_changed_state",
+          "name": "on_tower_pre_mined_plant",
           "order": 199,
           "description": ""
         },
         {
-          "name": "on_train_created",
+          "name": "on_train_changed_state",
           "order": 200,
           "description": ""
         },
         {
-          "name": "on_train_schedule_changed",
+          "name": "on_train_created",
           "order": 201,
           "description": ""
         },
         {
-          "name": "on_trigger_created_entity",
+          "name": "on_train_schedule_changed",
           "order": 202,
           "description": ""
         },
         {
-          "name": "on_trigger_fired_artillery",
+          "name": "on_trigger_created_entity",
           "order": 203,
           "description": ""
         },
         {
-          "name": "on_udp_packet_received",
+          "name": "on_trigger_fired_artillery",
           "order": 204,
           "description": ""
         },
         {
-          "name": "on_undo_applied",
+          "name": "on_udp_packet_received",
           "order": 205,
           "description": ""
         },
         {
-          "name": "on_unit_added_to_group",
+          "name": "on_undo_applied",
           "order": 206,
           "description": ""
         },
         {
-          "name": "on_unit_group_created",
+          "name": "on_unit_added_to_group",
           "order": 207,
           "description": ""
         },
         {
-          "name": "on_unit_group_finished_gathering",
+          "name": "on_unit_group_created",
           "order": 208,
           "description": ""
         },
         {
-          "name": "on_unit_removed_from_group",
+          "name": "on_unit_group_finished_gathering",
           "order": 209,
           "description": ""
         },
         {
-          "name": "on_worker_robot_expired",
+          "name": "on_unit_removed_from_group",
           "order": 210,
           "description": ""
         },
         {
-          "name": "script_raised_built",
+          "name": "on_worker_robot_expired",
           "order": 211,
           "description": ""
         },
         {
-          "name": "script_raised_destroy",
+          "name": "script_raised_built",
           "order": 212,
           "description": ""
         },
         {
-          "name": "script_raised_destroy_segmented_unit",
+          "name": "script_raised_destroy",
           "order": 213,
           "description": ""
         },
         {
-          "name": "script_raised_revive",
+          "name": "script_raised_destroy_segmented_unit",
           "order": 214,
           "description": ""
         },
         {
-          "name": "script_raised_set_tiles",
+          "name": "script_raised_revive",
           "order": 215,
           "description": ""
         },
         {
-          "name": "script_raised_teleported",
+          "name": "script_raised_set_tiles",
           "order": 216,
+          "description": ""
+        },
+        {
+          "name": "script_raised_teleported",
+          "order": 217,
           "description": ""
         }
       ]
