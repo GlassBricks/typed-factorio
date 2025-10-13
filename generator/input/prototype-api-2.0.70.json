@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.68",
+  "application_version": "2.0.70",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -1778,7 +1778,7 @@
         {
           "name": "selection_priority",
           "order": 19,
-          "description": "The entity with the higher number is selectable before the entity with the lower number.",
+          "description": "The entity with the higher number is selectable before the entity with the lower number.\n\nThe value `0` will be treated the same as `nil`.",
           "override": true,
           "type": "uint8",
           "optional": true,
@@ -1798,7 +1798,7 @@
         {
           "name": "shot_category",
           "order": 17,
-          "description": "",
+          "description": "Only artillery turrets/wagons whose ammo's [ammo_category](prototype:AmmoItemPrototype::ammo_category) matches this category will shoot at this flare. Defaults to all ammo categories being able to shoot at this flare.",
           "override": false,
           "type": "AmmoCategoryID",
           "optional": true
@@ -2458,7 +2458,7 @@
         {
           "name": "disabled_when_recipe_not_researched",
           "order": 14,
-          "description": "Defaults to true if fixed_recipe is not given.",
+          "description": "Defaults to true if `fixed_recipe` is not given.",
           "override": false,
           "type": "boolean",
           "optional": true
@@ -4403,7 +4403,7 @@
         {
           "name": "radar_range",
           "order": 12,
-          "description": "",
+          "description": "In chunks. The radius of how many chunks this cargo landing pad charts around itself.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -6103,7 +6103,7 @@
       "properties": [
         {
           "name": "animation",
-          "order": 22,
+          "order": 23,
           "description": "The dying animation.",
           "override": false,
           "type": "RotatedAnimationVariations",
@@ -6111,7 +6111,7 @@
         },
         {
           "name": "animation_overlay",
-          "order": 23,
+          "order": 24,
           "description": "Variation count must be the same as `animation` variation count. Direction count must be the same as `animation` direction count. Frame count must be the same as `animation` frame count.",
           "override": false,
           "type": "RotatedAnimationVariations",
@@ -6119,7 +6119,7 @@
         },
         {
           "name": "animation_overlay_final_render_layer",
-          "order": 13,
+          "order": 14,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6131,7 +6131,7 @@
         },
         {
           "name": "animation_overlay_render_layer",
-          "order": 12,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6143,7 +6143,7 @@
         },
         {
           "name": "animation_render_layer",
-          "order": 10,
+          "order": 11,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6155,7 +6155,7 @@
         },
         {
           "name": "auto_setup_collision_box",
-          "order": 7,
+          "order": 8,
           "description": "If true, and the collision box is unset, this will take the collision box of the first entity that uses this corpse.",
           "override": false,
           "type": "boolean",
@@ -6167,7 +6167,7 @@
         },
         {
           "name": "decay_animation",
-          "order": 24,
+          "order": 25,
           "description": "",
           "override": false,
           "type": "RotatedAnimationVariations",
@@ -6175,7 +6175,7 @@
         },
         {
           "name": "decay_frame_transition_duration",
-          "order": 21,
+          "order": 22,
           "description": "",
           "override": false,
           "type": "float",
@@ -6187,7 +6187,7 @@
         },
         {
           "name": "direction_shuffle",
-          "order": 31,
+          "order": 32,
           "description": "May not be an empty array. May not be used if there is no `animation` defined.\n\nThe inner arrays are called \"groups\" and must all have the same size.\n\nThe indices map to the directions of `animation` and they are 1-indexed. After the `shuffle_directions_at_frame` frame of the `animation`, these indices are used as the direction when choosing which frame to render. The chosen shuffled direction can be any direction in the same group as the non-shuffled direction. Which direction is chosen from the group depends on the shuffle variation which is `dying_graphics_variation % group_size`.",
           "override": false,
           "type": {
@@ -6226,7 +6226,7 @@
         },
         {
           "name": "final_render_layer",
-          "order": 8,
+          "order": 9,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6238,7 +6238,7 @@
         },
         {
           "name": "ground_patch",
-          "order": 26,
+          "order": 27,
           "description": "",
           "override": false,
           "type": "AnimationVariations",
@@ -6246,7 +6246,7 @@
         },
         {
           "name": "ground_patch_decay",
-          "order": 28,
+          "order": 29,
           "description": "",
           "override": false,
           "type": "AnimationVariations",
@@ -6254,18 +6254,6 @@
         },
         {
           "name": "ground_patch_fade_in_delay",
-          "order": 18,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
-        },
-        {
-          "name": "ground_patch_fade_in_speed",
           "order": 19,
           "description": "",
           "override": false,
@@ -6277,19 +6265,7 @@
           }
         },
         {
-          "name": "ground_patch_fade_out_duration",
-          "order": 30,
-          "description": "",
-          "override": false,
-          "type": "float",
-          "optional": true,
-          "default": {
-            "complex_type": "literal",
-            "value": 0
-          }
-        },
-        {
-          "name": "ground_patch_fade_out_start",
+          "name": "ground_patch_fade_in_speed",
           "order": 20,
           "description": "",
           "override": false,
@@ -6301,8 +6277,32 @@
           }
         },
         {
+          "name": "ground_patch_fade_out_duration",
+          "order": 31,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
+          "name": "ground_patch_fade_out_start",
+          "order": 21,
+          "description": "",
+          "override": false,
+          "type": "float",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
+        },
+        {
           "name": "ground_patch_higher",
-          "order": 27,
+          "order": 28,
           "description": "",
           "override": false,
           "type": "AnimationVariations",
@@ -6310,7 +6310,7 @@
         },
         {
           "name": "ground_patch_render_layer",
-          "order": 9,
+          "order": 10,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6321,19 +6321,19 @@
           }
         },
         {
-          "name": "remove_on_entity_placement",
+          "name": "protected_from_tile_building",
           "order": 5,
           "description": "",
-          "override": false,
+          "override": true,
           "type": "boolean",
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": true
+            "value": false
           }
         },
         {
-          "name": "remove_on_tile_placement",
+          "name": "remove_on_entity_placement",
           "order": 6,
           "description": "",
           "override": false,
@@ -6345,8 +6345,20 @@
           }
         },
         {
+          "name": "remove_on_tile_placement",
+          "order": 7,
+          "description": "",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
           "name": "shuffle_directions_at_frame",
-          "order": 14,
+          "order": 15,
           "description": "Defines after which frame in the `animation` the `direction_shuffle` should be applied. Can be set to `0`, frames are 1-indexed.",
           "override": false,
           "type": "uint8",
@@ -6358,7 +6370,7 @@
         },
         {
           "name": "splash",
-          "order": 25,
+          "order": 26,
           "description": "",
           "override": false,
           "type": "AnimationVariations",
@@ -6366,7 +6378,7 @@
         },
         {
           "name": "splash_render_layer",
-          "order": 11,
+          "order": 12,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -6408,7 +6420,7 @@
         },
         {
           "name": "underwater_layer_offset",
-          "order": 17,
+          "order": 18,
           "description": "",
           "override": false,
           "type": "int8",
@@ -6420,7 +6432,7 @@
         },
         {
           "name": "underwater_patch",
-          "order": 29,
+          "order": 30,
           "description": "",
           "override": false,
           "type": "RotatedSprite",
@@ -6428,7 +6440,7 @@
         },
         {
           "name": "use_decay_layer",
-          "order": 16,
+          "order": 17,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -6440,7 +6452,7 @@
         },
         {
           "name": "use_tile_color_for_ground_patch_tint",
-          "order": 15,
+          "order": 16,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -7552,7 +7564,7 @@
           "order": 4,
           "description": "",
           "override": false,
-          "type": "TriggerEffectItem",
+          "type": "TriggerEffect",
           "optional": false
         },
         {
@@ -7641,7 +7653,7 @@
     {
       "name": "DisplayPanelPrototype",
       "order": 75,
-      "description": "A display panel prototype to provide a prototype for display panels.",
+      "description": "Entity that display a signal icon and some text, either configured directly in the entity or through the circuit network.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
       "typename": "display-panel",
@@ -7710,7 +7722,7 @@
         {
           "name": "max_text_width",
           "order": 1,
-          "description": "The maximum width of the text on the display panel.",
+          "description": "The maximum display width of the text on the display panel. If the text exceeds this width it will be wrapped so that it continues on the next line.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -9487,7 +9499,7 @@
         {
           "name": "selection_priority",
           "order": 16,
-          "description": "The entity with the higher number is selectable before the entity with the lower number.",
+          "description": "The entity with the higher number is selectable before the entity with the lower number.\n\nThe value `0` will be treated the same as `nil`.",
           "override": false,
           "type": "uint8",
           "optional": true,
@@ -11741,6 +11753,28 @@
           "override": false,
           "type": "FluidAmount",
           "optional": false
+        },
+        {
+          "name": "connection_category",
+          "order": 3,
+          "description": "Pumps are only allowed to connect to this fluid wagon if the pump's [fluid box connection](prototype:PipeConnectionDefinition) and this fluid wagon share a connection category. Pump may have different connection categories on the input and output side, connection categories will be taken from the connection that is facing towards fluid wagon.",
+          "override": false,
+          "type": {
+            "complex_type": "union",
+            "options": [
+              "string",
+              {
+                "complex_type": "array",
+                "value": "string"
+              }
+            ],
+            "full_format": false
+          },
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": "default"
+          }
         },
         {
           "name": "quality_affects_capacity",
@@ -16411,7 +16445,7 @@
       "properties": [
         {
           "name": "allowed_effects",
-          "order": 15,
+          "order": 16,
           "description": "Sets the [modules](prototype:ModulePrototype) and [beacon](prototype:BeaconPrototype) effects that are allowed to be used on this mining drill.",
           "override": false,
           "type": "EffectTypeLimitation",
@@ -16420,7 +16454,7 @@
         },
         {
           "name": "allowed_module_categories",
-          "order": 16,
+          "order": 17,
           "description": "Sets the [module categories](prototype:ModuleCategory) that are allowed to be inserted into this machine.",
           "override": false,
           "type": {
@@ -16432,7 +16466,7 @@
         },
         {
           "name": "base_picture",
-          "order": 11,
+          "order": 12,
           "description": "Used by the [pumpjack](https://wiki.factorio.com/Pumpjack) to have a static 4 way sprite.",
           "override": false,
           "type": "Sprite4Way",
@@ -16440,7 +16474,7 @@
         },
         {
           "name": "base_render_layer",
-          "order": 21,
+          "order": 22,
           "description": "",
           "override": false,
           "type": "RenderLayer",
@@ -16452,7 +16486,7 @@
         },
         {
           "name": "circuit_connector",
-          "order": 32,
+          "order": 33,
           "description": "",
           "override": false,
           "type": {
@@ -16468,7 +16502,7 @@
         },
         {
           "name": "circuit_wire_max_distance",
-          "order": 18,
+          "order": 19,
           "description": "The maximum circuit wire distance for this entity.",
           "override": false,
           "type": "double",
@@ -16480,7 +16514,7 @@
         },
         {
           "name": "draw_circuit_wires",
-          "order": 20,
+          "order": 21,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -16492,7 +16526,7 @@
         },
         {
           "name": "draw_copper_wires",
-          "order": 19,
+          "order": 20,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -16504,7 +16538,7 @@
         },
         {
           "name": "drilling_sound",
-          "order": 28,
+          "order": 29,
           "description": "",
           "override": false,
           "type": "InterruptibleSound",
@@ -16512,7 +16546,7 @@
         },
         {
           "name": "drilling_sound_animation_end_frame",
-          "order": 30,
+          "order": 31,
           "description": "",
           "override": false,
           "type": "uint16",
@@ -16524,7 +16558,7 @@
         },
         {
           "name": "drilling_sound_animation_start_frame",
-          "order": 29,
+          "order": 30,
           "description": "",
           "override": false,
           "type": "uint16",
@@ -16536,7 +16570,7 @@
         },
         {
           "name": "drops_full_belt_stacks",
-          "order": 24,
+          "order": 25,
           "description": "",
           "visibility": [
             "space_age"
@@ -16551,7 +16585,7 @@
         },
         {
           "name": "effect_receiver",
-          "order": 12,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "EffectReceiver",
@@ -16559,7 +16593,7 @@
         },
         {
           "name": "energy_source",
-          "order": 4,
+          "order": 5,
           "description": "The energy source of this mining drill.",
           "override": false,
           "type": "EnergySource",
@@ -16567,7 +16601,7 @@
         },
         {
           "name": "energy_usage",
-          "order": 2,
+          "order": 3,
           "description": "The amount of energy used by the drill while mining. Can't be less than or equal to 0.",
           "examples": [
             "```\nenergy_usage = \"150kW\"\n```"
@@ -16578,7 +16612,7 @@
         },
         {
           "name": "filter_count",
-          "order": 33,
+          "order": 34,
           "description": "How many filters this mining drill has. Maximum count of filtered resources in a mining drill is 5.",
           "override": false,
           "type": "uint8",
@@ -16590,7 +16624,7 @@
         },
         {
           "name": "graphics_set",
-          "order": 8,
+          "order": 9,
           "description": "",
           "override": false,
           "type": "MiningDrillGraphicsSet",
@@ -16598,7 +16632,7 @@
         },
         {
           "name": "input_fluid_box",
-          "order": 7,
+          "order": 8,
           "description": "",
           "override": false,
           "type": "FluidBox",
@@ -16606,7 +16640,7 @@
         },
         {
           "name": "mining_speed",
-          "order": 3,
+          "order": 4,
           "description": "The speed of this drill.",
           "override": false,
           "type": "double",
@@ -16614,7 +16648,7 @@
         },
         {
           "name": "module_slots",
-          "order": 13,
+          "order": 14,
           "description": "The number of module slots in this machine.",
           "override": false,
           "type": "ItemStackIndex",
@@ -16622,7 +16656,7 @@
         },
         {
           "name": "monitor_visualization_tint",
-          "order": 31,
+          "order": 32,
           "description": "When this mining drill is connected to the circuit network, the resource that it is reading (either the entire resource patch, or the resource in the mining area of the drill, depending on circuit network setting), is tinted in this color when mousing over the mining drill.",
           "override": false,
           "type": "Color",
@@ -16630,7 +16664,7 @@
         },
         {
           "name": "moving_sound",
-          "order": 27,
+          "order": 28,
           "description": "",
           "override": false,
           "type": "InterruptibleSound",
@@ -16638,7 +16672,7 @@
         },
         {
           "name": "output_fluid_box",
-          "order": 6,
+          "order": 7,
           "description": "",
           "override": false,
           "type": "FluidBox",
@@ -16646,7 +16680,7 @@
         },
         {
           "name": "perceived_performance",
-          "order": 10,
+          "order": 11,
           "description": "Affects animation speed.",
           "override": false,
           "type": "PerceivedPerformance",
@@ -16654,7 +16688,7 @@
         },
         {
           "name": "quality_affects_mining_radius",
-          "order": 26,
+          "order": 27,
           "description": "If set, [QualityPrototype::mining_drill_mining_radius_bonus](prototype:QualityPrototype::mining_drill_mining_radius_bonus) will be added to resource_searching_radius.",
           "override": false,
           "type": "boolean",
@@ -16666,7 +16700,7 @@
         },
         {
           "name": "quality_affects_module_slots",
-          "order": 14,
+          "order": 15,
           "description": "If set, [QualityPrototype::mining_drill_module_slots_bonus](prototype:QualityPrototype::mining_drill_module_slots_bonus) will be added to module slots count.",
           "override": false,
           "type": "boolean",
@@ -16678,7 +16712,7 @@
         },
         {
           "name": "radius_visualisation_picture",
-          "order": 17,
+          "order": 18,
           "description": "The sprite used to show the range of the mining drill.",
           "override": false,
           "type": "Sprite",
@@ -16686,7 +16720,7 @@
         },
         {
           "name": "resource_categories",
-          "order": 5,
+          "order": 6,
           "description": "The names of the [ResourceCategory](prototype:ResourceCategory) that can be mined by this drill. For a list of built-in categories, see [here](https://wiki.factorio.com/Data.raw#resource-category).\n\nNote: Categories containing resources which produce items, fluids, or items+fluids may be combined on the same entity, but may not work as expected. Examples: Miner does not rotate fluid-resulting resources until depletion. Fluid isn't output (fluid resource change and fluidbox matches previous fluid). Miner with no `vector_to_place_result` can't output an item result and halts.",
           "override": false,
           "type": {
@@ -16697,7 +16731,7 @@
         },
         {
           "name": "resource_drain_rate_percent",
-          "order": 22,
+          "order": 23,
           "description": "May not be `0` or larger than `100`.",
           "override": false,
           "type": "uint8",
@@ -16708,16 +16742,25 @@
           }
         },
         {
+          "name": "resource_searching_offset",
+          "order": 2,
+          "description": "Offset of the `resource_searching_radius` from the entity center when the mining drill is facing north.",
+          "override": false,
+          "type": "Vector",
+          "optional": true,
+          "default": "`{0, 0}`"
+        },
+        {
           "name": "resource_searching_radius",
           "order": 1,
-          "description": "The distance from the centre of the mining drill to search for resources in.\n\nThis is 2.49 for electric mining drills (a 5x5 area) and 0.99 for burner mining drills (a 2x2 area). The drill searches resource outside its natural boundary box, which is 0.01 (the middle of the entity); making it 2.5 and 1.0 gives it another block radius.",
+          "description": "The distance from the center of the mining drill to search for resources in.\n\nThis is 2.49 for electric mining drills (a 5x5 area) and 0.99 for burner mining drills (a 2x2 area). The drill searches resource outside its natural boundary box, which is 0.01 (the middle of the entity); making it 2.5 and 1.0 gives it another block radius.",
           "override": false,
           "type": "double",
           "optional": false
         },
         {
           "name": "shuffle_resources_to_mine",
-          "order": 23,
+          "order": 24,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -16729,7 +16772,7 @@
         },
         {
           "name": "uses_force_mining_productivity_bonus",
-          "order": 25,
+          "order": 26,
           "description": "",
           "override": false,
           "type": "boolean",
@@ -16749,7 +16792,7 @@
         },
         {
           "name": "wet_mining_graphics_set",
-          "order": 9,
+          "order": 10,
           "description": "",
           "override": false,
           "type": "MiningDrillGraphicsSet",
@@ -19827,7 +19870,7 @@
         {
           "name": "collision_mask_allow_on_deep_oil_ocean",
           "order": 1,
-          "description": "Defaults to the mask from [UtilityConstants::default_collision_masks](prototype:UtilityConstants::default_collision_masks) when indexed by `\"allow_on_deep_oil_ocean\"`.",
+          "description": "Defaults to the mask from [UtilityConstants::default_collision_masks](prototype:UtilityConstants::default_collision_masks) when indexed by `\"rail-ramp/allow_on_deep_oil_ocean\"`.",
           "override": false,
           "type": "CollisionMaskConnector",
           "optional": true
@@ -20081,7 +20124,7 @@
         {
           "name": "collision_mask_allow_on_deep_oil_ocean",
           "order": 4,
-          "description": "Defaults to the mask from [UtilityConstants::default_collision_masks](prototype:UtilityConstants::default_collision_masks) when indexed by `\"allow_on_deep_oil_ocean\"`.",
+          "description": "Defaults to the mask from [UtilityConstants::default_collision_masks](prototype:UtilityConstants::default_collision_masks) when indexed by `\"rail-support/allow_on_deep_oil_ocean\"`.",
           "override": false,
           "type": "CollisionMaskConnector",
           "optional": true
@@ -21921,7 +21964,7 @@
         {
           "name": "radar_range",
           "order": 12,
-          "description": "Defaults to the max of logistic range or construction range rounded up to chunks.",
+          "description": "In chunks. The radius of how many chunks this roboport charts around itself. Defaults to the max of logistic range or construction range rounded up to chunks.",
           "override": false,
           "type": "uint32",
           "optional": true
@@ -25899,7 +25942,7 @@
         {
           "name": "radar_range",
           "order": 7,
-          "description": "",
+          "description": "In chunks. The radius of how many chunks this spider unit charts around itself.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -27211,7 +27254,7 @@
       "properties": [
         {
           "name": "icon",
-          "order": 1,
+          "order": 2,
           "description": "Path to the icon file.\n\nOnly loaded, and mandatory if `icons` is not defined.",
           "override": false,
           "type": "FileName",
@@ -27219,7 +27262,7 @@
         },
         {
           "name": "icon_size",
-          "order": 2,
+          "order": 3,
           "description": "The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.\n\nOnly loaded if `icons` is not defined.",
           "override": false,
           "type": "SpriteSizeType",
@@ -27228,6 +27271,17 @@
             "complex_type": "literal",
             "value": 64
           }
+        },
+        {
+          "name": "icons",
+          "order": 1,
+          "description": "Can't be an empty array.",
+          "override": false,
+          "type": {
+            "complex_type": "array",
+            "value": "IconData"
+          },
+          "optional": true
         },
         {
           "name": "surface_properties",
@@ -30301,7 +30355,7 @@
         {
           "name": "radar_range",
           "order": 12,
-          "description": "",
+          "description": "In chunks. The radius of how many chunks this unit charts around itself.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -30662,7 +30716,7 @@
         },
         {
           "name": "blueprint_big_slots_per_row",
-          "order": 183,
+          "order": 185,
           "description": "Will be clamped to the range [2, 100].",
           "override": false,
           "type": "uint8",
@@ -30670,7 +30724,7 @@
         },
         {
           "name": "blueprint_small_slots_per_row",
-          "order": 184,
+          "order": 186,
           "description": "Will be clamped to the range [2, 100].",
           "override": false,
           "type": "uint8",
@@ -30825,7 +30879,7 @@
         },
         {
           "name": "crafting_queue_slots_per_row",
-          "order": 181,
+          "order": 183,
           "description": "Will be clamped to the range [1, 100].",
           "override": false,
           "type": "uint8",
@@ -31140,7 +31194,7 @@
         },
         {
           "name": "flying_text_ttl",
-          "order": 189,
+          "order": 191,
           "description": "Must be >= 1.",
           "override": false,
           "type": "uint32",
@@ -31284,7 +31338,7 @@
         },
         {
           "name": "inventory_width",
-          "order": 185,
+          "order": 187,
           "description": "Will be clamped to the range [1, 100].",
           "override": false,
           "type": "uint8",
@@ -31447,7 +31501,7 @@
         },
         {
           "name": "logistic_slots_per_row",
-          "order": 182,
+          "order": 184,
           "description": "Will be clamped to the range [2, 100].",
           "override": false,
           "type": "uint8",
@@ -31546,6 +31600,14 @@
           "optional": false
         },
         {
+          "name": "maximum_quality_jump",
+          "order": 180,
+          "description": "Cap for how many steps of quality the output of something (miner/crafter) may be higher than the input (resource/ingredients). Must be >= 1.",
+          "override": false,
+          "type": "uint8",
+          "optional": false
+        },
+        {
           "name": "maximum_recipe_overload_multiplier",
           "order": 90,
           "description": "",
@@ -31611,7 +31673,7 @@
         },
         {
           "name": "module_inventory_width",
-          "order": 186,
+          "order": 188,
           "description": "Will be clamped to the range [1, 100].",
           "override": false,
           "type": "uint8",
@@ -31642,6 +31704,14 @@
           "description": "",
           "override": false,
           "type": "Color",
+          "optional": false
+        },
+        {
+          "name": "quality_selector_dropdown_threshold",
+          "order": 179,
+          "description": "",
+          "override": false,
+          "type": "uint8",
           "optional": false
         },
         {
@@ -31705,7 +31775,7 @@
         },
         {
           "name": "select_group_row_count",
-          "order": 179,
+          "order": 181,
           "description": "Will be clamped to the range [1, 100].",
           "override": false,
           "type": "uint8",
@@ -31713,7 +31783,7 @@
         },
         {
           "name": "select_slot_row_count",
-          "order": 180,
+          "order": 182,
           "description": "Will be clamped to the range [1, 100].",
           "override": false,
           "type": "uint8",
@@ -31889,7 +31959,7 @@
         },
         {
           "name": "tooltip_monitor_edge_border",
-          "order": 188,
+          "order": 190,
           "description": "Must be >= 1.",
           "override": false,
           "type": "int32",
@@ -31913,7 +31983,7 @@
         },
         {
           "name": "train_path_finding",
-          "order": 190,
+          "order": 192,
           "description": "",
           "override": false,
           "type": "TrainPathFinderConstants",
@@ -31969,7 +32039,7 @@
         },
         {
           "name": "trash_inventory_width",
-          "order": 187,
+          "order": 189,
           "description": "Will be clamped to the range [1, 100].",
           "override": false,
           "type": "uint8",
@@ -37459,7 +37529,7 @@
         {
           "name": "chunk_exploration_radius",
           "order": 14,
-          "description": "",
+          "description": "In chunks. The radius of the radar range of the vehicle, so how many chunks it charts around itself.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -38514,6 +38584,11 @@
           {
             "complex_type": "literal",
             "value": "top-right",
+            "description": ""
+          },
+          {
+            "complex_type": "literal",
+            "value": "middle-right",
             "description": ""
           },
           {
@@ -45111,6 +45186,30 @@
             "value": "CargoHatchDefinition"
           },
           "optional": true
+        },
+        {
+          "name": "is_input_station",
+          "order": 3,
+          "description": "If set to false, this station will not accept incoming cargo units even if it has hatches that can. (can occur through linked cargo bays)",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
+        {
+          "name": "is_output_station",
+          "order": 4,
+          "description": "If set to false, this station will not dispatch cargo units even if it has hatches that can. (can occur through linked cargo bays)",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
         },
         {
           "name": "prefer_packed_cargo_units",
@@ -63072,7 +63171,7 @@
     {
       "name": "NothingModifier",
       "order": 368,
-      "description": "",
+      "description": "Modifier that does nothing. Can be used to show custom scripted effects in the technology GUI.",
       "parent": "BaseModifier",
       "abstract": false,
       "inline": false,
@@ -64053,7 +64152,7 @@
         {
           "name": "connection_category",
           "order": 6,
-          "description": "Connection category bitmask makes it possible to define different categories of pipe connections that are not able to connect with each other. For example if a mod should have a \"steam pipes\" and \"cryogenic pipes\" category and they should not connect with each other.\n\nIn case of a normal connection, a bitmask may contain multiple bits set. This allows to create a mod where pipes of different categories would not connect to each other while still making it possible for crafting machines and other entities to connect to any of the specified pipes.\n\nBy default, all pipe connections have the `\"default\"` category. So a pipe that should connect to a new category and standard pipes can have the `connection_category = {\"my-new-pipe\", \"default\"}`.\n\nMay have at most one category when `connection_type` is `\"underground\"`.\n\nOnly loaded if `connection_type` is `\"normal\"` or `\"underground\"`.",
+          "description": "Fluidboxes' pipe connections are only allowed to connect with each other if they share a connection category. For example a mod could have a \"steam pipes\" and \"cryogenic pipes\" category that should not connect with each other.\n\nIn case of a normal connection, a pipe connection can be in multiple connection categories. This allows to create a mod where pipes of different categories would not connect to each other while still making it possible for crafting machines and other entities to connect to any of the specified pipes.\n\nBy default, all pipe connections have the `\"default\"` category. So a pipe that should connect to a new category and standard pipes can have the `connection_category = {\"my-new-pipe\", \"default\"}`.\n\nMay have at most one category when `connection_type` is `\"underground\"`.\n\nOnly loaded if `connection_type` is `\"normal\"` or `\"underground\"`.",
           "override": false,
           "type": {
             "complex_type": "union",
@@ -69724,8 +69823,70 @@
       ]
     },
     {
-      "name": "ScrollBarStyleSpecification",
+      "name": "ScriptedTechnologyTrigger",
       "order": 476,
+      "description": "Triggered only by calling [LuaForce::script_trigger_research](runtime:LuaForce::script_trigger_research). Can be used to show custom scripted triggers in the technology GUI.",
+      "abstract": false,
+      "inline": false,
+      "type": {
+        "complex_type": "struct"
+      },
+      "properties": [
+        {
+          "name": "icon",
+          "order": 3,
+          "description": "Path to the icon file.\n\nOnly loaded if `icons` is not defined.",
+          "override": false,
+          "type": "FileName",
+          "optional": true
+        },
+        {
+          "name": "icon_size",
+          "order": 4,
+          "description": "The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.\n\nOnly loaded if `icons` is not defined.",
+          "override": false,
+          "type": "SpriteSizeType",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 64
+          }
+        },
+        {
+          "name": "icons",
+          "order": 2,
+          "description": "Can't be an empty array.",
+          "override": false,
+          "type": {
+            "complex_type": "array",
+            "value": "IconData"
+          },
+          "optional": true
+        },
+        {
+          "name": "trigger_description",
+          "order": 1,
+          "description": "",
+          "override": false,
+          "type": "LocalisedString",
+          "optional": true
+        },
+        {
+          "name": "type",
+          "order": 0,
+          "description": "",
+          "override": false,
+          "type": {
+            "complex_type": "literal",
+            "value": "scripted"
+          },
+          "optional": false
+        }
+      ]
+    },
+    {
+      "name": "ScrollBarStyleSpecification",
+      "order": 477,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": true,
@@ -69754,7 +69915,7 @@
     },
     {
       "name": "ScrollPaneStyleSpecification",
-      "order": 477,
+      "order": 478,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -69922,7 +70083,7 @@
     },
     {
       "name": "SegmentEngineSpecification",
-      "order": 478,
+      "order": 479,
       "description": "Used by [SegmentedUnitPrototype](prototype:SegmentedUnitPrototype) to define and manage the segments that make up the body of the entity.",
       "abstract": false,
       "inline": false,
@@ -69945,7 +70106,7 @@
     },
     {
       "name": "SegmentSpecification",
-      "order": 479,
+      "order": 480,
       "description": "A container for a single reference to a [SegmentPrototype](prototype:SegmentPrototype) within a [SegmentEngineSpecification](prototype:SegmentEngineSpecification).",
       "abstract": false,
       "inline": false,
@@ -69965,7 +70126,7 @@
     },
     {
       "name": "SelectionModeData",
-      "order": 480,
+      "order": 481,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70130,7 +70291,7 @@
     },
     {
       "name": "SelectionModeFlags",
-      "order": 481,
+      "order": 482,
       "description": "An array containing the following values.\n\nSome flags only exclude objects from the selection, meaning they need to be combined with another flag to select anything.",
       "abstract": false,
       "inline": false,
@@ -70428,7 +70589,7 @@
     },
     {
       "name": "SemiPersistentWorldAmbientSoundDefinition",
-      "order": 482,
+      "order": 483,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70479,7 +70640,7 @@
     },
     {
       "name": "SendItemToOrbitTechnologyTrigger",
-      "order": 483,
+      "order": 484,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70510,7 +70671,7 @@
     },
     {
       "name": "SendSpidertronTipTrigger",
-      "order": 484,
+      "order": 485,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -70546,7 +70707,7 @@
     },
     {
       "name": "SendToOrbitMode",
-      "order": 485,
+      "order": 486,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70574,7 +70735,7 @@
     },
     {
       "name": "SequenceTipTrigger",
-      "order": 486,
+      "order": 487,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70608,7 +70769,7 @@
     },
     {
       "name": "SetFilterTipTrigger",
-      "order": 487,
+      "order": 488,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -70664,7 +70825,7 @@
     },
     {
       "name": "SetLogisticRequestTipTrigger",
-      "order": 488,
+      "order": 489,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -70708,7 +70869,7 @@
     },
     {
       "name": "SetRecipeTipTrigger",
-      "order": 489,
+      "order": 490,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -70781,7 +70942,7 @@
     },
     {
       "name": "SetTileTriggerEffectItem",
-      "order": 490,
+      "order": 491,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -70853,7 +71014,7 @@
     },
     {
       "name": "Settings",
-      "order": 491,
+      "order": 492,
       "description": "A struct that provides access to the user-set values of startup [mod settings](https://wiki.factorio.com/Tutorial:Mod_settings). It is accessible through the global object named `settings`.",
       "examples": [
         "```\n-- Accessing the value of a mod setting\nlocal val = settings.startup[\"my-mod-setting-name\"].value\n```"
@@ -70880,7 +71041,7 @@
     },
     {
       "name": "ShiftAnimationWaypoints",
-      "order": 492,
+      "order": 493,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70936,7 +71097,7 @@
     },
     {
       "name": "ShootTipTrigger",
-      "order": 493,
+      "order": 494,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -70981,7 +71142,7 @@
     },
     {
       "name": "ShowExplosionOnChartTriggerEffectItem",
-      "order": 494,
+      "order": 495,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -71013,7 +71174,7 @@
     },
     {
       "name": "SignalColorMapping",
-      "order": 495,
+      "order": 496,
       "description": "",
       "parent": "SignalIDConnector",
       "abstract": false,
@@ -71034,7 +71195,7 @@
     },
     {
       "name": "SignalIDConnector",
-      "order": 496,
+      "order": 497,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71120,7 +71281,7 @@
     },
     {
       "name": "SimpleBoundingBox",
-      "order": 497,
+      "order": 498,
       "description": "An axis aligned bounding box.\n\nSimpleBoundingBoxes are usually specified with the short-hand notation of passing an array of exactly 2 numbers. The first position is left_top, the second position is right_bottom.\n\nPositive x goes towards east, positive y goes towards south. This means that the upper-left point is the least dimension in x and y, and lower-right is the greatest.",
       "examples": [
         "```\n{{-0.4, -0.4}, {0.4, 0.4}}\n```",
@@ -71165,7 +71326,7 @@
     },
     {
       "name": "SimpleModifier",
-      "order": 498,
+      "order": 499,
       "description": "",
       "parent": "BaseModifier",
       "abstract": true,
@@ -71186,7 +71347,7 @@
     },
     {
       "name": "SimulationDefinition",
-      "order": 499,
+      "order": 500,
       "description": "Used by tips and tricks and main menu simulations. Simulations can be controlled at runtime via [LuaSimulation](runtime:LuaSimulation).",
       "abstract": false,
       "inline": false,
@@ -71393,7 +71554,7 @@
     },
     {
       "name": "SingleGraphicLayerProcessionBezierControlPoint",
-      "order": 500,
+      "order": 501,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -71535,7 +71696,7 @@
     },
     {
       "name": "SingleGraphicProcessionLayer",
-      "order": 501,
+      "order": 502,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71685,7 +71846,7 @@
     },
     {
       "name": "SliderStyleSpecification",
-      "order": 502,
+      "order": 503,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -71773,7 +71934,7 @@
     },
     {
       "name": "SmokeSource",
-      "order": 503,
+      "order": 504,
       "description": "Definition of the smoke of an entity.",
       "abstract": false,
       "inline": false,
@@ -71997,7 +72158,7 @@
     },
     {
       "name": "Sound",
-      "order": 504,
+      "order": 505,
       "description": "",
       "examples": [
         "```\n{\n  filename = \"__base__/sound/ambient/world-ambience-3.ogg\",\n  volume = 1.2\n}\n```"
@@ -72227,7 +72388,7 @@
     },
     {
       "name": "SoundAccent",
-      "order": 505,
+      "order": 506,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72267,7 +72428,7 @@
     },
     {
       "name": "SoundDefinition",
-      "order": 506,
+      "order": 507,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72392,7 +72553,7 @@
     },
     {
       "name": "SoundModifier",
-      "order": 507,
+      "order": 508,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72420,7 +72581,7 @@
     },
     {
       "name": "SoundModifierType",
-      "order": 508,
+      "order": 509,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72463,7 +72624,7 @@
     },
     {
       "name": "SoundType",
-      "order": 509,
+      "order": 510,
       "description": "This defines which slider in the sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.",
       "abstract": false,
       "inline": false,
@@ -72531,7 +72692,7 @@
     },
     {
       "name": "SpaceConnectionAsteroidSpawnDefinition",
-      "order": 510,
+      "order": 511,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72610,7 +72771,7 @@
     },
     {
       "name": "SpaceConnectionAsteroidSpawnPoint",
-      "order": 511,
+      "order": 512,
       "description": "",
       "parent": "AsteroidSpawnPoint",
       "abstract": false,
@@ -72631,7 +72792,7 @@
     },
     {
       "name": "SpaceConnectionID",
-      "order": 512,
+      "order": 513,
       "description": "The name of a [SpaceConnectionPrototype](prototype:SpaceConnectionPrototype).",
       "examples": [
         "```\n\"nauvis-vulcanus\"\n```",
@@ -72643,7 +72804,7 @@
     },
     {
       "name": "SpaceDustEffectProperties",
-      "order": 513,
+      "order": 514,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72691,7 +72852,7 @@
     },
     {
       "name": "SpaceLocationAsteroidSpawnDefinition",
-      "order": 514,
+      "order": 515,
       "description": "",
       "parent": "AsteroidSpawnPoint",
       "abstract": false,
@@ -72744,7 +72905,7 @@
     },
     {
       "name": "SpaceLocationID",
-      "order": 515,
+      "order": 516,
       "description": "The name of a [SpaceLocationPrototype](prototype:SpaceLocationPrototype).",
       "examples": [
         "```\n\"shattered-planet\"\n```",
@@ -72756,7 +72917,7 @@
     },
     {
       "name": "SpacePlatformTileDefinition",
-      "order": 516,
+      "order": 517,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72784,7 +72945,7 @@
     },
     {
       "name": "SpacePlatformsModifier",
-      "order": 517,
+      "order": 518,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -72820,7 +72981,7 @@
     },
     {
       "name": "SpaceTileEffectParameters",
-      "order": 518,
+      "order": 519,
       "description": "Nebulae are rendered only behind tiles with the effect, but stars are rendered behind entire terrain. For that reason using two or more tile types with different space effect on one surface is not supported. The game will allow this to happen, but rendering will chose one star configuration for entire screen.\n\nZoom is recalculated using formula `max(1/1024, pow(max(0, zoom * base_factor + base_offset), exponent) * factor + offset)`.",
       "abstract": false,
       "inline": false,
@@ -73012,7 +73173,7 @@
     },
     {
       "name": "SpacingItem",
-      "order": 519,
+      "order": 520,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -73040,7 +73201,7 @@
     },
     {
       "name": "SpawnPoint",
-      "order": 520,
+      "order": 521,
       "description": "The definition of a evolution and probability weights for a [spawnable unit](prototype:UnitSpawnDefinition) for a [EnemySpawnerPrototype](prototype:EnemySpawnerPrototype).\n\nIt can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the evolution factor and the second is the spawn weight.",
       "abstract": false,
       "inline": false,
@@ -73081,7 +73242,7 @@
     },
     {
       "name": "SpeechBubbleStyleSpecification",
-      "order": 521,
+      "order": 522,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -73153,7 +73314,7 @@
     },
     {
       "name": "SpiderEngineSpecification",
-      "order": 522,
+      "order": 523,
       "description": "Used by [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -73195,7 +73356,7 @@
     },
     {
       "name": "SpiderLegGraphicsSet",
-      "order": 523,
+      "order": 524,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -73319,7 +73480,7 @@
     },
     {
       "name": "SpiderLegPart",
-      "order": 524,
+      "order": 525,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -73439,7 +73600,7 @@
     },
     {
       "name": "SpiderLegSpecification",
-      "order": 525,
+      "order": 526,
       "description": "Used by [SpiderEngineSpecification](prototype:SpiderEngineSpecification) for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -73499,7 +73660,7 @@
     },
     {
       "name": "SpiderLegTriggerEffect",
-      "order": 526,
+      "order": 527,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -73527,7 +73688,7 @@
     },
     {
       "name": "SpiderTorsoGraphicsSet",
-      "order": 527,
+      "order": 528,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -73603,7 +73764,7 @@
     },
     {
       "name": "SpiderVehicleGraphicsSet",
-      "order": 528,
+      "order": 529,
       "description": "Used to specify the graphics for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "parent": "SpiderTorsoGraphicsSet",
       "abstract": false,
@@ -73722,7 +73883,7 @@
     },
     {
       "name": "SpoilToTriggerResult",
-      "order": 529,
+      "order": 530,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -73750,7 +73911,7 @@
     },
     {
       "name": "Sprite",
-      "order": 530,
+      "order": 531,
       "description": "Specifies one picture that can be used in the game.\n\nWhen there is more than one sprite or [Animation](prototype:Animation) frame with the same source file and dimensions/position in the game, they all share the same memory.",
       "examples": [
         "```\n-- simple sprite\npicture_set_enemy =\n{\n  filename = \"__base__/graphics/entity/land-mine/land-mine-set-enemy.png\",\n  priority = \"medium\",\n  width = 32,\n  height = 32\n}\n```",
@@ -73810,7 +73971,7 @@
     },
     {
       "name": "Sprite16Way",
-      "order": 531,
+      "order": 532,
       "description": "A map of sprites for all 16 directions of the entity.",
       "abstract": false,
       "inline": false,
@@ -73969,7 +74130,7 @@
     },
     {
       "name": "Sprite4Way",
-      "order": 532,
+      "order": 533,
       "description": "Sprites for the 4 major directions of the entity. If this is loaded as a single Sprite, it applies to all directions.\n\nThis struct is either loaded as `sheets` or `sheet` or a map of one sprite per direction. For per direction sprites, the sprites are loaded via `north`, `east`, `south` and `west`.",
       "examples": [
         "```\n-- separate sprites per direction\n{\n  north =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-N.png\",\n    priority = \"extra-high\",\n    width = 71,\n    height = 38,\n    shift = util.by_pixel(2.25, 13.5),\n    scale = 0.5\n  },\n  east =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-E.png\",\n    priority = \"extra-high\",\n    width = 42,\n    height = 76,\n    shift = util.by_pixel(-24.5, 1),\n    scale = 0.5\n  },\n  south =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-S.png\",\n    priority = \"extra-high\",\n    width = 88,\n    height = 61,\n    shift = util.by_pixel(0, -31.25),\n    scale = 0.5\n  },\n  west =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-W.png\",\n    priority = \"extra-high\",\n    width = 39,\n    height = 73,\n    shift = util.by_pixel(25.75, 1.25),\n    scale = 0.5\n  }\n}\n```"
@@ -74042,7 +74203,7 @@
     },
     {
       "name": "SpriteFlags",
-      "order": 533,
+      "order": 534,
       "description": "An array containing the following values.",
       "examples": [
         "```\nflags = { \"linear-minification\", \"linear-magnification\" }\n```"
@@ -74226,7 +74387,7 @@
     },
     {
       "name": "SpriteNWaySheet",
-      "order": 534,
+      "order": 535,
       "description": "",
       "examples": [
         "```\nsheet =\n{\n  filename = \"__base__/graphics/entity/burner-inserter/burner-inserter-platform.png\",\n  priority = \"extra-high\",\n  width = 105,\n  height = 79,\n  shift = util.by_pixel(1.5, 7.5-1),\n  scale = 0.5\n}\n```"
@@ -74263,7 +74424,7 @@
     },
     {
       "name": "SpriteParameters",
-      "order": 535,
+      "order": 536,
       "description": "",
       "parent": "SpriteSource",
       "abstract": true,
@@ -74500,7 +74661,7 @@
     },
     {
       "name": "SpritePriority",
-      "order": 536,
+      "order": 537,
       "description": "This sets the \"caching priority\" of a sprite, so deciding priority of it being included in VRAM instead of streaming it and is therefore a purely technical value. See [here](https://forums.factorio.com/viewtopic.php?p=437380#p437380) and [here](https://www.factorio.com/blog/post/fff-264). The possible values are listed below.",
       "abstract": false,
       "inline": false,
@@ -74548,7 +74709,7 @@
     },
     {
       "name": "SpriteSheet",
-      "order": 537,
+      "order": 538,
       "description": "",
       "parent": "SpriteParameters",
       "abstract": false,
@@ -74656,7 +74817,7 @@
     },
     {
       "name": "SpriteSizeType",
-      "order": 538,
+      "order": 539,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -74664,7 +74825,7 @@
     },
     {
       "name": "SpriteSource",
-      "order": 539,
+      "order": 540,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -74795,7 +74956,7 @@
     },
     {
       "name": "SpriteUsageHint",
-      "order": 540,
+      "order": 541,
       "description": "Provides hint to sprite atlas system, so it can pack sprites that are related to each other to the same sprite atlas.",
       "abstract": false,
       "inline": false,
@@ -74878,7 +75039,7 @@
     },
     {
       "name": "SpriteUsageSurfaceHint",
-      "order": 541,
+      "order": 542,
       "description": "Provides hint to sprite atlas system, so it can try to put sprites that are intended to be used at the same locations to the same sprite atlas.",
       "abstract": false,
       "inline": false,
@@ -74926,7 +75087,7 @@
     },
     {
       "name": "SpriteVariations",
-      "order": 542,
+      "order": 543,
       "description": "",
       "examples": [
         "```\n-- array of sprites\npictures =\n{\n  {size = 64, filename = \"__base__/graphics/icons/coal.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-1.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-2.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-3.png\", scale = 0.5, mipmap_count = 4}\n}\n```",
@@ -74961,7 +75122,7 @@
     },
     {
       "name": "StackTransferTipTrigger",
-      "order": 543,
+      "order": 544,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -75014,7 +75175,7 @@
     },
     {
       "name": "StateSteeringSettings",
-      "order": 544,
+      "order": 545,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75058,7 +75219,7 @@
     },
     {
       "name": "StatelessVisualisation",
-      "order": 545,
+      "order": 546,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75396,7 +75557,7 @@
     },
     {
       "name": "StatusColors",
-      "order": 546,
+      "order": 547,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75480,7 +75641,7 @@
     },
     {
       "name": "SteeringSettings",
-      "order": 547,
+      "order": 548,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -75508,7 +75669,7 @@
     },
     {
       "name": "StorageTankPictures",
-      "order": 548,
+      "order": 549,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -75568,7 +75729,7 @@
     },
     {
       "name": "StreamAttackParameters",
-      "order": 549,
+      "order": 550,
       "description": "",
       "parent": "BaseAttackParameters",
       "abstract": false,
@@ -75650,7 +75811,7 @@
     },
     {
       "name": "StreamFluidProperties",
-      "order": 550,
+      "order": 551,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -75682,7 +75843,7 @@
     },
     {
       "name": "StreamTriggerDelivery",
-      "order": 551,
+      "order": 552,
       "description": "",
       "parent": "TriggerDeliveryItem",
       "abstract": false,
@@ -75722,7 +75883,7 @@
     },
     {
       "name": "StretchRule",
-      "order": 552,
+      "order": 553,
       "description": "Sets whether a GUI element can be stretched or squashed.",
       "abstract": false,
       "inline": false,
@@ -75755,7 +75916,7 @@
     },
     {
       "name": "Stripe",
-      "order": 553,
+      "order": 554,
       "description": "Used as an alternative way to specify animations.",
       "abstract": false,
       "inline": false,
@@ -75815,7 +75976,7 @@
     },
     {
       "name": "StyleSpecification",
-      "order": 554,
+      "order": 555,
       "description": "Loaded as one of the [BaseStyleSpecification](prototype:BaseStyleSpecification) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -75983,7 +76144,7 @@
     },
     {
       "name": "StyleWithClickableGraphicalSetSpecification",
-      "order": 555,
+      "order": 556,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": true,
@@ -76068,7 +76229,7 @@
     },
     {
       "name": "SurfaceCondition",
-      "order": 556,
+      "order": 557,
       "description": "Requires Space Age to use.",
       "abstract": false,
       "inline": false,
@@ -76106,7 +76267,7 @@
     },
     {
       "name": "SurfaceID",
-      "order": 557,
+      "order": 558,
       "description": "The name of a [SurfacePrototype](prototype:SurfacePrototype).",
       "examples": [
         "```\n\"space-platform\"\n```"
@@ -76117,7 +76278,7 @@
     },
     {
       "name": "SurfacePropertyID",
-      "order": 558,
+      "order": 559,
       "description": "The name of a [SurfacePropertyPrototype](prototype:SurfacePropertyPrototype).",
       "examples": [
         "```\n\"solar-power\"\n```",
@@ -76129,7 +76290,7 @@
     },
     {
       "name": "SurfaceRenderParameters",
-      "order": 559,
+      "order": 560,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76225,7 +76386,7 @@
     },
     {
       "name": "SwitchStyleSpecification",
-      "order": 560,
+      "order": 561,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -76321,7 +76482,7 @@
     },
     {
       "name": "TabStyleSpecification",
-      "order": 561,
+      "order": 562,
       "description": "",
       "parent": "StyleWithClickableGraphicalSetSpecification",
       "abstract": false,
@@ -76497,7 +76658,7 @@
     },
     {
       "name": "TabbedPaneStyleSpecification",
-      "order": 562,
+      "order": 563,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -76545,7 +76706,7 @@
     },
     {
       "name": "TableStyleSpecification",
-      "order": 563,
+      "order": 564,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -76842,7 +77003,7 @@
     },
     {
       "name": "TechnologyID",
-      "order": 564,
+      "order": 565,
       "description": "The name of a [TechnologyPrototype](prototype:TechnologyPrototype).",
       "examples": [
         "```\n\"automated-rail-transportation\"\n```",
@@ -76854,7 +77015,7 @@
     },
     {
       "name": "TechnologySlotStyleSpecification",
-      "order": 565,
+      "order": 566,
       "description": "",
       "parent": "ButtonStyleSpecification",
       "abstract": false,
@@ -77150,7 +77311,7 @@
     },
     {
       "name": "TechnologyTrigger",
-      "order": 566,
+      "order": 567,
       "description": "Loaded as one of the technology triggers, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -77191,6 +77352,11 @@
             "complex_type": "type",
             "value": "CreateSpacePlatformTechnologyTrigger",
             "description": "Loaded when the `type` is `\"create-space-platform\"`."
+          },
+          {
+            "complex_type": "type",
+            "value": "ScriptedTechnologyTrigger",
+            "description": "Loaded when the `type` is `\"scripted\"`."
           }
         ],
         "full_format": true
@@ -77198,7 +77364,7 @@
     },
     {
       "name": "TechnologyUnit",
-      "order": 567,
+      "order": 568,
       "description": "Either `count` or `count_formula` must be defined, never both.",
       "examples": [
         "```\nunit =\n{\n  count_formula = \"2^(L-6)*1000\",\n  ingredients =\n  {\n    {\"automation-science-pack\", 1},\n    {\"logistic-science-pack\", 1},\n    {\"chemical-science-pack\", 1},\n    {\"production-science-pack\", 1},\n    {\"utility-science-pack\", 1},\n    {\"space-science-pack\", 1}\n  },\n  time = 60\n}\n```"
@@ -77251,7 +77417,7 @@
     },
     {
       "name": "TerritorySettings",
-      "order": 568,
+      "order": 569,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77303,7 +77469,7 @@
     },
     {
       "name": "TextBoxStyleSpecification",
-      "order": 569,
+      "order": 570,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -77447,7 +77613,7 @@
     },
     {
       "name": "ThrowCapsuleAction",
-      "order": 570,
+      "order": 571,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77490,7 +77656,7 @@
     },
     {
       "name": "ThrusterGraphicsSet",
-      "order": 571,
+      "order": 572,
       "description": "",
       "parent": "WorkingVisualisations",
       "abstract": false,
@@ -77583,7 +77749,7 @@
     },
     {
       "name": "ThrusterPerformancePoint",
-      "order": 572,
+      "order": 573,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77633,7 +77799,7 @@
     },
     {
       "name": "TileAndAlpha",
-      "order": 573,
+      "order": 574,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -77661,7 +77827,7 @@
     },
     {
       "name": "TileBasedParticleTints",
-      "order": 574,
+      "order": 575,
       "description": "Used for particles created with [apply_tile_tint](prototype:CreateParticleTriggerEffectItem::apply_tile_tint) defined.",
       "abstract": false,
       "inline": false,
@@ -77691,7 +77857,7 @@
     },
     {
       "name": "TileBuildSound",
-      "order": 575,
+      "order": 576,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -77735,7 +77901,7 @@
     },
     {
       "name": "TileBuildabilityRule",
-      "order": 576,
+      "order": 577,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77785,7 +77951,7 @@
     },
     {
       "name": "TileEffectDefinitionID",
-      "order": 577,
+      "order": 578,
       "description": "The name of an [TileEffectDefinition](prototype:TileEffectDefinition).",
       "examples": [
         "```\n\"water\"\n```"
@@ -77796,7 +77962,7 @@
     },
     {
       "name": "TileID",
-      "order": 578,
+      "order": 579,
       "description": "The name of a [TilePrototype](prototype:TilePrototype).",
       "examples": [
         "```\n\"grass-2\"\n```",
@@ -77808,7 +77974,7 @@
     },
     {
       "name": "TileIDRestriction",
-      "order": 579,
+      "order": 580,
       "description": "Name of an allowed tile, or a list of two tile names for entities allowed on transitions.",
       "abstract": false,
       "inline": true,
@@ -77829,7 +77995,7 @@
     },
     {
       "name": "TileLightPictures",
-      "order": 580,
+      "order": 581,
       "description": "",
       "parent": "TileSpriteLayout",
       "abstract": false,
@@ -77850,7 +78016,7 @@
     },
     {
       "name": "TileMainPictures",
-      "order": 581,
+      "order": 582,
       "description": "",
       "parent": "TileSpriteLayout",
       "abstract": false,
@@ -77894,7 +78060,7 @@
     },
     {
       "name": "TilePosition",
-      "order": 582,
+      "order": 583,
       "description": "Coordinates of a tile on a map where each integer `x`/`y` represents a different tile. This uses the same format as [MapPosition](prototype:MapPosition), except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.",
       "abstract": false,
       "inline": false,
@@ -77935,7 +78101,7 @@
     },
     {
       "name": "TileRenderLayer",
-      "order": 583,
+      "order": 584,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77978,7 +78144,7 @@
     },
     {
       "name": "TileSpriteLayout",
-      "order": 584,
+      "order": 585,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -78058,7 +78224,7 @@
     },
     {
       "name": "TileSpriteLayoutVariant",
-      "order": 585,
+      "order": 586,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -78134,7 +78300,7 @@
     },
     {
       "name": "TileTransitionSpritesheetLayout",
-      "order": 586,
+      "order": 587,
       "description": "The properties from the parent TileSpriteLayoutVariant provide defaults for the TileTransitionVariantLayouts.\n\nThe `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the corresponding properties in the TileTransitionVariantLayouts. They are used when the TileTransitionVariantLayouts have the same layout. See the example below.",
       "examples": [
         "```\n-- all the layers use the same layout, at different offsets inside the spritesheet\nlayout =\n{\n  scale = 0.5,\n  inner_corner_count = 8,\n  outer_corner_count = 8,\n  o_transition_count = 1,\n  outer_corner_x = 576,\n  u_transition_x = 1728,\n\n  overlay = { y_offset = 0 },  -- 0 is default, but by defining overlay property, we enable the layer\n  mask = { y_offset = 512 },\n  background = { y_offset = 1024 }\n}\n```"
@@ -78494,7 +78660,7 @@
     },
     {
       "name": "TileTransitionVariantLayout",
-      "order": 587,
+      "order": 588,
       "description": "The properties from the parent TileSpriteLayoutVariant provide defaults for the properties defined here.\n\nThe `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the properties inside the specific variant. They are used to specify select values for the variant without creating the table for the variant.\n\nThese various ways to define the variants are also shown in the examples below.",
       "examples": [
         "```\n-- longest version, using TileSpriteLayoutVariant tables for each variant\n{\n  inner_corner =\n  {\n    scale = 0.5,\n    count = 8,\n  },\n  outer_corner =\n  {\n    scale = 0.5,\n    count = 8,\n    x = 576\n  },\n  u_transition  =\n  {\n    scale = 0.5,\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
@@ -78872,7 +79038,7 @@
     },
     {
       "name": "TileTransitions",
-      "order": 588,
+      "order": 589,
       "description": "Used for [TilePrototype](prototype:TilePrototype) graphics.\n\nUse `layout` with `spritesheet` to define all the tile layers inside the `layout` property. The `*_enabled`, `*_layout` and `*_spritesheet` properties can be used to override specific layers of a reused layout.",
       "abstract": false,
       "inline": false,
@@ -79323,7 +79489,7 @@
     },
     {
       "name": "TileTransitionsBetweenTransitions",
-      "order": 589,
+      "order": 590,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -79352,7 +79518,7 @@
     },
     {
       "name": "TileTransitionsToTiles",
-      "order": 590,
+      "order": 591,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -79384,7 +79550,7 @@
     },
     {
       "name": "TileTransitionsVariants",
-      "order": 591,
+      "order": 592,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79478,7 +79644,7 @@
     },
     {
       "name": "TimeElapsedTipTrigger",
-      "order": 592,
+      "order": 593,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79509,7 +79675,7 @@
     },
     {
       "name": "TimeSinceLastTipActivationTipTrigger",
-      "order": 593,
+      "order": 594,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79540,7 +79706,7 @@
     },
     {
       "name": "TintProcessionBezierControlPoint",
-      "order": 594,
+      "order": 595,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -79608,7 +79774,7 @@
     },
     {
       "name": "TintProcessionLayer",
-      "order": 595,
+      "order": 596,
       "description": "Fullscreen overlay which blends gradient from top to bottom edge of the screen using [pre-multiplied alpha blending](prototype:BlendMode::normal).",
       "abstract": false,
       "inline": false,
@@ -79654,7 +79820,7 @@
     },
     {
       "name": "TipStatus",
-      "order": 596,
+      "order": 597,
       "description": "This is used by [TipsAndTricksItem](prototype:TipsAndTricksItem) for the initial starting status. One of the following values:",
       "abstract": false,
       "inline": false,
@@ -79707,7 +79873,7 @@
     },
     {
       "name": "TipTrigger",
-      "order": 597,
+      "order": 598,
       "description": "Loaded as one of the tip triggers, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -79965,7 +80131,7 @@
     },
     {
       "name": "ToggleRailLayerTipTrigger",
-      "order": 598,
+      "order": 599,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -79989,7 +80155,7 @@
     },
     {
       "name": "ToggleShowEntityInfoTipTrigger",
-      "order": 599,
+      "order": 600,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -80013,7 +80179,7 @@
     },
     {
       "name": "TrainBrakingForceBonusModifier",
-      "order": 600,
+      "order": 601,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -80061,7 +80227,7 @@
     },
     {
       "name": "TrainPathFinderConstants",
-      "order": 601,
+      "order": 602,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -80169,7 +80335,7 @@
     },
     {
       "name": "TrainStopDrawingBoxes",
-      "order": 602,
+      "order": 603,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -80213,7 +80379,7 @@
     },
     {
       "name": "TrainStopLight",
-      "order": 603,
+      "order": 604,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80249,7 +80415,7 @@
     },
     {
       "name": "TrainVisualizationConstants",
-      "order": 604,
+      "order": 605,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80341,7 +80507,7 @@
     },
     {
       "name": "TransitionApplication",
-      "order": 605,
+      "order": 606,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80389,7 +80555,7 @@
     },
     {
       "name": "TransportBeltAnimationSet",
-      "order": 606,
+      "order": 607,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80728,7 +80894,7 @@
     },
     {
       "name": "TransportBeltAnimationSetWithCorners",
-      "order": 607,
+      "order": 608,
       "description": "",
       "parent": "TransportBeltAnimationSet",
       "abstract": false,
@@ -80933,7 +81099,7 @@
     },
     {
       "name": "TransportBeltConnectorFrame",
-      "order": 608,
+      "order": 609,
       "description": "Used to define the graphics for the (in vanilla) yellow frame that is used when a [TransportBeltPrototype](prototype:TransportBeltPrototype) is connected to the circuit network.",
       "abstract": false,
       "inline": false,
@@ -81137,7 +81303,7 @@
     },
     {
       "name": "TreeVariation",
-      "order": 609,
+      "order": 610,
       "description": "Tree has number of \"dying\" stages, which is deduced from frame count of `shadow` if shadow is defined, otherwise from frame count of `trunk`. Frame count of `leaves` has to be one less than deduced number stages, as last stage is always assumed to be leafless.",
       "abstract": false,
       "inline": false,
@@ -81337,7 +81503,7 @@
     },
     {
       "name": "Trigger",
-      "order": 610,
+      "order": 611,
       "description": "Loaded as one of the [TriggerItem](prototype:TriggerItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -81405,7 +81571,7 @@
     },
     {
       "name": "TriggerDelivery",
-      "order": 611,
+      "order": 612,
       "description": "Loaded as one of the [TriggerDeliveryItem](prototype:TriggerDeliveryItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -81453,7 +81619,7 @@
     },
     {
       "name": "TriggerDeliveryItem",
-      "order": 612,
+      "order": 613,
       "description": "The abstract base of all [TriggerDeliveries](prototype:TriggerDelivery).",
       "abstract": true,
       "inline": false,
@@ -81481,7 +81647,7 @@
     },
     {
       "name": "TriggerEffect",
-      "order": 613,
+      "order": 614,
       "description": "Loaded as one of the [TriggerEffectItem](prototype:TriggerEffectItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -81739,7 +81905,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 614,
+      "order": 615,
       "description": "The abstract base of all [TriggerEffects](prototype:TriggerEffect).",
       "abstract": true,
       "inline": false,
@@ -81819,7 +81985,7 @@
     },
     {
       "name": "TriggerEffectWithCooldown",
-      "order": 615,
+      "order": 616,
       "description": "A [TriggerEffect](prototype:TriggerEffect) with cooldown conditions, used to limit the frequency of trigger effects that would otherwise fire every single tick. If multiple cooldown conditions are defined, then all cooldowns must be satisfied before the effect can be triggered.",
       "abstract": false,
       "inline": false,
@@ -81887,7 +82053,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 616,
+      "order": 617,
       "description": "The abstract base of all [Triggers](prototype:Trigger).",
       "abstract": true,
       "inline": false,
@@ -81989,7 +82155,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 617,
+      "order": 618,
       "description": "An array of names of [TriggerTargetType](prototype:TriggerTargetType). See [Design discussion: Trigger target type](https://forums.factorio.com/71657) and [Blacklist for prototypes turrets shouldn't attack](https://forums.factorio.com/86164).",
       "abstract": false,
       "inline": false,
@@ -82000,7 +82166,7 @@
     },
     {
       "name": "TrivialSmokeID",
-      "order": 618,
+      "order": 619,
       "description": "The name of a [TrivialSmokePrototype](prototype:TrivialSmokePrototype).",
       "examples": [
         "```\n\"smoke-building\"\n```",
@@ -82012,7 +82178,7 @@
     },
     {
       "name": "TurretAttackModifier",
-      "order": 619,
+      "order": 620,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -82076,7 +82242,7 @@
     },
     {
       "name": "TurretBaseVisualisation",
-      "order": 620,
+      "order": 621,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -82203,7 +82369,7 @@
     },
     {
       "name": "TurretGraphicsSet",
-      "order": 621,
+      "order": 622,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -82241,7 +82407,7 @@
     },
     {
       "name": "TurretSpecialEffect",
-      "order": 622,
+      "order": 623,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -82328,7 +82494,7 @@
     },
     {
       "name": "TurretSpecialEffectCenter",
-      "order": 623,
+      "order": 624,
       "description": "If this is loaded as a single Vector, it is used for all directions.",
       "abstract": false,
       "inline": false,
@@ -82419,7 +82585,7 @@
     },
     {
       "name": "TurretState",
-      "order": 624,
+      "order": 625,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -82472,7 +82638,7 @@
     },
     {
       "name": "UndergroundBeltStructure",
-      "order": 625,
+      "order": 626,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -82548,7 +82714,7 @@
     },
     {
       "name": "UnitAISettings",
-      "order": 626,
+      "order": 627,
       "description": "Used by [UnitPrototype](prototype:UnitPrototype) and [SpiderUnitPrototype](prototype:SpiderUnitPrototype).",
       "abstract": false,
       "inline": false,
@@ -82640,7 +82806,7 @@
     },
     {
       "name": "UnitAlternativeFrameSequence",
-      "order": 627,
+      "order": 628,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -82758,7 +82924,7 @@
     },
     {
       "name": "UnitGroupSettings",
-      "order": 628,
+      "order": 629,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -82874,7 +83040,7 @@
     },
     {
       "name": "UnitSpawnDefinition",
-      "order": 629,
+      "order": 630,
       "description": "It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the unit and the second is the spawn points.",
       "abstract": false,
       "inline": false,
@@ -82921,7 +83087,7 @@
     },
     {
       "name": "UnlockQualityModifier",
-      "order": 630,
+      "order": 631,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -82965,7 +83131,7 @@
     },
     {
       "name": "UnlockRecipeModifier",
-      "order": 631,
+      "order": 632,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -83009,7 +83175,7 @@
     },
     {
       "name": "UnlockRecipeTipTrigger",
-      "order": 632,
+      "order": 633,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83040,7 +83206,7 @@
     },
     {
       "name": "UnlockSpaceLocationModifier",
-      "order": 633,
+      "order": 634,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -83084,7 +83250,7 @@
     },
     {
       "name": "UseConfirmTipTrigger",
-      "order": 634,
+      "order": 635,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -83108,7 +83274,7 @@
     },
     {
       "name": "UseOnSelfCapsuleAction",
-      "order": 635,
+      "order": 636,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83151,7 +83317,7 @@
     },
     {
       "name": "UsePipetteTipTrigger",
-      "order": 636,
+      "order": 637,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -83175,7 +83341,7 @@
     },
     {
       "name": "UseRailPlannerTipTrigger",
-      "order": 637,
+      "order": 638,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -83207,7 +83373,7 @@
     },
     {
       "name": "ValveMode",
-      "order": 638,
+      "order": 639,
       "description": "Defines the mode of operation for a [ValvePrototype](prototype:ValvePrototype).",
       "abstract": false,
       "inline": false,
@@ -83235,7 +83401,7 @@
     },
     {
       "name": "VariableAmbientSoundCompositionMode",
-      "order": 639,
+      "order": 640,
       "description": "Defines how are individual samples selected and played after each other.",
       "abstract": false,
       "inline": false,
@@ -83268,7 +83434,7 @@
     },
     {
       "name": "VariableAmbientSoundLayer",
-      "order": 640,
+      "order": 641,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83403,7 +83569,7 @@
     },
     {
       "name": "VariableAmbientSoundLayerSample",
-      "order": 641,
+      "order": 642,
       "description": "First property is the name of a layer.\n\nSecond property is the sample index.",
       "abstract": false,
       "inline": false,
@@ -83417,7 +83583,7 @@
     },
     {
       "name": "VariableAmbientSoundLayerStateProperties",
-      "order": 642,
+      "order": 643,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83512,7 +83678,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateConditions",
-      "order": 643,
+      "order": 644,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83548,7 +83714,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateItem",
-      "order": 644,
+      "order": 645,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83576,7 +83742,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateTrigger",
-      "order": 645,
+      "order": 646,
       "description": "Defines how a transition to next state is triggered.",
       "abstract": false,
       "inline": false,
@@ -83599,7 +83765,7 @@
     },
     {
       "name": "VariableAmbientSoundState",
-      "order": 646,
+      "order": 647,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83712,7 +83878,7 @@
     },
     {
       "name": "VariableAmbientSoundStateType",
-      "order": 647,
+      "order": 648,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83745,7 +83911,7 @@
     },
     {
       "name": "VariableAmbientSoundVariableSound",
-      "order": 648,
+      "order": 649,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83807,7 +83973,7 @@
     },
     {
       "name": "Vector",
-      "order": 649,
+      "order": 650,
       "description": "A vector is a two-element array or dictionary containing the x and y components. Positive x goes east, positive y goes south.",
       "examples": [
         "```\nshift = {0, 12}\n```",
@@ -83853,7 +84019,7 @@
     },
     {
       "name": "Vector3D",
-      "order": 650,
+      "order": 651,
       "description": "If this is specified as a three-element array then the array items are x, y and z, in that order.",
       "abstract": false,
       "inline": false,
@@ -83903,7 +84069,7 @@
     },
     {
       "name": "Vector4f",
-      "order": 651,
+      "order": 652,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83962,7 +84128,7 @@
     },
     {
       "name": "VectorRotation",
-      "order": 652,
+      "order": 653,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -83993,7 +84159,7 @@
     },
     {
       "name": "VehicleLogisticsModifier",
-      "order": 653,
+      "order": 654,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -84029,7 +84195,7 @@
     },
     {
       "name": "VerticalAlign",
-      "order": 654,
+      "order": 655,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -84057,7 +84223,7 @@
     },
     {
       "name": "VerticalFlowStyleSpecification",
-      "order": 655,
+      "order": 656,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -84089,7 +84255,7 @@
     },
     {
       "name": "VerticalScrollBarStyleSpecification",
-      "order": 656,
+      "order": 657,
       "description": "",
       "parent": "ScrollBarStyleSpecification",
       "abstract": false,
@@ -84113,7 +84279,7 @@
     },
     {
       "name": "VirtualSignalID",
-      "order": 657,
+      "order": 658,
       "description": "The name of a [VirtualSignalPrototype](prototype:VirtualSignalPrototype).",
       "examples": [
         "```\n\"signal-red\"\n```",
@@ -84125,7 +84291,7 @@
     },
     {
       "name": "VisualState",
-      "order": 658,
+      "order": 659,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -84177,7 +84343,7 @@
     },
     {
       "name": "VoidEnergySource",
-      "order": 659,
+      "order": 660,
       "description": "Void energy sources provide unlimited free energy.",
       "examples": [
         "```\nenergy_source = {type = \"void\"}\n```"
@@ -84204,7 +84370,7 @@
     },
     {
       "name": "WallPictures",
-      "order": 660,
+      "order": 661,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -84304,7 +84470,7 @@
     },
     {
       "name": "WaterReflectionDefinition",
-      "order": 661,
+      "order": 662,
       "description": "Entity water reflection. [Currently only renders](https://forums.factorio.com/100703) for [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype).",
       "abstract": false,
       "inline": false,
@@ -84348,7 +84514,7 @@
     },
     {
       "name": "WaterTileEffectParameters",
-      "order": 662,
+      "order": 663,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -84594,7 +84760,7 @@
     },
     {
       "name": "Weight",
-      "order": 663,
+      "order": 664,
       "description": "Weight of an object. The weight is stored as a fixed-size 64 bit integer, with 16 bits reserved for decimal precision, meaning the smallest value step is `1/2^16`.",
       "abstract": false,
       "inline": false,
@@ -84602,7 +84768,7 @@
     },
     {
       "name": "WireConnectionPoint",
-      "order": 664,
+      "order": 665,
       "description": "Definition of a point where circuit network wires can be connected to an entity.",
       "abstract": false,
       "inline": false,
@@ -84630,7 +84796,7 @@
     },
     {
       "name": "WirePosition",
-      "order": 665,
+      "order": 666,
       "description": "Used by [WireConnectionPoint](prototype:WireConnectionPoint).",
       "abstract": false,
       "inline": false,
@@ -84666,7 +84832,7 @@
     },
     {
       "name": "WorkerRobotBatteryModifier",
-      "order": 666,
+      "order": 667,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -84714,7 +84880,7 @@
     },
     {
       "name": "WorkerRobotSpeedModifier",
-      "order": 667,
+      "order": 668,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -84762,7 +84928,7 @@
     },
     {
       "name": "WorkerRobotStorageModifier",
-      "order": 668,
+      "order": 669,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -84810,7 +84976,7 @@
     },
     {
       "name": "WorkingSound",
-      "order": 669,
+      "order": 670,
       "description": "This type is used to produce sound from in-game entities when they are working/idle.",
       "examples": [
         "```\n-- refinery\nworking_sound =\n{\n  sound = {filename = \"__base__/sound/oil-refinery.ogg\"},\n  idle_sound = {filename = \"__base__/sound/idle1.ogg\", volume = 0.6},\n}\n```",
@@ -84938,7 +85104,7 @@
     },
     {
       "name": "WorkingVisualisation",
-      "order": 670,
+      "order": 671,
       "description": "Used by crafting machines to display different graphics when the machine is running.",
       "abstract": false,
       "inline": false,
@@ -85412,7 +85578,7 @@
     },
     {
       "name": "WorkingVisualisations",
-      "order": 671,
+      "order": 672,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -85530,7 +85696,7 @@
     },
     {
       "name": "WorldAmbientSoundDefinition",
-      "order": 672,
+      "order": 673,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -85617,7 +85783,7 @@
     },
     {
       "name": "boolean",
-      "order": 673,
+      "order": 674,
       "description": "A variable type which can have one of two values: `true` or `false`. Wikipedia has a [comprehensive article](https://en.wikipedia.org/wiki/Boolean) on Booleans.",
       "abstract": false,
       "inline": false,
@@ -85625,7 +85791,7 @@
     },
     {
       "name": "double",
-      "order": 674,
+      "order": 675,
       "description": "Format uses a dot as its decimal delimiter. Doubles are stored in the [double precision](http://en.wikipedia.org/wiki/Double-precision_floating-point_format) floating point format.\n\nMay not be [NaN](https://en.wikipedia.org/wiki/NaN).",
       "examples": [
         "```\n7.5\n6\n```"
@@ -85636,7 +85802,7 @@
     },
     {
       "name": "float",
-      "order": 675,
+      "order": 676,
       "description": "Format uses a dot as its decimal delimiter. Floats are stored in the [single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) floating point format.\n\nMay not be [NaN](https://en.wikipedia.org/wiki/NaN).",
       "examples": [
         "```\n7.5\n6\n```"
@@ -85647,7 +85813,7 @@
     },
     {
       "name": "int16",
-      "order": 676,
+      "order": 677,
       "description": "16 bit signed integer. Ranges from `-32 768` to `32 767`, or `[-2^15, 2^15-1]`.\n\nDecimal numbers are automatically truncated when used in place of `int16`.",
       "abstract": false,
       "inline": false,
@@ -85655,7 +85821,7 @@
     },
     {
       "name": "int32",
-      "order": 677,
+      "order": 678,
       "description": "32 bit signed integer. Ranges from `-2 147 483 648` to `2 147 483 647`, or `[-2^31, 2^31-1]`.\n\nDecimal numbers are automatically truncated when used in place of `int32`.",
       "abstract": false,
       "inline": false,
@@ -85663,7 +85829,7 @@
     },
     {
       "name": "int8",
-      "order": 678,
+      "order": 679,
       "description": "8 bit signed integer. Ranges from `-128` to `127`, or `[-2^7, 2^7-1]`.\n\nDecimal numbers are automatically truncated when used in place of `int8`.",
       "abstract": false,
       "inline": false,
@@ -85671,7 +85837,7 @@
     },
     {
       "name": "number",
-      "order": 679,
+      "order": 680,
       "description": "Any kind of integer or floating point number.",
       "abstract": false,
       "inline": false,
@@ -85679,7 +85845,7 @@
     },
     {
       "name": "string",
-      "order": 680,
+      "order": 681,
       "description": "Strings are enclosed in double-quotes.",
       "examples": [
         "```\n\"Hello, world!\"\n```"
@@ -85690,7 +85856,7 @@
     },
     {
       "name": "table",
-      "order": 681,
+      "order": 682,
       "description": "A simple [Lua table](http://www.lua.org/pil/2.5.html). An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.\n\nTables used by prototypes may be parsed via an internal class called \"property tree\". Errors that reference this class treat tables as 0-indexed. For example `Value must be a number in property tree at ROOT.technology.steel-plate-productivity.effects[0].change` refers to element 0 of the property tree array which in Lua is at index 1.",
       "abstract": false,
       "inline": false,
@@ -85698,7 +85864,7 @@
     },
     {
       "name": "uint16",
-      "order": 682,
+      "order": 683,
       "description": "16 bit unsigned integer. Ranges from `0` to `65 535`, or `[0, 2^16-1]`.\n\nDecimal numbers are automatically truncated when used in place of `uint16`.",
       "abstract": false,
       "inline": false,
@@ -85706,7 +85872,7 @@
     },
     {
       "name": "uint32",
-      "order": 683,
+      "order": 684,
       "description": "32 bit unsigned integer. Ranges from `0` to `4 294 967 295`, or `[0, 2^32-1]`.\n\nDecimal numbers are automatically truncated when used in place of `uint32`.",
       "abstract": false,
       "inline": false,
@@ -85714,7 +85880,7 @@
     },
     {
       "name": "uint64",
-      "order": 684,
+      "order": 685,
       "description": "64 bit unsigned integer. Ranges from `0` to `18 446 744 073 709 551 615`, or `[0, 2^64-1]`.\n\nDecimal numbers are automatically truncated when used in place of `uint64`.",
       "abstract": false,
       "inline": false,
@@ -85722,7 +85888,7 @@
     },
     {
       "name": "uint8",
-      "order": 685,
+      "order": 686,
       "description": "8 bit unsigned integer. Ranges from `0` to `255`, or `[0, 2^8-1]`.\n\nDecimal numbers are automatically truncated when used in place of `uint8`.",
       "abstract": false,
       "inline": false,
@@ -87657,603 +87823,608 @@
           "description": ""
         },
         {
-          "name": "on_player_fast_transferred",
+          "name": "on_player_dropped_item_into_entity",
           "order": 97,
           "description": ""
         },
         {
-          "name": "on_player_flipped_entity",
+          "name": "on_player_fast_transferred",
           "order": 98,
           "description": ""
         },
         {
-          "name": "on_player_flushed_fluid",
+          "name": "on_player_flipped_entity",
           "order": 99,
           "description": ""
         },
         {
-          "name": "on_player_gun_inventory_changed",
+          "name": "on_player_flushed_fluid",
           "order": 100,
           "description": ""
         },
         {
-          "name": "on_player_input_method_changed",
+          "name": "on_player_gun_inventory_changed",
           "order": 101,
           "description": ""
         },
         {
-          "name": "on_player_joined_game",
+          "name": "on_player_input_method_changed",
           "order": 102,
           "description": ""
         },
         {
-          "name": "on_player_kicked",
+          "name": "on_player_joined_game",
           "order": 103,
           "description": ""
         },
         {
-          "name": "on_player_left_game",
+          "name": "on_player_kicked",
           "order": 104,
           "description": ""
         },
         {
-          "name": "on_player_locale_changed",
+          "name": "on_player_left_game",
           "order": 105,
           "description": ""
         },
         {
-          "name": "on_player_main_inventory_changed",
+          "name": "on_player_locale_changed",
           "order": 106,
           "description": ""
         },
         {
-          "name": "on_player_mined_entity",
+          "name": "on_player_main_inventory_changed",
           "order": 107,
           "description": ""
         },
         {
-          "name": "on_player_mined_item",
+          "name": "on_player_mined_entity",
           "order": 108,
           "description": ""
         },
         {
-          "name": "on_player_mined_tile",
+          "name": "on_player_mined_item",
           "order": 109,
           "description": ""
         },
         {
-          "name": "on_player_muted",
+          "name": "on_player_mined_tile",
           "order": 110,
           "description": ""
         },
         {
-          "name": "on_player_pipette",
+          "name": "on_player_muted",
           "order": 111,
           "description": ""
         },
         {
-          "name": "on_player_placed_equipment",
+          "name": "on_player_pipette",
           "order": 112,
           "description": ""
         },
         {
-          "name": "on_player_promoted",
+          "name": "on_player_placed_equipment",
           "order": 113,
           "description": ""
         },
         {
-          "name": "on_player_removed",
+          "name": "on_player_promoted",
           "order": 114,
           "description": ""
         },
         {
-          "name": "on_player_removed_equipment",
+          "name": "on_player_removed",
           "order": 115,
           "description": ""
         },
         {
-          "name": "on_player_repaired_entity",
+          "name": "on_player_removed_equipment",
           "order": 116,
           "description": ""
         },
         {
-          "name": "on_player_respawned",
+          "name": "on_player_repaired_entity",
           "order": 117,
           "description": ""
         },
         {
-          "name": "on_player_reverse_selected_area",
+          "name": "on_player_respawned",
           "order": 118,
           "description": ""
         },
         {
-          "name": "on_player_rotated_entity",
+          "name": "on_player_reverse_selected_area",
           "order": 119,
           "description": ""
         },
         {
-          "name": "on_player_selected_area",
+          "name": "on_player_rotated_entity",
           "order": 120,
           "description": ""
         },
         {
-          "name": "on_player_set_quick_bar_slot",
+          "name": "on_player_selected_area",
           "order": 121,
           "description": ""
         },
         {
-          "name": "on_player_setup_blueprint",
+          "name": "on_player_set_quick_bar_slot",
           "order": 122,
           "description": ""
         },
         {
-          "name": "on_player_toggled_alt_mode",
+          "name": "on_player_setup_blueprint",
           "order": 123,
           "description": ""
         },
         {
-          "name": "on_player_toggled_map_editor",
+          "name": "on_player_toggled_alt_mode",
           "order": 124,
           "description": ""
         },
         {
-          "name": "on_player_trash_inventory_changed",
+          "name": "on_player_toggled_map_editor",
           "order": 125,
           "description": ""
         },
         {
-          "name": "on_player_unbanned",
+          "name": "on_player_trash_inventory_changed",
           "order": 126,
           "description": ""
         },
         {
-          "name": "on_player_unmuted",
+          "name": "on_player_unbanned",
           "order": 127,
           "description": ""
         },
         {
-          "name": "on_player_used_capsule",
+          "name": "on_player_unmuted",
           "order": 128,
           "description": ""
         },
         {
-          "name": "on_player_used_spidertron_remote",
+          "name": "on_player_used_capsule",
           "order": 129,
           "description": ""
         },
         {
-          "name": "on_post_entity_died",
+          "name": "on_player_used_spidertron_remote",
           "order": 130,
           "description": ""
         },
         {
-          "name": "on_post_segmented_unit_died",
+          "name": "on_post_entity_died",
           "order": 131,
           "description": ""
         },
         {
-          "name": "on_pre_build",
+          "name": "on_post_segmented_unit_died",
           "order": 132,
           "description": ""
         },
         {
-          "name": "on_pre_chunk_deleted",
+          "name": "on_pre_build",
           "order": 133,
           "description": ""
         },
         {
-          "name": "on_pre_entity_settings_pasted",
+          "name": "on_pre_chunk_deleted",
           "order": 134,
           "description": ""
         },
         {
-          "name": "on_pre_ghost_deconstructed",
+          "name": "on_pre_entity_settings_pasted",
           "order": 135,
           "description": ""
         },
         {
-          "name": "on_pre_ghost_upgraded",
+          "name": "on_pre_ghost_deconstructed",
           "order": 136,
           "description": ""
         },
         {
-          "name": "on_pre_permission_group_deleted",
+          "name": "on_pre_ghost_upgraded",
           "order": 137,
           "description": ""
         },
         {
-          "name": "on_pre_permission_string_imported",
+          "name": "on_pre_permission_group_deleted",
           "order": 138,
           "description": ""
         },
         {
-          "name": "on_pre_player_crafted_item",
+          "name": "on_pre_permission_string_imported",
           "order": 139,
           "description": ""
         },
         {
-          "name": "on_pre_player_died",
+          "name": "on_pre_player_crafted_item",
           "order": 140,
           "description": ""
         },
         {
-          "name": "on_pre_player_left_game",
+          "name": "on_pre_player_died",
           "order": 141,
           "description": ""
         },
         {
-          "name": "on_pre_player_mined_item",
+          "name": "on_pre_player_left_game",
           "order": 142,
           "description": ""
         },
         {
-          "name": "on_pre_player_removed",
+          "name": "on_pre_player_mined_item",
           "order": 143,
           "description": ""
         },
         {
-          "name": "on_pre_player_toggled_map_editor",
+          "name": "on_pre_player_removed",
           "order": 144,
           "description": ""
         },
         {
-          "name": "on_pre_robot_exploded_cliff",
+          "name": "on_pre_player_toggled_map_editor",
           "order": 145,
           "description": ""
         },
         {
-          "name": "on_pre_scenario_finished",
+          "name": "on_pre_robot_exploded_cliff",
           "order": 146,
           "description": ""
         },
         {
-          "name": "on_pre_script_inventory_resized",
+          "name": "on_pre_scenario_finished",
           "order": 147,
           "description": ""
         },
         {
-          "name": "on_pre_surface_cleared",
+          "name": "on_pre_script_inventory_resized",
           "order": 148,
           "description": ""
         },
         {
-          "name": "on_pre_surface_deleted",
+          "name": "on_pre_surface_cleared",
           "order": 149,
           "description": ""
         },
         {
-          "name": "on_redo_applied",
+          "name": "on_pre_surface_deleted",
           "order": 150,
           "description": ""
         },
         {
-          "name": "on_research_cancelled",
+          "name": "on_redo_applied",
           "order": 151,
           "description": ""
         },
         {
-          "name": "on_research_finished",
+          "name": "on_research_cancelled",
           "order": 152,
           "description": ""
         },
         {
-          "name": "on_research_moved",
+          "name": "on_research_finished",
           "order": 153,
           "description": ""
         },
         {
-          "name": "on_research_queued",
+          "name": "on_research_moved",
           "order": 154,
           "description": ""
         },
         {
-          "name": "on_research_reversed",
+          "name": "on_research_queued",
           "order": 155,
           "description": ""
         },
         {
-          "name": "on_research_started",
+          "name": "on_research_reversed",
           "order": 156,
           "description": ""
         },
         {
-          "name": "on_resource_depleted",
+          "name": "on_research_started",
           "order": 157,
           "description": ""
         },
         {
-          "name": "on_robot_built_entity",
+          "name": "on_resource_depleted",
           "order": 158,
           "description": ""
         },
         {
-          "name": "on_robot_built_tile",
+          "name": "on_robot_built_entity",
           "order": 159,
           "description": ""
         },
         {
-          "name": "on_robot_exploded_cliff",
+          "name": "on_robot_built_tile",
           "order": 160,
           "description": ""
         },
         {
-          "name": "on_robot_mined",
+          "name": "on_robot_exploded_cliff",
           "order": 161,
           "description": ""
         },
         {
-          "name": "on_robot_mined_entity",
+          "name": "on_robot_mined",
           "order": 162,
           "description": ""
         },
         {
-          "name": "on_robot_mined_tile",
+          "name": "on_robot_mined_entity",
           "order": 163,
           "description": ""
         },
         {
-          "name": "on_robot_pre_mined",
+          "name": "on_robot_mined_tile",
           "order": 164,
           "description": ""
         },
         {
-          "name": "on_rocket_launch_ordered",
+          "name": "on_robot_pre_mined",
           "order": 165,
           "description": ""
         },
         {
-          "name": "on_rocket_launched",
+          "name": "on_rocket_launch_ordered",
           "order": 166,
           "description": ""
         },
         {
-          "name": "on_runtime_mod_setting_changed",
+          "name": "on_rocket_launched",
           "order": 167,
           "description": ""
         },
         {
-          "name": "on_script_inventory_resized",
+          "name": "on_runtime_mod_setting_changed",
           "order": 168,
           "description": ""
         },
         {
-          "name": "on_script_path_request_finished",
+          "name": "on_script_inventory_resized",
           "order": 169,
           "description": ""
         },
         {
-          "name": "on_script_trigger_effect",
+          "name": "on_script_path_request_finished",
           "order": 170,
           "description": ""
         },
         {
-          "name": "on_sector_scanned",
+          "name": "on_script_trigger_effect",
           "order": 171,
           "description": ""
         },
         {
-          "name": "on_segment_entity_created",
+          "name": "on_sector_scanned",
           "order": 172,
           "description": ""
         },
         {
-          "name": "on_segmented_unit_created",
+          "name": "on_segment_entity_created",
           "order": 173,
           "description": ""
         },
         {
-          "name": "on_segmented_unit_damaged",
+          "name": "on_segmented_unit_created",
           "order": 174,
           "description": ""
         },
         {
-          "name": "on_segmented_unit_died",
+          "name": "on_segmented_unit_damaged",
           "order": 175,
           "description": ""
         },
         {
-          "name": "on_selected_entity_changed",
+          "name": "on_segmented_unit_died",
           "order": 176,
           "description": ""
         },
         {
-          "name": "on_singleplayer_init",
+          "name": "on_selected_entity_changed",
           "order": 177,
           "description": ""
         },
         {
-          "name": "on_space_platform_built_entity",
+          "name": "on_singleplayer_init",
           "order": 178,
           "description": ""
         },
         {
-          "name": "on_space_platform_built_tile",
+          "name": "on_space_platform_built_entity",
           "order": 179,
           "description": ""
         },
         {
-          "name": "on_space_platform_changed_state",
+          "name": "on_space_platform_built_tile",
           "order": 180,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_entity",
+          "name": "on_space_platform_changed_state",
           "order": 181,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_item",
+          "name": "on_space_platform_mined_entity",
           "order": 182,
           "description": ""
         },
         {
-          "name": "on_space_platform_mined_tile",
+          "name": "on_space_platform_mined_item",
           "order": 183,
           "description": ""
         },
         {
-          "name": "on_space_platform_pre_mined",
+          "name": "on_space_platform_mined_tile",
           "order": 184,
           "description": ""
         },
         {
-          "name": "on_spider_command_completed",
+          "name": "on_space_platform_pre_mined",
           "order": 185,
           "description": ""
         },
         {
-          "name": "on_string_translated",
+          "name": "on_spider_command_completed",
           "order": 186,
           "description": ""
         },
         {
-          "name": "on_surface_cleared",
+          "name": "on_string_translated",
           "order": 187,
           "description": ""
         },
         {
-          "name": "on_surface_created",
+          "name": "on_surface_cleared",
           "order": 188,
           "description": ""
         },
         {
-          "name": "on_surface_deleted",
+          "name": "on_surface_created",
           "order": 189,
           "description": ""
         },
         {
-          "name": "on_surface_imported",
+          "name": "on_surface_deleted",
           "order": 190,
           "description": ""
         },
         {
-          "name": "on_surface_renamed",
+          "name": "on_surface_imported",
           "order": 191,
           "description": ""
         },
         {
-          "name": "on_technology_effects_reset",
+          "name": "on_surface_renamed",
           "order": 192,
           "description": ""
         },
         {
-          "name": "on_territory_created",
+          "name": "on_technology_effects_reset",
           "order": 193,
           "description": ""
         },
         {
-          "name": "on_territory_destroyed",
+          "name": "on_territory_created",
           "order": 194,
           "description": ""
         },
         {
-          "name": "on_tick",
+          "name": "on_territory_destroyed",
           "order": 195,
           "description": ""
         },
         {
-          "name": "on_tower_mined_plant",
+          "name": "on_tick",
           "order": 196,
           "description": ""
         },
         {
-          "name": "on_tower_planted_seed",
+          "name": "on_tower_mined_plant",
           "order": 197,
           "description": ""
         },
         {
-          "name": "on_tower_pre_mined_plant",
+          "name": "on_tower_planted_seed",
           "order": 198,
           "description": ""
         },
         {
-          "name": "on_train_changed_state",
+          "name": "on_tower_pre_mined_plant",
           "order": 199,
           "description": ""
         },
         {
-          "name": "on_train_created",
+          "name": "on_train_changed_state",
           "order": 200,
           "description": ""
         },
         {
-          "name": "on_train_schedule_changed",
+          "name": "on_train_created",
           "order": 201,
           "description": ""
         },
         {
-          "name": "on_trigger_created_entity",
+          "name": "on_train_schedule_changed",
           "order": 202,
           "description": ""
         },
         {
-          "name": "on_trigger_fired_artillery",
+          "name": "on_trigger_created_entity",
           "order": 203,
           "description": ""
         },
         {
-          "name": "on_udp_packet_received",
+          "name": "on_trigger_fired_artillery",
           "order": 204,
           "description": ""
         },
         {
-          "name": "on_undo_applied",
+          "name": "on_udp_packet_received",
           "order": 205,
           "description": ""
         },
         {
-          "name": "on_unit_added_to_group",
+          "name": "on_undo_applied",
           "order": 206,
           "description": ""
         },
         {
-          "name": "on_unit_group_created",
+          "name": "on_unit_added_to_group",
           "order": 207,
           "description": ""
         },
         {
-          "name": "on_unit_group_finished_gathering",
+          "name": "on_unit_group_created",
           "order": 208,
           "description": ""
         },
         {
-          "name": "on_unit_removed_from_group",
+          "name": "on_unit_group_finished_gathering",
           "order": 209,
           "description": ""
         },
         {
-          "name": "on_worker_robot_expired",
+          "name": "on_unit_removed_from_group",
           "order": 210,
           "description": ""
         },
         {
-          "name": "script_raised_built",
+          "name": "on_worker_robot_expired",
           "order": 211,
           "description": ""
         },
         {
-          "name": "script_raised_destroy",
+          "name": "script_raised_built",
           "order": 212,
           "description": ""
         },
         {
-          "name": "script_raised_destroy_segmented_unit",
+          "name": "script_raised_destroy",
           "order": 213,
           "description": ""
         },
         {
-          "name": "script_raised_revive",
+          "name": "script_raised_destroy_segmented_unit",
           "order": 214,
           "description": ""
         },
         {
-          "name": "script_raised_set_tiles",
+          "name": "script_raised_revive",
           "order": 215,
           "description": ""
         },
         {
-          "name": "script_raised_teleported",
+          "name": "script_raised_set_tiles",
           "order": 216,
+          "description": ""
+        },
+        {
+          "name": "script_raised_teleported",
+          "order": 217,
           "description": ""
         }
       ]

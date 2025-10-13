@@ -1,3 +1,7 @@
+# v3.32.0
+
+- Updated to factorio version 2.0.70
+
 # v3.31.0
 
 - Updated to factorio version 2.0.68
