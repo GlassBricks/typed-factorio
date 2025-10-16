@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.70",
+  "application_version": "2.0.71",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -9518,7 +9518,7 @@
         {
           "name": "active",
           "order": 10,
-          "description": "Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).\n\nWriting to this is deprecated and affects only the [disabled_by_script](runtime:LuaEntity::disabled_by_script) state.\n\nReading from this returns `false` if the entity is deactivated in at least one of the following ways: [by script](runtime:LuaEntity::disabled_by_script), [by circuit network](runtime:LuaEntity::disabled_by_control_behavior), [by recipe](runtime:LuaEntity::disabled_by_recipe), [by freezing](runtime:LuaEntity::frozen), or by deconstruction.\n\nEntities that are not active naturally can't be set to be active (setting it to be active will do nothing). Some entities (Corpse, FireFlame, Roboport, RollingStock, dying entities) need to remain active and will ignore writes.",
+          "description": "Deactivating an entity will stop all its operations (car will stop moving, inserters will stop working, fish will stop moving etc).\n\nReading from this returns `false` if the entity is deactivated in at least one of the following ways: [by script](runtime:LuaEntity::disabled_by_script), [by circuit network](runtime:LuaEntity::disabled_by_control_behavior), [by recipe](runtime:LuaEntity::disabled_by_recipe), [by freezing](runtime:LuaEntity::frozen), or by deconstruction.\n\nWriting to this is deprecated and affects only the [disabled_by_script](runtime:LuaEntity::disabled_by_script) state.\n\nEntities that are not active naturally can't be set to be active (setting it to be active will do nothing). Some entities (Corpse, FireFlame, Roboport, RollingStock, dying entities) need to remain active and will ignore writes.",
           "read_type": "boolean",
           "write_type": "boolean",
           "optional": false
@@ -10158,7 +10158,7 @@
         {
           "name": "disabled_by_control_behavior",
           "order": 210,
-          "description": "If the updatable entity is disabled by control behavior.",
+          "description": "If the updatable entity is disabled by control behavior.\n\nAlways returns `false` if this entity is not considered [updatable](runtime:LuaEntity::is_updatable).",
           "subclasses": [
             "UpdatableEntity"
           ],
@@ -10168,7 +10168,7 @@
         {
           "name": "disabled_by_recipe",
           "order": 211,
-          "description": "If the assembling machine is disabled by recipe, e.g. due to [AssemblingMachinePrototype::disabled_when_recipe_not_researched](prototype:AssemblingMachinePrototype::disabled_when_recipe_not_researched).",
+          "description": "If the assembling machine is disabled by recipe, e.g. due to [AssemblingMachinePrototype::disabled_when_recipe_not_researched](prototype:AssemblingMachinePrototype::disabled_when_recipe_not_researched).\n\nAlways returns `false` if this entity is not considered [updatable](runtime:LuaEntity::is_updatable).",
           "subclasses": [
             "UpdatableEntity"
           ],
@@ -10178,7 +10178,7 @@
         {
           "name": "disabled_by_script",
           "order": 209,
-          "description": "If the updatable entity is disabled by script.\n\nNote: Some entities (Corpse, FireFlame, Roboport, RollingStock, dying entities) need to remain active and will ignore writes.",
+          "description": "If the updatable entity is disabled by script.\n\nNote: Some entities (Corpse, FireFlame, Roboport, RollingStock, dying entities) need to remain active and will ignore writes.\n\nIf this entity is not considered [updatable](runtime:LuaEntity::is_updatable) then this always returns `false` and writes will be ignored.",
           "subclasses": [
             "UpdatableEntity"
           ],
@@ -10448,7 +10448,7 @@
         {
           "name": "frozen",
           "order": 213,
-          "description": "If the freezable entity is currently frozen.",
+          "description": "Whether the freezable entity is currently frozen.\n\nAlways returns `false` if this entity is not considered [freezable](runtime:LuaEntity::is_freezable).",
           "subclasses": [
             "FreezableEntity"
           ],
@@ -10751,7 +10751,7 @@
         {
           "name": "is_freezable",
           "order": 212,
-          "description": "If the entity is freezable.",
+          "description": "Whether the entity is freezable and considered a FreezableEntity.",
           "read_type": "boolean",
           "optional": false
         },
@@ -10776,7 +10776,7 @@
         {
           "name": "is_updatable",
           "order": 208,
-          "description": "If the entity is updatable.",
+          "description": "Whether the entity is updatable and considered an UpdatableEntity.",
           "read_type": "boolean",
           "optional": false
         },
@@ -45597,7 +45597,10 @@
                   "name": "priority-list",
                   "order": 0,
                   "description": "",
-                  "type": "SlotFilter",
+                  "type": {
+                    "complex_type": "array",
+                    "value": "SlotFilter"
+                  },
                   "optional": true
                 }
               ]
@@ -46245,7 +46248,10 @@
                   "name": "priority-list",
                   "order": 0,
                   "description": "",
-                  "type": "SlotFilter",
+                  "type": {
+                    "complex_type": "array",
+                    "value": "SlotFilter"
+                  },
                   "optional": true
                 }
               ]
@@ -46308,7 +46314,10 @@
                   "name": "priority-list",
                   "order": 0,
                   "description": "",
-                  "type": "SlotFilter",
+                  "type": {
+                    "complex_type": "array",
+                    "value": "SlotFilter"
+                  },
                   "optional": true
                 }
               ]
@@ -47624,7 +47633,10 @@
                   "name": "priority-list",
                   "order": 0,
                   "description": "",
-                  "type": "SlotFilter",
+                  "type": {
+                    "complex_type": "array",
+                    "value": "SlotFilter"
+                  },
                   "optional": true
                 }
               ]
@@ -63500,7 +63512,7 @@
     },
     {
       "name": "AchievementPrototypeFilter",
-      "order": 380,
+      "order": 381,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -63795,7 +63807,7 @@
     },
     {
       "name": "Alignment",
-      "order": 336,
+      "order": 337,
       "description": "A string that specifies where a GUI element should be.",
       "type": {
         "complex_type": "union",
@@ -63938,7 +63950,7 @@
     },
     {
       "name": "Any",
-      "order": 370,
+      "order": 371,
       "description": "Any basic type (string, number, boolean), table, or LuaObject.",
       "type": {
         "complex_type": "union",
@@ -63954,7 +63966,7 @@
     },
     {
       "name": "AnyBasic",
-      "order": 369,
+      "order": 370,
       "description": "Any basic type (string, number, boolean) or table.",
       "type": {
         "complex_type": "union",
@@ -64316,7 +64328,7 @@
     },
     {
       "name": "AsteroidChunkPrototypeFilter",
-      "order": 376,
+      "order": 377,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64453,7 +64465,7 @@
     },
     {
       "name": "AttackParameterFluid",
-      "order": 337,
+      "order": 338,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64477,7 +64489,7 @@
     },
     {
       "name": "AttackParameters",
-      "order": 349,
+      "order": 350,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -64716,7 +64728,7 @@
     },
     {
       "name": "AttackReactionItem",
-      "order": 343,
+      "order": 344,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -65085,7 +65097,10 @@
                 "name": "priority-list",
                 "order": 0,
                 "description": "",
-                "type": "SlotFilter",
+                "type": {
+                  "complex_type": "array",
+                  "value": "SlotFilter"
+                },
                 "optional": true
               }
             ]
@@ -65555,7 +65570,10 @@
                 "name": "priority-list",
                 "order": 0,
                 "description": "",
-                "type": "SlotFilter",
+                "type": {
+                  "complex_type": "array",
+                  "value": "SlotFilter"
+                },
                 "optional": true
               }
             ]
@@ -65583,7 +65601,10 @@
                 "name": "priority-list",
                 "order": 0,
                 "description": "",
-                "type": "SlotFilter",
+                "type": {
+                  "complex_type": "array",
+                  "value": "SlotFilter"
+                },
                 "optional": true
               }
             ]
@@ -66589,7 +66610,10 @@
                 "name": "priority-list",
                 "order": 0,
                 "description": "",
-                "type": "SlotFilter",
+                "type": {
+                  "complex_type": "array",
+                  "value": "SlotFilter"
+                },
                 "optional": true
               }
             ]
@@ -66666,7 +66690,7 @@
     },
     {
       "name": "BlueprintInfinityInventorySettings",
-      "order": 310,
+      "order": 311,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66693,7 +66717,7 @@
     },
     {
       "name": "BlueprintInsertPlan",
-      "order": 315,
+      "order": 316,
       "description": "Defines an item type that a blueprint entity will request.",
       "type": {
         "complex_type": "table",
@@ -66788,7 +66812,7 @@
     },
     {
       "name": "BlueprintItemIDAndQualityIDPair",
-      "order": 289,
+      "order": 290,
       "description": "An item prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -66812,7 +66836,7 @@
     },
     {
       "name": "BlueprintLogisticFilter",
-      "order": 329,
+      "order": 330,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66885,7 +66909,7 @@
     },
     {
       "name": "BlueprintLogisticSections",
-      "order": 330,
+      "order": 331,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66919,7 +66943,7 @@
     },
     {
       "name": "BlueprintMiningDrillFilter",
-      "order": 302,
+      "order": 303,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -66949,6 +66973,23 @@
               ],
               "full_format": false
             },
+            "optional": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "BlueprintQualityID",
+      "order": 289,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "name",
+            "order": 0,
+            "description": "The name of the quality prototype. Defaults to `\"normal\"`.",
+            "type": "string",
             "optional": true
           }
         ]
@@ -67749,7 +67790,7 @@
     },
     {
       "name": "CircularProjectileCreationSpecification",
-      "order": 340,
+      "order": 341,
       "description": "",
       "type": {
         "complex_type": "array",
@@ -67764,7 +67805,7 @@
     },
     {
       "name": "CliffOrientation",
-      "order": 305,
+      "order": 306,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -68417,7 +68458,7 @@
     },
     {
       "name": "CompiledLogisticFilter",
-      "order": 328,
+      "order": 329,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68730,7 +68771,7 @@
     },
     {
       "name": "CustomEntityStatus",
-      "order": 320,
+      "order": 321,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -68869,7 +68910,7 @@
     },
     {
       "name": "DamageTypeFilters",
-      "order": 346,
+      "order": 347,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69130,7 +69171,7 @@
     },
     {
       "name": "DecorativePrototypeFilter",
-      "order": 374,
+      "order": 375,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69843,7 +69884,7 @@
     },
     {
       "name": "EntityIDFilter",
-      "order": 291,
+      "order": 292,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -69874,7 +69915,7 @@
     },
     {
       "name": "EntityPrototypeFilter",
-      "order": 383,
+      "order": 384,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70253,7 +70294,7 @@
     },
     {
       "name": "EntityPrototypeFlag",
-      "order": 294,
+      "order": 295,
       "description": "A [string](runtime:string) specifying an entity prototype flag.",
       "type": {
         "complex_type": "union",
@@ -70389,7 +70430,7 @@
     },
     {
       "name": "EntityPrototypeFlags",
-      "order": 293,
+      "order": 294,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.\n\nBy default, none of these flags are set.",
       "type": {
         "complex_type": "dictionary",
@@ -70745,7 +70786,7 @@
     },
     {
       "name": "EquipmentPrototypeFilter",
-      "order": 381,
+      "order": 382,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71086,7 +71127,7 @@
     },
     {
       "name": "ExplosionDefinition",
-      "order": 297,
+      "order": 298,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71110,7 +71151,7 @@
     },
     {
       "name": "FactoriopediaID",
-      "order": 334,
+      "order": 335,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -71487,7 +71528,7 @@
     },
     {
       "name": "FluidPrototypeFilter",
-      "order": 382,
+      "order": 383,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -72304,7 +72345,7 @@
     },
     {
       "name": "GuiDirection",
-      "order": 335,
+      "order": 336,
       "description": "Direction of a [LuaGuiElement's](runtime:LuaGuiElement::direction) layout.",
       "type": {
         "complex_type": "union",
@@ -72498,7 +72539,7 @@
     },
     {
       "name": "GunShift4Way",
-      "order": 338,
+      "order": 339,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -72560,7 +72601,7 @@
     },
     {
       "name": "HeatSetting",
-      "order": 304,
+      "order": 305,
       "description": "The settings used by a heat-interface type entity.",
       "type": {
         "complex_type": "table",
@@ -72584,7 +72625,7 @@
     },
     {
       "name": "HeatSettingMode",
-      "order": 303,
+      "order": 304,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -72955,7 +72996,7 @@
     },
     {
       "name": "InfinityInventoryFilter",
-      "order": 323,
+      "order": 324,
       "description": "A single filter used by an infinity-filters instance.",
       "type": {
         "complex_type": "table",
@@ -73017,7 +73058,7 @@
     },
     {
       "name": "InfinityPipeFilter",
-      "order": 295,
+      "order": 296,
       "description": "A single filter used by an infinity-pipe type entity.",
       "type": {
         "complex_type": "table",
@@ -73262,7 +73303,7 @@
     },
     {
       "name": "InventoryPosition",
-      "order": 313,
+      "order": 314,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -73441,7 +73482,7 @@
     },
     {
       "name": "ItemIDFilter",
-      "order": 290,
+      "order": 291,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -73472,7 +73513,7 @@
     },
     {
       "name": "ItemInventoryPositions",
-      "order": 312,
+      "order": 313,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -73631,7 +73672,7 @@
     },
     {
       "name": "ItemPrototypeFilter",
-      "order": 377,
+      "order": 378,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75480,7 +75521,7 @@
     },
     {
       "name": "LogisticGroup",
-      "order": 332,
+      "order": 333,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75510,7 +75551,7 @@
     },
     {
       "name": "LogisticSection",
-      "order": 331,
+      "order": 332,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75558,7 +75599,7 @@
     },
     {
       "name": "LogisticSections",
-      "order": 333,
+      "order": 334,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75711,7 +75752,7 @@
     },
     {
       "name": "LuaEntityClonedEventFilter",
-      "order": 395,
+      "order": 396,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75879,7 +75920,7 @@
     },
     {
       "name": "LuaEntityDamagedEventFilter",
-      "order": 409,
+      "order": 410,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76140,7 +76181,7 @@
     },
     {
       "name": "LuaEntityDeconstructionCancelledEventFilter",
-      "order": 391,
+      "order": 392,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76308,7 +76349,7 @@
     },
     {
       "name": "LuaEntityDiedEventFilter",
-      "order": 410,
+      "order": 411,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76494,7 +76535,7 @@
     },
     {
       "name": "LuaEntityMarkedForDeconstructionEventFilter",
-      "order": 404,
+      "order": 405,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76662,7 +76703,7 @@
     },
     {
       "name": "LuaEntityMarkedForUpgradeEventFilter",
-      "order": 411,
+      "order": 412,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76861,7 +76902,7 @@
     },
     {
       "name": "LuaObject",
-      "order": 368,
+      "order": 369,
       "description": "Any LuaObject listed on the [Classes](runtime:classes) page.",
       "type": {
         "complex_type": "builtin"
@@ -76869,7 +76910,7 @@
     },
     {
       "name": "LuaPlatformBuiltEntityEventFilter",
-      "order": 393,
+      "order": 394,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77055,7 +77096,7 @@
     },
     {
       "name": "LuaPlatformMinedEntityEventFilter",
-      "order": 388,
+      "order": 389,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77223,7 +77264,7 @@
     },
     {
       "name": "LuaPlayerBuiltEntityEventFilter",
-      "order": 407,
+      "order": 408,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77409,7 +77450,7 @@
     },
     {
       "name": "LuaPlayerMinedEntityEventFilter",
-      "order": 401,
+      "order": 402,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77577,7 +77618,7 @@
     },
     {
       "name": "LuaPlayerRepairedEntityEventFilter",
-      "order": 396,
+      "order": 397,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77745,7 +77786,7 @@
     },
     {
       "name": "LuaPostEntityDiedEventFilter",
-      "order": 397,
+      "order": 398,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77815,7 +77856,7 @@
     },
     {
       "name": "LuaPostSegmentedUnitDiedEventFilter",
-      "order": 405,
+      "order": 406,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77885,7 +77926,7 @@
     },
     {
       "name": "LuaPreGhostDeconstructedEventFilter",
-      "order": 400,
+      "order": 401,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78053,7 +78094,7 @@
     },
     {
       "name": "LuaPreGhostUpgradedEventFilter",
-      "order": 392,
+      "order": 393,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78221,7 +78262,7 @@
     },
     {
       "name": "LuaPrePlatformMinedEntityEventFilter",
-      "order": 394,
+      "order": 395,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78389,7 +78430,7 @@
     },
     {
       "name": "LuaPrePlayerMinedEntityEventFilter",
-      "order": 390,
+      "order": 391,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78557,7 +78598,7 @@
     },
     {
       "name": "LuaPreRobotMinedEntityEventFilter",
-      "order": 386,
+      "order": 387,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78725,7 +78766,7 @@
     },
     {
       "name": "LuaRobotBuiltEntityEventFilter",
-      "order": 389,
+      "order": 390,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78911,7 +78952,7 @@
     },
     {
       "name": "LuaRobotMinedEntityEventFilter",
-      "order": 403,
+      "order": 404,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79079,7 +79120,7 @@
     },
     {
       "name": "LuaScriptRaisedBuiltEventFilter",
-      "order": 387,
+      "order": 388,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79247,7 +79288,7 @@
     },
     {
       "name": "LuaScriptRaisedDestroyEventFilter",
-      "order": 413,
+      "order": 414,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79415,7 +79456,7 @@
     },
     {
       "name": "LuaScriptRaisedDestroySegmentedUnitEventFilter",
-      "order": 398,
+      "order": 399,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79485,7 +79526,7 @@
     },
     {
       "name": "LuaScriptRaisedReviveEventFilter",
-      "order": 406,
+      "order": 407,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79653,7 +79694,7 @@
     },
     {
       "name": "LuaScriptRaisedTeleportedEventFilter",
-      "order": 385,
+      "order": 386,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79821,7 +79862,7 @@
     },
     {
       "name": "LuaSectorScannedEventFilter",
-      "order": 402,
+      "order": 403,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79989,7 +80030,7 @@
     },
     {
       "name": "LuaSegmentedUnitCreatedEventFilter",
-      "order": 412,
+      "order": 413,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80077,7 +80118,7 @@
     },
     {
       "name": "LuaSegmentedUnitDamagedEventFilter",
-      "order": 399,
+      "order": 400,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80240,7 +80281,7 @@
     },
     {
       "name": "LuaSegmentedUnitDiedEventFilter",
-      "order": 384,
+      "order": 385,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80310,7 +80351,7 @@
     },
     {
       "name": "LuaUpgradeCancelledEventFilter",
-      "order": 408,
+      "order": 409,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81115,7 +81156,7 @@
     },
     {
       "name": "MarketIngredient",
-      "order": 318,
+      "order": 319,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81331,7 +81372,7 @@
     },
     {
       "name": "ModSettingPrototypeFilter",
-      "order": 372,
+      "order": 373,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81832,7 +81873,7 @@
     },
     {
       "name": "NeighbourConnectable",
-      "order": 317,
+      "order": 318,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81866,7 +81907,7 @@
     },
     {
       "name": "NeighbourConnectableConnectionDefinition",
-      "order": 316,
+      "order": 317,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81930,7 +81971,7 @@
     },
     {
       "name": "Offer",
-      "order": 319,
+      "order": 320,
       "description": "A single offer on a market entity.",
       "type": {
         "complex_type": "table",
@@ -82325,7 +82366,7 @@
     },
     {
       "name": "PerceivedPerformance",
-      "order": 322,
+      "order": 323,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82961,7 +83002,7 @@
     },
     {
       "name": "ProgrammableSpeakerAlertParameters",
-      "order": 300,
+      "order": 301,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83023,7 +83064,7 @@
     },
     {
       "name": "ProgrammableSpeakerCircuitParameters",
-      "order": 301,
+      "order": 302,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83061,7 +83102,7 @@
     },
     {
       "name": "ProgrammableSpeakerInstrument",
-      "order": 296,
+      "order": 297,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83088,7 +83129,7 @@
     },
     {
       "name": "ProgrammableSpeakerParameters",
-      "order": 298,
+      "order": 299,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83133,7 +83174,7 @@
     },
     {
       "name": "ProgrammableSpeakerPlaybackMode",
-      "order": 299,
+      "order": 300,
       "description": "Specifies from where the programmable speaker's sound will be heard.",
       "type": {
         "complex_type": "union",
@@ -83159,7 +83200,7 @@
     },
     {
       "name": "PropertyExpressionNames",
-      "order": 371,
+      "order": 372,
       "description": "All other MapGenSettings feed into named noise expressions, and therefore placement can be overridden by including the name of a property in this dictionary. The probability and richness functions for placing specific tiles, entities, and decoratives can be overridden by including an entry named `{tile|entity|decorative}:(prototype name):{probability|richness}`.",
       "lists": [
         "Values either name a NamedNoiseExpression or can be literal numbers, stored as strings (e.g. `5`). All other controls can be overridden by a property expression names. Notable properties:\n\n- `moisture` - a value between 0 and 1 that determines whether a tile becomes sandy (low moisture) or grassy (high moisture).\n- `aux` - a value between 0 and 1 that determines whether low-moisture tiles become sand or red desert.\n- `temperature` - provides a value (vaguely representing degrees Celsius, varying between -20 and 50) that is used (together with moisture and aux) as part of tree and decorative placement.\n- `elevation` - tiles values less than zero become water. Cliffs are placed along certain contours according to [CliffPlacementSettings](runtime:CliffPlacementSettings).\n- `cliffiness` - determines whether (when >0.5) or not (when <0.5) a cliff will be placed at an otherwise suitable (according to [CliffPlacementSettings](runtime:CliffPlacementSettings)) location.\n- `enemy-base-intensity` - a number that is referenced by both `enemy-base-frequency` and `enemy-base-radius`. i.e. if this is overridden, enemy base frequency and size will both be affected and do something reasonable. By default, this expression returns a value proportional to distance from any starting point, clamped at about 7.\n- `enemy-base-frequency` - a number representing average number of enemy bases per tile for a region, by default in terms of `enemy-base-intensity`.\n- `enemy-base-radius` - a number representing the radius of an enemy base, if one were to be placed on the given tile, by default proportional to a constant plus `enemy-base-intensity`.",
@@ -83173,7 +83214,7 @@
     },
     {
       "name": "PrototypeFilter",
-      "order": 292,
+      "order": 293,
       "description": "Types `\"signal\"` and `\"item-group\"` do not support filters.\n\nFilters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.",
       "type": {
         "complex_type": "array",
@@ -83438,7 +83479,7 @@
     },
     {
       "name": "RadiusVisualisationSpecification",
-      "order": 324,
+      "order": 325,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83814,7 +83855,7 @@
     },
     {
       "name": "RecipePrototypeFilter",
-      "order": 379,
+      "order": 380,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -84819,7 +84860,7 @@
     },
     {
       "name": "Resistance",
-      "order": 325,
+      "order": 326,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85747,7 +85788,7 @@
                 "order": 0,
                 "description": "The signal to emit.",
                 "type": "SignalID",
-                "optional": false
+                "optional": true
               }
             ]
           },
@@ -85787,8 +85828,8 @@
               {
                 "name": "quality_source_static",
                 "order": 1,
-                "description": "The name of the quality prototype. Defaults to `\"normal\"`.",
-                "type": "string",
+                "description": "",
+                "type": "BlueprintQualityID",
                 "optional": true
               },
               {
@@ -86139,7 +86180,7 @@
     },
     {
       "name": "SlotFilter",
-      "order": 353,
+      "order": 354,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -86163,7 +86204,7 @@
     },
     {
       "name": "SmokeSource",
-      "order": 321,
+      "order": 322,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -86313,7 +86354,7 @@
     },
     {
       "name": "SoundPath",
-      "order": 326,
+      "order": 327,
       "description": "It can be either the name of a [SoundPrototype](prototype:SoundPrototype) defined in the data stage, or a path in the form `\"type/name\"`. The latter option can be sorted into four categories.\n\nThe validity of a SoundPath can be verified at runtime using [LuaHelpers::is_valid_sound_path](runtime:LuaHelpers::is_valid_sound_path).",
       "lists": [
         "The utility and ambient types each contain general use sound prototypes defined by the game itself.\n\n- `\"utility\"` - Uses [UtilitySounds](prototype:UtilitySounds). Example: `\"utility/wire_connect_pole\"`\n- `\"ambient\"` - Uses [AmbientSound](prototype:AmbientSound). Example: `\"ambient/resource-deficiency\"`",
@@ -86325,7 +86366,7 @@
     },
     {
       "name": "SoundType",
-      "order": 327,
+      "order": 328,
       "description": "Defines which slider in the game's sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.",
       "type": {
         "complex_type": "union",
@@ -86543,7 +86584,7 @@
     },
     {
       "name": "SpaceLocationPrototypeFilter",
-      "order": 373,
+      "order": 374,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -86752,7 +86793,7 @@
     },
     {
       "name": "SpiderEngineSpecification",
-      "order": 309,
+      "order": 310,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -86779,7 +86820,7 @@
     },
     {
       "name": "SpiderLegSpecification",
-      "order": 308,
+      "order": 309,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -86896,7 +86937,7 @@
     },
     {
       "name": "SplitterPriority",
-      "order": 350,
+      "order": 351,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -86922,7 +86963,7 @@
     },
     {
       "name": "SpoilPriority",
-      "order": 307,
+      "order": 308,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -87191,7 +87232,7 @@
     },
     {
       "name": "Tags",
-      "order": 351,
+      "order": 352,
       "description": "A dictionary of string to the four basic Lua types: `string`, `boolean`, `number`, `table`.\n\nNote that the API returns tags as a simple table, meaning any modifications to it will not propagate back to the game. Thus, to modify a set of tags, the whole table needs to be written back to the respective property.\n\nTables inside Tags that have numeric keys but are not sequences (e.g. `tags = {foo = {nil, \"something\"}}` or `tags = {bar = {[4] = \"cat\"}}`) will have their keys converted to strings when read back from the game (e.g. `{foo = {[\"2\"] = \"something\"}}` or `{bar = {[\"4\"] = \"cat\"}}`). Only sequences without gaps will have their keys maintained as numeric.",
       "examples": [
         "```\n{a = 1, b = true, c = \"three\", d = {e = \"f\"}}\n```"
@@ -87990,7 +88031,7 @@
     },
     {
       "name": "TechnologyPrototypeFilter",
-      "order": 378,
+      "order": 379,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -88244,7 +88285,7 @@
     },
     {
       "name": "ThrusterPerformancePoint",
-      "order": 314,
+      "order": 315,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -88275,7 +88316,7 @@
     },
     {
       "name": "Tile",
-      "order": 352,
+      "order": 353,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -88400,7 +88441,7 @@
     },
     {
       "name": "TilePrototypeFilter",
-      "order": 375,
+      "order": 376,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89312,7 +89353,7 @@
     },
     {
       "name": "TriggerDelivery",
-      "order": 344,
+      "order": 345,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89382,7 +89423,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 348,
+      "order": 349,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89441,7 +89482,7 @@
     },
     {
       "name": "TriggerEffectItemType",
-      "order": 347,
+      "order": 348,
       "description": "Used by [TriggerEffectItem](runtime:TriggerEffectItem).",
       "type": {
         "complex_type": "union",
@@ -89567,7 +89608,7 @@
     },
     {
       "name": "TriggerEffectWithCooldown",
-      "order": 345,
+      "order": 346,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89615,7 +89656,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 339,
+      "order": 340,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89712,7 +89753,7 @@
     },
     {
       "name": "TriggerModifierData",
-      "order": 341,
+      "order": 342,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89743,7 +89784,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 342,
+      "order": 343,
       "description": "A set of trigger target masks.",
       "type": {
         "complex_type": "dictionary",
@@ -90452,7 +90493,7 @@
     },
     {
       "name": "ValveMode",
-      "order": 306,
+      "order": 307,
       "description": "Defines the mode of operation for a [ValvePrototype](prototype:ValvePrototype).",
       "type": {
         "complex_type": "union",
@@ -90563,7 +90604,7 @@
     },
     {
       "name": "VehicleAutomaticTargetingParameters",
-      "order": 311,
+      "order": 312,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91054,7 +91095,7 @@
     },
     {
       "name": "boolean",
-      "order": 365,
+      "order": 366,
       "description": "Either `true` or `false`.",
       "type": {
         "complex_type": "builtin"
@@ -91062,7 +91103,7 @@
     },
     {
       "name": "double",
-      "order": 355,
+      "order": 356,
       "description": "A double-precision floating-point number. This is the same data type as all Lua numbers use.",
       "type": {
         "complex_type": "builtin"
@@ -91070,7 +91111,7 @@
     },
     {
       "name": "float",
-      "order": 354,
+      "order": 355,
       "description": "A floating-point number. This is a single-precision floating point number. Whilst Lua only uses double-precision numbers, when a function takes a float, the game engine will immediately convert the double-precision number to single-precision.",
       "type": {
         "complex_type": "builtin"
@@ -91078,7 +91119,7 @@
     },
     {
       "name": "int16",
-      "order": 359,
+      "order": 360,
       "description": "16 bit signed integer. Possible values are `-32 768` to `32 767`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `int16` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -91086,7 +91127,7 @@
     },
     {
       "name": "int32",
-      "order": 361,
+      "order": 362,
       "description": "32-bit signed integer. Possible values are `-2 147 483 648` to `2 147 483 647`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `int` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -91094,7 +91135,7 @@
     },
     {
       "name": "int8",
-      "order": 357,
+      "order": 358,
       "description": "8-bit signed integer. Possible values are `-128` to `127`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `int8` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -91102,7 +91143,7 @@
     },
     {
       "name": "nil",
-      "order": 366,
+      "order": 367,
       "description": "Nil is the type of the value `nil`, whose main property is to be different from any other value. It usually represents the absence of a useful value.",
       "type": {
         "complex_type": "builtin"
@@ -91110,7 +91151,7 @@
     },
     {
       "name": "number",
-      "order": 363,
+      "order": 364,
       "description": "Any kind of integer or floating point number.",
       "type": {
         "complex_type": "builtin"
@@ -91118,7 +91159,7 @@
     },
     {
       "name": "string",
-      "order": 364,
+      "order": 365,
       "description": "Strings are enclosed in double-quotes, like this `\"hi\"`.",
       "type": {
         "complex_type": "builtin"
@@ -91126,7 +91167,7 @@
     },
     {
       "name": "table",
-      "order": 367,
+      "order": 368,
       "description": "Tables are enclosed in curly brackets, like this `{}`.\n\nThroughout the API docs, the terms \"array\" and \"dictionary\" are used. These are fundamentally just [Lua tables](http://www.lua.org/pil/2.5.html), but have a limitation on which kind of table keys can be used. An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.",
       "type": {
         "complex_type": "builtin"
@@ -91134,7 +91175,7 @@
     },
     {
       "name": "uint16",
-      "order": 358,
+      "order": 359,
       "description": "16-bit unsigned integer. Possible values are `0` to `65 535`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `uint16` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -91142,7 +91183,7 @@
     },
     {
       "name": "uint32",
-      "order": 360,
+      "order": 361,
       "description": "32-bit unsigned integer. Possible values are `0` to `4 294 967 295`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `uint` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -91150,7 +91191,7 @@
     },
     {
       "name": "uint64",
-      "order": 362,
+      "order": 363,
       "description": "64-bit unsigned integer. Possible values are `0` to `18 446 744 073 709 551 615`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `uint64` will floor the given double.",
       "type": {
         "complex_type": "builtin"
@@ -91158,7 +91199,7 @@
     },
     {
       "name": "uint8",
-      "order": 356,
+      "order": 357,
       "description": "8-bit unsigned integer. Possible values are `0` to `255`.\n\nSince Lua 5.2 only uses doubles, any API that asks for `uint8` will floor the given double.",
       "type": {
         "complex_type": "builtin"
