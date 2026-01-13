@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.72",
+  "application_version": "2.0.73",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -3281,7 +3281,7 @@
         {
           "name": "cancel_crafting",
           "order": 21,
-          "description": "Cancels crafting the given count of the given crafting queue index.",
+          "description": "Cancels the given amount of crafts at the given crafting queue position. If this causes any later crafts that depend on the cancelled one to have insufficient ingredients, those crafts will also be cancelled.",
           "raises": [
             {
               "name": "on_player_cancelled_crafting",
@@ -7128,7 +7128,7 @@
               "name": "index",
               "order": 0,
               "description": "Index of the transport line. Transport lines are 1-indexed.",
-              "type": "uint32",
+              "type": "defines.transport_line",
               "optional": false
             },
             {
@@ -7241,7 +7241,7 @@
             {
               "order": 0,
               "description": "",
-              "type": "uint32",
+              "type": "defines.transport_line",
               "optional": false
             }
           ]
@@ -7813,7 +7813,7 @@
               "name": "index",
               "order": 0,
               "description": "Index of the requested transport line. Transport lines are 1-indexed.",
-              "type": "uint32",
+              "type": "defines.transport_line",
               "optional": false
             }
           ],
@@ -7855,7 +7855,7 @@
         {
           "name": "get_wire_connector",
           "order": 114,
-          "description": "Gets a single wire connector of this entity",
+          "description": "Gets a single wire connector of this entity, if any.",
           "parameters": [
             {
               "name": "or_create",
@@ -7880,7 +7880,7 @@
               "order": 0,
               "description": "",
               "type": "LuaWireConnector",
-              "optional": false
+              "optional": true
             }
           ]
         },
@@ -9507,7 +9507,7 @@
       "attributes": [
         {
           "name": "absorbed_pollution",
-          "order": 120,
+          "order": 121,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -9525,7 +9525,7 @@
         },
         {
           "name": "ai_settings",
-          "order": 150,
+          "order": 151,
           "description": "The ai settings of this unit.",
           "subclasses": [
             "Unit",
@@ -9536,7 +9536,7 @@
         },
         {
           "name": "alert_parameters",
-          "order": 114,
+          "order": 115,
           "description": "",
           "subclasses": [
             "ProgrammableSpeaker"
@@ -9547,7 +9547,7 @@
         },
         {
           "name": "allow_dispatching_robots",
-          "order": 161,
+          "order": 162,
           "description": "Whether this character's personal roboports are allowed to dispatch robots.",
           "subclasses": [
             "Character"
@@ -9558,7 +9558,7 @@
         },
         {
           "name": "always_on",
-          "order": 204,
+          "order": 205,
           "description": "If the lamp is always on when not driven by control behavior.",
           "subclasses": [
             "Lamp"
@@ -9580,7 +9580,7 @@
         },
         {
           "name": "armed",
-          "order": 143,
+          "order": 144,
           "description": "Whether this land mine is armed.",
           "subclasses": [
             "LandMine"
@@ -9590,7 +9590,7 @@
         },
         {
           "name": "artillery_auto_targeting",
-          "order": 205,
+          "order": 206,
           "description": "If this artillery auto-targets enemies.",
           "subclasses": [
             "ArtilleryWagon",
@@ -9602,7 +9602,7 @@
         },
         {
           "name": "associated_player",
-          "order": 132,
+          "order": 133,
           "description": "The player this character is associated with, if any. Set to `nil` to clear.\n\nThe player will be automatically disassociated when a controller is set on the character. Also, all characters associated to a player will be logged off when the player logs off in multiplayer.\n\nA character associated with a player is not directly controlled by any player.",
           "subclasses": [
             "Character"
@@ -9613,7 +9613,7 @@
         },
         {
           "name": "attached_cargo_pod",
-          "order": 218,
+          "order": 219,
           "description": "The cargo pod attached to this rocket silo rocket if any.",
           "subclasses": [
             "RocketSiloRocket"
@@ -9623,7 +9623,7 @@
         },
         {
           "name": "autopilot_destination",
-          "order": 169,
+          "order": 170,
           "description": "Destination of this spidertron's autopilot, if any. Writing `nil` clears all destinations.",
           "subclasses": [
             "SpiderVehicle"
@@ -9634,7 +9634,7 @@
         },
         {
           "name": "autopilot_destinations",
-          "order": 170,
+          "order": 171,
           "description": "The queued destination positions of spidertron's autopilot.",
           "subclasses": [
             "SpiderVehicle"
@@ -9664,7 +9664,7 @@
         },
         {
           "name": "base_damage_modifiers",
-          "order": 221,
+          "order": 222,
           "description": "",
           "subclasses": [
             "Projectile"
@@ -9675,7 +9675,7 @@
         },
         {
           "name": "beacons_count",
-          "order": 126,
+          "order": 127,
           "description": "Number of beacons affecting this effect receiver. Can only be used when the entity has an effect receiver (AssemblingMachine, Furnace, Lab, MiningDrills)",
           "read_type": "uint32",
           "optional": true
@@ -9716,7 +9716,7 @@
         },
         {
           "name": "belt_shape",
-          "order": 199,
+          "order": 200,
           "description": "Gives what is the current shape of a transport-belt.",
           "subclasses": [
             "TransportBelt"
@@ -9753,7 +9753,7 @@
         },
         {
           "name": "bonus_damage_modifiers",
-          "order": 222,
+          "order": 223,
           "description": "",
           "subclasses": [
             "Projectile"
@@ -9764,7 +9764,7 @@
         },
         {
           "name": "bonus_mining_progress",
-          "order": 88,
+          "order": 89,
           "description": "The bonus mining progress for this mining drill. Read yields a number in range [0, mining_target.prototype.mineable_properties.mining_time]. `nil` if this isn't a mining drill.",
           "read_type": "double",
           "write_type": "double",
@@ -9783,21 +9783,21 @@
         },
         {
           "name": "bounding_box",
-          "order": 92,
+          "order": 93,
           "description": "[LuaEntityPrototype::collision_box](runtime:LuaEntityPrototype::collision_box) around entity's given position and respecting the current entity orientation.",
           "read_type": "BoundingBox",
           "optional": false
         },
         {
           "name": "burner",
-          "order": 107,
+          "order": 108,
           "description": "The burner energy source for this entity, if any.",
           "read_type": "LuaBurner",
           "optional": true
         },
         {
           "name": "cargo_bay_connection_owner",
-          "order": 223,
+          "order": 224,
           "description": "The space platform hub or cargo landing pad this cargo bay is connected to if any.",
           "subclasses": [
             "CargoBay"
@@ -9807,7 +9807,7 @@
         },
         {
           "name": "cargo_hatches",
-          "order": 214,
+          "order": 215,
           "description": "The cargo hatches owned by this entity if any.",
           "read_type": {
             "complex_type": "array",
@@ -9817,7 +9817,7 @@
         },
         {
           "name": "cargo_pod_destination",
-          "order": 216,
+          "order": 217,
           "description": "The destination of this cargo pod entity.\n\nUse [force_finish_ascending](runtime:LuaEntity::force_finish_ascending) if you want it to only descend from orbit.",
           "subclasses": [
             "CargoPod"
@@ -9828,7 +9828,7 @@
         },
         {
           "name": "cargo_pod_origin",
-          "order": 217,
+          "order": 218,
           "description": "The origin of this cargo pod entity. (Must be a silo, hub or pad)",
           "subclasses": [
             "CargoPod"
@@ -9839,7 +9839,7 @@
         },
         {
           "name": "cargo_pod_state",
-          "order": 215,
+          "order": 216,
           "description": "The state of this cargo pod entity.",
           "subclasses": [
             "CargoPod"
@@ -9884,7 +9884,7 @@
         },
         {
           "name": "character_corpse_death_cause",
-          "order": 131,
+          "order": 132,
           "description": "The reason this character corpse character died. `\"\"` if there is no reason.",
           "subclasses": [
             "CharacterCorpse"
@@ -9895,7 +9895,7 @@
         },
         {
           "name": "character_corpse_player_index",
-          "order": 129,
+          "order": 130,
           "description": "The player index associated with this character corpse.\n\nThe index is not guaranteed to be valid so it should always be checked first if a player with that index actually exists.",
           "subclasses": [
             "CharacterCorpse"
@@ -9906,7 +9906,7 @@
         },
         {
           "name": "character_corpse_tick_of_death",
-          "order": 130,
+          "order": 131,
           "description": "The tick this character corpse died at.",
           "subclasses": [
             "CharacterCorpse"
@@ -9935,7 +9935,7 @@
         },
         {
           "name": "combat_robot_owner",
-          "order": 176,
+          "order": 177,
           "description": "The owner of this combat robot, if any.",
           "subclasses": [
             "CombatRobot"
@@ -9946,7 +9946,7 @@
         },
         {
           "name": "combinator_description",
-          "order": 124,
+          "order": 125,
           "description": "The description on this combinator.",
           "subclasses": [
             "ArithmeticCombinator",
@@ -9960,14 +9960,14 @@
         },
         {
           "name": "commandable",
-          "order": 201,
+          "order": 202,
           "description": "Returns a LuaCommandable for this entity or nil if entity is not commandable. Units and SpiderUnits are commandable.",
           "read_type": "LuaCommandable",
           "optional": true
         },
         {
           "name": "connected_rail",
-          "order": 145,
+          "order": 146,
           "description": "The rail entity this train stop is connected to, if any.",
           "subclasses": [
             "TrainStop"
@@ -9977,7 +9977,7 @@
         },
         {
           "name": "connected_rail_direction",
-          "order": 146,
+          "order": 147,
           "description": "Rail direction to which this train stop is binding. This returns a value even when no rails are present.",
           "subclasses": [
             "TrainStop"
@@ -10005,7 +10005,7 @@
         },
         {
           "name": "copy_color_from_train_stop",
-          "order": 195,
+          "order": 196,
           "description": "If this rolling stock has 'copy color from train stop' enabled.",
           "subclasses": [
             "RollingStock"
@@ -10016,7 +10016,7 @@
         },
         {
           "name": "corpse_expires",
-          "order": 165,
+          "order": 166,
           "description": "Whether this corpse will ever fade away.",
           "subclasses": [
             "Corpse"
@@ -10027,7 +10027,7 @@
         },
         {
           "name": "corpse_immune_to_entity_placement",
-          "order": 166,
+          "order": 167,
           "description": "If true, corpse won't be destroyed when entities are placed over it. If false, whether corpse will be removed or not depends on value of [CorpsePrototype::remove_on_entity_placement](prototype:CorpsePrototype::remove_on_entity_placement).",
           "subclasses": [
             "Corpse"
@@ -10060,7 +10060,7 @@
         },
         {
           "name": "crane_destination",
-          "order": 190,
+          "order": 191,
           "description": "Destination of the crane of this entity. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -10071,7 +10071,7 @@
         },
         {
           "name": "crane_destination_3d",
-          "order": 191,
+          "order": 192,
           "description": "Destination of the crane of this entity in 3D. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -10082,7 +10082,7 @@
         },
         {
           "name": "crane_end_position_3d",
-          "order": 189,
+          "order": 190,
           "description": "Returns current position in 3D for the end of the crane of this entity.",
           "subclasses": [
             "AgriculturalTower"
@@ -10092,7 +10092,7 @@
         },
         {
           "name": "crane_grappler_destination",
-          "order": 192,
+          "order": 193,
           "description": "Will set destination for the grappler of crane of this entity. The crane grappler will start moving to reach the destination, but the rest of the arm will remain stationary. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -10102,7 +10102,7 @@
         },
         {
           "name": "crane_grappler_destination_3d",
-          "order": 193,
+          "order": 194,
           "description": "Will set destination in 3D for the grappler of crane of this entity. The crane grappler will start moving to reach the destination, but the rest of the arm will remain stationary. Throws when trying to set the destination out of range.",
           "subclasses": [
             "AgriculturalTower"
@@ -10112,7 +10112,7 @@
         },
         {
           "name": "created_by_corpse",
-          "order": 228,
+          "order": 229,
           "description": "The corpse that caused this entity ghost to be created, if any.",
           "subclasses": [
             "EntityGhost"
@@ -10122,7 +10122,7 @@
         },
         {
           "name": "custom_status",
-          "order": 154,
+          "order": 155,
           "description": "A custom status for this entity that will be displayed in the GUI.",
           "read_type": "CustomEntityStatus",
           "write_type": "CustomEntityStatus",
@@ -10130,7 +10130,7 @@
         },
         {
           "name": "damage_dealt",
-          "order": 78,
+          "order": 79,
           "description": "The damage dealt by this turret, artillery turret, or artillery wagon.",
           "subclasses": [
             "Turret"
@@ -10157,7 +10157,7 @@
         },
         {
           "name": "disabled_by_control_behavior",
-          "order": 210,
+          "order": 211,
           "description": "If the updatable entity is disabled by control behavior.\n\nAlways returns `false` if this entity is not considered [updatable](runtime:LuaEntity::is_updatable).",
           "subclasses": [
             "UpdatableEntity"
@@ -10167,7 +10167,7 @@
         },
         {
           "name": "disabled_by_recipe",
-          "order": 211,
+          "order": 212,
           "description": "If the assembling machine is disabled by recipe, e.g. due to [AssemblingMachinePrototype::disabled_when_recipe_not_researched](prototype:AssemblingMachinePrototype::disabled_when_recipe_not_researched).\n\nAlways returns `false` if this entity is not considered [updatable](runtime:LuaEntity::is_updatable).",
           "subclasses": [
             "UpdatableEntity"
@@ -10177,7 +10177,7 @@
         },
         {
           "name": "disabled_by_script",
-          "order": 209,
+          "order": 210,
           "description": "If the updatable entity is disabled by script.\n\nNote: Some entities (Corpse, FireFlame, Roboport, RollingStock, dying entities) need to remain active and will ignore writes.\n\nIf this entity is not considered [updatable](runtime:LuaEntity::is_updatable) then this always returns `false` and writes will be ignored.",
           "subclasses": [
             "UpdatableEntity"
@@ -10188,28 +10188,6 @@
         },
         {
           "name": "display_panel_always_show",
-          "order": 234,
-          "description": "",
-          "subclasses": [
-            "DisplayPanel"
-          ],
-          "read_type": "boolean",
-          "write_type": "boolean",
-          "optional": false
-        },
-        {
-          "name": "display_panel_icon",
-          "order": 233,
-          "description": "Icon visible on the display panel. Can be written only when it is not set by control behavior.",
-          "subclasses": [
-            "DisplayPanel"
-          ],
-          "read_type": "SignalID",
-          "write_type": "SignalID",
-          "optional": true
-        },
-        {
-          "name": "display_panel_show_in_chart",
           "order": 235,
           "description": "",
           "subclasses": [
@@ -10220,8 +10198,30 @@
           "optional": false
         },
         {
+          "name": "display_panel_icon",
+          "order": 234,
+          "description": "Icon visible on the display panel. Can be written only when it is not set by control behavior.",
+          "subclasses": [
+            "DisplayPanel"
+          ],
+          "read_type": "SignalID",
+          "write_type": "SignalID",
+          "optional": true
+        },
+        {
+          "name": "display_panel_show_in_chart",
+          "order": 236,
+          "description": "",
+          "subclasses": [
+            "DisplayPanel"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
           "name": "display_panel_text",
-          "order": 232,
+          "order": 233,
           "description": "Text visible on the display panel. Can be written only when it is not set by control behavior.",
           "subclasses": [
             "DisplayPanel"
@@ -10232,7 +10232,7 @@
         },
         {
           "name": "draw_data",
-          "order": 197,
+          "order": 198,
           "description": "Gives a draw data of the given entity if it supports such data.",
           "subclasses": [
             "RollingStock"
@@ -10291,14 +10291,14 @@
         },
         {
           "name": "effects",
-          "order": 125,
+          "order": 126,
           "description": "The effects being applied to this entity, if any. For beacons, this is the effect the beacon is broadcasting.",
           "read_type": "ModuleEffects",
           "optional": true
         },
         {
           "name": "electric_buffer_size",
-          "order": 82,
+          "order": 83,
           "description": "The buffer size for the electric energy source. `nil` if the entity doesn't have an electric energy source.\n\nWrite access is limited to the ElectricEnergyInterface type.",
           "read_type": "double",
           "write_type": "double",
@@ -10306,14 +10306,14 @@
         },
         {
           "name": "electric_drain",
-          "order": 83,
+          "order": 84,
           "description": "The electric drain for the electric energy source. `nil` if the entity doesn't have an electric energy source.",
           "read_type": "double",
           "optional": true
         },
         {
           "name": "electric_emissions_per_joule",
-          "order": 84,
+          "order": 85,
           "description": "The table of emissions of this energy source in `pollution/Joule`, indexed by pollutant type. `nil` if the entity doesn't have an electric energy source. Multiplying values in the returned table by energy consumption in `Watt` gives `pollution/second`.",
           "read_type": {
             "complex_type": "dictionary",
@@ -10324,14 +10324,14 @@
         },
         {
           "name": "electric_network_id",
-          "order": 160,
+          "order": 161,
           "description": "Returns the id of the electric network that this entity is connected to, if any.",
           "read_type": "uint32",
           "optional": true
         },
         {
           "name": "electric_network_statistics",
-          "order": 115,
+          "order": 116,
           "description": "The electric network statistics for this electric pole.",
           "subclasses": [
             "ElectricPole"
@@ -10341,7 +10341,7 @@
         },
         {
           "name": "enable_logistics_while_moving",
-          "order": 155,
+          "order": 156,
           "description": "Whether equipment grid logistics are enabled while this vehicle is moving.",
           "subclasses": [
             "Vehicle"
@@ -10363,7 +10363,7 @@
         },
         {
           "name": "energy_generated_last_tick",
-          "order": 162,
+          "order": 163,
           "description": "How much energy this generator generated in the last tick.",
           "subclasses": [
             "Generator"
@@ -10390,7 +10390,7 @@
         },
         {
           "name": "filter_slot_count",
-          "order": 97,
+          "order": 98,
           "description": "The number of filter slots this inserter, loader, mining drill, asteroid collector or logistic storage container has. 0 if not one of those entities.",
           "read_type": "uint32",
           "optional": false
@@ -10404,14 +10404,14 @@
         },
         {
           "name": "fluids_count",
-          "order": 202,
+          "order": 203,
           "description": "Returns count of fluid storages. This includes fluid storages provided by fluidboxes but also covers other fluid storages like fluid turret's internal buffer and fluid wagon's fluid since they are not fluidbox and cannot be exposed through [LuaFluidBox](runtime:LuaFluidBox).",
           "read_type": "uint32",
           "optional": false
         },
         {
           "name": "follow_offset",
-          "order": 179,
+          "order": 180,
           "description": "The follow offset of this spidertron, if any entity is being followed. This is randomized each time the follow entity is set.",
           "subclasses": [
             "SpiderVehicle"
@@ -10422,7 +10422,7 @@
         },
         {
           "name": "follow_target",
-          "order": 178,
+          "order": 179,
           "description": "The follow target of this spidertron, if any.",
           "subclasses": [
             "SpiderVehicle"
@@ -10447,7 +10447,7 @@
         },
         {
           "name": "frozen",
-          "order": 213,
+          "order": 214,
           "description": "Whether the freezable entity is currently frozen.\n\nAlways returns `false` if this entity is not considered [freezable](runtime:LuaEntity::is_freezable).",
           "subclasses": [
             "FreezableEntity"
@@ -10514,7 +10514,7 @@
         },
         {
           "name": "ghost_unit_number",
-          "order": 86,
+          "order": 87,
           "description": "The [unit_number](runtime:LuaEntity::unit_number) of the entity contained in this ghost. It is the same as the unit number of the [EntityWithOwnerPrototype](prototype:EntityWithOwnerPrototype) that was destroyed to create this ghost. If it was created by other means, or if the inner entity does not support unit numbers, this property is `nil`.",
           "subclasses": [
             "EntityGhost"
@@ -10524,7 +10524,7 @@
         },
         {
           "name": "gps_tag",
-          "order": 200,
+          "order": 201,
           "description": "Returns a [rich text](https://wiki.factorio.com/Rich_text) string containing this entity's position and surface name as a gps tag. [Printing](runtime:LuaGameScript::print) it will ping the location of the entity.",
           "examples": [
             "```\n-- called on a LuaEntity on the default surface it returns:\nentity.gps_tag -- => \"[gps=-4,-9]\"\n\n-- called on a LuaEntity on \"custom-surface\" it returns:\ndifferent_entity.gps_tag -- => \"[gps=1,-5,custom-surface]\"\n```"
@@ -10534,7 +10534,7 @@
         },
         {
           "name": "graphics_variation",
-          "order": 100,
+          "order": 101,
           "description": "The graphics variation for this entity. `nil` if this entity doesn't use graphics variations.",
           "read_type": "uint8",
           "write_type": "uint8",
@@ -10542,7 +10542,7 @@
         },
         {
           "name": "grid",
-          "order": 99,
+          "order": 100,
           "description": "This entity's equipment grid, if any.",
           "read_type": "LuaEquipmentGrid",
           "optional": true
@@ -10587,7 +10587,7 @@
         },
         {
           "name": "highlight_box_blink_interval",
-          "order": 152,
+          "order": 153,
           "description": "The blink interval of this highlight box entity. `0` indicates no blink.",
           "subclasses": [
             "HighlightBox"
@@ -10598,7 +10598,7 @@
         },
         {
           "name": "highlight_box_type",
-          "order": 151,
+          "order": 152,
           "description": "The highlight box type of this highlight box entity.",
           "subclasses": [
             "HighlightBox"
@@ -10609,7 +10609,7 @@
         },
         {
           "name": "ignore_unprioritised_targets",
-          "order": 80,
+          "order": 81,
           "description": "Whether this turret shoots at targets that are not on its priority list.",
           "subclasses": [
             "Turret"
@@ -10620,7 +10620,7 @@
         },
         {
           "name": "infinity_container_filters",
-          "order": 127,
+          "order": 128,
           "description": "The filters for this infinity container.",
           "subclasses": [
             "InfinityContainer",
@@ -10649,7 +10649,7 @@
         },
         {
           "name": "insert_plan",
-          "order": 75,
+          "order": 76,
           "description": "The insert plan for this ghost or item request proxy.",
           "subclasses": [
             "EntityGhost",
@@ -10667,7 +10667,7 @@
         },
         {
           "name": "inserter_filter_mode",
-          "order": 136,
+          "order": 137,
           "description": "The filter mode for this filter inserter. `nil` if this inserter doesn't use filters.",
           "subclasses": [
             "Inserter"
@@ -10704,7 +10704,7 @@
         },
         {
           "name": "inserter_spoil_priority",
-          "order": 142,
+          "order": 143,
           "description": "The spoil priority for this inserter.",
           "subclasses": [
             "Inserter"
@@ -10715,7 +10715,7 @@
         },
         {
           "name": "inserter_stack_size_override",
-          "order": 117,
+          "order": 118,
           "description": "Sets the stack size limit on this inserter.\n\nSet to `0` to reset.",
           "subclasses": [
             "Inserter"
@@ -10726,7 +10726,7 @@
         },
         {
           "name": "inserter_target_pickup_count",
-          "order": 116,
+          "order": 117,
           "description": "Returns the current target pickup count of the inserter.\n\nThis considers the circuit network, manual override and the inserter stack size limit based on technology.",
           "subclasses": [
             "Inserter"
@@ -10736,28 +10736,28 @@
         },
         {
           "name": "is_entity_with_health",
-          "order": 175,
+          "order": 176,
           "description": "If this entity is EntityWithHealth",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_entity_with_owner",
-          "order": 174,
+          "order": 175,
           "description": "If this entity is EntityWithOwner",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_freezable",
-          "order": 212,
+          "order": 213,
           "description": "Whether the entity is freezable and considered a FreezableEntity.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "is_headed_to_trains_front",
-          "order": 196,
+          "order": 197,
           "description": "If the rolling stock is facing train's front.",
           "subclasses": [
             "RollingStock"
@@ -10767,7 +10767,7 @@
         },
         {
           "name": "is_military_target",
-          "order": 173,
+          "order": 174,
           "description": "Whether this entity is a MilitaryTarget. Can be written to if [LuaEntityPrototype::allow_run_time_change_of_is_military_target](runtime:LuaEntityPrototype::allow_run_time_change_of_is_military_target) returns `true`.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -10775,28 +10775,28 @@
         },
         {
           "name": "is_updatable",
-          "order": 208,
+          "order": 209,
           "description": "Whether the entity is updatable and considered an UpdatableEntity.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "item_request_proxy",
-          "order": 220,
+          "order": 221,
           "description": "The first found item request proxy targeting this entity.",
           "read_type": "LuaEntity",
           "optional": true
         },
         {
           "name": "item_requests",
-          "order": 74,
+          "order": 75,
           "description": "Items this ghost will request when revived or items this item request proxy is requesting.",
           "read_type": "ItemWithQualityCounts",
           "optional": false
         },
         {
           "name": "kills",
-          "order": 79,
+          "order": 80,
           "description": "The number of units killed by this turret, artillery turret, or artillery wagon.",
           "subclasses": [
             "Turret"
@@ -10807,7 +10807,7 @@
         },
         {
           "name": "last_user",
-          "order": 81,
+          "order": 82,
           "description": "The last player that changed any setting on this entity. This includes building the entity, changing its color, or configuring its circuit network. `nil` if the last user is not part of the save anymore.",
           "subclasses": [
             "EntityWithOwner",
@@ -10820,7 +10820,7 @@
         },
         {
           "name": "link_id",
-          "order": 177,
+          "order": 178,
           "description": "The link ID this linked container is using.",
           "subclasses": [
             "LinkedContainer"
@@ -10831,7 +10831,7 @@
         },
         {
           "name": "linked_belt_neighbour",
-          "order": 181,
+          "order": 182,
           "description": "Neighbour to which this linked belt is connected to, if any.\n\nMay return entity ghost which contains linked belt to which connection is made.",
           "subclasses": [
             "LinkedBelt"
@@ -10841,7 +10841,7 @@
         },
         {
           "name": "linked_belt_type",
-          "order": 180,
+          "order": 181,
           "description": "Type of linked belt. Changing type will also flip direction so the belt is out of the same side.\n\nCan only be changed when linked belt is disconnected (has no neighbour set).",
           "subclasses": [
             "LinkedBelt"
@@ -10852,7 +10852,7 @@
         },
         {
           "name": "loader_belt_stack_size_override",
-          "order": 138,
+          "order": 139,
           "description": "The belt stack size override for this loader. Set to `0` to disable. Writing this value requires [LoaderPrototype::adjustable_belt_stack_size](prototype:LoaderPrototype::adjustable_belt_stack_size) to be `true`.",
           "subclasses": [
             "Loader"
@@ -10863,7 +10863,7 @@
         },
         {
           "name": "loader_container",
-          "order": 98,
+          "order": 99,
           "description": "The container entity this loader is pointing at/pulling from depending on the [LuaEntity::loader_type](runtime:LuaEntity::loader_type), if any.",
           "subclasses": [
             "Loader"
@@ -10873,7 +10873,7 @@
         },
         {
           "name": "loader_filter_mode",
-          "order": 137,
+          "order": 138,
           "description": "The filter mode for this loader. `nil` if this loader does not support filters.",
           "subclasses": [
             "Loader"
@@ -10909,14 +10909,14 @@
         },
         {
           "name": "logistic_cell",
-          "order": 73,
+          "order": 74,
           "description": "The logistic cell this entity is a part of. Will be `nil` if this entity is not a part of any logistic cell.",
           "read_type": "LuaLogisticCell",
           "optional": false
         },
         {
           "name": "logistic_network",
-          "order": 72,
+          "order": 73,
           "description": "The logistic network this entity is a part of, or `nil` if this entity is not a part of any logistic network.",
           "read_type": "LuaLogisticNetwork",
           "write_type": "LuaLogisticNetwork",
@@ -10947,7 +10947,7 @@
         },
         {
           "name": "mining_area",
-          "order": 89,
+          "order": 90,
           "description": "Area in which this mining drill looks for resources to mine.",
           "subclasses": [
             "MiningDrill"
@@ -10957,7 +10957,7 @@
         },
         {
           "name": "mining_drill_filter_mode",
-          "order": 139,
+          "order": 140,
           "description": "The filter mode for this mining drill. `nil` if this mining drill doesn't have filters.",
           "subclasses": [
             "MiningDrill"
@@ -10994,7 +10994,7 @@
         },
         {
           "name": "mining_progress",
-          "order": 87,
+          "order": 88,
           "description": "The mining progress for this mining drill. Is a number in range [0, mining_target.prototype.mineable_properties.mining_time]. `nil` if this isn't a mining drill.",
           "read_type": "double",
           "write_type": "double",
@@ -11002,7 +11002,7 @@
         },
         {
           "name": "mining_target",
-          "order": 96,
+          "order": 97,
           "description": "The mining target, if any.",
           "subclasses": [
             "MiningDrill"
@@ -11027,7 +11027,7 @@
         },
         {
           "name": "name_tag",
-          "order": 185,
+          "order": 186,
           "description": "Name tag of this entity. Returns `nil` if entity has no name tag. When name tag is already used by other entity, the name will be removed from the other entity. Entity name tags can also be set in the entity \"extra settings\" GUI in the map editor.",
           "read_type": "string",
           "write_type": "string",
@@ -11035,7 +11035,7 @@
         },
         {
           "name": "neighbour_bonus",
-          "order": 149,
+          "order": 150,
           "description": "The current total neighbour bonus of this reactor.",
           "subclasses": [
             "Reactor"
@@ -11048,7 +11048,7 @@
           "order": 48,
           "description": "A list of neighbours for certain types of entities. Applies to underground belts, walls, gates, reactors, heat pipes, cliffs, and pipe-connectable entities.",
           "lists": [
-            "Differs depending on the type of entity:\n\n- When called on a pipe-connectable entity, this is an array of entity arrays of all entities a given fluidbox is connected to.\n- When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.\n- When called on a wall-connectable entity or reactor, this is a dictionary of all connections indexed by the connection direction \"north\", \"south\", \"east\", and \"west\".\n- When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction \"north\", \"south\", \"east\", and \"west\"."
+            "Differs depending on the type of entity:\n\n- When called on a pipe-connectable entity, this is an array of entity arrays of all entities a given fluidbox is connected to.\n- When called on an underground transport belt, this is the other end of the underground belt connection, or `nil` if none.\n- When called on a wall-connectable entity, reactor or heat pipe, this is a dictionary of all connections indexed by the connection direction \"north\", \"south\", \"east\", and \"west\".\n- When called on a cliff entity, this is a dictionary of all connections indexed by the connection direction \"north\", \"south\", \"east\", and \"west\"."
           ],
           "read_type": {
             "complex_type": "union",
@@ -11056,10 +11056,7 @@
               {
                 "complex_type": "dictionary",
                 "key": "string",
-                "value": {
-                  "complex_type": "array",
-                  "value": "LuaEntity"
-                }
+                "value": "LuaEntity"
               },
               {
                 "complex_type": "array",
@@ -11076,7 +11073,7 @@
         },
         {
           "name": "object_name",
-          "order": 237,
+          "order": 238,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -11099,7 +11096,7 @@
         },
         {
           "name": "owned_plants",
-          "order": 194,
+          "order": 195,
           "description": "Plants registered by this agricultural tower. One plant can be registered in multiple agricultural towers.",
           "subclasses": [
             "AgriculturalTower"
@@ -11112,7 +11109,7 @@
         },
         {
           "name": "parameters",
-          "order": 113,
+          "order": 114,
           "description": "",
           "subclasses": [
             "ProgrammableSpeaker"
@@ -11123,7 +11120,7 @@
         },
         {
           "name": "pickup_from_left_lane",
-          "order": 224,
+          "order": 225,
           "description": "For inserters taking items from transport belt connectables, this determines whether the inserter is allowed to take items from the left lane.",
           "subclasses": [
             "Inserter"
@@ -11134,7 +11131,7 @@
         },
         {
           "name": "pickup_from_right_lane",
-          "order": 225,
+          "order": 226,
           "description": "For inserters taking items from transport belt connectables, this determines whether the inserter is allowed to take items from the right lane.",
           "subclasses": [
             "Inserter"
@@ -11167,7 +11164,7 @@
         },
         {
           "name": "player",
-          "order": 77,
+          "order": 78,
           "description": "The player connected to this character, if any.",
           "subclasses": [
             "Character"
@@ -11184,7 +11181,7 @@
         },
         {
           "name": "power_production",
-          "order": 90,
+          "order": 91,
           "description": "The power production specific to the ElectricEnergyInterface entity type.",
           "subclasses": [
             "ElectricEnergyInterface"
@@ -11195,7 +11192,7 @@
         },
         {
           "name": "power_switch_state",
-          "order": 123,
+          "order": 124,
           "description": "The state of this power switch.",
           "subclasses": [
             "PowerSwitch"
@@ -11206,7 +11203,7 @@
         },
         {
           "name": "power_usage",
-          "order": 91,
+          "order": 92,
           "description": "The power usage specific to the ElectricEnergyInterface entity type.",
           "subclasses": [
             "ElectricEnergyInterface"
@@ -11227,7 +11224,7 @@
         },
         {
           "name": "priority_targets",
-          "order": 229,
+          "order": 230,
           "description": "The priority targets for this turret (if any).",
           "subclasses": [
             "Turret"
@@ -11240,7 +11237,7 @@
         },
         {
           "name": "procession_tick",
-          "order": 207,
+          "order": 208,
           "description": "how far into the current procession the cargo pod is.",
           "subclasses": [
             "CargoPod"
@@ -11258,7 +11255,7 @@
         },
         {
           "name": "products_finished",
-          "order": 118,
+          "order": 119,
           "description": "The number of products this machine finished crafting in its lifetime.",
           "subclasses": [
             "CraftingMachine"
@@ -11276,7 +11273,7 @@
         },
         {
           "name": "proxy_target",
-          "order": 109,
+          "order": 110,
           "description": "The target entity for this item-request-proxy, if any.",
           "subclasses": [
             "ItemRequestProxy"
@@ -11286,7 +11283,7 @@
         },
         {
           "name": "proxy_target_entity",
-          "order": 230,
+          "order": 231,
           "description": "Entity of which inventory is exposed by this ProxyContainer",
           "subclasses": [
             "ProxyContainer"
@@ -11297,7 +11294,7 @@
         },
         {
           "name": "proxy_target_inventory",
-          "order": 231,
+          "order": 232,
           "description": "Inventory index of the inventory that is exposed by this ProxyContainer",
           "subclasses": [
             "ProxyContainer"
@@ -11308,7 +11305,7 @@
         },
         {
           "name": "pump_rail_target",
-          "order": 158,
+          "order": 159,
           "description": "The rail target of this pump, if any.",
           "subclasses": [
             "Pump"
@@ -11318,7 +11315,7 @@
         },
         {
           "name": "pumped_last_tick",
-          "order": 227,
+          "order": 228,
           "description": "The amount of fluid moved by this offshore pump or normal pump in the last tick.",
           "subclasses": [
             "OffshorePump",
@@ -11329,14 +11326,14 @@
         },
         {
           "name": "quality",
-          "order": 182,
+          "order": 183,
           "description": "The quality of this entity.\n\nNot all entities support quality and will give the \"normal\" quality back if they don't.",
           "read_type": "LuaQualityPrototype",
           "optional": false
         },
         {
           "name": "radar_scan_progress",
-          "order": 184,
+          "order": 185,
           "description": "The current radar scan progress, as a number in range `[0, 1]`.",
           "subclasses": [
             "Radar"
@@ -11346,7 +11343,7 @@
         },
         {
           "name": "rail_layer",
-          "order": 183,
+          "order": 184,
           "description": "Gets rail layer of a given signal",
           "subclasses": [
             "RailSignal",
@@ -11367,7 +11364,7 @@
         },
         {
           "name": "recipe_locked",
-          "order": 144,
+          "order": 145,
           "description": "When locked; the recipe in this assembling machine can't be changed by the player.",
           "subclasses": [
             "AssemblingMachine"
@@ -11386,7 +11383,7 @@
         },
         {
           "name": "removal_plan",
-          "order": 76,
+          "order": 77,
           "description": "The removal plan for this item request proxy.",
           "subclasses": [
             "ItemRequestProxy"
@@ -11403,7 +11400,7 @@
         },
         {
           "name": "remove_unfiltered_items",
-          "order": 128,
+          "order": 129,
           "description": "Whether items not included in this infinity container filters should be removed from the container.",
           "subclasses": [
             "InfinityContainer",
@@ -11415,7 +11412,7 @@
         },
         {
           "name": "render_player",
-          "order": 156,
+          "order": 157,
           "description": "The player that this `simple-entity-with-owner`, `simple-entity-with-force`, or `highlight-box` is visible to. `nil` when this entity is rendered for all players.",
           "read_type": "LuaPlayer",
           "write_type": "PlayerIdentification",
@@ -11423,7 +11420,7 @@
         },
         {
           "name": "render_to_forces",
-          "order": 157,
+          "order": 158,
           "description": "The forces that this `simple-entity-with-owner` or `simple-entity-with-force` is visible to. `nil` or an empty array when this entity is rendered for all forces.\n\nReading will always give an array of [LuaForce](runtime:LuaForce)",
           "read_type": "ForceSet",
           "write_type": "ForceSet",
@@ -11431,7 +11428,7 @@
         },
         {
           "name": "request_from_buffers",
-          "order": 164,
+          "order": 165,
           "description": "Whether this requester chest is set to also request from buffer chests.\n\nUseable only on entities that have requester slots.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -11450,7 +11447,7 @@
         },
         {
           "name": "robot_order_queue",
-          "order": 206,
+          "order": 207,
           "description": "Get the current queue of robot orders.",
           "subclasses": [
             "ConstructionRobot",
@@ -11464,7 +11461,7 @@
         },
         {
           "name": "rocket",
-          "order": 219,
+          "order": 220,
           "description": "The rocket silo rocket this cargo pod is attached to, or rocket silo rocket attached to this rocket silo - if any.",
           "read_type": "LuaEntity",
           "optional": true
@@ -11472,7 +11469,7 @@
         {
           "name": "rocket_parts",
           "order": 71,
-          "description": "Number of rocket parts in the silo.",
+          "description": "Number of rocket parts in this rocket silo.",
           "subclasses": [
             "RocketSilo"
           ],
@@ -11482,7 +11479,7 @@
         },
         {
           "name": "rocket_silo_status",
-          "order": 186,
+          "order": 187,
           "description": "The status of this rocket silo entity.",
           "subclasses": [
             "RocketSilo"
@@ -11500,21 +11497,21 @@
         },
         {
           "name": "secondary_bounding_box",
-          "order": 93,
+          "order": 94,
           "description": "The secondary bounding box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.",
           "read_type": "BoundingBox",
           "optional": true
         },
         {
           "name": "secondary_selection_box",
-          "order": 95,
+          "order": 96,
           "description": "The secondary selection box of this entity or `nil` if it doesn't have one. This only exists for curved rails, and is automatically determined by the game.",
           "read_type": "BoundingBox",
           "optional": true
         },
         {
           "name": "segmented_unit",
-          "order": 226,
+          "order": 227,
           "description": "The segmented unit object that the segment entity is a part of.",
           "subclasses": [
             "Segment"
@@ -11537,14 +11534,25 @@
         },
         {
           "name": "selection_box",
-          "order": 94,
+          "order": 95,
           "description": "[LuaEntityPrototype::selection_box](runtime:LuaEntityPrototype::selection_box) around entity's given position and respecting the current entity orientation.",
           "read_type": "BoundingBox",
           "optional": false
         },
         {
+          "name": "send_to_orbit_automatically",
+          "order": 72,
+          "description": "Whether this rocket silo is set to send items to orbit automatically. Only relevant if there is an item prototype with [launch products](runtime:LuaItemPrototype::rocket_launch_products) with automated [send_to_orbit_mode](runtime:LuaItemPrototype::send_to_orbit_mode), such as the satellite in vanilla (without Space Age mod).",
+          "subclasses": [
+            "RocketSilo"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
           "name": "shooting_target",
-          "order": 108,
+          "order": 109,
           "description": "The shooting target for this turret, if any. Can't be set to `nil` via script.",
           "subclasses": [
             "Turret"
@@ -11566,7 +11574,7 @@
         },
         {
           "name": "spawn_shift",
-          "order": 121,
+          "order": 122,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -11576,7 +11584,7 @@
         },
         {
           "name": "spawning_cooldown",
-          "order": 119,
+          "order": 120,
           "description": "",
           "subclasses": [
             "Spawner"
@@ -11601,7 +11609,7 @@
         },
         {
           "name": "splitter_filter",
-          "order": 135,
+          "order": 136,
           "description": "The filter for this splitter, if any is set.",
           "subclasses": [
             "Splitter",
@@ -11613,7 +11621,7 @@
         },
         {
           "name": "splitter_input_priority",
-          "order": 140,
+          "order": 141,
           "description": "The input priority for this splitter.",
           "subclasses": [
             "Splitter",
@@ -11659,7 +11667,7 @@
         },
         {
           "name": "splitter_output_priority",
-          "order": 141,
+          "order": 142,
           "description": "The output priority for this splitter.",
           "subclasses": [
             "Splitter",
@@ -11715,14 +11723,14 @@
         },
         {
           "name": "status",
-          "order": 153,
+          "order": 154,
           "description": "The status of this entity, if any.\n\nThis is always the actual status of the entity, even if [LuaEntity::custom_status](runtime:LuaEntity::custom_status) is set.",
           "read_type": "defines.entity_status",
           "optional": true
         },
         {
           "name": "sticked_to",
-          "order": 111,
+          "order": 112,
           "description": "The entity this sticker is sticked to.",
           "subclasses": [
             "Sticker"
@@ -11732,7 +11740,7 @@
         },
         {
           "name": "sticker_vehicle_modifiers",
-          "order": 112,
+          "order": 113,
           "description": "The vehicle modifiers applied to this entity through the attached stickers.",
           "read_type": {
             "complex_type": "table",
@@ -11764,7 +11772,7 @@
         },
         {
           "name": "stickers",
-          "order": 110,
+          "order": 111,
           "description": "The sticker entities attached to this entity, if any.",
           "read_type": {
             "complex_type": "array",
@@ -11774,7 +11782,7 @@
         },
         {
           "name": "storage_filter",
-          "order": 163,
+          "order": 164,
           "description": "The storage filter for this logistic storage container.\n\nUseable only on logistic containers with the `\"storage\"` [logistic_mode](runtime:LuaEntityPrototype::logistic_mode).",
           "read_type": "ItemIDAndQualityIDPair",
           "write_type": "ItemWithQualityID",
@@ -11789,7 +11797,7 @@
         },
         {
           "name": "tags",
-          "order": 167,
+          "order": 168,
           "description": "The tags associated with this entity ghost. `nil` if this is not an entity ghost or when the ghost has no tags.",
           "read_type": "Tags",
           "write_type": "Tags",
@@ -11805,7 +11813,7 @@
         },
         {
           "name": "tick_grown",
-          "order": 203,
+          "order": 204,
           "description": "The tick when this plant is fully grown.",
           "subclasses": [
             "Plant"
@@ -11816,7 +11824,7 @@
         },
         {
           "name": "tick_of_last_attack",
-          "order": 133,
+          "order": 134,
           "description": "The last tick this character entity was attacked.",
           "subclasses": [
             "Character"
@@ -11827,7 +11835,7 @@
         },
         {
           "name": "tick_of_last_damage",
-          "order": 134,
+          "order": 135,
           "description": "The last tick this character entity was damaged.",
           "subclasses": [
             "Character"
@@ -11838,14 +11846,14 @@
         },
         {
           "name": "tile_height",
-          "order": 188,
+          "order": 189,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.",
           "read_type": "uint32",
           "optional": false
         },
         {
           "name": "tile_width",
-          "order": 187,
+          "order": 188,
           "description": "Specifies the tiling size of the entity, is used to decide, if the center should be in the center of the tile (odd tile size dimension) or on the tile border (even tile size dimension). Uses the current direction of the entity.",
           "read_type": "uint32",
           "optional": false
@@ -11866,7 +11874,7 @@
         },
         {
           "name": "time_to_next_effect",
-          "order": 168,
+          "order": 169,
           "description": "The ticks until the next trigger effect of this smoke-with-trigger.",
           "subclasses": [
             "SmokeWithTrigger"
@@ -11877,7 +11885,7 @@
         },
         {
           "name": "timeout",
-          "order": 148,
+          "order": 149,
           "description": "The timeout that's left on this landmine in ticks. It describes the time between the landmine being placed and it being armed.",
           "subclasses": [
             "LandMine"
@@ -11917,7 +11925,7 @@
         },
         {
           "name": "train_stop_priority",
-          "order": 198,
+          "order": 199,
           "description": "Priority of this train stop.",
           "subclasses": [
             "TrainStop"
@@ -11928,7 +11936,7 @@
         },
         {
           "name": "trains_count",
-          "order": 171,
+          "order": 172,
           "description": "Amount of trains related to this particular train stop. Includes train stopped at this train stop (until it finds a path to next target) and trains having this train stop as goal or waypoint.\n\nTrain may be included multiple times when braking distance covers this train stop multiple times.\n\nValue may be read even when train stop has no control behavior.",
           "subclasses": [
             "TrainStop"
@@ -11938,7 +11946,7 @@
         },
         {
           "name": "trains_in_block",
-          "order": 147,
+          "order": 148,
           "description": "The number of trains in this rail block for this rail entity.",
           "subclasses": [
             "Rail"
@@ -11948,7 +11956,7 @@
         },
         {
           "name": "trains_limit",
-          "order": 172,
+          "order": 173,
           "description": "Amount of trains above which no new trains will be sent to this train stop. Writing nil will disable the limit (will set a maximum possible value).\n\nWhen a train stop has a control behavior with wire connected and set_trains_limit enabled, this value will be overwritten by it.",
           "subclasses": [
             "TrainStop"
@@ -11969,7 +11977,7 @@
         },
         {
           "name": "tree_color_index",
-          "order": 101,
+          "order": 102,
           "description": "Index of the tree color.",
           "subclasses": [
             "Tree"
@@ -11980,7 +11988,7 @@
         },
         {
           "name": "tree_color_index_max",
-          "order": 102,
+          "order": 103,
           "description": "Maximum index of the tree colors.",
           "subclasses": [
             "Tree"
@@ -11990,7 +11998,7 @@
         },
         {
           "name": "tree_gray_stage_index",
-          "order": 105,
+          "order": 106,
           "description": "Index of the tree gray stage",
           "subclasses": [
             "Tree"
@@ -12001,7 +12009,7 @@
         },
         {
           "name": "tree_gray_stage_index_max",
-          "order": 106,
+          "order": 107,
           "description": "Maximum index of the tree gray stages.",
           "subclasses": [
             "Tree"
@@ -12011,7 +12019,7 @@
         },
         {
           "name": "tree_stage_index",
-          "order": 103,
+          "order": 104,
           "description": "Index of the tree stage.",
           "subclasses": [
             "Tree"
@@ -12022,7 +12030,7 @@
         },
         {
           "name": "tree_stage_index_max",
-          "order": 104,
+          "order": 105,
           "description": "Maximum index of the tree stages.",
           "subclasses": [
             "Tree"
@@ -12039,14 +12047,14 @@
         },
         {
           "name": "unit_number",
-          "order": 85,
+          "order": 86,
           "description": "A unique number identifying this entity for the lifetime of the save. These are allocated sequentially, and not re-used (until overflow).\n\nOnly entities inheriting from [EntityWithOwnerPrototype](prototype:EntityWithOwnerPrototype), as well as [ItemRequestProxyPrototype](prototype:ItemRequestProxyPrototype) and [EntityGhostPrototype](prototype:EntityGhostPrototype) are assigned a unit number. Returns `nil` otherwise.",
           "read_type": "uint64",
           "optional": true
         },
         {
           "name": "units",
-          "order": 122,
+          "order": 123,
           "description": "The units associated with this spawner entity.",
           "subclasses": [
             "Spawner"
@@ -12081,14 +12089,14 @@
         },
         {
           "name": "valid",
-          "order": 236,
+          "order": 237,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "valve_threshold_override",
-          "order": 159,
+          "order": 160,
           "description": "The threshold override of this valve, or `nil` if an override is not defined.\n\nIf no override is defined, the threshold is taken from [LuaEntityPrototype::valve_threshold](runtime:LuaEntityPrototype::valve_threshold).",
           "subclasses": [
             "Valve"
@@ -16028,7 +16036,7 @@
         {
           "name": "tile_buildability_rules",
           "order": 260,
-          "description": "The tile buildability rules of this entity prototype.",
+          "description": "",
           "read_type": {
             "complex_type": "array",
             "value": "TileBuildabilityRule"
@@ -31036,7 +31044,7 @@
           "name": "logistic_member_index",
           "order": 2,
           "description": "The Logistic member index of this logistic point.",
-          "read_type": "uint32",
+          "read_type": "defines.logistic_member_index",
           "optional": false
         },
         {
@@ -45371,14 +45379,14 @@
           "parameters": [
             {
               "name": "burner_fuel_inventory",
-              "order": 21,
+              "order": 22,
               "description": "Used by entities with a burner energy source.",
               "type": "BlueprintInventoryWithFilters",
               "optional": true
             },
             {
               "name": "cause",
-              "order": 7,
+              "order": 8,
               "description": "Cause entity / force. The entity or force that triggered the chain of events that led to this entity being created. Used for beams, projectiles, stickers, etc. so that the damage receiver can know which entity or force to retaliate against. Defaults to the value of `source`.",
               "type": {
                 "complex_type": "union",
@@ -45392,14 +45400,14 @@
             },
             {
               "name": "character",
-              "order": 12,
+              "order": 13,
               "description": "If fast_replace is true simulate fast replace using this character.",
               "type": "LuaEntity",
               "optional": true
             },
             {
               "name": "create_build_effect_smoke",
-              "order": 15,
+              "order": 16,
               "description": "If false, the building effect smoke will not be shown around the new entity. Defaults to `true`.",
               "type": "boolean",
               "optional": true
@@ -45413,28 +45421,35 @@
             },
             {
               "name": "fast_replace",
-              "order": 9,
+              "order": 10,
               "description": "If true, building will attempt to simulate fast-replace building. Defaults to `false`.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "force",
-              "order": 4,
+              "order": 5,
               "description": "Force of the entity, default is enemy.",
               "type": "ForceID",
               "optional": true
             },
             {
               "name": "item",
-              "order": 18,
+              "order": 19,
               "description": "If provided, the entity will attempt to pull stored values from this item (for example; creating a spidertron from a previously named and mined spidertron)",
               "type": "LuaItemStack",
               "optional": true
             },
             {
+              "name": "mirror",
+              "order": 3,
+              "description": "Whether this entity is mirrored. Defaults to `false`.",
+              "type": "boolean",
+              "optional": true
+            },
+            {
               "name": "move_stuck_players",
-              "order": 17,
+              "order": 18,
               "description": "If true, any characters that are in the way of the entity are teleported out of the way.",
               "type": "boolean",
               "optional": true
@@ -45448,7 +45463,7 @@
             },
             {
               "name": "player",
-              "order": 11,
+              "order": 12,
               "description": "If given set the last_user to this player. If fast_replace is true simulate fast replace using this player. Also the player whose undo queue this action should be added to.",
               "type": "PlayerIdentification",
               "optional": true
@@ -45462,42 +45477,42 @@
             },
             {
               "name": "preserve_ghosts_and_corpses",
-              "order": 19,
+              "order": 20,
               "description": "If true, colliding ghosts and corpses will not be removed by the creation of some entity types. Defaults to `false`.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "quality",
-              "order": 3,
+              "order": 4,
               "description": "Quality of the entity to be created. Defaults to `normal`.",
               "type": "QualityID",
               "optional": true
             },
             {
               "name": "raise_built",
-              "order": 14,
+              "order": 15,
               "description": "If true; [defines.events.script_raised_built](runtime:defines.events.script_raised_built) will be fired on successful entity creation. Defaults to `false`.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "register_plant",
-              "order": 20,
+              "order": 21,
               "description": "If true, plants created will register in any in-range agricultural towers.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "snap_to_grid",
-              "order": 8,
+              "order": 9,
               "description": "If false the exact position given is used to instead of snapping to the normal entity grid. This only applies if the entity normally snaps to the grid.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "source",
-              "order": 6,
+              "order": 7,
               "description": "Source entity. Used for beams, projectiles, and highlight-boxes.",
               "type": {
                 "complex_type": "union",
@@ -45511,21 +45526,21 @@
             },
             {
               "name": "spawn_decorations",
-              "order": 16,
+              "order": 17,
               "description": "If true, entity types that have [spawn_decoration](runtime:LuaEntityPrototype::spawn_decorations) property will apply triggers defined in the property. Defaults to `false`.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "spill",
-              "order": 13,
+              "order": 14,
               "description": "If false while fast_replace is true and player is nil any items from fast-replacing will be deleted instead of dropped on the ground. Defaults to `true`.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "target",
-              "order": 5,
+              "order": 6,
               "description": "Entity with health for the new entity to target.",
               "type": {
                 "complex_type": "union",
@@ -45539,7 +45554,7 @@
             },
             {
               "name": "undo_index",
-              "order": 10,
+              "order": 11,
               "description": "The index of the undo item to add this action to. An index of `0` creates a new undo item for it. Defaults to putting it into the appropriate undo item automatically if not specified.",
               "type": "uint32",
               "optional": true
@@ -95970,6 +95985,21 @@
         {
           "name": "car_requester",
           "order": 9,
+          "description": ""
+        },
+        {
+          "name": "cargo_landing_pad_provider",
+          "order": 19,
+          "description": ""
+        },
+        {
+          "name": "cargo_landing_pad_requester",
+          "order": 18,
+          "description": ""
+        },
+        {
+          "name": "cargo_landing_pad_trash_provider",
+          "order": 20,
           "description": ""
         },
         {
