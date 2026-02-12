@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.73",
+  "application_version": "2.0.75",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -804,7 +804,7 @@
         {
           "name": "automated_ammo_count",
           "order": 3,
-          "description": "Shift of the \"alt-mode icon\" relative to the turret's position.",
+          "description": "The amount of ammo that inserters automatically insert into this turret.",
           "override": false,
           "type": "ItemCountType",
           "optional": false
@@ -828,7 +828,7 @@
         {
           "name": "inventory_size",
           "order": 2,
-          "description": "",
+          "description": "Size of the ammo inventory.",
           "override": false,
           "type": "ItemStackIndex",
           "optional": false
@@ -1952,7 +1952,7 @@
         {
           "name": "automated_ammo_count",
           "order": 3,
-          "description": "Must be > 0.",
+          "description": "Must be > 0. The amount of ammo that inserters automatically insert into this artillery turret.",
           "override": false,
           "type": "ItemCountType",
           "optional": true
@@ -2209,7 +2209,7 @@
         {
           "name": "automated_ammo_count",
           "order": 3,
-          "description": "Must be > 0.",
+          "description": "Must be > 0. The amount of ammo that inserters automatically insert into this artillery wagon.",
           "override": false,
           "type": "ItemCountType",
           "optional": true
@@ -8498,7 +8498,7 @@
           "optional": false
         },
         {
-          "name": "track_coverage_during_build_by_moving",
+          "name": "track_coverage_during_drag_building",
           "order": 9,
           "description": "",
           "override": false,
@@ -8506,7 +8506,7 @@
           "optional": true,
           "default": {
             "complex_type": "literal",
-            "value": false
+            "value": true
           }
         }
       ]
@@ -9537,7 +9537,7 @@
         {
           "name": "sticker_box",
           "order": 8,
-          "description": "Used to set the area of the entity that can have stickers on it, currently only used for units to specify the area where the green slow down stickers can appear.",
+          "description": "Used to specify the area where the [sticker](prototype:StickerPrototype) animation can appear for entities that can have stickers on them.",
           "examples": [
             "```\nsticker_box = {{-0.5, -0.5}, {0.5, 0.5}}\n```"
           ],
@@ -21222,7 +21222,7 @@
         {
           "name": "infinite_depletion_amount",
           "order": 9,
-          "description": "Every time an infinite-type resource \"ticks\" lower it's lowered by that amount.",
+          "description": "Every time an infinite-type resource is decreased by mining, its current resource amount is lowered by this number.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -38009,7 +38009,7 @@
         {
           "name": "bar_width",
           "order": 2,
-          "description": "",
+          "description": "The thickness of the bar, not the horizontal size.",
           "override": false,
           "type": "uint32",
           "optional": true
@@ -60772,7 +60772,7 @@
     {
       "name": "LocalisedString",
       "order": 321,
-      "description": "Localised strings are a way to support translation of in-game text. They offer a language-independent code representation of the text that should be shown to players.\n\nIt is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.\n\nThe key identifies the string template. For example, `\"gui-alert-tooltip.attack\"` (for the template `\"__1__ objects are being damaged\"`; see the file `data/core/locale/en.cfg`). In the settings and prototype stages, this key cannot be longer than 200 characters.\n\nThe template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.\n\nThere are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`\"\"`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`\"?\"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.\n\nFurthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number or boolean, which will be converted to their textual representation.\n\nSee [Tutorial:Localisation](https://wiki.factorio.com/Tutorial:Localisation) for more information.",
+      "description": "Localised strings are a way to support translation of in-game text. They offer a language-independent code representation of the text that should be shown to players.\n\nIt is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.\n\nThe key identifies the string template. For example, `\"gui-alert-tooltip.attack\"` (for the template `\"__1__ objects are being damaged\"`; see the file `data/core/locale/en.cfg`). In the settings and prototype stages, this key cannot be longer than 200 characters.\n\nThe template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.\n\nThere are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`\"\"`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`\"?\"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.\n\nFurthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated. In the settings and prototype stages, this string cannot be longer than 200 characters.\n\nSee [Tutorial:Localisation](https://wiki.factorio.com/Tutorial:Localisation) for more information.",
       "examples": [
         "```\n-- In the English translation, this will result in \"No ammo\"; in the Czech translation, it will result in \"Bez munice\":\nlocalised_description = {\"description.no-ammo\"}\n-- The \"description.no-ammo\" template contains no placeholders, so no further parameters are necessary.\n```",
         "```\n-- In the English translation, this will result in \"80 hitpoints\"; in the Japanese one, it will result in \"80 HP\":\nlocalised_description = {\"description.hitpoints\", tostring(80)}\n```",
@@ -66650,7 +66650,7 @@
         {
           "name": "bar_width",
           "order": 1,
-          "description": "",
+          "description": "The thickness of the bar, not the horizontal size.",
           "override": false,
           "type": "uint32",
           "optional": true
@@ -69083,7 +69083,7 @@
         {
           "name": "percent",
           "order": 2,
-          "description": "The [percentage resistance](https://wiki.factorio.com/Damage#Percentage_resistance) to the given damage type. (Higher is better)",
+          "description": "The [percentage resistance](https://wiki.factorio.com/Damage#Percentage_resistance) to the given damage type. Expected range is from 0 to 100, e.g. 50 is 50%. (Higher is better.)",
           "override": false,
           "type": "float",
           "optional": true,
@@ -71277,7 +71277,7 @@
         {
           "name": "game_view_settings",
           "order": 1,
-          "description": "",
+          "description": "Only applied to the simulation if a test player is created through [LuaSimulation::create_test_player](runtime:LuaSimulation::create_test_player).",
           "override": false,
           "type": "GameViewSettings",
           "optional": true
