@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.75",
+  "application_version": "2.0.76",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -4211,7 +4211,7 @@
             "complex_type": "array",
             "value": "CraftingQueueItem"
           },
-          "optional": false
+          "optional": true
         },
         {
           "name": "crafting_queue_progress",
@@ -12782,7 +12782,7 @@
         },
         {
           "name": "acceleration_rate",
-          "order": 269,
+          "order": 270,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -12805,7 +12805,7 @@
         },
         {
           "name": "activation_buffer_ratio",
-          "order": 313,
+          "order": 314,
           "description": "",
           "subclasses": [
             "FluidTurret"
@@ -13012,16 +13012,6 @@
         },
         {
           "name": "arm_angular_speed_cap_base",
-          "order": 303,
-          "description": "",
-          "subclasses": [
-            "AsteroidCollector"
-          ],
-          "read_type": "float",
-          "optional": true
-        },
-        {
-          "name": "arm_angular_speed_cap_quality_scaling",
           "order": 304,
           "description": "",
           "subclasses": [
@@ -13031,8 +13021,18 @@
           "optional": true
         },
         {
+          "name": "arm_angular_speed_cap_quality_scaling",
+          "order": 305,
+          "description": "",
+          "subclasses": [
+            "AsteroidCollector"
+          ],
+          "read_type": "float",
+          "optional": true
+        },
+        {
           "name": "arm_color_gradient",
-          "order": 311,
+          "order": 312,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13045,16 +13045,6 @@
         },
         {
           "name": "arm_count_base",
-          "order": 296,
-          "description": "",
-          "subclasses": [
-            "AsteroidCollector"
-          ],
-          "read_type": "uint32",
-          "optional": true
-        },
-        {
-          "name": "arm_count_quality_scaling",
           "order": 297,
           "description": "",
           "subclasses": [
@@ -13064,18 +13054,8 @@
           "optional": true
         },
         {
-          "name": "arm_energy_usage",
-          "order": 293,
-          "description": "",
-          "subclasses": [
-            "AsteroidCollector"
-          ],
-          "read_type": "double",
-          "optional": true
-        },
-        {
-          "name": "arm_inventory_size_quality_increase",
-          "order": 290,
+          "name": "arm_count_quality_scaling",
+          "order": 298,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13084,7 +13064,7 @@
           "optional": true
         },
         {
-          "name": "arm_slow_energy_usage",
+          "name": "arm_energy_usage",
           "order": 294,
           "description": "",
           "subclasses": [
@@ -13094,8 +13074,28 @@
           "optional": true
         },
         {
+          "name": "arm_inventory_size_quality_increase",
+          "order": 291,
+          "description": "",
+          "subclasses": [
+            "AsteroidCollector"
+          ],
+          "read_type": "uint32",
+          "optional": true
+        },
+        {
+          "name": "arm_slow_energy_usage",
+          "order": 295,
+          "description": "",
+          "subclasses": [
+            "AsteroidCollector"
+          ],
+          "read_type": "double",
+          "optional": true
+        },
+        {
           "name": "arm_speed_base",
-          "order": 301,
+          "order": 302,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13105,7 +13105,7 @@
         },
         {
           "name": "arm_speed_quality_scaling",
-          "order": 302,
+          "order": 303,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13145,7 +13145,7 @@
         },
         {
           "name": "attacking_speed",
-          "order": 267,
+          "order": 268,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -13155,7 +13155,7 @@
         },
         {
           "name": "attractor_hit_effect",
-          "order": 320,
+          "order": 321,
           "description": "",
           "subclasses": [
             "Lightning"
@@ -13300,7 +13300,7 @@
         },
         {
           "name": "build_distance",
-          "order": 277,
+          "order": 278,
           "description": "",
           "subclasses": [
             "Character"
@@ -13385,7 +13385,7 @@
         },
         {
           "name": "character_corpse",
-          "order": 289,
+          "order": 290,
           "description": "",
           "subclasses": [
             "Character"
@@ -13415,7 +13415,7 @@
         },
         {
           "name": "collection_box_offset",
-          "order": 299,
+          "order": 300,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13467,7 +13467,7 @@
         },
         {
           "name": "combat_robot_friction",
-          "order": 316,
+          "order": 317,
           "description": "",
           "subclasses": [
             "CombatRobot"
@@ -13477,7 +13477,7 @@
         },
         {
           "name": "connection_category",
-          "order": 323,
+          "order": 324,
           "description": "",
           "subclasses": [
             "FluidWagon"
@@ -13697,7 +13697,7 @@
         },
         {
           "name": "damage",
-          "order": 321,
+          "order": 322,
           "description": "When lightning strikes something that is not a lightning attractor, this damage is applied to the target.",
           "subclasses": [
             "Lightning"
@@ -13707,7 +13707,7 @@
         },
         {
           "name": "damage_hit_tint",
-          "order": 288,
+          "order": 289,
           "description": "",
           "subclasses": [
             "Character"
@@ -13750,7 +13750,7 @@
         },
         {
           "name": "deposit_radius",
-          "order": 300,
+          "order": 301,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -13760,7 +13760,7 @@
         },
         {
           "name": "destroy_action",
-          "order": 317,
+          "order": 318,
           "description": "",
           "subclasses": [
             "CombatRobot"
@@ -13841,7 +13841,7 @@
         },
         {
           "name": "drop_item_distance",
-          "order": 278,
+          "order": 279,
           "description": "",
           "subclasses": [
             "Character"
@@ -13936,7 +13936,7 @@
         },
         {
           "name": "energy",
-          "order": 322,
+          "order": 323,
           "description": "When lightning hits a lightning attractor this amount of energy is transferred to the lightning attractor.",
           "subclasses": [
             "Lightning"
@@ -13983,7 +13983,7 @@
         },
         {
           "name": "energy_usage_quality_scaling",
-          "order": 295,
+          "order": 296,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14003,7 +14003,7 @@
         },
         {
           "name": "enraged_duration",
-          "order": 264,
+          "order": 265,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -14013,7 +14013,7 @@
         },
         {
           "name": "enraged_speed",
-          "order": 268,
+          "order": 269,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -14023,7 +14023,7 @@
         },
         {
           "name": "enter_vehicle_distance",
-          "order": 283,
+          "order": 284,
           "description": "",
           "subclasses": [
             "Character"
@@ -14120,7 +14120,7 @@
         },
         {
           "name": "fluid_buffer_input_flow",
-          "order": 314,
+          "order": 315,
           "description": "",
           "subclasses": [
             "FluidTurret"
@@ -14130,7 +14130,7 @@
         },
         {
           "name": "fluid_buffer_size",
-          "order": 312,
+          "order": 313,
           "description": "",
           "subclasses": [
             "FluidTurret"
@@ -14204,7 +14204,7 @@
         },
         {
           "name": "follows_player",
-          "order": 318,
+          "order": 319,
           "description": "",
           "subclasses": [
             "CombatRobot"
@@ -14305,7 +14305,7 @@
         },
         {
           "name": "head_collection_radius",
-          "order": 298,
+          "order": 299,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14354,7 +14354,7 @@
         },
         {
           "name": "held_items_display_count",
-          "order": 310,
+          "order": 311,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14364,7 +14364,7 @@
         },
         {
           "name": "held_items_offset",
-          "order": 308,
+          "order": 309,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14374,7 +14374,7 @@
         },
         {
           "name": "held_items_spread",
-          "order": 309,
+          "order": 310,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14531,7 +14531,7 @@
         },
         {
           "name": "inventory_size_quality_increase",
-          "order": 291,
+          "order": 292,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -14592,7 +14592,7 @@
         },
         {
           "name": "investigating_speed",
-          "order": 266,
+          "order": 267,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -14629,7 +14629,7 @@
         },
         {
           "name": "item_pickup_distance",
-          "order": 281,
+          "order": 282,
           "description": "",
           "subclasses": [
             "Character"
@@ -14940,7 +14940,7 @@
         },
         {
           "name": "loot_pickup_distance",
-          "order": 282,
+          "order": 283,
           "description": "",
           "subclasses": [
             "Character"
@@ -15129,7 +15129,7 @@
         },
         {
           "name": "maximum_corner_sliding_distance",
-          "order": 276,
+          "order": 277,
           "description": "",
           "subclasses": [
             "Character"
@@ -15197,7 +15197,7 @@
         },
         {
           "name": "minimal_arm_swing_segment_retraction",
-          "order": 307,
+          "order": 308,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -15293,7 +15293,7 @@
         },
         {
           "name": "object_name",
-          "order": 325,
+          "order": 326,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -15310,7 +15310,7 @@
         },
         {
           "name": "passive_energy_usage",
-          "order": 292,
+          "order": 293,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -15320,7 +15320,7 @@
         },
         {
           "name": "patrolling_speed",
-          "order": 265,
+          "order": 266,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15330,7 +15330,7 @@
         },
         {
           "name": "patrolling_turn_radius",
-          "order": 271,
+          "order": 272,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15449,7 +15449,7 @@
         },
         {
           "name": "range_from_player",
-          "order": 315,
+          "order": 316,
           "description": "",
           "subclasses": [
             "CombatRobot"
@@ -15459,7 +15459,7 @@
         },
         {
           "name": "reach_distance",
-          "order": 279,
+          "order": 280,
           "description": "",
           "subclasses": [
             "Character"
@@ -15469,7 +15469,7 @@
         },
         {
           "name": "reach_resource_distance",
-          "order": 280,
+          "order": 281,
           "description": "",
           "subclasses": [
             "Character"
@@ -15585,7 +15585,7 @@
         },
         {
           "name": "respawn_time",
-          "order": 287,
+          "order": 288,
           "description": "",
           "subclasses": [
             "Character"
@@ -15614,6 +15614,16 @@
             "SegmentedUnit"
           ],
           "read_type": "AttackParameters",
+          "optional": true
+        },
+        {
+          "name": "reversing_power_modifier",
+          "order": 263,
+          "description": "",
+          "subclasses": [
+            "Locomotive"
+          ],
+          "read_type": "double",
           "optional": true
         },
         {
@@ -15688,7 +15698,7 @@
         },
         {
           "name": "running_speed",
-          "order": 275,
+          "order": 276,
           "description": "The movement speed of this character prototype.",
           "subclasses": [
             "Character"
@@ -15725,7 +15735,7 @@
         },
         {
           "name": "segment_engine",
-          "order": 274,
+          "order": 275,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15917,7 +15927,7 @@
         },
         {
           "name": "strike_effect",
-          "order": 319,
+          "order": 320,
           "description": "",
           "subclasses": [
             "Lightning"
@@ -15989,7 +15999,7 @@
         },
         {
           "name": "territory_radius",
-          "order": 263,
+          "order": 264,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -15999,7 +16009,7 @@
         },
         {
           "name": "tether_size",
-          "order": 305,
+          "order": 306,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -16009,7 +16019,7 @@
         },
         {
           "name": "ticks_per_scan",
-          "order": 273,
+          "order": 274,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -16019,7 +16029,7 @@
         },
         {
           "name": "ticks_to_keep_aiming_direction",
-          "order": 285,
+          "order": 286,
           "description": "",
           "subclasses": [
             "Character"
@@ -16029,7 +16039,7 @@
         },
         {
           "name": "ticks_to_keep_gun",
-          "order": 284,
+          "order": 285,
           "description": "",
           "subclasses": [
             "Character"
@@ -16039,7 +16049,7 @@
         },
         {
           "name": "ticks_to_stay_in_combat",
-          "order": 286,
+          "order": 287,
           "description": "",
           "subclasses": [
             "Character"
@@ -16143,7 +16153,7 @@
         },
         {
           "name": "turn_radius",
-          "order": 270,
+          "order": 271,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -16153,7 +16163,7 @@
         },
         {
           "name": "turn_smoothing",
-          "order": 272,
+          "order": 273,
           "description": "",
           "subclasses": [
             "SegmentedUnit"
@@ -16193,7 +16203,7 @@
         },
         {
           "name": "unpowered_arm_speed_scale",
-          "order": 306,
+          "order": 307,
           "description": "",
           "subclasses": [
             "AsteroidCollector"
@@ -16259,7 +16269,7 @@
         },
         {
           "name": "valid",
-          "order": 324,
+          "order": 325,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -44458,7 +44468,7 @@
     {
       "name": "LuaSurface",
       "order": 128,
-      "description": "A \"domain\" of the world. Surfaces can only be created and deleted through the API. Surfaces are uniquely identified by their name. Every game contains at least the surface \"nauvis\".",
+      "description": "A \"domain\" of the world, such as a planet or space platform. Surfaces are uniquely identified by their name. Every game contains at least the surface \"nauvis\".",
       "abstract": false,
       "methods": [
         {
