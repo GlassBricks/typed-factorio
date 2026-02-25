@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.0.75",
+  "application_version": "2.0.76",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -4731,7 +4731,7 @@
         {
           "name": "picture",
           "order": 3,
-          "description": "Mandatory if `pictures` is not defined.",
+          "description": "Only loaded, and mandatory if `pictures` is not defined.",
           "override": false,
           "type": "Animation",
           "optional": true
@@ -27510,7 +27510,7 @@
     {
       "name": "TemporaryContainerPrototype",
       "order": 249,
-      "description": "",
+      "description": "A container that can automatically destroy itself when it is emptied or after it has existed for a certain time.",
       "parent": "ContainerPrototype",
       "abstract": false,
       "typename": "temporary-container",
@@ -27519,7 +27519,7 @@
         {
           "name": "alert_after_time",
           "order": 2,
-          "description": "",
+          "description": "If the container has existed for this long, [an alert](prototype:UtilitySprites::unclaimed_cargo_icon) is show on it. In ticks, 0 for no alert.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -27531,7 +27531,7 @@
         {
           "name": "destroy_on_empty",
           "order": 0,
-          "description": "",
+          "description": "Whether the container is automatically destroyed when it is emptied.",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -27543,7 +27543,7 @@
         {
           "name": "time_to_live",
           "order": 1,
-          "description": "",
+          "description": "Duration after which the container and its contents are automatically destroyed. In ticks, 0 for infinite.",
           "override": false,
           "type": "uint32",
           "optional": true,
@@ -27814,7 +27814,7 @@
         },
         {
           "name": "build_animations",
-          "order": 2,
+          "order": 3,
           "description": "The build animation used when this tile is built on a space platform.",
           "override": false,
           "type": "Animation4Way",
@@ -27822,7 +27822,7 @@
         },
         {
           "name": "build_animations_background",
-          "order": 3,
+          "order": 4,
           "description": "",
           "override": false,
           "type": "Animation4Way",
@@ -27845,7 +27845,7 @@
         },
         {
           "name": "built_animation_frame",
-          "order": 4,
+          "order": 5,
           "description": "When the build_animations frame reaches this point the tile is built.\n\nMandatory if `build_animations` is defined.",
           "override": false,
           "type": "uint32",
@@ -28001,7 +28001,7 @@
         },
         {
           "name": "icon",
-          "order": 8,
+          "order": 9,
           "description": "Path to the icon file. If this and `icons` is not set, the `material_background` in `variants` is used as the icon.\n\nOnly loaded if `icons` is not defined.",
           "override": false,
           "type": "FileName",
@@ -28009,7 +28009,7 @@
         },
         {
           "name": "icon_size",
-          "order": 9,
+          "order": 10,
           "description": "The size of the square icon, in pixels. E.g. `32` for a 32px by 32px icon. Must be larger than `0`.\n\nOnly loaded if `icons` is not defined.",
           "override": false,
           "type": "SpriteSizeType",
@@ -28021,7 +28021,7 @@
         },
         {
           "name": "icons",
-          "order": 7,
+          "order": 8,
           "description": "Can't be an empty array. If this and `icon` is not set, the `material_background` in `variants` is used as the icon.",
           "override": false,
           "type": {
@@ -28053,15 +28053,15 @@
         {
           "name": "layer",
           "order": 1,
-          "description": "Specifies transition drawing priority.",
+          "description": "Specifies transition drawing priority. This represents the positive offset from this tile's `layer_group`. Internally, the final layer is computed as `layer_group + layer` (a [uint16](prototype:uint16)), wrapping back to `\"zero\"` after the `\"top\"` layer.",
           "override": false,
           "type": "uint8",
           "optional": false
         },
         {
           "name": "layer_group",
-          "order": 13,
-          "description": "",
+          "order": 2,
+          "description": "The base group of render layers this tile belongs to. It can be moved up inside this group using the `layer` property. See the [TileRenderLayer](prototype:TileRenderLayer) page to see the sizes of all layer groups.",
           "override": false,
           "type": "TileRenderLayer",
           "optional": true,
@@ -28072,7 +28072,7 @@
         },
         {
           "name": "lowland_fog",
-          "order": 10,
+          "order": 11,
           "description": "For surfaces that use [fog effect](prototype:SurfaceRenderParameters::fog) of type `gleba`, this property determines whether given tile should contribute to fog intensity on a chunk or not.",
           "override": false,
           "type": "boolean",
@@ -28084,7 +28084,7 @@
         },
         {
           "name": "map_color",
-          "order": 6,
+          "order": 7,
           "description": "",
           "override": false,
           "type": "Color",
@@ -28186,7 +28186,7 @@
         },
         {
           "name": "sprite_usage_surface",
-          "order": 12,
+          "order": 13,
           "description": "",
           "override": false,
           "type": "SpriteUsageSurfaceHint",
@@ -28223,7 +28223,7 @@
         },
         {
           "name": "transition_overlay_layer_offset",
-          "order": 11,
+          "order": 12,
           "description": "",
           "override": false,
           "type": "int8",
@@ -28265,7 +28265,7 @@
         },
         {
           "name": "variants",
-          "order": 5,
+          "order": 6,
           "description": "Graphics for this tile.",
           "override": false,
           "type": "TileTransitionsVariants",
@@ -32219,7 +32219,7 @@
       "properties": [
         {
           "name": "achievement_unlocked",
-          "order": 45,
+          "order": 46,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32227,190 +32227,6 @@
         },
         {
           "name": "alert_destroyed",
-          "order": 30,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "armor_insert",
-          "order": 43,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "armor_remove",
-          "order": 44,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "axe_fighting",
-          "order": 29,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "axe_mining_ore",
-          "order": 26,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "axe_mining_stone",
-          "order": 27,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_animated_huge",
-          "order": 16,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_animated_large",
-          "order": 15,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_animated_medium",
-          "order": 14,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_animated_small",
-          "order": 13,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_blueprint_huge",
-          "order": 10,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_blueprint_large",
-          "order": 9,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_blueprint_medium",
-          "order": 8,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_blueprint_small",
-          "order": 7,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_ghost_upgrade",
-          "order": 11,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_ghost_upgrade_cancel",
-          "order": 12,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_huge",
-          "order": 5,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_large",
-          "order": 4,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_medium",
-          "order": 3,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "build_small",
-          "order": 2,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "cannot_build",
-          "order": 6,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "clear_cursor",
-          "order": 42,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "confirm",
-          "order": 58,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "console_message",
           "order": 31,
           "description": "",
           "override": false,
@@ -32418,47 +32234,47 @@
           "optional": false
         },
         {
-          "name": "crafting_finished",
-          "order": 39,
+          "name": "armor_insert",
+          "order": 44,
           "description": "",
           "override": false,
           "type": "Sound",
           "optional": false
         },
         {
-          "name": "deconstruct_huge",
-          "order": 20,
+          "name": "armor_remove",
+          "order": 45,
           "description": "",
           "override": false,
           "type": "Sound",
           "optional": false
         },
         {
-          "name": "deconstruct_large",
-          "order": 19,
+          "name": "axe_fighting",
+          "order": 30,
           "description": "",
           "override": false,
           "type": "Sound",
           "optional": false
         },
         {
-          "name": "deconstruct_medium",
-          "order": 18,
+          "name": "axe_mining_ore",
+          "order": 27,
           "description": "",
           "override": false,
           "type": "Sound",
           "optional": false
         },
         {
-          "name": "deconstruct_robot",
-          "order": 21,
+          "name": "axe_mining_stone",
+          "order": 28,
           "description": "",
           "override": false,
           "type": "Sound",
           "optional": false
         },
         {
-          "name": "deconstruct_small",
+          "name": "build_animated_huge",
           "order": 17,
           "description": "",
           "override": false,
@@ -32466,8 +32282,192 @@
           "optional": false
         },
         {
+          "name": "build_animated_large",
+          "order": 16,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_animated_medium",
+          "order": 15,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_animated_small",
+          "order": 14,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_blueprint_huge",
+          "order": 11,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_blueprint_large",
+          "order": 10,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_blueprint_medium",
+          "order": 9,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_blueprint_small",
+          "order": 8,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_ghost_upgrade",
+          "order": 12,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_ghost_upgrade_cancel",
+          "order": 13,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_huge",
+          "order": 6,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_large",
+          "order": 5,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_medium",
+          "order": 4,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "build_small",
+          "order": 3,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "cannot_build",
+          "order": 7,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "clear_cursor",
+          "order": 43,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "confirm",
+          "order": 59,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "console_message",
+          "order": 32,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "crafting_finished",
+          "order": 40,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "deconstruct_huge",
+          "order": 21,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "deconstruct_large",
+          "order": 20,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "deconstruct_medium",
+          "order": 19,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "deconstruct_robot",
+          "order": 22,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "deconstruct_small",
+          "order": 18,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
           "name": "default_driving_sound",
-          "order": 62,
+          "order": 63,
           "description": "",
           "override": false,
           "type": "InterruptibleSound",
@@ -32475,7 +32475,7 @@
         },
         {
           "name": "default_landing_steps",
-          "order": 63,
+          "order": 64,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32483,7 +32483,7 @@
         },
         {
           "name": "default_manual_repair",
-          "order": 38,
+          "order": 39,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32491,7 +32491,7 @@
         },
         {
           "name": "drop_item",
-          "order": 60,
+          "order": 61,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32499,7 +32499,7 @@
         },
         {
           "name": "entity_settings_copied",
-          "order": 56,
+          "order": 57,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32507,7 +32507,7 @@
         },
         {
           "name": "entity_settings_pasted",
-          "order": 55,
+          "order": 56,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32515,7 +32515,7 @@
         },
         {
           "name": "game_lost",
-          "order": 34,
+          "order": 35,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32523,7 +32523,7 @@
         },
         {
           "name": "game_won",
-          "order": 35,
+          "order": 36,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32538,39 +32538,7 @@
           "optional": false
         },
         {
-          "name": "inventory_click",
-          "order": 40,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "inventory_move",
-          "order": 41,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "item_deleted",
-          "order": 54,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "item_spawned",
-          "order": 57,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "list_box_click",
+          "name": "gui_switch",
           "order": 1,
           "description": "",
           "override": false,
@@ -32578,55 +32546,47 @@
           "optional": false
         },
         {
+          "name": "inventory_click",
+          "order": 41,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "inventory_move",
+          "order": 42,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "item_deleted",
+          "order": 55,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "item_spawned",
+          "order": 58,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "list_box_click",
+          "order": 2,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
           "name": "metal_walking_sound",
-          "order": 36,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "mining_wood",
-          "order": 28,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "new_objective",
-          "order": 33,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "paste_activated",
-          "order": 53,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "picked_up_item",
-          "order": 52,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "rail_plan_start",
-          "order": 61,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "research_completed",
           "order": 37,
           "description": "",
           "override": false,
@@ -32634,8 +32594,56 @@
           "optional": false
         },
         {
+          "name": "mining_wood",
+          "order": 29,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "new_objective",
+          "order": 34,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "paste_activated",
+          "order": 54,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "picked_up_item",
+          "order": 53,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "rail_plan_start",
+          "order": 62,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "research_completed",
+          "order": 38,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
           "name": "rotated_huge",
-          "order": 25,
+          "order": 26,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32643,7 +32651,7 @@
         },
         {
           "name": "rotated_large",
-          "order": 24,
+          "order": 25,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32651,7 +32659,7 @@
         },
         {
           "name": "rotated_medium",
-          "order": 23,
+          "order": 24,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32659,7 +32667,7 @@
         },
         {
           "name": "rotated_small",
-          "order": 22,
+          "order": 23,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32667,7 +32675,7 @@
         },
         {
           "name": "scenario_message",
-          "order": 32,
+          "order": 33,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32675,7 +32683,7 @@
         },
         {
           "name": "segment_dying_sound",
-          "order": 64,
+          "order": 65,
           "description": "Only present when the Space Age mod is loaded.",
           "override": false,
           "type": "Sound",
@@ -32683,14 +32691,6 @@
         },
         {
           "name": "smart_pipette",
-          "order": 50,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "switch_gun",
           "order": 51,
           "description": "",
           "override": false,
@@ -32698,8 +32698,16 @@
           "optional": false
         },
         {
+          "name": "switch_gun",
+          "order": 52,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
           "name": "tutorial_notice",
-          "order": 49,
+          "order": 50,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32707,7 +32715,7 @@
         },
         {
           "name": "undo",
-          "order": 59,
+          "order": 60,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -32715,14 +32723,6 @@
         },
         {
           "name": "wire_connect_pole",
-          "order": 46,
-          "description": "",
-          "override": false,
-          "type": "Sound",
-          "optional": false
-        },
-        {
-          "name": "wire_disconnect",
           "order": 47,
           "description": "",
           "override": false,
@@ -32730,8 +32730,16 @@
           "optional": false
         },
         {
-          "name": "wire_pickup",
+          "name": "wire_disconnect",
           "order": 48,
+          "description": "",
+          "override": false,
+          "type": "Sound",
+          "optional": false
+        },
+        {
+          "name": "wire_pickup",
+          "order": 49,
           "description": "",
           "override": false,
           "type": "Sound",
@@ -74763,7 +74771,7 @@
         {
           "name": "height",
           "order": 3,
-          "description": "Mandatory if `size` is not defined.\n\nHeight of the picture in pixels, from 0-4096.",
+          "description": "Mandatory if `size` is not defined.\n\nHeight of the sprite in pixels, from 0-4096.",
           "override": false,
           "type": "SpriteSizeType",
           "optional": true
@@ -74830,7 +74838,7 @@
         {
           "name": "width",
           "order": 2,
-          "description": "Mandatory if `size` is not defined.\n\nWidth of the picture in pixels, from 0-4096.",
+          "description": "Mandatory if `size` is not defined.\n\nWidth of the sprite in pixels, from 0-4096.",
           "override": false,
           "type": "SpriteSizeType",
           "optional": true
