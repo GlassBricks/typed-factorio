@@ -17346,7 +17346,7 @@
           "order": 513,
           "description": "",
           "subclasses": [
-            "LandMine"
+            "Landmine"
           ],
           "read_type": "boolean",
           "optional": true
@@ -20846,7 +20846,7 @@
           "order": 514,
           "description": "",
           "subclasses": [
-            "LandMine"
+            "Landmine"
           ],
           "read_type": "ForceCondition",
           "optional": true
@@ -20856,7 +20856,7 @@
           "order": 511,
           "description": "",
           "subclasses": [
-            "LandMine"
+            "Landmine"
           ],
           "read_type": "uint32",
           "optional": true
@@ -20866,7 +20866,7 @@
           "order": 512,
           "description": "",
           "subclasses": [
-            "LandMine"
+            "Landmine"
           ],
           "read_type": "double",
           "optional": true
@@ -70259,7 +70259,7 @@
   "concepts": [
     {
       "name": "AccumulatorBlueprintControlBehavior",
-      "order": 383,
+      "order": 389,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70290,7 +70290,7 @@
     },
     {
       "name": "AchievementPrototypeFilter",
-      "order": 459,
+      "order": 447,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70374,7 +70374,7 @@
     },
     {
       "name": "AddRecordData",
-      "order": 374,
+      "order": 191,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70443,7 +70443,7 @@
     },
     {
       "name": "AdvancedMapGenSettings",
-      "order": 64,
+      "order": 131,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70488,7 +70488,7 @@
     },
     {
       "name": "AgriculturalTowerBlueprintControlBehavior",
-      "order": 385,
+      "order": 390,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70575,7 +70575,7 @@
     },
     {
       "name": "Alert",
-      "order": 354,
+      "order": 187,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70627,7 +70627,7 @@
     },
     {
       "name": "AlertFilter",
-      "order": 265,
+      "order": 337,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70686,7 +70686,7 @@
     },
     {
       "name": "Alignment",
-      "order": 378,
+      "order": 386,
       "description": "A string that specifies where a GUI element should be.",
       "type": {
         "complex_type": "union",
@@ -70757,7 +70757,7 @@
     },
     {
       "name": "AmmoCategoryID",
-      "order": 247,
+      "order": 319,
       "description": "An ammo category may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -70778,7 +70778,7 @@
     },
     {
       "name": "AmmoType",
-      "order": 314,
+      "order": 106,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -70881,7 +70881,7 @@
     },
     {
       "name": "ApplyTileTint",
-      "order": 147,
+      "order": 220,
       "description": "Refers to tints defined in [TilePrototype::particle_tints](prototype:TilePrototype::particle_tints).",
       "type": {
         "complex_type": "union",
@@ -70919,7 +70919,7 @@
     },
     {
       "name": "ArithmeticCombinatorParameterOperation",
-      "order": 289,
+      "order": 23,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -70985,7 +70985,7 @@
     },
     {
       "name": "ArithmeticCombinatorParameters",
-      "order": 288,
+      "order": 22,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71051,7 +71051,7 @@
     },
     {
       "name": "ArtilleryTurretBlueprintControlBehavior",
-      "order": 410,
+      "order": 392,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71110,7 +71110,7 @@
     },
     {
       "name": "AssemblingMachineBlueprintControlBehavior",
-      "order": 382,
+      "order": 393,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71225,7 +71225,7 @@
     },
     {
       "name": "AsteroidChunk",
-      "order": 346,
+      "order": 193,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71256,7 +71256,7 @@
     },
     {
       "name": "AsteroidChunkID",
-      "order": 260,
+      "order": 332,
       "description": "An asteroid chunk prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -71277,7 +71277,7 @@
     },
     {
       "name": "AsteroidChunkPrototypeFilter",
-      "order": 449,
+      "order": 448,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71331,7 +71331,7 @@
     },
     {
       "name": "AsteroidCollectorBlueprintControlBehavior",
-      "order": 390,
+      "order": 394,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71404,7 +71404,7 @@
     },
     {
       "name": "AsteroidMapSettings",
-      "order": 57,
+      "order": 137,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71428,7 +71428,7 @@
     },
     {
       "name": "AttackParameterFluid",
-      "order": 149,
+      "order": 218,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71452,7 +71452,7 @@
     },
     {
       "name": "AttackParameters",
-      "order": 156,
+      "order": 226,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71698,7 +71698,7 @@
     },
     {
       "name": "AttackReactionItem",
-      "order": 146,
+      "order": 214,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71736,7 +71736,7 @@
     },
     {
       "name": "AutoplaceControl",
-      "order": 68,
+      "order": 132,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71767,7 +71767,7 @@
     },
     {
       "name": "AutoplaceSettings",
-      "order": 70,
+      "order": 134,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71795,7 +71795,7 @@
     },
     {
       "name": "AutoplaceSpecification",
-      "order": 55,
+      "order": 125,
       "description": "Specifies how probability and richness are calculated when placing something on the map.",
       "type": {
         "complex_type": "table",
@@ -71864,7 +71864,7 @@
     },
     {
       "name": "AutoplaceSpecificationRestriction",
-      "order": 53,
+      "order": 123,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71888,7 +71888,7 @@
     },
     {
       "name": "BeamTarget",
-      "order": 327,
+      "order": 177,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71912,7 +71912,7 @@
     },
     {
       "name": "BeltConnectionType",
-      "order": 7,
+      "order": 10,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -71933,7 +71933,7 @@
     },
     {
       "name": "BlueprintEntity",
-      "order": 284,
+      "order": 236,
       "description": "The representation of an entity inside of a blueprint.",
       "type": {
         "complex_type": "table",
@@ -73886,7 +73886,7 @@
     },
     {
       "name": "BlueprintEquipment",
-      "order": 44,
+      "order": 80,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -73910,7 +73910,7 @@
     },
     {
       "name": "BlueprintInfinityInventorySettings",
-      "order": 113,
+      "order": 49,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -73937,7 +73937,7 @@
     },
     {
       "name": "BlueprintInsertPlan",
-      "order": 107,
+      "order": 76,
       "description": "Defines an item type that a blueprint entity will request.",
       "type": {
         "complex_type": "table",
@@ -73961,13 +73961,13 @@
     },
     {
       "name": "BlueprintInventory",
-      "order": 310,
+      "order": 112,
       "description": "",
       "type": "table"
     },
     {
       "name": "BlueprintInventoryWithFilters",
-      "order": 316,
+      "order": 114,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -73994,7 +73994,7 @@
     },
     {
       "name": "BlueprintItemFilter",
-      "order": 315,
+      "order": 113,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74032,7 +74032,7 @@
     },
     {
       "name": "BlueprintItemIDAndQualityIDPair",
-      "order": 50,
+      "order": 98,
       "description": "An item prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -74056,7 +74056,7 @@
     },
     {
       "name": "BlueprintLogisticFilter",
-      "order": 76,
+      "order": 118,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74136,7 +74136,7 @@
     },
     {
       "name": "BlueprintLogisticSections",
-      "order": 81,
+      "order": 119,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74170,7 +74170,7 @@
     },
     {
       "name": "BlueprintMiningDrillFilter",
-      "order": 98,
+      "order": 53,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74210,7 +74210,7 @@
     },
     {
       "name": "BlueprintQualityID",
-      "order": 52,
+      "order": 94,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74227,7 +74227,7 @@
     },
     {
       "name": "BlueprintRollingStockConnection",
-      "order": 283,
+      "order": 235,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74258,7 +74258,7 @@
     },
     {
       "name": "BlueprintSchedule",
-      "order": 39,
+      "order": 363,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74295,7 +74295,7 @@
     },
     {
       "name": "BlueprintScheduleInterrupt",
-      "order": 40,
+      "order": 364,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74339,7 +74339,7 @@
     },
     {
       "name": "BlueprintScheduleRecord",
-      "order": 37,
+      "order": 359,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74387,7 +74387,7 @@
     },
     {
       "name": "BlueprintSignalIcon",
-      "order": 126,
+      "order": 21,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74411,7 +74411,7 @@
     },
     {
       "name": "BlueprintSpoilPriority",
-      "order": 117,
+      "order": 77,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -74432,7 +74432,7 @@
     },
     {
       "name": "BlueprintWire",
-      "order": 285,
+      "order": 237,
       "description": "Describes a single wire in the blueprint. The members of the tuple are, in order:\n\n- `source_entity_number`\n\n- `source_wire_connector_id`\n\n- `target_entity_number`\n\n- `target_wire_connector_id`",
       "type": {
         "complex_type": "tuple",
@@ -74446,7 +74446,7 @@
     },
     {
       "name": "BlueprintWireEnd",
-      "order": 42,
+      "order": 369,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74477,7 +74477,7 @@
     },
     {
       "name": "BoilerBlueprintControlBehavior",
-      "order": 405,
+      "order": 395,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74536,7 +74536,7 @@
     },
     {
       "name": "BonusUtilityConstants",
-      "order": 423,
+      "order": 382,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74630,7 +74630,7 @@
     },
     {
       "name": "BoundingBox",
-      "order": 253,
+      "order": 325,
       "description": "Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with [MapPosition](runtime:MapPosition), the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero.",
       "examples": [
         "```\n-- Explicit definition\n{left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}\n```",
@@ -74678,7 +74678,7 @@
     },
     {
       "name": "CapsuleAction",
-      "order": 305,
+      "order": 109,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74814,7 +74814,7 @@
     },
     {
       "name": "CargoDestination",
-      "order": 273,
+      "order": 345,
       "description": "The destination of a cargo pod.",
       "type": {
         "complex_type": "table",
@@ -74880,7 +74880,7 @@
     },
     {
       "name": "CargoHatchDefinition",
-      "order": 206,
+      "order": 278,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74921,7 +74921,7 @@
     },
     {
       "name": "CargoLandingPadBlueprintControlBehavior",
-      "order": 415,
+      "order": 396,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -74959,7 +74959,7 @@
     },
     {
       "name": "CargoStationParameters",
-      "order": 207,
+      "order": 279,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75000,7 +75000,7 @@
     },
     {
       "name": "ChartTagSpec",
-      "order": 369,
+      "order": 180,
       "description": "Either `icon`, `text`, or both must be provided.",
       "type": {
         "complex_type": "table",
@@ -75038,7 +75038,7 @@
     },
     {
       "name": "ChartUtilityConstants",
-      "order": 422,
+      "order": 381,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75406,7 +75406,7 @@
     },
     {
       "name": "ChunkPosition",
-      "order": 161,
+      "order": 233,
       "description": "Coordinates of a chunk in a [LuaSurface](runtime:LuaSurface) where each integer `x`/`y` represents a different chunk. This uses the same format as [MapPosition](runtime:MapPosition), meaning it can be specified either with or without explicit keys. A [MapPosition](runtime:MapPosition) can be translated to a ChunkPosition by dividing the `x`/`y` values by 32.",
       "type": {
         "complex_type": "union",
@@ -75443,7 +75443,7 @@
     },
     {
       "name": "ChunkPositionAndArea",
-      "order": 371,
+      "order": 167,
       "description": "A [ChunkPosition](runtime:ChunkPosition) with an added bounding box for the area of the chunk.",
       "type": {
         "complex_type": "table",
@@ -75474,7 +75474,7 @@
     },
     {
       "name": "CircuitCondition",
-      "order": 295,
+      "order": 34,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75512,7 +75512,7 @@
     },
     {
       "name": "CircuitConditionDefinition",
-      "order": 420,
+      "order": 379,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75557,7 +75557,7 @@
     },
     {
       "name": "CircuitNetworkSelection",
-      "order": 293,
+      "order": 35,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75581,7 +75581,7 @@
     },
     {
       "name": "CircularParticleCreationSpecification",
-      "order": 18,
+      "order": 8,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75696,7 +75696,7 @@
     },
     {
       "name": "CircularProjectileCreationSpecification",
-      "order": 154,
+      "order": 215,
       "description": "",
       "type": {
         "complex_type": "array",
@@ -75711,7 +75711,7 @@
     },
     {
       "name": "CliffOrientation",
-      "order": 96,
+      "order": 46,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -75822,7 +75822,7 @@
     },
     {
       "name": "CliffPlacementSettings",
-      "order": 69,
+      "order": 133,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75874,7 +75874,7 @@
     },
     {
       "name": "CloudsEffectProperties",
-      "order": 215,
+      "order": 287,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75975,7 +75975,7 @@
     },
     {
       "name": "CollisionLayerID",
-      "order": 130,
+      "order": 356,
       "description": "The name of a [LuaCollisionLayerPrototype](runtime:LuaCollisionLayerPrototype).",
       "examples": [
         "```\n\"is_lower_object\"\n```"
@@ -75984,7 +75984,7 @@
     },
     {
       "name": "CollisionMask",
-      "order": 131,
+      "order": 357,
       "description": "",
       "examples": [
         "```\n-- Most common collision mask of buildings:\ncollision_mask = {layers = {item = true, meltable = true, object = true, player = true, water_tile = true, is_object = true, is_lower_object = true}}\n```"
@@ -76032,7 +76032,7 @@
     },
     {
       "name": "Color",
-      "order": 287,
+      "order": 227,
       "description": "Red, green, blue and alpha values, all in range [0, 1] or all in range [0, 255] if any value is > 1. All values here are optional. Color channels default to `0`, the alpha channel defaults to `1`.\n\nSimilar to [MapPosition](runtime:MapPosition), Color allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).",
       "examples": [
         "```\nred1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red\nred2 = {r = 0.5, a = 0.5}                -- Same color as red1\nblack = {}                               -- All channels omitted: black\nred1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation\n```"
@@ -76088,7 +76088,7 @@
     },
     {
       "name": "ColorFilterData",
-      "order": 183,
+      "order": 255,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76122,7 +76122,7 @@
     },
     {
       "name": "ColorHintSpecification",
-      "order": 180,
+      "order": 252,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76146,13 +76146,13 @@
     },
     {
       "name": "ColorLookupTable",
-      "order": 181,
+      "order": 253,
       "description": "Does not return the value at runtime.",
       "type": "nil"
     },
     {
       "name": "ColorModifier",
-      "order": 336,
+      "order": 197,
       "description": "Same as [Color](runtime:Color), but red, green, blue and alpha values can be any floating point number, without any special handling of the range [1, 255].",
       "type": {
         "complex_type": "union",
@@ -76205,7 +76205,7 @@
     },
     {
       "name": "Command",
-      "order": 172,
+      "order": 244,
       "description": "Commands can be given to enemies and unit groups.",
       "type": {
         "complex_type": "table",
@@ -76466,7 +76466,7 @@
     },
     {
       "name": "ComparatorString",
-      "order": 19,
+      "order": 9,
       "description": "A string that specifies how the inputs should be compared.\n\nWhile the API accepts both versions for `\"less/greater than or equal to\"` and `\"not equal\"`, it'll always return `\"≥\"`, `\"≤\"` or `\"≠\"` respectively when reading them back.",
       "type": {
         "complex_type": "union",
@@ -76522,7 +76522,7 @@
     },
     {
       "name": "CompiledLogisticFilter",
-      "order": 77,
+      "order": 117,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76595,7 +76595,7 @@
     },
     {
       "name": "ConfigurationChangedData",
-      "order": 331,
+      "order": 182,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76659,7 +76659,7 @@
     },
     {
       "name": "ConstantCombinatorBlueprintControlBehavior",
-      "order": 400,
+      "order": 397,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76683,7 +76683,7 @@
     },
     {
       "name": "ContainerBlueprintControlBehavior",
-      "order": 392,
+      "order": 398,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76707,7 +76707,7 @@
     },
     {
       "name": "CraftingQueueItem",
-      "order": 358,
+      "order": 171,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76745,7 +76745,7 @@
     },
     {
       "name": "CraterPlacementDefinition",
-      "order": 197,
+      "order": 269,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76779,7 +76779,7 @@
     },
     {
       "name": "CraterSegment",
-      "order": 196,
+      "order": 268,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76803,7 +76803,7 @@
     },
     {
       "name": "CursorBoxRenderType",
-      "order": 84,
+      "order": 87,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -76869,7 +76869,7 @@
     },
     {
       "name": "CustomCommandData",
-      "order": 359,
+      "order": 168,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76907,7 +76907,7 @@
     },
     {
       "name": "CustomEntityStatus",
-      "order": 108,
+      "order": 47,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76931,7 +76931,7 @@
     },
     {
       "name": "CustomTooltipField",
-      "order": 212,
+      "order": 284,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76994,7 +76994,7 @@
     },
     {
       "name": "CutsceneWaypoint",
-      "order": 353,
+      "order": 186,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77046,7 +77046,7 @@
     },
     {
       "name": "DamageParameters",
-      "order": 74,
+      "order": 45,
       "description": "Used to specify what type of damage and how much damage something deals.",
       "type": {
         "complex_type": "table",
@@ -77070,7 +77070,7 @@
     },
     {
       "name": "DamageTypeFilters",
-      "order": 155,
+      "order": 221,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77101,7 +77101,7 @@
     },
     {
       "name": "DamageTypeID",
-      "order": 239,
+      "order": 311,
       "description": "A damage type prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -77122,7 +77122,7 @@
     },
     {
       "name": "DaytimeColorLookupTable",
-      "order": 182,
+      "order": 254,
       "description": "Returns an empty table at runtime.",
       "type": {
         "complex_type": "literal",
@@ -77131,7 +77131,7 @@
     },
     {
       "name": "DebugVariable",
-      "order": 144,
+      "order": 374,
       "description": "The supported subset of [DebugAdapter Variable](https://microsoft.github.io/debug-adapter-protocol/specification#Types_Variable)",
       "type": {
         "complex_type": "table",
@@ -77190,7 +77190,7 @@
     },
     {
       "name": "DebugVariablePresentationHint",
-      "order": 143,
+      "order": 373,
       "description": "The supported subset of [DebugAdapter VariablePresentationHint](https://microsoft.github.io/debug-adapter-protocol/specification#Types_VariablePresentationHint)",
       "type": {
         "complex_type": "table",
@@ -77236,7 +77236,7 @@
     },
     {
       "name": "DebugVariablesFilter",
-      "order": 142,
+      "order": 372,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77284,7 +77284,7 @@
     },
     {
       "name": "DeciderCombinatorBlueprintControlBehavior",
-      "order": 395,
+      "order": 399,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77301,7 +77301,7 @@
     },
     {
       "name": "DeciderCombinatorCondition",
-      "order": 291,
+      "order": 26,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77373,7 +77373,7 @@
     },
     {
       "name": "DeciderCombinatorOutput",
-      "order": 292,
+      "order": 27,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77411,7 +77411,7 @@
     },
     {
       "name": "DeciderCombinatorParameters",
-      "order": 290,
+      "order": 25,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77441,7 +77441,7 @@
     },
     {
       "name": "Decorative",
-      "order": 337,
+      "order": 198,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77472,7 +77472,7 @@
     },
     {
       "name": "DecorativeID",
-      "order": 259,
+      "order": 331,
       "description": "A decorative prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -77493,7 +77493,7 @@
     },
     {
       "name": "DecorativePrototypeFilter",
-      "order": 458,
+      "order": 449,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77606,7 +77606,7 @@
     },
     {
       "name": "DecorativeResult",
-      "order": 338,
+      "order": 199,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77637,7 +77637,7 @@
     },
     {
       "name": "DetailedItemOnLine",
-      "order": 319,
+      "order": 203,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77668,7 +77668,7 @@
     },
     {
       "name": "DeviatedValue",
-      "order": 184,
+      "order": 256,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77692,7 +77692,7 @@
     },
     {
       "name": "DifficultySettings",
-      "order": 332,
+      "order": 183,
       "description": "Technology difficulty settings. Updating any of the attributes will immediately take effect in the game engine.",
       "type": {
         "complex_type": "LuaStruct",
@@ -77718,7 +77718,7 @@
     },
     {
       "name": "DisplayPanelBlueprintControlBehavior",
-      "order": 384,
+      "order": 400,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77738,7 +77738,7 @@
     },
     {
       "name": "DisplayPanelMessageDefinition",
-      "order": 296,
+      "order": 28,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77769,7 +77769,7 @@
     },
     {
       "name": "DisplayResolution",
-      "order": 357,
+      "order": 190,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77793,7 +77793,7 @@
     },
     {
       "name": "DragTarget",
-      "order": 356,
+      "order": 189,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77817,7 +77817,7 @@
     },
     {
       "name": "EditorUtilityConstants",
-      "order": 424,
+      "order": 383,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77939,7 +77939,7 @@
     },
     {
       "name": "EffectReceiver",
-      "order": 201,
+      "order": 273,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78012,7 +78012,7 @@
     },
     {
       "name": "EffectValueRange",
-      "order": 200,
+      "order": 272,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78036,7 +78036,7 @@
     },
     {
       "name": "EjectedItem",
-      "order": 347,
+      "order": 194,
       "description": "An item thrown overboard on a space platform.",
       "type": {
         "complex_type": "table",
@@ -78088,7 +78088,7 @@
     },
     {
       "name": "ElemID",
-      "order": 27,
+      "order": 37,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78126,7 +78126,7 @@
     },
     {
       "name": "ElemType",
-      "order": 32,
+      "order": 39,
       "description": "A [string](runtime:string) specifying a type for [choose elem buttons](runtime:LuaGuiElement::elem_type). It's also used by [ElemID](runtime:ElemID) for [LuaGuiElement::elem_tooltip](runtime:LuaGuiElement::elem_tooltip).",
       "type": {
         "complex_type": "union",
@@ -78222,7 +78222,7 @@
     },
     {
       "name": "EmptySlotInfo",
-      "order": 30,
+      "order": 43,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78253,7 +78253,7 @@
     },
     {
       "name": "EnemyEvolutionMapSettings",
-      "order": 66,
+      "order": 126,
       "description": "These values represent a percentual increase in evolution. This means a value of `0.1` would increase evolution by 10%.",
       "type": {
         "complex_type": "table",
@@ -78291,7 +78291,7 @@
     },
     {
       "name": "EnemyExpansionMapSettings",
-      "order": 65,
+      "order": 129,
       "description": "Candidate chunks are given scores to determine which one of them should be expanded into. This score takes into account various settings noted below. The iteration is over a square region centered around the chunk for which the calculation is done, and includes the central chunk as well. Distances are calculated as [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance).\n\nThe pseudocode algorithm to determine a chunk's score is as follows:\n\n```\nplayer = 0\nfor neighbour in all chunks within enemy_building_influence_radius from chunk :\n  if neighbour has player buildings :\n    player += neighbouring_chunk_coefficient ^ distance(chunk, neighbour)\n      * building_coefficient\nbase = 0\nfor neighbour in all chunks within friendly_base_influence_radius from chunk :\n  if neighbour has enemy bases :\n    base += neighbouring_base_chunk_coefficient ^ distance(chunk, neighbour)\n      * other_base_coefficient\nscore(chunk) = 1 / (1 + player + base)\n```",
       "type": {
         "complex_type": "table",
@@ -78399,7 +78399,7 @@
     },
     {
       "name": "EnemySpawnerAbsorption",
-      "order": 227,
+      "order": 299,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78423,7 +78423,7 @@
     },
     {
       "name": "EnergyAndCapacityPair",
-      "order": 370,
+      "order": 160,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78447,7 +78447,7 @@
     },
     {
       "name": "EntityID",
-      "order": 235,
+      "order": 307,
       "description": "An entity prototype may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -78473,7 +78473,7 @@
     },
     {
       "name": "EntityIDAndQualityIDPair",
-      "order": 231,
+      "order": 303,
       "description": "An entity prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -78497,7 +78497,7 @@
     },
     {
       "name": "EntityIDFilter",
-      "order": 49,
+      "order": 96,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78528,7 +78528,7 @@
     },
     {
       "name": "EntityPrototypeFilter",
-      "order": 454,
+      "order": 458,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78882,7 +78882,7 @@
     },
     {
       "name": "EntityPrototypeFlag",
-      "order": 91,
+      "order": 69,
       "description": "A [string](runtime:string) specifying an entity prototype flag.",
       "type": {
         "complex_type": "union",
@@ -79038,7 +79038,7 @@
     },
     {
       "name": "EntityPrototypeFlags",
-      "order": 90,
+      "order": 68,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.\n\nBy default, none of these flags are set.",
       "type": {
         "complex_type": "dictionary",
@@ -79051,7 +79051,7 @@
     },
     {
       "name": "EntityRendererSearchBoxLimits",
-      "order": 202,
+      "order": 274,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79089,7 +79089,7 @@
     },
     {
       "name": "EntitySearchFilters",
-      "order": 334,
+      "order": 195,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79286,7 +79286,7 @@
     },
     {
       "name": "EntityWithQualityID",
-      "order": 230,
+      "order": 302,
       "description": "An entity prototype with optional quality specification. Can be specified in one of four ways.",
       "type": {
         "complex_type": "union",
@@ -79317,7 +79317,7 @@
     },
     {
       "name": "EquipmentID",
-      "order": 249,
+      "order": 321,
       "description": "An equipment prototype may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -79343,7 +79343,7 @@
     },
     {
       "name": "EquipmentIDAndQualityIDPair",
-      "order": 251,
+      "order": 323,
       "description": "An equipment prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -79367,7 +79367,7 @@
     },
     {
       "name": "EquipmentPoint",
-      "order": 345,
+      "order": 161,
       "description": "A table used to define a manual shape for a piece of equipment.",
       "type": {
         "complex_type": "table",
@@ -79391,7 +79391,7 @@
     },
     {
       "name": "EquipmentPosition",
-      "order": 45,
+      "order": 79,
       "description": "Position inside an equipment grid. This uses the same format as [MapPosition](runtime:MapPosition), meaning it can be specified either with or without explicit keys.",
       "examples": [
         "```\n-- Explicit definition\n{x = 5, y = 2}\n{y = 2, x = 5}\n```",
@@ -79432,7 +79432,7 @@
     },
     {
       "name": "EquipmentPrototypeFilter",
-      "order": 457,
+      "order": 450,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79516,7 +79516,7 @@
     },
     {
       "name": "EquipmentWithQualityCounts",
-      "order": 189,
+      "order": 261,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79547,7 +79547,7 @@
     },
     {
       "name": "EquipmentWithQualityID",
-      "order": 250,
+      "order": 322,
       "description": "An equipment prototype with optional quality specification.",
       "type": {
         "complex_type": "union",
@@ -79578,7 +79578,7 @@
     },
     {
       "name": "EventData",
-      "order": 9,
+      "order": 15,
       "description": "Information about the event that has been raised. The table can also contain other fields depending on the type of event. See [the list of Factorio events](runtime:events) for more information on these.",
       "type": {
         "complex_type": "table",
@@ -79609,7 +79609,7 @@
     },
     {
       "name": "EventFilter",
-      "order": 425,
+      "order": 384,
       "description": "Used to filter out irrelevant event callbacks in a performant way.\n\nFilters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding event, and different types of event filters can not be mixed.",
       "type": {
         "complex_type": "array",
@@ -79618,7 +79618,7 @@
           "options": [
             {
               "complex_type": "type",
-              "value": "LuaPlayerRepairedEntityEventFilter",
+              "value": "LuaEntityClonedEventFilter",
               "description": ""
             },
             {
@@ -79628,52 +79628,12 @@
             },
             {
               "complex_type": "type",
-              "value": "LuaSectorScannedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPlatformBuiltEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaSegmentedUnitCreatedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPreGhostDeconstructedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaScriptRaisedBuiltEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPreGhostUpgradedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPreRobotMinedEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaRobotMinedEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
               "value": "LuaEntityDeconstructionCancelledEventFilter",
               "description": ""
             },
             {
               "complex_type": "type",
-              "value": "LuaPrePlayerMinedEntityEventFilter",
+              "value": "LuaEntityDiedEventFilter",
               "description": ""
             },
             {
@@ -79683,42 +79643,12 @@
             },
             {
               "complex_type": "type",
-              "value": "LuaSegmentedUnitDamagedEventFilter",
+              "value": "LuaEntityMarkedForUpgradeEventFilter",
               "description": ""
             },
             {
               "complex_type": "type",
-              "value": "LuaUpgradeCancelledEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaSegmentedUnitDiedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPostSegmentedUnitDiedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaEntityClonedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPlayerBuiltEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaRobotBuiltEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaScriptRaisedDestroyEventFilter",
+              "value": "LuaPlatformBuiltEntityEventFilter",
               "description": ""
             },
             {
@@ -79728,32 +79658,7 @@
             },
             {
               "complex_type": "type",
-              "value": "LuaScriptRaisedTeleportedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPrePlatformMinedEntityEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaScriptRaisedReviveEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaPostEntityDiedEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaScriptRaisedDestroySegmentedUnitEventFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "LuaEntityMarkedForUpgradeEventFilter",
+              "value": "LuaPlayerBuiltEntityEventFilter",
               "description": ""
             },
             {
@@ -79763,7 +79668,102 @@
             },
             {
               "complex_type": "type",
-              "value": "LuaEntityDiedEventFilter",
+              "value": "LuaPlayerRepairedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPostEntityDiedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPostSegmentedUnitDiedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPreGhostDeconstructedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPreGhostUpgradedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPrePlatformMinedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPrePlayerMinedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaPreRobotMinedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaRobotBuiltEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaRobotMinedEntityEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaScriptRaisedBuiltEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaScriptRaisedDestroyEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaScriptRaisedDestroySegmentedUnitEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaScriptRaisedReviveEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaScriptRaisedTeleportedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaSectorScannedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaSegmentedUnitCreatedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaSegmentedUnitDamagedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaSegmentedUnitDiedEventFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "LuaUpgradeCancelledEventFilter",
               "description": ""
             }
           ],
@@ -79773,7 +79773,7 @@
     },
     {
       "name": "ExplosionDefinition",
-      "order": 110,
+      "order": 48,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79797,7 +79797,7 @@
     },
     {
       "name": "FactoriopediaID",
-      "order": 136,
+      "order": 93,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -79868,7 +79868,7 @@
     },
     {
       "name": "FlowStatisticsID",
-      "order": 15,
+      "order": 3,
       "description": "Identifies a statistics prototype, depending on the statistics type.",
       "type": {
         "complex_type": "union",
@@ -79899,7 +79899,7 @@
     },
     {
       "name": "Fluid",
-      "order": 248,
+      "order": 320,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79930,13 +79930,13 @@
     },
     {
       "name": "FluidAmount",
-      "order": 22,
+      "order": 81,
       "description": "A fluid amount. The amount is stored as a fixed-size signed 64 bit integer, with 24 bits reserved for decimal precision, meaning the smallest value step is `1/2^24`.",
       "type": "double"
     },
     {
       "name": "FluidBoxConnectionRecord",
-      "order": 326,
+      "order": 176,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79967,7 +79967,7 @@
     },
     {
       "name": "FluidBoxNeighbourRecord",
-      "order": 324,
+      "order": 174,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79991,7 +79991,7 @@
     },
     {
       "name": "FluidFilter",
-      "order": 175,
+      "order": 247,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80022,7 +80022,7 @@
     },
     {
       "name": "FluidFlowDirection",
-      "order": 23,
+      "order": 83,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -80048,7 +80048,7 @@
     },
     {
       "name": "FluidID",
-      "order": 229,
+      "order": 301,
       "description": "A fluid may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -80074,7 +80074,7 @@
     },
     {
       "name": "FluidProduct",
-      "order": 125,
+      "order": 146,
       "description": "",
       "examples": [
         "```\n-- Products of the \"advanced-oil-processing\" recipe\n{{type=\"fluid\", name=\"heavy-oil\", amount=1},\n  {type=\"fluid\", name=\"light-oil\", amount=4.5},\n  {type=\"fluid\", name=\"petroleum-gas\", amount=5.5}}\n```"
@@ -80167,7 +80167,7 @@
     },
     {
       "name": "FluidPrototypeFilter",
-      "order": 448,
+      "order": 451,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80419,13 +80419,13 @@
     },
     {
       "name": "FluidStorageIndex",
-      "order": 323,
+      "order": 173,
       "description": "Valid values are from 1 up to [LuaEntity::fluids_count](runtime:LuaEntity::fluids_count).",
       "type": "uint32"
     },
     {
       "name": "FogEffectProperties",
-      "order": 216,
+      "order": 288,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80456,7 +80456,7 @@
     },
     {
       "name": "ForceCondition",
-      "order": 121,
+      "order": 86,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -80502,7 +80502,7 @@
     },
     {
       "name": "ForceID",
-      "order": 228,
+      "order": 300,
       "description": "A force may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -80528,7 +80528,7 @@
     },
     {
       "name": "ForceSet",
-      "order": 258,
+      "order": 330,
       "description": "Set of forces. Can be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -80552,7 +80552,7 @@
     },
     {
       "name": "FurnaceBlueprintControlBehavior",
-      "order": 414,
+      "order": 401,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80660,7 +80660,7 @@
     },
     {
       "name": "GameViewSettings",
-      "order": 17,
+      "order": 12,
       "description": "Parameters that affect the look and control of the game. Updating any of the member attributes here will immediately take effect in the game engine.",
       "type": {
         "complex_type": "LuaStruct",
@@ -80814,7 +80814,7 @@
     },
     {
       "name": "GenericOnOffBlueprintControlBehavior",
-      "order": 397,
+      "order": 402,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80859,7 +80859,7 @@
     },
     {
       "name": "GhostShimmerConfig",
-      "order": 185,
+      "order": 257,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80931,7 +80931,7 @@
     },
     {
       "name": "GhostShimmerDistortionData",
-      "order": 187,
+      "order": 259,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80969,7 +80969,7 @@
     },
     {
       "name": "GhostShimmerOverlayData",
-      "order": 186,
+      "order": 258,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81021,7 +81021,7 @@
     },
     {
       "name": "GhostTintSet",
-      "order": 188,
+      "order": 260,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81066,7 +81066,7 @@
     },
     {
       "name": "GlobalTintEffectProperties",
-      "order": 217,
+      "order": 289,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81104,7 +81104,7 @@
     },
     {
       "name": "GuiAnchor",
-      "order": 344,
+      "order": 206,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81176,7 +81176,7 @@
     },
     {
       "name": "GuiArrowSpecification",
-      "order": 173,
+      "order": 245,
       "description": "Used for specifying where a GUI arrow should point to.",
       "type": {
         "complex_type": "table",
@@ -81290,7 +81290,7 @@
     },
     {
       "name": "GuiArrowType",
-      "order": 174,
+      "order": 246,
       "description": "Used by [GuiArrowSpecification](runtime:GuiArrowSpecification).",
       "type": {
         "complex_type": "union",
@@ -81341,7 +81341,7 @@
     },
     {
       "name": "GuiDirection",
-      "order": 137,
+      "order": 92,
       "description": "Direction of a [LuaGuiElement's](runtime:LuaGuiElement::direction) layout.",
       "type": {
         "complex_type": "union",
@@ -81362,7 +81362,7 @@
     },
     {
       "name": "GuiElementType",
-      "order": 33,
+      "order": 41,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -81503,7 +81503,7 @@
     },
     {
       "name": "GuiLocation",
-      "order": 342,
+      "order": 204,
       "description": "Screen coordinates of a GUI element in a [LuaGui](runtime:LuaGui). This uses the same format as [TilePosition](runtime:TilePosition), meaning it can be specified either with or without explicit keys.",
       "type": {
         "complex_type": "union",
@@ -81540,7 +81540,7 @@
     },
     {
       "name": "GunShift4Way",
-      "order": 150,
+      "order": 219,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81578,7 +81578,7 @@
     },
     {
       "name": "HeatConnectionDefinition",
-      "order": 139,
+      "order": 371,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81602,7 +81602,7 @@
     },
     {
       "name": "HeatPipeBlueprintControlBehavior",
-      "order": 396,
+      "order": 403,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81633,7 +81633,7 @@
     },
     {
       "name": "HeatSetting",
-      "order": 102,
+      "order": 66,
       "description": "The settings used by a heat-interface type entity.",
       "type": {
         "complex_type": "table",
@@ -81657,7 +81657,7 @@
     },
     {
       "name": "HeatSettingMode",
-      "order": 101,
+      "order": 65,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -81693,7 +81693,7 @@
     },
     {
       "name": "IDType",
-      "order": 51,
+      "order": 97,
       "description": "All base prototype types.",
       "type": {
         "complex_type": "union",
@@ -81914,7 +81914,7 @@
     },
     {
       "name": "IconDrawSpecification",
-      "order": 85,
+      "order": 91,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81969,7 +81969,7 @@
     },
     {
       "name": "IconSequencePositioning",
-      "order": 87,
+      "order": 89,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82028,7 +82028,7 @@
     },
     {
       "name": "InfinityInventoryFilter",
-      "order": 100,
+      "order": 50,
       "description": "A single filter used by an infinity-filters instance.",
       "type": {
         "complex_type": "table",
@@ -82090,7 +82090,7 @@
     },
     {
       "name": "InfinityPipeFilter",
-      "order": 112,
+      "order": 67,
       "description": "A single filter used by an infinity-pipe type entity.",
       "type": {
         "complex_type": "table",
@@ -82153,7 +82153,7 @@
     },
     {
       "name": "Ingredient",
-      "order": 159,
+      "order": 148,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82291,7 +82291,7 @@
     },
     {
       "name": "InserterBlueprintControlBehavior",
-      "order": 387,
+      "order": 404,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82378,13 +82378,13 @@
     },
     {
       "name": "InventoryIndex",
-      "order": 6,
+      "order": 7,
       "description": "",
       "type": "uint8"
     },
     {
       "name": "InventoryPosition",
-      "order": 106,
+      "order": 71,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82415,7 +82415,7 @@
     },
     {
       "name": "InventoryWithCustomStackSizeSpecification",
-      "order": 351,
+      "order": 166,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82464,13 +82464,13 @@
     },
     {
       "name": "ItemCountType",
-      "order": 5,
+      "order": 6,
       "description": "",
       "type": "uint32"
     },
     {
       "name": "ItemFilter",
-      "order": 168,
+      "order": 240,
       "description": "An item filter may be specified in two ways, either as a string which is an item prototype name or as a table.",
       "type": {
         "complex_type": "union",
@@ -82508,7 +82508,7 @@
     },
     {
       "name": "ItemHealthColorData",
-      "order": 191,
+      "order": 263,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82532,7 +82532,7 @@
     },
     {
       "name": "ItemID",
-      "order": 234,
+      "order": 306,
       "description": "An item prototype may be specified in one of four ways.",
       "type": {
         "complex_type": "union",
@@ -82563,7 +82563,7 @@
     },
     {
       "name": "ItemIDAndQualityIDPair",
-      "order": 233,
+      "order": 305,
       "description": "An item prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -82587,7 +82587,7 @@
     },
     {
       "name": "ItemIDFilter",
-      "order": 48,
+      "order": 95,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82618,7 +82618,7 @@
     },
     {
       "name": "ItemInventoryPositions",
-      "order": 105,
+      "order": 70,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82645,7 +82645,7 @@
     },
     {
       "name": "ItemLocationData",
-      "order": 352,
+      "order": 184,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82690,7 +82690,7 @@
     },
     {
       "name": "ItemProduct",
-      "order": 124,
+      "order": 145,
       "description": "",
       "examples": [
         "```\n-- Products of the \"steel-chest\" recipe (an array of Product)\n{{type=\"item\", name=\"steel-chest\", amount=1}}\n```",
@@ -82819,7 +82819,7 @@
     },
     {
       "name": "ItemPrototypeFilter",
-      "order": 451,
+      "order": 459,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83276,7 +83276,7 @@
     },
     {
       "name": "ItemPrototypeFlag",
-      "order": 304,
+      "order": 111,
       "description": "A [string](runtime:string) specifying an item prototype flag.",
       "type": {
         "complex_type": "union",
@@ -83362,7 +83362,7 @@
     },
     {
       "name": "ItemPrototypeFlags",
-      "order": 303,
+      "order": 110,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.\n\nBy default, none of these flags are set.",
       "type": {
         "complex_type": "dictionary",
@@ -83375,7 +83375,7 @@
     },
     {
       "name": "ItemStackDefinition",
-      "order": 307,
+      "order": 115,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83448,7 +83448,7 @@
     },
     {
       "name": "ItemStackIdentification",
-      "order": 271,
+      "order": 343,
       "description": "An item may be specified in one of three ways.",
       "examples": [
         "```\n-- All of these lines specify an item stack of one iron plate\n{name=\"iron-plate\"}\n{name=\"iron-plate\", count=1}\n{name=\"iron-plate\", count=1, quality=\"normal\"}\n```",
@@ -83479,13 +83479,13 @@
     },
     {
       "name": "ItemStackIndex",
-      "order": 3,
+      "order": 4,
       "description": "",
       "type": "uint16"
     },
     {
       "name": "ItemStackLocation",
-      "order": 166,
+      "order": 238,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83509,7 +83509,7 @@
     },
     {
       "name": "ItemToPlace",
-      "order": 190,
+      "order": 262,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83533,7 +83533,7 @@
     },
     {
       "name": "ItemWithQualityCount",
-      "order": 167,
+      "order": 239,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83564,7 +83564,7 @@
     },
     {
       "name": "ItemWithQualityID",
-      "order": 232,
+      "order": 304,
       "description": "An item prototype with optional quality specification. Can be specified in one of four ways.",
       "type": {
         "complex_type": "union",
@@ -83595,7 +83595,7 @@
     },
     {
       "name": "LabBlueprintControlBehavior",
-      "order": 416,
+      "order": 425,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83671,7 +83671,7 @@
     },
     {
       "name": "LabStoredDurability",
-      "order": 329,
+      "order": 179,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83695,7 +83695,7 @@
     },
     {
       "name": "LampBlueprintControlBehavior",
-      "order": 409,
+      "order": 405,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83782,7 +83782,7 @@
     },
     {
       "name": "LandMineBlueprintControlBehavior",
-      "order": 404,
+      "order": 406,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -83827,7 +83827,7 @@
     },
     {
       "name": "LinkedGameControl",
-      "order": 141,
+      "order": 100,
       "description": "The internal name of a game control (key binding).",
       "type": {
         "complex_type": "union",
@@ -84813,7 +84813,7 @@
     },
     {
       "name": "LoaderBlueprintControlBehavior",
-      "order": 408,
+      "order": 407,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -84879,7 +84879,7 @@
     },
     {
       "name": "LocalisedString",
-      "order": 171,
+      "order": 243,
       "description": "Localised strings are a way to support translation of in-game text. They offer a language-independent code representation of the text that should be shown to players.\n\nIt is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.\n\nThe key identifies the string template. For example, `\"gui-alert-tooltip.attack\"` (for the template `\"__1__ objects are being damaged\"`; see the file `data/core/locale/en.cfg`).\n\nThe template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.\n\nThere are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`\"\"`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`\"?\"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.\n\nFurthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated, as well as a number, boolean or `nil`, which will be converted to their textual representation.",
       "examples": [
         "```\n-- In the English translation, this will print \"No ammo\"; in the Czech translation, it will print \"Bez munice\":\ngame.player.print({\"description.no-ammo\"})\n-- The 'description.no-ammo' template contains no placeholders, so no further parameters are necessary.\n```",
@@ -84906,7 +84906,7 @@
     },
     {
       "name": "LogisticContainerBlueprintControlBehavior",
-      "order": 389,
+      "order": 408,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -84958,7 +84958,7 @@
     },
     {
       "name": "LogisticFilter",
-      "order": 264,
+      "order": 336,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85003,13 +85003,13 @@
     },
     {
       "name": "LogisticFilterIndex",
-      "order": 4,
+      "order": 5,
       "description": "",
       "type": "uint16"
     },
     {
       "name": "LogisticGroup",
-      "order": 82,
+      "order": 116,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85039,7 +85039,7 @@
     },
     {
       "name": "LogisticMode",
-      "order": 78,
+      "order": 121,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -85075,7 +85075,7 @@
     },
     {
       "name": "LogisticSection",
-      "order": 79,
+      "order": 120,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85123,7 +85123,7 @@
     },
     {
       "name": "LogisticSections",
-      "order": 80,
+      "order": 122,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85150,7 +85150,7 @@
     },
     {
       "name": "LogisticsNetworkSupplyCounts",
-      "order": 320,
+      "order": 162,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85188,7 +85188,7 @@
     },
     {
       "name": "LogisticsNetworkSupplyPoints",
-      "order": 321,
+      "order": 163,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85238,7 +85238,7 @@
     },
     {
       "name": "LuaEntityClonedEventFilter",
-      "order": 477,
+      "order": 460,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85667,7 +85667,7 @@
     },
     {
       "name": "LuaEntityDeconstructionCancelledEventFilter",
-      "order": 470,
+      "order": 462,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85835,567 +85835,6 @@
     },
     {
       "name": "LuaEntityDiedEventFilter",
-      "order": 489,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "ghost"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail-signal"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rolling-stock"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "robot-with-logistics-interface"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "vehicle"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "turret"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "crafting-machine"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "wall-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "transport-belt-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "circuit-network-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "force"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "force",
-            "order": 4,
-            "description": "",
-            "parameters": [
-              {
-                "name": "force",
-                "order": 0,
-                "description": "The entity force",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_name",
-            "order": 3,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The ghost prototype name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_type",
-            "order": 2,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The ghost prototype type",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "order": 1,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The prototype name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaEntityMarkedForDeconstructionEventFilter",
-      "order": 472,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "ghost"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail-signal"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rolling-stock"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "robot-with-logistics-interface"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "vehicle"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "turret"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "crafting-machine"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "wall-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "transport-belt-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "circuit-network-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_name"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "ghost_name",
-            "order": 3,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The ghost prototype name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_type",
-            "order": 2,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The ghost prototype type",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "order": 1,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The prototype name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaEntityMarkedForUpgradeEventFilter",
-      "order": 487,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "ghost"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail-signal"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rolling-stock"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "robot-with-logistics-interface"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "vehicle"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "turret"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "crafting-machine"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "wall-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "transport-belt-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "circuit-network-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_name"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "ghost_name",
-            "order": 3,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The ghost prototype name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_type",
-            "order": 2,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The ghost prototype type",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "order": 1,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The prototype name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaEventType",
-      "order": 279,
-      "description": "Event name may be specified in one of four ways.",
-      "type": {
-        "complex_type": "union",
-        "options": [
-          {
-            "complex_type": "type",
-            "value": "LuaCustomEventPrototype",
-            "description": "Custom event prototype."
-          },
-          {
-            "complex_type": "type",
-            "value": "LuaCustomInputPrototype",
-            "description": "Custom input prototype."
-          },
-          {
-            "complex_type": "type",
-            "value": "defines.events",
-            "description": "Event identifier."
-          },
-          {
-            "complex_type": "type",
-            "value": "string",
-            "description": "Name of the event."
-          }
-        ],
-        "full_format": true
-      }
-    },
-    {
-      "name": "LuaObject",
-      "order": 443,
-      "description": "Any LuaObject listed on the [Classes](runtime:classes) page.",
-      "type": {
-        "complex_type": "builtin"
-      }
-    },
-    {
-      "name": "LuaPlatformBuiltEntityEventFilter",
       "order": 463,
       "description": "",
       "type": {
@@ -86581,8 +86020,569 @@
       }
     },
     {
+      "name": "LuaEntityMarkedForDeconstructionEventFilter",
+      "order": 464,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "ghost"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail-signal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rolling-stock"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "robot-with-logistics-interface"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "vehicle"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "turret"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "crafting-machine"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "wall-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "transport-belt-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "circuit-network-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_name"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "ghost_name",
+            "order": 3,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The ghost prototype name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_type",
+            "order": 2,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The ghost prototype type",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The prototype name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
+      "name": "LuaEntityMarkedForUpgradeEventFilter",
+      "order": 465,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "ghost"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail-signal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rolling-stock"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "robot-with-logistics-interface"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "vehicle"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "turret"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "crafting-machine"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "wall-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "transport-belt-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "circuit-network-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_name"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "ghost_name",
+            "order": 3,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The ghost prototype name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_type",
+            "order": 2,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The ghost prototype type",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The prototype name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
+      "name": "LuaEventType",
+      "order": 351,
+      "description": "Event name may be specified in one of four ways.",
+      "type": {
+        "complex_type": "union",
+        "options": [
+          {
+            "complex_type": "type",
+            "value": "LuaCustomEventPrototype",
+            "description": "Custom event prototype."
+          },
+          {
+            "complex_type": "type",
+            "value": "LuaCustomInputPrototype",
+            "description": "Custom input prototype."
+          },
+          {
+            "complex_type": "type",
+            "value": "defines.events",
+            "description": "Event identifier."
+          },
+          {
+            "complex_type": "type",
+            "value": "string",
+            "description": "Name of the event."
+          }
+        ],
+        "full_format": true
+      }
+    },
+    {
+      "name": "LuaObject",
+      "order": 443,
+      "description": "Any LuaObject listed on the [Classes](runtime:classes) page.",
+      "type": {
+        "complex_type": "builtin"
+      }
+    },
+    {
+      "name": "LuaPlatformBuiltEntityEventFilter",
+      "order": 466,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "ghost"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail-signal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rolling-stock"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "robot-with-logistics-interface"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "vehicle"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "turret"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "crafting-machine"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "wall-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "transport-belt-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "circuit-network-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "force"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "force",
+            "order": 4,
+            "description": "",
+            "parameters": [
+              {
+                "name": "force",
+                "order": 0,
+                "description": "The entity force",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_name",
+            "order": 3,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The ghost prototype name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_type",
+            "order": 2,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The ghost prototype type",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The prototype name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
       "name": "LuaPlatformMinedEntityEventFilter",
-      "order": 481,
+      "order": 467,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -86750,7 +86750,7 @@
     },
     {
       "name": "LuaPlayerBuiltEntityEventFilter",
-      "order": 478,
+      "order": 468,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -86936,7 +86936,7 @@
     },
     {
       "name": "LuaPlayerMinedEntityEventFilter",
-      "order": 488,
+      "order": 469,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -87104,7 +87104,7 @@
     },
     {
       "name": "LuaPlayerRepairedEntityEventFilter",
-      "order": 460,
+      "order": 470,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -87272,7 +87272,7 @@
     },
     {
       "name": "LuaPostEntityDiedEventFilter",
-      "order": 485,
+      "order": 471,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -87342,7 +87342,7 @@
     },
     {
       "name": "LuaPostSegmentedUnitDiedEventFilter",
-      "order": 476,
+      "order": 472,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -87412,7 +87412,7 @@
     },
     {
       "name": "LuaPreGhostDeconstructedEventFilter",
-      "order": 465,
+      "order": 473,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -87580,7 +87580,7 @@
     },
     {
       "name": "LuaPreGhostUpgradedEventFilter",
-      "order": 467,
+      "order": 474,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -87748,7 +87748,7 @@
     },
     {
       "name": "LuaPrePlatformMinedEntityEventFilter",
-      "order": 483,
+      "order": 475,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -87916,7 +87916,7 @@
     },
     {
       "name": "LuaPrePlayerMinedEntityEventFilter",
-      "order": 471,
+      "order": 476,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -88084,7 +88084,7 @@
     },
     {
       "name": "LuaPreRobotMinedEntityEventFilter",
-      "order": 468,
+      "order": 477,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -88252,7 +88252,7 @@
     },
     {
       "name": "LuaRobotBuiltEntityEventFilter",
-      "order": 479,
+      "order": 478,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -88438,7 +88438,7 @@
     },
     {
       "name": "LuaRobotMinedEntityEventFilter",
-      "order": 469,
+      "order": 479,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -88606,174 +88606,6 @@
     },
     {
       "name": "LuaScriptRaisedBuiltEventFilter",
-      "order": 466,
-      "description": "",
-      "type": {
-        "complex_type": "table",
-        "parameters": [
-          {
-            "name": "filter",
-            "order": 0,
-            "description": "The condition to filter on.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "ghost"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rail-signal"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "rolling-stock"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "robot-with-logistics-interface"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "vehicle"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "turret"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "crafting-machine"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "wall-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "transport-belt-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "circuit-network-connectable"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "name"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_type"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "ghost_name"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": false
-          },
-          {
-            "name": "invert",
-            "order": 2,
-            "description": "Inverts the condition. Default is `false`.",
-            "type": "boolean",
-            "optional": true
-          },
-          {
-            "name": "mode",
-            "order": 1,
-            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
-            "type": {
-              "complex_type": "union",
-              "options": [
-                {
-                  "complex_type": "literal",
-                  "value": "or"
-                },
-                {
-                  "complex_type": "literal",
-                  "value": "and"
-                }
-              ],
-              "full_format": false
-            },
-            "optional": true
-          }
-        ],
-        "variant_parameter_groups": [
-          {
-            "name": "ghost_name",
-            "order": 3,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The ghost prototype name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "ghost_type",
-            "order": 2,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The ghost prototype type",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "name",
-            "order": 1,
-            "description": "",
-            "parameters": [
-              {
-                "name": "name",
-                "order": 0,
-                "description": "The prototype name",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          },
-          {
-            "name": "type",
-            "order": 0,
-            "description": "",
-            "parameters": [
-              {
-                "name": "type",
-                "order": 0,
-                "description": "The prototype type",
-                "type": "string",
-                "optional": false
-              }
-            ]
-          }
-        ],
-        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
-      }
-    },
-    {
-      "name": "LuaScriptRaisedDestroyEventFilter",
       "order": 480,
       "description": "",
       "type": {
@@ -88941,8 +88773,176 @@
       }
     },
     {
+      "name": "LuaScriptRaisedDestroyEventFilter",
+      "order": 481,
+      "description": "",
+      "type": {
+        "complex_type": "table",
+        "parameters": [
+          {
+            "name": "filter",
+            "order": 0,
+            "description": "The condition to filter on.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "ghost"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rail-signal"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "rolling-stock"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "robot-with-logistics-interface"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "vehicle"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "turret"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "crafting-machine"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "wall-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "transport-belt-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "circuit-network-connectable"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "name"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_type"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "ghost_name"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": false
+          },
+          {
+            "name": "invert",
+            "order": 2,
+            "description": "Inverts the condition. Default is `false`.",
+            "type": "boolean",
+            "optional": true
+          },
+          {
+            "name": "mode",
+            "order": 1,
+            "description": "How to combine this with the previous filter. Defaults to `\"or\"`. When evaluating the filters, `\"and\"` has higher precedence than `\"or\"`.",
+            "type": {
+              "complex_type": "union",
+              "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "or"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "and"
+                }
+              ],
+              "full_format": false
+            },
+            "optional": true
+          }
+        ],
+        "variant_parameter_groups": [
+          {
+            "name": "ghost_name",
+            "order": 3,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The ghost prototype name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "ghost_type",
+            "order": 2,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The ghost prototype type",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "name",
+            "order": 1,
+            "description": "",
+            "parameters": [
+              {
+                "name": "name",
+                "order": 0,
+                "description": "The prototype name",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          },
+          {
+            "name": "type",
+            "order": 0,
+            "description": "",
+            "parameters": [
+              {
+                "name": "type",
+                "order": 0,
+                "description": "The prototype type",
+                "type": "string",
+                "optional": false
+              }
+            ]
+          }
+        ],
+        "variant_parameter_description": "Other attributes may be specified depending on `filter`:"
+      }
+    },
+    {
       "name": "LuaScriptRaisedDestroySegmentedUnitEventFilter",
-      "order": 486,
+      "order": 482,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89012,7 +89012,7 @@
     },
     {
       "name": "LuaScriptRaisedReviveEventFilter",
-      "order": 484,
+      "order": 483,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89180,7 +89180,7 @@
     },
     {
       "name": "LuaScriptRaisedTeleportedEventFilter",
-      "order": 482,
+      "order": 484,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89348,7 +89348,7 @@
     },
     {
       "name": "LuaSectorScannedEventFilter",
-      "order": 462,
+      "order": 485,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89516,7 +89516,7 @@
     },
     {
       "name": "LuaSegmentedUnitCreatedEventFilter",
-      "order": 464,
+      "order": 486,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89604,7 +89604,7 @@
     },
     {
       "name": "LuaSegmentedUnitDamagedEventFilter",
-      "order": 473,
+      "order": 487,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89767,7 +89767,7 @@
     },
     {
       "name": "LuaSegmentedUnitDiedEventFilter",
-      "order": 475,
+      "order": 488,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -89837,7 +89837,7 @@
     },
     {
       "name": "LuaUpgradeCancelledEventFilter",
-      "order": 474,
+      "order": 489,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90005,7 +90005,7 @@
     },
     {
       "name": "MapAndDifficultySettings",
-      "order": 61,
+      "order": 141,
       "description": "A standard table containing all [MapSettings](runtime:MapSettings) attributes plus an additional table that contains all [DifficultySettings](runtime:DifficultySettings) properties.",
       "type": {
         "complex_type": "table",
@@ -90071,7 +90071,7 @@
     },
     {
       "name": "MapDifficultySettings",
-      "order": 60,
+      "order": 140,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90095,7 +90095,7 @@
     },
     {
       "name": "MapExchangeStringData",
-      "order": 348,
+      "order": 169,
       "description": "The data that can be extracted from a map exchange string, as a plain table.",
       "type": {
         "complex_type": "table",
@@ -90119,7 +90119,7 @@
     },
     {
       "name": "MapGenPreset",
-      "order": 63,
+      "order": 130,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90157,7 +90157,7 @@
     },
     {
       "name": "MapGenSettings",
-      "order": 72,
+      "order": 136,
       "description": "When reading MapGenSettings, all properties will always be present, but they can be omitted when writing.",
       "examples": [
         "```\n-- Assuming a NamedNoiseExpression with the name \"my-alternate-grass1-probability\" is defined...\nlocal surface = game.player.surface\nlocal mgs = surface.map_gen_settings\nmgs.property_expression_names[\"tile:grass1:probability\"] = \"my-alternate-grass1-probability\"\nsurface.map_gen_settings = mgs\n-- ...would override the probability of grass1 being placed at any given point on the current surface.\n```",
@@ -90290,7 +90290,7 @@
     },
     {
       "name": "MapGenSize",
-      "order": 67,
+      "order": 127,
       "description": "A floating point number specifying an amount.\n\nFor backwards compatibility, MapGenSizes can also be specified as a string, which will be converted to a number (when queried, a number will always be returned).\n\nThe map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.",
       "type": {
         "complex_type": "union",
@@ -90386,7 +90386,7 @@
     },
     {
       "name": "MapLocation",
-      "order": 164,
+      "order": 234,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90410,7 +90410,7 @@
     },
     {
       "name": "MapPosition",
-      "order": 163,
+      "order": 228,
       "description": "Coordinates on a surface, for example of an entity. MapPositions may be specified either as a dictionary with `x`, `y` as keys, or simply as an array with two elements.\n\nThe coordinates are saved as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.",
       "examples": [
         "```\n-- Explicit definition\n{x = 5.5, y = 2}\n{y = 2.25, x = 5.125}\n```",
@@ -90451,7 +90451,7 @@
     },
     {
       "name": "MapSettings",
-      "order": 62,
+      "order": 142,
       "description": "Various game-related settings. Updating any of the attributes will immediately take effect in the game engine.",
       "examples": [
         "```\n-- Increase the number of short paths the pathfinder can cache.\ngame.map_settings.path_finder.short_cache_size = 15\n```"
@@ -90520,13 +90520,13 @@
     },
     {
       "name": "MapTick",
-      "order": 2,
+      "order": 0,
       "description": "`math.huge` represents the maximum possible tick.",
       "type": "uint64"
     },
     {
       "name": "MapViewSettings",
-      "order": 86,
+      "order": 88,
       "description": "What is shown in the map view. If a field is not given, that setting will not be changed.",
       "type": {
         "complex_type": "table",
@@ -90627,7 +90627,7 @@
     },
     {
       "name": "MarketIngredient",
-      "order": 114,
+      "order": 51,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90658,7 +90658,7 @@
     },
     {
       "name": "MathExpression",
-      "order": 379,
+      "order": 376,
       "description": "A string that represents a math expression. The expression parser recognizes four basic token types (with their regex):\n\n- Whitespace: `[ \\n\\r\\t]*`\n\n- Number: `(0x[0-9a-f]+|([0-9]+\\.?[0-9]*|\\.[0-9]+)(e-?[0-9]+)?)` (e.g. `3.2`, `100`, `.6`, `4.2e-5`, `0x2a5f`). Supports hexadecimal input and scientific notation for decimal numbers.\n\n- Operator: `+`, `-`, `*`, `/`, `^`, and `()` for brackets, which may be nested.\n\n- Identifier: The functions listed below and any variables listed where the expression is used.\n\nIdentifiers are used to name functions and variables, which result in or represent numbers. The following functions are always available:\n\n- `abs(value)`: Returns absolute value of the given argument; i.e. if the argument is negative, it is inverted.\n\n- `log2(value)`: Returns a binary logarithm of the given value.\n\n- `sign(value)`: Returns `-1` for negative numbers, `0` for zero (regardless of sign), `1` for positive numbers\n\n- `max(value1, value2, ...)`: Returns the greater of the given values. Supports between 2 and 255 arguments.\n\n- `min(value1, value2, ...)`: Returns the smaller of the given values. Supports between 2 and 255 arguments.\n\nThe property where the expression is used may provide variables. For example in [TechnologyUnit::count_formula](prototype:TechnologyUnit::count_formula) `L` and `l` may be used for the technology level.\n\nThe formula is executed following the [BODMAS](https://en.wikipedia.org/wiki/Order_of_operations#Conventional_order) order (also known as PEMDAS).",
       "examples": [
         "```\n\"2500 * (L - 3)\"\n```",
@@ -90668,7 +90668,7 @@
     },
     {
       "name": "MineableProperties",
-      "order": 26,
+      "order": 147,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90740,7 +90740,7 @@
     },
     {
       "name": "MiningDrillBlueprintControlBehavior",
-      "order": 412,
+      "order": 409,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90806,7 +90806,7 @@
     },
     {
       "name": "ModChangeData",
-      "order": 330,
+      "order": 181,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90830,7 +90830,7 @@
     },
     {
       "name": "ModSetting",
-      "order": 418,
+      "order": 387,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90857,7 +90857,7 @@
     },
     {
       "name": "ModSettingPrototypeFilter",
-      "order": 455,
+      "order": 452,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90990,7 +90990,7 @@
     },
     {
       "name": "ModifierType",
-      "order": 129,
+      "order": 212,
       "description": "Used by [TechnologyModifier](runtime:TechnologyModifier).",
       "type": {
         "complex_type": "union",
@@ -91256,13 +91256,13 @@
     },
     {
       "name": "ModuleEffectValue",
-      "order": 0,
+      "order": 13,
       "description": "The percentual increase of the attribute. A value of `0.6` means a 60% increase.",
       "type": "float"
     },
     {
       "name": "ModuleEffects",
-      "order": 1,
+      "order": 14,
       "description": "",
       "examples": [
         "```\n-- These are the effects of the vanilla Speed Module 3\n{speed = 0.5, consumption = 0.7, quality = -0.025}\n```"
@@ -91310,7 +91310,7 @@
     },
     {
       "name": "MouseButtonFlags",
-      "order": 28,
+      "order": 36,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.\n\nTo write to this, use an array[[string](runtime:string)] of the mouse buttons that should be possible to use with on button. The flag `\"left-and-right\"` can also be set, which will set `\"left\"` and `\"right\"` to `true`.",
       "type": {
         "complex_type": "dictionary",
@@ -91373,7 +91373,7 @@
     },
     {
       "name": "NeighbourConnectable",
-      "order": 120,
+      "order": 55,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91407,7 +91407,7 @@
     },
     {
       "name": "NeighbourConnectableConnection",
-      "order": 322,
+      "order": 172,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91452,7 +91452,7 @@
     },
     {
       "name": "NeighbourConnectableConnectionDefinition",
-      "order": 119,
+      "order": 54,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91486,13 +91486,13 @@
     },
     {
       "name": "NoiseExpressionSourceString",
-      "order": 54,
+      "order": 124,
       "description": "The string representation of a noise expression. More detailed information is found on the [prototype docs](prototype:NamedNoiseExpression).",
       "type": "string"
     },
     {
       "name": "NthTickEventData",
-      "order": 10,
+      "order": 16,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91516,7 +91516,7 @@
     },
     {
       "name": "Offer",
-      "order": 115,
+      "order": 52,
       "description": "A single offer on a market entity.",
       "type": {
         "complex_type": "table",
@@ -91543,7 +91543,7 @@
     },
     {
       "name": "OldTileAndPosition",
-      "order": 11,
+      "order": 17,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91567,7 +91567,7 @@
     },
     {
       "name": "OrientedCliffPrototypeSet",
-      "order": 198,
+      "order": 270,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91717,7 +91717,7 @@
     },
     {
       "name": "ParticleID",
-      "order": 238,
+      "order": 310,
       "description": "A particle prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -91738,7 +91738,7 @@
     },
     {
       "name": "PathFinderMapSettings",
-      "order": 59,
+      "order": 139,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91985,7 +91985,7 @@
     },
     {
       "name": "PathfinderFlags",
-      "order": 252,
+      "order": 324,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92037,7 +92037,7 @@
     },
     {
       "name": "PathfinderWaypoint",
-      "order": 12,
+      "order": 18,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92061,7 +92061,7 @@
     },
     {
       "name": "PerceivedPerformance",
-      "order": 116,
+      "order": 56,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92092,7 +92092,7 @@
     },
     {
       "name": "PipeConnection",
-      "order": 325,
+      "order": 175,
       "description": "A single pipe connection for a given fluidbox.",
       "type": {
         "complex_type": "table",
@@ -92151,7 +92151,7 @@
     },
     {
       "name": "PipeConnectionDefinition",
-      "order": 25,
+      "order": 85,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92237,7 +92237,7 @@
     },
     {
       "name": "PipeConnectionType",
-      "order": 24,
+      "order": 84,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -92263,7 +92263,7 @@
     },
     {
       "name": "PipetteID",
-      "order": 140,
+      "order": 99,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -92314,7 +92314,7 @@
     },
     {
       "name": "PlaceAsTileResult",
-      "order": 317,
+      "order": 185,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92362,7 +92362,7 @@
     },
     {
       "name": "PlatformBackdrop",
-      "order": 220,
+      "order": 292,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92585,7 +92585,7 @@
     },
     {
       "name": "PlatformBackdropHeroCloud",
-      "order": 219,
+      "order": 291,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92682,7 +92682,7 @@
     },
     {
       "name": "PlatformSchedule",
-      "order": 195,
+      "order": 267,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92709,7 +92709,7 @@
     },
     {
       "name": "PlayMusicSpecification",
-      "order": 255,
+      "order": 327,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92768,7 +92768,7 @@
     },
     {
       "name": "PlaySoundSpecification",
-      "order": 254,
+      "order": 326,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92806,7 +92806,7 @@
     },
     {
       "name": "PlayerColorData",
-      "order": 205,
+      "order": 277,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92837,7 +92837,7 @@
     },
     {
       "name": "PlayerIdentification",
-      "order": 257,
+      "order": 329,
       "description": "A player may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -92863,7 +92863,7 @@
     },
     {
       "name": "Pollutant",
-      "order": 341,
+      "order": 202,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92880,7 +92880,7 @@
     },
     {
       "name": "PollutionMapSettings",
-      "order": 56,
+      "order": 128,
       "description": "These values are for the time frame of one second (60 ticks).",
       "type": {
         "complex_type": "table",
@@ -92974,7 +92974,7 @@
     },
     {
       "name": "PostSegmentDiedData",
-      "order": 14,
+      "order": 20,
       "description": "Information about an individual segment in a segmented unit when the unit died.",
       "type": {
         "complex_type": "table",
@@ -92998,7 +92998,7 @@
     },
     {
       "name": "PrintSettings",
-      "order": 267,
+      "order": 339,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93050,13 +93050,13 @@
     },
     {
       "name": "ProcessionID",
-      "order": 377,
+      "order": 375,
       "description": "The name of a [ProcessionPrototype](prototype:ProcessionPrototype).",
       "type": "string"
     },
     {
       "name": "ProcessionSet",
-      "order": 204,
+      "order": 276,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93086,7 +93086,7 @@
     },
     {
       "name": "ProcessionTimeline",
-      "order": 214,
+      "order": 286,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93131,7 +93131,7 @@
     },
     {
       "name": "Product",
-      "order": 122,
+      "order": 143,
       "description": "Returns one of the subtypes, depending on the value of `type`.",
       "examples": [
         "```\n-- Products of the \"steel-chest\" recipe (an array of Product)\n{{type=\"item\", name=\"steel-chest\", amount=1}}\n```",
@@ -93157,7 +93157,7 @@
     },
     {
       "name": "ProductionType",
-      "order": 21,
+      "order": 82,
       "description": "Specifies how the entity will utilize this fluidbox. `input-output` should only be used for boilers in fluid heating mode.",
       "type": {
         "complex_type": "union",
@@ -93188,7 +93188,7 @@
     },
     {
       "name": "ProgrammableSpeakerAlertParameters",
-      "order": 94,
+      "order": 59,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93226,7 +93226,7 @@
     },
     {
       "name": "ProgrammableSpeakerBlueprintControlBehavior",
-      "order": 393,
+      "order": 410,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93250,7 +93250,7 @@
     },
     {
       "name": "ProgrammableSpeakerCircuitParameters",
-      "order": 95,
+      "order": 60,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93288,7 +93288,7 @@
     },
     {
       "name": "ProgrammableSpeakerInstrument",
-      "order": 88,
+      "order": 61,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93315,7 +93315,7 @@
     },
     {
       "name": "ProgrammableSpeakerParameters",
-      "order": 92,
+      "order": 57,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93360,7 +93360,7 @@
     },
     {
       "name": "ProgrammableSpeakerPlaybackMode",
-      "order": 93,
+      "order": 58,
       "description": "Specifies from where the programmable speaker's sound will be heard.",
       "type": {
         "complex_type": "union",
@@ -93400,7 +93400,7 @@
     },
     {
       "name": "PrototypeFilter",
-      "order": 375,
+      "order": 385,
       "description": "Types `\"signal\"` and `\"item-group\"` do not support filters.\n\nFilters are always used as an array of filters of a specific type. Every filter can only be used with its corresponding prototype type, and different types of prototype filters can not be mixed.",
       "type": {
         "complex_type": "array",
@@ -93409,12 +93409,7 @@
           "options": [
             {
               "complex_type": "type",
-              "value": "VirtualSignalPrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "FluidPrototypeFilter",
+              "value": "AchievementPrototypeFilter",
               "description": ""
             },
             {
@@ -93424,37 +93419,7 @@
             },
             {
               "complex_type": "type",
-              "value": "TilePrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "ItemPrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "TechnologyPrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "RecipePrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "EntityPrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "ModSettingPrototypeFilter",
-              "description": ""
-            },
-            {
-              "complex_type": "type",
-              "value": "SpaceLocationPrototypeFilter",
+              "value": "DecorativePrototypeFilter",
               "description": ""
             },
             {
@@ -93464,12 +93429,47 @@
             },
             {
               "complex_type": "type",
-              "value": "DecorativePrototypeFilter",
+              "value": "FluidPrototypeFilter",
               "description": ""
             },
             {
               "complex_type": "type",
-              "value": "AchievementPrototypeFilter",
+              "value": "ModSettingPrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "RecipePrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "SpaceLocationPrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "TechnologyPrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "TilePrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "VirtualSignalPrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "EntityPrototypeFilter",
+              "description": ""
+            },
+            {
+              "complex_type": "type",
+              "value": "ItemPrototypeFilter",
               "description": ""
             }
           ],
@@ -93479,7 +93479,7 @@
     },
     {
       "name": "PrototypeFilterMode",
-      "order": 312,
+      "order": 101,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -93505,7 +93505,7 @@
     },
     {
       "name": "PrototypeHistory",
-      "order": 373,
+      "order": 170,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93532,7 +93532,7 @@
     },
     {
       "name": "PrototypeStrafeSettings",
-      "order": 224,
+      "order": 296,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93598,7 +93598,7 @@
     },
     {
       "name": "PrototypeWithQuality",
-      "order": 31,
+      "order": 38,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93622,7 +93622,7 @@
     },
     {
       "name": "ProxyContainerBlueprintControlBehavior",
-      "order": 380,
+      "order": 411,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93646,7 +93646,7 @@
     },
     {
       "name": "PumpBlueprintControlBehavior",
-      "order": 388,
+      "order": 412,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93698,7 +93698,7 @@
     },
     {
       "name": "QualityCondition",
-      "order": 272,
+      "order": 344,
       "description": "An item filter may be specified in two ways, either as a string which is a quality prototype name or as a table.",
       "type": {
         "complex_type": "union",
@@ -93729,7 +93729,7 @@
     },
     {
       "name": "QualityID",
-      "order": 243,
+      "order": 315,
       "description": "A quality prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -93750,7 +93750,7 @@
     },
     {
       "name": "QuickBarSlot",
-      "order": 355,
+      "order": 188,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93819,7 +93819,7 @@
     },
     {
       "name": "RadarBlueprintControlBehavior",
-      "order": 381,
+      "order": 413,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93843,7 +93843,7 @@
     },
     {
       "name": "RadiusVisualisationSpecification",
-      "order": 109,
+      "order": 75,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93892,7 +93892,7 @@
     },
     {
       "name": "RailEndGoal",
-      "order": 365,
+      "order": 155,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93923,7 +93923,7 @@
     },
     {
       "name": "RailEndStart",
-      "order": 366,
+      "order": 156,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93968,7 +93968,7 @@
     },
     {
       "name": "RailExtensionData",
-      "order": 372,
+      "order": 149,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -94006,7 +94006,7 @@
     },
     {
       "name": "RailLocation",
-      "order": 199,
+      "order": 271,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -94037,7 +94037,7 @@
     },
     {
       "name": "RailSignalBaseBlueprintControlBehavior",
-      "order": 402,
+      "order": 414,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -94110,7 +94110,7 @@
     },
     {
       "name": "RangeMode",
-      "order": 165,
+      "order": 229,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -94136,7 +94136,7 @@
     },
     {
       "name": "ReactorBlueprintControlBehavior",
-      "order": 398,
+      "order": 415,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -94174,13 +94174,13 @@
     },
     {
       "name": "RealOrientation",
-      "order": 162,
+      "order": 230,
       "description": "The smooth orientation. It is a `float` in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise.\n\nThis means a value of `0` indicates \"north\", a value of `0.5` indicates \"south\". For example then, a value of `0.625` would indicate \"south-west\", and a value of `0.875` would indicate \"north-west\".",
       "type": "float"
     },
     {
       "name": "RecipeCategoryID",
-      "order": 244,
+      "order": 316,
       "description": "A recipe category may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -94201,7 +94201,7 @@
     },
     {
       "name": "RecipeID",
-      "order": 245,
+      "order": 317,
       "description": "A recipe may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -94227,7 +94227,7 @@
     },
     {
       "name": "RecipeIDAndQualityIDPair",
-      "order": 203,
+      "order": 275,
       "description": "A recipe prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -94563,7 +94563,7 @@
     },
     {
       "name": "RegistrationTarget",
-      "order": 419,
+      "order": 378,
       "description": "Represents an object that can be [registered](runtime:LuaBootstrap::register_on_object_destroyed) for the [on_object_destroyed](runtime:on_object_destroyed) event. Each target has an associated [defines.target_type](runtime:defines.target_type) and some have a unique identifier.",
       "type": {
         "complex_type": "union",
@@ -94699,7 +94699,7 @@
     },
     {
       "name": "RenderLayer",
-      "order": 83,
+      "order": 90,
       "description": "A number between 0 and 255 inclusive, represented by one of the following named strings or the string version of the number. For example `\"10\"` and `\"decals\"` are both valid. Higher values are rendered above lower values.",
       "type": {
         "complex_type": "union",
@@ -95070,7 +95070,7 @@
     },
     {
       "name": "RequestFromLocation",
-      "order": 8,
+      "order": 11,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -95096,7 +95096,7 @@
     },
     {
       "name": "ResearchCondition",
-      "order": 394,
+      "order": 388,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95127,7 +95127,7 @@
     },
     {
       "name": "ResearchIngredient",
-      "order": 128,
+      "order": 210,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95151,7 +95151,7 @@
     },
     {
       "name": "ResearchTrigger",
-      "order": 376,
+      "order": 377,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95320,7 +95320,7 @@
     },
     {
       "name": "Resistance",
-      "order": 75,
+      "order": 44,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95344,7 +95344,7 @@
     },
     {
       "name": "RidingState",
-      "order": 179,
+      "order": 251,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95368,7 +95368,7 @@
     },
     {
       "name": "RoboportBlueprintControlBehavior",
-      "order": 406,
+      "order": 416,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95434,7 +95434,7 @@
     },
     {
       "name": "RocketSiloBlueprintControlBehavior",
-      "order": 403,
+      "order": 417,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95458,7 +95458,7 @@
     },
     {
       "name": "RollingStockDrawData",
-      "order": 328,
+      "order": 178,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95496,7 +95496,7 @@
     },
     {
       "name": "RuntimeTooltipField",
-      "order": 213,
+      "order": 285,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95534,7 +95534,7 @@
     },
     {
       "name": "SavedLogisticFilters",
-      "order": 170,
+      "order": 242,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95561,7 +95561,7 @@
     },
     {
       "name": "SavedLogisticSection",
-      "order": 169,
+      "order": 241,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95602,7 +95602,7 @@
     },
     {
       "name": "ScheduleInterrupt",
-      "order": 41,
+      "order": 365,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95646,7 +95646,7 @@
     },
     {
       "name": "ScheduleRecord",
-      "order": 38,
+      "order": 360,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95708,7 +95708,7 @@
     },
     {
       "name": "ScheduleRecordPosition",
-      "order": 274,
+      "order": 346,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95732,7 +95732,7 @@
     },
     {
       "name": "ScriptArea",
-      "order": 339,
+      "order": 200,
       "description": "An area defined using the map editor.",
       "type": {
         "complex_type": "table",
@@ -95770,7 +95770,7 @@
     },
     {
       "name": "ScriptPosition",
-      "order": 340,
+      "order": 201,
       "description": "A position defined using the map editor.",
       "type": {
         "complex_type": "table",
@@ -95808,7 +95808,7 @@
     },
     {
       "name": "ScriptRenderMode",
-      "order": 277,
+      "order": 349,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -95834,7 +95834,7 @@
     },
     {
       "name": "ScriptRenderTarget",
-      "order": 269,
+      "order": 341,
       "description": "When writing it is possible to give LuaEntity or MapPosition directly. However, reading always returns the full ScriptRenderTargetTable.\n\nThe full ScriptRenderTargetTable allows specifying cursor targets and an offset for entity targets.\n\nIf an entity target of an object (except its `orientation_target`) is destroyed or changes surface, then the object is also destroyed.",
       "examples": [
         "```\ntarget = some_lua_entity\n```",
@@ -95856,7 +95856,7 @@
     },
     {
       "name": "ScriptRenderTargetTable",
-      "order": 270,
+      "order": 342,
       "description": "If an entity target of an object (except its `orientation_target`) is destroyed or changes surface, then the object is also destroyed.\n\nTargets of type `\"cursor\"` draw at the position of the player's cursor.\n\nTargets of type `\"build-cursor\"` draw at the position of the player's build cursor, including snapping to the build position. The offset is rotated by the entity's direction and mirrored if the entity to be built is mirrored. Recommended to be combined with [ScriptRenderMode::build-cursor](runtime:ScriptRenderMode::build-cursor).",
       "examples": [
         "```\n{type = \"entity\", entity = some_lua_entity, offset = {-0.5, 1}}\n```",
@@ -95923,7 +95923,7 @@
     },
     {
       "name": "ScriptSpriteLightMode",
-      "order": 278,
+      "order": 350,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -95949,7 +95949,7 @@
     },
     {
       "name": "ScrollPolicy",
-      "order": 29,
+      "order": 42,
       "description": "Scroll policy of a [scroll pane](runtime:LuaGuiElement).",
       "type": {
         "complex_type": "union",
@@ -95985,7 +95985,7 @@
     },
     {
       "name": "SegmentEngineSpecification",
-      "order": 209,
+      "order": 281,
       "description": "A runtime representation of [SegmentEngineSpecification](prototype:SegmentEngineSpecification).",
       "type": {
         "complex_type": "table",
@@ -96012,7 +96012,7 @@
     },
     {
       "name": "SegmentSpecification",
-      "order": 210,
+      "order": 282,
       "description": "A runtime representation of [SegmentSpecification](prototype:SegmentSpecification).",
       "type": {
         "complex_type": "table",
@@ -96036,7 +96036,7 @@
     },
     {
       "name": "SegmentedUnitAIState",
-      "order": 333,
+      "order": 192,
       "description": "A structure describing the state of a [LuaSegmentedUnit](runtime:LuaSegmentedUnit)'s AI.",
       "type": {
         "complex_type": "table",
@@ -96182,7 +96182,7 @@
     },
     {
       "name": "SelectedPrototypeData",
-      "order": 13,
+      "order": 19,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96220,7 +96220,7 @@
     },
     {
       "name": "SelectionModeFlags",
-      "order": 311,
+      "order": 107,
       "description": "A set of flags on a selection tool that define how entities and tiles are selected. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.",
       "type": {
         "complex_type": "dictionary",
@@ -96373,7 +96373,7 @@
     },
     {
       "name": "SelectorCombinatorParameterOperation",
-      "order": 301,
+      "order": 30,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -96424,7 +96424,7 @@
     },
     {
       "name": "SelectorCombinatorParameters",
-      "order": 300,
+      "order": 29,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96577,7 +96577,7 @@
     },
     {
       "name": "SharedProbabilityDefinition",
-      "order": 123,
+      "order": 144,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96601,7 +96601,7 @@
     },
     {
       "name": "Signal",
-      "order": 299,
+      "order": 24,
       "description": "An actual signal transmitted by the network.",
       "type": {
         "complex_type": "table",
@@ -96625,7 +96625,7 @@
     },
     {
       "name": "SignalFilter",
-      "order": 263,
+      "order": 335,
       "description": "A signal filter may be specified in two ways, either as a string which is a virtual signal name or item prototype name or as a table.\n\nWhen the LogisticFilter that this is used in has a non-zero `min` value then `comparator` must be `\"=\"` (the default when writing) and `quality` is mandatory.",
       "type": {
         "complex_type": "union",
@@ -96670,7 +96670,7 @@
     },
     {
       "name": "SignalID",
-      "order": 294,
+      "order": 31,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96701,7 +96701,7 @@
     },
     {
       "name": "SignalIDBase",
-      "order": 297,
+      "order": 32,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96725,7 +96725,7 @@
     },
     {
       "name": "SignalIDType",
-      "order": 298,
+      "order": 33,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -96776,7 +96776,7 @@
     },
     {
       "name": "SimpleBoundingBox",
-      "order": 192,
+      "order": 264,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96800,7 +96800,7 @@
     },
     {
       "name": "SimulationDefinition",
-      "order": 193,
+      "order": 265,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96932,7 +96932,7 @@
     },
     {
       "name": "SimulationWidgetType",
-      "order": 318,
+      "order": 159,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -97048,7 +97048,7 @@
     },
     {
       "name": "SingleFluidBoxBlueprintControlBehavior",
-      "order": 386,
+      "order": 418,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97110,7 +97110,7 @@
     },
     {
       "name": "SmokeSource",
-      "order": 111,
+      "order": 62,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97260,7 +97260,7 @@
     },
     {
       "name": "SoundPath",
-      "order": 46,
+      "order": 208,
       "description": "It can be either the name of a [SoundPrototype](prototype:SoundPrototype) defined in the data stage, or a path in the form `\"type/name\"`. The latter option can be sorted into four categories.\n\nThe validity of a SoundPath can be verified at runtime using [LuaHelpers::is_valid_sound_path](runtime:LuaHelpers::is_valid_sound_path).",
       "lists": [
         "The utility and ambient types each contain general use sound prototypes defined by the game itself.\n\n- `\"utility\"` - Uses [UtilitySounds](prototype:UtilitySounds). Example: `\"utility/wire_connect_pole\"`\n- `\"ambient\"` - Uses [AmbientSound::sound](prototype:AmbientSound::sound). Variable sounds cannot be used. Example: `\"ambient/resource-deficiency\"`",
@@ -97272,7 +97272,7 @@
     },
     {
       "name": "SoundType",
-      "order": 47,
+      "order": 207,
       "description": "Defines which slider in the game's sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.",
       "type": {
         "complex_type": "union",
@@ -97338,7 +97338,7 @@
     },
     {
       "name": "SpaceConnectionAsteroidSpawnDefinition",
-      "order": 133,
+      "order": 366,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97372,7 +97372,7 @@
     },
     {
       "name": "SpaceConnectionAsteroidSpawnPoint",
-      "order": 134,
+      "order": 367,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97403,7 +97403,7 @@
     },
     {
       "name": "SpaceConnectionID",
-      "order": 261,
+      "order": 333,
       "description": "A space connection prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -97424,7 +97424,7 @@
     },
     {
       "name": "SpaceDustEffectProperties",
-      "order": 218,
+      "order": 290,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97441,7 +97441,7 @@
     },
     {
       "name": "SpaceLocationAsteroidSpawnDefinition",
-      "order": 135,
+      "order": 368,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97486,7 +97486,7 @@
     },
     {
       "name": "SpaceLocationID",
-      "order": 262,
+      "order": 334,
       "description": "A space location prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -97507,7 +97507,7 @@
     },
     {
       "name": "SpaceLocationPrototypeFilter",
-      "order": 456,
+      "order": 454,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97616,7 +97616,7 @@
     },
     {
       "name": "SpacePlatformHubBlueprintControlBehavior",
-      "order": 413,
+      "order": 419,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97703,7 +97703,7 @@
     },
     {
       "name": "SpacePlatformTileDefinition",
-      "order": 308,
+      "order": 108,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97727,7 +97727,7 @@
     },
     {
       "name": "SpawnPointDefinition",
-      "order": 349,
+      "order": 164,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97751,7 +97751,7 @@
     },
     {
       "name": "SpentFluidSpecification",
-      "order": 226,
+      "order": 298,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97782,7 +97782,7 @@
     },
     {
       "name": "SpiderEngineSpecification",
-      "order": 104,
+      "order": 73,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97809,7 +97809,7 @@
     },
     {
       "name": "SpiderLegSpecification",
-      "order": 103,
+      "order": 72,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97867,7 +97867,7 @@
     },
     {
       "name": "SplitterBlueprintControlBehavior",
-      "order": 407,
+      "order": 420,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -97933,7 +97933,7 @@
     },
     {
       "name": "SplitterPriority",
-      "order": 138,
+      "order": 355,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -97959,7 +97959,7 @@
     },
     {
       "name": "SpoilPriority",
-      "order": 118,
+      "order": 78,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -97985,7 +97985,7 @@
     },
     {
       "name": "SpoilToTriggerResult",
-      "order": 306,
+      "order": 102,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98012,7 +98012,7 @@
     },
     {
       "name": "SpritePath",
-      "order": 16,
+      "order": 1,
       "description": "It can be either the name of a [SpritePrototype](prototype:SpritePrototype) defined in the data stage, or a path in form \"type/name\" or \"type.name\".\n\nThe validity of a SpritePath can be verified at runtime using [LuaHelpers::is_valid_sprite_path](runtime:LuaHelpers::is_valid_sprite_path).",
       "lists": [
         "The supported types are:\n\n- `\"item\"` - for example \"item/iron-plate\" is the icon sprite of iron plate\n- `\"entity\"` - for example \"entity/small-biter\" is the icon sprite of the small biter\n- `\"technology\"`\n- `\"recipe\"`\n- `\"fluid\"`\n- `\"tile\"`\n- `\"item-group\"`\n- `\"virtual-signal\"`\n- `\"shortcut\"`\n- `\"achievement\"`\n- `\"equipment\"`\n- `\"ammo-category\"`\n- `\"decorative\"`\n- `\"space-connection\"`\n- `\"space-location\"`\n- `\"surface\"`\n- `\"airborne-pollutant\"`\n- `\"asteroid-chunk\"`\n- `\"quality\"`\n- `\"file\"` - path to an image file located inside the current scenario. This file is not preloaded so it will be slower; for frequently used sprites, it is better to define sprite prototype and use it instead.\n- `\"utility\"` - sprite defined in the utility-sprites object, these are the pictures used by the game internally for the UI."
@@ -98021,7 +98021,7 @@
     },
     {
       "name": "StateSteeringSettings",
-      "order": 222,
+      "order": 294,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98052,7 +98052,7 @@
     },
     {
       "name": "SteeringSettings",
-      "order": 223,
+      "order": 295,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98083,7 +98083,7 @@
     },
     {
       "name": "SurfaceCondition",
-      "order": 73,
+      "order": 209,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98114,7 +98114,7 @@
     },
     {
       "name": "SurfaceIdentification",
-      "order": 256,
+      "order": 328,
       "description": "A surface may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -98140,7 +98140,7 @@
     },
     {
       "name": "SurfacePropertyID",
-      "order": 268,
+      "order": 340,
       "description": "Surface property prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -98161,7 +98161,7 @@
     },
     {
       "name": "SurfaceRenderParameters",
-      "order": 221,
+      "order": 293,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98213,7 +98213,7 @@
     },
     {
       "name": "SwitchState",
-      "order": 34,
+      "order": 40,
       "description": "State of a GUI [switch](runtime:LuaGuiElement::switch_state).",
       "type": {
         "complex_type": "union",
@@ -98239,7 +98239,7 @@
     },
     {
       "name": "TabAndContent",
-      "order": 343,
+      "order": 205,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98276,7 +98276,7 @@
     },
     {
       "name": "TargetType",
-      "order": 313,
+      "order": 105,
       "description": "Target type of an [AmmoType](runtime:AmmoType).",
       "type": {
         "complex_type": "union",
@@ -98302,7 +98302,7 @@
     },
     {
       "name": "TechnologyID",
-      "order": 237,
+      "order": 309,
       "description": "An technology prototype may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -98328,7 +98328,7 @@
     },
     {
       "name": "TechnologyModifier",
-      "order": 127,
+      "order": 211,
       "description": "The effect that is applied when a technology is researched.",
       "type": {
         "complex_type": "table",
@@ -99104,7 +99104,7 @@
     },
     {
       "name": "TechnologyPrototypeFilter",
-      "order": 452,
+      "order": 455,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99291,7 +99291,7 @@
     },
     {
       "name": "TerritorySettings",
-      "order": 71,
+      "order": 135,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99332,7 +99332,7 @@
     },
     {
       "name": "TerritoryVisibilityCondition",
-      "order": 282,
+      "order": 354,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -99358,7 +99358,7 @@
     },
     {
       "name": "TextAlign",
-      "order": 241,
+      "order": 313,
       "description": "The text is aligned so that the target position is at the given side of the text.\n\nFor example, `\"right\"` aligned text means the right side of the text is at the target position. Or in other words, the target is on the right of the text.",
       "type": {
         "complex_type": "union",
@@ -99384,7 +99384,7 @@
     },
     {
       "name": "ThrusterPerformancePoint",
-      "order": 97,
+      "order": 74,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99439,7 +99439,7 @@
     },
     {
       "name": "TileBuildabilityRule",
-      "order": 211,
+      "order": 283,
       "description": "A runtime representation of [TileBuildabilityRule](prototype:TileBuildabilityRule).",
       "type": {
         "complex_type": "table",
@@ -99477,7 +99477,7 @@
     },
     {
       "name": "TileCollisionMask",
-      "order": 132,
+      "order": 358,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99501,7 +99501,7 @@
     },
     {
       "name": "TileID",
-      "order": 246,
+      "order": 318,
       "description": "A tile may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -99527,7 +99527,7 @@
     },
     {
       "name": "TilePosition",
-      "order": 160,
+      "order": 231,
       "description": "Coordinates of a tile on a [LuaSurface](runtime:LuaSurface) where each integer `x`/`y` represents a different tile. This uses the same format as [MapPosition](runtime:MapPosition), except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.",
       "type": {
         "complex_type": "union",
@@ -99564,7 +99564,7 @@
     },
     {
       "name": "TilePrototypeFilter",
-      "order": 450,
+      "order": 456,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99792,7 +99792,7 @@
     },
     {
       "name": "TileSearchFilters",
-      "order": 335,
+      "order": 196,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99914,7 +99914,7 @@
     },
     {
       "name": "TrainFilter",
-      "order": 360,
+      "order": 150,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100004,7 +100004,7 @@
     },
     {
       "name": "TrainPathAllGoalsResult",
-      "order": 368,
+      "order": 158,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100048,7 +100048,7 @@
     },
     {
       "name": "TrainPathFinderConstants",
-      "order": 178,
+      "order": 250,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100142,7 +100142,7 @@
     },
     {
       "name": "TrainPathFinderGoal",
-      "order": 363,
+      "order": 153,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -100173,7 +100173,7 @@
     },
     {
       "name": "TrainPathFinderOneGoalResult",
-      "order": 367,
+      "order": 157,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100242,7 +100242,7 @@
     },
     {
       "name": "TrainPathRequestType",
-      "order": 362,
+      "order": 152,
       "description": "A [string](runtime:string) specifying the type of request for [LuaTrainManager::request_train_path](runtime:LuaTrainManager::request_train_path).",
       "type": {
         "complex_type": "union",
@@ -100273,7 +100273,7 @@
     },
     {
       "name": "TrainSchedule",
-      "order": 194,
+      "order": 266,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100300,7 +100300,7 @@
     },
     {
       "name": "TrainStopBlueprintControlBehavior",
-      "order": 399,
+      "order": 421,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100422,7 +100422,7 @@
     },
     {
       "name": "TrainStopFilter",
-      "order": 361,
+      "order": 151,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100508,7 +100508,7 @@
     },
     {
       "name": "TrainStopGoal",
-      "order": 364,
+      "order": 154,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100532,7 +100532,7 @@
     },
     {
       "name": "TrainVisualizationConstants",
-      "order": 177,
+      "order": 249,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100612,7 +100612,7 @@
     },
     {
       "name": "TransportBeltBlueprintControlBehavior",
-      "order": 401,
+      "order": 422,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100678,7 +100678,7 @@
     },
     {
       "name": "TriggerDelivery",
-      "order": 145,
+      "order": 222,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100961,7 +100961,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 158,
+      "order": 224,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -102368,7 +102368,7 @@
     },
     {
       "name": "TriggerEffectItemType",
-      "order": 157,
+      "order": 223,
       "description": "Used by [TriggerEffectItem](runtime:TriggerEffectItem).",
       "type": {
         "complex_type": "union",
@@ -102499,7 +102499,7 @@
     },
     {
       "name": "TriggerEffectWithCooldown",
-      "order": 151,
+      "order": 216,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -102547,7 +102547,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 153,
+      "order": 225,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -102782,7 +102782,7 @@
     },
     {
       "name": "TriggerModifierData",
-      "order": 152,
+      "order": 217,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -102813,7 +102813,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 148,
+      "order": 213,
       "description": "A set of trigger target masks.",
       "type": {
         "complex_type": "dictionary",
@@ -102826,7 +102826,7 @@
     },
     {
       "name": "TrivialSmokeID",
-      "order": 240,
+      "order": 312,
       "description": "A trivial smoke prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -102847,7 +102847,7 @@
     },
     {
       "name": "TurretBlueprintControlBehavior",
-      "order": 411,
+      "order": 423,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -102927,7 +102927,7 @@
     },
     {
       "name": "UndoRedoAction",
-      "order": 43,
+      "order": 370,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -103289,7 +103289,7 @@
     },
     {
       "name": "UnitAISettings",
-      "order": 225,
+      "order": 297,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -103348,7 +103348,7 @@
     },
     {
       "name": "UnitGroupMapSettings",
-      "order": 58,
+      "order": 138,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -103449,7 +103449,7 @@
     },
     {
       "name": "UnitSpawnDefinition",
-      "order": 350,
+      "order": 165,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -103476,7 +103476,7 @@
     },
     {
       "name": "UnlockableID",
-      "order": 280,
+      "order": 352,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -103500,7 +103500,7 @@
     },
     {
       "name": "UnlockableIDType",
-      "order": 281,
+      "order": 353,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -103601,7 +103601,7 @@
     },
     {
       "name": "UpgradeMapperDestination",
-      "order": 309,
+      "order": 103,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -103662,7 +103662,7 @@
     },
     {
       "name": "UpgradeMapperSource",
-      "order": 302,
+      "order": 104,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -103720,7 +103720,7 @@
     },
     {
       "name": "UtilityConstants",
-      "order": 421,
+      "order": 380,
       "description": "Constants used by the game that are not specific to certain prototypes. See [utility-constants.lua](https://github.com/wube/factorio-data/blob/master/core/prototypes/utility-constants.lua) for the values used by the base game.\n\nNote that this is actually implemented as a [LuaCustomTable](runtime:LuaCustomTable), not a regular table.",
       "type": {
         "complex_type": "table",
@@ -105158,7 +105158,7 @@
     },
     {
       "name": "ValveMode",
-      "order": 99,
+      "order": 63,
       "description": "Defines the mode of operation for a [ValvePrototype](prototype:ValvePrototype).",
       "type": {
         "complex_type": "union",
@@ -105184,7 +105184,7 @@
     },
     {
       "name": "Vector",
-      "order": 286,
+      "order": 232,
       "description": "A vector is a two-element array or dictionary containing the `x` and `y` components. The game will always provide the array format. Positive x goes east, positive y goes south.",
       "examples": [
         "```\nright = {1.0, 0.0}\n```"
@@ -105224,7 +105224,7 @@
     },
     {
       "name": "Vector3D",
-      "order": 176,
+      "order": 248,
       "description": "Reading this always returns the table with the named keys.\n\nIf this is specified as a three-element array then the array items are x, y and z, in that order.",
       "type": {
         "complex_type": "union",
@@ -105269,7 +105269,7 @@
     },
     {
       "name": "VehicleAutomaticTargetingParameters",
-      "order": 89,
+      "order": 64,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105293,7 +105293,7 @@
     },
     {
       "name": "VerticalTextAlign",
-      "order": 242,
+      "order": 314,
       "description": "The text is aligned so that the target position is at the given side of the text.\n\nFor example, `\"top\"` aligned text means the top of the text is at the target position. Or in other words, the target is at the top of the text.",
       "type": {
         "complex_type": "union",
@@ -105324,7 +105324,7 @@
     },
     {
       "name": "VirtualSignalID",
-      "order": 236,
+      "order": 308,
       "description": "A virtual signal prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -105345,7 +105345,7 @@
     },
     {
       "name": "VirtualSignalPrototypeFilter",
-      "order": 447,
+      "order": 457,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105399,7 +105399,7 @@
     },
     {
       "name": "WaitCondition",
-      "order": 35,
+      "order": 361,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105478,7 +105478,7 @@
     },
     {
       "name": "WaitConditionType",
-      "order": 36,
+      "order": 362,
       "description": "Type of a [WaitCondition](runtime:WaitCondition).",
       "type": {
         "complex_type": "union",
@@ -105619,7 +105619,7 @@
     },
     {
       "name": "WallBlueprintControlBehavior",
-      "order": 417,
+      "order": 424,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105671,13 +105671,13 @@
     },
     {
       "name": "Weight",
-      "order": 20,
+      "order": 2,
       "description": "Weight of an object. The weight is stored as a fixed-size 64 bit integer, with 16 bits reserved for decimal precision, meaning the smallest value step is `1/2^16`.",
       "type": "double"
     },
     {
       "name": "WireConnection",
-      "order": 266,
+      "order": 338,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105701,7 +105701,7 @@
     },
     {
       "name": "WorkerRobotOrder",
-      "order": 208,
+      "order": 280,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105760,7 +105760,7 @@
     },
     {
       "name": "ZoomLimits",
-      "order": 275,
+      "order": 347,
       "description": "A set of limitations for the player zoom level.",
       "examples": [
         "```\n{\n  closest = { zoom = 4 },\n  furthest = { zoom = 1 / 16 },\n  furthest_game_view = { distance = 200, max_distance = 400 }\n}\n```"
@@ -105794,7 +105794,7 @@
     },
     {
       "name": "ZoomSpecification",
-      "order": 276,
+      "order": 348,
       "description": "A table specifying a fixed or dynamically-computed zoom level using one of the supported methods. Used by [ZoomLimits](runtime:ZoomLimits).\n\nMethod 1 only uses the `zoom` field. The zoom level is fixed and will not change at runtime. Directly correlates to the perceived size of objects in the game world.\n\nMethod 2 only uses `distance` and optionally `max_distance`. The zoom level is computed dynamically based on the player's window dimensions and aspect ratio. This method is ideal for limiting how far the player can see.\n\nIf there is ambiguity in which method should be used (i.e. both `zoom` and `distance` fields are provided), an error will be thrown during parsing.",
       "examples": [
         "```\n-- Method 1: Specify a fixed zoom level.\n{ zoom = 3.0 }\n\n-- Method 2: Specify a dynamic zoom level based on the window dimensions.\n{ distance = 200, max_distance = 500 }\n```"
