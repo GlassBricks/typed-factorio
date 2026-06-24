@@ -172,23 +172,6 @@ export type LuaGuiElement = {
   /** @variantsName GuiSpec */
   add<Type extends GuiElementType>(element: GuiSpec & { type: Type }): Extract<LuaGuiElement, { type: Type }>
 
-  get elem_value(): // @ts-ignore
-  this["elem_type"] extends "signal"
-    ? SignalID | nil
-    : // @ts-ignore
-      this["elem_type"] extends "with-quality"
-      ? PrototypeWithQualityRead | nil
-      : string | nil
-  set elem_value(
-    value: // @ts-ignore
-    this["elem_type"] extends "signal"
-      ? SignalIDWrite | nil
-      : // @ts-ignore
-        this["elem_type"] extends "with-quality"
-        ? PrototypeWithQuality | nil
-        : string | nil,
-  )
-
   /** @subclasses slider */
   get_slider_minimum()
   /** @subclasses slider */

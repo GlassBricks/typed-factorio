@@ -1,3 +1,7 @@
+# v4.0.1
+
+- `LuaGuiElement.elem_value` is now typed as a plain `string | SignalID | PrototypeWithQuality` union instead of a conditional type based on `elem_type`. The conditional type crashed the TypeScript 6.0 compiler.
+
 # v4.0.0
 
 - Updated to factorio version 2.1.7! This includes some breaking API changes. Make sure to migrate.
