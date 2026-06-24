@@ -27,6 +27,9 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
   // This is also a record of which types exist
   tsToFactorioType = new Map<string, string>()
 
+  // names of types (builtins/concepts) that map to a TS `number`, and so are valid as indexable keys
+  numericTypes = new Set<string>()
+
   hasWarnings = false
 
   public readonly manualDefs: ManualDefinitions

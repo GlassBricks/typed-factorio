@@ -32,8 +32,6 @@ export class RuntimeGenerationContext extends GenerationContext<FactorioRuntimeA
   globalObjects!: Map<string, Parameter>
   globalFunctions!: Map<string, Method>
 
-  numericTypes = new Set<string>()
-
   conceptUsageAnalysis!: ConceptUsageAnalysis
 
   tryGetTypeOfReference(reference: string): Type | undefined {

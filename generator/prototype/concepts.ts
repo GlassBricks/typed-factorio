@@ -57,6 +57,13 @@ export function preprocessTypes(context: PrototypeGenerationContext): void {
   for (const concept of context.types.values()) {
     context.tsToFactorioType.set(concept.name, concept.name)
 
+    if (concept.type === "builtin") {
+      const existing = context.manualDefs.getDeclaration(concept.name)
+      if (existing?.kind === "type" && existing.node.type.kind === ts.SyntaxKind.NumberKeyword) {
+        context.numericTypes.add(concept.name)
+      }
+    }
+
     if (concept.properties) {
       for (const property of concept.properties) {
         maybeRecordInlineConceptReference(context, concept.name, property)

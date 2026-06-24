@@ -1,3 +1,8 @@
+# v4.0.0
+
+- Updated to factorio version 2.1.7! This includes some breaking API changes. Make sure to migrate.
+- Removed the deprecated utility type PrototypeSubclassMap. Use defines.prototypes instead.
+
 # v3.35.0
 
 - Updated to factorio version 2.0.75

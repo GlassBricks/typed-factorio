@@ -16,7 +16,15 @@ export const nameToToPrototypeType = {
   _unused2: "active-trigger",
 } as const
 
-const toIgnore = ["damage", "get_prototype_history", "GuiAnchor", "Noise", "LuaPrototypeBase"]
+const toIgnore = [
+  "damage",
+  "DamageParameters",
+  "get_prototype_history",
+  "GuiAnchor",
+  "Noise",
+  "LuaPrototypeBase",
+  "DebugVariable",
+]
 
 /**
  * For attributes of the `type : string` or `ghost_type : string` form,

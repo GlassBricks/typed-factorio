@@ -27,6 +27,9 @@ const auxiliaryPages = new Set([
   "noise-expressions",
   "instrument",
   "item-weight",
+  "circuit-recipe-selection",
+  "furnace-recipe-selection",
+  "mod-structure",
 ])
 const otherPages = new Set(["classes", "concepts", "events", "defines", "prototypes"])
 

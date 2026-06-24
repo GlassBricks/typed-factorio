@@ -228,26 +228,6 @@ function addPrototypeMapDefinitions(
 
   context.currentFile.add(intf)
 
-  // type PrototypeSubclassMap = defines.prototypes
-  const typeAlias = ts.factory.createTypeAliasDeclaration(
-    [Modifiers.export],
-    "PrototypeSubclassMap",
-    undefined,
-    ts.factory.createTypeReferenceNode("defines.prototypes"),
-  )
-  addJsDoc(
-    context,
-    typeAlias,
-    {
-      description: "A map of prototype subclass types to their prototype types.",
-    },
-    undefined,
-    {
-      tags: [createTag("deprecated", "Use defines.prototypes instead.")],
-    },
-  )
-  context.currentFile.add(typeAlias)
-
   // typealias PrototypeType = keyof PrototypeMap
   const prototypeTypeAlias = ts.factory.createTypeAliasDeclaration(
     [Modifiers.export],

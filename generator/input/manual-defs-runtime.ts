@@ -8,9 +8,6 @@ import { ActiveMods, CustomInputName, VersionString } from "factorio:common" // 
 /** @omit */
 export interface VirtualSignalID {}
 
-/** @omit */
-export interface SpaceConnectionID {}
-
 export interface LuaObject {
   readonly object_name: string
 }
@@ -111,8 +108,6 @@ export interface LuaChunkIterator extends LuaIterable<ChunkPositionAndArea> {}
 
 export interface Fluid {}
 
-export interface LuaFluidBox extends Array<Fluid | nil> {}
-
 export interface LuaTransportLine extends ReadonlyArray<LuaItemStack> {}
 
 export interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
@@ -145,6 +140,9 @@ export interface LuaStyle {
 }
 
 export interface GuiElementType {}
+
+/** @omit */
+export interface AmmoCategoryID {}
 
 export interface SignalID {}
 
@@ -254,9 +252,14 @@ export interface LuaControl {
 
 export interface LuaLogisticPoint {}
 
+export interface LuaWireConnector {}
+
 export interface LuaEntity {
   get_logistic_point(index: defines.logistic_member_index): LuaLogisticPoint | nil
   get_logistic_point(): Record<defines.logistic_member_index, LuaLogisticPoint> | nil
+
+  get_wire_connector(wire_connector_id: defines.wire_connector_id, or_create: true): LuaWireConnector
+  get_wire_connector(wire_connector_id: defines.wire_connector_id, or_create: boolean): LuaWireConnector | nil
 }
 
 export interface LuaGroup {
@@ -552,6 +555,9 @@ export interface SpaceLocationAsteroidSpawnDefinition {
 export interface SpaceConnectionAsteroidSpawnDefinition {
   readonly type: "asteroid-chunk" | "entity"
 }
+
+/** @usage r */
+export interface DebugVariablesFilter {}
 
 /** @replace */
 export type BlueprintWire = readonly [

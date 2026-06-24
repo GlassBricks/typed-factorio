@@ -5,3 +5,8 @@
  * @see {@link https://lua-api.factorio.com/2.0.55/index-runtime.html Online documentation}
  */
 declare const helpers: import("factorio:runtime").LuaHelpers
+
+/**
+ * @see {@link LuaDebugAdapter}
+ */
+declare const debugadapter: import("factorio:runtime").LuaDebugAdapter | undefined

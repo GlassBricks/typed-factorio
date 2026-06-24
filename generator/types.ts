@@ -522,7 +522,8 @@ function getIndexableType(context: GenerationContext, type: runtime.Type | proto
     if (
       type === "string" ||
       type === "number" ||
-      (context instanceof RuntimeGenerationContext && (type.startsWith("defines.") || context.numericTypes.has(type)))
+      context.numericTypes.has(type) ||
+      (context instanceof RuntimeGenerationContext && type.startsWith("defines."))
     )
       return IndexType.Basic
     const innerType = context.tryGetTypeOfReference(type)
@@ -543,9 +544,18 @@ function getIndexableType(context: GenerationContext, type: runtime.Type | proto
   return IndexType.None
 }
 
+// ID concepts that are a `Lua<X>Prototype | string` union: as a dictionary key, the runtime uses the
+// prototype name (a string), so index them as `Record<string, ...>` instead of the non-indexable union.
+const idKeyTypesMappedToString = new Set(["SurfacePropertyID", "QualityID"])
+
 function maybeMapKeyType(type: runtime.Type | prototype.Type) {
-  if (type === "SurfacePropertyID") return "string"
+  if (typeof type === "string" && idKeyTypesMappedToString.has(type)) return "string"
   return type
+}
+
+// A dictionary keyed by a runtime class (an object reference, e.g. LuaTilePrototype), requires a LuaTable.
+function isObjectKeyType(context: GenerationContext, type: runtime.Type | prototype.Type): boolean {
+  return context instanceof RuntimeGenerationContext && typeof type === "string" && context.classes.has(type)
 }
 
 function mapDictionaryType(
@@ -559,7 +569,9 @@ function mapDictionaryType(
 
   const indexType = getIndexableType(context, apiKeyType)
   if (indexType === IndexType.None) {
-    context.warning("dictionary key is not indexable: " + JSON.stringify(apiKeyType))
+    if (!isObjectKeyType(context, apiKeyType)) {
+      context.warning("dictionary key is not indexable: " + JSON.stringify(apiKeyType))
+    }
     recordType = "LuaTable"
   }
   // flags
