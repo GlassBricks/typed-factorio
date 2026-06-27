@@ -26,7 +26,7 @@ export default tseslint.config(
       },
     },
     rules: {
-      eqeqeq: "error",
+      "eqeqeq": "error",
       "no-useless-constructor": "off",
       "@typescript-eslint/no-useless-constructor": "error",
       "no-inner-declarations": "off",

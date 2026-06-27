@@ -18498,19 +18498,19 @@ declare module "factorio:prototype" {
     connected_gate_visualization?: Sprite
   }
   export interface PrototypeMap {
-    accumulator: AccumulatorPrototype
-    achievement: AchievementPrototype
+    "accumulator": AccumulatorPrototype
+    "achievement": AchievementPrototype
     "active-defense-equipment": ActiveDefenseEquipmentPrototype
     "agricultural-tower": AgriculturalTowerPrototype
     "airborne-pollutant": AirbornePollutantPrototype
     "ambient-sound": AmbientSound
     "ammo-category": AmmoCategory
-    ammo: AmmoItemPrototype
+    "ammo": AmmoItemPrototype
     "ammo-turret": AmmoTurretPrototype
-    animation: AnimationPrototype
+    "animation": AnimationPrototype
     "arithmetic-combinator": ArithmeticCombinatorPrototype
-    armor: ArmorPrototype
-    arrow: ArrowPrototype
+    "armor": ArmorPrototype
+    "arrow": ArrowPrototype
     "artillery-flare": ArtilleryFlarePrototype
     "artillery-projectile": ArtilleryProjectilePrototype
     "artillery-turret": ArtilleryTurretPrototype
@@ -18518,21 +18518,21 @@ declare module "factorio:prototype" {
     "assembling-machine": AssemblingMachinePrototype
     "asteroid-chunk": AsteroidChunkPrototype
     "asteroid-collector": AsteroidCollectorPrototype
-    asteroid: AsteroidPrototype
+    "asteroid": AsteroidPrototype
     "autoplace-control": AutoplaceControl
     "battery-equipment": BatteryEquipmentPrototype
-    beacon: BeaconPrototype
-    beam: BeamPrototype
+    "beacon": BeaconPrototype
+    "beam": BeamPrototype
     "belt-immunity-equipment": BeltImmunityEquipmentPrototype
     "blueprint-book": BlueprintBookPrototype
-    blueprint: BlueprintItemPrototype
-    boiler: BoilerPrototype
+    "blueprint": BlueprintItemPrototype
+    "boiler": BoilerPrototype
     "build-entity-achievement": BuildEntityAchievementPrototype
     "burner-generator": BurnerGeneratorPrototype
     "burner-usage": BurnerUsagePrototype
-    capsule: CapsulePrototype
+    "capsule": CapsulePrototype
     "capture-robot": CaptureRobotPrototype
-    car: CarPrototype
+    "car": CarPrototype
     "cargo-bay": CargoBayPrototype
     "cargo-landing-pad": CargoLandingPadPrototype
     "cargo-pod": CargoPodPrototype
@@ -18540,8 +18540,8 @@ declare module "factorio:prototype" {
     "chain-active-trigger": ChainActiveTriggerPrototype
     "change-surface-achievement": ChangedSurfaceAchievementPrototype
     "character-corpse": CharacterCorpsePrototype
-    character: CharacterPrototype
-    cliff: CliffPrototype
+    "character": CharacterPrototype
+    "cliff": CliffPrototype
     "collision-layer": CollisionLayerPrototype
     "combat-robot-count-achievement": CombatRobotCountAchievementPrototype
     "combat-robot": CombatRobotPrototype
@@ -18549,9 +18549,9 @@ declare module "factorio:prototype" {
     "constant-combinator": ConstantCombinatorPrototype
     "construct-with-robots-achievement": ConstructWithRobotsAchievementPrototype
     "construction-robot": ConstructionRobotPrototype
-    container: ContainerPrototype
+    "container": ContainerPrototype
     "copy-paste-tool": CopyPasteToolPrototype
-    corpse: CorpsePrototype
+    "corpse": CorpsePrototype
     "create-platform-achievement": CreatePlatformAchievementPrototype
     "curved-rail-a": CurvedRailAPrototype
     "curved-rail-b": CurvedRailBPrototype
@@ -18591,25 +18591,25 @@ declare module "factorio:prototype" {
     "equipment-category": EquipmentCategory
     "equipment-ghost": EquipmentGhostPrototype
     "equipment-grid": EquipmentGridPrototype
-    explosion: ExplosionPrototype
-    fire: FireFlamePrototype
-    fish: FishPrototype
-    fluid: FluidPrototype
-    stream: FluidStreamPrototype
+    "explosion": ExplosionPrototype
+    "fire": FireFlamePrototype
+    "fish": FishPrototype
+    "fluid": FluidPrototype
+    "stream": FluidStreamPrototype
     "fluid-turret": FluidTurretPrototype
     "fluid-wagon": FluidWagonPrototype
-    font: FontPrototype
+    "font": FontPrototype
     "fuel-category": FuelCategory
-    furnace: FurnacePrototype
+    "furnace": FurnacePrototype
     "fusion-generator": FusionGeneratorPrototype
     "fusion-reactor": FusionReactorPrototype
-    gate: GatePrototype
+    "gate": GatePrototype
     "generator-equipment": GeneratorEquipmentPrototype
-    generator: GeneratorPrototype
+    "generator": GeneratorPrototype
     "god-controller": GodControllerPrototype
     "group-attack-achievement": GroupAttackAchievementPrototype
     "gui-style": GuiStyle
-    gun: GunPrototype
+    "gun": GunPrototype
     "half-diagonal-rail": HalfDiagonalRailPrototype
     "heat-interface": HeatInterfacePrototype
     "heat-pipe": HeatPipePrototype
@@ -18618,11 +18618,11 @@ declare module "factorio:prototype" {
     "infinity-cargo-wagon": InfinityCargoWagonPrototype
     "infinity-container": InfinityContainerPrototype
     "infinity-pipe": InfinityPipePrototype
-    inserter: InserterPrototype
+    "inserter": InserterPrototype
     "inventory-bonus-equipment": InventoryBonusEquipmentPrototype
     "item-entity": ItemEntityPrototype
     "item-group": ItemGroup
-    item: ItemPrototype
+    "item": ItemPrototype
     "item-request-proxy": ItemRequestProxyPrototype
     "item-subgroup": ItemSubGroup
     "item-with-entity-data": ItemWithEntityDataPrototype
@@ -18630,28 +18630,28 @@ declare module "factorio:prototype" {
     "item-with-label": ItemWithLabelPrototype
     "item-with-tags": ItemWithTagsPrototype
     "kill-achievement": KillAchievementPrototype
-    lab: LabPrototype
-    lamp: LampPrototype
+    "lab": LabPrototype
+    "lamp": LampPrototype
     "land-mine": LandMinePrototype
     "lane-splitter": LaneSplitterPrototype
     "legacy-curved-rail": LegacyCurvedRailPrototype
     "legacy-straight-rail": LegacyStraightRailPrototype
     "lightning-attractor": LightningAttractorPrototype
-    lightning: LightningPrototype
+    "lightning": LightningPrototype
     "linked-belt": LinkedBeltPrototype
     "linked-container": LinkedContainerPrototype
     "loader-1x1": Loader1x1Prototype
-    loader: Loader1x2Prototype
-    locomotive: LocomotivePrototype
+    "loader": Loader1x2Prototype
+    "locomotive": LocomotivePrototype
     "logistic-container": LogisticContainerPrototype
     "logistic-robot": LogisticRobotPrototype
     "map-gen-presets": MapGenPresets
     "map-settings": MapSettings
-    market: MarketPrototype
+    "market": MarketPrototype
     "mining-drill": MiningDrillPrototype
     "mod-data": ModData
     "module-category": ModuleCategory
-    module: ModulePrototype
+    "module": ModulePrototype
     "module-transfer-achievement": ModuleTransferAchievementPrototype
     "mouse-cursor": MouseCursor
     "movement-bonus-equipment": MovementBonusEquipmentPrototype
@@ -18661,11 +18661,11 @@ declare module "factorio:prototype" {
     "offshore-pump": OffshorePumpPrototype
     "optimized-particle": ParticlePrototype
     "particle-source": ParticleSourcePrototype
-    pipe: PipePrototype
+    "pipe": PipePrototype
     "pipe-to-ground": PipeToGroundPrototype
     "place-equipment-achievement": PlaceEquipmentAchievementPrototype
-    planet: PlanetPrototype
-    plant: PlantPrototype
+    "planet": PlanetPrototype
+    "plant": PlantPrototype
     "player-damaged-achievement": PlayerDamagedAchievementPrototype
     /**
      * @deprecated
@@ -18673,48 +18673,48 @@ declare module "factorio:prototype" {
     "player-port": PlayerPortPrototype
     "power-switch": PowerSwitchPrototype
     "procession-layer-inheritance-group": ProcessionLayerInheritanceGroup
-    procession: ProcessionPrototype
+    "procession": ProcessionPrototype
     "produce-achievement": ProduceAchievementPrototype
     "produce-per-hour-achievement": ProducePerHourAchievementPrototype
     "programmable-speaker": ProgrammableSpeakerPrototype
-    projectile: ProjectilePrototype
+    "projectile": ProjectilePrototype
     "proxy-container": ProxyContainerPrototype
-    pump: PumpPrototype
-    quality: QualityPrototype
-    radar: RadarPrototype
+    "pump": PumpPrototype
+    "quality": QualityPrototype
+    "radar": RadarPrototype
     "rail-chain-signal": RailChainSignalPrototype
     "rail-planner": RailPlannerPrototype
     "rail-ramp": RailRampPrototype
     "rail-remnants": RailRemnantsPrototype
     "rail-signal": RailSignalPrototype
     "rail-support": RailSupportPrototype
-    reactor: ReactorPrototype
+    "reactor": ReactorPrototype
     "recipe-category": RecipeCategory
-    recipe: RecipePrototype
+    "recipe": RecipePrototype
     "remote-controller": RemoteControllerPrototype
     "repair-tool": RepairToolPrototype
     "research-achievement": ResearchAchievementPrototype
     "research-with-science-pack-achievement": ResearchWithSciencePackAchievementPrototype
     "resource-category": ResourceCategory
-    resource: ResourceEntityPrototype
+    "resource": ResourceEntityPrototype
     "roboport-equipment": RoboportEquipmentPrototype
-    roboport: RoboportPrototype
+    "roboport": RoboportPrototype
     "rocket-silo": RocketSiloPrototype
     "rocket-silo-rocket": RocketSiloRocketPrototype
     "rocket-silo-rocket-shadow": RocketSiloRocketShadowPrototype
-    segment: SegmentPrototype
+    "segment": SegmentPrototype
     "segmented-unit": SegmentedUnitPrototype
     "selection-tool": SelectionToolPrototype
     "selector-combinator": SelectorCombinatorPrototype
     "shoot-achievement": ShootAchievementPrototype
-    shortcut: ShortcutPrototype
+    "shortcut": ShortcutPrototype
     "simple-entity": SimpleEntityPrototype
     "simple-entity-with-force": SimpleEntityWithForcePrototype
     "simple-entity-with-owner": SimpleEntityWithOwnerPrototype
     "smoke-with-trigger": SmokeWithTriggerPrototype
     "solar-panel-equipment": SolarPanelEquipmentPrototype
     "solar-panel": SolarPanelPrototype
-    sound: SoundPrototype
+    "sound": SoundPrototype
     "space-connection-distance-traveled-achievement": SpaceConnectionDistanceTraveledAchievementPrototype
     "space-connection": SpaceConnectionPrototype
     "space-location": SpaceLocationPrototype
@@ -18726,41 +18726,41 @@ declare module "factorio:prototype" {
     "spider-unit": SpiderUnitPrototype
     "spider-vehicle": SpiderVehiclePrototype
     "spidertron-remote": SpidertronRemotePrototype
-    splitter: SplitterPrototype
-    sprite: SpritePrototype
-    sticker: StickerPrototype
+    "splitter": SplitterPrototype
+    "sprite": SpritePrototype
+    "sticker": StickerPrototype
     "storage-tank": StorageTankPrototype
     "straight-rail": StraightRailPrototype
     "surface-property": SurfacePropertyPrototype
-    surface: SurfacePrototype
-    technology: TechnologyPrototype
+    "surface": SurfacePrototype
+    "technology": TechnologyPrototype
     "temporary-container": TemporaryContainerPrototype
-    thruster: ThrusterPrototype
+    "thruster": ThrusterPrototype
     "tile-effect": TileEffectDefinition
     "tile-ghost": TileGhostPrototype
-    tile: TilePrototype
+    "tile": TilePrototype
     "tips-and-tricks-item": TipsAndTricksItem
     "tips-and-tricks-item-category": TipsAndTricksItemCategory
-    tool: ToolPrototype
+    "tool": ToolPrototype
     "train-path-achievement": TrainPathAchievementPrototype
     "train-stop": TrainStopPrototype
     "transport-belt": TransportBeltPrototype
-    tree: TreePrototype
+    "tree": TreePrototype
     "trigger-target-type": TriggerTargetType
     "trivial-smoke": TrivialSmokePrototype
-    turret: TurretPrototype
-    tutorial: TutorialDefinition
+    "turret": TurretPrototype
+    "tutorial": TutorialDefinition
     "underground-belt": UndergroundBeltPrototype
-    unit: UnitPrototype
+    "unit": UnitPrototype
     "upgrade-item": UpgradeItemPrototype
     "use-entity-in-energy-production-achievement": UseEntityInEnergyProductionAchievementPrototype
     "use-item-achievement": UseItemAchievementPrototype
     "utility-constants": UtilityConstants
     "utility-sounds": UtilitySounds
     "utility-sprites": UtilitySprites
-    valve: ValvePrototype
+    "valve": ValvePrototype
     "virtual-signal": VirtualSignalPrototype
-    wall: WallPrototype
+    "wall": WallPrototype
   }
   /**
    * All prototype types.
