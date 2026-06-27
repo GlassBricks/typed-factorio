@@ -117,8 +117,7 @@ export interface LuaInventory extends ReadonlyArray<LuaItemStack> {}
  * @usage w
  */
 export type StyleValuesArray =
-  | readonly [topBottom: int32, leftRight: int32]
-  | readonly [top: int32, right: int32, bottom: int32, left: int32]
+  readonly [topBottom: int32, leftRight: int32] | readonly [top: int32, right: int32, bottom: int32, left: int32]
 /**
  * @addTo concepts
  * @usage w
@@ -220,14 +219,7 @@ export interface LuaControl {
   )
 
   get opened():
-    | LuaEntity
-    | LuaEquipment
-    | LuaEquipmentGrid
-    | LuaPlayer
-    | LuaGuiElement
-    | LuaInventory
-    | LuaTechnology
-    | nil
+    LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | LuaInventory | LuaTechnology | nil
 
   /** @overload */
   teleport(x: number, y?: number): boolean

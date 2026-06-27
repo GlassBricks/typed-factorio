@@ -107,12 +107,8 @@ data.extend<AmmoCategory | ItemPrototype>([
 ])
 
 // Use types on separate variables:
-const fooCategory: AmmoCategory = {
-  /* ... */
-}
-const barItem: ItemPrototype = {
-  /* ... */
-}
+const fooCategory: AmmoCategory = {/* ... */}
+const barItem: ItemPrototype = {/* ... */}
 data.extend([fooCategory, barItem])
 ```
 

@@ -2464,12 +2464,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.1.8/types/BlendMode.html Online documentation}
    */
   export type BlendMode =
-    | "normal"
-    | "additive"
-    | "additive-soft"
-    | "multiplicative"
-    | "multiplicative-with-alpha"
-    | "overwrite"
+    "normal" | "additive" | "additive-soft" | "multiplicative" | "multiplicative-with-alpha" | "overwrite"
   /**
    * @see BoilerPrototype.pictures
    * @see {@link https://lua-api.factorio.com/2.1.8/prototypes/BoilerPrototype.html#pictures Online documentation}
@@ -2576,9 +2571,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.1.8/types/BoundingBox.html Online documentation}
    */
   export type BoundingBox =
-    | BoundingBoxStruct
-    | readonly [MapPosition, MapPosition]
-    | readonly [MapPosition, MapPosition, RealOrientation]
+    BoundingBoxStruct | readonly [MapPosition, MapPosition] | readonly [MapPosition, MapPosition, RealOrientation]
   /**
    * A cursor box, for use in {@link UtilitySprites}.
    * @see {@link https://lua-api.factorio.com/2.1.8/types/BoxSpecification.html Online documentation}
@@ -6082,11 +6075,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.1.8/types/EnergySource.html Online documentation}
    */
   export type EnergySource =
-    | ElectricEnergySource
-    | BurnerEnergySource
-    | HeatEnergySource
-    | FluidEnergySource
-    | VoidEnergySource
+    ElectricEnergySource | BurnerEnergySource | HeatEnergySource | FluidEnergySource | VoidEnergySource
   export interface EnterVehicleTipTrigger extends CountBasedTipTrigger {
     readonly type: "enter-vehicle"
     vehicle?: EntityID
@@ -11870,12 +11859,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.1.8/types/ProcessionGraphicType.html Online documentation}
    */
   export type ProcessionGraphicType =
-    | "none"
-    | "sprite"
-    | "animation"
-    | "pod-catalogue"
-    | "location-catalogue"
-    | "hatch-location-catalogue-index"
+    "none" | "sprite" | "animation" | "pod-catalogue" | "location-catalogue" | "hatch-location-catalogue-index"
   /**
    * The name of a {@link ProcessionPrototype}.
    * @see {@link https://lua-api.factorio.com/2.1.8/types/ProcessionID.html Online documentation}
@@ -14615,13 +14599,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.1.8/types/SoundModifierType.html Online documentation}
    */
   export type SoundModifierType =
-    | "game"
-    | "main-menu"
-    | "tips-and-tricks"
-    | "driving"
-    | "elevation"
-    | "space-platform"
-    | "tall-entities-hidden"
+    "game" | "main-menu" | "tips-and-tricks" | "driving" | "elevation" | "space-platform" | "tall-entities-hidden"
   /**
    * This defines which slider in the sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.
    *
@@ -14670,8 +14648,7 @@ declare module "factorio:prototype" {
     spawn_points: readonly SpaceConnectionAsteroidSpawnPoint[]
   }
   export type SpaceConnectionAsteroidSpawnDefinition =
-    | SpaceConnectionAsteroidSpawnDefinitionStruct
-    | readonly [EntityID, readonly SpaceConnectionAsteroidSpawnPoint[]]
+    SpaceConnectionAsteroidSpawnDefinitionStruct | readonly [EntityID, readonly SpaceConnectionAsteroidSpawnPoint[]]
   export interface SpaceConnectionAsteroidSpawnPoint extends AsteroidSpawnPoint {
     distance: double
   }
@@ -15677,13 +15654,7 @@ declare module "factorio:prototype" {
    * @see {@link https://lua-api.factorio.com/2.1.8/types/SpritePriority.html Online documentation}
    */
   export type SpritePriority =
-    | "extra-high-no-scale"
-    | "extra-high"
-    | "high"
-    | "medium"
-    | "low"
-    | "very-low"
-    | "no-atlas"
+    "extra-high-no-scale" | "extra-high" | "high" | "medium" | "low" | "very-low" | "no-atlas"
   export interface SpriteSheet extends Omit<SpriteParameters, "filename"> {
     /**
      * If this property is present, all SpriteSheet definitions have to be placed as entries in the array, and they will all be loaded from there. `layers` may not be an empty table. Each definition in the array may also have the `layers` property.
@@ -20095,12 +20066,7 @@ declare module "factorio:prototype" {
      * @see {@link https://lua-api.factorio.com/2.1.8/types/WorkingVisualisation.html#apply_tint Online documentation}
      */
     apply_tint?:
-      | "resource-color"
-      | "input-fluid-base-color"
-      | "input-fluid-flow-color"
-      | "status"
-      | "none"
-      | "visual-state-color"
+      "resource-color" | "input-fluid-base-color" | "input-fluid-flow-color" | "status" | "none" | "visual-state-color"
     north_animation?: Animation
     east_animation?: Animation
     south_animation?: Animation
