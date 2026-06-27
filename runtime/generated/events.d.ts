@@ -1802,13 +1802,7 @@ declare module "factorio:runtime" {
      * The edit type.
      */
     readonly type:
-      | "add-permission"
-      | "remove-permission"
-      | "enable-all"
-      | "disable-all"
-      | "add-player"
-      | "remove-player"
-      | "rename"
+      "add-permission" | "remove-permission" | "enable-all" | "disable-all" | "add-player" | "remove-player" | "rename"
     /**
      * The action when the `type` is `"add-permission"` or `"remove-permission"`.
      */

@@ -1334,14 +1334,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/GuiArrowType.html Online documentation}
    */
   export type GuiArrowType =
-    | "nowhere"
-    | "goal"
-    | "entity_info"
-    | "active_window"
-    | "entity"
-    | "position"
-    | "crafting_queue"
-    | "item_stack"
+    "nowhere" | "goal" | "entity_info" | "active_window" | "entity" | "position" | "crafting_queue" | "item_stack"
   /**
    * @see FluidFilterWrite
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/FluidFilter.html Online documentation}
@@ -2158,10 +2151,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/EquipmentWithQualityID.html Online documentation}
    */
   export type EquipmentWithQualityIDWrite =
-    | LuaEquipmentPrototype
-    | LuaEquipment
-    | string
-    | EquipmentIDAndQualityIDPairWrite
+    LuaEquipmentPrototype | LuaEquipment | string | EquipmentIDAndQualityIDPairWrite
   /**
    * An equipment prototype with optional quality specification.
    * @see EquipmentIDAndQualityIDPairWrite
@@ -5578,14 +5568,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/SignalIDType.html Online documentation}
    */
   export type SignalIDType =
-    | "item"
-    | "fluid"
-    | "virtual"
-    | "entity"
-    | "recipe"
-    | "space-location"
-    | "asteroid-chunk"
-    | "quality"
+    "item" | "fluid" | "virtual" | "entity" | "recipe" | "space-location" | "asteroid-chunk" | "quality"
   /**
    * @see DeciderCombinatorParametersWrite
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/DeciderCombinatorParameters.html Online documentation}
@@ -5818,17 +5801,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/ArithmeticCombinatorParameterOperation.html Online documentation}
    */
   export type ArithmeticCombinatorParameterOperation =
-    | "*"
-    | "/"
-    | "+"
-    | "-"
-    | "%"
-    | "^"
-    | "<<"
-    | ">>"
-    | "AND"
-    | "OR"
-    | "XOR"
+    "*" | "/" | "+" | "-" | "%" | "^" | "<<" | ">>" | "AND" | "OR" | "XOR"
   export interface BaseSelectorCombinatorParameters {
     /**
      * Defaults to `"select"`.
@@ -6017,14 +5990,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/SelectorCombinatorParameterOperation.html Online documentation}
    */
   export type SelectorCombinatorParameterOperation =
-    | "select"
-    | "count"
-    | "random"
-    | "quality-transfer"
-    | "rocket-capacity"
-    | "stack-size"
-    | "quality-filter"
-    | "time"
+    "select" | "count" | "random" | "quality-transfer" | "rocket-capacity" | "stack-size" | "quality-filter" | "time"
   export interface SpaceConnectionAsteroidSpawnDefinition {
     /**
      * `asteroid-chunk` or `entity`
@@ -13412,9 +13378,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/ModSettingPrototypeFilter.html Online documentation}
    */
   export type ModSettingPrototypeFilter =
-    | TypeModSettingPrototypeFilter
-    | ModModSettingPrototypeFilter
-    | SettingTypeModSettingPrototypeFilter
+    TypeModSettingPrototypeFilter | ModModSettingPrototypeFilter | SettingTypeModSettingPrototypeFilter
   /**
    * Common attributes to all variants of {@link SpaceLocationPrototypeFilter}.
    */
@@ -13476,9 +13440,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/SpaceLocationPrototypeFilter.html Online documentation}
    */
   export type SpaceLocationPrototypeFilter =
-    | TypeSpaceLocationPrototypeFilter
-    | SolarPowerInSpaceSpaceLocationPrototypeFilter
-    | OtherSpaceLocationPrototypeFilter
+    TypeSpaceLocationPrototypeFilter | SolarPowerInSpaceSpaceLocationPrototypeFilter | OtherSpaceLocationPrototypeFilter
   /**
    * Write form of {@link SpaceLocationPrototypeFilter}, where some properties allow additional values as input compared to the read form.
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/SpaceLocationPrototypeFilter.html Online documentation}
@@ -15766,8 +15728,7 @@ declare module "factorio:runtime" {
   /**
    * `"ghost_type"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
    */
-  export interface GhostTypeEntityDeconstructionCancelledEventFilter
-    extends BaseEntityDeconstructionCancelledEventFilter {
+  export interface GhostTypeEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
     readonly filter: "ghost_type"
     /**
      * The ghost prototype type
@@ -15777,8 +15738,7 @@ declare module "factorio:runtime" {
   /**
    * `"ghost_name"` variant of {@link LuaEntityDeconstructionCancelledEventFilter}.
    */
-  export interface GhostNameEntityDeconstructionCancelledEventFilter
-    extends BaseEntityDeconstructionCancelledEventFilter {
+  export interface GhostNameEntityDeconstructionCancelledEventFilter extends BaseEntityDeconstructionCancelledEventFilter {
     readonly filter: "ghost_name"
     /**
      * The ghost prototype name
@@ -16411,8 +16371,7 @@ declare module "factorio:runtime" {
   /**
    * `"name"` variant of {@link LuaScriptRaisedDestroySegmentedUnitEventFilter}.
    */
-  export interface NameScriptRaisedDestroySegmentedUnitEventFilter
-    extends BaseScriptRaisedDestroySegmentedUnitEventFilter {
+  export interface NameScriptRaisedDestroySegmentedUnitEventFilter extends BaseScriptRaisedDestroySegmentedUnitEventFilter {
     readonly filter: "name"
     /**
      * The prototype name
@@ -16465,8 +16424,7 @@ declare module "factorio:runtime" {
      */
     readonly value: float
   }
-  export interface OriginalDamageAmountSegmentedUnitDamagedEventFilterWrite
-    extends BaseSegmentedUnitDamagedEventFilter {
+  export interface OriginalDamageAmountSegmentedUnitDamagedEventFilterWrite extends BaseSegmentedUnitDamagedEventFilter {
     readonly filter: "original-damage-amount"
     readonly comparison: ComparatorString
     /**
@@ -17024,8 +16982,7 @@ declare module "factorio:runtime" {
   /**
    * `"ghost_type"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
    */
-  export interface GhostTypeEntityMarkedForDeconstructionEventFilter
-    extends BaseEntityMarkedForDeconstructionEventFilter {
+  export interface GhostTypeEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "ghost_type"
     /**
      * The ghost prototype type
@@ -17035,8 +16992,7 @@ declare module "factorio:runtime" {
   /**
    * `"ghost_name"` variant of {@link LuaEntityMarkedForDeconstructionEventFilter}.
    */
-  export interface GhostNameEntityMarkedForDeconstructionEventFilter
-    extends BaseEntityMarkedForDeconstructionEventFilter {
+  export interface GhostNameEntityMarkedForDeconstructionEventFilter extends BaseEntityMarkedForDeconstructionEventFilter {
     readonly filter: "ghost_name"
     /**
      * The ghost prototype name
@@ -17906,8 +17862,7 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/LuaSegmentedUnitCreatedEventFilter.html Online documentation}
    */
   export type LuaSegmentedUnitCreatedEventFilter =
-    | NameSegmentedUnitCreatedEventFilter
-    | CauseSegmentedUnitCreatedEventFilter
+    NameSegmentedUnitCreatedEventFilter | CauseSegmentedUnitCreatedEventFilter
   /**
    * Common attributes to all variants of {@link LuaScriptRaisedDestroyEventFilter}.
    */
@@ -18014,8 +17969,7 @@ declare module "factorio:runtime" {
     | GhostNameScriptRaisedDestroyEventFilter
     | OtherScriptRaisedDestroyEventFilter
   export type StyleValuesArray =
-    | [topBottom: int32, leftRight: int32]
-    | [top: int32, right: int32, bottom: int32, left: int32]
+    [topBottom: int32, leftRight: int32] | [top: int32, right: int32, bottom: int32, left: int32]
   export type SizeArray = [width: int32, height: int32]
   export type EventTypeOf<T extends LuaEventType> = T extends string | LuaCustomInputPrototype
     ? CustomInputEvent

@@ -1,9 +1,0 @@
-**/*.d.ts
-**/*.js
-generator/input
-scripts
-test
-runtime/*.ts
-.yarn
-**/index-template.ts
-**/globals-template.ts

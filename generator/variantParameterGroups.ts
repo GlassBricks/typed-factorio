@@ -341,7 +341,7 @@ function tryGetStringUnionValuesFromTsType(
   if (!type.isUnion() || !type.types.every((t) => t.isStringLiteral())) {
     return undefined
   }
-  return type.types.map((t) => (t as ts.StringLiteralType).value)
+  return type.types.map((t) => t.value)
 }
 
 function addOtherVariant(

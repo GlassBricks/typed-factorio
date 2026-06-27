@@ -281,7 +281,7 @@ function tryGetTableOrArrayConcept(
   const arrayType = type.options.find((o) => typeof o !== "string" && o.complex_type === "tuple")
   if (!tableType || !arrayType) return undefined
   return {
-    table: tableType as TableType,
-    array: arrayType as TupleType,
+    table: tableType,
+    array: arrayType,
   }
 }

@@ -1,6 +1,6 @@
 import assert from "assert"
 import ts from "typescript"
-import { Attribute, CallOperator, Class, IndexOperator, LengthOperator, Method } from "../FactorioRuntimeApiJson.js"
+import { Attribute, Class, Method } from "../FactorioRuntimeApiJson.js"
 import { InterfaceDef, TypeAliasDef, getAnnotations } from "../ManualDefinitions"
 import { FactorioModule } from "../OutputFile.js"
 import { addJsDoc } from "../documentation.js"
@@ -119,7 +119,7 @@ function generateClass(
   }
 
   function fillIndexType() {
-    const indexOperator = clazz.operators.find((x) => x.name === "index") as IndexOperator | undefined
+    const indexOperator = clazz.operators.find((x) => x.name === "index")
     if (!indexOperator) return
     if (arrayType) {
       const indexSignature = addJsDoc(
@@ -174,7 +174,7 @@ function generateClass(
       })),
     )
 
-    const callOperator = clazz.operators.find((x) => x.name === "call") as CallOperator | undefined
+    const callOperator = clazz.operators.find((x) => x.name === "call")
     if (callOperator) {
       // manual define for operator not supported yet
       const [asMethod] = mapMethod(
@@ -191,7 +191,7 @@ function generateClass(
       members.push({ original: callOperator, member: callSignature })
     }
 
-    const lengthOperator = clazz.operators.find((x) => x.name === "length") as LengthOperator | undefined
+    const lengthOperator = clazz.operators.find((x) => x.name === "length")
     if (lengthOperator) {
       // length operator is (supposed to be) numeric, so not map with transforms
       assert(lengthOperator.read_type && !lengthOperator.write_type)

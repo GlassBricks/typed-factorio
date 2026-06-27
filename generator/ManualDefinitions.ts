@@ -188,13 +188,12 @@ function createDef(node: ts.Statement): AnyDef | undefined {
     }
   } else if (ts.isTypeAliasDeclaration(node)) {
     const types: ReadonlyArray<ts.TypeNode> = ts.isIntersectionTypeNode(node.type) ? node.type.types : [node.type]
-    const mappedTypeIndexOperator = types.find((t) => ts.isMappedTypeNode(t)) as ts.MappedTypeNode | undefined
+    const mappedTypeIndexOperator = types.find((t) => ts.isMappedTypeNode(t))
     const literalIndexOperator = types.find((t) => {
       return ts.isTypeLiteralNode(t) && t.members.length === 1 && ts.isIndexSignatureDeclaration(t.members[0])
     }) as ts.TypeLiteralNode
     const membersNode = types.find((t) => ts.isTypeLiteralNode(t) && t !== literalIndexOperator) as
-      | ts.TypeLiteralNode
-      | undefined
+      ts.TypeLiteralNode | undefined
     const inherits: ts.TypeReferenceNode[] = types.filter(ts.isTypeReferenceNode)
     return {
       kind: "type",

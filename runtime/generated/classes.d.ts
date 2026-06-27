@@ -2036,14 +2036,7 @@ declare module "factorio:runtime" {
         | nil,
     )
     get opened():
-      | LuaEntity
-      | LuaEquipment
-      | LuaEquipmentGrid
-      | LuaPlayer
-      | LuaGuiElement
-      | LuaInventory
-      | LuaTechnology
-      | nil
+      LuaEntity | LuaEquipment | LuaEquipmentGrid | LuaPlayer | LuaGuiElement | LuaInventory | LuaTechnology | nil
     /**
      * Size of the crafting queue.
      * @see {@link https://lua-api.factorio.com/2.1.8/classes/LuaControl.html#crafting_queue_size Online documentation}
@@ -10801,12 +10794,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.1.8/classes/LuaEntityPrototype.html#inventory_type Online documentation}
      */
     readonly inventory_type?:
-      | "normal"
-      | "with_bar"
-      | "with_filters"
-      | "with_filters_and_bar"
-      | "with_weight_limit"
-      | "with_custom_stack_size"
+      "normal" | "with_bar" | "with_filters" | "with_filters_and_bar" | "with_weight_limit" | "with_custom_stack_size"
     /**
      * Weight limit of the inventory if inventory_type is `"with_weight_limit"`.
      *
@@ -15957,12 +15945,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.1.8/classes/LuaEntityPrototype.html#inventory_type Online documentation}
      */
     readonly inventory_type?:
-      | "normal"
-      | "with_bar"
-      | "with_filters"
-      | "with_filters_and_bar"
-      | "with_weight_limit"
-      | "with_custom_stack_size"
+      "normal" | "with_bar" | "with_filters" | "with_filters_and_bar" | "with_weight_limit" | "with_custom_stack_size"
     /**
      * Weight limit of the inventory if inventory_type is `"with_weight_limit"`.
      *
@@ -16001,12 +15984,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.1.8/classes/LuaEntityPrototype.html#inventory_type Online documentation}
      */
     readonly inventory_type?:
-      | "normal"
-      | "with_bar"
-      | "with_filters"
-      | "with_filters_and_bar"
-      | "with_weight_limit"
-      | "with_custom_stack_size"
+      "normal" | "with_bar" | "with_filters" | "with_filters_and_bar" | "with_weight_limit" | "with_custom_stack_size"
     /**
      * Weight limit of the inventory if inventory_type is `"with_weight_limit"`.
      *
@@ -35725,8 +35703,7 @@ declare module "factorio:runtime" {
     readonly body_nodes: readonly (MapPosition | MapPositionArray)[]
   }
   export type SurfaceCreateSegmentedUnit =
-    | PositionAndDirectionSurfaceCreateSegmentedUnit
-    | BodyNodesSurfaceCreateSegmentedUnit
+    PositionAndDirectionSurfaceCreateSegmentedUnit | BodyNodesSurfaceCreateSegmentedUnit
   /**
    * A "domain" of the world, such as a planet or space platform. Surfaces are uniquely identified by their name. Every game contains at least the surface "nauvis".
    * @see {@link https://lua-api.factorio.com/2.1.8/classes/LuaSurface.html Online documentation}

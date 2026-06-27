@@ -13306,12 +13306,7 @@ declare module "factorio:prototype" {
    */
   export interface SelectionToolPrototype extends ItemWithLabelPrototype {
     type:
-      | "blueprint"
-      | "copy-paste-tool"
-      | "deconstruction-item"
-      | "selection-tool"
-      | "spidertron-remote"
-      | "upgrade-item"
+      "blueprint" | "copy-paste-tool" | "deconstruction-item" | "selection-tool" | "spidertron-remote" | "upgrade-item"
     select: SelectionModeData
     alt_select: SelectionModeData
     super_forced_select?: SelectionModeData
