@@ -291,6 +291,19 @@ function generateClass(
     function normalizeName(origName: string) {
       return origName.replace(/[-_ ]/g, "").toLowerCase() as MapName
     }
+
+    function resolveKnownNameConflict(a: UseName, b: UseName): UseName | undefined {
+      const names = [a, b]
+      if (names.includes("LandMine" as UseName) && names.includes("Landmine" as UseName)) {
+        if (context.factorioVersion !== "2.1.8") {
+          context.warning(
+            `LandMine subclass casing workaround is for factorio 2.1.8, but current version is ${context.factorioVersion}; re-check whether it is still needed`,
+          )
+        }
+        return "LandMine" as UseName
+      }
+      return undefined
+    }
     const mapMembersBySubclass = new Map<MapName, MemberAndOriginal[]>()
     const useNames = new Map<MapName, UseName>()
 
@@ -349,7 +362,11 @@ function generateClass(
           const useName = toPascalCase(baseName) as UseName
           if (existingUseName !== undefined) {
             if (useName !== existingUseName) {
-              throw new Error(`Multiple derived names for ${subclass} (${mapName}): ${existingUseName}, ${useName}`)
+              const canonical = resolveKnownNameConflict(existingUseName, useName)
+              if (canonical === undefined) {
+                throw new Error(`Multiple derived names for ${subclass} (${mapName}): ${existingUseName}, ${useName}`)
+              }
+              useNames.set(mapName, canonical)
             }
           } else {
             useNames.set(mapName, useName)

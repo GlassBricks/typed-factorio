@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.7",
+  "application_version": "2.1.8",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -10071,7 +10071,7 @@
         {
           "name": "tall",
           "order": 40,
-          "description": "When this is true, this entity prototype will be translucent and unselectable when \"Hide tall entities\" mode is active.",
+          "description": "When this is true, this entity prototype will be translucent and unselectable when \"Hide tall entities\" mode is active.\n\nRail signals are always treated as 'tall' when built attached to elevated rails.",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -40534,7 +40534,7 @@
     {
       "name": "AlternativeBuildTipTrigger",
       "order": 15,
-      "description": "",
+      "description": "Triggered when using the \"build ghost\" hotkey to build something.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
       "inline": false,
@@ -42800,7 +42800,7 @@
     {
       "name": "ApplyStarterPackTipTrigger",
       "order": 33,
-      "description": "",
+      "description": "Triggered when a [space platform starter pack](prototype:SpacePlatformStarterPackPrototype) is used to create a space platform.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
       "inline": false,
@@ -53565,7 +53565,7 @@
         {
           "name": "technology_price_multiplier",
           "order": 0,
-          "description": "Must be >= 0.001 and <= 1000.",
+          "description": "Must be >= 0.001 and <= 100000.",
           "override": false,
           "type": "double",
           "optional": true,
@@ -56248,7 +56248,7 @@
     {
       "name": "EntityTransferTipTrigger",
       "order": 221,
-      "description": "",
+      "description": "Triggered when a player fast-transfers something to or from an entity, similar to the [on_player_fast_transferred](runtime:on_player_fast_transferred) event.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
       "inline": false,
@@ -56259,7 +56259,7 @@
         {
           "name": "transfer",
           "order": 1,
-          "description": "",
+          "description": "Whether the transfer should be into or out of the player.",
           "override": false,
           "type": {
             "complex_type": "union",
@@ -63673,7 +63673,7 @@
     {
       "name": "ManualTransferTipTrigger",
       "order": 334,
-      "description": "",
+      "description": "Triggered when the player manually moves item with the cursor, *without* using shortcuts such as entity transfer or stack split.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
       "inline": false,
@@ -74084,7 +74084,7 @@
     {
       "name": "SequenceTipTrigger",
       "order": 497,
-      "description": "",
+      "description": "Triggered when the triggers listed in `triggers` are triggered in order.",
       "abstract": false,
       "inline": false,
       "type": {
@@ -83837,7 +83837,7 @@
     {
       "name": "ToggleShowEntityInfoTipTrigger",
       "order": 614,
-      "description": "",
+      "description": "Triggered when the player turns \"alt-mode\" on or off.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
       "inline": false,
@@ -87090,7 +87090,7 @@
     {
       "name": "UseConfirmTipTrigger",
       "order": 652,
-      "description": "",
+      "description": "Triggered when using E to confirm a GUI that allows to pick from a certain kind of prototype.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
       "inline": false,
@@ -89249,7 +89249,7 @@
         {
           "name": "name",
           "order": 34,
-          "description": "",
+          "description": "Used by [MainSound::play_for_working_visualisations](prototype:MainSound::play_for_working_visualisations), [SoundAccent::play_for_working_visualisation](prototype:SoundAccent::play_for_working_visualisation), [FluidBox::enable_working_visualisations](prototype:FluidBox::enable_working_visualisations), and [PipeConnectionDefinition::enable_working_visualisations](prototype:PipeConnectionDefinition::enable_working_visualisations).",
           "override": false,
           "type": "string",
           "optional": true,

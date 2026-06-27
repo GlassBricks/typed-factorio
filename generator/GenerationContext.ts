@@ -66,6 +66,10 @@ export abstract class GenerationContext<A extends AnyApiJson = AnyApiJson> {
 
   abstract getOnlineDocUrl(reference: string): string
 
+  get factorioVersion(): string {
+    return this.apiDocs.application_version
+  }
+
   docUrlBase(): string {
     if (this.options.noLink) return "https://lua-api.factorio.com/latest/"
     return `https://lua-api.factorio.com/${this.apiDocs.application_version}/`
