@@ -639,9 +639,9 @@ declare module "factorio:runtime" {
    * @see {@link https://lua-api.factorio.com/2.1.8/concepts/MouseButtonFlags.html Online documentation}
    */
   export interface MouseButtonFlags {
-    readonly left?: true
-    readonly right?: true
-    readonly middle?: true
+    readonly "left"?: true
+    readonly "right"?: true
+    readonly "middle"?: true
     readonly "button-4"?: true
     readonly "button-5"?: true
     readonly "button-6"?: true
@@ -3106,7 +3106,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehavior
+    readonly "control_behavior"?: TurretBlueprintControlBehavior
   }
   export interface AmmoTurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly "priority-list"?: SlotFilter[]
@@ -3114,7 +3114,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: TurretBlueprintControlBehaviorWrite
   }
   /**
    * `"arithmetic-combinator"` variant of {@link BlueprintEntity}.
@@ -3190,12 +3190,12 @@ declare module "factorio:runtime" {
   export interface AsteroidCollectorBlueprintEntity extends BaseBlueprintEntity {
     readonly "result-inventory": BlueprintInventory
     readonly "chunk-filter"?: SlotFilter[]
-    readonly control_behavior?: AsteroidCollectorBlueprintControlBehavior
+    readonly "control_behavior"?: AsteroidCollectorBlueprintControlBehavior
   }
   export interface AsteroidCollectorBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly "result-inventory": BlueprintInventory
     readonly "chunk-filter"?: SlotFilter[]
-    readonly control_behavior?: AsteroidCollectorBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: AsteroidCollectorBlueprintControlBehaviorWrite
   }
   /**
    * `"boiler"` variant of {@link BlueprintEntity}.
@@ -3344,7 +3344,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehavior
+    readonly "control_behavior"?: TurretBlueprintControlBehavior
   }
   export interface ElectricTurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly "priority-list"?: SlotFilter[]
@@ -3352,7 +3352,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: TurretBlueprintControlBehaviorWrite
   }
   /**
    * `"fluid-turret"` variant of {@link BlueprintEntity}.
@@ -3363,7 +3363,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehavior
+    readonly "control_behavior"?: TurretBlueprintControlBehavior
   }
   export interface FluidTurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly "priority-list"?: SlotFilter[]
@@ -3371,7 +3371,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: TurretBlueprintControlBehaviorWrite
   }
   /**
    * `"fluid-wagon"` variant of {@link BlueprintEntity}.
@@ -3931,7 +3931,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehavior
+    readonly "control_behavior"?: TurretBlueprintControlBehavior
   }
   export interface TurretBlueprintEntityWrite extends BaseBlueprintEntityWrite {
     readonly "priority-list"?: SlotFilter[]
@@ -3939,7 +3939,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: TurretBlueprintControlBehaviorWrite
   }
   /**
    * `"underground-belt"` variant of {@link BlueprintEntity}.
@@ -5052,11 +5052,11 @@ declare module "factorio:runtime" {
     /**
      * Excludes entities and tiles that can't be selected for blueprinting.
      */
-    readonly blueprint?: true
+    readonly "blueprint"?: true
     /**
      * Excludes entities and tiles that can't be selected for deconstruction.
      */
-    readonly deconstruct?: true
+    readonly "deconstruct"?: true
     /**
      * Excludes entities that can't be selected for deconstruction cancellation.
      */
@@ -5064,11 +5064,11 @@ declare module "factorio:runtime" {
     /**
      * Selects items on the ground.
      */
-    readonly items?: true
+    readonly "items"?: true
     /**
      * Selects trees.
      */
-    readonly trees?: true
+    readonly "trees"?: true
     /**
      * Selects entities which are considered a {@link LuaEntityPrototype#is_building building}, plus landmines.
      */
@@ -5076,7 +5076,7 @@ declare module "factorio:runtime" {
     /**
      * Selects no entities or tiles, but is useful to select an area.
      */
-    readonly nothing?: true
+    readonly "nothing"?: true
     /**
      * Selects entities and tiles that can be {@link LuaItemPrototype#place_result built by an item}.
      */
@@ -5100,15 +5100,15 @@ declare module "factorio:runtime" {
     /**
      * Selects entities from a {@link LuaForce#is_friend friendly} force.
      */
-    readonly friend?: true
+    readonly "friend"?: true
     /**
      * Selects entities from an {@link LuaForce#is_enemy enemy} force.
      */
-    readonly enemy?: true
+    readonly "enemy"?: true
     /**
      * Excludes entities that can't be selected for upgrading.
      */
-    readonly upgrade?: true
+    readonly "upgrade"?: true
     /**
      * Excludes entities that can't be selected for upgrade cancellation.
      */
@@ -5116,7 +5116,7 @@ declare module "factorio:runtime" {
     /**
      * Excludes entities that can't be selected for downgrading.
      */
-    readonly downgrade?: true
+    readonly "downgrade"?: true
     /**
      * Selects entities that are {@link LuaEntity#is_entity_with_health entities with health}.
      */
@@ -5134,7 +5134,7 @@ declare module "factorio:runtime" {
      */
     readonly "avoid-rolling-stock"?: true
     readonly "avoid-vehicle"?: true
-    readonly controllable?: true
+    readonly "controllable"?: true
     readonly "controllable-add"?: true
     readonly "controllable-remove"?: true
     /**
@@ -8394,7 +8394,7 @@ declare module "factorio:runtime" {
     /**
      * Number of available items in the storage members.
      */
-    readonly storage: uint32
+    readonly "storage": uint32
     /**
      * Number of available items in the passive provider members.
      */
@@ -8402,16 +8402,16 @@ declare module "factorio:runtime" {
     /**
      * Number of available items in the buffer members.
      */
-    readonly buffer: uint32
+    readonly "buffer": uint32
     /**
      * Number of available items in the active provider members.
      */
     readonly "active-provider": uint32
   }
   export interface LogisticsNetworkSupplyPoints {
-    readonly storage: LuaLogisticPoint[]
+    readonly "storage": LuaLogisticPoint[]
     readonly "passive-provider": LuaLogisticPoint[]
-    readonly buffer: LuaLogisticPoint[]
+    readonly "buffer": LuaLogisticPoint[]
     readonly "active-provider": LuaLogisticPoint[]
   }
   export interface PlaceAsTileResult {
@@ -13857,7 +13857,7 @@ declare module "factorio:runtime" {
    * `"fuel-category"` variant of {@link ItemPrototypeFilter}.
    */
   export interface FuelCategoryItemPrototypeFilter extends BaseItemPrototypeFilter {
-    readonly filter: "fuel-category"
+    readonly "filter": "fuel-category"
     /**
      * A {@link LuaFuelCategoryPrototype} name
      */

@@ -1,7 +1,6 @@
 import child_process from "child_process"
 import * as fs from "fs/promises"
 import * as path from "path"
-import download from "download"
 import { fileURLToPath } from "url"
 
 const __filename = fileURLToPath(import.meta.url)
@@ -15,11 +14,11 @@ const versionToDownload = args[0] ?? "latest"
 async function downloadApi(stage: string) {
   const url = `https://lua-api.factorio.com/${versionToDownload}/${stage}-api.json`
   console.log("downloading", url)
-  const result = (
-    await download(url, {
-      timeout: 5000,
-    })
-  ).toString("utf8")
+  const response = await fetch(url, { signal: AbortSignal.timeout(5000) })
+  if (!response.ok) {
+    throw new Error(`Failed to download ${url}: ${response.status} ${response.statusText}`)
+  }
+  const result = await response.text()
   const contents = JSON.parse(result) as {
     application: string
     stage: string

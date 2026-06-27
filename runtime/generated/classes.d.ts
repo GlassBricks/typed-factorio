@@ -21366,39 +21366,39 @@ declare module "factorio:runtime" {
    * `"choose-elem-button"` variant of {@link GuiSpec}.
    */
   export interface ChooseElemButtonGuiSpec extends BaseGuiSpec {
-    readonly type: "choose-elem-button"
+    readonly "type": "choose-elem-button"
     /**
      * The type of the button.
      */
-    readonly elem_type: ElemType
+    readonly "elem_type": ElemType
     /**
      * If type is `"item"` - the default value for the button.
      */
-    readonly item?: string
+    readonly "item"?: string
     /**
      * If type is `"tile"` - the default value for the button.
      */
-    readonly tile?: string
+    readonly "tile"?: string
     /**
      * If type is `"entity"` - the default value for the button.
      */
-    readonly entity?: string
+    readonly "entity"?: string
     /**
      * If type is `"signal"` - the default value for the button.
      */
-    readonly signal?: SignalIDWrite
+    readonly "signal"?: SignalIDWrite
     /**
      * If type is `"fluid"` - the default value for the button.
      */
-    readonly fluid?: string
+    readonly "fluid"?: string
     /**
      * If type is `"recipe"` - the default value for the button.
      */
-    readonly recipe?: string
+    readonly "recipe"?: string
     /**
      * If type is `"decorative"` - the default value for the button.
      */
-    readonly decorative?: string
+    readonly "decorative"?: string
     /**
      * If type is `"item-group"` - the default value for the button.
      */
@@ -21406,15 +21406,15 @@ declare module "factorio:runtime" {
     /**
      * If type is `"achievement"` - the default value for the button.
      */
-    readonly achievement?: string
+    readonly "achievement"?: string
     /**
      * If type is `"equipment"` - the default value for the button.
      */
-    readonly equipment?: string
+    readonly "equipment"?: string
     /**
      * If type is `"technology"` - the default value for the button.
      */
-    readonly technology?: string
+    readonly "technology"?: string
     /**
      * If type is `"asteroid-chunk"` - the default value for the button.
      */
@@ -21442,7 +21442,7 @@ declare module "factorio:runtime" {
     /**
      * Filters describing what to show in the selection window. The applicable filter depends on the `elem_type`.
      */
-    readonly elem_filters?: PrototypeFilterWrite
+    readonly "elem_filters"?: PrototypeFilterWrite
   }
   /**
    * `"text-box"` variant of {@link GuiSpec}.
@@ -34748,7 +34748,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: TurretBlueprintControlBehaviorWrite
   }
   /**
    * `"arithmetic-combinator"` variant of {@link SurfaceCreateEntity}.
@@ -34823,7 +34823,7 @@ declare module "factorio:runtime" {
   export interface AsteroidCollectorSurfaceCreateEntity extends BaseSurfaceCreateEntity {
     readonly "result-inventory"?: BlueprintInventory
     readonly "chunk-filter"?: readonly SlotFilter[]
-    readonly control_behavior?: AsteroidCollectorBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: AsteroidCollectorBlueprintControlBehaviorWrite
   }
   /**
    * `"beam"` variant of {@link SurfaceCreateEntity}.
@@ -34982,7 +34982,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: TurretBlueprintControlBehaviorWrite
   }
   /**
    * `"entity-ghost"` variant of {@link SurfaceCreateEntity}.
@@ -35024,7 +35024,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: TurretBlueprintControlBehaviorWrite
   }
   /**
    * `"fluid-wagon"` variant of {@link SurfaceCreateEntity}.
@@ -35547,7 +35547,7 @@ declare module "factorio:runtime" {
      * Defaults to `false`.
      */
     readonly "ignore-unprioritised"?: boolean
-    readonly control_behavior?: TurretBlueprintControlBehaviorWrite
+    readonly "control_behavior"?: TurretBlueprintControlBehaviorWrite
   }
   /**
    * `"underground-belt"` variant of {@link SurfaceCreateEntity}.

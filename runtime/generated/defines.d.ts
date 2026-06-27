@@ -2614,8 +2614,8 @@ declare global {
      * @see {@link https://lua-api.factorio.com/2.1.8/defines.html#defines.prototypes Online documentation}
      */
     interface prototypes {
-      achievement: {
-        achievement: 0
+      "achievement": {
+        "achievement": 0
         "build-entity-achievement": 0
         "change-surface-achievement": 0
         "combat-robot-count-achievement": 0
@@ -2660,7 +2660,7 @@ declare global {
       "ammo-category": {
         "ammo-category": 0
       }
-      animation: {
+      "animation": {
         animation: 0
       }
       "asteroid-chunk": {
@@ -2684,7 +2684,7 @@ declare global {
       "damage-type": {
         "damage-type": 0
       }
-      decorative: {
+      "decorative": {
         "optimized-decorative": 0
       }
       "deliver-category": {
@@ -2696,37 +2696,37 @@ declare global {
       "editor-controller": {
         "editor-controller": 0
       }
-      entity: {
-        accumulator: 0
+      "entity": {
+        "accumulator": 0
         "agricultural-tower": 0
         "ammo-turret": 0
         "arithmetic-combinator": 0
-        arrow: 0
+        "arrow": 0
         "artillery-flare": 0
         "artillery-projectile": 0
         "artillery-turret": 0
         "artillery-wagon": 0
         "assembling-machine": 0
-        asteroid: 0
+        "asteroid": 0
         "asteroid-collector": 0
-        beacon: 0
-        beam: 0
-        boiler: 0
+        "beacon": 0
+        "beam": 0
+        "boiler": 0
         "burner-generator": 0
         "capture-robot": 0
-        car: 0
+        "car": 0
         "cargo-bay": 0
         "cargo-landing-pad": 0
         "cargo-pod": 0
         "cargo-wagon": 0
-        character: 0
+        "character": 0
         "character-corpse": 0
-        cliff: 0
+        "cliff": 0
         "combat-robot": 0
         "constant-combinator": 0
         "construction-robot": 0
-        container: 0
-        corpse: 0
+        "container": 0
+        "corpse": 0
         "curved-rail-a": 0
         "curved-rail-b": 0
         "decider-combinator": 0
@@ -2740,16 +2740,16 @@ declare global {
         "elevated-half-diagonal-rail": 0
         "elevated-straight-rail": 0
         "entity-ghost": 0
-        explosion: 0
-        fire: 0
-        fish: 0
+        "explosion": 0
+        "fire": 0
+        "fish": 0
         "fluid-turret": 0
         "fluid-wagon": 0
-        furnace: 0
+        "furnace": 0
         "fusion-generator": 0
         "fusion-reactor": 0
-        gate: 0
-        generator: 0
+        "gate": 0
+        "generator": 0
         "half-diagonal-rail": 0
         "heat-interface": 0
         "heat-pipe": 0
@@ -2757,50 +2757,50 @@ declare global {
         "infinity-cargo-wagon": 0
         "infinity-container": 0
         "infinity-pipe": 0
-        inserter: 0
+        "inserter": 0
         "item-entity": 0
         "item-request-proxy": 0
-        lab: 0
-        lamp: 0
+        "lab": 0
+        "lamp": 0
         "land-mine": 0
         "lane-splitter": 0
         "legacy-curved-rail": 0
         "legacy-straight-rail": 0
-        lightning: 0
+        "lightning": 0
         "lightning-attractor": 0
         "linked-belt": 0
         "linked-container": 0
-        loader: 0
+        "loader": 0
         "loader-1x1": 0
-        locomotive: 0
+        "locomotive": 0
         "logistic-container": 0
         "logistic-robot": 0
-        market: 0
+        "market": 0
         "mining-drill": 0
         "offshore-pump": 0
         "particle-source": 0
-        pipe: 0
+        "pipe": 0
         "pipe-to-ground": 0
-        plant: 0
+        "plant": 0
         "player-port": 0
         "power-switch": 0
         "programmable-speaker": 0
-        projectile: 0
+        "projectile": 0
         "proxy-container": 0
-        pump: 0
-        radar: 0
+        "pump": 0
+        "radar": 0
         "rail-chain-signal": 0
         "rail-ramp": 0
         "rail-remnants": 0
         "rail-signal": 0
         "rail-support": 0
-        reactor: 0
-        resource: 0
-        roboport: 0
+        "reactor": 0
+        "resource": 0
+        "roboport": 0
         "rocket-silo": 0
         "rocket-silo-rocket": 0
         "rocket-silo-rocket-shadow": 0
-        segment: 0
+        "segment": 0
         "segmented-unit": 0
         "selector-combinator": 0
         "simple-entity": 0
@@ -2813,25 +2813,25 @@ declare global {
         "spider-leg": 0
         "spider-unit": 0
         "spider-vehicle": 0
-        splitter: 0
-        sticker: 0
+        "splitter": 0
+        "sticker": 0
         "storage-tank": 0
         "straight-rail": 0
-        stream: 0
+        "stream": 0
         "temporary-container": 0
-        thruster: 0
+        "thruster": 0
         "tile-ghost": 0
         "train-stop": 0
         "transport-belt": 0
-        tree: 0
-        turret: 0
+        "tree": 0
+        "turret": 0
         "underground-belt": 0
-        unit: 0
+        "unit": 0
         "unit-spawner": 0
-        valve: 0
-        wall: 0
+        "valve": 0
+        "wall": 0
       }
-      equipment: {
+      "equipment": {
         "active-defense-equipment": 0
         "battery-equipment": 0
         "belt-immunity-equipment": 0
@@ -2851,10 +2851,10 @@ declare global {
       "equipment-grid": {
         "equipment-grid": 0
       }
-      fluid: {
+      "fluid": {
         fluid: 0
       }
-      font: {
+      "font": {
         font: 0
       }
       "fuel-category": {
@@ -2869,27 +2869,27 @@ declare global {
       "impact-category": {
         "impact-category": 0
       }
-      item: {
-        ammo: 0
-        armor: 0
-        blueprint: 0
+      "item": {
+        "ammo": 0
+        "armor": 0
+        "blueprint": 0
         "blueprint-book": 0
-        capsule: 0
+        "capsule": 0
         "copy-paste-tool": 0
         "deconstruction-item": 0
-        gun: 0
-        item: 0
+        "gun": 0
+        "item": 0
         "item-with-entity-data": 0
         "item-with-inventory": 0
         "item-with-label": 0
         "item-with-tags": 0
-        module: 0
+        "module": 0
         "rail-planner": 0
         "repair-tool": 0
         "selection-tool": 0
         "space-platform-starter-pack": 0
         "spidertron-remote": 0
-        tool: 0
+        "tool": 0
         "upgrade-item": 0
       }
       "item-group": {
@@ -2919,19 +2919,19 @@ declare global {
       "noise-function": {
         "noise-function": 0
       }
-      particle: {
+      "particle": {
         "optimized-particle": 0
       }
-      procession: {
+      "procession": {
         procession: 0
       }
       "procession-layer-inheritance-group": {
         "procession-layer-inheritance-group": 0
       }
-      quality: {
+      "quality": {
         quality: 0
       }
-      recipe: {
+      "recipe": {
         recipe: 0
       }
       "recipe-category": {
@@ -2943,35 +2943,35 @@ declare global {
       "resource-category": {
         "resource-category": 0
       }
-      shortcut: {
+      "shortcut": {
         shortcut: 0
       }
-      sound: {
+      "sound": {
         sound: 0
       }
       "space-connection": {
         "space-connection": 0
       }
       "space-location": {
-        planet: 0
+        "planet": 0
         "space-location": 0
       }
       "spectator-controller": {
         "spectator-controller": 0
       }
-      sprite: {
+      "sprite": {
         sprite: 0
       }
-      surface: {
+      "surface": {
         surface: 0
       }
       "surface-property": {
         "surface-property": 0
       }
-      technology: {
+      "technology": {
         technology: 0
       }
-      tile: {
+      "tile": {
         tile: 0
       }
       "tile-effect": {
@@ -2989,7 +2989,7 @@ declare global {
       "trivial-smoke": {
         "trivial-smoke": 0
       }
-      tutorial: {
+      "tutorial": {
         tutorial: 0
       }
       "utility-constants": {
