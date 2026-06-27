@@ -1,0 +1,13 @@
+// Type-checks the published library declarations together files in this
+// directory. `npm run check` runs this (tsc --noEmit -p test/tsconfig.json).
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "types": [],
+    "noEmit": true
+  },
+  "include": ["../**/index.d.ts", "**/*.ts"]
+}
