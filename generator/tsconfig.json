@@ -1,23 +1,14 @@
+// The generator source. Run with tsx (npm run generate); never emitted by tsc.
 {
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
-    "target": "es2020",
-    "module": "ESNext",
-    "lib": [
-      "esnext"
-    ],
     "skipLibCheck": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "noEmit": true
   },
-  "include": [
-    "./**/*.ts"
-  ],
-  "exclude": [
-    "input"
-  ],
-  "ts-node": {
-    "files": true
-  }
+  "include": ["./**/*.ts"],
+  "exclude": ["input"]
 }

@@ -1,15 +1,14 @@
+// Scripts. Run with tsx (npm run script); never emitted by tsc.
 {
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
-    "target": "es2020",
-    "module": "ESNext",
-    "lib": ["esnext"],
     "skipLibCheck": true,
-    "sourceMap": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noEmit": true
   },
   "include": ["./*.ts"]
 }
