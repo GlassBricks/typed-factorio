@@ -284,12 +284,8 @@ export function tryGetStringEnumType(
   }
 
   if (ts.isTypeReferenceNode(tsType)) {
-    try {
-      const result = tryGetStringUnionValuesFromConcept(context, (tsType.typeName as ts.Identifier).text)
-      if (result) return result
-    } catch (err) {
-      console.log((err as Error).message)
-    }
+    const result = tryGetStringUnionValuesFromConcept(context, (tsType.typeName as ts.Identifier).text)
+    if (result) return result
   }
 
   // check for string literal union
