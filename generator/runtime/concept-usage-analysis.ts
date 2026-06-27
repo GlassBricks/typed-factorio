@@ -145,7 +145,7 @@ export function analyzeConcept(context: RuntimeGenerationContext, concept: Conce
 export function finalizeConceptUsageAnalysis(context: RuntimeGenerationContext): void {
   const { usagesToPropagate, usages } = context.conceptUsageAnalysis
   while (usagesToPropagate.size > 0) {
-    const [concept, usage] = usagesToPropagate.entries().next().value
+    const [concept, usage] = usagesToPropagate.entries().next().value!
     usagesToPropagate.delete(concept)
     if (!usage) continue
     usages.set(concept, usages.get(concept)! | usage)

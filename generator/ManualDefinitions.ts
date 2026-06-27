@@ -253,6 +253,7 @@ function createDef(node: ts.Statement): AnyDef | undefined {
         name =
           ts.isStringLiteral(propertyName) ||
           ts.isNumericLiteral(propertyName) ||
+          ts.isBigIntLiteral(propertyName) ||
           ts.isNoSubstitutionTemplateLiteral(propertyName)
             ? propertyName.text
             : ts.idText(propertyName)

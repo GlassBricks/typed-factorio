@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
 jobs:
-  check-lint-and-format:
+  check:
     runs-on: ubuntu-latest
 
     steps:
@@ -13,8 +13,7 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-      - run: npm run lint
-      - run: npm run format:check
+      - run: npm run check
 
   check-generated-files:
     runs-on: ubuntu-latest
@@ -28,4 +27,3 @@ jobs:
       - run: npm run clean
       - run: npm run generate
       - run: npm run check-clean-tree
-      - run: npm run type-check
