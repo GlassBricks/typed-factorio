@@ -4,8 +4,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "none",
-    "moduleResolution": "node",
+    "module": "ESNext",
     "strict": true,
     "plugins": [
       {
