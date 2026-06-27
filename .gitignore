@@ -118,4 +118,5 @@ dist
 *.iml
 .idea
 .vscode
+.zed
 todo.txt
