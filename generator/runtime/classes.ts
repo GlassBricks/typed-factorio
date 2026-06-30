@@ -295,9 +295,9 @@ function generateClass(
     function resolveKnownNameConflict(a: UseName, b: UseName): UseName | undefined {
       const names = [a, b]
       if (names.includes("LandMine" as UseName) && names.includes("Landmine" as UseName)) {
-        if (context.factorioVersion !== "2.1.8") {
+        if (context.factorioVersion !== "2.1.9") {
           context.warning(
-            `LandMine subclass casing workaround is for factorio 2.1.8, but current version is ${context.factorioVersion}; re-check whether it is still needed`,
+            `LandMine subclass casing workaround is for factorio 2.1.9, but current version is ${context.factorioVersion}; re-check whether it is still needed`,
           )
         }
         return "LandMine" as UseName
