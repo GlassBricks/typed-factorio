@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.8",
+  "application_version": "2.1.9",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -5168,7 +5168,7 @@
     {
       "name": "LuaDebugAdapter",
       "order": 35,
-      "description": "Factorio provides a [Debug Adapter](https://microsoft.github.io/debug-adapter-protocol/overview) for compatible tools in single-session mode on stdin/stdout when launched with the `--dap` command line argument.\n\nThe Debug Adapter supports a Launch request with the following arguments:\n\n- `factorioArgs` :: array[[string](runtime:string)]? : Command line arguments for the debug session\n\n- `followSymlinks` :: [boolean](runtime:boolean)? : Follow symlinks when emitting locations (stack traces, etc) (default: true)\n\n- `tags` :: [Any](runtime:Any)? : Extra debug session tags, see also [tags](runtime:LuaDebugAdapter::tags)\n\nMetatable methods may be used to customize debug views:\n\n- `__tostring`(`self`) -> [string](runtime:string) : Called when the object appears as a value.\n\n- `__debugcounts`(`self`) -> `indexedVariables` :: [int32](runtime:int32) , `namedVariables` :: [int32](runtime:int32) : Called when the object appears in a parent object's listing, to estimate the size of this object's listing, and enabled paged listing for large indexed objects.\n\n- `__debugchildren`(`self`, `filters` :: [DebugVariablesFilter](runtime:DebugVariablesFilter)) -> array([DebugVariable](runtime:DebugVariable)) : Called when the object itself is opened for a debug listing. If `__debugcounts` was implemented, the client may choose to fetch Indexed and Named children separately, and Indexed children in pages as-needed for display. See also [describe_field](runtime:LuaDebugAdapter::describe_field).\n\nThis class also provides debug session APIs, as the global object `debugadapter` in all stages.",
+      "description": "Factorio provides a [Debug Adapter](https://microsoft.github.io/debug-adapter-protocol/overview) for compatible tools in single-session mode on stdin/stdout when launched with the `--dap` command line argument.\n\nThe Debug Adapter supports a Launch request with the following arguments:\n\n- `factorioArgs` :: array[[string](runtime:string)]? : Command line arguments for the debug session\n\n- `followSymlinks` :: [boolean](runtime:boolean)? : Follow symlinks when emitting locations (stack traces, etc) (default: true)\n\n- `trace` :: [boolean](runtime:boolean)? : Trace DAP messages to a `dap-trace.log` (default: false)\n\n- `tags` :: [Any](runtime:Any)? : Extra debug session tags, see also [tags](runtime:LuaDebugAdapter::tags)\n\nMetatable methods may be used to customize debug views:\n\n- `__tostring`(`self`) -> [string](runtime:string) : Called when the object appears as a value.\n\n- `__debugcounts`(`self`) -> `indexedVariables` :: [int32](runtime:int32) , `namedVariables` :: [int32](runtime:int32) : Called when the object appears in a parent object's listing, to estimate the size of this object's listing, and enabled paged listing for large indexed objects.\n\n- `__debugchildren`(`self`, `filters` :: [DebugVariablesFilter](runtime:DebugVariablesFilter)) -> array([DebugVariable](runtime:DebugVariable)) : Called when the object itself is opened for a debug listing. If `__debugcounts` was implemented, the client may choose to fetch Indexed and Named children separately, and Indexed children in pages as-needed for display. See also [describe_field](runtime:LuaDebugAdapter::describe_field).\n\nThis class also provides debug session APIs, as the global object `debugadapter` in all stages.",
       "abstract": false,
       "methods": [
         {
@@ -5291,6 +5291,31 @@
           "return_values": []
         },
         {
+          "name": "add_else_output",
+          "order": 10,
+          "description": "Adds a new else-output.",
+          "parameters": [
+            {
+              "name": "index",
+              "order": 1,
+              "description": "Index to insert new else-output at. If not specified, appends to the end.",
+              "type": "uint32",
+              "optional": true
+            },
+            {
+              "name": "output",
+              "order": 0,
+              "description": "New else-output to insert.",
+              "type": "DeciderCombinatorOutput",
+              "optional": false
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": []
+        },
+        {
           "name": "add_output",
           "order": 6,
           "description": "Adds a new output.",
@@ -5341,6 +5366,31 @@
           ]
         },
         {
+          "name": "get_else_output",
+          "order": 8,
+          "description": "Gets the else-output at `index`.",
+          "parameters": [
+            {
+              "name": "index",
+              "order": 0,
+              "description": "Index of else-output to get.",
+              "type": "uint32",
+              "optional": false
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "",
+              "type": "DeciderCombinatorOutput",
+              "optional": false
+            }
+          ]
+        },
+        {
           "name": "get_output",
           "order": 4,
           "description": "Gets the output at `index`.",
@@ -5374,6 +5424,24 @@
               "name": "index",
               "order": 0,
               "description": "Index of condition to remove.",
+              "type": "uint32",
+              "optional": false
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": []
+        },
+        {
+          "name": "remove_else_output",
+          "order": 11,
+          "description": "Removes the else-output at `index`.",
+          "parameters": [
+            {
+              "name": "index",
+              "order": 0,
+              "description": "Index of else-output to remove.",
               "type": "uint32",
               "optional": false
             }
@@ -5418,6 +5486,31 @@
               "order": 0,
               "description": "Index of condition to modify.",
               "type": "uint32",
+              "optional": false
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": []
+        },
+        {
+          "name": "set_else_output",
+          "order": 9,
+          "description": "Sets the else-output at `index`.",
+          "parameters": [
+            {
+              "name": "index",
+              "order": 0,
+              "description": "Index of else-output to modify.",
+              "type": "uint32",
+              "optional": false
+            },
+            {
+              "name": "output",
+              "order": 1,
+              "description": "Data to set selected else-output to.",
+              "type": "DeciderCombinatorOutput",
               "optional": false
             }
           ],
@@ -31296,8 +31389,15 @@
           "optional": false
         },
         {
-          "name": "object_name",
+          "name": "instrument_mod",
           "order": 2,
+          "description": "The name of the active Instrument Mode mod, if any.",
+          "read_type": "string",
+          "optional": true
+        },
+        {
+          "name": "object_name",
+          "order": 3,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -39951,7 +40051,7 @@
       "attributes": [
         {
           "name": "admin",
-          "order": 25,
+          "order": 26,
           "description": "`true` if the player is an admin.\n\nTrying to change player admin status from the console when you aren't an admin does nothing.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -39959,28 +40059,28 @@
         },
         {
           "name": "afk_time",
-          "order": 27,
+          "order": 28,
           "description": "How many ticks since the last action of this player.",
           "read_type": "uint32",
           "optional": false
         },
         {
           "name": "auto_sort_main_inventory",
-          "order": 46,
+          "order": 47,
           "description": "If the main inventory will be auto sorted.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "blueprint_to_setup",
-          "order": 38,
+          "order": 39,
           "description": "The item stack containing a blueprint to be setup.",
           "read_type": "LuaItemStack",
           "optional": false
         },
         {
           "name": "blueprints",
-          "order": 39,
+          "order": 40,
           "description": "Records contained in the player's blueprint library.",
           "read_type": {
             "complex_type": "array",
@@ -40006,7 +40106,7 @@
         },
         {
           "name": "chat_color",
-          "order": 21,
+          "order": 22,
           "description": "The color used when this player talks in game.",
           "read_type": "Color",
           "write_type": "Color",
@@ -40014,7 +40114,7 @@
         },
         {
           "name": "color",
-          "order": 20,
+          "order": 21,
           "description": "The color associated with the player. This will be used to tint the player's character as well as their buildings and vehicles.",
           "read_type": "Color",
           "write_type": "Color",
@@ -40022,7 +40122,7 @@
         },
         {
           "name": "connected",
-          "order": 24,
+          "order": 25,
           "description": "`true` if the player is currently connected to the game.",
           "read_type": "boolean",
           "optional": false
@@ -40036,14 +40136,14 @@
         },
         {
           "name": "current_music",
-          "order": 52,
+          "order": 53,
           "description": "The name of an ambient sound (music) the player is currently listening to.\n\nIf music is not playing, returns an empty string.\n\nIf the player is disconnected, returns the last played ambient sound.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "cursor_stack_temporary",
-          "order": 48,
+          "order": 49,
           "description": "Returns true if the current item stack in cursor will be destroyed after clearing the cursor. Manually putting it into inventory still preserves the item. If the cursor stack is not one of the supported types (blueprint, blueprint-book, deconstruction-planner, upgrade-planner), write operation will be silently ignored.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -40066,35 +40166,35 @@
         },
         {
           "name": "display_density_scale",
-          "order": 36,
+          "order": 37,
           "description": "The display density scale for this player. The display density scale is the factor of [LuaPlayer::display_scale](runtime:LuaPlayer::display_scale) that is determined by the physical DPI of the screen that Factorio is running on. In most cases, the default value is 1. If the player is playing on a high-density display, this value may be 2 or greater.\n\nDuring [on_player_created](runtime:on_player_created), this attribute will always return a scale of `1`. To get the actual scale, listen to the [on_player_display_density_scale_changed](runtime:on_player_display_density_scale_changed) event raised shortly afterwards.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "display_resolution",
-          "order": 34,
+          "order": 35,
           "description": "The display resolution for this player.\n\nDuring [on_player_created](runtime:on_player_created), this attribute will always return a resolution of `{width=1920, height=1080}`. To get the actual resolution, listen to the [on_player_display_resolution_changed](runtime:on_player_display_resolution_changed) event raised shortly afterwards.",
           "read_type": "DisplayResolution",
           "optional": false
         },
         {
           "name": "display_scale",
-          "order": 35,
+          "order": 36,
           "description": "The display scale for this player.\n\nDuring [on_player_created](runtime:on_player_created), this attribute will always return a scale of `1`. To get the actual scale, listen to the [on_player_display_scale_changed](runtime:on_player_display_scale_changed) event raised shortly afterwards.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "drag_target",
-          "order": 50,
+          "order": 51,
           "description": "The wire drag target for this player, if any.",
           "read_type": "DragTarget",
           "optional": true
         },
         {
           "name": "entity_copy_source",
-          "order": 26,
+          "order": 27,
           "description": "The source entity used during entity settings copy-paste, if any.",
           "read_type": "LuaEntity",
           "write_type": "LuaEntity",
@@ -40117,11 +40217,19 @@
         },
         {
           "name": "hand_location",
-          "order": 47,
+          "order": 48,
           "description": "The original location of the item in the cursor, marked with a hand. `nil` if the cursor stack is empty. When writing, the specified inventory slot must be empty and the cursor stack must not be empty.",
           "read_type": "ItemStackLocation",
           "write_type": "ItemStackLocation",
           "optional": true
+        },
+        {
+          "name": "hide_locked_prototypes_in_factoriopedia",
+          "order": 20,
+          "description": "Set to `true` to hide prototypes in Factoriopedia if they aren't unlocked yet.",
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
         },
         {
           "name": "index",
@@ -40132,7 +40240,7 @@
         },
         {
           "name": "infinity_inventory_filters",
-          "order": 45,
+          "order": 46,
           "description": "The filters for this map editor infinity inventory settings.",
           "read_type": {
             "complex_type": "array",
@@ -40146,28 +40254,28 @@
         },
         {
           "name": "input_method",
-          "order": 41,
+          "order": 42,
           "description": "The input method of the player, mouse and keyboard or game controller",
           "read_type": "defines.input_method",
           "optional": false
         },
         {
           "name": "last_online",
-          "order": 29,
+          "order": 30,
           "description": "At what tick this player was last online.",
           "read_type": "uint32",
           "optional": false
         },
         {
           "name": "locale",
-          "order": 37,
+          "order": 38,
           "description": "The active locale for this player.\n\nDuring [on_player_created](runtime:on_player_created), this attribute will be `en`. To get the actual value, listen to the [on_player_locale_changed](runtime:on_player_locale_changed) event raised shortly afterwards.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "map_view_settings",
-          "order": 51,
+          "order": 52,
           "description": "The player's map view settings. To write to this, use a table containing the fields that should be changed.",
           "write_type": "MapViewSettings",
           "optional": false
@@ -40182,7 +40290,7 @@
         },
         {
           "name": "mod_settings",
-          "order": 31,
+          "order": 32,
           "description": "The current per-player settings for the this player, indexed by prototype name. Returns the same structure as [LuaSettings::get_player_settings](runtime:LuaSettings::get_player_settings). This table becomes invalid if its associated player does.\n\nEven though this attribute is marked as read-only, individual settings can be changed by overwriting their [ModSetting](runtime:ModSetting) table. Mods can only change their own settings. Using the in-game console, all player settings can be changed.",
           "examples": [
             "```\n-- Change the value of the \"active_lifestyle\" setting\nplayer.mod_settings[\"active_lifestyle\"] = {value = true}\n```"
@@ -40196,21 +40304,21 @@
         },
         {
           "name": "name",
-          "order": 22,
+          "order": 23,
           "description": "The player's username.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "object_name",
-          "order": 55,
+          "order": 56,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "online_time",
-          "order": 28,
+          "order": 29,
           "description": "How many ticks did this player spend playing this save (all sessions combined).",
           "read_type": "uint32",
           "optional": false
@@ -40224,7 +40332,7 @@
         },
         {
           "name": "permission_group",
-          "order": 30,
+          "order": 31,
           "description": "The permission group this player is part of, if any.",
           "read_type": "LuaPermissionGroup",
           "write_type": "LuaPermissionGroup",
@@ -40274,7 +40382,7 @@
         },
         {
           "name": "remove_unfiltered_items",
-          "order": 44,
+          "order": 45,
           "description": "If items not included in this map editor infinity inventory filters should be removed.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -40282,14 +40390,14 @@
         },
         {
           "name": "render_mode",
-          "order": 40,
+          "order": 41,
           "description": "The render mode of the player, like map or zoom to world.",
           "read_type": "defines.render_mode",
           "optional": false
         },
         {
           "name": "respawn_quality",
-          "order": 33,
+          "order": 34,
           "description": "The quality used when this player respawns.\n\nThis can be set at any time however it is best to set it during the [defines.events.on_player_died](runtime:defines.events.on_player_died) event.",
           "read_type": "LuaQualityPrototype",
           "write_type": "QualityID",
@@ -40297,7 +40405,7 @@
         },
         {
           "name": "saved_logistic_filters",
-          "order": 53,
+          "order": 54,
           "description": "The filters that will be applied when this player respawns. These only have meaning if the player is actively waiting to respawn.",
           "read_type": "SavedLogisticFilters",
           "write_type": "SavedLogisticFilters",
@@ -40305,7 +40413,7 @@
         },
         {
           "name": "show_on_map",
-          "order": 43,
+          "order": 44,
           "description": "If `true`, circle and name of given player is rendered on the map/chart.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -40313,7 +40421,7 @@
         },
         {
           "name": "spectator",
-          "order": 42,
+          "order": 43,
           "description": "If `true`, zoom-to-world noise effect will be disabled and environmental sounds will be based on zoom-to-world view instead of position of player's character.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -40342,7 +40450,7 @@
         },
         {
           "name": "tag",
-          "order": 23,
+          "order": 24,
           "description": "The tag that is shown after the player in chat, on the map and above multiplayer selection rectangles.",
           "read_type": "string",
           "write_type": "string",
@@ -40350,7 +40458,7 @@
         },
         {
           "name": "ticks_to_respawn",
-          "order": 32,
+          "order": 33,
           "description": "The number of ticks until this player will respawn. `nil` if this player is not waiting to respawn.\n\nSet to `nil` to immediately respawn the player.\n\nSet to any positive value to trigger the respawn state for this player.",
           "read_type": "uint32",
           "write_type": "uint32",
@@ -40358,14 +40466,14 @@
         },
         {
           "name": "undo_redo_stack",
-          "order": 49,
+          "order": 50,
           "description": "The undo and redo stack for this player.",
           "read_type": "LuaUndoRedoStack",
           "optional": false
         },
         {
           "name": "valid",
-          "order": 54,
+          "order": 55,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -70443,7 +70551,7 @@
     },
     {
       "name": "AdvancedMapGenSettings",
-      "order": 246,
+      "order": 247,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71736,7 +71844,7 @@
     },
     {
       "name": "AutoplaceControl",
-      "order": 240,
+      "order": 241,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71767,7 +71875,7 @@
     },
     {
       "name": "AutoplaceSettings",
-      "order": 242,
+      "order": 243,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -71795,7 +71903,7 @@
     },
     {
       "name": "AutoplaceSpecification",
-      "order": 249,
+      "order": 250,
       "description": "Specifies how probability and richness are calculated when placing something on the map.",
       "type": {
         "complex_type": "table",
@@ -71864,7 +71972,7 @@
     },
     {
       "name": "AutoplaceSpecificationRestriction",
-      "order": 247,
+      "order": 248,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -75822,7 +75930,7 @@
     },
     {
       "name": "CliffPlacementSettings",
-      "order": 241,
+      "order": 242,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76595,7 +76703,7 @@
     },
     {
       "name": "ConfigurationChangedData",
-      "order": 253,
+      "order": 254,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76707,7 +76815,7 @@
     },
     {
       "name": "CraftingQueueItem",
-      "order": 251,
+      "order": 252,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77427,6 +77535,16 @@
             "optional": false
           },
           {
+            "name": "else_outputs",
+            "order": 2,
+            "description": "List of else-outputs.",
+            "type": {
+              "complex_type": "array",
+              "value": "DeciderCombinatorOutput"
+            },
+            "optional": false
+          },
+          {
             "name": "outputs",
             "order": 1,
             "description": "List of outputs.",
@@ -77692,7 +77810,7 @@
     },
     {
       "name": "DifficultySettings",
-      "order": 254,
+      "order": 235,
       "description": "Technology difficulty settings. Updating any of the attributes will immediately take effect in the game engine.",
       "type": {
         "complex_type": "LuaStruct",
@@ -77708,7 +77826,7 @@
           {
             "name": "technology_price_multiplier",
             "order": 0,
-            "description": "A value in range [0.001, 1000].",
+            "description": "A value in range [0.001, 100000].",
             "read_type": "double",
             "write_type": "double",
             "optional": false
@@ -78253,7 +78371,7 @@
     },
     {
       "name": "EnemyEvolutionMapSettings",
-      "order": 239,
+      "order": 240,
       "description": "These values represent a percentual increase in evolution. This means a value of `0.1` would increase evolution by 10%.",
       "type": {
         "complex_type": "table",
@@ -82701,7 +82819,7 @@
         "parameters": [
           {
             "name": "affected_by_quality",
-            "order": 15,
+            "order": 16,
             "description": "",
             "type": "boolean",
             "optional": false
@@ -82778,23 +82896,30 @@
           },
           {
             "name": "quality_change",
-            "order": 14,
+            "order": 15,
             "description": "",
             "type": "int8",
             "optional": true
           },
           {
             "name": "quality_max",
-            "order": 13,
+            "order": 14,
             "description": "",
             "type": "QualityID",
             "optional": true
           },
           {
             "name": "quality_min",
-            "order": 12,
+            "order": 13,
             "description": "",
             "type": "QualityID",
+            "optional": true
+          },
+          {
+            "name": "reset_freshness_on_craft",
+            "order": 12,
+            "description": "",
+            "type": "boolean",
             "optional": true
           },
           {
@@ -90012,7 +90137,7 @@
     },
     {
       "name": "MapAndDifficultySettings",
-      "order": 235,
+      "order": 236,
       "description": "A standard table containing all [MapSettings](runtime:MapSettings) attributes plus an additional table that contains all [DifficultySettings](runtime:DifficultySettings) properties.",
       "type": {
         "complex_type": "table",
@@ -90126,7 +90251,7 @@
     },
     {
       "name": "MapGenPreset",
-      "order": 245,
+      "order": 246,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -90164,7 +90289,7 @@
     },
     {
       "name": "MapGenSettings",
-      "order": 244,
+      "order": 245,
       "description": "When reading MapGenSettings, all properties will always be present, but they can be omitted when writing.",
       "examples": [
         "```\n-- Assuming a NamedNoiseExpression with the name \"my-alternate-grass1-probability\" is defined...\nlocal surface = game.player.surface\nlocal mgs = surface.map_gen_settings\nmgs.property_expression_names[\"tile:grass1:probability\"] = \"my-alternate-grass1-probability\"\nsurface.map_gen_settings = mgs\n-- ...would override the probability of grass1 being placed at any given point on the current surface.\n```",
@@ -90297,7 +90422,7 @@
     },
     {
       "name": "MapGenSize",
-      "order": 237,
+      "order": 238,
       "description": "A floating point number specifying an amount.\n\nFor backwards compatibility, MapGenSizes can also be specified as a string, which will be converted to a number (when queried, a number will always be returned).\n\nThe map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.",
       "type": {
         "complex_type": "union",
@@ -90458,7 +90583,7 @@
     },
     {
       "name": "MapSettings",
-      "order": 236,
+      "order": 237,
       "description": "Various game-related settings. Updating any of the attributes will immediately take effect in the game engine.",
       "examples": [
         "```\n-- Increase the number of short paths the pathfinder can cache.\ngame.map_settings.path_finder.short_cache_size = 15\n```"
@@ -90813,7 +90938,7 @@
     },
     {
       "name": "ModChangeData",
-      "order": 252,
+      "order": 253,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -91493,7 +91618,7 @@
     },
     {
       "name": "NoiseExpressionSourceString",
-      "order": 248,
+      "order": 249,
       "description": "The string representation of a noise expression. More detailed information is found on the [prototype docs](prototype:NamedNoiseExpression).",
       "type": "string"
     },
@@ -92887,7 +93012,7 @@
     },
     {
       "name": "PollutionMapSettings",
-      "order": 238,
+      "order": 239,
       "description": "These values are for the time frame of one second (60 ticks).",
       "type": {
         "complex_type": "table",
@@ -93975,7 +94100,7 @@
     },
     {
       "name": "RailExtensionData",
-      "order": 250,
+      "order": 251,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99298,7 +99423,7 @@
     },
     {
       "name": "TerritorySettings",
-      "order": 243,
+      "order": 244,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -107141,7 +107266,7 @@
         {
           "name": "disabled",
           "order": 60,
-          "description": "Used by constant combinators: Combinator is turned off via switch in GUI."
+          "description": "Used by constant combinators: Combinator is turned off via switch in GUI. Also used by inserters."
         },
         {
           "name": "disabled_by_control_behavior",
@@ -108848,1443 +108973,1463 @@
           "description": ""
         },
         {
-          "name": "add_decider_combinator_output",
+          "name": "add_decider_combinator_else_output",
           "order": 3,
           "description": ""
         },
         {
-          "name": "add_logistic_section",
+          "name": "add_decider_combinator_output",
           "order": 4,
           "description": ""
         },
         {
-          "name": "add_permission_group",
+          "name": "add_logistic_section",
           "order": 5,
           "description": ""
         },
         {
-          "name": "add_pin",
+          "name": "add_permission_group",
           "order": 6,
           "description": ""
         },
         {
-          "name": "add_train_interrupt",
+          "name": "add_pin",
           "order": 7,
           "description": ""
         },
         {
-          "name": "add_train_station",
+          "name": "add_train_interrupt",
           "order": 8,
           "description": ""
         },
         {
-          "name": "adjust_blueprint_snapping",
+          "name": "add_train_station",
           "order": 9,
           "description": ""
         },
         {
-          "name": "admin_action",
+          "name": "adjust_blueprint_snapping",
           "order": 10,
           "description": ""
         },
         {
-          "name": "alt_reverse_select_area",
+          "name": "admin_action",
           "order": 11,
           "description": ""
         },
         {
-          "name": "alt_select_area",
+          "name": "alt_reverse_select_area",
           "order": 12,
           "description": ""
         },
         {
-          "name": "alt_select_blueprint_entities",
+          "name": "alt_select_area",
           "order": 13,
           "description": ""
         },
         {
-          "name": "alternative_copy",
+          "name": "alt_select_blueprint_entities",
           "order": 14,
           "description": ""
         },
         {
-          "name": "begin_mining",
+          "name": "alternative_copy",
           "order": 15,
           "description": ""
         },
         {
-          "name": "begin_mining_terrain",
+          "name": "begin_mining",
           "order": 16,
           "description": ""
         },
         {
-          "name": "build",
+          "name": "begin_mining_terrain",
           "order": 17,
           "description": ""
         },
         {
-          "name": "build_rail",
+          "name": "build",
           "order": 18,
           "description": ""
         },
         {
-          "name": "build_terrain",
+          "name": "build_rail",
           "order": 19,
           "description": ""
         },
         {
-          "name": "cancel_craft",
+          "name": "build_terrain",
           "order": 20,
           "description": ""
         },
         {
-          "name": "cancel_deconstruct",
+          "name": "cancel_craft",
           "order": 21,
           "description": ""
         },
         {
-          "name": "cancel_delete_space_platform",
+          "name": "cancel_deconstruct",
           "order": 22,
           "description": ""
         },
         {
-          "name": "cancel_new_blueprint",
+          "name": "cancel_delete_space_platform",
           "order": 23,
           "description": ""
         },
         {
-          "name": "cancel_research",
+          "name": "cancel_new_blueprint",
           "order": 24,
           "description": ""
         },
         {
-          "name": "cancel_upgrade",
+          "name": "cancel_research",
           "order": 25,
           "description": ""
         },
         {
-          "name": "change_active_character_tab",
+          "name": "cancel_upgrade",
           "order": 26,
           "description": ""
         },
         {
-          "name": "change_active_item_group_for_crafting",
+          "name": "change_active_character_tab",
           "order": 27,
           "description": ""
         },
         {
-          "name": "change_active_item_group_for_filters",
+          "name": "change_active_item_group_for_crafting",
           "order": 28,
           "description": ""
         },
         {
-          "name": "change_active_quick_bar",
+          "name": "change_active_item_group_for_filters",
           "order": 29,
           "description": ""
         },
         {
-          "name": "change_arithmetic_combinator_parameters",
+          "name": "change_active_quick_bar",
           "order": 30,
           "description": ""
         },
         {
-          "name": "change_entity_label",
+          "name": "change_arithmetic_combinator_parameters",
           "order": 31,
           "description": ""
         },
         {
-          "name": "change_heading_riding_state",
+          "name": "change_entity_label",
           "order": 32,
           "description": ""
         },
         {
-          "name": "change_item_label",
+          "name": "change_heading_riding_state",
           "order": 33,
           "description": ""
         },
         {
-          "name": "change_logistic_point_group",
+          "name": "change_item_label",
           "order": 34,
           "description": ""
         },
         {
-          "name": "change_multiplayer_config",
+          "name": "change_logistic_point_group",
           "order": 35,
           "description": ""
         },
         {
-          "name": "change_picking_state",
+          "name": "change_multiplayer_config",
           "order": 36,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_alert_parameters",
+          "name": "change_picking_state",
           "order": 37,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_circuit_parameters",
+          "name": "change_programmable_speaker_alert_parameters",
           "order": 38,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_parameters",
+          "name": "change_programmable_speaker_circuit_parameters",
           "order": 39,
           "description": ""
         },
         {
-          "name": "change_research_condition",
+          "name": "change_programmable_speaker_parameters",
           "order": 40,
           "description": ""
         },
         {
-          "name": "change_riding_state",
+          "name": "change_research_condition",
           "order": 41,
           "description": ""
         },
         {
-          "name": "change_selector_combinator_parameters",
+          "name": "change_riding_state",
           "order": 42,
           "description": ""
         },
         {
-          "name": "change_shooting_state",
+          "name": "change_selector_combinator_parameters",
           "order": 43,
           "description": ""
         },
         {
-          "name": "change_train_name",
+          "name": "change_shooting_state",
           "order": 44,
           "description": ""
         },
         {
-          "name": "change_train_station",
+          "name": "change_train_name",
           "order": 45,
           "description": ""
         },
         {
-          "name": "change_train_stop_station",
+          "name": "change_train_station",
           "order": 46,
           "description": ""
         },
         {
-          "name": "change_train_wait_condition",
+          "name": "change_train_stop_station",
           "order": 47,
           "description": ""
         },
         {
-          "name": "change_train_wait_condition_data",
+          "name": "change_train_wait_condition",
           "order": 48,
           "description": ""
         },
         {
-          "name": "cheat",
+          "name": "change_train_wait_condition_data",
           "order": 49,
           "description": ""
         },
         {
-          "name": "clear_cursor",
+          "name": "cheat",
           "order": 50,
           "description": ""
         },
         {
-          "name": "connect_rolling_stock",
+          "name": "clear_cursor",
           "order": 51,
           "description": ""
         },
         {
-          "name": "copy",
+          "name": "connect_rolling_stock",
           "order": 52,
           "description": ""
         },
         {
-          "name": "copy_entity_settings",
+          "name": "copy",
           "order": 53,
           "description": ""
         },
         {
-          "name": "copy_large_opened_blueprint",
+          "name": "copy_entity_settings",
           "order": 54,
           "description": ""
         },
         {
-          "name": "copy_large_opened_item",
+          "name": "copy_large_opened_blueprint",
           "order": 55,
           "description": ""
         },
         {
-          "name": "copy_opened_blueprint",
+          "name": "copy_large_opened_item",
           "order": 56,
           "description": ""
         },
         {
-          "name": "copy_opened_item",
+          "name": "copy_opened_blueprint",
           "order": 57,
           "description": ""
         },
         {
-          "name": "craft",
+          "name": "copy_opened_item",
           "order": 58,
           "description": ""
         },
         {
-          "name": "create_space_platform",
+          "name": "craft",
           "order": 59,
           "description": ""
         },
         {
-          "name": "cursor_split",
+          "name": "create_space_platform",
           "order": 60,
           "description": ""
         },
         {
-          "name": "cursor_transfer",
+          "name": "cursor_split",
           "order": 61,
           "description": ""
         },
         {
-          "name": "custom_input",
+          "name": "cursor_transfer",
           "order": 62,
           "description": ""
         },
         {
-          "name": "cycle_blueprint_book_backwards",
+          "name": "custom_input",
           "order": 63,
           "description": ""
         },
         {
-          "name": "cycle_blueprint_book_forwards",
+          "name": "cycle_blueprint_book_backwards",
           "order": 64,
           "description": ""
         },
         {
-          "name": "cycle_quality_down",
+          "name": "cycle_blueprint_book_forwards",
           "order": 65,
           "description": ""
         },
         {
-          "name": "cycle_quality_up",
+          "name": "cycle_quality_down",
           "order": 66,
           "description": ""
         },
         {
-          "name": "deconstruct",
+          "name": "cycle_quality_up",
           "order": 67,
           "description": ""
         },
         {
-          "name": "delete_blueprint_library",
+          "name": "deconstruct",
           "order": 68,
           "description": ""
         },
         {
-          "name": "delete_blueprint_record",
+          "name": "delete_blueprint_library",
           "order": 69,
           "description": ""
         },
         {
-          "name": "delete_custom_tag",
+          "name": "delete_blueprint_record",
           "order": 70,
           "description": ""
         },
         {
-          "name": "delete_logistic_group",
+          "name": "delete_custom_tag",
           "order": 71,
           "description": ""
         },
         {
-          "name": "delete_permission_group",
+          "name": "delete_logistic_group",
           "order": 72,
           "description": ""
         },
         {
-          "name": "delete_space_platform",
+          "name": "delete_permission_group",
           "order": 73,
           "description": ""
         },
         {
-          "name": "destroy_item",
+          "name": "delete_space_platform",
           "order": 74,
           "description": ""
         },
         {
-          "name": "destroy_opened_item",
+          "name": "destroy_item",
           "order": 75,
           "description": ""
         },
         {
-          "name": "disconnect_rolling_stock",
+          "name": "destroy_opened_item",
           "order": 76,
           "description": ""
         },
         {
-          "name": "drag_decider_combinator_condition",
+          "name": "disconnect_rolling_stock",
           "order": 77,
           "description": ""
         },
         {
-          "name": "drag_decider_combinator_output",
+          "name": "drag_decider_combinator_condition",
           "order": 78,
           "description": ""
         },
         {
-          "name": "drag_research_condition",
+          "name": "drag_decider_combinator_else_output",
           "order": 79,
           "description": ""
         },
         {
-          "name": "drag_train_schedule",
+          "name": "drag_decider_combinator_output",
           "order": 80,
           "description": ""
         },
         {
-          "name": "drag_train_schedule_interrupt",
+          "name": "drag_research_condition",
           "order": 81,
           "description": ""
         },
         {
-          "name": "drag_train_wait_condition",
+          "name": "drag_train_schedule",
           "order": 82,
           "description": ""
         },
         {
-          "name": "drop_blueprint_record",
+          "name": "drag_train_schedule_interrupt",
           "order": 83,
           "description": ""
         },
         {
-          "name": "drop_item",
+          "name": "drag_train_wait_condition",
           "order": 84,
           "description": ""
         },
         {
-          "name": "edit_blueprint_tool_preview",
+          "name": "drop_blueprint_record",
           "order": 85,
           "description": ""
         },
         {
-          "name": "edit_custom_tag",
+          "name": "drop_item",
           "order": 86,
           "description": ""
         },
         {
-          "name": "edit_display_panel",
+          "name": "edit_blueprint_tool_preview",
           "order": 87,
           "description": ""
         },
         {
-          "name": "edit_display_panel_always_show",
+          "name": "edit_custom_tag",
           "order": 88,
           "description": ""
         },
         {
-          "name": "edit_display_panel_icon",
+          "name": "edit_display_panel",
           "order": 89,
           "description": ""
         },
         {
-          "name": "edit_display_panel_parameters",
+          "name": "edit_display_panel_always_show",
           "order": 90,
           "description": ""
         },
         {
-          "name": "edit_display_panel_show_in_chart",
+          "name": "edit_display_panel_icon",
           "order": 91,
           "description": ""
         },
         {
-          "name": "edit_display_panel_single_entry",
+          "name": "edit_display_panel_parameters",
           "order": 92,
           "description": ""
         },
         {
-          "name": "edit_interrupt",
+          "name": "edit_display_panel_show_in_chart",
           "order": 93,
           "description": ""
         },
         {
-          "name": "edit_permission_group",
+          "name": "edit_display_panel_single_entry",
           "order": 94,
           "description": ""
         },
         {
-          "name": "edit_pin",
+          "name": "edit_interrupt",
           "order": 95,
           "description": ""
         },
         {
-          "name": "export_blueprint",
+          "name": "edit_permission_group",
           "order": 96,
           "description": ""
         },
         {
-          "name": "fast_entity_split",
+          "name": "edit_pin",
           "order": 97,
           "description": ""
         },
         {
-          "name": "fast_entity_transfer",
+          "name": "export_blueprint",
           "order": 98,
           "description": ""
         },
         {
-          "name": "flip_entity",
+          "name": "fast_entity_split",
           "order": 99,
           "description": ""
         },
         {
-          "name": "flush_opened_entity_fluid",
+          "name": "fast_entity_transfer",
           "order": 100,
           "description": ""
         },
         {
-          "name": "flush_opened_entity_specific_fluid",
+          "name": "flip_entity",
           "order": 101,
           "description": ""
         },
         {
-          "name": "go_to_train_station",
+          "name": "flush_opened_entity_fluid",
           "order": 102,
           "description": ""
         },
         {
-          "name": "grab_blueprint_record",
+          "name": "flush_opened_entity_specific_fluid",
           "order": 103,
           "description": ""
         },
         {
-          "name": "gui_checked_state_changed",
+          "name": "go_to_train_station",
           "order": 104,
           "description": ""
         },
         {
-          "name": "gui_click",
+          "name": "grab_blueprint_record",
           "order": 105,
           "description": ""
         },
         {
-          "name": "gui_confirmed",
+          "name": "gui_checked_state_changed",
           "order": 106,
           "description": ""
         },
         {
-          "name": "gui_elem_changed",
+          "name": "gui_click",
           "order": 107,
           "description": ""
         },
         {
-          "name": "gui_hover",
+          "name": "gui_confirmed",
           "order": 108,
           "description": ""
         },
         {
-          "name": "gui_inventory_action",
+          "name": "gui_elem_changed",
           "order": 109,
           "description": ""
         },
         {
-          "name": "gui_inventory_bar_changed",
+          "name": "gui_hover",
           "order": 110,
           "description": ""
         },
         {
-          "name": "gui_inventory_filter_changed",
+          "name": "gui_inventory_action",
           "order": 111,
           "description": ""
         },
         {
-          "name": "gui_leave",
+          "name": "gui_inventory_bar_changed",
           "order": 112,
           "description": ""
         },
         {
-          "name": "gui_location_changed",
+          "name": "gui_inventory_filter_changed",
           "order": 113,
           "description": ""
         },
         {
-          "name": "gui_selected_tab_changed",
+          "name": "gui_leave",
           "order": 114,
           "description": ""
         },
         {
-          "name": "gui_selection_state_changed",
+          "name": "gui_location_changed",
           "order": 115,
           "description": ""
         },
         {
-          "name": "gui_switch_state_changed",
+          "name": "gui_selected_tab_changed",
           "order": 116,
           "description": ""
         },
         {
-          "name": "gui_text_changed",
+          "name": "gui_selection_state_changed",
           "order": 117,
           "description": ""
         },
         {
-          "name": "gui_value_changed",
+          "name": "gui_switch_state_changed",
           "order": 118,
           "description": ""
         },
         {
-          "name": "import_blueprint",
+          "name": "gui_text_changed",
           "order": 119,
           "description": ""
         },
         {
-          "name": "import_blueprint_string",
+          "name": "gui_value_changed",
           "order": 120,
           "description": ""
         },
         {
-          "name": "import_blueprints_filtered",
+          "name": "import_blueprint",
           "order": 121,
           "description": ""
         },
         {
-          "name": "import_permissions_string",
+          "name": "import_blueprint_string",
           "order": 122,
           "description": ""
         },
         {
-          "name": "instantly_create_space_platform",
+          "name": "import_blueprints_filtered",
           "order": 123,
           "description": ""
         },
         {
-          "name": "inventory_split",
+          "name": "import_permissions_string",
           "order": 124,
           "description": ""
         },
         {
-          "name": "inventory_transfer",
+          "name": "instantly_create_space_platform",
           "order": 125,
           "description": ""
         },
         {
-          "name": "land_at_planet",
+          "name": "inventory_split",
           "order": 126,
           "description": ""
         },
         {
-          "name": "launch_rocket",
+          "name": "inventory_transfer",
           "order": 127,
           "description": ""
         },
         {
-          "name": "lua_shortcut",
+          "name": "land_at_planet",
           "order": 128,
           "description": ""
         },
         {
-          "name": "map_editor_action",
+          "name": "launch_rocket",
           "order": 129,
           "description": ""
         },
         {
-          "name": "market_offer",
+          "name": "lua_shortcut",
           "order": 130,
           "description": ""
         },
         {
-          "name": "mod_settings_changed",
+          "name": "map_editor_action",
           "order": 131,
           "description": ""
         },
         {
-          "name": "modify_decider_combinator_condition",
+          "name": "market_offer",
           "order": 132,
           "description": ""
         },
         {
-          "name": "modify_decider_combinator_output",
+          "name": "mod_settings_changed",
           "order": 133,
           "description": ""
         },
         {
-          "name": "move_pin",
+          "name": "modify_decider_combinator_condition",
           "order": 134,
           "description": ""
         },
         {
-          "name": "move_research",
+          "name": "modify_decider_combinator_else_output",
           "order": 135,
           "description": ""
         },
         {
-          "name": "open_achievements_gui",
+          "name": "modify_decider_combinator_output",
           "order": 136,
           "description": ""
         },
         {
-          "name": "open_blueprint_library_gui",
+          "name": "move_pin",
           "order": 137,
           "description": ""
         },
         {
-          "name": "open_blueprint_record",
+          "name": "move_research",
           "order": 138,
           "description": ""
         },
         {
-          "name": "open_bonus_gui",
+          "name": "open_achievements_gui",
           "order": 139,
           "description": ""
         },
         {
-          "name": "open_character_gui",
+          "name": "open_blueprint_library_gui",
           "order": 140,
           "description": ""
         },
         {
-          "name": "open_current_vehicle_gui",
+          "name": "open_blueprint_record",
           "order": 141,
           "description": ""
         },
         {
-          "name": "open_equipment",
+          "name": "open_bonus_gui",
           "order": 142,
           "description": ""
         },
         {
-          "name": "open_global_electric_network_gui",
+          "name": "open_character_gui",
           "order": 143,
           "description": ""
         },
         {
-          "name": "open_gui",
+          "name": "open_current_vehicle_gui",
           "order": 144,
           "description": ""
         },
         {
-          "name": "open_item",
+          "name": "open_equipment",
           "order": 145,
           "description": ""
         },
         {
-          "name": "open_logistics_gui",
+          "name": "open_global_electric_network_gui",
           "order": 146,
           "description": ""
         },
         {
-          "name": "open_mod_item",
+          "name": "open_gui",
           "order": 147,
           "description": ""
         },
         {
-          "name": "open_new_platform_button_from_rocket_silo",
+          "name": "open_item",
           "order": 148,
           "description": ""
         },
         {
-          "name": "open_opened_entity_grid",
+          "name": "open_logistics_gui",
           "order": 149,
           "description": ""
         },
         {
-          "name": "open_parent_of_opened_item",
+          "name": "open_mod_item",
           "order": 150,
           "description": ""
         },
         {
-          "name": "open_production_gui",
+          "name": "open_new_platform_button_from_rocket_silo",
           "order": 151,
           "description": ""
         },
         {
-          "name": "open_train_gui",
+          "name": "open_opened_entity_grid",
           "order": 152,
           "description": ""
         },
         {
-          "name": "open_train_station_gui",
+          "name": "open_parent_of_opened_item",
           "order": 153,
           "description": ""
         },
         {
-          "name": "open_trains_gui",
+          "name": "open_production_gui",
           "order": 154,
           "description": ""
         },
         {
-          "name": "parametrise_blueprint",
+          "name": "open_train_gui",
           "order": 155,
           "description": ""
         },
         {
-          "name": "paste_entity_settings",
+          "name": "open_train_station_gui",
           "order": 156,
           "description": ""
         },
         {
-          "name": "pin_alert_group",
+          "name": "open_trains_gui",
           "order": 157,
           "description": ""
         },
         {
-          "name": "pin_custom_alert",
+          "name": "parametrise_blueprint",
           "order": 158,
           "description": ""
         },
         {
-          "name": "pin_search_result",
+          "name": "paste_entity_settings",
           "order": 159,
           "description": ""
         },
         {
-          "name": "pipette",
+          "name": "pin_alert_group",
           "order": 160,
           "description": ""
         },
         {
-          "name": "place_equipment",
+          "name": "pin_custom_alert",
           "order": 161,
           "description": ""
         },
         {
-          "name": "providing_to_other_platforms",
+          "name": "pin_search_result",
           "order": 162,
           "description": ""
         },
         {
-          "name": "quick_bar_pick_slot",
+          "name": "pipette",
           "order": 163,
           "description": ""
         },
         {
-          "name": "quick_bar_set_selected_page",
+          "name": "place_equipment",
           "order": 164,
           "description": ""
         },
         {
-          "name": "quick_bar_set_slot",
+          "name": "providing_to_other_platforms",
           "order": 165,
           "description": ""
         },
         {
-          "name": "reassign_blueprint",
+          "name": "quick_bar_pick_slot",
           "order": 166,
           "description": ""
         },
         {
-          "name": "redo",
+          "name": "quick_bar_set_selected_page",
           "order": 167,
           "description": ""
         },
         {
-          "name": "remote_view_entity",
+          "name": "quick_bar_set_slot",
           "order": 168,
           "description": ""
         },
         {
-          "name": "remote_view_surface",
+          "name": "reassign_blueprint",
           "order": 169,
           "description": ""
         },
         {
-          "name": "remove_cables",
+          "name": "redo",
           "order": 170,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_condition",
+          "name": "remote_view_entity",
           "order": 171,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_output",
+          "name": "remote_view_surface",
           "order": 172,
           "description": ""
         },
         {
-          "name": "remove_logistic_section",
+          "name": "remove_cables",
           "order": 173,
           "description": ""
         },
         {
-          "name": "remove_pin",
+          "name": "remove_decider_combinator_condition",
           "order": 174,
           "description": ""
         },
         {
-          "name": "remove_train_interrupt",
+          "name": "remove_decider_combinator_else_output",
           "order": 175,
           "description": ""
         },
         {
-          "name": "remove_train_station",
+          "name": "remove_decider_combinator_output",
           "order": 176,
           "description": ""
         },
         {
-          "name": "rename_interrupt",
+          "name": "remove_logistic_section",
           "order": 177,
           "description": ""
         },
         {
-          "name": "rename_space_platform",
+          "name": "remove_pin",
           "order": 178,
           "description": ""
         },
         {
-          "name": "reorder_logistic_section",
+          "name": "remove_train_interrupt",
           "order": 179,
           "description": ""
         },
         {
-          "name": "request_missing_construction_materials",
+          "name": "remove_train_station",
           "order": 180,
           "description": ""
         },
         {
-          "name": "reset_assembling_machine",
+          "name": "rename_interrupt",
           "order": 181,
           "description": ""
         },
         {
-          "name": "reverse_select_area",
+          "name": "rename_space_platform",
           "order": 182,
           "description": ""
         },
         {
-          "name": "rotate_entity",
+          "name": "reorder_logistic_section",
           "order": 183,
           "description": ""
         },
         {
-          "name": "select_area",
+          "name": "request_missing_construction_materials",
           "order": 184,
           "description": ""
         },
         {
-          "name": "select_asteroid_chunk_slot",
+          "name": "reset_assembling_machine",
           "order": 185,
           "description": ""
         },
         {
-          "name": "select_blueprint_entities",
+          "name": "reverse_select_area",
           "order": 186,
           "description": ""
         },
         {
-          "name": "select_entity_filter_slot",
+          "name": "rotate_entity",
           "order": 187,
           "description": ""
         },
         {
-          "name": "select_entity_slot",
+          "name": "select_area",
           "order": 188,
           "description": ""
         },
         {
-          "name": "select_item_filter",
+          "name": "select_asteroid_chunk_slot",
           "order": 189,
           "description": ""
         },
         {
-          "name": "select_mapper_slot_from",
+          "name": "select_blueprint_entities",
           "order": 190,
           "description": ""
         },
         {
-          "name": "select_mapper_slot_to",
+          "name": "select_entity_filter_slot",
           "order": 191,
           "description": ""
         },
         {
-          "name": "select_next_valid_gun",
+          "name": "select_entity_slot",
           "order": 192,
           "description": ""
         },
         {
-          "name": "select_tile_slot",
+          "name": "select_item_filter",
           "order": 193,
           "description": ""
         },
         {
-          "name": "send_spidertron",
+          "name": "select_mapper_slot_from",
           "order": 194,
           "description": ""
         },
         {
-          "name": "send_stack_to_trash",
+          "name": "select_mapper_slot_to",
           "order": 195,
           "description": ""
         },
         {
-          "name": "send_stacks_to_trash",
+          "name": "select_next_valid_gun",
           "order": 196,
           "description": ""
         },
         {
-          "name": "send_train_to_pin_target",
+          "name": "select_tile_slot",
           "order": 197,
           "description": ""
         },
         {
-          "name": "set_behavior_mode",
+          "name": "send_spidertron",
           "order": 198,
           "description": ""
         },
         {
-          "name": "set_car_weapons_control",
+          "name": "send_stack_to_trash",
           "order": 199,
           "description": ""
         },
         {
-          "name": "set_cheat_mode_quality",
+          "name": "send_stacks_to_trash",
           "order": 200,
           "description": ""
         },
         {
-          "name": "set_circuit_condition",
+          "name": "send_train_to_pin_target",
           "order": 201,
           "description": ""
         },
         {
-          "name": "set_circuit_mode_of_operation",
+          "name": "set_behavior_mode",
           "order": 202,
           "description": ""
         },
         {
-          "name": "set_combinator_description",
+          "name": "set_car_weapons_control",
           "order": 203,
           "description": ""
         },
         {
-          "name": "set_control_behavior_input_networks",
+          "name": "set_cheat_mode_quality",
           "order": 204,
           "description": ""
         },
         {
-          "name": "set_control_behavior_output_networks",
+          "name": "set_circuit_condition",
           "order": 205,
           "description": ""
         },
         {
-          "name": "set_copy_color_from_train_stop",
+          "name": "set_circuit_mode_of_operation",
           "order": 206,
           "description": ""
         },
         {
-          "name": "set_deconstruction_item_tile_selection_mode",
+          "name": "set_combinator_description",
           "order": 207,
           "description": ""
         },
         {
-          "name": "set_deconstruction_item_trees_and_rocks_only",
+          "name": "set_control_behavior_input_networks",
           "order": 208,
           "description": ""
         },
         {
-          "name": "set_entity_color",
+          "name": "set_control_behavior_output_networks",
           "order": 209,
           "description": ""
         },
         {
-          "name": "set_entity_energy_property",
+          "name": "set_copy_color_from_train_stop",
           "order": 210,
           "description": ""
         },
         {
-          "name": "set_equipment_energy_property",
+          "name": "set_deconstruction_item_tile_selection_mode",
           "order": 211,
           "description": ""
         },
         {
-          "name": "set_filter",
+          "name": "set_deconstruction_item_trees_and_rocks_only",
           "order": 212,
           "description": ""
         },
         {
-          "name": "set_ghost_cursor",
+          "name": "set_entity_color",
           "order": 213,
           "description": ""
         },
         {
-          "name": "set_heat_interface_mode",
+          "name": "set_entity_energy_property",
           "order": 214,
           "description": ""
         },
         {
-          "name": "set_heat_interface_temperature",
+          "name": "set_equipment_energy_property",
           "order": 215,
           "description": ""
         },
         {
-          "name": "set_infinity_container_filter_item",
+          "name": "set_filter",
           "order": 216,
           "description": ""
         },
         {
-          "name": "set_infinity_container_logistic_mode",
+          "name": "set_ghost_cursor",
           "order": 217,
           "description": ""
         },
         {
-          "name": "set_infinity_container_remove_unfiltered_items",
+          "name": "set_heat_interface_mode",
           "order": 218,
           "description": ""
         },
         {
-          "name": "set_infinity_pipe_filter",
+          "name": "set_heat_interface_temperature",
           "order": 219,
           "description": ""
         },
         {
-          "name": "set_inserter_max_stack_size",
+          "name": "set_infinity_container_filter_item",
           "order": 220,
           "description": ""
         },
         {
-          "name": "set_inventory_bar",
+          "name": "set_infinity_container_logistic_mode",
           "order": 221,
           "description": ""
         },
         {
-          "name": "set_lamp_always_on",
+          "name": "set_infinity_container_remove_unfiltered_items",
           "order": 222,
           "description": ""
         },
         {
-          "name": "set_linked_container_link_i_d",
+          "name": "set_infinity_pipe_filter",
           "order": 223,
           "description": ""
         },
         {
-          "name": "set_loader_belt_stack_size_override",
+          "name": "set_inserter_max_stack_size",
           "order": 224,
           "description": ""
         },
         {
-          "name": "set_logistic_filter_item",
+          "name": "set_inventory_bar",
           "order": 225,
           "description": ""
         },
         {
-          "name": "set_logistic_network_name",
+          "name": "set_lamp_always_on",
           "order": 226,
           "description": ""
         },
         {
-          "name": "set_logistic_section_active",
+          "name": "set_linked_container_link_i_d",
           "order": 227,
           "description": ""
         },
         {
-          "name": "set_player_color",
+          "name": "set_loader_belt_stack_size_override",
           "order": 228,
           "description": ""
         },
         {
-          "name": "set_pump_fluid_filter",
+          "name": "set_logistic_filter_item",
           "order": 229,
           "description": ""
         },
         {
-          "name": "set_request_from_buffers",
+          "name": "set_logistic_network_name",
           "order": 230,
           "description": ""
         },
         {
-          "name": "set_research_finished_stops_game",
+          "name": "set_logistic_section_active",
           "order": 231,
           "description": ""
         },
         {
-          "name": "set_rocket_silo_send_to_orbit_automated_mode",
+          "name": "set_player_color",
           "order": 232,
           "description": ""
         },
         {
-          "name": "set_schedule_record_allow_unloading",
+          "name": "set_pump_fluid_filter",
           "order": 233,
           "description": ""
         },
         {
-          "name": "set_signal",
+          "name": "set_request_from_buffers",
           "order": 234,
           "description": ""
         },
         {
-          "name": "set_splitter_priority",
+          "name": "set_research_finished_stops_game",
           "order": 235,
           "description": ""
         },
         {
-          "name": "set_spoil_priority",
+          "name": "set_rocket_silo_send_to_orbit_automated_mode",
           "order": 236,
           "description": ""
         },
         {
-          "name": "set_train_stop_priority",
+          "name": "set_schedule_record_allow_unloading",
           "order": 237,
           "description": ""
         },
         {
-          "name": "set_train_stopped",
+          "name": "set_signal",
           "order": 238,
           "description": ""
         },
         {
-          "name": "set_trains_limit",
+          "name": "set_splitter_priority",
           "order": 239,
           "description": ""
         },
         {
-          "name": "set_turret_ignore_unlisted",
+          "name": "set_spoil_priority",
           "order": 240,
           "description": ""
         },
         {
-          "name": "set_use_inserter_filters",
+          "name": "set_train_stop_priority",
           "order": 241,
           "description": ""
         },
         {
-          "name": "set_vehicle_automatic_targeting_parameters",
+          "name": "set_train_stopped",
           "order": 242,
           "description": ""
         },
         {
-          "name": "setup_assembling_machine",
+          "name": "set_trains_limit",
           "order": 243,
           "description": ""
         },
         {
-          "name": "setup_blueprint",
+          "name": "set_turret_ignore_unlisted",
           "order": 244,
           "description": ""
         },
         {
-          "name": "setup_single_blueprint_record",
+          "name": "set_use_inserter_filters",
           "order": 245,
           "description": ""
         },
         {
-          "name": "spawn_item",
+          "name": "set_vehicle_automatic_targeting_parameters",
           "order": 246,
           "description": ""
         },
         {
-          "name": "spectator_change_surface",
+          "name": "setup_assembling_machine",
           "order": 247,
           "description": ""
         },
         {
-          "name": "stack_split",
+          "name": "setup_blueprint",
           "order": 248,
           "description": ""
         },
         {
-          "name": "stack_transfer",
+          "name": "setup_single_blueprint_record",
           "order": 249,
           "description": ""
         },
         {
-          "name": "start_repair",
+          "name": "spawn_item",
           "order": 250,
           "description": ""
         },
         {
-          "name": "start_research",
+          "name": "spectator_change_surface",
           "order": 251,
           "description": ""
         },
         {
-          "name": "start_walking",
+          "name": "stack_split",
           "order": 252,
           "description": ""
         },
         {
-          "name": "stop_drag_build",
+          "name": "stack_transfer",
           "order": 253,
           "description": ""
         },
         {
-          "name": "swap_asteroid_chunk_slots",
+          "name": "start_repair",
           "order": 254,
           "description": ""
         },
         {
-          "name": "swap_entity_filter_slots",
+          "name": "start_research",
           "order": 255,
           "description": ""
         },
         {
-          "name": "swap_entity_slots",
+          "name": "start_walking",
           "order": 256,
           "description": ""
         },
         {
-          "name": "swap_infinity_container_filter_items",
+          "name": "stop_drag_build",
           "order": 257,
           "description": ""
         },
         {
-          "name": "swap_item_filters",
+          "name": "swap_asteroid_chunk_slots",
           "order": 258,
           "description": ""
         },
         {
-          "name": "swap_logistic_filter_items",
+          "name": "swap_entity_filter_slots",
           "order": 259,
           "description": ""
         },
         {
-          "name": "swap_mappers",
+          "name": "swap_entity_slots",
           "order": 260,
           "description": ""
         },
         {
-          "name": "swap_tile_slots",
+          "name": "swap_infinity_container_filter_items",
           "order": 261,
           "description": ""
         },
         {
-          "name": "switch_connect_to_logistic_network",
+          "name": "swap_item_filters",
           "order": 262,
           "description": ""
         },
         {
-          "name": "switch_constant_combinator_state",
+          "name": "swap_logistic_filter_items",
           "order": 263,
           "description": ""
         },
         {
-          "name": "switch_inserter_filter_mode_state",
+          "name": "swap_mappers",
           "order": 264,
           "description": ""
         },
         {
-          "name": "switch_loader_filter_mode",
+          "name": "swap_tile_slots",
           "order": 265,
           "description": ""
         },
         {
-          "name": "switch_mining_drill_filter_mode_state",
+          "name": "switch_connect_to_logistic_network",
           "order": 266,
           "description": ""
         },
         {
-          "name": "switch_power_switch_state",
+          "name": "switch_constant_combinator_state",
           "order": 267,
           "description": ""
         },
         {
-          "name": "take_equipment",
+          "name": "switch_inserter_filter_mode_state",
           "order": 268,
           "description": ""
         },
         {
-          "name": "toggle_artillery_auto_targeting",
+          "name": "switch_loader_filter_mode",
           "order": 269,
           "description": ""
         },
         {
-          "name": "toggle_blueprint_snap_to_grid",
+          "name": "switch_mining_drill_filter_mode_state",
           "order": 270,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_entity_filter_mode",
+          "name": "switch_power_switch_state",
           "order": 271,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_tile_filter_mode",
+          "name": "take_equipment",
           "order": 272,
           "description": ""
         },
         {
-          "name": "toggle_driving",
+          "name": "toggle_artillery_auto_targeting",
           "order": 273,
           "description": ""
         },
         {
-          "name": "toggle_enable_vehicle_logistics_while_moving",
+          "name": "toggle_blueprint_snap_to_grid",
           "order": 274,
           "description": ""
         },
         {
-          "name": "toggle_entity_logistic_requests",
+          "name": "toggle_deconstruction_item_entity_filter_mode",
           "order": 275,
           "description": ""
         },
         {
-          "name": "toggle_equipment_movement_bonus",
+          "name": "toggle_deconstruction_item_tile_filter_mode",
           "order": 276,
           "description": ""
         },
         {
-          "name": "toggle_map_editor",
+          "name": "toggle_driving",
           "order": 277,
           "description": ""
         },
         {
-          "name": "toggle_personal_logistic_requests",
+          "name": "toggle_enable_vehicle_logistics_while_moving",
           "order": 278,
           "description": ""
         },
         {
-          "name": "toggle_personal_roboport",
+          "name": "toggle_entity_logistic_requests",
           "order": 279,
           "description": ""
         },
         {
-          "name": "toggle_selected_entity",
+          "name": "toggle_equipment_movement_bonus",
           "order": 280,
           "description": ""
         },
         {
-          "name": "toggle_show_entity_info",
+          "name": "toggle_map_editor",
           "order": 281,
           "description": ""
         },
         {
-          "name": "toggle_tall_entity_visibility",
+          "name": "toggle_personal_logistic_requests",
           "order": 282,
           "description": ""
         },
         {
-          "name": "trash_not_requested_items",
+          "name": "toggle_personal_roboport",
           "order": 283,
           "description": ""
         },
         {
-          "name": "undo",
+          "name": "toggle_selected_entity",
           "order": 284,
           "description": ""
         },
         {
-          "name": "upgrade",
+          "name": "toggle_show_entity_info",
           "order": 285,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_item",
+          "name": "toggle_tall_entity_visibility",
           "order": 286,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_record",
+          "name": "trash_not_requested_items",
           "order": 287,
           "description": ""
         },
         {
-          "name": "use_item",
+          "name": "undo",
           "order": 288,
           "description": ""
         },
         {
-          "name": "wire_dragging",
+          "name": "upgrade",
           "order": 289,
           "description": ""
         },
         {
-          "name": "write_to_console",
+          "name": "upgrade_opened_blueprint_by_item",
           "order": 290,
+          "description": ""
+        },
+        {
+          "name": "upgrade_opened_blueprint_by_record",
+          "order": 291,
+          "description": ""
+        },
+        {
+          "name": "use_item",
+          "order": 292,
+          "description": ""
+        },
+        {
+          "name": "wire_dragging",
+          "order": 293,
+          "description": ""
+        },
+        {
+          "name": "write_to_console",
+          "order": 294,
           "description": ""
         }
       ]

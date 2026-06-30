@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.8",
+  "application_version": "2.1.9",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -13565,7 +13565,7 @@
       "custom_properties": {
         "description": "Styles are defined as uniquely named [StyleSpecification](prototype:StyleSpecification) properties of the prototype.\n\nStyles with certain names are mandatory, as they are used by the base game GUI. A list is found below.",
         "lists": [
-          "Mandatory styles:\n\n- `\"slot_button\"` of type `button_style`\n- `\"confirm_button\"` of type `button_style`\n- `\"confirm_button_without_tooltip\"` of type `button_style`\n- `\"confirm_double_arrow_button\"` of type `button_style`\n- `\"tips_and_tricks_notification_button\"` of type `button_style`\n- `\"red_confirm_button\"` of type `button_style`\n- `\"red_back_button\"` of type `button_style`\n- `\"red_button\"` of type `button_style`\n- `\"green_button\"` of type `button_style`\n- `\"tool_button_red\"` of type `button_style`\n- `\"tool_button\"` of type `button_style`\n- `\"tool_button_without_padding\"` of type `button_style`\n- `\"tool_button_green\"` of type `button_style`\n- `\"tool_button_blue\"` of type `button_style`\n- `\"tool_button_flush_fluid\"` of type `button_style`\n- `\"mini_button\"` of type `button_style`\n- `\"mini_button_aligned_to_text_vertically\"` of type `button_style`\n- `\"mini_button_aligned_to_text_vertically_when_centered\"` of type `button_style`\n- `\"mini_tool_button_red\"` of type `button_style`\n- `\"highlighted_tool_button\"` of type `button_style`\n- `\"confirm_in_load_game_button\"` of type `button_style`\n- `\"back_button\"` of type `button_style`\n- `\"forward_button\"` of type `button_style`\n- `\"menu_button\"` of type `button_style`\n- `\"menu_button_continue\"` of type `button_style`\n- `\"side_menu_button\"` of type `button_style`\n- `\"dialog_button\"` of type `button_style`\n- `\"control_settings_button\"` of type `button_style`\n- `\"control_settings_section_button\"` of type `button_style`\n- `\"quick_bar_page_button\"` of type `button_style`\n- `\"slot_button_in_shallow_frame\"` of type `button_style`\n- `\"yellow_slot_button\"` of type `button_style`\n- `\"red_slot_button\"` of type `button_style`\n- `\"slot_sized_button\"` of type `button_style`\n- `\"compact_slot_sized_button\"` of type `button_style`\n- `\"slot_sized_button_blue\"` of type `button_style`\n- `\"slot_sized_button_red\"` of type `button_style`\n- `\"slot_sized_button_green\"` of type `button_style`\n- `\"shortcut_bar_button\"` of type `button_style`\n- `\"shortcut_bar_button_blue\"` of type `button_style`\n- `\"shortcut_bar_button_red\"` of type `button_style`\n- `\"shortcut_bar_button_green\"` of type `button_style`\n- `\"shortcut_bar_button_small\"` of type `button_style`\n- `\"shortcut_bar_button_small_green\"` of type `button_style`\n- `\"shortcut_bar_button_small_red\"` of type `button_style`\n- `\"shortcut_bar_button_small_blue\"` of type `button_style`\n- `\"compact_slot\"` of type `button_style`\n- `\"slot\"` of type `button_style`\n- `\"red_slot\"` of type `button_style`\n- `\"yellow_slot\"` of type `button_style`\n- `\"green_slot\"` of type `button_style`\n- `\"blue_slot\"` of type `button_style`\n- `\"inventory_slot\"` of type `button_style`\n- `\"filter_inventory_slot\"` of type `button_style`\n- `\"closed_inventory_slot\"` of type `button_style`\n- `\"red_inventory_slot\"` of type `button_style`\n- `\"yellow_inventory_slot\"` of type `button_style`\n- `\"filter_group_button_tab_slightly_larger\"` of type `button_style`\n- `\"blueprint_record_slot_button\"` of type `button_style`\n- `\"blueprint_record_selection_button\"` of type `button_style`\n- `\"compact_red_slot\"` of type `button_style`\n- `\"inventory_limit_slot_button\"` of type `button_style`\n- `\"working_weapon_button\"` of type `button_style`\n- `\"not_working_weapon_button\"` of type `button_style`\n- `\"transparent_button\"` of type `button_style`\n- `\"transparent_slot\"` of type `button_style`\n- `\"universe_frame\"` of type `frame_style`\n- `\"universe_connection_button\"` of type `button_style`\n- `\"universe_platform_button\"` of type `button_style`\n- `\"frame_action_button\"` of type `button_style`\n- `\"train_schedule_action_button\"` of type `button_style`\n- `\"train_schedule_delete_button\"` of type `button_style`\n- `\"train_schedule_collapse_button\"` of type `button_style`\n- `\"shortcut_bar_expand_button\"` of type `button_style`\n- `\"open_armor_button\"` of type `button_style`\n- `\"item_and_count_select_confirm\"` of type `button_style`\n- `\"tool_bar_open_button\"` of type `button_style`\n- `\"map_view_add_button\"` of type `button_style`\n- `\"tool_equip_ammo_slot\"` of type `button_style`\n- `\"choose_chat_icon_button\"` of type `button_style`\n- `\"choose_chat_icon_in_textbox_button\"` of type `button_style`\n- `\"decider_combinator_signal_select_button\"` of type `button_style`\n- `\"decider_combinator_fulfilled_signal_select_button\"` of type `button_style`\n- `\"add_logistic_section_button\"` of type `button_style`\n- `\"tool_equip_equipment_image\"` of type `image_style`\n- `\"clickable_empty_technology_slot\"` of type `technology_slot_style`\n- `\"disabled_technology_slot\"` of type `technology_slot_style`\n- `\"disabled_index_technology_slot\"` of type `technology_slot_style`\n- `\"researched_technology_slot\"` of type `technology_slot_style`\n- `\"available_technology_slot\"` of type `technology_slot_style`\n- `\"conditionally_available_technology_slot\"` of type `technology_slot_style`\n- `\"unavailable_technology_slot\"` of type `technology_slot_style`\n- `\"disabled_preview_technology_slot\"` of type `technology_slot_style`\n- `\"disabled_preview_index_technology_slot\"` of type `technology_slot_style`\n- `\"researched_preview_technology_slot\"` of type `technology_slot_style`\n- `\"available_preview_technology_slot\"` of type `technology_slot_style`\n- `\"conditionally_available_preview_technology_slot\"` of type `technology_slot_style`\n- `\"unavailable_preview_technology_slot\"` of type `technology_slot_style`\n- `\"omitted_technology_slot\"` of type `button_style`\n- `\"crafting_queue_slot\"` of type `button_style`\n- `\"promised_crafting_queue_slot\"` of type `button_style`\n- `\"image_tab_slot\"` of type `button_style`\n- `\"image_tab_selected_slot\"` of type `button_style`\n- `\"red_circuit_network_content_slot\"` of type `button_style`\n- `\"green_circuit_network_content_slot\"` of type `button_style`\n- `\"drop_target_button\"` of type `button_style`\n- `\"minimap_slot\"` of type `button_style`\n- `\"locomotive_minimap_button\"` of type `button_style`\n- `\"browse_games_gui_toggle_favorite_on_button\"` of type `button_style`\n- `\"browse_games_gui_toggle_favorite_off_button\"` of type `button_style`\n- `\"research_queue_cancel_button\"` of type `button_style`\n- `\"new_game_header_list_box_item\"` of type `button_style`\n- `\"list_box_item\"` of type `button_style`\n- `\"train_status_button\"` of type `button_style`\n- `\"station_train_status_button\"` of type `button_style`\n- `\"title_tip_item\"` of type `button_style`\n- `\"default_permission_group_list_box_item\"` of type `button_style`\n- `\"target_station_in_schedule_in_train_view_list_box_item\"` of type `button_style`\n- `\"no_path_station_in_schedule_in_train_view_list_box_item\"` of type `button_style`\n- `\"not_accessible_station_in_station_selection\"` of type `button_style`\n- `\"partially_accessible_station_in_station_selection\"` of type `button_style`\n- `\"other_settings_gui_button\"` of type `button_style`\n- `\"map_generator_preview_button\"` of type `button_style`\n- `\"map_generator_close_preview_button\"` of type `button_style`\n- `\"map_generator_confirm_button\"` of type `button_style`\n- `\"train_schedule_comparison_type_button\"` of type `button_style`\n- `\"train_schedule_add_wait_condition_button\"` of type `button_style`\n- `\"train_schedule_add_station_button\"` of type `button_style`\n- `\"train_schedule_add_interrupt_station_button\"` of type `button_style`\n- `\"train_schedule_item_select_button\"` of type `button_style`\n- `\"train_schedule_fulfilled_item_select_button\"` of type `button_style`\n- `\"train_schedule_fulfilled_delete_button\"` of type `button_style`\n- `\"train_schedule_temporary_station_delete_button\"` of type `button_style`\n- `\"train_schedule_condition_time_selection_button\"` of type `button_style`\n- `\"entity_variation_button\"` of type `button_style`\n- `\"tile_variation_button\"` of type `button_style`\n- `\"cancel_close_button\"` of type `button_style`\n- `\"close_button\"` of type `button_style`\n- `\"mods_filter_exclude_button\"` of type `button_style`\n- `\"wide_list_box\"` of type `list_box_style`\n- `\"wide_list_box_in_shallow_frame\"` of type `list_box_style`\n- `\"wide_list_box_under_subheader\"` of type `list_box_style`\n- `\"wide_list_box_in_shallow_frame_under_subheader\"` of type `list_box_style`\n- `\"list_box_under_subheader\"` of type `list_box_style`\n- `\"campaigns_list_box\"` of type `list_box_style`\n- `\"campaign_levels_list_box\"` of type `list_box_style`\n- `\"custom_games_list_box\"` of type `list_box_style`\n- `\"train_station_list_box\"` of type `list_box_style`\n- `\"floating_train_station_list_box\"` of type `list_box_style`\n- `\"schedule_in_train_view_list_box\"` of type `list_box_style`\n- `\"permissions_groups_list_box\"` of type `list_box_style`\n- `\"permissions_players_list_box\"` of type `list_box_style`\n- `\"naked_list_box\"` of type `list_box_style`\n- `\"game_controller_icons_dropdown\"` of type `drop_down_style`\n- `\"circuit_condition_comparator_dropdown\"` of type `drop_down_style`\n- `\"train_schedule_circuit_condition_comparator_dropdown\"` of type `drop_down_style`\n- `\"changelog_textbox\"` of type `text_box_style`\n- `\"console_input_textfield\"` of type `text_box_style`\n- `\"invalid_value_textfield\"` of type `text_box_style`\n- `\"highlighted_value_textfield\"` of type `text_box_style`\n- `\"mod_startup_settings_mismatch_notice_box\"` of type `text_box_style`\n- `\"notice_scroll_pane\"` of type `scroll_pane_style`\n- `\"pins_scroll_pane\"` of type `scroll_pane_style`\n- `\"notice_textbox\"` of type `text_box_style`\n- `\"long_number_textfield\"` of type `text_box_style`\n- `\"big_notice_textbox\"` of type `text_box_style`\n- `\"small_notice_textbox\"` of type `text_box_style`\n- `\"search_popup_textfield\"` of type `text_box_style`\n- `\"other_settings_gui_textbox\"` of type `text_box_style`\n- `\"short_number_textfield\"` of type `text_box_style`\n- `\"invalid_value_short_number_textfield\"` of type `text_box_style`\n- `\"very_short_number_textfield\"` of type `text_box_style`\n- `\"slider_value_textfield\"` of type `text_box_style`\n- `\"wide_slider_value_textfield\"` of type `text_box_style`\n- `\"short_slider_value_textfield\"` of type `text_box_style`\n- `\"stretchable_textfield\"` of type `text_box_style`\n- `\"ime_composition_textfield\"` of type `text_box_style`\n- `\"editor_lua_textbox\"` of type `text_box_style`\n- `\"edit_blueprint_description_textbox\"` of type `text_box_style`\n- `\"non_draggable_frame\"` of type `frame_style`\n- `\"invisible_frame\"` of type `frame_style`\n- `\"frame_with_even_paddings\"` of type `frame_style`\n- `\"no_header_filler_frame\"` of type `frame_style`\n- `\"map_details_frame\"` of type `frame_style`\n- `\"bordered_frame\"` of type `frame_style`\n- `\"inside_deep_frame\"` of type `frame_style`\n- `\"tab_deep_frame_in_entity_frame\"` of type `frame_style`\n- `\"deep_frame_in_shallow_frame_for_description\"` of type `frame_style`\n- `\"deep_frame_in_shallow_frame_for_description_with_fixed_width\"` of type `frame_style`\n- `\"inside_shallow_frame\"` of type `frame_style`\n- `\"shallow_frame_in_shallow_frame\"` of type `frame_style`\n- `\"inside_shallow_frame_with_padding\"` of type `frame_style`\n- `\"inside_shallow_frame_with_padding_and_vertical_spacing\"` of type `frame_style`\n- `\"deep_frame_in_shallow_frame\"` of type `frame_style`\n- `\"deep_frame_in_tabbed_pane\"` of type `frame_style`\n- `\"slot_button_deep_frame\"` of type `frame_style`\n- `\"inventory_frame\"` of type `frame_style`\n- `\"quick_panel_slot_button_deep_frame\"` of type `frame_style`\n- `\"filter_frame\"` of type `frame_style`\n- `\"train_inventory_frame\"` of type `frame_style`\n- `\"tooltip_frame\"` of type `frame_style`\n- `\"tooltip_description_frame\"` of type `frame_style`\n- `\"blueprint_tooltip_description_frame\"` of type `frame_style`\n- `\"goal_frame\"` of type `frame_style`\n- `\"goal_inner_frame\"` of type `frame_style`\n- `\"shortcut_bar_window_frame\"` of type `frame_style`\n- `\"quick_bar_inner_panel\"` of type `frame_style`\n- `\"tool_equip_inner_panel\"` of type `frame_style`\n- `\"shortcut_bar_inner_panel\"` of type `frame_style`\n- `\"subfooter_frame\"` of type `frame_style`\n- `\"subfooter_frame_with_left_edge\"` of type `frame_style`\n- `\"tips_and_tricks_info_frame\"` of type `frame_style`\n- `\"tips_and_tricks_info_frame_small_screen\"` of type `frame_style`\n- `\"tips_and_tricks_subfooter\"` of type `frame_style`\n- `\"right_container_frame\"` of type `frame_style`\n- `\"minimap_frame\"` of type `frame_style`\n- `\"side_menu_frame\"` of type `frame_style`\n- `\"achievement_frame\"` of type `frame_style`\n- `\"completed_achievement_frame\"` of type `frame_style`\n- `\"tips_and_tricks_frame\"` of type `frame_style`\n- `\"failed_achievement_frame\"` of type `frame_style`\n- `\"achievement_notification_frame\"` of type `frame_style`\n- `\"tips_and_tricks_notification_frame\"` of type `frame_style`\n- `\"subheader_frame\"` of type `frame_style`\n- `\"repeated_subheader_frame\"` of type `frame_style`\n- `\"subheader_frame_with_text_on_the_right\"` of type `frame_style`\n- `\"negative_subheader_frame\"` of type `frame_style`\n- `\"logistic_section_subheader_frame\"` of type `frame_style`\n- `\"logistic_section_repeated_subheader_frame\"` of type `frame_style`\n- `\"slot_group_frame\"` of type `frame_style`\n- `\"inside_shallow_frame_packed\"` of type `frame_style`\n- `\"slot_window_frame\"` of type `frame_style`\n- `\"quick_bar_slot_window_frame\"` of type `frame_style`\n- `\"technology_card_frame\"` of type `frame_style`\n- `\"research_progress_inner_frame_inactive\"` of type `frame_style`\n- `\"research_progress_inner_frame_active\"` of type `frame_style`\n- `\"shallow_frame\"` of type `frame_style`\n- `\"control_settings_section_frame\"` of type `frame_style`\n- `\"technology_gui_outer_frame\"` of type `frame_style`\n- `\"technology_gui_left_frame\"` of type `frame_style`\n- `\"technology_graph_title_frame\"` of type `frame_style`\n- `\"train_schedule_station_frame\"` of type `frame_style`\n- `\"train_schedule_station_in_interrupt_frame\"` of type `frame_style`\n- `\"train_schedule_temporary_station_frame\"` of type `frame_style`\n- `\"train_schedule_condition_frame\"` of type `frame_style`\n- `\"blueprint_parameter_frame\"` of type `frame_style`\n- `\"train_schedule_fullfilled_condition_frame\"` of type `frame_style`\n- `\"train_schedule_comparison_type_frame\"` of type `frame_style`\n- `\"train_schedule_comparison_type_frame_indented\"` of type `frame_style`\n- `\"train_schedule_comparison_type_frame_extra_indented\"` of type `frame_style`\n- `\"sync_mods_default_status_frame\"` of type `frame_style`\n- `\"sync_mods_downloading_status_frame\"` of type `frame_style`\n- `\"tooltip_title_frame_light\"` of type `frame_style`\n- `\"tooltip_panel_background\"` of type `frame_style`\n- `\"number_input_frame\"` of type `frame_style`\n- `\"neutral_message_frame\"` of type `frame_style`\n- `\"negative_message_frame\"` of type `frame_style`\n- `\"positive_message_frame\"` of type `frame_style`\n- `\"shortcut_selection_row\"` of type `frame_style`\n- `\"frame_tabbed_pane_corner\"` of type `frame_style`\n- `\"frame_tabbed_pane_frame_header\"` of type `frame_style`\n- `\"tabbed_pane_frame\"` of type `frame_style`\n- `\"frame_without_left_side\"` of type `frame_style`\n- `\"frame_without_left_and_right_side\"` of type `frame_style`\n- `\"character_gui_left_side\"` of type `frame_style`\n- `\"search_popup_frame\"` of type `frame_style`\n- `\"bonus_card_frame\"` of type `frame_style`\n- `\"empty_bonus_card_frame\"` of type `frame_style`\n- `\"inset_frame_container_frame\"` of type `frame_style`\n- `\"chart_search_result_frame\"` of type `frame_style`\n- `\"pins_frame\"` of type `frame_style`\n- `\"lab_research_info_button\"` of type `button_style`\n- `\"current_research_info_button\"` of type `button_style`\n- `\"current_research_info_image\"` of type `image_style`\n- `\"current_research_info_percent_label\"` of type `label_style`\n- `\"blueprint_book_edit_frame\"` of type `frame_style`\n- `\"main_progressbar_frame\"` of type `frame_style`\n- `\"editor_mode_selection_frame\"` of type `frame_style`\n- `\"editor_inner_frame\"` of type `frame_style`\n- `\"new_game_subfooter\"` of type `frame_style`\n- `\"entity_frame\"` of type `frame_style`\n- `\"entity_button_frame\"` of type `frame_style`\n- `\"train_with_minimap_frame\"` of type `frame_style`\n- `\"right_side_frame\"` of type `frame_style`\n- `\"decider_combinator_frame\"` of type `frame_style`\n- `\"decider_combinator_condition_frame\"` of type `frame_style`\n- `\"decider_combinator_fulfilled_condition_frame\"` of type `frame_style`\n- `\"frame_around_top\"` of type `frame_style`\n- `\"frame_around_bottom\"` of type `frame_style`\n- `\"frame_around_left\"` of type `frame_style`\n- `\"frame_around_right\"` of type `frame_style`\n- `\"frame_around_center\"` of type `frame_style`\n- `\"control_settings_bordered_frame\"` of type `frame_style`\n- `\"packed_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"compact_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"dialog_buttons_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"player_input_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"inset_frame_container_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"inset_frame_container_horizontal_flow_in_tabbed_pane\"` of type `horizontal_flow_style`\n- `\"train_schedule_mode_switch_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"horizontal_flow_with_extra_right_margin\"` of type `horizontal_flow_style`\n- `\"relative_gui_top_flow\"` of type `horizontal_flow_style`\n- `\"relative_gui_bottom_flow\"` of type `horizontal_flow_style`\n- `\"two_module_spacing_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"relative_gui_left_flow\"` of type `vertical_flow_style`\n- `\"relative_gui_right_flow\"` of type `vertical_flow_style`\n- `\"packed_vertical_flow\"` of type `vertical_flow_style`\n- `\"padded_vertical_flow\"` of type `vertical_flow_style`\n- `\"quickbar_holder_flow\"` of type `vertical_flow_style`\n- `\"inset_frame_container_vertical_flow\"` of type `vertical_flow_style`\n- `\"two_module_spacing_vertical_flow\"` of type `vertical_flow_style`\n- `\"new_game_difficulty_vertical_flow\"` of type `vertical_flow_style`\n- `\"crafting_queue_flow\"` of type `flow_style`\n- `\"table_with_selection\"` of type `table_style`\n- `\"players_table\"` of type `table_style`\n- `\"mods_explore_results_table\"` of type `table_style`\n- `\"bordered_table\"` of type `table_style`\n- `\"compact_slot_table\"` of type `table_style`\n- `\"slot_table\"` of type `table_style`\n- `\"browse_games_table\"` of type `table_style`\n- `\"browse_games_on_lan_table\"` of type `table_style`\n- `\"inset_frame_container_table\"` of type `table_style`\n- `\"map_generator_frequency_table\"` of type `table_style`\n- `\"player_input_table\"` of type `table_style`\n- `\"graphics_settings_table\"` of type `table_style`\n- `\"control_settings_bordered_table\"` of type `table_style`\n- `\"sync_mods_table\"` of type `table_style`\n- `\"removed_content_table\"` of type `table_style`\n- `\"finished_game_table\"` of type `table_style`\n- `\"filter_slot_table\"` of type `table_style`\n- `\"editor_mode_selection_table\"` of type `table_style`\n- `\"splitter_settings_table\"` of type `table_style`\n- `\"trains_widget_table\"` of type `table_style`\n- `\"undelete_space_platforms_table\"` of type `table_style`\n- `\"research_queue_table\"` of type `table_style`\n- `\"mappers_table\"` of type `table_style`\n- `\"wide_activity_bar\"` of type `activity_bar_style`\n- `\"production_progressbar\"` of type `progress_bar_style`\n- `\"burning_progressbar\"` of type `progress_bar_style`\n- `\"health_progressbar\"` of type `progress_bar_style`\n- `\"vehicle_health_progressbar\"` of type `progress_bar_style`\n- `\"mining_progressbar\"` of type `progress_bar_style`\n- `\"shield_progressbar\"` of type `progress_bar_style`\n- `\"bonus_progressbar\"` of type `progress_bar_style`\n- `\"battery_progressbar\"` of type `progress_bar_style`\n- `\"electric_satisfaction_progressbar\"` of type `progress_bar_style`\n- `\"electric_satisfaction_statistics_progressbar\"` of type `progress_bar_style`\n- `\"electric_statistics_progressbar\"` of type `progress_bar_style`\n- `\"electric_satisfaction_in_description_progressbar\"` of type `progress_bar_style`\n- `\"item_spoilage_in_description_progress_bar\"` of type `progress_bar_style`\n- `\"thick_progressbar\"` of type `progress_bar_style`\n- `\"disk_usage_progressbar\"` of type `progress_bar_style`\n- `\"achievement_progressbar\"` of type `progress_bar_style`\n- `\"achievement_card_progressbar\"` of type `progress_bar_style`\n- `\"heat_progressbar\"` of type `progress_bar_style`\n- `\"rocket_weight_used_progress_bar\"` of type `progress_bar_style`\n- `\"caption_checkbox\"` of type `check_box_style`\n- `\"subheader_caption_checkbox\"` of type `check_box_style`\n- `\"black_checkbox\"` of type `check_box_style`\n- `\"caption_radiobutton\"` of type `radio_button_style`\n- `\"frame_title\"` of type `label_style`\n- `\"caption_label\"` of type `label_style`\n- `\"semibold_caption_label\"` of type `label_style`\n- `\"semibold_label\"` of type `label_style`\n- `\"bold_label\"` of type `label_style`\n- `\"green_label\"` of type `label_style`\n- `\"bold_black_label\"` of type `label_style`\n- `\"bold_green_label\"` of type `label_style`\n- `\"red_label\"` of type `label_style`\n- `\"bold_red_label\"` of type `label_style`\n- `\"electric_usage_label\"` of type `label_style`\n- `\"count_label\"` of type `label_style`\n- `\"recipe_count_line_label\"` of type `label_style`\n- `\"recipe_ghost_count_line_label\"` of type `label_style`\n- `\"tooltip_label\"` of type `label_style`\n- `\"tooltip_title_label\"` of type `label_style`\n- `\"subheader_label\"` of type `label_style`\n- `\"subheader_caption_label\"` of type `label_style`\n- `\"subheader_semibold_label\"` of type `label_style`\n- `\"subheader_right_aligned_label\"` of type `label_style`\n- `\"heading_2_label\"` of type `label_style`\n- `\"achievement_unlocked_title_label\"` of type `label_style`\n- `\"achievement_locked_title_label\"` of type `label_style`\n- `\"achievement_failed_title_label\"` of type `label_style`\n- `\"achievement_failed_description_label\"` of type `label_style`\n- `\"achievement_failed_reason_label\"` of type `label_style`\n- `\"tips_and_tricks_title_label\"` of type `label_style`\n- `\"steam_friend_label\"` of type `label_style`\n- `\"frame_subheading_label\"` of type `label_style`\n- `\"orange_label\"` of type `label_style`\n- `\"bold_orange_label\"` of type `label_style`\n- `\"grey_label\"` of type `label_style`\n- `\"bold_grey_label\"` of type `label_style`\n- `\"tooltip_heading_label\"` of type `label_style`\n- `\"tooltip_heading_label_category\"` of type `label_style`\n- `\"squashable_label\"` of type `label_style`\n- `\"black_label\"` of type `label_style`\n- `\"black_squashable_label\"` of type `label_style`\n- `\"black_label_with_left_padding\"` of type `label_style`\n- `\"black_squashable_label_with_left_padding\"` of type `label_style`\n- `\"black_clickable_label\"` of type `label_style`\n- `\"black_clickable_squashable_label\"` of type `label_style`\n- `\"color_picker_label\"` of type `label_style`\n- `\"tooltip_item_label\"` of type `label_style`\n- `\"clickable_label\"` of type `label_style`\n- `\"clickable_squashable_label\"` of type `label_style`\n- `\"label_with_left_padding\"` of type `label_style`\n- `\"squashable_label_with_left_padding\"` of type `label_style`\n- `\"train_schedule_unavailable_stop_label\"` of type `label_style`\n- `\"train_schedule_non_existent_stop_label\"` of type `label_style`\n- `\"hyperlink_label\"` of type `label_style`\n- `\"info_label\"` of type `label_style`\n- `\"control_input_shortcut_label\"` of type `label_style`\n- `\"main_menu_version_label\"` of type `label_style`\n- `\"label_under_widget\"` of type `label_style`\n- `\"finished_game_label\"` of type `label_style`\n- `\"train_stop_subheader\"` of type `label_style`\n- `\"inventory_frame_title_style\"` of type `label_style`\n- `\"mods_filter_hit_count_label\"` of type `label_style`\n- `\"slot_column_header_label\"` of type `label_style`\n- `\"inside_shallow_frame_with_padding_line\"` of type `line_style`\n- `\"blurry_panel_horizontal_line\"` of type `line_style`\n- `\"dark_line\"` of type `line_style`\n- `\"tooltip_category_line\"` of type `line_style`\n- `\"tooltip_horizontal_line\"` of type `line_style`\n- `\"lab_progress_and_slot_divider\"` of type `line_style`\n- `\"lab_progress_and_slot_divider_empty\"` of type `line_style`\n- `\"scroll_pane_in_shallow_frame\"` of type `scroll_pane_style`\n- `\"trains_scroll_pane\"` of type `scroll_pane_style`\n- `\"trains_scroll_pane_with_side_margin\"` of type `scroll_pane_style`\n- `\"stations_scroll_pane\"` of type `scroll_pane_style`\n- `\"stations_scroll_pane_small_screen\"` of type `scroll_pane_style`\n- `\"tab_scroll_pane\"` of type `scroll_pane_style`\n- `\"technology_list_scroll_pane\"` of type `scroll_pane_style`\n- `\"statistics_scroll_pane\"` of type `scroll_pane_style`\n- `\"blurry_scroll_pane\"` of type `scroll_pane_style`\n- `\"map_preview_scroll_pane\"` of type `scroll_pane_style`\n- `\"tab_shallow_scroll_pane\"` of type `scroll_pane_style`\n- `\"featured_technology_description_scroll_pane\"` of type `scroll_pane_style`\n- `\"scroll_pane_under_subheader\"` of type `scroll_pane_style`\n- `\"train_schedule_scroll_pane\"` of type `scroll_pane_style`\n- `\"train_interrupts_scroll_pane\"` of type `scroll_pane_style`\n- `\"mods_scroll_pane\"` of type `scroll_pane_style`\n- `\"stations_trains_scroll_pane\"` of type `scroll_pane_style`\n- `\"entity_frame_scroll_pane\"` of type `scroll_pane_style`\n- `\"shallow_scroll_pane\"` of type `scroll_pane_style`\n- `\"shallow_slots_scroll_pane\"` of type `scroll_pane_style`\n- `\"deep_scroll_pane\"` of type `scroll_pane_style`\n- `\"deep_scroll_pane_with_padding\"` of type `scroll_pane_style`\n- `\"deep_slots_scroll_pane\"` of type `scroll_pane_style`\n- `\"achievement_slots_scroll_pane\"` of type `scroll_pane_style`\n- `\"logistic_sections_scroll_pane\"` of type `scroll_pane_style`\n- `\"character_crafting_queue_scroll_pane\"` of type `scroll_pane_style`\n- `\"logistic_gui_items_scroll_pane\"` of type `scroll_pane_style`\n- `\"shortcut_bar_selection_scroll_pane\"` of type `scroll_pane_style`\n- `\"naked_scroll_pane\"` of type `scroll_pane_style`\n- `\"horizontally_limited_equipment_grid_scroll_pane\"` of type `scroll_pane_style`\n- `\"text_holding_scroll_pane\"` of type `scroll_pane_style`\n- `\"factoriopedia_contents_scroll_pane\"` of type `scroll_pane_style`\n- `\"factoriopedia_icon_grid_scroll_pane\"` of type `scroll_pane_style`\n- `\"decider_combinator_conditions_scroll_pane\"` of type `scroll_pane_style`\n- `\"decider_combinator_outputs_scroll_pane\"` of type `scroll_pane_style`\n- `\"mappers_scroll_pane\"` of type `scroll_pane_style`\n- `\"achievement_image\"` of type `image_style`\n- `\"map_info_image\"` of type `image_style`\n- `\"new_game_info_image\"` of type `image_style`\n- `\"mod_thumbnail_image\"` of type `image_style`\n- `\"mod_explore_thumbnail_image\"` of type `image_style`\n- `\"mod_updates_status_image\"` of type `image_style`\n- `\"install_mod_status_image\"` of type `image_style`\n- `\"mod_attribute_image\"` of type `image_style`\n- `\"tips_and_tricks_image\"` of type `image_style`\n- `\"logistics_diode\"` of type `image_style`\n- `\"status_image\"` of type `image_style`\n- `\"achievement_warning_image\"` of type `image_style`\n- `\"mods_sorting_image\"` of type `image_style`\n- `\"recipe_tooltip_horizontal_image\"` of type `image_style`\n- `\"tips_and_tricks_simulation\"` of type `empty_widget_style`\n- `\"entity_button_base\"` of type `empty_widget_style`\n- `\"undo_camera\"` of type `empty_widget_style`\n- `\"tooltip_camera\"` of type `empty_widget_style`\n- `\"wide_entity_button\"` of type `empty_widget_style`\n- `\"draggable_space_in_train_schedule\"` of type `empty_widget_style`\n- `\"draggable_space_in_temporary_train_station\"` of type `empty_widget_style`\n- `\"fulfilled_draggable_space_in_train_schedule\"` of type `empty_widget_style`\n- `\"color_indicator\"` of type `empty_widget_style`\n- `\"minimap_widget_under_subheader\"` of type `empty_widget_style`\n- `\"blueprint_preview\"` of type `empty_widget_style`\n- `\"entity_frame_filler\"` of type `empty_widget_style`\n- `\"tool_bar_empty_slot\"` of type `empty_widget_style`\n- `\"research_queue_drag_handle\"` of type `empty_widget_style`\n- `\"research_queue_active_glow_dark\"` of type `glow_style`\n- `\"research_queue_active_glow_light\"` of type `glow_style`\n- `\"research_queue_active_glow_outer\"` of type `glow_style`\n- `\"notched_slider\"` of type `slider_style`\n- `\"map_generator_notched_slider\"` of type `slider_style`\n- `\"map_generator_13_notch_slider\"` of type `slider_style`\n- `\"map_generator_notched_slider_wide\"` of type `slider_style`\n- `\"red_slider\"` of type `slider_style`\n- `\"green_slider\"` of type `slider_style`\n- `\"blue_slider\"` of type `slider_style`\n- `\"other_settings_slider\"` of type `slider_style`\n- `\"notched_double_slider\"` of type `double_slider_style`\n- `\"blueprint_drop_slot_button\"` of type `empty_widget_style`\n- `\"blueprint_icon_preview\"` of type `empty_widget_style`\n- `\"draggable_space\"` of type `empty_widget_style`\n- `\"draggable_space_in_shortcut_list\"` of type `empty_widget_style`\n- `\"filter_tabbed_pane\"` of type `tabbed_pane_style`\n- `\"frame_tabbed_pane\"` of type `tabbed_pane_style`\n- `\"quick_panel_tabbed_pane\"` of type `tabbed_pane_style`\n- `\"tabbed_pane_with_no_side_padding\"` of type `tabbed_pane_style`\n- `\"tabbed_pane_with_extra_padding\"` of type `tabbed_pane_style`\n- `\"frame_tab\"` of type `tab_style`\n- `\"filter_group_tab\"` of type `tab_style`\n- `\"slightly_smaller_tab\"` of type `tab_style`\n- `\"filter_group_slot_tab\"` of type `tab_style`\n- `\"production_graph\"` of type `graph_style`\n- `\"research_info_tooltip_graph\"` of type `graph_style`\n- `\"train_schedule_partially_fullfilled_condition_frame\"` of type `frame_style`\n- `\"partially_fulfilled_draggable_space_in_train_schedule\"` of type `empty_widget_style`\n- `\"train_schedule_partially_fulfilled_delete_button\"` of type `button_style`\n- `\"train_schedule_partially_fulfilled_item_select_button\"` of type `button_style`"
+          "Mandatory styles:\n\n- `\"slot_button\"` of type `button_style`\n- `\"confirm_button\"` of type `button_style`\n- `\"confirm_button_without_tooltip\"` of type `button_style`\n- `\"confirm_double_arrow_button\"` of type `button_style`\n- `\"tips_and_tricks_notification_button\"` of type `button_style`\n- `\"red_confirm_button\"` of type `button_style`\n- `\"red_back_button\"` of type `button_style`\n- `\"red_button\"` of type `button_style`\n- `\"green_button\"` of type `button_style`\n- `\"tool_button_red\"` of type `button_style`\n- `\"tool_button\"` of type `button_style`\n- `\"tool_button_without_padding\"` of type `button_style`\n- `\"tool_button_green\"` of type `button_style`\n- `\"tool_button_blue\"` of type `button_style`\n- `\"tool_button_flush_fluid\"` of type `button_style`\n- `\"mini_button\"` of type `button_style`\n- `\"mini_button_aligned_to_text_vertically\"` of type `button_style`\n- `\"mini_button_aligned_to_text_vertically_when_centered\"` of type `button_style`\n- `\"mini_tool_button_red\"` of type `button_style`\n- `\"highlighted_tool_button\"` of type `button_style`\n- `\"confirm_in_load_game_button\"` of type `button_style`\n- `\"back_button\"` of type `button_style`\n- `\"forward_button\"` of type `button_style`\n- `\"menu_button\"` of type `button_style`\n- `\"menu_button_continue\"` of type `button_style`\n- `\"side_menu_button\"` of type `button_style`\n- `\"dialog_button\"` of type `button_style`\n- `\"control_settings_button\"` of type `button_style`\n- `\"control_settings_section_button\"` of type `button_style`\n- `\"quick_bar_page_button\"` of type `button_style`\n- `\"slot_button_in_shallow_frame\"` of type `button_style`\n- `\"yellow_slot_button\"` of type `button_style`\n- `\"red_slot_button\"` of type `button_style`\n- `\"slot_sized_button\"` of type `button_style`\n- `\"compact_slot_sized_button\"` of type `button_style`\n- `\"slot_sized_button_blue\"` of type `button_style`\n- `\"slot_sized_button_red\"` of type `button_style`\n- `\"slot_sized_button_green\"` of type `button_style`\n- `\"shortcut_bar_button\"` of type `button_style`\n- `\"shortcut_bar_button_blue\"` of type `button_style`\n- `\"shortcut_bar_button_red\"` of type `button_style`\n- `\"shortcut_bar_button_green\"` of type `button_style`\n- `\"shortcut_bar_button_small\"` of type `button_style`\n- `\"shortcut_bar_button_small_green\"` of type `button_style`\n- `\"shortcut_bar_button_small_red\"` of type `button_style`\n- `\"shortcut_bar_button_small_blue\"` of type `button_style`\n- `\"compact_slot\"` of type `button_style`\n- `\"slot\"` of type `button_style`\n- `\"red_slot\"` of type `button_style`\n- `\"yellow_slot\"` of type `button_style`\n- `\"green_slot\"` of type `button_style`\n- `\"blue_slot\"` of type `button_style`\n- `\"inventory_slot\"` of type `button_style`\n- `\"filter_inventory_slot\"` of type `button_style`\n- `\"closed_inventory_slot\"` of type `button_style`\n- `\"red_inventory_slot\"` of type `button_style`\n- `\"yellow_inventory_slot\"` of type `button_style`\n- `\"filter_group_button_tab_slightly_larger\"` of type `button_style`\n- `\"blueprint_record_slot_button\"` of type `button_style`\n- `\"blueprint_record_selection_button\"` of type `button_style`\n- `\"compact_red_slot\"` of type `button_style`\n- `\"inventory_limit_slot_button\"` of type `button_style`\n- `\"working_weapon_button\"` of type `button_style`\n- `\"not_working_weapon_button\"` of type `button_style`\n- `\"transparent_button\"` of type `button_style`\n- `\"transparent_slot\"` of type `button_style`\n- `\"universe_frame\"` of type `frame_style`\n- `\"universe_connection_button\"` of type `button_style`\n- `\"universe_platform_button\"` of type `button_style`\n- `\"frame_action_button\"` of type `button_style`\n- `\"train_schedule_action_button\"` of type `button_style`\n- `\"train_schedule_delete_button\"` of type `button_style`\n- `\"train_schedule_collapse_button\"` of type `button_style`\n- `\"shortcut_bar_expand_button\"` of type `button_style`\n- `\"open_armor_button\"` of type `button_style`\n- `\"item_and_count_select_confirm\"` of type `button_style`\n- `\"tool_bar_open_button\"` of type `button_style`\n- `\"map_view_add_button\"` of type `button_style`\n- `\"tool_equip_ammo_slot\"` of type `button_style`\n- `\"choose_chat_icon_button\"` of type `button_style`\n- `\"choose_chat_icon_in_textbox_button\"` of type `button_style`\n- `\"decider_combinator_signal_select_button\"` of type `button_style`\n- `\"decider_combinator_fulfilled_signal_select_button\"` of type `button_style`\n- `\"add_logistic_section_button\"` of type `button_style`\n- `\"tool_equip_equipment_image\"` of type `image_style`\n- `\"clickable_empty_technology_slot\"` of type `technology_slot_style`\n- `\"disabled_technology_slot\"` of type `technology_slot_style`\n- `\"disabled_index_technology_slot\"` of type `technology_slot_style`\n- `\"researched_technology_slot\"` of type `technology_slot_style`\n- `\"available_technology_slot\"` of type `technology_slot_style`\n- `\"conditionally_available_technology_slot\"` of type `technology_slot_style`\n- `\"unavailable_technology_slot\"` of type `technology_slot_style`\n- `\"disabled_preview_technology_slot\"` of type `technology_slot_style`\n- `\"disabled_preview_index_technology_slot\"` of type `technology_slot_style`\n- `\"researched_preview_technology_slot\"` of type `technology_slot_style`\n- `\"available_preview_technology_slot\"` of type `technology_slot_style`\n- `\"conditionally_available_preview_technology_slot\"` of type `technology_slot_style`\n- `\"unavailable_preview_technology_slot\"` of type `technology_slot_style`\n- `\"omitted_technology_slot\"` of type `button_style`\n- `\"crafting_queue_slot\"` of type `button_style`\n- `\"promised_crafting_queue_slot\"` of type `button_style`\n- `\"image_tab_slot\"` of type `button_style`\n- `\"image_tab_selected_slot\"` of type `button_style`\n- `\"red_circuit_network_content_slot\"` of type `button_style`\n- `\"green_circuit_network_content_slot\"` of type `button_style`\n- `\"drop_target_button\"` of type `button_style`\n- `\"minimap_slot\"` of type `button_style`\n- `\"locomotive_minimap_button\"` of type `button_style`\n- `\"browse_games_gui_toggle_favorite_on_button\"` of type `button_style`\n- `\"browse_games_gui_toggle_favorite_off_button\"` of type `button_style`\n- `\"research_queue_cancel_button\"` of type `button_style`\n- `\"new_game_header_list_box_item\"` of type `button_style`\n- `\"list_box_item\"` of type `button_style`\n- `\"train_status_button\"` of type `button_style`\n- `\"station_train_status_button\"` of type `button_style`\n- `\"title_tip_item\"` of type `button_style`\n- `\"default_permission_group_list_box_item\"` of type `button_style`\n- `\"target_station_in_schedule_in_train_view_list_box_item\"` of type `button_style`\n- `\"no_path_station_in_schedule_in_train_view_list_box_item\"` of type `button_style`\n- `\"not_accessible_station_in_station_selection\"` of type `button_style`\n- `\"partially_accessible_station_in_station_selection\"` of type `button_style`\n- `\"other_settings_gui_button\"` of type `button_style`\n- `\"map_generator_preview_button\"` of type `button_style`\n- `\"map_generator_close_preview_button\"` of type `button_style`\n- `\"map_generator_confirm_button\"` of type `button_style`\n- `\"train_schedule_comparison_type_button\"` of type `button_style`\n- `\"train_schedule_add_wait_condition_button\"` of type `button_style`\n- `\"train_schedule_add_station_button\"` of type `button_style`\n- `\"train_schedule_add_interrupt_station_button\"` of type `button_style`\n- `\"train_schedule_item_select_button\"` of type `button_style`\n- `\"train_schedule_fulfilled_item_select_button\"` of type `button_style`\n- `\"train_schedule_fulfilled_delete_button\"` of type `button_style`\n- `\"train_schedule_temporary_station_delete_button\"` of type `button_style`\n- `\"train_schedule_condition_time_selection_button\"` of type `button_style`\n- `\"entity_variation_button\"` of type `button_style`\n- `\"tile_variation_button\"` of type `button_style`\n- `\"cancel_close_button\"` of type `button_style`\n- `\"close_button\"` of type `button_style`\n- `\"mods_filter_exclude_button\"` of type `button_style`\n- `\"wide_list_box\"` of type `list_box_style`\n- `\"wide_list_box_in_shallow_frame\"` of type `list_box_style`\n- `\"wide_list_box_under_subheader\"` of type `list_box_style`\n- `\"wide_list_box_in_shallow_frame_under_subheader\"` of type `list_box_style`\n- `\"list_box_under_subheader\"` of type `list_box_style`\n- `\"campaigns_list_box\"` of type `list_box_style`\n- `\"campaign_levels_list_box\"` of type `list_box_style`\n- `\"custom_games_list_box\"` of type `list_box_style`\n- `\"train_station_list_box\"` of type `list_box_style`\n- `\"floating_train_station_list_box\"` of type `list_box_style`\n- `\"schedule_in_train_view_list_box\"` of type `list_box_style`\n- `\"permissions_groups_list_box\"` of type `list_box_style`\n- `\"permissions_players_list_box\"` of type `list_box_style`\n- `\"naked_list_box\"` of type `list_box_style`\n- `\"game_controller_icons_dropdown\"` of type `drop_down_style`\n- `\"circuit_condition_comparator_dropdown\"` of type `drop_down_style`\n- `\"train_schedule_circuit_condition_comparator_dropdown\"` of type `drop_down_style`\n- `\"changelog_textbox\"` of type `text_box_style`\n- `\"console_input_textfield\"` of type `text_box_style`\n- `\"invalid_value_textfield\"` of type `text_box_style`\n- `\"highlighted_value_textfield\"` of type `text_box_style`\n- `\"mod_startup_settings_mismatch_notice_box\"` of type `text_box_style`\n- `\"notice_scroll_pane\"` of type `scroll_pane_style`\n- `\"pins_scroll_pane\"` of type `scroll_pane_style`\n- `\"notice_textbox\"` of type `text_box_style`\n- `\"long_number_textfield\"` of type `text_box_style`\n- `\"big_notice_textbox\"` of type `text_box_style`\n- `\"small_notice_textbox\"` of type `text_box_style`\n- `\"search_popup_textfield\"` of type `text_box_style`\n- `\"other_settings_gui_textbox\"` of type `text_box_style`\n- `\"short_number_textfield\"` of type `text_box_style`\n- `\"invalid_value_short_number_textfield\"` of type `text_box_style`\n- `\"very_short_number_textfield\"` of type `text_box_style`\n- `\"slider_value_textfield\"` of type `text_box_style`\n- `\"wide_slider_value_textfield\"` of type `text_box_style`\n- `\"short_slider_value_textfield\"` of type `text_box_style`\n- `\"stretchable_textfield\"` of type `text_box_style`\n- `\"ime_composition_textfield\"` of type `text_box_style`\n- `\"editor_lua_textbox\"` of type `text_box_style`\n- `\"edit_blueprint_description_textbox\"` of type `text_box_style`\n- `\"non_draggable_frame\"` of type `frame_style`\n- `\"invisible_frame\"` of type `frame_style`\n- `\"frame_with_even_paddings\"` of type `frame_style`\n- `\"no_header_filler_frame\"` of type `frame_style`\n- `\"map_details_frame\"` of type `frame_style`\n- `\"bordered_frame\"` of type `frame_style`\n- `\"inside_deep_frame\"` of type `frame_style`\n- `\"tab_deep_frame_in_entity_frame\"` of type `frame_style`\n- `\"deep_frame_in_shallow_frame_for_description\"` of type `frame_style`\n- `\"deep_frame_in_shallow_frame_for_description_with_fixed_width\"` of type `frame_style`\n- `\"inside_shallow_frame\"` of type `frame_style`\n- `\"shallow_frame_in_shallow_frame\"` of type `frame_style`\n- `\"inside_shallow_frame_with_padding\"` of type `frame_style`\n- `\"inside_shallow_frame_with_padding_and_vertical_spacing\"` of type `frame_style`\n- `\"deep_frame_in_shallow_frame\"` of type `frame_style`\n- `\"deep_frame_in_tabbed_pane\"` of type `frame_style`\n- `\"slot_button_deep_frame\"` of type `frame_style`\n- `\"inventory_frame\"` of type `frame_style`\n- `\"quick_panel_slot_button_deep_frame\"` of type `frame_style`\n- `\"filter_frame\"` of type `frame_style`\n- `\"train_inventory_frame\"` of type `frame_style`\n- `\"tooltip_frame\"` of type `frame_style`\n- `\"tooltip_description_frame\"` of type `frame_style`\n- `\"blueprint_tooltip_description_frame\"` of type `frame_style`\n- `\"goal_frame\"` of type `frame_style`\n- `\"goal_inner_frame\"` of type `frame_style`\n- `\"shortcut_bar_window_frame\"` of type `frame_style`\n- `\"quick_bar_inner_panel\"` of type `frame_style`\n- `\"tool_equip_inner_panel\"` of type `frame_style`\n- `\"shortcut_bar_inner_panel\"` of type `frame_style`\n- `\"subfooter_frame\"` of type `frame_style`\n- `\"subfooter_frame_with_left_edge\"` of type `frame_style`\n- `\"tips_and_tricks_info_frame\"` of type `frame_style`\n- `\"tips_and_tricks_info_frame_small_screen\"` of type `frame_style`\n- `\"tips_and_tricks_subfooter\"` of type `frame_style`\n- `\"right_container_frame\"` of type `frame_style`\n- `\"minimap_frame\"` of type `frame_style`\n- `\"side_menu_frame\"` of type `frame_style`\n- `\"achievement_frame\"` of type `frame_style`\n- `\"completed_achievement_frame\"` of type `frame_style`\n- `\"tips_and_tricks_frame\"` of type `frame_style`\n- `\"failed_achievement_frame\"` of type `frame_style`\n- `\"achievement_notification_frame\"` of type `frame_style`\n- `\"tips_and_tricks_notification_frame\"` of type `frame_style`\n- `\"subheader_frame\"` of type `frame_style`\n- `\"repeated_subheader_frame\"` of type `frame_style`\n- `\"subheader_frame_with_text_on_the_right\"` of type `frame_style`\n- `\"negative_subheader_frame\"` of type `frame_style`\n- `\"logistic_section_subheader_frame\"` of type `frame_style`\n- `\"logistic_section_repeated_subheader_frame\"` of type `frame_style`\n- `\"slot_group_frame\"` of type `frame_style`\n- `\"inside_shallow_frame_packed\"` of type `frame_style`\n- `\"slot_window_frame\"` of type `frame_style`\n- `\"quick_bar_slot_window_frame\"` of type `frame_style`\n- `\"technology_card_frame\"` of type `frame_style`\n- `\"research_progress_inner_frame_inactive\"` of type `frame_style`\n- `\"research_progress_inner_frame_active\"` of type `frame_style`\n- `\"shallow_frame\"` of type `frame_style`\n- `\"control_settings_section_frame\"` of type `frame_style`\n- `\"technology_gui_outer_frame\"` of type `frame_style`\n- `\"technology_gui_left_frame\"` of type `frame_style`\n- `\"technology_graph_title_frame\"` of type `frame_style`\n- `\"train_schedule_station_frame\"` of type `frame_style`\n- `\"train_schedule_station_in_interrupt_frame\"` of type `frame_style`\n- `\"train_schedule_temporary_station_frame\"` of type `frame_style`\n- `\"train_schedule_condition_frame\"` of type `frame_style`\n- `\"blueprint_parameter_frame\"` of type `frame_style`\n- `\"train_schedule_fullfilled_condition_frame\"` of type `frame_style`\n- `\"train_schedule_comparison_type_frame\"` of type `frame_style`\n- `\"train_schedule_comparison_type_frame_indented\"` of type `frame_style`\n- `\"train_schedule_comparison_type_frame_extra_indented\"` of type `frame_style`\n- `\"sync_mods_default_status_frame\"` of type `frame_style`\n- `\"sync_mods_downloading_status_frame\"` of type `frame_style`\n- `\"tooltip_title_frame_light\"` of type `frame_style`\n- `\"tooltip_panel_background\"` of type `frame_style`\n- `\"number_input_frame\"` of type `frame_style`\n- `\"neutral_message_frame\"` of type `frame_style`\n- `\"negative_message_frame\"` of type `frame_style`\n- `\"positive_message_frame\"` of type `frame_style`\n- `\"shortcut_selection_row\"` of type `frame_style`\n- `\"frame_tabbed_pane_corner\"` of type `frame_style`\n- `\"frame_tabbed_pane_frame_header\"` of type `frame_style`\n- `\"tabbed_pane_frame\"` of type `frame_style`\n- `\"frame_without_left_side\"` of type `frame_style`\n- `\"frame_without_left_and_right_side\"` of type `frame_style`\n- `\"character_gui_left_side\"` of type `frame_style`\n- `\"search_popup_frame\"` of type `frame_style`\n- `\"bonus_card_frame\"` of type `frame_style`\n- `\"empty_bonus_card_frame\"` of type `frame_style`\n- `\"inset_frame_container_frame\"` of type `frame_style`\n- `\"chart_search_result_frame\"` of type `frame_style`\n- `\"pins_frame\"` of type `frame_style`\n- `\"lab_research_info_button\"` of type `button_style`\n- `\"current_research_info_button\"` of type `button_style`\n- `\"current_research_info_image\"` of type `image_style`\n- `\"current_research_info_percent_label\"` of type `label_style`\n- `\"blueprint_book_edit_frame\"` of type `frame_style`\n- `\"main_progressbar_frame\"` of type `frame_style`\n- `\"editor_mode_selection_frame\"` of type `frame_style`\n- `\"editor_inner_frame\"` of type `frame_style`\n- `\"new_game_subfooter\"` of type `frame_style`\n- `\"entity_frame\"` of type `frame_style`\n- `\"entity_button_frame\"` of type `frame_style`\n- `\"train_with_minimap_frame\"` of type `frame_style`\n- `\"right_side_frame\"` of type `frame_style`\n- `\"decider_combinator_frame\"` of type `frame_style`\n- `\"decider_combinator_condition_frame\"` of type `frame_style`\n- `\"decider_combinator_fulfilled_frame\"` of type `frame_style`\n- `\"decider_combinator_fulfilled_condition_frame\"` of type `frame_style`\n- `\"frame_around_top\"` of type `frame_style`\n- `\"frame_around_bottom\"` of type `frame_style`\n- `\"frame_around_left\"` of type `frame_style`\n- `\"frame_around_right\"` of type `frame_style`\n- `\"frame_around_center\"` of type `frame_style`\n- `\"control_settings_bordered_frame\"` of type `frame_style`\n- `\"packed_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"compact_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"dialog_buttons_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"player_input_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"inset_frame_container_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"inset_frame_container_horizontal_flow_in_tabbed_pane\"` of type `horizontal_flow_style`\n- `\"train_schedule_mode_switch_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"horizontal_flow_with_extra_right_margin\"` of type `horizontal_flow_style`\n- `\"relative_gui_top_flow\"` of type `horizontal_flow_style`\n- `\"relative_gui_bottom_flow\"` of type `horizontal_flow_style`\n- `\"two_module_spacing_horizontal_flow\"` of type `horizontal_flow_style`\n- `\"relative_gui_left_flow\"` of type `vertical_flow_style`\n- `\"relative_gui_right_flow\"` of type `vertical_flow_style`\n- `\"packed_vertical_flow\"` of type `vertical_flow_style`\n- `\"padded_vertical_flow\"` of type `vertical_flow_style`\n- `\"quickbar_holder_flow\"` of type `vertical_flow_style`\n- `\"inset_frame_container_vertical_flow\"` of type `vertical_flow_style`\n- `\"two_module_spacing_vertical_flow\"` of type `vertical_flow_style`\n- `\"new_game_difficulty_vertical_flow\"` of type `vertical_flow_style`\n- `\"crafting_queue_flow\"` of type `flow_style`\n- `\"table_with_selection\"` of type `table_style`\n- `\"players_table\"` of type `table_style`\n- `\"mods_explore_results_table\"` of type `table_style`\n- `\"bordered_table\"` of type `table_style`\n- `\"compact_slot_table\"` of type `table_style`\n- `\"slot_table\"` of type `table_style`\n- `\"browse_games_table\"` of type `table_style`\n- `\"browse_games_on_lan_table\"` of type `table_style`\n- `\"inset_frame_container_table\"` of type `table_style`\n- `\"map_generator_frequency_table\"` of type `table_style`\n- `\"player_input_table\"` of type `table_style`\n- `\"graphics_settings_table\"` of type `table_style`\n- `\"control_settings_bordered_table\"` of type `table_style`\n- `\"sync_mods_table\"` of type `table_style`\n- `\"removed_content_table\"` of type `table_style`\n- `\"finished_game_table\"` of type `table_style`\n- `\"filter_slot_table\"` of type `table_style`\n- `\"editor_mode_selection_table\"` of type `table_style`\n- `\"splitter_settings_table\"` of type `table_style`\n- `\"trains_widget_table\"` of type `table_style`\n- `\"undelete_space_platforms_table\"` of type `table_style`\n- `\"research_queue_table\"` of type `table_style`\n- `\"mappers_table\"` of type `table_style`\n- `\"wide_activity_bar\"` of type `activity_bar_style`\n- `\"production_progressbar\"` of type `progress_bar_style`\n- `\"burning_progressbar\"` of type `progress_bar_style`\n- `\"health_progressbar\"` of type `progress_bar_style`\n- `\"vehicle_health_progressbar\"` of type `progress_bar_style`\n- `\"mining_progressbar\"` of type `progress_bar_style`\n- `\"shield_progressbar\"` of type `progress_bar_style`\n- `\"bonus_progressbar\"` of type `progress_bar_style`\n- `\"battery_progressbar\"` of type `progress_bar_style`\n- `\"electric_satisfaction_progressbar\"` of type `progress_bar_style`\n- `\"electric_satisfaction_statistics_progressbar\"` of type `progress_bar_style`\n- `\"electric_statistics_progressbar\"` of type `progress_bar_style`\n- `\"electric_satisfaction_in_description_progressbar\"` of type `progress_bar_style`\n- `\"item_spoilage_in_description_progress_bar\"` of type `progress_bar_style`\n- `\"thick_progressbar\"` of type `progress_bar_style`\n- `\"disk_usage_progressbar\"` of type `progress_bar_style`\n- `\"achievement_progressbar\"` of type `progress_bar_style`\n- `\"achievement_card_progressbar\"` of type `progress_bar_style`\n- `\"heat_progressbar\"` of type `progress_bar_style`\n- `\"rocket_weight_used_progress_bar\"` of type `progress_bar_style`\n- `\"caption_checkbox\"` of type `check_box_style`\n- `\"subheader_caption_checkbox\"` of type `check_box_style`\n- `\"black_checkbox\"` of type `check_box_style`\n- `\"caption_radiobutton\"` of type `radio_button_style`\n- `\"frame_title\"` of type `label_style`\n- `\"caption_label\"` of type `label_style`\n- `\"semibold_caption_label\"` of type `label_style`\n- `\"semibold_label\"` of type `label_style`\n- `\"bold_label\"` of type `label_style`\n- `\"green_label\"` of type `label_style`\n- `\"bold_black_label\"` of type `label_style`\n- `\"bold_green_label\"` of type `label_style`\n- `\"red_label\"` of type `label_style`\n- `\"bold_red_label\"` of type `label_style`\n- `\"electric_usage_label\"` of type `label_style`\n- `\"count_label\"` of type `label_style`\n- `\"recipe_count_line_label\"` of type `label_style`\n- `\"recipe_ghost_count_line_label\"` of type `label_style`\n- `\"tooltip_label\"` of type `label_style`\n- `\"tooltip_title_label\"` of type `label_style`\n- `\"subheader_label\"` of type `label_style`\n- `\"subheader_caption_label\"` of type `label_style`\n- `\"subheader_semibold_label\"` of type `label_style`\n- `\"subheader_right_aligned_label\"` of type `label_style`\n- `\"heading_2_label\"` of type `label_style`\n- `\"achievement_unlocked_title_label\"` of type `label_style`\n- `\"achievement_locked_title_label\"` of type `label_style`\n- `\"achievement_failed_title_label\"` of type `label_style`\n- `\"achievement_failed_description_label\"` of type `label_style`\n- `\"achievement_failed_reason_label\"` of type `label_style`\n- `\"tips_and_tricks_title_label\"` of type `label_style`\n- `\"steam_friend_label\"` of type `label_style`\n- `\"frame_subheading_label\"` of type `label_style`\n- `\"orange_label\"` of type `label_style`\n- `\"bold_orange_label\"` of type `label_style`\n- `\"purple_label\"` of type `label_style`\n- `\"grey_label\"` of type `label_style`\n- `\"bold_grey_label\"` of type `label_style`\n- `\"tooltip_heading_label\"` of type `label_style`\n- `\"tooltip_heading_label_category\"` of type `label_style`\n- `\"squashable_label\"` of type `label_style`\n- `\"black_label\"` of type `label_style`\n- `\"black_squashable_label\"` of type `label_style`\n- `\"black_label_with_left_padding\"` of type `label_style`\n- `\"black_squashable_label_with_left_padding\"` of type `label_style`\n- `\"black_clickable_label\"` of type `label_style`\n- `\"black_clickable_squashable_label\"` of type `label_style`\n- `\"color_picker_label\"` of type `label_style`\n- `\"tooltip_item_label\"` of type `label_style`\n- `\"clickable_label\"` of type `label_style`\n- `\"clickable_squashable_label\"` of type `label_style`\n- `\"label_with_left_padding\"` of type `label_style`\n- `\"squashable_label_with_left_padding\"` of type `label_style`\n- `\"train_schedule_unavailable_stop_label\"` of type `label_style`\n- `\"train_schedule_non_existent_stop_label\"` of type `label_style`\n- `\"hyperlink_label\"` of type `label_style`\n- `\"info_label\"` of type `label_style`\n- `\"control_input_shortcut_label\"` of type `label_style`\n- `\"main_menu_version_label\"` of type `label_style`\n- `\"label_under_widget\"` of type `label_style`\n- `\"finished_game_label\"` of type `label_style`\n- `\"train_stop_subheader\"` of type `label_style`\n- `\"inventory_frame_title_style\"` of type `label_style`\n- `\"mods_filter_hit_count_label\"` of type `label_style`\n- `\"slot_column_header_label\"` of type `label_style`\n- `\"inside_shallow_frame_with_padding_line\"` of type `line_style`\n- `\"blurry_panel_horizontal_line\"` of type `line_style`\n- `\"dark_line\"` of type `line_style`\n- `\"tooltip_category_line\"` of type `line_style`\n- `\"tooltip_horizontal_line\"` of type `line_style`\n- `\"lab_progress_and_slot_divider\"` of type `line_style`\n- `\"lab_progress_and_slot_divider_empty\"` of type `line_style`\n- `\"scroll_pane_in_shallow_frame\"` of type `scroll_pane_style`\n- `\"trains_scroll_pane\"` of type `scroll_pane_style`\n- `\"trains_scroll_pane_with_side_margin\"` of type `scroll_pane_style`\n- `\"stations_scroll_pane\"` of type `scroll_pane_style`\n- `\"stations_scroll_pane_small_screen\"` of type `scroll_pane_style`\n- `\"tab_scroll_pane\"` of type `scroll_pane_style`\n- `\"technology_list_scroll_pane\"` of type `scroll_pane_style`\n- `\"statistics_scroll_pane\"` of type `scroll_pane_style`\n- `\"blurry_scroll_pane\"` of type `scroll_pane_style`\n- `\"map_preview_scroll_pane\"` of type `scroll_pane_style`\n- `\"tab_shallow_scroll_pane\"` of type `scroll_pane_style`\n- `\"featured_technology_description_scroll_pane\"` of type `scroll_pane_style`\n- `\"scroll_pane_under_subheader\"` of type `scroll_pane_style`\n- `\"train_schedule_scroll_pane\"` of type `scroll_pane_style`\n- `\"train_interrupts_scroll_pane\"` of type `scroll_pane_style`\n- `\"mods_scroll_pane\"` of type `scroll_pane_style`\n- `\"stations_trains_scroll_pane\"` of type `scroll_pane_style`\n- `\"entity_frame_scroll_pane\"` of type `scroll_pane_style`\n- `\"shallow_scroll_pane\"` of type `scroll_pane_style`\n- `\"shallow_slots_scroll_pane\"` of type `scroll_pane_style`\n- `\"deep_scroll_pane\"` of type `scroll_pane_style`\n- `\"deep_scroll_pane_with_padding\"` of type `scroll_pane_style`\n- `\"deep_slots_scroll_pane\"` of type `scroll_pane_style`\n- `\"achievement_slots_scroll_pane\"` of type `scroll_pane_style`\n- `\"logistic_sections_scroll_pane\"` of type `scroll_pane_style`\n- `\"character_crafting_queue_scroll_pane\"` of type `scroll_pane_style`\n- `\"logistic_gui_items_scroll_pane\"` of type `scroll_pane_style`\n- `\"shortcut_bar_selection_scroll_pane\"` of type `scroll_pane_style`\n- `\"naked_scroll_pane\"` of type `scroll_pane_style`\n- `\"horizontally_limited_equipment_grid_scroll_pane\"` of type `scroll_pane_style`\n- `\"text_holding_scroll_pane\"` of type `scroll_pane_style`\n- `\"factoriopedia_contents_scroll_pane\"` of type `scroll_pane_style`\n- `\"factoriopedia_icon_grid_scroll_pane\"` of type `scroll_pane_style`\n- `\"decider_combinator_conditions_scroll_pane\"` of type `scroll_pane_style`\n- `\"decider_combinator_outputs_scroll_pane\"` of type `scroll_pane_style`\n- `\"mappers_scroll_pane\"` of type `scroll_pane_style`\n- `\"achievement_image\"` of type `image_style`\n- `\"map_info_image\"` of type `image_style`\n- `\"new_game_info_image\"` of type `image_style`\n- `\"mod_thumbnail_image\"` of type `image_style`\n- `\"mod_explore_thumbnail_image\"` of type `image_style`\n- `\"mod_updates_status_image\"` of type `image_style`\n- `\"install_mod_status_image\"` of type `image_style`\n- `\"mod_attribute_image\"` of type `image_style`\n- `\"tips_and_tricks_image\"` of type `image_style`\n- `\"logistics_diode\"` of type `image_style`\n- `\"status_image\"` of type `image_style`\n- `\"achievement_warning_image\"` of type `image_style`\n- `\"mods_sorting_image\"` of type `image_style`\n- `\"recipe_tooltip_horizontal_image\"` of type `image_style`\n- `\"tips_and_tricks_simulation\"` of type `empty_widget_style`\n- `\"entity_button_base\"` of type `empty_widget_style`\n- `\"undo_camera\"` of type `empty_widget_style`\n- `\"tooltip_camera\"` of type `empty_widget_style`\n- `\"wide_entity_button\"` of type `empty_widget_style`\n- `\"draggable_space_in_train_schedule\"` of type `empty_widget_style`\n- `\"draggable_space_in_temporary_train_station\"` of type `empty_widget_style`\n- `\"fulfilled_draggable_space_in_train_schedule\"` of type `empty_widget_style`\n- `\"color_indicator\"` of type `empty_widget_style`\n- `\"minimap_widget_under_subheader\"` of type `empty_widget_style`\n- `\"blueprint_preview\"` of type `empty_widget_style`\n- `\"entity_frame_filler\"` of type `empty_widget_style`\n- `\"tool_bar_empty_slot\"` of type `empty_widget_style`\n- `\"research_queue_drag_handle\"` of type `empty_widget_style`\n- `\"research_queue_active_glow_dark\"` of type `glow_style`\n- `\"research_queue_active_glow_light\"` of type `glow_style`\n- `\"research_queue_active_glow_outer\"` of type `glow_style`\n- `\"notched_slider\"` of type `slider_style`\n- `\"map_generator_notched_slider\"` of type `slider_style`\n- `\"map_generator_13_notch_slider\"` of type `slider_style`\n- `\"map_generator_notched_slider_wide\"` of type `slider_style`\n- `\"red_slider\"` of type `slider_style`\n- `\"green_slider\"` of type `slider_style`\n- `\"blue_slider\"` of type `slider_style`\n- `\"other_settings_slider\"` of type `slider_style`\n- `\"notched_double_slider\"` of type `double_slider_style`\n- `\"blueprint_drop_slot_button\"` of type `empty_widget_style`\n- `\"blueprint_icon_preview\"` of type `empty_widget_style`\n- `\"draggable_space\"` of type `empty_widget_style`\n- `\"draggable_space_in_shortcut_list\"` of type `empty_widget_style`\n- `\"filter_tabbed_pane\"` of type `tabbed_pane_style`\n- `\"frame_tabbed_pane\"` of type `tabbed_pane_style`\n- `\"quick_panel_tabbed_pane\"` of type `tabbed_pane_style`\n- `\"tabbed_pane_with_no_side_padding\"` of type `tabbed_pane_style`\n- `\"tabbed_pane_with_extra_padding\"` of type `tabbed_pane_style`\n- `\"frame_tab\"` of type `tab_style`\n- `\"filter_group_tab\"` of type `tab_style`\n- `\"slightly_smaller_tab\"` of type `tab_style`\n- `\"filter_group_slot_tab\"` of type `tab_style`\n- `\"production_graph\"` of type `graph_style`\n- `\"research_info_tooltip_graph\"` of type `graph_style`\n- `\"train_schedule_partially_fullfilled_condition_frame\"` of type `frame_style`\n- `\"partially_fulfilled_draggable_space_in_train_schedule\"` of type `empty_widget_style`\n- `\"train_schedule_partially_fulfilled_delete_button\"` of type `button_style`\n- `\"train_schedule_partially_fulfilled_item_select_button\"` of type `button_style`"
         ],
         "examples": [
           "```\n-- Adding a custom frame_style-type style\ndata.raw[\"gui-style\"][\"default\"][\"custom_style_for_a_frame\"] =\n{\n  type = \"frame_style\",\n  parent = \"frame\",\n  use_header_filler = false,\n  drag_by_title = false\n}\n```"
@@ -90929,7 +90929,7 @@
         {
           "name": "disabled",
           "order": 60,
-          "description": "Used by constant combinators: Combinator is turned off via switch in GUI."
+          "description": "Used by constant combinators: Combinator is turned off via switch in GUI. Also used by inserters."
         },
         {
           "name": "disabled_by_control_behavior",
@@ -92636,1443 +92636,1463 @@
           "description": ""
         },
         {
-          "name": "add_decider_combinator_output",
+          "name": "add_decider_combinator_else_output",
           "order": 3,
           "description": ""
         },
         {
-          "name": "add_logistic_section",
+          "name": "add_decider_combinator_output",
           "order": 4,
           "description": ""
         },
         {
-          "name": "add_permission_group",
+          "name": "add_logistic_section",
           "order": 5,
           "description": ""
         },
         {
-          "name": "add_pin",
+          "name": "add_permission_group",
           "order": 6,
           "description": ""
         },
         {
-          "name": "add_train_interrupt",
+          "name": "add_pin",
           "order": 7,
           "description": ""
         },
         {
-          "name": "add_train_station",
+          "name": "add_train_interrupt",
           "order": 8,
           "description": ""
         },
         {
-          "name": "adjust_blueprint_snapping",
+          "name": "add_train_station",
           "order": 9,
           "description": ""
         },
         {
-          "name": "admin_action",
+          "name": "adjust_blueprint_snapping",
           "order": 10,
           "description": ""
         },
         {
-          "name": "alt_reverse_select_area",
+          "name": "admin_action",
           "order": 11,
           "description": ""
         },
         {
-          "name": "alt_select_area",
+          "name": "alt_reverse_select_area",
           "order": 12,
           "description": ""
         },
         {
-          "name": "alt_select_blueprint_entities",
+          "name": "alt_select_area",
           "order": 13,
           "description": ""
         },
         {
-          "name": "alternative_copy",
+          "name": "alt_select_blueprint_entities",
           "order": 14,
           "description": ""
         },
         {
-          "name": "begin_mining",
+          "name": "alternative_copy",
           "order": 15,
           "description": ""
         },
         {
-          "name": "begin_mining_terrain",
+          "name": "begin_mining",
           "order": 16,
           "description": ""
         },
         {
-          "name": "build",
+          "name": "begin_mining_terrain",
           "order": 17,
           "description": ""
         },
         {
-          "name": "build_rail",
+          "name": "build",
           "order": 18,
           "description": ""
         },
         {
-          "name": "build_terrain",
+          "name": "build_rail",
           "order": 19,
           "description": ""
         },
         {
-          "name": "cancel_craft",
+          "name": "build_terrain",
           "order": 20,
           "description": ""
         },
         {
-          "name": "cancel_deconstruct",
+          "name": "cancel_craft",
           "order": 21,
           "description": ""
         },
         {
-          "name": "cancel_delete_space_platform",
+          "name": "cancel_deconstruct",
           "order": 22,
           "description": ""
         },
         {
-          "name": "cancel_new_blueprint",
+          "name": "cancel_delete_space_platform",
           "order": 23,
           "description": ""
         },
         {
-          "name": "cancel_research",
+          "name": "cancel_new_blueprint",
           "order": 24,
           "description": ""
         },
         {
-          "name": "cancel_upgrade",
+          "name": "cancel_research",
           "order": 25,
           "description": ""
         },
         {
-          "name": "change_active_character_tab",
+          "name": "cancel_upgrade",
           "order": 26,
           "description": ""
         },
         {
-          "name": "change_active_item_group_for_crafting",
+          "name": "change_active_character_tab",
           "order": 27,
           "description": ""
         },
         {
-          "name": "change_active_item_group_for_filters",
+          "name": "change_active_item_group_for_crafting",
           "order": 28,
           "description": ""
         },
         {
-          "name": "change_active_quick_bar",
+          "name": "change_active_item_group_for_filters",
           "order": 29,
           "description": ""
         },
         {
-          "name": "change_arithmetic_combinator_parameters",
+          "name": "change_active_quick_bar",
           "order": 30,
           "description": ""
         },
         {
-          "name": "change_entity_label",
+          "name": "change_arithmetic_combinator_parameters",
           "order": 31,
           "description": ""
         },
         {
-          "name": "change_heading_riding_state",
+          "name": "change_entity_label",
           "order": 32,
           "description": ""
         },
         {
-          "name": "change_item_label",
+          "name": "change_heading_riding_state",
           "order": 33,
           "description": ""
         },
         {
-          "name": "change_logistic_point_group",
+          "name": "change_item_label",
           "order": 34,
           "description": ""
         },
         {
-          "name": "change_multiplayer_config",
+          "name": "change_logistic_point_group",
           "order": 35,
           "description": ""
         },
         {
-          "name": "change_picking_state",
+          "name": "change_multiplayer_config",
           "order": 36,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_alert_parameters",
+          "name": "change_picking_state",
           "order": 37,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_circuit_parameters",
+          "name": "change_programmable_speaker_alert_parameters",
           "order": 38,
           "description": ""
         },
         {
-          "name": "change_programmable_speaker_parameters",
+          "name": "change_programmable_speaker_circuit_parameters",
           "order": 39,
           "description": ""
         },
         {
-          "name": "change_research_condition",
+          "name": "change_programmable_speaker_parameters",
           "order": 40,
           "description": ""
         },
         {
-          "name": "change_riding_state",
+          "name": "change_research_condition",
           "order": 41,
           "description": ""
         },
         {
-          "name": "change_selector_combinator_parameters",
+          "name": "change_riding_state",
           "order": 42,
           "description": ""
         },
         {
-          "name": "change_shooting_state",
+          "name": "change_selector_combinator_parameters",
           "order": 43,
           "description": ""
         },
         {
-          "name": "change_train_name",
+          "name": "change_shooting_state",
           "order": 44,
           "description": ""
         },
         {
-          "name": "change_train_station",
+          "name": "change_train_name",
           "order": 45,
           "description": ""
         },
         {
-          "name": "change_train_stop_station",
+          "name": "change_train_station",
           "order": 46,
           "description": ""
         },
         {
-          "name": "change_train_wait_condition",
+          "name": "change_train_stop_station",
           "order": 47,
           "description": ""
         },
         {
-          "name": "change_train_wait_condition_data",
+          "name": "change_train_wait_condition",
           "order": 48,
           "description": ""
         },
         {
-          "name": "cheat",
+          "name": "change_train_wait_condition_data",
           "order": 49,
           "description": ""
         },
         {
-          "name": "clear_cursor",
+          "name": "cheat",
           "order": 50,
           "description": ""
         },
         {
-          "name": "connect_rolling_stock",
+          "name": "clear_cursor",
           "order": 51,
           "description": ""
         },
         {
-          "name": "copy",
+          "name": "connect_rolling_stock",
           "order": 52,
           "description": ""
         },
         {
-          "name": "copy_entity_settings",
+          "name": "copy",
           "order": 53,
           "description": ""
         },
         {
-          "name": "copy_large_opened_blueprint",
+          "name": "copy_entity_settings",
           "order": 54,
           "description": ""
         },
         {
-          "name": "copy_large_opened_item",
+          "name": "copy_large_opened_blueprint",
           "order": 55,
           "description": ""
         },
         {
-          "name": "copy_opened_blueprint",
+          "name": "copy_large_opened_item",
           "order": 56,
           "description": ""
         },
         {
-          "name": "copy_opened_item",
+          "name": "copy_opened_blueprint",
           "order": 57,
           "description": ""
         },
         {
-          "name": "craft",
+          "name": "copy_opened_item",
           "order": 58,
           "description": ""
         },
         {
-          "name": "create_space_platform",
+          "name": "craft",
           "order": 59,
           "description": ""
         },
         {
-          "name": "cursor_split",
+          "name": "create_space_platform",
           "order": 60,
           "description": ""
         },
         {
-          "name": "cursor_transfer",
+          "name": "cursor_split",
           "order": 61,
           "description": ""
         },
         {
-          "name": "custom_input",
+          "name": "cursor_transfer",
           "order": 62,
           "description": ""
         },
         {
-          "name": "cycle_blueprint_book_backwards",
+          "name": "custom_input",
           "order": 63,
           "description": ""
         },
         {
-          "name": "cycle_blueprint_book_forwards",
+          "name": "cycle_blueprint_book_backwards",
           "order": 64,
           "description": ""
         },
         {
-          "name": "cycle_quality_down",
+          "name": "cycle_blueprint_book_forwards",
           "order": 65,
           "description": ""
         },
         {
-          "name": "cycle_quality_up",
+          "name": "cycle_quality_down",
           "order": 66,
           "description": ""
         },
         {
-          "name": "deconstruct",
+          "name": "cycle_quality_up",
           "order": 67,
           "description": ""
         },
         {
-          "name": "delete_blueprint_library",
+          "name": "deconstruct",
           "order": 68,
           "description": ""
         },
         {
-          "name": "delete_blueprint_record",
+          "name": "delete_blueprint_library",
           "order": 69,
           "description": ""
         },
         {
-          "name": "delete_custom_tag",
+          "name": "delete_blueprint_record",
           "order": 70,
           "description": ""
         },
         {
-          "name": "delete_logistic_group",
+          "name": "delete_custom_tag",
           "order": 71,
           "description": ""
         },
         {
-          "name": "delete_permission_group",
+          "name": "delete_logistic_group",
           "order": 72,
           "description": ""
         },
         {
-          "name": "delete_space_platform",
+          "name": "delete_permission_group",
           "order": 73,
           "description": ""
         },
         {
-          "name": "destroy_item",
+          "name": "delete_space_platform",
           "order": 74,
           "description": ""
         },
         {
-          "name": "destroy_opened_item",
+          "name": "destroy_item",
           "order": 75,
           "description": ""
         },
         {
-          "name": "disconnect_rolling_stock",
+          "name": "destroy_opened_item",
           "order": 76,
           "description": ""
         },
         {
-          "name": "drag_decider_combinator_condition",
+          "name": "disconnect_rolling_stock",
           "order": 77,
           "description": ""
         },
         {
-          "name": "drag_decider_combinator_output",
+          "name": "drag_decider_combinator_condition",
           "order": 78,
           "description": ""
         },
         {
-          "name": "drag_research_condition",
+          "name": "drag_decider_combinator_else_output",
           "order": 79,
           "description": ""
         },
         {
-          "name": "drag_train_schedule",
+          "name": "drag_decider_combinator_output",
           "order": 80,
           "description": ""
         },
         {
-          "name": "drag_train_schedule_interrupt",
+          "name": "drag_research_condition",
           "order": 81,
           "description": ""
         },
         {
-          "name": "drag_train_wait_condition",
+          "name": "drag_train_schedule",
           "order": 82,
           "description": ""
         },
         {
-          "name": "drop_blueprint_record",
+          "name": "drag_train_schedule_interrupt",
           "order": 83,
           "description": ""
         },
         {
-          "name": "drop_item",
+          "name": "drag_train_wait_condition",
           "order": 84,
           "description": ""
         },
         {
-          "name": "edit_blueprint_tool_preview",
+          "name": "drop_blueprint_record",
           "order": 85,
           "description": ""
         },
         {
-          "name": "edit_custom_tag",
+          "name": "drop_item",
           "order": 86,
           "description": ""
         },
         {
-          "name": "edit_display_panel",
+          "name": "edit_blueprint_tool_preview",
           "order": 87,
           "description": ""
         },
         {
-          "name": "edit_display_panel_always_show",
+          "name": "edit_custom_tag",
           "order": 88,
           "description": ""
         },
         {
-          "name": "edit_display_panel_icon",
+          "name": "edit_display_panel",
           "order": 89,
           "description": ""
         },
         {
-          "name": "edit_display_panel_parameters",
+          "name": "edit_display_panel_always_show",
           "order": 90,
           "description": ""
         },
         {
-          "name": "edit_display_panel_show_in_chart",
+          "name": "edit_display_panel_icon",
           "order": 91,
           "description": ""
         },
         {
-          "name": "edit_display_panel_single_entry",
+          "name": "edit_display_panel_parameters",
           "order": 92,
           "description": ""
         },
         {
-          "name": "edit_interrupt",
+          "name": "edit_display_panel_show_in_chart",
           "order": 93,
           "description": ""
         },
         {
-          "name": "edit_permission_group",
+          "name": "edit_display_panel_single_entry",
           "order": 94,
           "description": ""
         },
         {
-          "name": "edit_pin",
+          "name": "edit_interrupt",
           "order": 95,
           "description": ""
         },
         {
-          "name": "export_blueprint",
+          "name": "edit_permission_group",
           "order": 96,
           "description": ""
         },
         {
-          "name": "fast_entity_split",
+          "name": "edit_pin",
           "order": 97,
           "description": ""
         },
         {
-          "name": "fast_entity_transfer",
+          "name": "export_blueprint",
           "order": 98,
           "description": ""
         },
         {
-          "name": "flip_entity",
+          "name": "fast_entity_split",
           "order": 99,
           "description": ""
         },
         {
-          "name": "flush_opened_entity_fluid",
+          "name": "fast_entity_transfer",
           "order": 100,
           "description": ""
         },
         {
-          "name": "flush_opened_entity_specific_fluid",
+          "name": "flip_entity",
           "order": 101,
           "description": ""
         },
         {
-          "name": "go_to_train_station",
+          "name": "flush_opened_entity_fluid",
           "order": 102,
           "description": ""
         },
         {
-          "name": "grab_blueprint_record",
+          "name": "flush_opened_entity_specific_fluid",
           "order": 103,
           "description": ""
         },
         {
-          "name": "gui_checked_state_changed",
+          "name": "go_to_train_station",
           "order": 104,
           "description": ""
         },
         {
-          "name": "gui_click",
+          "name": "grab_blueprint_record",
           "order": 105,
           "description": ""
         },
         {
-          "name": "gui_confirmed",
+          "name": "gui_checked_state_changed",
           "order": 106,
           "description": ""
         },
         {
-          "name": "gui_elem_changed",
+          "name": "gui_click",
           "order": 107,
           "description": ""
         },
         {
-          "name": "gui_hover",
+          "name": "gui_confirmed",
           "order": 108,
           "description": ""
         },
         {
-          "name": "gui_inventory_action",
+          "name": "gui_elem_changed",
           "order": 109,
           "description": ""
         },
         {
-          "name": "gui_inventory_bar_changed",
+          "name": "gui_hover",
           "order": 110,
           "description": ""
         },
         {
-          "name": "gui_inventory_filter_changed",
+          "name": "gui_inventory_action",
           "order": 111,
           "description": ""
         },
         {
-          "name": "gui_leave",
+          "name": "gui_inventory_bar_changed",
           "order": 112,
           "description": ""
         },
         {
-          "name": "gui_location_changed",
+          "name": "gui_inventory_filter_changed",
           "order": 113,
           "description": ""
         },
         {
-          "name": "gui_selected_tab_changed",
+          "name": "gui_leave",
           "order": 114,
           "description": ""
         },
         {
-          "name": "gui_selection_state_changed",
+          "name": "gui_location_changed",
           "order": 115,
           "description": ""
         },
         {
-          "name": "gui_switch_state_changed",
+          "name": "gui_selected_tab_changed",
           "order": 116,
           "description": ""
         },
         {
-          "name": "gui_text_changed",
+          "name": "gui_selection_state_changed",
           "order": 117,
           "description": ""
         },
         {
-          "name": "gui_value_changed",
+          "name": "gui_switch_state_changed",
           "order": 118,
           "description": ""
         },
         {
-          "name": "import_blueprint",
+          "name": "gui_text_changed",
           "order": 119,
           "description": ""
         },
         {
-          "name": "import_blueprint_string",
+          "name": "gui_value_changed",
           "order": 120,
           "description": ""
         },
         {
-          "name": "import_blueprints_filtered",
+          "name": "import_blueprint",
           "order": 121,
           "description": ""
         },
         {
-          "name": "import_permissions_string",
+          "name": "import_blueprint_string",
           "order": 122,
           "description": ""
         },
         {
-          "name": "instantly_create_space_platform",
+          "name": "import_blueprints_filtered",
           "order": 123,
           "description": ""
         },
         {
-          "name": "inventory_split",
+          "name": "import_permissions_string",
           "order": 124,
           "description": ""
         },
         {
-          "name": "inventory_transfer",
+          "name": "instantly_create_space_platform",
           "order": 125,
           "description": ""
         },
         {
-          "name": "land_at_planet",
+          "name": "inventory_split",
           "order": 126,
           "description": ""
         },
         {
-          "name": "launch_rocket",
+          "name": "inventory_transfer",
           "order": 127,
           "description": ""
         },
         {
-          "name": "lua_shortcut",
+          "name": "land_at_planet",
           "order": 128,
           "description": ""
         },
         {
-          "name": "map_editor_action",
+          "name": "launch_rocket",
           "order": 129,
           "description": ""
         },
         {
-          "name": "market_offer",
+          "name": "lua_shortcut",
           "order": 130,
           "description": ""
         },
         {
-          "name": "mod_settings_changed",
+          "name": "map_editor_action",
           "order": 131,
           "description": ""
         },
         {
-          "name": "modify_decider_combinator_condition",
+          "name": "market_offer",
           "order": 132,
           "description": ""
         },
         {
-          "name": "modify_decider_combinator_output",
+          "name": "mod_settings_changed",
           "order": 133,
           "description": ""
         },
         {
-          "name": "move_pin",
+          "name": "modify_decider_combinator_condition",
           "order": 134,
           "description": ""
         },
         {
-          "name": "move_research",
+          "name": "modify_decider_combinator_else_output",
           "order": 135,
           "description": ""
         },
         {
-          "name": "open_achievements_gui",
+          "name": "modify_decider_combinator_output",
           "order": 136,
           "description": ""
         },
         {
-          "name": "open_blueprint_library_gui",
+          "name": "move_pin",
           "order": 137,
           "description": ""
         },
         {
-          "name": "open_blueprint_record",
+          "name": "move_research",
           "order": 138,
           "description": ""
         },
         {
-          "name": "open_bonus_gui",
+          "name": "open_achievements_gui",
           "order": 139,
           "description": ""
         },
         {
-          "name": "open_character_gui",
+          "name": "open_blueprint_library_gui",
           "order": 140,
           "description": ""
         },
         {
-          "name": "open_current_vehicle_gui",
+          "name": "open_blueprint_record",
           "order": 141,
           "description": ""
         },
         {
-          "name": "open_equipment",
+          "name": "open_bonus_gui",
           "order": 142,
           "description": ""
         },
         {
-          "name": "open_global_electric_network_gui",
+          "name": "open_character_gui",
           "order": 143,
           "description": ""
         },
         {
-          "name": "open_gui",
+          "name": "open_current_vehicle_gui",
           "order": 144,
           "description": ""
         },
         {
-          "name": "open_item",
+          "name": "open_equipment",
           "order": 145,
           "description": ""
         },
         {
-          "name": "open_logistics_gui",
+          "name": "open_global_electric_network_gui",
           "order": 146,
           "description": ""
         },
         {
-          "name": "open_mod_item",
+          "name": "open_gui",
           "order": 147,
           "description": ""
         },
         {
-          "name": "open_new_platform_button_from_rocket_silo",
+          "name": "open_item",
           "order": 148,
           "description": ""
         },
         {
-          "name": "open_opened_entity_grid",
+          "name": "open_logistics_gui",
           "order": 149,
           "description": ""
         },
         {
-          "name": "open_parent_of_opened_item",
+          "name": "open_mod_item",
           "order": 150,
           "description": ""
         },
         {
-          "name": "open_production_gui",
+          "name": "open_new_platform_button_from_rocket_silo",
           "order": 151,
           "description": ""
         },
         {
-          "name": "open_train_gui",
+          "name": "open_opened_entity_grid",
           "order": 152,
           "description": ""
         },
         {
-          "name": "open_train_station_gui",
+          "name": "open_parent_of_opened_item",
           "order": 153,
           "description": ""
         },
         {
-          "name": "open_trains_gui",
+          "name": "open_production_gui",
           "order": 154,
           "description": ""
         },
         {
-          "name": "parametrise_blueprint",
+          "name": "open_train_gui",
           "order": 155,
           "description": ""
         },
         {
-          "name": "paste_entity_settings",
+          "name": "open_train_station_gui",
           "order": 156,
           "description": ""
         },
         {
-          "name": "pin_alert_group",
+          "name": "open_trains_gui",
           "order": 157,
           "description": ""
         },
         {
-          "name": "pin_custom_alert",
+          "name": "parametrise_blueprint",
           "order": 158,
           "description": ""
         },
         {
-          "name": "pin_search_result",
+          "name": "paste_entity_settings",
           "order": 159,
           "description": ""
         },
         {
-          "name": "pipette",
+          "name": "pin_alert_group",
           "order": 160,
           "description": ""
         },
         {
-          "name": "place_equipment",
+          "name": "pin_custom_alert",
           "order": 161,
           "description": ""
         },
         {
-          "name": "providing_to_other_platforms",
+          "name": "pin_search_result",
           "order": 162,
           "description": ""
         },
         {
-          "name": "quick_bar_pick_slot",
+          "name": "pipette",
           "order": 163,
           "description": ""
         },
         {
-          "name": "quick_bar_set_selected_page",
+          "name": "place_equipment",
           "order": 164,
           "description": ""
         },
         {
-          "name": "quick_bar_set_slot",
+          "name": "providing_to_other_platforms",
           "order": 165,
           "description": ""
         },
         {
-          "name": "reassign_blueprint",
+          "name": "quick_bar_pick_slot",
           "order": 166,
           "description": ""
         },
         {
-          "name": "redo",
+          "name": "quick_bar_set_selected_page",
           "order": 167,
           "description": ""
         },
         {
-          "name": "remote_view_entity",
+          "name": "quick_bar_set_slot",
           "order": 168,
           "description": ""
         },
         {
-          "name": "remote_view_surface",
+          "name": "reassign_blueprint",
           "order": 169,
           "description": ""
         },
         {
-          "name": "remove_cables",
+          "name": "redo",
           "order": 170,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_condition",
+          "name": "remote_view_entity",
           "order": 171,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_output",
+          "name": "remote_view_surface",
           "order": 172,
           "description": ""
         },
         {
-          "name": "remove_logistic_section",
+          "name": "remove_cables",
           "order": 173,
           "description": ""
         },
         {
-          "name": "remove_pin",
+          "name": "remove_decider_combinator_condition",
           "order": 174,
           "description": ""
         },
         {
-          "name": "remove_train_interrupt",
+          "name": "remove_decider_combinator_else_output",
           "order": 175,
           "description": ""
         },
         {
-          "name": "remove_train_station",
+          "name": "remove_decider_combinator_output",
           "order": 176,
           "description": ""
         },
         {
-          "name": "rename_interrupt",
+          "name": "remove_logistic_section",
           "order": 177,
           "description": ""
         },
         {
-          "name": "rename_space_platform",
+          "name": "remove_pin",
           "order": 178,
           "description": ""
         },
         {
-          "name": "reorder_logistic_section",
+          "name": "remove_train_interrupt",
           "order": 179,
           "description": ""
         },
         {
-          "name": "request_missing_construction_materials",
+          "name": "remove_train_station",
           "order": 180,
           "description": ""
         },
         {
-          "name": "reset_assembling_machine",
+          "name": "rename_interrupt",
           "order": 181,
           "description": ""
         },
         {
-          "name": "reverse_select_area",
+          "name": "rename_space_platform",
           "order": 182,
           "description": ""
         },
         {
-          "name": "rotate_entity",
+          "name": "reorder_logistic_section",
           "order": 183,
           "description": ""
         },
         {
-          "name": "select_area",
+          "name": "request_missing_construction_materials",
           "order": 184,
           "description": ""
         },
         {
-          "name": "select_asteroid_chunk_slot",
+          "name": "reset_assembling_machine",
           "order": 185,
           "description": ""
         },
         {
-          "name": "select_blueprint_entities",
+          "name": "reverse_select_area",
           "order": 186,
           "description": ""
         },
         {
-          "name": "select_entity_filter_slot",
+          "name": "rotate_entity",
           "order": 187,
           "description": ""
         },
         {
-          "name": "select_entity_slot",
+          "name": "select_area",
           "order": 188,
           "description": ""
         },
         {
-          "name": "select_item_filter",
+          "name": "select_asteroid_chunk_slot",
           "order": 189,
           "description": ""
         },
         {
-          "name": "select_mapper_slot_from",
+          "name": "select_blueprint_entities",
           "order": 190,
           "description": ""
         },
         {
-          "name": "select_mapper_slot_to",
+          "name": "select_entity_filter_slot",
           "order": 191,
           "description": ""
         },
         {
-          "name": "select_next_valid_gun",
+          "name": "select_entity_slot",
           "order": 192,
           "description": ""
         },
         {
-          "name": "select_tile_slot",
+          "name": "select_item_filter",
           "order": 193,
           "description": ""
         },
         {
-          "name": "send_spidertron",
+          "name": "select_mapper_slot_from",
           "order": 194,
           "description": ""
         },
         {
-          "name": "send_stack_to_trash",
+          "name": "select_mapper_slot_to",
           "order": 195,
           "description": ""
         },
         {
-          "name": "send_stacks_to_trash",
+          "name": "select_next_valid_gun",
           "order": 196,
           "description": ""
         },
         {
-          "name": "send_train_to_pin_target",
+          "name": "select_tile_slot",
           "order": 197,
           "description": ""
         },
         {
-          "name": "set_behavior_mode",
+          "name": "send_spidertron",
           "order": 198,
           "description": ""
         },
         {
-          "name": "set_car_weapons_control",
+          "name": "send_stack_to_trash",
           "order": 199,
           "description": ""
         },
         {
-          "name": "set_cheat_mode_quality",
+          "name": "send_stacks_to_trash",
           "order": 200,
           "description": ""
         },
         {
-          "name": "set_circuit_condition",
+          "name": "send_train_to_pin_target",
           "order": 201,
           "description": ""
         },
         {
-          "name": "set_circuit_mode_of_operation",
+          "name": "set_behavior_mode",
           "order": 202,
           "description": ""
         },
         {
-          "name": "set_combinator_description",
+          "name": "set_car_weapons_control",
           "order": 203,
           "description": ""
         },
         {
-          "name": "set_control_behavior_input_networks",
+          "name": "set_cheat_mode_quality",
           "order": 204,
           "description": ""
         },
         {
-          "name": "set_control_behavior_output_networks",
+          "name": "set_circuit_condition",
           "order": 205,
           "description": ""
         },
         {
-          "name": "set_copy_color_from_train_stop",
+          "name": "set_circuit_mode_of_operation",
           "order": 206,
           "description": ""
         },
         {
-          "name": "set_deconstruction_item_tile_selection_mode",
+          "name": "set_combinator_description",
           "order": 207,
           "description": ""
         },
         {
-          "name": "set_deconstruction_item_trees_and_rocks_only",
+          "name": "set_control_behavior_input_networks",
           "order": 208,
           "description": ""
         },
         {
-          "name": "set_entity_color",
+          "name": "set_control_behavior_output_networks",
           "order": 209,
           "description": ""
         },
         {
-          "name": "set_entity_energy_property",
+          "name": "set_copy_color_from_train_stop",
           "order": 210,
           "description": ""
         },
         {
-          "name": "set_equipment_energy_property",
+          "name": "set_deconstruction_item_tile_selection_mode",
           "order": 211,
           "description": ""
         },
         {
-          "name": "set_filter",
+          "name": "set_deconstruction_item_trees_and_rocks_only",
           "order": 212,
           "description": ""
         },
         {
-          "name": "set_ghost_cursor",
+          "name": "set_entity_color",
           "order": 213,
           "description": ""
         },
         {
-          "name": "set_heat_interface_mode",
+          "name": "set_entity_energy_property",
           "order": 214,
           "description": ""
         },
         {
-          "name": "set_heat_interface_temperature",
+          "name": "set_equipment_energy_property",
           "order": 215,
           "description": ""
         },
         {
-          "name": "set_infinity_container_filter_item",
+          "name": "set_filter",
           "order": 216,
           "description": ""
         },
         {
-          "name": "set_infinity_container_logistic_mode",
+          "name": "set_ghost_cursor",
           "order": 217,
           "description": ""
         },
         {
-          "name": "set_infinity_container_remove_unfiltered_items",
+          "name": "set_heat_interface_mode",
           "order": 218,
           "description": ""
         },
         {
-          "name": "set_infinity_pipe_filter",
+          "name": "set_heat_interface_temperature",
           "order": 219,
           "description": ""
         },
         {
-          "name": "set_inserter_max_stack_size",
+          "name": "set_infinity_container_filter_item",
           "order": 220,
           "description": ""
         },
         {
-          "name": "set_inventory_bar",
+          "name": "set_infinity_container_logistic_mode",
           "order": 221,
           "description": ""
         },
         {
-          "name": "set_lamp_always_on",
+          "name": "set_infinity_container_remove_unfiltered_items",
           "order": 222,
           "description": ""
         },
         {
-          "name": "set_linked_container_link_i_d",
+          "name": "set_infinity_pipe_filter",
           "order": 223,
           "description": ""
         },
         {
-          "name": "set_loader_belt_stack_size_override",
+          "name": "set_inserter_max_stack_size",
           "order": 224,
           "description": ""
         },
         {
-          "name": "set_logistic_filter_item",
+          "name": "set_inventory_bar",
           "order": 225,
           "description": ""
         },
         {
-          "name": "set_logistic_network_name",
+          "name": "set_lamp_always_on",
           "order": 226,
           "description": ""
         },
         {
-          "name": "set_logistic_section_active",
+          "name": "set_linked_container_link_i_d",
           "order": 227,
           "description": ""
         },
         {
-          "name": "set_player_color",
+          "name": "set_loader_belt_stack_size_override",
           "order": 228,
           "description": ""
         },
         {
-          "name": "set_pump_fluid_filter",
+          "name": "set_logistic_filter_item",
           "order": 229,
           "description": ""
         },
         {
-          "name": "set_request_from_buffers",
+          "name": "set_logistic_network_name",
           "order": 230,
           "description": ""
         },
         {
-          "name": "set_research_finished_stops_game",
+          "name": "set_logistic_section_active",
           "order": 231,
           "description": ""
         },
         {
-          "name": "set_rocket_silo_send_to_orbit_automated_mode",
+          "name": "set_player_color",
           "order": 232,
           "description": ""
         },
         {
-          "name": "set_schedule_record_allow_unloading",
+          "name": "set_pump_fluid_filter",
           "order": 233,
           "description": ""
         },
         {
-          "name": "set_signal",
+          "name": "set_request_from_buffers",
           "order": 234,
           "description": ""
         },
         {
-          "name": "set_splitter_priority",
+          "name": "set_research_finished_stops_game",
           "order": 235,
           "description": ""
         },
         {
-          "name": "set_spoil_priority",
+          "name": "set_rocket_silo_send_to_orbit_automated_mode",
           "order": 236,
           "description": ""
         },
         {
-          "name": "set_train_stop_priority",
+          "name": "set_schedule_record_allow_unloading",
           "order": 237,
           "description": ""
         },
         {
-          "name": "set_train_stopped",
+          "name": "set_signal",
           "order": 238,
           "description": ""
         },
         {
-          "name": "set_trains_limit",
+          "name": "set_splitter_priority",
           "order": 239,
           "description": ""
         },
         {
-          "name": "set_turret_ignore_unlisted",
+          "name": "set_spoil_priority",
           "order": 240,
           "description": ""
         },
         {
-          "name": "set_use_inserter_filters",
+          "name": "set_train_stop_priority",
           "order": 241,
           "description": ""
         },
         {
-          "name": "set_vehicle_automatic_targeting_parameters",
+          "name": "set_train_stopped",
           "order": 242,
           "description": ""
         },
         {
-          "name": "setup_assembling_machine",
+          "name": "set_trains_limit",
           "order": 243,
           "description": ""
         },
         {
-          "name": "setup_blueprint",
+          "name": "set_turret_ignore_unlisted",
           "order": 244,
           "description": ""
         },
         {
-          "name": "setup_single_blueprint_record",
+          "name": "set_use_inserter_filters",
           "order": 245,
           "description": ""
         },
         {
-          "name": "spawn_item",
+          "name": "set_vehicle_automatic_targeting_parameters",
           "order": 246,
           "description": ""
         },
         {
-          "name": "spectator_change_surface",
+          "name": "setup_assembling_machine",
           "order": 247,
           "description": ""
         },
         {
-          "name": "stack_split",
+          "name": "setup_blueprint",
           "order": 248,
           "description": ""
         },
         {
-          "name": "stack_transfer",
+          "name": "setup_single_blueprint_record",
           "order": 249,
           "description": ""
         },
         {
-          "name": "start_repair",
+          "name": "spawn_item",
           "order": 250,
           "description": ""
         },
         {
-          "name": "start_research",
+          "name": "spectator_change_surface",
           "order": 251,
           "description": ""
         },
         {
-          "name": "start_walking",
+          "name": "stack_split",
           "order": 252,
           "description": ""
         },
         {
-          "name": "stop_drag_build",
+          "name": "stack_transfer",
           "order": 253,
           "description": ""
         },
         {
-          "name": "swap_asteroid_chunk_slots",
+          "name": "start_repair",
           "order": 254,
           "description": ""
         },
         {
-          "name": "swap_entity_filter_slots",
+          "name": "start_research",
           "order": 255,
           "description": ""
         },
         {
-          "name": "swap_entity_slots",
+          "name": "start_walking",
           "order": 256,
           "description": ""
         },
         {
-          "name": "swap_infinity_container_filter_items",
+          "name": "stop_drag_build",
           "order": 257,
           "description": ""
         },
         {
-          "name": "swap_item_filters",
+          "name": "swap_asteroid_chunk_slots",
           "order": 258,
           "description": ""
         },
         {
-          "name": "swap_logistic_filter_items",
+          "name": "swap_entity_filter_slots",
           "order": 259,
           "description": ""
         },
         {
-          "name": "swap_mappers",
+          "name": "swap_entity_slots",
           "order": 260,
           "description": ""
         },
         {
-          "name": "swap_tile_slots",
+          "name": "swap_infinity_container_filter_items",
           "order": 261,
           "description": ""
         },
         {
-          "name": "switch_connect_to_logistic_network",
+          "name": "swap_item_filters",
           "order": 262,
           "description": ""
         },
         {
-          "name": "switch_constant_combinator_state",
+          "name": "swap_logistic_filter_items",
           "order": 263,
           "description": ""
         },
         {
-          "name": "switch_inserter_filter_mode_state",
+          "name": "swap_mappers",
           "order": 264,
           "description": ""
         },
         {
-          "name": "switch_loader_filter_mode",
+          "name": "swap_tile_slots",
           "order": 265,
           "description": ""
         },
         {
-          "name": "switch_mining_drill_filter_mode_state",
+          "name": "switch_connect_to_logistic_network",
           "order": 266,
           "description": ""
         },
         {
-          "name": "switch_power_switch_state",
+          "name": "switch_constant_combinator_state",
           "order": 267,
           "description": ""
         },
         {
-          "name": "take_equipment",
+          "name": "switch_inserter_filter_mode_state",
           "order": 268,
           "description": ""
         },
         {
-          "name": "toggle_artillery_auto_targeting",
+          "name": "switch_loader_filter_mode",
           "order": 269,
           "description": ""
         },
         {
-          "name": "toggle_blueprint_snap_to_grid",
+          "name": "switch_mining_drill_filter_mode_state",
           "order": 270,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_entity_filter_mode",
+          "name": "switch_power_switch_state",
           "order": 271,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_tile_filter_mode",
+          "name": "take_equipment",
           "order": 272,
           "description": ""
         },
         {
-          "name": "toggle_driving",
+          "name": "toggle_artillery_auto_targeting",
           "order": 273,
           "description": ""
         },
         {
-          "name": "toggle_enable_vehicle_logistics_while_moving",
+          "name": "toggle_blueprint_snap_to_grid",
           "order": 274,
           "description": ""
         },
         {
-          "name": "toggle_entity_logistic_requests",
+          "name": "toggle_deconstruction_item_entity_filter_mode",
           "order": 275,
           "description": ""
         },
         {
-          "name": "toggle_equipment_movement_bonus",
+          "name": "toggle_deconstruction_item_tile_filter_mode",
           "order": 276,
           "description": ""
         },
         {
-          "name": "toggle_map_editor",
+          "name": "toggle_driving",
           "order": 277,
           "description": ""
         },
         {
-          "name": "toggle_personal_logistic_requests",
+          "name": "toggle_enable_vehicle_logistics_while_moving",
           "order": 278,
           "description": ""
         },
         {
-          "name": "toggle_personal_roboport",
+          "name": "toggle_entity_logistic_requests",
           "order": 279,
           "description": ""
         },
         {
-          "name": "toggle_selected_entity",
+          "name": "toggle_equipment_movement_bonus",
           "order": 280,
           "description": ""
         },
         {
-          "name": "toggle_show_entity_info",
+          "name": "toggle_map_editor",
           "order": 281,
           "description": ""
         },
         {
-          "name": "toggle_tall_entity_visibility",
+          "name": "toggle_personal_logistic_requests",
           "order": 282,
           "description": ""
         },
         {
-          "name": "trash_not_requested_items",
+          "name": "toggle_personal_roboport",
           "order": 283,
           "description": ""
         },
         {
-          "name": "undo",
+          "name": "toggle_selected_entity",
           "order": 284,
           "description": ""
         },
         {
-          "name": "upgrade",
+          "name": "toggle_show_entity_info",
           "order": 285,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_item",
+          "name": "toggle_tall_entity_visibility",
           "order": 286,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_record",
+          "name": "trash_not_requested_items",
           "order": 287,
           "description": ""
         },
         {
-          "name": "use_item",
+          "name": "undo",
           "order": 288,
           "description": ""
         },
         {
-          "name": "wire_dragging",
+          "name": "upgrade",
           "order": 289,
           "description": ""
         },
         {
-          "name": "write_to_console",
+          "name": "upgrade_opened_blueprint_by_item",
           "order": 290,
+          "description": ""
+        },
+        {
+          "name": "upgrade_opened_blueprint_by_record",
+          "order": 291,
+          "description": ""
+        },
+        {
+          "name": "use_item",
+          "order": 292,
+          "description": ""
+        },
+        {
+          "name": "wire_dragging",
+          "order": 293,
+          "description": ""
+        },
+        {
+          "name": "write_to_console",
+          "order": 294,
           "description": ""
         }
       ]
