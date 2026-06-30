@@ -38,7 +38,7 @@ There is no unit-test runner; `test/test.ts` is a type-level test compiled by
 - `npm run download-latest-api-jsons [version]`: fetch `runtime-api.json` /
   `prototype-api.json` into `generator/input/` (defaults to `latest`).
 - `npm run next-factorio-version-diff`, `npm run new-version-changelog`, `npm
-  run get-current-factorio-version`: version-bump helpers in `scripts/`.
+run get-current-factorio-version`: version-bump helpers in `scripts/`.
 - `npm run script <file.ts>` runs an arbitrary script under
   `scripts/tsconfig.json`.
 
@@ -61,7 +61,7 @@ Each generation:
    cannot express and override/augment generated ones via JSDoc tags (e.g.
    `@omit`, `@addTo`). See `ManualDefinitions.ts` and `added-types.ts` for how
    they are parsed and merged.
-3. Builds a `GenerationContext` (`generator/GenerationContext.ts`) — the shared
+2. Builds a `GenerationContext` (`generator/GenerationContext.ts`) — the shared
    abstract base holding cross-cutting state (type-name maps, warnings, the
    current output file) and stage-agnostic helpers like doc-URL generation.
 
