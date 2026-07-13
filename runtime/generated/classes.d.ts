@@ -21190,7 +21190,7 @@ declare module "factorio:runtime" {
     /**
      * Which mouse buttons the button responds to. Defaults to `"left-and-right"`.
      */
-    readonly mouse_button_filter?: MouseButtonFlagsWrite
+    readonly mouse_button_filter?: MouseButtonFlags
     /**
      * Whether the button will automatically toggle when clicked. Defaults to `false`.
      */
@@ -21342,7 +21342,7 @@ declare module "factorio:runtime" {
     /**
      * The mouse buttons that the button responds to. Defaults to `"left-and-right"`.
      */
-    readonly mouse_button_filter?: MouseButtonFlagsWrite
+    readonly mouse_button_filter?: MouseButtonFlags
     /**
      * Whether the button will automatically toggle when clicked. Defaults to `false`.
      */
@@ -21901,7 +21901,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.1.10/classes/LuaGuiElement.html#mouse_button_filter Online documentation}
      */
     get mouse_button_filter(): ActiveMouseButtonFlags
-    set mouse_button_filter(value: MouseButtonFlagsWrite)
+    set mouse_button_filter(value: MouseButtonFlags)
   }
   export type ButtonGuiElement = ButtonGuiElementMembers & GuiElementIndexer
   export interface SpriteButtonGuiElementMembers extends BaseGuiElement {
@@ -21974,7 +21974,7 @@ declare module "factorio:runtime" {
      * @see {@link https://lua-api.factorio.com/2.1.10/classes/LuaGuiElement.html#mouse_button_filter Online documentation}
      */
     get mouse_button_filter(): ActiveMouseButtonFlags
-    set mouse_button_filter(value: MouseButtonFlagsWrite)
+    set mouse_button_filter(value: MouseButtonFlags)
   }
   export type SpriteButtonGuiElement = SpriteButtonGuiElementMembers & GuiElementIndexer
   export interface CheckboxGuiElementMembers extends BaseGuiElement {

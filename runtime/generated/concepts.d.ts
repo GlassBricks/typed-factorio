@@ -673,7 +673,6 @@ declare module "factorio:runtime" {
     | "button-8"
     | "button-9"
   )[]
-  export type MouseButtonFlagsWrite = MouseButtonFlags | ReadonlyArray<keyof MouseButtonFlags | "left-and-right">
   /**
    * State of a GUI {@link LuaGuiElement#switch_state switch}.
    *
