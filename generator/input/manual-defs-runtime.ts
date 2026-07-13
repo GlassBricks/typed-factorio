@@ -434,12 +434,7 @@ export interface ComparatorString {}
 /** @see ComparatorString */
 export type ComparatorStringRead = "=" | ">" | "<" | "≥" | "≤" | "≠"
 
-/** @writeType MouseButtonFlagsWrite */
 export interface MouseButtonFlags {}
-
-/** @addTo concepts after MouseButtonFlags */
-/** @see MouseButtonFlags */
-export type MouseButtonFlagsWrite = MouseButtonFlags | ReadonlyArray<keyof MouseButtonFlags | "left-and-right">
 
 /** @addTo concepts before SpritePath */
 export type SpriteType =
