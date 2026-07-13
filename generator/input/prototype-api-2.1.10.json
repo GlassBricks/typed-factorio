@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.9",
+  "application_version": "2.1.10",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -15044,18 +15044,22 @@
         {
           "name": "spoil_quality_change",
           "order": 14,
-          "description": "",
+          "description": "Defines how many levels the item's quality will go up (positive integer) or down (negative integer) when spoiling.",
           "visibility": [
             "space_age"
           ],
           "override": false,
           "type": "int8",
-          "optional": true
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": 0
+          }
         },
         {
           "name": "spoil_quality_max",
           "order": 13,
-          "description": "",
+          "description": "The maximum quality level that can be reached when [spoil_quality_change](prototype:ItemPrototype::spoil_quality_change) is used.",
           "visibility": [
             "space_age"
           ],
@@ -15066,7 +15070,7 @@
         {
           "name": "spoil_quality_min",
           "order": 12,
-          "description": "",
+          "description": "The minimum quality level that can be reached when [spoil_quality_change](prototype:ItemPrototype::spoil_quality_change) is used.",
           "visibility": [
             "space_age"
           ],
@@ -72304,7 +72308,7 @@
     {
       "name": "ResearchIngredient",
       "order": 471,
-      "description": "Defines the amount of an item required to research one unit of a [technology](prototype:TechnologyPrototype). The first member of the tuple is the name of a [ToolPrototype](prototype:ToolPrototype) and the second is the amount. Amount must not be 0.",
+      "description": "Defines the amount of an item required to research one unit of a [technology](prototype:TechnologyPrototype). The first member of the tuple is the name of a [ItemPrototype](prototype:ItemPrototype) and the second is the amount. Amount must not be 0.",
       "examples": [
         "```\n{\"automation-science-pack\", 1}\n```"
       ],
