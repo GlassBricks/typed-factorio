@@ -5064,7 +5064,7 @@ declare module "factorio:prototype" {
    * The data table and its properties are defined in Lua, so their source code can be viewed in {@linkplain https://github.com/wube/factorio-data/blob/master/core/lualib/dataloader.lua dataloader.lua}.
    * @see {@link https://lua-api.factorio.com/2.1.10/types/Data.html Online documentation}
    */
-  export interface Data {
+  export interface Data<M = import("factorio:common").GlobalPrototypeMap> {
     /**
      * A dictionary of prototype types to values that themselves are dictionaries of prototype names to specific prototypes.
      *
@@ -5077,14 +5077,11 @@ declare module "factorio:prototype" {
      * local health = data.raw["container"]["wooden-chest"].max_health
      * @see {@link https://lua-api.factorio.com/2.1.10/types/Data.html#raw Online documentation}
      */
-    raw: {
-      readonly [Type in PrototypeType]: {
-        readonly [Name in string]?: PrototypeMap[Type]
+    readonly raw: {
+      [Type in keyof M]: {
+        [Name in string]?: M[Type]
       }
     }
-    /**
-     * Add additional prototypes.
-     */
     /**
      * The primary way to add prototypes to the data table.
      * @example
@@ -5104,7 +5101,7 @@ declare module "factorio:prototype" {
      * data:extend({not_coal, proto2})
      * @see {@link https://lua-api.factorio.com/2.1.10/types/Data.html#extend Online documentation}
      */
-    extend<P extends AnyPrototype>(prototypes: readonly P[]): void
+    extend<P extends import("factorio:common").AnyPrototype<M>>(prototypes: readonly P[]): void
     /**
      * Set by the game based on whether the demo or retail version is running. Should not be used by mods.
      * @see {@link https://lua-api.factorio.com/2.1.10/types/Data.html#is_demo Online documentation}

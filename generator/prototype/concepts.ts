@@ -92,6 +92,8 @@ function generateTypeDeclaration(concept: PrototypeConcept, context: PrototypeGe
   const heritageClauses = getConceptHeritageClauses(context, concept)
   const { type, description, innerStructType } = mapPrototypeConcept(context, concept)
 
+  const typeParameters = context.manualDefs.getDeclaration(concept.name)?.node.typeParameters
+
   const innerStructDeclaration =
     innerStructType && typeToDeclaration(context, innerStructType, concept.name + "Struct", heritageClauses)
 
@@ -100,6 +102,7 @@ function generateTypeDeclaration(concept: PrototypeConcept, context: PrototypeGe
     type,
     concept.name,
     innerStructDeclaration ? undefined : heritageClauses,
+    typeParameters,
   )
 
   return { declaration, description, innerStructDeclaration }
