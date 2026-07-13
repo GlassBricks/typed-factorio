@@ -1,0 +1,9 @@
+// Config for editor/LSP project resolution only.
+{
+  "files": [],
+  "references": [
+    { "path": "./test" },
+    { "path": "./generator" },
+    { "path": "./scripts" }
+  ]
+}
