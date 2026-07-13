@@ -1,7 +1,7 @@
 /** @noResolution */
 declare module "factorio:common" {
-  import { ModSetting, LuaBootstrap } from "factorio:runtime"
-  import { Data } from "factorio:prototype"
+  import { Data, PrototypeMap } from "factorio:prototype"
+  import { LuaBootstrap, ModSetting } from "factorio:runtime"
   import { SettingsPrototypeMap } from "factorio:settings"
   /**
    * A type map of type name -> prototype type.
@@ -16,28 +16,9 @@ declare module "factorio:common" {
     readonly name: string
   }
 
-  /**
-   * See {@link Data} for documentation.
-   */
-  export interface DataGlobal<M = GlobalPrototypeMap> {
-    /**
-     * A table of the already added prototypes.
-     * Indexed by prototype type, then by prototype name.
-     */
-    readonly raw: {
-      readonly [type in keyof M]: {
-        readonly [name in string]?: M[type]
-      }
-    }
-
-    extend<P extends AnyPrototype<M>>(prototypes: readonly P[]): void
-
-    is_demo: boolean
-  }
-
   export interface SettingsGlobal {
     readonly startup: {
-      readonly [name: string]: ModSetting
+      [name: string]: ModSetting
     }
   }
 
@@ -61,7 +42,7 @@ declare module "factorio:common" {
    * data.extend(...)
    * ```
    */
-  export type PrototypeData = Data
+  export type PrototypeData = Data<PrototypeMap>
 
   /**
    * Represents the `data` global variable for the settings stage.
@@ -74,7 +55,7 @@ declare module "factorio:common" {
    * data.extend(...)
    * ```
    */
-  export type SettingsData = DataGlobal<SettingsPrototypeMap>
+  export type SettingsData = Data<SettingsPrototypeMap>
 
   /**
    * You can optionally extend this interface to provide type checking and autocompletion for custom input names, like so:

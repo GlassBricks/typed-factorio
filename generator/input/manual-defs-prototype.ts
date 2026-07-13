@@ -1,4 +1,4 @@
-import { AnyPrototype, CustomInputName } from "factorio:common"
+import { CustomInputName } from "factorio:common"
 
 export type double = number
 export type float = number
@@ -14,17 +14,14 @@ export type uint64 = number
 /** @omit */
 export interface DataExtendMethod {}
 
-export interface Data {
-  raw: {
-    readonly [Type in PrototypeType]: {
-      readonly [Name in string]?: PrototypeMap[Type]
+export interface Data<M = import("factorio:common").GlobalPrototypeMap> {
+  readonly raw: {
+    [Type in keyof M]: {
+      [Name in string]?: M[Type]
     }
   }
 
-  /**
-   * Add additional prototypes.
-   */
-  extend<P extends AnyPrototype>(prototypes: readonly P[]): void
+  extend<P extends import("factorio:common").AnyPrototype<M>>(prototypes: readonly P[]): void
 }
 
 /** @replace */

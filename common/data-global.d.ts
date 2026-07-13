@@ -4,7 +4,7 @@
  * This is only available in the settings or prototype stage.
  * Only prototypes for the current stage can be accessed.
  */
-declare const data: import("factorio:common").DataGlobal
+declare const data: import("factorio:prototype").Data
 
 /**
  * A table of (mod name -> mod version) for all currently active mods.

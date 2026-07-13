@@ -927,14 +927,21 @@ export function typeToDeclaration(
   type: ts.TypeNode,
   name: string,
   heritageClauses?: ts.HeritageClause[],
+  typeParameters?: readonly ts.TypeParameterDeclaration[],
 ): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
   if (ts.isTypeLiteralNode(type)) {
-    return ts.factory.createInterfaceDeclaration([Modifiers.export], name, undefined, heritageClauses, type.members)
+    return ts.factory.createInterfaceDeclaration(
+      [Modifiers.export],
+      name,
+      typeParameters,
+      heritageClauses,
+      type.members,
+    )
   } else {
     if (heritageClauses) {
       context.warning("Cannot have heritage clauses on non-interface")
     }
-    return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, undefined, type)
+    return ts.factory.createTypeAliasDeclaration([Modifiers.export], name, typeParameters, type)
   }
 }
 

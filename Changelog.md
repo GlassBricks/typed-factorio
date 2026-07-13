@@ -1,3 +1,8 @@
+# v3.36.0
+
+- Change entries in data.raw to be not readonly.
+- Consolidated the `data` global's type into a single generic `Data<M>`, generated with documentation from the API. `PrototypeData` and `SettingsData` are now `Data<PrototypeMap>` and `Data<SettingsPrototypeMap>`. Removed the `DataGlobal` type; use `Data` instead.
+
 # v3.35.0
 
 - Updated to factorio version 2.0.75
