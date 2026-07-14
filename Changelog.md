@@ -1,3 +1,7 @@
+# v4.5.0
+
+- Updated to factorio version 2.1.11
+
 # v4.4.0
 
 - Change entries in data.raw to be not readonly.

@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.10",
+  "application_version": "2.1.11",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -41782,6 +41782,13 @@
           "optional": false
         },
         {
+          "name": "max_logistics_connection_distance",
+          "order": 55,
+          "description": "",
+          "read_type": "float",
+          "optional": false
+        },
+        {
           "name": "max_pipe_to_ground_distance",
           "order": 53,
           "description": "",
@@ -41852,7 +41859,7 @@
         },
         {
           "name": "object_name",
-          "order": 55,
+          "order": 56,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
