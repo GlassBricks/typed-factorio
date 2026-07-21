@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.10",
+  "application_version": "2.1.12",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -22242,6 +22242,21 @@
           "name": "preserve_products_in_machine_output",
           "order": 24,
           "description": "",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": false
+          }
+        },
+        {
+          "name": "raise_on_crafted",
+          "order": 43,
+          "description": "If set to true, an event with identifier of [LuaRecipePrototype::on_crafted_event](runtime:LuaRecipePrototype::on_crafted_event) will be raised when this recipe is crafted. Currently this is only raised when recipe is crafted by a crafting machine.\n\nEvent raised will be given data as described by [OnRecipeCraftedData](runtime:OnRecipeCraftedData).",
+          "examples": [
+            "```\n-- in data stage:\ndata.raw.recipe[\"iron-plate\"].raise_on_crafted = true\n-- in control stage:\nscript.on_event(prototypes.recipe[\"iron-plate\"].on_crafted_event, function(event)\n  game.print(\"Iron plate was crafted by \".. event.entity.name .. \" at \" .. event.entity.gps_tag)\nend)\n```"
+          ],
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -52763,8 +52778,16 @@
       }
     },
     {
-      "name": "CustomTooltipField",
+      "name": "CustomEventID",
       "order": 169,
+      "description": "The name of an [CustomEventPrototype](prototype:CustomEventPrototype).",
+      "abstract": false,
+      "inline": false,
+      "type": "string"
+    },
+    {
+      "name": "CustomTooltipField",
+      "order": 170,
       "description": "Allows to add extra description items to the tooltip.",
       "abstract": false,
       "inline": false,
@@ -52852,7 +52875,7 @@
     },
     {
       "name": "CyclicSound",
-      "order": 170,
+      "order": 171,
       "description": "Used by [BaseAttackParameters](prototype:BaseAttackParameters) to play a sound during the attack.",
       "abstract": false,
       "inline": false,
@@ -52888,7 +52911,7 @@
     },
     {
       "name": "DamageEntityTriggerEffectItem",
-      "order": 171,
+      "order": 172,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -52998,7 +53021,7 @@
     },
     {
       "name": "DamageParameters",
-      "order": 172,
+      "order": 173,
       "description": "Used to specify what type of damage and how much damage something deals.",
       "abstract": false,
       "inline": false,
@@ -53026,7 +53049,7 @@
     },
     {
       "name": "DamageTileTriggerEffectItem",
-      "order": 173,
+      "order": 174,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -53066,7 +53089,7 @@
     },
     {
       "name": "DamageTypeFilters",
-      "order": 174,
+      "order": 175,
       "description": "",
       "examples": [
         "```\ndamage_type_filters = \"fire\"\n```",
@@ -53125,7 +53148,7 @@
     },
     {
       "name": "DamageTypeID",
-      "order": 175,
+      "order": 176,
       "description": "The name of a [DamageType](prototype:DamageType).",
       "examples": [
         "```\n\"impact\"\n```",
@@ -53137,7 +53160,7 @@
     },
     {
       "name": "Data",
-      "order": 176,
+      "order": 177,
       "description": "The data table is read by the game to load all prototypes.\n\nAt the end of the prototype stage, the data table is loaded by the game engine and the format of the prototypes is validated. Any extra properties are ignored. See [Data Lifecycle](auxiliary:data-lifecycle) for more information.\n\nThe data table and its properties are defined in Lua, so their source code can be viewed in [dataloader.lua](https://github.com/wube/factorio-data/blob/master/core/lualib/dataloader.lua).",
       "abstract": true,
       "inline": false,
@@ -53188,7 +53211,7 @@
     },
     {
       "name": "DataExtendMethod",
-      "order": 177,
+      "order": 178,
       "description": "The data.extend method. It's the primary way to add prototypes to the data table.\n\nThe method has two positional function parameters:\n\n- `self` :: [Data](prototype:Data)?: Usually provided by calling `data:extend(otherdata)`, which is syntax sugar for `data.extend(data, otherdata)`.\n\n- `otherdata` :: array[[AnyPrototype](prototype:AnyPrototype)]: A continuous array of non-abstract prototypes.\n\nThe data.extend method can also be called with only the `otherdata` argument by calling it directly on data: `data.extend(otherdata)`.",
       "examples": [
         "```\ndata:extend({\n  {\n    type = \"item\",\n    name = \"a-thing\",\n    icon = \"__base__/graphics/icons/coal.png\",\n    icon_size = 64,\n    stack_size = 2\n  }\n})\n```",
@@ -53200,7 +53223,7 @@
     },
     {
       "name": "DaytimeColorLookupTable",
-      "order": 178,
+      "order": 179,
       "description": "The first member of the tuple states at which time of the day the LUT should be used. If the current game time is between two values defined in the color lookup that have different LUTs, the color is interpolated to create a smooth transition. (Sharp transition can be achieved by having the two values differing only by a small fraction.)\n\nIf there is only one tuple, it means that the LUT will be used all the time, regardless of the value of the first member of the tuple.\n\nThe second member of the tuple is a lookup table (LUT) for the color which maps the original color to a position in the sprite where the replacement color is found.",
       "examples": [
         "```\ncolor_lookup = {{1, \"identity\"}}\n```",
@@ -53222,7 +53245,7 @@
     },
     {
       "name": "DeconstructionTimeToLiveModifier",
-      "order": 179,
+      "order": 180,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -53258,7 +53281,7 @@
     },
     {
       "name": "DecorativeID",
-      "order": 180,
+      "order": 181,
       "description": "The name of a [DecorativePrototype](prototype:DecorativePrototype).",
       "examples": [
         "```\n\"dark-mud-decal\"\n```",
@@ -53270,7 +53293,7 @@
     },
     {
       "name": "DelayedTriggerDelivery",
-      "order": 181,
+      "order": 182,
       "description": "",
       "parent": "TriggerDeliveryItem",
       "abstract": false,
@@ -53302,7 +53325,7 @@
     },
     {
       "name": "DependenciesMetTipTrigger",
-      "order": 182,
+      "order": 183,
       "description": "This trigger is considered fulfilled when the [TipsAndTricksItem::dependencies](prototype:TipsAndTricksItem::dependencies) are fulfilled.",
       "abstract": false,
       "inline": false,
@@ -53325,7 +53348,7 @@
     },
     {
       "name": "DestroyCliffsCapsuleAction",
-      "order": 183,
+      "order": 184,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -53400,7 +53423,7 @@
     },
     {
       "name": "DestroyCliffsTriggerEffectItem",
-      "order": 184,
+      "order": 185,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -53448,7 +53471,7 @@
     },
     {
       "name": "DestroyDecorativesTriggerEffectItem",
-      "order": 185,
+      "order": 186,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -53546,7 +53569,7 @@
     },
     {
       "name": "DifficultySettings",
-      "order": 186,
+      "order": 187,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -53582,7 +53605,7 @@
     },
     {
       "name": "DirectTriggerItem",
-      "order": 187,
+      "order": 188,
       "description": "",
       "parent": "TriggerItem",
       "abstract": false,
@@ -53618,7 +53641,7 @@
     },
     {
       "name": "DirectionShift",
-      "order": 188,
+      "order": 189,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -53662,7 +53685,7 @@
     },
     {
       "name": "DirectionString",
-      "order": 189,
+      "order": 190,
       "description": "One of the 16 directions, specified with a string.",
       "abstract": false,
       "inline": false,
@@ -53755,7 +53778,7 @@
     },
     {
       "name": "DoubleSliderStyleSpecification",
-      "order": 190,
+      "order": 191,
       "description": "Root style: `\"double_slider\"`",
       "parent": "SliderStyleSpecification",
       "abstract": false,
@@ -53779,7 +53802,7 @@
     },
     {
       "name": "DropDownStyleSpecification",
-      "order": 191,
+      "order": 192,
       "description": "Root style: `\"dropdown\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -53843,7 +53866,7 @@
     },
     {
       "name": "DropItemTipTrigger",
-      "order": 192,
+      "order": 193,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -53879,7 +53902,7 @@
     },
     {
       "name": "EditorUtilityConstants",
-      "order": 193,
+      "order": 194,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -54019,7 +54042,7 @@
     },
     {
       "name": "Effect",
-      "order": 194,
+      "order": 195,
       "description": "When applied to [modules](prototype:ModulePrototype), the resulting effect is a sum of all module effects, multiplied through calculations: `(1 + sum module effects)`, or `(0 + sum)` for productivity.",
       "examples": [
         "```\n-- These are the effects of the vanilla Speed Module 3\n{speed = 0.5, consumption = 0.7, quality = -0.025}\n```"
@@ -54074,7 +54097,7 @@
     },
     {
       "name": "EffectReceiver",
-      "order": 195,
+      "order": 196,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -54175,7 +54198,7 @@
     },
     {
       "name": "EffectRelativeTo",
-      "order": 196,
+      "order": 197,
       "description": "Identifies what [CloudEffectStyle](prototype:CloudEffectStyle) refers to.",
       "abstract": false,
       "inline": false,
@@ -54203,7 +54226,7 @@
     },
     {
       "name": "EffectTexture",
-      "order": 197,
+      "order": 198,
       "description": "",
       "parent": "SpriteSource",
       "abstract": false,
@@ -54215,7 +54238,7 @@
     },
     {
       "name": "EffectTypeLimitation",
-      "order": 198,
+      "order": 199,
       "description": "A list of [module](prototype:ModulePrototype) effects, or just a single effect. Modules with other effects cannot be used on the machine. This means that both effects from modules and from surrounding beacons are restricted to the listed effects. If `allowed_effects` is an empty array, the machine cannot be affected by modules or beacons.",
       "examples": [
         "```\n-- Allow all module types\nallowed_effects = {\"speed\", \"productivity\", \"consumption\", \"pollution\", \"quality\"}\n```",
@@ -54297,19 +54320,15 @@
     },
     {
       "name": "EffectValue",
-      "order": 199,
+      "order": 200,
       "description": "Precision is ignored beyond four decimals - `0.56789` results in `0.5678` and means 56.78% etc. Values can range from `-1000.0000` to `1000.0000`.",
-      "examples": [
-        "```\n{speed = 0.07}  -- 7% bonus\n```",
-        "```\n{quality = 0.025}  -- 2.5% bonus\n```"
-      ],
       "abstract": false,
       "inline": false,
       "type": "float"
     },
     {
       "name": "EffectValueRange",
-      "order": 200,
+      "order": 201,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -54337,7 +54356,7 @@
     },
     {
       "name": "EffectVariation",
-      "order": 201,
+      "order": 202,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -54370,7 +54389,7 @@
     },
     {
       "name": "ElectricEnergySource",
-      "order": 202,
+      "order": 203,
       "description": "",
       "examples": [
         "```\nenergy_source = -- energy source of oil pumpjack\n{\n  type = \"electric\",\n  emissions_per_minute = { pollution = 10 },\n  usage_priority = \"secondary-input\"\n}\n```",
@@ -54456,7 +54475,7 @@
     },
     {
       "name": "ElectricUsagePriority",
-      "order": 203,
+      "order": 204,
       "description": "Used to specify priority of energy usage in the [electric system](https://wiki.factorio.com/Electric_system).",
       "examples": [
         "```\nusage_priority = \"primary-input\"\n```"
@@ -54512,7 +54531,7 @@
     },
     {
       "name": "ElementImageSet",
-      "order": 204,
+      "order": 205,
       "description": "If this is loaded as a single ElementImageSetLayer, it gets used as `base`.",
       "abstract": false,
       "inline": false,
@@ -54555,7 +54574,7 @@
     },
     {
       "name": "ElementImageSetLayer",
-      "order": 205,
+      "order": 206,
       "description": "If this is loaded as a Sprite, it gets used as `center`.",
       "images": [
         {
@@ -55143,7 +55162,7 @@
     },
     {
       "name": "EmptyWidgetStyleSpecification",
-      "order": 206,
+      "order": 207,
       "description": "Root style: `\"empty_widget\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -55175,7 +55194,7 @@
     },
     {
       "name": "EnemyEvolutionSettings",
-      "order": 207,
+      "order": 208,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55219,7 +55238,7 @@
     },
     {
       "name": "EnemyExpansionSettings",
-      "order": 208,
+      "order": 209,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55351,7 +55370,7 @@
     },
     {
       "name": "EnemySpawnerAbsorption",
-      "order": 209,
+      "order": 210,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55379,7 +55398,7 @@
     },
     {
       "name": "EnemySpawnerGraphicsSet",
-      "order": 210,
+      "order": 211,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55455,7 +55474,7 @@
     },
     {
       "name": "Energy",
-      "order": 211,
+      "order": 212,
       "description": "Specifies an amount of electric energy in joules, or electric energy per time in watts.\n\nInternally, the input in `Watt` or `Joule/second` is always converted into `Joule/tick`, where 1 second is equal to 60 ticks. This means it uses the following formula: `Power in Joule/tick = Power in Watt / 60`. See [Power](https://wiki.factorio.com/Units#Power).\n\nSupported Multipliers:\n\n- `k`: 10^3, or 1 000\n\n- `M`: 10^6\n\n- `G`: 10^9\n\n- `T`: 10^12\n\n- `P`: 10^15\n\n- `E`: 10^18\n\n- `Z`: 10^21\n\n- `Y`: 10^24\n\n- `R`: 10^27\n\n- `Q`: 10^30",
       "examples": [
         "```\nbuffer_capacity = \"5MJ\"\ninput_flow_limit = \"300W\"\n-- the following two lines result in the same power consumption:\nenergy_usage = \"60W\"\nenergy_usage = \"1J\" -- not recommended, Watt is convention for power\n```"
@@ -55466,7 +55485,7 @@
     },
     {
       "name": "EnergySource",
-      "order": 212,
+      "order": 213,
       "description": "Loaded as one of the [BaseEnergySource](prototype:BaseEnergySource) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -55504,7 +55523,7 @@
     },
     {
       "name": "EnterVehicleTipTrigger",
-      "order": 213,
+      "order": 214,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -55548,7 +55567,7 @@
     },
     {
       "name": "EntityBuildAnimationPiece",
-      "order": 214,
+      "order": 215,
       "description": "A single tiles worth of animations used when building entities.",
       "abstract": false,
       "inline": false,
@@ -55576,7 +55595,7 @@
     },
     {
       "name": "EntityBuildAnimations",
-      "order": 215,
+      "order": 216,
       "description": "A set of animations used when building entities on space platforms. All EntityBuildAnimationPieces must have the same animation speed.",
       "abstract": false,
       "inline": true,
@@ -55620,7 +55639,7 @@
     },
     {
       "name": "EntityID",
-      "order": 216,
+      "order": 217,
       "description": "The name of an [EntityPrototype](prototype:EntityPrototype).",
       "examples": [
         "```\n\"stone-furnace\"\n```",
@@ -55632,7 +55651,7 @@
     },
     {
       "name": "EntityIDFilter",
-      "order": 217,
+      "order": 218,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -55675,7 +55694,7 @@
     },
     {
       "name": "EntityPrototypeFlags",
-      "order": 218,
+      "order": 219,
       "description": "An array containing the following values.\n\nIf an entity is a [building](runtime:LuaEntityPrototype::is_building) and has the `\"player-creation\"` flag set, it is considered for multiple enemy/unit behaviors:\n\n- Autonomous enemy attacks (usually triggered by pollution) can only attack within chunks that contain at least one entity that is both a building and a player-creation.\n\n- Enemy expansion considers entities that are both buildings and player-creations as \"enemy\" entities that may block expansion.",
       "examples": [
         "```\nflags = {\"placeable-neutral\", \"player-creation\"}\n```"
@@ -55839,7 +55858,7 @@
     },
     {
       "name": "EntityRendererSearchBoxLimits",
-      "order": 219,
+      "order": 220,
       "description": "How far (in tiles) entities should be rendered outside the visible area of the screen.",
       "abstract": false,
       "inline": true,
@@ -55883,7 +55902,7 @@
     },
     {
       "name": "EntityStatus",
-      "order": 220,
+      "order": 221,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -56251,7 +56270,7 @@
     },
     {
       "name": "EntityTransferTipTrigger",
-      "order": 221,
+      "order": 222,
       "description": "Triggered when a player fast-transfers something to or from an entity, similar to the [on_player_fast_transferred](runtime:on_player_fast_transferred) event.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -56297,7 +56316,7 @@
     },
     {
       "name": "EquipmentCategoryID",
-      "order": 222,
+      "order": 223,
       "description": "The name of an [EquipmentCategory](prototype:EquipmentCategory).",
       "examples": [
         "```\n\"armor\"\n```"
@@ -56308,7 +56327,7 @@
     },
     {
       "name": "EquipmentGridID",
-      "order": 223,
+      "order": 224,
       "description": "The name of an [EquipmentGridPrototype](prototype:EquipmentGridPrototype).",
       "examples": [
         "```\n\"small-equipment-grid\"\n```",
@@ -56320,7 +56339,7 @@
     },
     {
       "name": "EquipmentID",
-      "order": 224,
+      "order": 225,
       "description": "The name of an [EquipmentPrototype](prototype:EquipmentPrototype).",
       "examples": [
         "```\n\"fusion-reactor-equipment\"\n```",
@@ -56332,7 +56351,7 @@
     },
     {
       "name": "EquipmentShape",
-      "order": 225,
+      "order": 226,
       "description": "The shape and dimensions of an equipment module.",
       "abstract": false,
       "inline": false,
@@ -56398,7 +56417,7 @@
     },
     {
       "name": "ExplosionDefinition",
-      "order": 226,
+      "order": 227,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -56433,7 +56452,7 @@
     },
     {
       "name": "Fade",
-      "order": 227,
+      "order": 228,
       "description": "",
       "parent": "Attenuation",
       "abstract": false,
@@ -56469,7 +56488,7 @@
     },
     {
       "name": "Fades",
-      "order": 228,
+      "order": 229,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -56497,7 +56516,7 @@
     },
     {
       "name": "FastBeltBendTipTrigger",
-      "order": 229,
+      "order": 230,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -56521,7 +56540,7 @@
     },
     {
       "name": "FastReplaceTipTrigger",
-      "order": 230,
+      "order": 231,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -56573,7 +56592,7 @@
     },
     {
       "name": "FeatureFlags",
-      "order": 231,
+      "order": 232,
       "description": "A dictionary of feature flags and their status. It can be used to adjust prototypes based on whether the feature flags are enabled. It is accessible through the global object named `feature_flags`.\n\nSee the [mod structure](auxiliary:mod-structure) documentation for more information on what each feature flag affects.",
       "examples": [
         "```\n-- sets coal to spoil only when the spoiling feature flag is enabled\nif feature_flags[\"spoiling\"] then\n  data.raw.item.coal.spoil_ticks = 600\nend\n```"
@@ -56652,7 +56671,7 @@
     },
     {
       "name": "FileName",
-      "order": 232,
+      "order": 233,
       "description": "A slash `\"/\"` is always used as the directory delimiter. A path always begins with the specification of a root, which can be one of three formats:\n\n- **core**: A path starting with `__core__` will access the resources in the data/core directory, these resources are always accessible regardless of mod specifications.\n\n- **base**: A path starting with `__base__` will access the resources in the base mod in data/base directory. These resources are usually available, as long as the base mod isn't removed/deactivated.\n\n- **mod path**: The format `__<mod-name>__` is placeholder for root of any other mod (mods/<mod-name>), and is accessible as long as the mod is active.\n\nRelative paths using `..` are not supported.",
       "examples": [
         "```\nfilename = \"__base__/graphics/entity/accumulator/accumulator.png\"\n```",
@@ -56664,7 +56683,7 @@
     },
     {
       "name": "FlipEntityTipTrigger",
-      "order": 233,
+      "order": 234,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -56688,7 +56707,7 @@
     },
     {
       "name": "FlowStyleSpecification",
-      "order": 234,
+      "order": 235,
       "description": "Root style: `\"flow\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -56736,7 +56755,7 @@
     },
     {
       "name": "FluidAmount",
-      "order": 235,
+      "order": 236,
       "description": "A fluid amount. The amount is stored as a fixed-size signed 64 bit integer, with 24 bits reserved for decimal precision, meaning the smallest value step is `1/2^24`.",
       "abstract": false,
       "inline": false,
@@ -56744,7 +56763,7 @@
     },
     {
       "name": "FluidBox",
-      "order": 236,
+      "order": 237,
       "description": "Used to set the fluid amount an entity can hold, as well as the connection points for pipes leading into and out of the entity.\n\nEntities can have multiple fluidboxes. These can be part of a [FluidEnergySource](prototype:FluidEnergySource), or be specified directly in the entity prototype.",
       "examples": [
         "```\nfluid_box =\n{\n  volume = 200,\n  pipe_covers = pipecoverspictures(),\n  pipe_connections =\n  {\n    {flow_direction = \"input-output\", direction = defines.direction.west, position = {-1, 0.5}},\n    {flow_direction = \"input-output\", direction = defines.direction.east, position = {1, 0.5}}\n  },\n  production_type = \"input-output\",\n  filter = \"water\"\n}\n```"
@@ -56952,7 +56971,7 @@
     },
     {
       "name": "FluidBoxLinkedConnectionID",
-      "order": 237,
+      "order": 238,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -56960,7 +56979,7 @@
     },
     {
       "name": "FluidBoxSecondaryDrawOrders",
-      "order": 238,
+      "order": 239,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -57004,7 +57023,7 @@
     },
     {
       "name": "FluidEnergySource",
-      "order": 239,
+      "order": 240,
       "description": "",
       "parent": "BaseEnergySource",
       "abstract": false,
@@ -57143,7 +57162,7 @@
     },
     {
       "name": "FluidFlowDirection",
-      "order": 240,
+      "order": 241,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57171,7 +57190,7 @@
     },
     {
       "name": "FluidID",
-      "order": 241,
+      "order": 242,
       "description": "The name of a [FluidPrototype](prototype:FluidPrototype).",
       "examples": [
         "```\n\"water\"\n```",
@@ -57183,7 +57202,7 @@
     },
     {
       "name": "FluidIngredientPrototype",
-      "order": 242,
+      "order": 243,
       "description": "A fluid ingredient definition.",
       "examples": [
         "```\n{type=\"fluid\", name=\"water\", amount=50}\n```"
@@ -57296,7 +57315,7 @@
     },
     {
       "name": "FluidProductPrototype",
-      "order": 243,
+      "order": 244,
       "description": "A fluid product definition.",
       "parent": "ProductPrototypeBase",
       "abstract": false,
@@ -57416,7 +57435,7 @@
     },
     {
       "name": "FogEffectProperties",
-      "order": 244,
+      "order": 245,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57499,7 +57518,7 @@
     },
     {
       "name": "FogMaskShapeDefinition",
-      "order": 245,
+      "order": 246,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57531,7 +57550,7 @@
     },
     {
       "name": "FollowerRobotLifetimeModifier",
-      "order": 246,
+      "order": 247,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -57579,7 +57598,7 @@
     },
     {
       "name": "FootprintParticle",
-      "order": 247,
+      "order": 248,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57622,7 +57641,7 @@
     },
     {
       "name": "FootstepTriggerEffectItem",
-      "order": 248,
+      "order": 249,
       "description": "",
       "parent": "CreateParticleTriggerEffectItem",
       "abstract": false,
@@ -57669,7 +57688,7 @@
     },
     {
       "name": "FootstepTriggerEffectList",
-      "order": 249,
+      "order": 250,
       "description": "",
       "examples": [
         "```\nfootstep_particle_triggers =\n{\n  {\n    tiles = { \"water\", \"water-shallow\" },\n    type = \"create-particle\",\n    particle_name = \"water-particle\",\n    [...]\n  },\n  {\n    tiles = { \"grass-1\", \"grass-2\" },\n    type = \"create-particle\",\n    particle_name = \"grass-particle\",\n    [...]\n  },\n  [...]\n}\n```",
@@ -57684,7 +57703,7 @@
     },
     {
       "name": "ForceCondition",
-      "order": 250,
+      "order": 251,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57732,7 +57751,7 @@
     },
     {
       "name": "FrameStyleSpecification",
-      "order": 251,
+      "order": 252,
       "description": "Root style: `\"frame\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -57846,7 +57865,7 @@
     },
     {
       "name": "FrequencySizeRichness",
-      "order": 252,
+      "order": 253,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57882,7 +57901,7 @@
     },
     {
       "name": "FuelCategoryID",
-      "order": 253,
+      "order": 254,
       "description": "The name of a [FuelCategory](prototype:FuelCategory).",
       "examples": [
         "```\n\"chemical\"\n```",
@@ -57894,7 +57913,7 @@
     },
     {
       "name": "FusionGeneratorDirectionGraphicsSet",
-      "order": 254,
+      "order": 255,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57941,7 +57960,7 @@
     },
     {
       "name": "FusionGeneratorFluidInputGraphics",
-      "order": 255,
+      "order": 256,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -57977,7 +57996,7 @@
     },
     {
       "name": "FusionGeneratorGraphicsSet",
-      "order": 256,
+      "order": 257,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58058,7 +58077,7 @@
     },
     {
       "name": "FusionReactorConnectionGraphics",
-      "order": 257,
+      "order": 258,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58094,7 +58113,7 @@
     },
     {
       "name": "FusionReactorGraphicsSet",
-      "order": 258,
+      "order": 259,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58213,7 +58232,7 @@
     },
     {
       "name": "GameControllerVibrationData",
-      "order": 259,
+      "order": 260,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58273,7 +58292,7 @@
     },
     {
       "name": "GameViewSettings",
-      "order": 260,
+      "order": 261,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58509,7 +58528,7 @@
     },
     {
       "name": "GateOverRailBuildTipTrigger",
-      "order": 261,
+      "order": 262,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -58533,7 +58552,7 @@
     },
     {
       "name": "GeneratingPowerTipTrigger",
-      "order": 262,
+      "order": 263,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -58557,7 +58576,7 @@
     },
     {
       "name": "GeneratorPictureSet",
-      "order": 263,
+      "order": 264,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -58601,7 +58620,7 @@
     },
     {
       "name": "GeneratorPictures",
-      "order": 264,
+      "order": 265,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58629,7 +58648,7 @@
     },
     {
       "name": "GhostShimmerConfig",
-      "order": 265,
+      "order": 266,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58711,7 +58730,7 @@
     },
     {
       "name": "GhostShimmerDistortionData",
-      "order": 266,
+      "order": 267,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58755,7 +58774,7 @@
     },
     {
       "name": "GhostShimmerOverlayData",
-      "order": 267,
+      "order": 268,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58815,7 +58834,7 @@
     },
     {
       "name": "GhostTintSet",
-      "order": 268,
+      "order": 269,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58867,7 +58886,7 @@
     },
     {
       "name": "GigaCargoHatchDefinition",
-      "order": 269,
+      "order": 270,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -58946,7 +58965,7 @@
     },
     {
       "name": "GiveItemModifier",
-      "order": 270,
+      "order": 271,
       "description": "Note that when any technology prototype changes (regardless of which mod it belongs to), the game re-applies all researched technology effects, including `\"give-item\"` modifiers. This means that players will receive the item again, even if they already received it previously. This can be undesirable.",
       "parent": "BaseModifier",
       "abstract": false,
@@ -59014,7 +59033,7 @@
     },
     {
       "name": "GlobalRecipeTints",
-      "order": 271,
+      "order": 272,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -59062,7 +59081,7 @@
     },
     {
       "name": "GlobalTintEffectProperties",
-      "order": 272,
+      "order": 273,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -59146,7 +59165,7 @@
     },
     {
       "name": "GlowStyleSpecification",
-      "order": 273,
+      "order": 274,
       "description": "Root style: `\"glow\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -59178,7 +59197,7 @@
     },
     {
       "name": "GraphStyleSpecification",
-      "order": 274,
+      "order": 275,
       "description": "Root style: `\"graph\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -59325,7 +59344,7 @@
     },
     {
       "name": "GroupAttackTipTrigger",
-      "order": 275,
+      "order": 276,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -59349,7 +59368,7 @@
     },
     {
       "name": "GunShift4Way",
-      "order": 276,
+      "order": 277,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -59393,7 +59412,7 @@
     },
     {
       "name": "GunSpeedModifier",
-      "order": 277,
+      "order": 278,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -59457,7 +59476,7 @@
     },
     {
       "name": "HeatBuffer",
-      "order": 278,
+      "order": 279,
       "description": "Used to specify heat capacity properties without a [heat energy source](prototype:HeatEnergySource).",
       "abstract": false,
       "inline": false,
@@ -59584,7 +59603,7 @@
     },
     {
       "name": "HeatConnectionDefinition",
-      "order": 279,
+      "order": 280,
       "description": "Defines the connections for [HeatEnergySource](prototype:HeatEnergySource) and [HeatBuffer](prototype:HeatBuffer).",
       "abstract": false,
       "inline": false,
@@ -59612,7 +59631,7 @@
     },
     {
       "name": "HeatEnergySource",
-      "order": 280,
+      "order": 281,
       "description": "",
       "parent": "BaseEnergySource",
       "abstract": false,
@@ -59763,7 +59782,7 @@
     },
     {
       "name": "HorizontalAlign",
-      "order": 281,
+      "order": 282,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -59791,7 +59810,7 @@
     },
     {
       "name": "HorizontalFlowStyleSpecification",
-      "order": 282,
+      "order": 283,
       "description": "Root style: `\"horizontal_flow\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -59823,7 +59842,7 @@
     },
     {
       "name": "HorizontalScrollBarStyleSpecification",
-      "order": 283,
+      "order": 284,
       "description": "Root style: `\"horizontal_scrollbar\"`",
       "parent": "ScrollBarStyleSpecification",
       "abstract": false,
@@ -59847,7 +59866,7 @@
     },
     {
       "name": "IconData",
-      "order": 284,
+      "order": 285,
       "description": "One layer of an icon. Icon layering follows the following rules:\n\n- The rendering order of the individual icon layers follows the array order: Later added icon layers (higher index) are drawn on top of previously added icon layers (lower index).\n\n- By default the first icon layer will draw an outline (or shadow in GUI), other layers will draw it only if they have `draw_background` explicitly set to `true`. There are caveats to this though. See [the doc](prototype:IconData::draw_background).\n\n- When the final icon is displayed with transparency (e.g. a faded out alert), the icon layer overlap may look [undesirable](https://forums.factorio.com/viewtopic.php?p=575844#p575844).\n\n- When the final icon is displayed with a shadow (e.g. an item on the ground or on a belt when item shadows are turned on), each icon layer will [cast a shadow](https://forums.factorio.com/84888) and the shadow is cast on the layer below it.\n\n- The final icon will always be resized and centered in GUI so that all its layers (except the [`floating`](prototype:IconData::floating) ones) fit the target slot, but won't be resized when displayed on machines in alt-mode. For example: recipe first icon layer is size 128, scale 1, the icon group will be displayed at resolution /4 to fit the 32px GUI boxes, but will be displayed 4 times as large on buildings.\n\n- Shift values are based on [`expected_icon_size / 2`](prototype:IconData::scale).\n\nThe game automatically generates [icon mipmaps](https://factorio.com/blog/post/fff-291) for all icons. However, icons can have custom mipmaps defined. Custom mipmaps may help to achieve clearer icons at reduced size (e.g. when zooming out) than auto-generated mipmaps. If an icon file contains mipmaps then the game will automatically infer the icon's mipmap count. Icon files for custom mipmaps must contain half-size images with a geometric-ratio, for each mipmap level. Each next level is aligned to the upper-left corner, with no extra padding. Example sequence: `128x128@(0,0)`, `64x64@(128,0)`, `32x32@(192,0)` is three mipmaps.",
       "examples": [
         "```\n-- one icon layer\n{\n  icon = \"__base__/graphics/icons/fluid/heavy-oil.png\",\n  icon_size = 64,\n  scale = 0.5,\n  shift = {4, -8}\n}\n```",
@@ -59930,7 +59949,7 @@
     },
     {
       "name": "IconDrawSpecification",
-      "order": 285,
+      "order": 286,
       "description": "Specification of where and how the alt-mode icons of entities should be drawn.",
       "abstract": false,
       "inline": false,
@@ -60004,7 +60023,7 @@
     },
     {
       "name": "IconSequencePositioning",
-      "order": 286,
+      "order": 287,
       "description": "Specification of where and how should be the icons of individual inventories be drawn.",
       "abstract": false,
       "inline": false,
@@ -60087,7 +60106,7 @@
     },
     {
       "name": "ImageStyleSpecification",
-      "order": 287,
+      "order": 288,
       "description": "Root style: `\"image\"`",
       "examples": [
         "```\ndata.raw[\"gui-style\"][\"default\"][\"stretchy-sprite\"] =\n{\n  type = \"image_style\",\n  vertically_stretchable = \"on\",\n  horizontally_stretchable = \"on\",\n  stretch_image_to_widget_size = true,\n}\n```"
@@ -60142,7 +60161,7 @@
     },
     {
       "name": "IngredientPrototype",
-      "order": 288,
+      "order": 289,
       "description": "Item or fluid ingredient.",
       "examples": [
         "```\n{type=\"item\", name=\"steel-plate\", amount=8} -- item ingredient\n```",
@@ -60169,7 +60188,7 @@
     },
     {
       "name": "InsertItemTriggerEffectItem",
-      "order": 289,
+      "order": 290,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -60225,7 +60244,7 @@
     },
     {
       "name": "InserterStackSizeBonusModifier",
-      "order": 290,
+      "order": 291,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -60273,7 +60292,7 @@
     },
     {
       "name": "InstantTriggerDelivery",
-      "order": 291,
+      "order": 292,
       "description": "",
       "parent": "TriggerDeliveryItem",
       "abstract": false,
@@ -60297,7 +60316,7 @@
     },
     {
       "name": "InterruptibleSound",
-      "order": 292,
+      "order": 293,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60361,7 +60380,7 @@
     },
     {
       "name": "InventoryWithCustomStackSizeSpecification",
-      "order": 293,
+      "order": 294,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60433,7 +60452,7 @@
     },
     {
       "name": "InvokeTileEffectTriggerEffectItem",
-      "order": 294,
+      "order": 295,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -60465,7 +60484,7 @@
     },
     {
       "name": "ItemCountType",
-      "order": 295,
+      "order": 296,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60473,7 +60492,7 @@
     },
     {
       "name": "ItemGroupID",
-      "order": 296,
+      "order": 297,
       "description": "The name of an [ItemGroup](prototype:ItemGroup).",
       "examples": [
         "```\n\"logistics\"\n```",
@@ -60485,7 +60504,7 @@
     },
     {
       "name": "ItemHealthColorData",
-      "order": 297,
+      "order": 298,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -60513,7 +60532,7 @@
     },
     {
       "name": "ItemID",
-      "order": 298,
+      "order": 299,
       "description": "The name of an [ItemPrototype](prototype:ItemPrototype).",
       "examples": [
         "```\n\"iron-plate\"\n```",
@@ -60525,7 +60544,7 @@
     },
     {
       "name": "ItemIDFilter",
-      "order": 299,
+      "order": 300,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60568,7 +60587,7 @@
     },
     {
       "name": "ItemIngredientPrototype",
-      "order": 300,
+      "order": 301,
       "description": "An item ingredient definition.",
       "examples": [
         "```\n{type=\"item\", name=\"steel-plate\", amount=8}\n```",
@@ -60663,7 +60682,7 @@
     },
     {
       "name": "ItemProductPrototype",
-      "order": 301,
+      "order": 302,
       "description": "An item product definition.",
       "parent": "ProductPrototypeBase",
       "abstract": false,
@@ -60828,7 +60847,7 @@
     },
     {
       "name": "ItemPrototypeFlags",
-      "order": 302,
+      "order": 303,
       "description": "An array containing the following values.",
       "abstract": false,
       "inline": false,
@@ -60919,7 +60938,7 @@
     },
     {
       "name": "ItemStackIndex",
-      "order": 303,
+      "order": 304,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -60927,7 +60946,7 @@
     },
     {
       "name": "ItemSubGroupID",
-      "order": 304,
+      "order": 305,
       "description": "The name of an [ItemSubGroup](prototype:ItemSubGroup).",
       "examples": [
         "```\n\"capsule\"\n```",
@@ -60939,7 +60958,7 @@
     },
     {
       "name": "ItemToPlace",
-      "order": 305,
+      "order": 306,
       "description": "Item that when placed creates this entity/tile.",
       "examples": [
         "```\n{item = \"iron-chest\", count = 1}\n```"
@@ -60970,7 +60989,7 @@
     },
     {
       "name": "KillTipTrigger",
-      "order": 306,
+      "order": 307,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -61022,7 +61041,7 @@
     },
     {
       "name": "LabelStyleSpecification",
-      "order": 307,
+      "order": 308,
       "description": "Root style: `\"label\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -61159,7 +61178,7 @@
     },
     {
       "name": "LaboratoryProductivityModifier",
-      "order": 308,
+      "order": 309,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -61207,7 +61226,7 @@
     },
     {
       "name": "LaboratorySpeedModifier",
-      "order": 309,
+      "order": 310,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -61255,7 +61274,7 @@
     },
     {
       "name": "LayeredSound",
-      "order": 310,
+      "order": 311,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -61285,7 +61304,7 @@
     },
     {
       "name": "LayeredSprite",
-      "order": 311,
+      "order": 312,
       "description": "",
       "parent": "Sprite",
       "abstract": false,
@@ -61316,7 +61335,7 @@
     },
     {
       "name": "LayeredSprite4Way",
-      "order": 312,
+      "order": 313,
       "description": "Sprites for the 4 major directions of the entity. If this is loaded as a single LayeredSprite, it applies to all directions.",
       "abstract": false,
       "inline": false,
@@ -61367,7 +61386,7 @@
     },
     {
       "name": "LayeredSpriteVariations",
-      "order": 313,
+      "order": 314,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -61378,7 +61397,7 @@
     },
     {
       "name": "LightDefinition",
-      "order": 314,
+      "order": 315,
       "description": "Specifies a light source. This is loaded either as a single light source or as an array of light sources.",
       "examples": [
         "```\n-- The light of the orange state of the rail signal\norange_light = {intensity = 0.2, size = 4, color={r=1, g=0.5}}\n```",
@@ -61565,7 +61584,7 @@
     },
     {
       "name": "LightFlickeringDefinition",
-      "order": 315,
+      "order": 316,
       "description": "Specifies the light flicker. Note that this defaults to \"showing a white light\" instead of the usually expected \"showing nothing\".",
       "abstract": false,
       "inline": false,
@@ -61670,7 +61689,7 @@
     },
     {
       "name": "LightProperties",
-      "order": 316,
+      "order": 317,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -61700,7 +61719,7 @@
     },
     {
       "name": "LightningGraphicsSet",
-      "order": 317,
+      "order": 318,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -61966,7 +61985,7 @@
     },
     {
       "name": "LightningPriorityRule",
-      "order": 318,
+      "order": 319,
       "description": "",
       "parent": "LightningRuleBase",
       "abstract": false,
@@ -61987,7 +62006,7 @@
     },
     {
       "name": "LightningProperties",
-      "order": 319,
+      "order": 320,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -62088,7 +62107,7 @@
     },
     {
       "name": "LightningRuleBase",
-      "order": 320,
+      "order": 321,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -62137,7 +62156,7 @@
     },
     {
       "name": "LightningShaderConfiguration",
-      "order": 321,
+      "order": 322,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -62181,7 +62200,7 @@
     },
     {
       "name": "LimitChestTipTrigger",
-      "order": 322,
+      "order": 323,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -62205,7 +62224,7 @@
     },
     {
       "name": "LineStyleSpecification",
-      "order": 323,
+      "order": 324,
       "description": "Root style: `\"line\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -62237,7 +62256,7 @@
     },
     {
       "name": "LineTriggerItem",
-      "order": 324,
+      "order": 325,
       "description": "",
       "examples": [
         "```\naction =\n{\n  type = \"line\",\n  range = 25,\n  width = 0.5,\n\n  range_effects =\n  {\n    type = \"create-explosion\",\n    entity_name = \"railgun-beam\"\n  },\n\n  action_delivery =\n  {\n    type = \"instant\",\n    target_effects =\n    {\n      type = \"damage\",\n      damage = { amount = 100, type = \"physical\"}\n    }\n  }\n}\n```"
@@ -62288,7 +62307,7 @@
     },
     {
       "name": "LinkedBeltStructure",
-      "order": 325,
+      "order": 326,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -62348,7 +62367,7 @@
     },
     {
       "name": "LinkedGameControl",
-      "order": 326,
+      "order": 327,
       "description": "The internal name of a game control (key binding).",
       "abstract": false,
       "inline": false,
@@ -63336,7 +63355,7 @@
     },
     {
       "name": "ListBoxStyleSpecification",
-      "order": 327,
+      "order": 328,
       "description": "Root style: `\"list_box\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -63376,7 +63395,7 @@
     },
     {
       "name": "LoaderStructure",
-      "order": 328,
+      "order": 329,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63436,7 +63455,7 @@
     },
     {
       "name": "LocalisedString",
-      "order": 329,
+      "order": 330,
       "description": "Localised strings are a way to support translation of in-game text. They offer a language-independent code representation of the text that should be shown to players.\n\nIt is an array where the first element is the key and the remaining elements are parameters that will be substituted for placeholders in the template designated by the key.\n\nThe key identifies the string template. For example, `\"gui-alert-tooltip.attack\"` (for the template `\"__1__ objects are being damaged\"`; see the file `data/core/locale/en.cfg`). In the settings and prototype stages, this key cannot be longer than 200 characters.\n\nThe template can contain placeholders such as `__1__` or `__2__`. These will be replaced by the respective parameter in the LocalisedString. The parameters themselves can be other localised strings, which will be processed recursively in the same fashion. Localised strings can not be recursed deeper than 20 levels and can not have more than 20 parameters.\n\nThere are two special flags for the localised string, indicated by the key being a particular string. First, if the key is the empty string (`\"\"`), then all parameters will be concatenated (after processing, if any are localised strings themselves). Second, if the key is a question mark (`\"?\"`), then the first valid parameter will be used. A parameter can be invalid if its name doesn't match any string template. If no parameters are valid, the last one is returned. This is useful to implement a fallback for missing locale templates.\n\nFurthermore, when an API function expects a localised string, it will also accept a regular string (i.e. not a table) which will not be translated. In the settings and prototype stages, this string cannot be longer than 200 characters.\n\nSee [Tutorial:Localisation](https://wiki.factorio.com/Tutorial:Localisation) for more information.",
       "examples": [
         "```\n-- In the English translation, this will result in \"No ammo\"; in the Czech translation, it will result in \"Bez munice\":\nlocalised_description = {\"description.no-ammo\"}\n-- The \"description.no-ammo\" template contains no placeholders, so no further parameters are necessary.\n```",
@@ -63461,7 +63480,7 @@
     },
     {
       "name": "LogisticFilterIndex",
-      "order": 330,
+      "order": 331,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63469,7 +63488,7 @@
     },
     {
       "name": "LogisticMode",
-      "order": 331,
+      "order": 332,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63507,7 +63526,7 @@
     },
     {
       "name": "LowPowerTipTrigger",
-      "order": 332,
+      "order": 333,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -63531,7 +63550,7 @@
     },
     {
       "name": "MainSound",
-      "order": 333,
+      "order": 334,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63676,7 +63695,7 @@
     },
     {
       "name": "ManualTransferTipTrigger",
-      "order": 334,
+      "order": 335,
       "description": "Triggered when the player manually moves item with the cursor, *without* using shortcuts such as entity transfer or stack split.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -63700,7 +63719,7 @@
     },
     {
       "name": "ManualWireDragTipTrigger",
-      "order": 335,
+      "order": 336,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -63777,7 +63796,7 @@
     },
     {
       "name": "MapGenPreset",
-      "order": 336,
+      "order": 337,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63825,7 +63844,7 @@
     },
     {
       "name": "MapGenPresetAsteroidSettings",
-      "order": 337,
+      "order": 338,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63853,7 +63872,7 @@
     },
     {
       "name": "MapGenPresetDifficultySettings",
-      "order": 338,
+      "order": 339,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63873,7 +63892,7 @@
     },
     {
       "name": "MapGenPresetEnemyEvolutionSettings",
-      "order": 339,
+      "order": 340,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63917,7 +63936,7 @@
     },
     {
       "name": "MapGenPresetEnemyExpansionSettings",
-      "order": 340,
+      "order": 341,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -63993,7 +64012,7 @@
     },
     {
       "name": "MapGenPresetPollutionSettings",
-      "order": 341,
+      "order": 342,
       "description": "The pollution settings, the values are for 60 ticks (1 second).",
       "abstract": false,
       "inline": false,
@@ -64053,7 +64072,7 @@
     },
     {
       "name": "MapGenSettings",
-      "order": 342,
+      "order": 343,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -64217,7 +64236,7 @@
     },
     {
       "name": "MapGenSize",
-      "order": 343,
+      "order": 344,
       "description": "A floating point number specifying an amount.\n\nFor backwards compatibility, MapGenSizes can also be specified as a string, which will be converted to a number (when queried, a number will always be returned).\n\nThe map generation algorithm officially supports the range of values the in-game map generation screen shows (specifically `0` and values from `1/6` to `6`). Values outside this range are not guaranteed to work as expected.",
       "abstract": false,
       "inline": false,
@@ -64315,7 +64334,7 @@
     },
     {
       "name": "MapLocation",
-      "order": 344,
+      "order": 345,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -64343,7 +64362,7 @@
     },
     {
       "name": "MapPosition",
-      "order": 345,
+      "order": 346,
       "description": "Coordinates of a tile in a map. Positive x goes towards east, positive y goes towards south, and x is the first dimension in the array format.\n\nThe coordinates are stored as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.",
       "examples": [
         "```\n-- Explicit definition\n{x = 5.5, y = 2}\n{y = 2.25, x = 5.125}\n```",
@@ -64388,7 +64407,7 @@
     },
     {
       "name": "MapTick",
-      "order": 346,
+      "order": 347,
       "description": "`math.huge` represents the maximum possible tick.",
       "abstract": false,
       "inline": false,
@@ -64396,7 +64415,7 @@
     },
     {
       "name": "MaterialAmountType",
-      "order": 347,
+      "order": 348,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -64404,7 +64423,7 @@
     },
     {
       "name": "MaterialTextureParameters",
-      "order": 348,
+      "order": 349,
       "description": "Used by [TilePrototype](prototype:TilePrototype).",
       "abstract": false,
       "inline": false,
@@ -64480,7 +64499,7 @@
     },
     {
       "name": "MathExpression",
-      "order": 349,
+      "order": 350,
       "description": "A string that represents a math expression. The expression parser recognizes four basic token types (with their regex):\n\n- Whitespace: `[ \\n\\r\\t]*`\n\n- Number: `(0x[0-9a-f]+|([0-9]+\\.?[0-9]*|\\.[0-9]+)(e-?[0-9]+)?)` (e.g. `3.2`, `100`, `.6`, `4.2e-5`, `0x2a5f`). Supports hexadecimal input and scientific notation for decimal numbers.\n\n- Operator: `+`, `-`, `*`, `/`, `^`, and `()` for brackets, which may be nested.\n\n- Identifier: The functions listed below and any variables listed where the expression is used.\n\nIdentifiers are used to name functions and variables, which result in or represent numbers. The following functions are always available:\n\n- `abs(value)`: Returns absolute value of the given argument; i.e. if the argument is negative, it is inverted.\n\n- `log2(value)`: Returns a binary logarithm of the given value.\n\n- `sign(value)`: Returns `-1` for negative numbers, `0` for zero (regardless of sign), `1` for positive numbers\n\n- `max(value1, value2, ...)`: Returns the greater of the given values. Supports between 2 and 255 arguments.\n\n- `min(value1, value2, ...)`: Returns the smaller of the given values. Supports between 2 and 255 arguments.\n\nThe property where the expression is used may provide variables. For example in [TechnologyUnit::count_formula](prototype:TechnologyUnit::count_formula) `L` and `l` may be used for the technology level.\n\nThe formula is executed following the [BODMAS](https://en.wikipedia.org/wiki/Order_of_operations#Conventional_order) order (also known as PEMDAS).",
       "examples": [
         "```\n\"2500 * (L - 3)\"\n```",
@@ -64492,7 +64511,7 @@
     },
     {
       "name": "MaxCargoBayUnloadingDistanceModifier",
-      "order": 350,
+      "order": 351,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -64528,7 +64547,7 @@
     },
     {
       "name": "MaxFailedAttemptsPerTickPerConstructionQueueModifier",
-      "order": 351,
+      "order": 352,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -64564,7 +64583,7 @@
     },
     {
       "name": "MaxSuccessfulAttemptsPerTickPerConstructionQueueModifier",
-      "order": 352,
+      "order": 353,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -64600,7 +64619,7 @@
     },
     {
       "name": "MaximumFollowingRobotsCountModifier",
-      "order": 353,
+      "order": 354,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -64648,7 +64667,7 @@
     },
     {
       "name": "MinableProperties",
-      "order": 354,
+      "order": 355,
       "description": "The mining properties of objects. For formulas for the mining time, see [mining](https://wiki.factorio.com/Mining).",
       "examples": [
         "```\nminable = { mining_time = 0.55, result = \"wood\", count = 4, mining_particle = \"wooden-particle\" }\n```",
@@ -64759,7 +64778,7 @@
     },
     {
       "name": "MineEntityTechnologyTrigger",
-      "order": 355,
+      "order": 356,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -64793,7 +64812,7 @@
     },
     {
       "name": "MineItemByRobotTipTrigger",
-      "order": 356,
+      "order": 357,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -64817,7 +64836,7 @@
     },
     {
       "name": "MinimapStyleSpecification",
-      "order": 357,
+      "order": 358,
       "description": "Root style: `\"minimap\"`",
       "parent": "EmptyWidgetStyleSpecification",
       "abstract": false,
@@ -64841,7 +64860,7 @@
     },
     {
       "name": "MiningDrillGraphicsSet",
-      "order": 358,
+      "order": 359,
       "description": "Used by [MiningDrillPrototype](prototype:MiningDrillPrototype).",
       "parent": "WorkingVisualisations",
       "abstract": false,
@@ -64944,7 +64963,7 @@
     },
     {
       "name": "MiningDrillProductivityBonusModifier",
-      "order": 359,
+      "order": 360,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -64992,7 +65011,7 @@
     },
     {
       "name": "MiningWithFluidModifier",
-      "order": 360,
+      "order": 361,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -65028,7 +65047,7 @@
     },
     {
       "name": "ModSetting",
-      "order": 361,
+      "order": 362,
       "description": "The user-set value of a startup [mod setting](https://wiki.factorio.com/Tutorial:Mod_settings).",
       "abstract": false,
       "inline": false,
@@ -65058,7 +65077,7 @@
     },
     {
       "name": "Modifier",
-      "order": 362,
+      "order": 363,
       "description": "The effect that is applied when a [TechnologyPrototype](prototype:TechnologyPrototype) is researched.\n\nLoaded as one of the [BaseModifier](prototype:BaseModifier) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -65326,7 +65345,7 @@
     },
     {
       "name": "Mods",
-      "order": 363,
+      "order": 364,
       "description": "A dictionary of mod names to mod versions of all active mods. It can be used to adjust mod functionality based on the presence of other mods.",
       "examples": [
         "```\n-- executes pineapple only when the pizza mod is active\nif mods[\"pizza\"] then\n  pineapple()\nend\n```",
@@ -65343,7 +65362,7 @@
     },
     {
       "name": "ModuleCategoryID",
-      "order": 364,
+      "order": 365,
       "description": "The name of a [ModuleCategory](prototype:ModuleCategory).",
       "examples": [
         "```\n\"productivity\"\n```",
@@ -65355,7 +65374,7 @@
     },
     {
       "name": "ModuleTint",
-      "order": 365,
+      "order": 366,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -65393,7 +65412,7 @@
     },
     {
       "name": "ModuleTransferTipTrigger",
-      "order": 366,
+      "order": 367,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -65425,7 +65444,7 @@
     },
     {
       "name": "MouseCursorID",
-      "order": 367,
+      "order": 368,
       "description": "The name of a [MouseCursor](prototype:MouseCursor).",
       "examples": [
         "```\n\"selection-tool-cursor\"\n```"
@@ -65436,7 +65455,7 @@
     },
     {
       "name": "NeighbourConnectable",
-      "order": 368,
+      "order": 369,
       "description": "Defines how this entity connects to its neighbours",
       "abstract": false,
       "inline": false,
@@ -65483,7 +65502,7 @@
     },
     {
       "name": "NeighbourConnectableConnectionCategory",
-      "order": 369,
+      "order": 370,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -65491,7 +65510,7 @@
     },
     {
       "name": "NeighbourConnectableConnectionDefinition",
-      "order": 370,
+      "order": 371,
       "description": "In order for 2 NeighbourConnectable to connect they need to share a connection point at the same position with opposite direction and both accept neighbor's category.",
       "abstract": false,
       "inline": false,
@@ -65530,7 +65549,7 @@
     },
     {
       "name": "NestedTriggerEffectItem",
-      "order": 371,
+      "order": 372,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -65562,7 +65581,7 @@
     },
     {
       "name": "NoiseExpression",
-      "order": 372,
+      "order": 373,
       "description": "A boolean or double as simple values or a string that represents a math expression. The expression parser recognizes five basic token types (with their regex):\n\n- **Whitespace:** `[ \\n\\r\\t]*`\n\n- **Identifier:** `[a-zA-Z_][a-zA-Z0-9_:]*` (e.g. cat_bar123)\n\n- **Number:** `(0x[0-9a-f]+|([0-9]+\\.?[0-9]*|\\.[0-9]+)(e-?[0-9]+)?)` (e.g. `3.2`, `100`, `.6`, `4.2e-5`, `0x2a5f`). Supports hexadecimal input and scientific notation for decimal numbers.\n\n- **String:** `(\"[^\"]*\"|'[^']*')` (e.g. `\"cat bar 123\"`, `'control-setting:copper-ore'`)\n\n- **Operator:** See the list below\n\nIdentifiers are used to name functions and variables. The built-in functions and variables are documented in the [auxiliary docs](auxiliary:noise-expressions). Mods can define their own noise expressions which can be used as variables and functions. The entry points for this are [NamedNoiseFunction](prototype:NamedNoiseFunction) and [NamedNoiseExpression](prototype:NamedNoiseExpression) as well as local functions and expressions.\n\nAll functions accept both named and positional arguments. To differentiate between these function calls, positional arguments start/end with `(`/`)` and named arguments with `{`/`}`, e.g. `clamp(x, -1, 1)` and `clamp{min = -1, max = 1, value = x}` are the same function call. Because of this, positional arguments can't be mixed with named arguments. A function can't have more than 255 parameters.\n\nRecursion is not supported.\n\nThe following operators are available, ordered by precedence:\n\n- `x^y`: Exponentiation (fast, inaccurate), equivalent to the built-in `pow(x, y)` noise function\n\n- `+x`, `-x`, `~x`: Unary plus and minus and unary bitwise not\n\n- `x*y`, `x/y`, `x%y`, `x%%y`: Multiplication and division, modulo and remainder\n\n- `x+y`, `x-y`: Addition and subtraction\n\n- `x<y`, `x<=y`, `x>y`, `x>=y`: Less than, less than or equal, greater than, greater than or equal\n\n- `x==y`, `x~=y`, `x!=y`: Equal to and not equal to (Lua and C++ syntax)\n\n- `x&y`: Bitwise and\n\n- `x~y`: Bitwise xor\n\n- `x|y`: Bitwise or\n\nModulo is implemented as `x - floor(x / y) * y` and remainder uses C++ [`fmod(x, y)`](https://en.cppreference.com/w/cpp/numeric/math/fmod) function.\n\nThe boolean operators (less than, less than or equal, equal, not equal, greater than, greater than or equal) take two numbers and return 0 for false or 1 for true.\n\nThe bitwise operators convert single-precision floating-point numbers to signed 32-bit integers before computing the result.\n\nExponentiation and the unary operators are right-to-left associative. The rest of the operators are left-to-right associative.",
       "examples": [
         "```\n\"distance_from_nearest_point{x = x, y = y, points = starting_positions}\"\n```",
@@ -65582,7 +65601,7 @@
     },
     {
       "name": "NoiseFunction",
-      "order": 373,
+      "order": 374,
       "description": "The advantage of noise functions over [noise expressions](prototype:NoiseExpression) is that they have parameters.",
       "abstract": false,
       "inline": false,
@@ -65637,7 +65656,7 @@
     },
     {
       "name": "NothingModifier",
-      "order": 374,
+      "order": 375,
       "description": "Modifier that does nothing. Can be used to show custom scripted effects in the technology GUI.",
       "parent": "BaseModifier",
       "abstract": false,
@@ -65681,7 +65700,7 @@
     },
     {
       "name": "OffshorePumpGraphicsSet",
-      "order": 375,
+      "order": 376,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -65765,7 +65784,7 @@
     },
     {
       "name": "OrTipTrigger",
-      "order": 376,
+      "order": 377,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -65799,7 +65818,7 @@
     },
     {
       "name": "Order",
-      "order": 377,
+      "order": 378,
       "description": "The order property is a simple `string`. When the game needs to sort prototypes (of the same type), it looks at their order properties and sorts those alphabetically. A prototype with an order string of `\"a\"` will be listed before other prototypes with order string `\"b\"` or `\"c\"`. The `\"-\"` or `\"[]\"` structures that can be found in vanilla order strings do *not* have any special meaning.\n\nThe alphabetical sorting uses [lexicographical comparison](https://en.wikipedia.org/wiki/Lexicographic_order) to determine if a given prototype is shown before or after another. If the order strings are equal then the game falls back to comparing the prototype names to determine order.\n\nThe order of special characters can be identified by looking at a UTF-8 character list. This is the order some common characters are sorted in:\n\n- \"-\"\n\n- \"0\"\n\n- \"9\"\n\n- \"A\"\n\n- \"Z\"\n\n- \"[\"\n\n- \"]\"\n\n- \"a\"\n\n- \"z\"\n\nThe following order strings would be ordered thusly then:\n\n- \"-\"\n\n- \"a\"\n\n- \"ab\"\n\n- \"azaaa\" (`b` is sorted before `z`, so \"ab\" comes before \"az\", regardless of the letters following it)\n\n- \"b\"\n\n- \"b-zzz\"\n\n- \"b[aaa]\" (`[` is sorted after `-` in UTF-8)\n\n- \"bb\" (`b` is sorted after `[` in UTF-8)",
       "examples": [
         "```\n{  -- This item will be shown after the below one\n  type = \"item\",\n  name = \"item-1\",\n  order = \"ad\",\n},\n{  -- This item will be shown before the above one\n  type = \"item\",\n  name = \"item-2\",\n  order = \"ab\",\n}\n```"
@@ -65810,7 +65829,7 @@
     },
     {
       "name": "OrientedCliffPrototype",
-      "order": 378,
+      "order": 379,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -65854,7 +65873,7 @@
     },
     {
       "name": "OrientedCliffPrototypeSet",
-      "order": 379,
+      "order": 380,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -66026,7 +66045,7 @@
     },
     {
       "name": "OtherColors",
-      "order": 380,
+      "order": 381,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -66062,7 +66081,7 @@
     },
     {
       "name": "ParticleID",
-      "order": 381,
+      "order": 382,
       "description": "The name of a [ParticlePrototype](prototype:ParticlePrototype).",
       "examples": [
         "```\n\"beacon-metal-particle-small\"\n```",
@@ -66074,7 +66093,7 @@
     },
     {
       "name": "PasteEntitySettingsTipTrigger",
-      "order": 382,
+      "order": 383,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -66126,7 +66145,7 @@
     },
     {
       "name": "PathFinderSettings",
-      "order": 383,
+      "order": 384,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -66408,7 +66427,7 @@
     },
     {
       "name": "PerceivedPerformance",
-      "order": 384,
+      "order": 385,
       "description": "Not all prototypes that use this type are affected by all properties.",
       "abstract": false,
       "inline": false,
@@ -66453,7 +66472,7 @@
     },
     {
       "name": "PersistentWorldAmbientSoundDefinition",
-      "order": 385,
+      "order": 386,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -66480,7 +66499,7 @@
     },
     {
       "name": "PersistentWorldAmbientSoundsDefinition",
-      "order": 386,
+      "order": 387,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -66554,7 +66573,7 @@
     },
     {
       "name": "PersistentWorldAmbientSoundsDefinitionCrossfade",
-      "order": 387,
+      "order": 388,
       "description": "",
       "parent": "Fade",
       "abstract": false,
@@ -66607,7 +66626,7 @@
     },
     {
       "name": "PipeConnectionDefinition",
-      "order": 388,
+      "order": 389,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -66774,7 +66793,7 @@
     },
     {
       "name": "PipeConnectionType",
-      "order": 389,
+      "order": 390,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -66802,7 +66821,7 @@
     },
     {
       "name": "PipePictures",
-      "order": 390,
+      "order": 391,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -67446,7 +67465,7 @@
     },
     {
       "name": "PlaceAsTile",
-      "order": 391,
+      "order": 392,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -67505,7 +67524,7 @@
     },
     {
       "name": "PlaceEquipmentTipTrigger",
-      "order": 392,
+      "order": 393,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -67537,7 +67556,7 @@
     },
     {
       "name": "PlanTrainPathTipTrigger",
-      "order": 393,
+      "order": 394,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -67568,7 +67587,7 @@
     },
     {
       "name": "PlanetPrototypeMapGenSettings",
-      "order": 394,
+      "order": 395,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -67681,7 +67700,7 @@
     },
     {
       "name": "PlatformBackdrop",
-      "order": 395,
+      "order": 396,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -68099,7 +68118,7 @@
     },
     {
       "name": "PlatformBackdropHeroCloud",
-      "order": 396,
+      "order": 397,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -68233,7 +68252,7 @@
     },
     {
       "name": "PlayFor",
-      "order": 397,
+      "order": 398,
       "description": "Defines when controller vibrations should be played.",
       "abstract": false,
       "inline": true,
@@ -68256,7 +68275,7 @@
     },
     {
       "name": "PlaySoundTriggerEffectItem",
-      "order": 398,
+      "order": 399,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -68321,7 +68340,7 @@
     },
     {
       "name": "PlayerColorData",
-      "order": 399,
+      "order": 400,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -68357,7 +68376,7 @@
     },
     {
       "name": "PlayerInputMethodFilter",
-      "order": 400,
+      "order": 401,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -68385,7 +68404,7 @@
     },
     {
       "name": "PlumeEffect",
-      "order": 401,
+      "order": 402,
       "description": "",
       "parent": "StatelessVisualisation",
       "abstract": false,
@@ -68410,7 +68429,7 @@
     },
     {
       "name": "PlumesSpecification",
-      "order": 402,
+      "order": 403,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -68496,7 +68515,7 @@
     },
     {
       "name": "PodAnimationProcessionBezierControlPoint",
-      "order": 403,
+      "order": 404,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -68524,7 +68543,7 @@
     },
     {
       "name": "PodAnimationProcessionLayer",
-      "order": 404,
+      "order": 405,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -68566,7 +68585,7 @@
     },
     {
       "name": "PodDistanceTraveledProcessionBezierControlPoint",
-      "order": 405,
+      "order": 406,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -68602,7 +68621,7 @@
     },
     {
       "name": "PodDistanceTraveledProcessionLayer",
-      "order": 406,
+      "order": 407,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -68668,7 +68687,7 @@
     },
     {
       "name": "PodMovementProcessionBezierControlPoint",
-      "order": 407,
+      "order": 408,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -68736,7 +68755,7 @@
     },
     {
       "name": "PodMovementProcessionLayer",
-      "order": 408,
+      "order": 409,
       "description": "",
       "examples": [
         "```\n{\n  type = \"pod-movement\",\n  frames =\n  {\n    { timestamp = 700 , tilt = 0.0               , tilt_t = 0 },\n    { timestamp = 700 , offset = {0, 0 - 500}    , offset_t = {0, -40} },\n    { timestamp = 900 , offset = {15, -60 - 500} , offset_t = {-10, -10} },\n    { timestamp = 900 , opacity = 1.0 },\n    { timestamp = 960 , tilt = 0.05              , tilt_t = -0.03 },\n    { timestamp = 1050, tilt = 0.25              , tilt_t = 0 },\n    { timestamp = 1050, offset = {40, -70 - 500} , offset_t = {-1, 0} },\n    { timestamp = 1050, opacity = 0.0 },\n    { timestamp = 700 , offset_rate = 0 },\n    { timestamp = 1050, offset_rate = 1.0 }\n  }\n}\n```"
@@ -68813,7 +68832,7 @@
     },
     {
       "name": "PodOpacityProcessionBezierControlPoint",
-      "order": 409,
+      "order": 410,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -68881,7 +68900,7 @@
     },
     {
       "name": "PodOpacityProcessionLayer",
-      "order": 410,
+      "order": 411,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -68923,7 +68942,7 @@
     },
     {
       "name": "PollutionSettings",
-      "order": 411,
+      "order": 412,
       "description": "The pollution settings, the values are for 60 ticks (1 second).",
       "abstract": false,
       "inline": false,
@@ -69031,7 +69050,7 @@
     },
     {
       "name": "ProbabilityTable",
-      "order": 412,
+      "order": 413,
       "description": "Probabilities of all items must add up to 100.",
       "abstract": false,
       "inline": false,
@@ -69042,7 +69061,7 @@
     },
     {
       "name": "ProbabilityTableItem",
-      "order": 413,
+      "order": 414,
       "description": "The first number is the value.\n\nThe second number is the probability in percents. It must be in the `(0, 100]` interval.",
       "abstract": false,
       "inline": false,
@@ -69056,7 +69075,7 @@
     },
     {
       "name": "ProcessionAudio",
-      "order": 414,
+      "order": 415,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -69100,7 +69119,7 @@
     },
     {
       "name": "ProcessionAudioCatalogue",
-      "order": 415,
+      "order": 416,
       "description": "Allows a prototype to load variable amount of sounds which may be referenced by index.",
       "abstract": false,
       "inline": false,
@@ -69111,7 +69130,7 @@
     },
     {
       "name": "ProcessionAudioCatalogueItem",
-      "order": 416,
+      "order": 417,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -69147,7 +69166,7 @@
     },
     {
       "name": "ProcessionAudioEvent",
-      "order": 417,
+      "order": 418,
       "description": "Controls sounds during procession.",
       "abstract": false,
       "inline": false,
@@ -69191,7 +69210,7 @@
     },
     {
       "name": "ProcessionAudioEventType",
-      "order": 418,
+      "order": 419,
       "description": "Type of [ProcessionAudioEvent](prototype:ProcessionAudioEvent).",
       "abstract": false,
       "inline": false,
@@ -69219,7 +69238,7 @@
     },
     {
       "name": "ProcessionAudioType",
-      "order": 419,
+      "order": 420,
       "description": "Types of [ProcessionAudio](prototype:ProcessionAudio).",
       "abstract": false,
       "inline": false,
@@ -69257,7 +69276,7 @@
     },
     {
       "name": "ProcessionAudioUsage",
-      "order": 420,
+      "order": 421,
       "description": "Who will hear [ProcessionAudioEvent](prototype:ProcessionAudioEvent).",
       "abstract": false,
       "inline": false,
@@ -69285,7 +69304,7 @@
     },
     {
       "name": "ProcessionGraphic",
-      "order": 421,
+      "order": 422,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -69329,7 +69348,7 @@
     },
     {
       "name": "ProcessionGraphicCatalogue",
-      "order": 422,
+      "order": 423,
       "description": "Allows a prototype to load variable amount of sprites which may be referenced by index.",
       "abstract": false,
       "inline": false,
@@ -69340,7 +69359,7 @@
     },
     {
       "name": "ProcessionGraphicCatalogueItem",
-      "order": 423,
+      "order": 424,
       "description": "Either animation or sprite must be provided.",
       "abstract": false,
       "inline": false,
@@ -69376,7 +69395,7 @@
     },
     {
       "name": "ProcessionGraphicType",
-      "order": 424,
+      "order": 425,
       "description": "Types of [ProcessionGraphic](prototype:ProcessionGraphic).",
       "abstract": false,
       "inline": false,
@@ -69419,7 +69438,7 @@
     },
     {
       "name": "ProcessionID",
-      "order": 425,
+      "order": 426,
       "description": "The name of a [ProcessionPrototype](prototype:ProcessionPrototype).",
       "abstract": false,
       "inline": false,
@@ -69427,7 +69446,7 @@
     },
     {
       "name": "ProcessionLayer",
-      "order": 426,
+      "order": 427,
       "description": "Describes one aspect of a procession. Animation and picture are interchangeable for types that require it.\n\nLoaded as one of the procession layers, based on the value of the `type` key.",
       "examples": [
         "```\n{\n  type = \"pod-movement\",\n  frames =\n  {\n    { timestamp = 700 , tilt = 0.0               , tilt_t = 0 },\n    { timestamp = 700 , offset = {0, 0 - 500}    , offset_t = {0, -40} },\n    { timestamp = 900 , offset = {15, -60 - 500} , offset_t = {-10, -10} },\n    { timestamp = 900 , opacity = 1.0 },\n    { timestamp = 960 , tilt = 0.05              , tilt_t = -0.03 },\n    { timestamp = 1050, tilt = 0.25              , tilt_t = 0 },\n    { timestamp = 1050, offset = {40, -70 - 500} , offset_t = {-1, 0} },\n    { timestamp = 1050, opacity = 0.0 },\n    { timestamp = 700 , offset_rate = 0 },\n    { timestamp = 1050, offset_rate = 1.0 }\n  }\n}\n```"
@@ -69478,7 +69497,7 @@
     },
     {
       "name": "ProcessionLayerInheritanceGroupID",
-      "order": 427,
+      "order": 428,
       "description": "The name of an [ProcessionLayerInheritanceGroup](prototype:ProcessionLayerInheritanceGroup).",
       "abstract": false,
       "inline": false,
@@ -69486,7 +69505,7 @@
     },
     {
       "name": "ProcessionSet",
-      "order": 428,
+      "order": 429,
       "description": "Lists arrivals and departures available for travel to a given surface.",
       "abstract": false,
       "inline": false,
@@ -69520,7 +69539,7 @@
     },
     {
       "name": "ProcessionTimeline",
-      "order": 429,
+      "order": 430,
       "description": "A wrapper for a collection of [ProcessionLayers](prototype:ProcessionLayer).",
       "abstract": false,
       "inline": false,
@@ -69604,7 +69623,7 @@
     },
     {
       "name": "ProductPrototype",
-      "order": 430,
+      "order": 431,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -69627,7 +69646,7 @@
     },
     {
       "name": "ProductPrototypeBase",
-      "order": 431,
+      "order": 432,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -69672,7 +69691,7 @@
     },
     {
       "name": "ProductionHealthEffect",
-      "order": 432,
+      "order": 433,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -69716,7 +69735,7 @@
     },
     {
       "name": "ProductionType",
-      "order": 433,
+      "order": 434,
       "description": "Specifies how the entity will utilize this fluidbox. `input-output` should only be used for boilers in fluid heating mode.",
       "abstract": false,
       "inline": true,
@@ -69749,7 +69768,7 @@
     },
     {
       "name": "ProgrammableSpeakerInstrument",
-      "order": 434,
+      "order": 435,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -69780,7 +69799,7 @@
     },
     {
       "name": "ProgrammableSpeakerNote",
-      "order": 435,
+      "order": 436,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -69816,7 +69835,7 @@
     },
     {
       "name": "ProgressBarStyleSpecification",
-      "order": 436,
+      "order": 437,
       "description": "Root style: `\"progressbar\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -69924,7 +69943,7 @@
     },
     {
       "name": "ProjectileAttackParameters",
-      "order": 437,
+      "order": 438,
       "description": "",
       "parent": "BaseAttackParameters",
       "abstract": false,
@@ -70020,7 +70039,7 @@
     },
     {
       "name": "ProjectileTriggerDelivery",
-      "order": 438,
+      "order": 439,
       "description": "",
       "parent": "TriggerDeliveryItem",
       "abstract": false,
@@ -70132,7 +70151,7 @@
     },
     {
       "name": "PrototypeStrafeSettings",
-      "order": 439,
+      "order": 440,
       "description": "Used by [UnitPrototype](prototype:UnitPrototype).",
       "abstract": false,
       "inline": false,
@@ -70240,7 +70259,7 @@
     },
     {
       "name": "PuddleTileEffectParameters",
-      "order": 440,
+      "order": 441,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70276,7 +70295,7 @@
     },
     {
       "name": "PumpWagonConnectionGraphics",
-      "order": 441,
+      "order": 442,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70450,7 +70469,7 @@
     },
     {
       "name": "PumpWagonConnectionShift4Way",
-      "order": 442,
+      "order": 443,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70494,7 +70513,7 @@
     },
     {
       "name": "PushBackTriggerEffectItem",
-      "order": 443,
+      "order": 444,
       "description": "The push back effect used by the [discharge defense](https://wiki.factorio.com/Discharge_defense).\n\nAims to push the target entity away from the source entity by the `distance` from the target entity's current position. Searches within double the `distance` from the pushed to position for the nearest non-colliding position for the target entity to be teleported too. If no valid non-colliding position is found or the target is not teleportable, then no push back occurs.",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -70526,7 +70545,7 @@
     },
     {
       "name": "QualityID",
-      "order": 444,
+      "order": 445,
       "description": "The name of a [QualityPrototype](prototype:QualityPrototype).",
       "examples": [
         "```\n\"rare\"\n```",
@@ -70538,7 +70557,7 @@
     },
     {
       "name": "RadioButtonStyleSpecification",
-      "order": 445,
+      "order": 446,
       "description": "Root style: `\"radiobutton\"`",
       "parent": "StyleWithClickableGraphicalSetSpecification",
       "abstract": false,
@@ -70594,7 +70613,7 @@
     },
     {
       "name": "RadiusVisualisationSpecification",
-      "order": 446,
+      "order": 447,
       "description": "Sprite to be shown around the entity when it is selected/held in the cursor.",
       "examples": [
         "```\nradius_visualisation_specification =\n{\n  sprite =\n  {\n    filename = \"__base__/graphics/entity/electric-mining-drill/electric-mining-drill-radius-visualization.png\",\n    size = 10\n  },\n  distance = 5,\n  offset = {0, -5}\n}\n```"
@@ -70673,7 +70692,7 @@
     },
     {
       "name": "RailFenceDirectionSet",
-      "order": 447,
+      "order": 448,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70749,7 +70768,7 @@
     },
     {
       "name": "RailFenceGraphicsSet",
-      "order": 448,
+      "order": 449,
       "description": "Used for graphics by [RailPrototype](prototype:RailPrototype).",
       "abstract": false,
       "inline": false,
@@ -70833,7 +70852,7 @@
     },
     {
       "name": "RailFencePictureSet",
-      "order": 449,
+      "order": 450,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -70893,7 +70912,7 @@
     },
     {
       "name": "RailPictureSet",
-      "order": 450,
+      "order": 451,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71036,7 +71055,7 @@
     },
     {
       "name": "RailPieceLayers",
-      "order": 451,
+      "order": 452,
       "description": "Used for graphics by [RailPrototype](prototype:RailPrototype) and [RailRemnantsPrototype](prototype:RailRemnantsPrototype).",
       "abstract": false,
       "inline": false,
@@ -71128,7 +71147,7 @@
     },
     {
       "name": "RailPlannerAllowElevatedRailsModifier",
-      "order": 452,
+      "order": 453,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -71164,7 +71183,7 @@
     },
     {
       "name": "RailRenderLayers",
-      "order": 453,
+      "order": 454,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71266,7 +71285,7 @@
     },
     {
       "name": "RailSignalColorToFrameIndex",
-      "order": 454,
+      "order": 455,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71338,7 +71357,7 @@
     },
     {
       "name": "RailSignalLightDefinition",
-      "order": 455,
+      "order": 456,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71366,7 +71385,7 @@
     },
     {
       "name": "RailSignalLights",
-      "order": 456,
+      "order": 457,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71410,7 +71429,7 @@
     },
     {
       "name": "RailSignalPictureSet",
-      "order": 457,
+      "order": 458,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71519,7 +71538,7 @@
     },
     {
       "name": "RailSignalStaticSpriteLayer",
-      "order": 458,
+      "order": 459,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71597,7 +71616,7 @@
     },
     {
       "name": "RailSupportGraphicsSet",
-      "order": 459,
+      "order": 460,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -71657,7 +71676,7 @@
     },
     {
       "name": "RailSupportOnDeepOilOceanModifier",
-      "order": 460,
+      "order": 461,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -71693,7 +71712,7 @@
     },
     {
       "name": "RailsFogMaskDefinitions",
-      "order": 461,
+      "order": 462,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -71737,7 +71756,7 @@
     },
     {
       "name": "RailsSliceOffsets",
-      "order": 462,
+      "order": 463,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -71781,7 +71800,7 @@
     },
     {
       "name": "RandomRange",
-      "order": 463,
+      "order": 464,
       "description": "Define a numerical property in terms of minimum and maximum to be used as a randomly chosen value in that range (inclusively).\n\nThe maximum cannot be less than the minimum.",
       "abstract": false,
       "inline": false,
@@ -71810,7 +71829,7 @@
     },
     {
       "name": "RangeMode",
-      "order": 464,
+      "order": 465,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71838,7 +71857,7 @@
     },
     {
       "name": "RangedValue",
-      "order": 465,
+      "order": 466,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -71859,7 +71878,7 @@
     },
     {
       "name": "RealOrientation",
-      "order": 466,
+      "order": 467,
       "description": "The smooth orientation. It is a `float` in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise.\n\nThis means a value of `0` indicates \"north\", a value of `0.5` indicates \"south\". For example then, a value of `0.625` would indicate \"south-west\", and a value of `0.875` would indicate \"north-west\".",
       "abstract": false,
       "inline": false,
@@ -71867,7 +71886,7 @@
     },
     {
       "name": "RecipeCategoryID",
-      "order": 467,
+      "order": 468,
       "description": "The name of a [RecipeCategory](prototype:RecipeCategory).",
       "examples": [
         "```\n\"crafting\"\n```",
@@ -71879,7 +71898,7 @@
     },
     {
       "name": "RecipeID",
-      "order": 468,
+      "order": 469,
       "description": "The name of a [RecipePrototype](prototype:RecipePrototype).",
       "examples": [
         "```\n\"electronic-circuit\"\n```",
@@ -71891,7 +71910,7 @@
     },
     {
       "name": "RecipeTints",
-      "order": 469,
+      "order": 470,
       "description": "If no tint is specified, the machine falls back to [WorkingVisualisations::default_recipe_tint](prototype:WorkingVisualisations::default_recipe_tint).",
       "abstract": false,
       "inline": false,
@@ -71939,7 +71958,7 @@
     },
     {
       "name": "RenderLayer",
-      "order": 470,
+      "order": 471,
       "description": "The render layer specifies the order of the sprite when rendering, most of the objects have it hardcoded in the source, but some are configurable. The union contains valid values from lowest to highest.\n\nNote: `decals` is used as special marker for [DecorativePrototype::render_layer](prototype:DecorativePrototype::render_layer). When used elsewhere, the sprites will draw over the terrain.",
       "abstract": false,
       "inline": false,
@@ -72307,7 +72326,7 @@
     },
     {
       "name": "ResearchIngredient",
-      "order": 471,
+      "order": 472,
       "description": "Defines the amount of an item required to research one unit of a [technology](prototype:TechnologyPrototype). The first member of the tuple is the name of a [ItemPrototype](prototype:ItemPrototype) and the second is the amount. Amount must not be 0.",
       "examples": [
         "```\n{\"automation-science-pack\", 1}\n```"
@@ -72324,7 +72343,7 @@
     },
     {
       "name": "ResearchTechnologyTipTrigger",
-      "order": 472,
+      "order": 473,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72355,7 +72374,7 @@
     },
     {
       "name": "ResearchWithSciencePackTipTrigger",
-      "order": 473,
+      "order": 474,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72386,7 +72405,7 @@
     },
     {
       "name": "Resistance",
-      "order": 474,
+      "order": 475,
       "description": "Resistances to certain types of attacks from enemy, and physical damage. See [Damage](https://wiki.factorio.com/Damage).",
       "examples": [
         "```\nresistances =\n{\n  {\n    type = \"physical\",\n    decrease = 6,\n    percent = 30\n  },\n  {\n    type = \"explosion\",\n    decrease = 20,\n    percent = 30\n  },\n  {\n    type = \"acid\",\n    decrease = 3,\n    percent = 30\n  },\n  {\n    type = \"fire\",\n    decrease = 0,\n    percent = 30\n  }\n}\n```"
@@ -72433,7 +72452,7 @@
     },
     {
       "name": "ResourceCategoryID",
-      "order": 475,
+      "order": 476,
       "description": "The name of a [ResourceCategory](prototype:ResourceCategory).",
       "examples": [
         "```\n\"basic-solid\"\n```",
@@ -72445,7 +72464,7 @@
     },
     {
       "name": "RichTextSetting",
-      "order": 476,
+      "order": 477,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72473,7 +72492,7 @@
     },
     {
       "name": "RobotDoorSpecification",
-      "order": 477,
+      "order": 478,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72521,7 +72540,7 @@
     },
     {
       "name": "RollingStockRotatedSlopedGraphics",
-      "order": 478,
+      "order": 479,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72573,7 +72592,7 @@
     },
     {
       "name": "RotateEntityTipTrigger",
-      "order": 479,
+      "order": 480,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -72597,7 +72616,7 @@
     },
     {
       "name": "RotatedAnimation",
-      "order": 480,
+      "order": 481,
       "description": "",
       "parent": "AnimationParameters",
       "abstract": false,
@@ -72739,7 +72758,7 @@
     },
     {
       "name": "RotatedAnimation8Way",
-      "order": 481,
+      "order": 482,
       "description": "A map of rotated animations for all 8 directions of the entity. If this is loaded as a single RotatedAnimation, it applies to all directions.\n\nAny direction that is not defined defaults to the rotated animation of the opposite direction. If that is also not defined, it defaults to the north rotated animation.",
       "abstract": false,
       "inline": false,
@@ -72822,7 +72841,7 @@
     },
     {
       "name": "RotatedAnimationVariations",
-      "order": 482,
+      "order": 483,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -72840,7 +72859,7 @@
     },
     {
       "name": "RotatedSprite",
-      "order": 483,
+      "order": 484,
       "description": "Specifies series of sprites used to visualize different rotations of the object.",
       "examples": [
         "```\npictures =\n{\n  layers =\n  {\n    {\n      filename = \"__base__/graphics/entity/radar/radar.png\",\n      priority = \"low\",\n      width = 196,\n      height = 254,\n      apply_projection = false,\n      direction_count = 64,\n      line_length = 8,\n      shift = util.by_pixel(1, -16),\n      scale = 0.5\n    },\n    {\n      filename = \"__base__/graphics/entity/radar/radar-shadow.png\",\n      priority = \"low\",\n      width = 343,\n      height = 186,\n      apply_projection = false,\n      direction_count = 64,\n      line_length = 8,\n      shift = util.by_pixel(39.25,3),\n      draw_as_shadow = true,\n      scale = 0.5\n    }\n  }\n}\n```"
@@ -73013,7 +73032,7 @@
     },
     {
       "name": "RotatedSpriteFrame",
-      "order": 484,
+      "order": 485,
       "description": "Specifies frame-specific properties of an individual sprite within a RotatedSprite set. Some properties are absolute values, and some are relative and inherited from the parent RotatedSprite prototype definition.",
       "abstract": false,
       "inline": false,
@@ -73076,7 +73095,7 @@
     },
     {
       "name": "ScriptTriggerEffectItem",
-      "order": 485,
+      "order": 486,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -73085,6 +73104,14 @@
         "complex_type": "struct"
       },
       "properties": [
+        {
+          "name": "custom_event",
+          "order": 2,
+          "description": "Event to be raised. When set, that event will be raised instead of [on_script_trigger_effect](runtime:on_script_trigger_effect).",
+          "override": false,
+          "type": "CustomEventID",
+          "optional": true
+        },
         {
           "name": "effect_id",
           "order": 1,
@@ -73108,7 +73135,7 @@
     },
     {
       "name": "ScriptedTechnologyTrigger",
-      "order": 486,
+      "order": 487,
       "description": "Triggered only by calling [LuaForce::script_trigger_research](runtime:LuaForce::script_trigger_research). Can be used to show custom scripted triggers in the technology GUI.",
       "abstract": false,
       "inline": false,
@@ -73170,7 +73197,7 @@
     },
     {
       "name": "ScrollBarStyleSpecification",
-      "order": 487,
+      "order": 488,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": true,
@@ -73199,7 +73226,7 @@
     },
     {
       "name": "ScrollPaneStyleSpecification",
-      "order": 488,
+      "order": 489,
       "description": "Root style: `\"scroll_pane\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -73411,7 +73438,7 @@
     },
     {
       "name": "SegmentEngineSpecification",
-      "order": 489,
+      "order": 490,
       "description": "Used by [SegmentedUnitPrototype](prototype:SegmentedUnitPrototype) to define and manage the segments that make up the body of the entity.",
       "abstract": false,
       "inline": false,
@@ -73434,7 +73461,7 @@
     },
     {
       "name": "SegmentSpecification",
-      "order": 490,
+      "order": 491,
       "description": "A container for a single reference to a [SegmentPrototype](prototype:SegmentPrototype) within a [SegmentEngineSpecification](prototype:SegmentEngineSpecification).",
       "abstract": false,
       "inline": false,
@@ -73454,7 +73481,7 @@
     },
     {
       "name": "SelectionModeData",
-      "order": 491,
+      "order": 492,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -73643,7 +73670,7 @@
     },
     {
       "name": "SelectionModeFlags",
-      "order": 492,
+      "order": 493,
       "description": "An array containing the following values.\n\nSome flags only exclude objects from the selection, meaning they need to be combined with another flag to select anything.",
       "abstract": false,
       "inline": false,
@@ -73941,7 +73968,7 @@
     },
     {
       "name": "SemiPersistentWorldAmbientSoundDefinition",
-      "order": 493,
+      "order": 494,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -73992,7 +74019,7 @@
     },
     {
       "name": "SendItemToOrbitTechnologyTrigger",
-      "order": 494,
+      "order": 495,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -74023,7 +74050,7 @@
     },
     {
       "name": "SendSpidertronTipTrigger",
-      "order": 495,
+      "order": 496,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -74059,7 +74086,7 @@
     },
     {
       "name": "SendToOrbitMode",
-      "order": 496,
+      "order": 497,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -74087,7 +74114,7 @@
     },
     {
       "name": "SequenceTipTrigger",
-      "order": 497,
+      "order": 498,
       "description": "Triggered when the triggers listed in `triggers` are triggered in order.",
       "abstract": false,
       "inline": false,
@@ -74121,7 +74148,7 @@
     },
     {
       "name": "SetFilterTipTrigger",
-      "order": 498,
+      "order": 499,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -74177,7 +74204,7 @@
     },
     {
       "name": "SetLogisticRequestTipTrigger",
-      "order": 499,
+      "order": 500,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -74221,7 +74248,7 @@
     },
     {
       "name": "SetRecipeTipTrigger",
-      "order": 500,
+      "order": 501,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -74294,7 +74321,7 @@
     },
     {
       "name": "SetTileTriggerEffectItem",
-      "order": 501,
+      "order": 502,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -74366,7 +74393,7 @@
     },
     {
       "name": "Settings",
-      "order": 502,
+      "order": 503,
       "description": "A struct that provides access to the user-set values of startup [mod settings](https://wiki.factorio.com/Tutorial:Mod_settings). It is accessible through the global object named `settings`.",
       "examples": [
         "```\n-- Accessing the value of a mod setting\nlocal val = settings.startup[\"my-mod-setting-name\"].value\n```"
@@ -74393,7 +74420,7 @@
     },
     {
       "name": "SharedProbabilityDefinition",
-      "order": 503,
+      "order": 504,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -74421,7 +74448,7 @@
     },
     {
       "name": "ShiftAnimationWaypoints",
-      "order": 504,
+      "order": 505,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -74477,7 +74504,7 @@
     },
     {
       "name": "ShootTipTrigger",
-      "order": 505,
+      "order": 506,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -74522,7 +74549,7 @@
     },
     {
       "name": "ShowExplosionOnChartTriggerEffectItem",
-      "order": 506,
+      "order": 507,
       "description": "",
       "parent": "TriggerEffectItem",
       "abstract": false,
@@ -74554,7 +74581,7 @@
     },
     {
       "name": "SignalColorMapping",
-      "order": 507,
+      "order": 508,
       "description": "",
       "parent": "SignalIDConnector",
       "abstract": false,
@@ -74575,7 +74602,7 @@
     },
     {
       "name": "SignalIDConnector",
-      "order": 508,
+      "order": 509,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -74669,7 +74696,7 @@
     },
     {
       "name": "SimpleBoundingBox",
-      "order": 509,
+      "order": 510,
       "description": "An axis aligned bounding box.\n\nSimpleBoundingBoxes are usually specified with the short-hand notation of passing an array of exactly 2 numbers. The first position is left_top, the second position is right_bottom.\n\nPositive x goes towards east, positive y goes towards south. This means that the upper-left point is the least dimension in x and y, and lower-right is the greatest.",
       "examples": [
         "```\n{{-0.4, -0.4}, {0.4, 0.4}}\n```",
@@ -74714,7 +74741,7 @@
     },
     {
       "name": "SimpleModifier",
-      "order": 510,
+      "order": 511,
       "description": "",
       "parent": "BaseModifier",
       "abstract": true,
@@ -74735,7 +74762,7 @@
     },
     {
       "name": "SimulationDefinition",
-      "order": 511,
+      "order": 512,
       "description": "Used by tips and tricks and main menu simulations. Simulations can be controlled at runtime via [LuaSimulation](runtime:LuaSimulation).",
       "abstract": false,
       "inline": false,
@@ -74942,7 +74969,7 @@
     },
     {
       "name": "SingleGraphicLayerProcessionBezierControlPoint",
-      "order": 512,
+      "order": 513,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -75084,7 +75111,7 @@
     },
     {
       "name": "SingleGraphicProcessionLayer",
-      "order": 513,
+      "order": 514,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75234,7 +75261,7 @@
     },
     {
       "name": "SliderStyleSpecification",
-      "order": 514,
+      "order": 515,
       "description": "Root style: `\"slider\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -75322,7 +75349,7 @@
     },
     {
       "name": "SmokeSource",
-      "order": 515,
+      "order": 516,
       "description": "Definition of the smoke of an entity.",
       "abstract": false,
       "inline": false,
@@ -75546,7 +75573,7 @@
     },
     {
       "name": "Sound",
-      "order": 516,
+      "order": 517,
       "description": "",
       "examples": [
         "```\n{\n  filename = \"__base__/sound/ambient/world-ambience-3.ogg\",\n  volume = 1.2\n}\n```"
@@ -75776,7 +75803,7 @@
     },
     {
       "name": "SoundAccent",
-      "order": 517,
+      "order": 518,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75827,7 +75854,7 @@
     },
     {
       "name": "SoundDefinition",
-      "order": 518,
+      "order": 519,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75952,7 +75979,7 @@
     },
     {
       "name": "SoundModifier",
-      "order": 519,
+      "order": 520,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -75980,7 +76007,7 @@
     },
     {
       "name": "SoundModifierType",
-      "order": 520,
+      "order": 521,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76028,7 +76055,7 @@
     },
     {
       "name": "SoundType",
-      "order": 521,
+      "order": 522,
       "description": "This defines which slider in the sound settings affects the volume of this sound. Furthermore, some sound types are mixed differently than others, e.g. zoom level effects are applied.",
       "abstract": false,
       "inline": false,
@@ -76096,7 +76123,7 @@
     },
     {
       "name": "SpaceConnectionAsteroidSpawnDefinition",
-      "order": 522,
+      "order": 523,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76175,7 +76202,7 @@
     },
     {
       "name": "SpaceConnectionAsteroidSpawnPoint",
-      "order": 523,
+      "order": 524,
       "description": "",
       "parent": "AsteroidSpawnPoint",
       "abstract": false,
@@ -76196,7 +76223,7 @@
     },
     {
       "name": "SpaceConnectionID",
-      "order": 524,
+      "order": 525,
       "description": "The name of a [SpaceConnectionPrototype](prototype:SpaceConnectionPrototype).",
       "examples": [
         "```\n\"nauvis-vulcanus\"\n```",
@@ -76208,7 +76235,7 @@
     },
     {
       "name": "SpaceDustEffectProperties",
-      "order": 525,
+      "order": 526,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76256,7 +76283,7 @@
     },
     {
       "name": "SpaceLocationAsteroidSpawnDefinition",
-      "order": 526,
+      "order": 527,
       "description": "",
       "parent": "AsteroidSpawnPoint",
       "abstract": false,
@@ -76309,7 +76336,7 @@
     },
     {
       "name": "SpaceLocationID",
-      "order": 527,
+      "order": 528,
       "description": "The name of a [SpaceLocationPrototype](prototype:SpaceLocationPrototype).",
       "examples": [
         "```\n\"shattered-planet\"\n```",
@@ -76321,7 +76348,7 @@
     },
     {
       "name": "SpacePlatformTileDefinition",
-      "order": 528,
+      "order": 529,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76349,7 +76376,7 @@
     },
     {
       "name": "SpacePlatformsModifier",
-      "order": 529,
+      "order": 530,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -76385,7 +76412,7 @@
     },
     {
       "name": "SpaceTileEffectParameters",
-      "order": 530,
+      "order": 531,
       "description": "Nebulae are rendered only behind tiles with the effect, but stars are rendered behind entire terrain. For that reason using two or more tile types with different space effect on one surface is not supported. The game will allow this to happen, but rendering will chose one star configuration for entire screen.\n\nZoom is recalculated using formula `max(1/1024, pow(max(0, zoom * base_factor + base_offset), exponent) * factor + offset)`.",
       "abstract": false,
       "inline": false,
@@ -76577,7 +76604,7 @@
     },
     {
       "name": "SpacingItem",
-      "order": 531,
+      "order": 532,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76605,7 +76632,7 @@
     },
     {
       "name": "SpawnPoint",
-      "order": 532,
+      "order": 533,
       "description": "The definition of a evolution and probability weights for a [spawnable unit](prototype:UnitSpawnDefinition) for a [EnemySpawnerPrototype](prototype:EnemySpawnerPrototype).\n\nIt can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the evolution factor and the second is the spawn weight.",
       "abstract": false,
       "inline": false,
@@ -76646,7 +76673,7 @@
     },
     {
       "name": "SpeechBubbleStyleSpecification",
-      "order": 533,
+      "order": 534,
       "description": "Root style: `\"speech_bubble\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -76718,7 +76745,7 @@
     },
     {
       "name": "SpentFluidSpecification",
-      "order": 534,
+      "order": 535,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -76762,7 +76789,7 @@
     },
     {
       "name": "SpiderEngineSpecification",
-      "order": 535,
+      "order": 536,
       "description": "Used by [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -76804,7 +76831,7 @@
     },
     {
       "name": "SpiderLegGraphicsSet",
-      "order": 536,
+      "order": 537,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -76928,7 +76955,7 @@
     },
     {
       "name": "SpiderLegPart",
-      "order": 537,
+      "order": 538,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77048,7 +77075,7 @@
     },
     {
       "name": "SpiderLegSpecification",
-      "order": 538,
+      "order": 539,
       "description": "Used by [SpiderEngineSpecification](prototype:SpiderEngineSpecification) for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "abstract": false,
       "inline": false,
@@ -77108,7 +77135,7 @@
     },
     {
       "name": "SpiderLegTriggerEffect",
-      "order": 539,
+      "order": 540,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77136,7 +77163,7 @@
     },
     {
       "name": "SpiderTorsoGraphicsSet",
-      "order": 540,
+      "order": 541,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77212,7 +77239,7 @@
     },
     {
       "name": "SpiderVehicleGraphicsSet",
-      "order": 541,
+      "order": 542,
       "description": "Used to specify the graphics for [SpiderVehiclePrototype](prototype:SpiderVehiclePrototype).",
       "parent": "SpiderTorsoGraphicsSet",
       "abstract": false,
@@ -77331,7 +77358,7 @@
     },
     {
       "name": "SpoilToTriggerResult",
-      "order": 542,
+      "order": 543,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -77359,7 +77386,7 @@
     },
     {
       "name": "Sprite",
-      "order": 543,
+      "order": 544,
       "description": "Specifies one picture that can be used in the game.\n\nWhen there is more than one sprite or [Animation](prototype:Animation) frame with the same source file and dimensions/position in the game, they all share the same memory.",
       "examples": [
         "```\n-- simple sprite\npicture_set_enemy =\n{\n  filename = \"__base__/graphics/entity/land-mine/land-mine-set-enemy.png\",\n  priority = \"medium\",\n  width = 32,\n  height = 32\n}\n```",
@@ -77419,7 +77446,7 @@
     },
     {
       "name": "Sprite16Way",
-      "order": 544,
+      "order": 545,
       "description": "A map of sprites for all 16 directions of the entity.",
       "abstract": false,
       "inline": false,
@@ -77578,7 +77605,7 @@
     },
     {
       "name": "Sprite4Way",
-      "order": 545,
+      "order": 546,
       "description": "Sprites for the 4 major directions of the entity. If this is loaded as a single Sprite, it applies to all directions.\n\nThis struct is either loaded as `sheets` or `sheet` or a map of one sprite per direction. For per direction sprites, the sprites are loaded via `north`, `east`, `south` and `west`.",
       "examples": [
         "```\n-- separate sprites per direction\n{\n  north =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-N.png\",\n    priority = \"extra-high\",\n    width = 71,\n    height = 38,\n    shift = util.by_pixel(2.25, 13.5),\n    scale = 0.5\n  },\n  east =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-E.png\",\n    priority = \"extra-high\",\n    width = 42,\n    height = 76,\n    shift = util.by_pixel(-24.5, 1),\n    scale = 0.5\n  },\n  south =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-S.png\",\n    priority = \"extra-high\",\n    width = 88,\n    height = 61,\n    shift = util.by_pixel(0, -31.25),\n    scale = 0.5\n  },\n  west =\n  {\n    filename = \"__base__/graphics/entity/assembling-machine-3/assembling-machine-3-pipe-W.png\",\n    priority = \"extra-high\",\n    width = 39,\n    height = 73,\n    shift = util.by_pixel(25.75, 1.25),\n    scale = 0.5\n  }\n}\n```"
@@ -77651,7 +77678,7 @@
     },
     {
       "name": "Sprite8Way",
-      "order": 546,
+      "order": 547,
       "description": "A map of sprites for 8 directions of the entity.",
       "abstract": false,
       "inline": false,
@@ -77746,7 +77773,7 @@
     },
     {
       "name": "SpriteFlags",
-      "order": 547,
+      "order": 548,
       "description": "An array containing the following values.",
       "examples": [
         "```\nflags = { \"linear-minification\", \"linear-magnification\" }\n```"
@@ -77950,7 +77977,7 @@
     },
     {
       "name": "SpriteNWaySheet",
-      "order": 548,
+      "order": 549,
       "description": "",
       "examples": [
         "```\nsheet =\n{\n  filename = \"__base__/graphics/entity/burner-inserter/burner-inserter-platform.png\",\n  priority = \"extra-high\",\n  width = 105,\n  height = 79,\n  shift = util.by_pixel(1.5, 7.5-1),\n  scale = 0.5\n}\n```"
@@ -77999,7 +78026,7 @@
     },
     {
       "name": "SpriteParameters",
-      "order": 549,
+      "order": 550,
       "description": "",
       "parent": "SpriteSource",
       "abstract": true,
@@ -78236,7 +78263,7 @@
     },
     {
       "name": "SpritePriority",
-      "order": 550,
+      "order": 551,
       "description": "This sets the caching priority of a sprite, influencing whether it is kept in VRAM or streamed from disk in VRAM-limited situations. See [here](https://forums.factorio.com/viewtopic.php?p=437380#p437380) and [here](https://www.factorio.com/blog/post/fff-264) for context.",
       "abstract": false,
       "inline": false,
@@ -78284,7 +78311,7 @@
     },
     {
       "name": "SpriteSheet",
-      "order": 551,
+      "order": 552,
       "description": "",
       "parent": "SpriteParameters",
       "abstract": false,
@@ -78392,7 +78419,7 @@
     },
     {
       "name": "SpriteSizeType",
-      "order": 552,
+      "order": 553,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -78400,7 +78427,7 @@
     },
     {
       "name": "SpriteSource",
-      "order": 553,
+      "order": 554,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -78564,7 +78591,7 @@
     },
     {
       "name": "SpriteUsageHint",
-      "order": 554,
+      "order": 555,
       "description": "Provides hint to sprite atlas system, so it can pack sprites that are related to each other to the same sprite atlas.",
       "abstract": false,
       "inline": false,
@@ -78647,7 +78674,7 @@
     },
     {
       "name": "SpriteUsageSurfaceHint",
-      "order": 555,
+      "order": 556,
       "description": "Provides hint to sprite atlas system, so it can try to put sprites that are intended to be used at the same locations to the same sprite atlas.",
       "abstract": false,
       "inline": false,
@@ -78695,7 +78722,7 @@
     },
     {
       "name": "SpriteVariations",
-      "order": 556,
+      "order": 557,
       "description": "",
       "examples": [
         "```\n-- array of sprites\npictures =\n{\n  {size = 64, filename = \"__base__/graphics/icons/coal.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-1.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-2.png\", scale = 0.5, mipmap_count = 4},\n  {size = 64, filename = \"__base__/graphics/icons/coal-3.png\", scale = 0.5, mipmap_count = 4}\n}\n```",
@@ -78730,7 +78757,7 @@
     },
     {
       "name": "StackTransferTipTrigger",
-      "order": 557,
+      "order": 558,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -78783,7 +78810,7 @@
     },
     {
       "name": "StateSteeringSettings",
-      "order": 558,
+      "order": 559,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -78819,7 +78846,7 @@
     },
     {
       "name": "StatelessVisualisation",
-      "order": 559,
+      "order": 560,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79157,7 +79184,7 @@
     },
     {
       "name": "StatusColors",
-      "order": 560,
+      "order": 561,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79241,7 +79268,7 @@
     },
     {
       "name": "SteeringSettings",
-      "order": 561,
+      "order": 562,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -79277,7 +79304,7 @@
     },
     {
       "name": "StorageTankPictures",
-      "order": 562,
+      "order": 563,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -79337,7 +79364,7 @@
     },
     {
       "name": "StreamAttackParameters",
-      "order": 563,
+      "order": 564,
       "description": "",
       "parent": "BaseAttackParameters",
       "abstract": false,
@@ -79419,7 +79446,7 @@
     },
     {
       "name": "StreamFluidProperties",
-      "order": 564,
+      "order": 565,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -79451,7 +79478,7 @@
     },
     {
       "name": "StreamTriggerDelivery",
-      "order": 565,
+      "order": 566,
       "description": "",
       "parent": "TriggerDeliveryItem",
       "abstract": false,
@@ -79491,7 +79518,7 @@
     },
     {
       "name": "StretchRule",
-      "order": 566,
+      "order": 567,
       "description": "Sets whether a GUI element can be stretched or squashed.",
       "abstract": false,
       "inline": false,
@@ -79524,7 +79551,7 @@
     },
     {
       "name": "Stripe",
-      "order": 567,
+      "order": 568,
       "description": "Used as an alternative way to specify animations.",
       "abstract": false,
       "inline": false,
@@ -79584,7 +79611,7 @@
     },
     {
       "name": "StyleSpecification",
-      "order": 568,
+      "order": 569,
       "description": "Loaded as one of the [BaseStyleSpecification](prototype:BaseStyleSpecification) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -79752,7 +79779,7 @@
     },
     {
       "name": "StyleWithClickableGraphicalSetSpecification",
-      "order": 569,
+      "order": 570,
       "description": "",
       "parent": "BaseStyleSpecification",
       "abstract": true,
@@ -79837,7 +79864,7 @@
     },
     {
       "name": "SurfaceCondition",
-      "order": 570,
+      "order": 571,
       "description": "Requires Space Age to use.",
       "abstract": false,
       "inline": false,
@@ -79875,7 +79902,7 @@
     },
     {
       "name": "SurfaceID",
-      "order": 571,
+      "order": 572,
       "description": "The name of a [SurfacePrototype](prototype:SurfacePrototype).",
       "examples": [
         "```\n\"space-platform\"\n```"
@@ -79886,7 +79913,7 @@
     },
     {
       "name": "SurfacePropertyID",
-      "order": 572,
+      "order": 573,
       "description": "The name of a [SurfacePropertyPrototype](prototype:SurfacePropertyPrototype).",
       "examples": [
         "```\n\"solar-power\"\n```",
@@ -79898,7 +79925,7 @@
     },
     {
       "name": "SurfaceRenderParameters",
-      "order": 573,
+      "order": 574,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -80002,7 +80029,7 @@
     },
     {
       "name": "SwitchStyleSpecification",
-      "order": 574,
+      "order": 575,
       "description": "Root style: `\"switch\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -80098,7 +80125,7 @@
     },
     {
       "name": "TabStyleSpecification",
-      "order": 575,
+      "order": 576,
       "description": "Root style: `\"tab\"`",
       "parent": "StyleWithClickableGraphicalSetSpecification",
       "abstract": false,
@@ -80278,7 +80305,7 @@
     },
     {
       "name": "TabbedPaneStyleSpecification",
-      "order": 576,
+      "order": 577,
       "description": "Root style: `\"tabbed_pane\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -80326,7 +80353,7 @@
     },
     {
       "name": "TableStyleSpecification",
-      "order": 577,
+      "order": 578,
       "description": "Root style: `\"table\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -80661,7 +80688,7 @@
     },
     {
       "name": "TechnologyID",
-      "order": 578,
+      "order": 579,
       "description": "The name of a [TechnologyPrototype](prototype:TechnologyPrototype).",
       "examples": [
         "```\n\"automated-rail-transportation\"\n```",
@@ -80673,7 +80700,7 @@
     },
     {
       "name": "TechnologySlotStyleSpecification",
-      "order": 579,
+      "order": 580,
       "description": "Root style: `\"technology_slot\"`",
       "parent": "ButtonStyleSpecification",
       "abstract": false,
@@ -80969,7 +80996,7 @@
     },
     {
       "name": "TechnologyTrigger",
-      "order": 580,
+      "order": 581,
       "description": "Loaded as one of the technology triggers, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -81022,7 +81049,7 @@
     },
     {
       "name": "TechnologyUnit",
-      "order": 581,
+      "order": 582,
       "description": "Either `count` or `count_formula` must be defined, never both.",
       "examples": [
         "```\nunit =\n{\n  count_formula = \"2^(L-6)*1000\",\n  ingredients =\n  {\n    {\"automation-science-pack\", 1},\n    {\"logistic-science-pack\", 1},\n    {\"chemical-science-pack\", 1},\n    {\"production-science-pack\", 1},\n    {\"utility-science-pack\", 1},\n    {\"space-science-pack\", 1}\n  },\n  time = 60\n}\n```"
@@ -81075,7 +81102,7 @@
     },
     {
       "name": "TerritorySettings",
-      "order": 582,
+      "order": 583,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81127,7 +81154,7 @@
     },
     {
       "name": "TextBoxStyleSpecification",
-      "order": 583,
+      "order": 584,
       "description": "Root style: `\"textbox\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -81271,7 +81298,7 @@
     },
     {
       "name": "ThrowCapsuleAction",
-      "order": 584,
+      "order": 585,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81314,7 +81341,7 @@
     },
     {
       "name": "ThrusterGraphicsSet",
-      "order": 585,
+      "order": 586,
       "description": "",
       "parent": "WorkingVisualisations",
       "abstract": false,
@@ -81323,6 +81350,18 @@
         "complex_type": "struct"
       },
       "properties": [
+        {
+          "name": "animation_random_start_frame",
+          "order": 8,
+          "description": "If true the starting frame will be randomized upon placement.",
+          "override": false,
+          "type": "boolean",
+          "optional": true,
+          "default": {
+            "complex_type": "literal",
+            "value": true
+          }
+        },
         {
           "name": "flame",
           "order": 0,
@@ -81407,7 +81446,7 @@
     },
     {
       "name": "ThrusterPerformancePoint",
-      "order": 586,
+      "order": 587,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81457,7 +81496,7 @@
     },
     {
       "name": "TileAndAlpha",
-      "order": 587,
+      "order": 588,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -81485,7 +81524,7 @@
     },
     {
       "name": "TileBasedParticleTints",
-      "order": 588,
+      "order": 589,
       "description": "Used for particles created with [apply_tile_tint](prototype:CreateParticleTriggerEffectItem::apply_tile_tint) defined.",
       "abstract": false,
       "inline": false,
@@ -81515,7 +81554,7 @@
     },
     {
       "name": "TileBuildSound",
-      "order": 589,
+      "order": 590,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -81559,7 +81598,7 @@
     },
     {
       "name": "TileBuildabilityRule",
-      "order": 590,
+      "order": 591,
       "description": "Defines restrictions on what tiles an entity can or must be built on.\n\nNote that once the entity has been placed, placing new tiles is not always restricted by these rules for performance reasons. In particular, for most entities these rules are only checked when placing tiles within the collision box of the entity. The exception to this are thrusters and asteroid collectors, for which the rules are always checked.",
       "abstract": false,
       "inline": false,
@@ -81609,7 +81648,7 @@
     },
     {
       "name": "TileCollisionMaskConnector",
-      "order": 591,
+      "order": 592,
       "description": "The base game provides common collision mask functions in a Lua file in the core [lualib](https://github.com/wube/factorio-data/blob/master/core/lualib/collision-mask-util.lua).",
       "abstract": false,
       "inline": false,
@@ -81636,7 +81675,7 @@
     },
     {
       "name": "TileEffectDefinitionID",
-      "order": 592,
+      "order": 593,
       "description": "The name of an [TileEffectDefinition](prototype:TileEffectDefinition).",
       "examples": [
         "```\n\"water\"\n```"
@@ -81647,7 +81686,7 @@
     },
     {
       "name": "TileID",
-      "order": 593,
+      "order": 594,
       "description": "The name of a [TilePrototype](prototype:TilePrototype).",
       "examples": [
         "```\n\"grass-2\"\n```",
@@ -81659,7 +81698,7 @@
     },
     {
       "name": "TileIDRestriction",
-      "order": 594,
+      "order": 595,
       "description": "Name of an allowed tile, or a list of two tile names for entities allowed on transitions.",
       "abstract": false,
       "inline": true,
@@ -81680,7 +81719,7 @@
     },
     {
       "name": "TileLightPictures",
-      "order": 595,
+      "order": 596,
       "description": "",
       "parent": "TileSpriteLayout",
       "abstract": false,
@@ -81701,7 +81740,7 @@
     },
     {
       "name": "TileMainPictures",
-      "order": 596,
+      "order": 597,
       "description": "",
       "parent": "TileSpriteLayout",
       "abstract": false,
@@ -81745,7 +81784,7 @@
     },
     {
       "name": "TilePosition",
-      "order": 597,
+      "order": 598,
       "description": "Coordinates of a tile on a map where each integer `x`/`y` represents a different tile. This uses the same format as [MapPosition](prototype:MapPosition), except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.",
       "abstract": false,
       "inline": false,
@@ -81786,7 +81825,7 @@
     },
     {
       "name": "TileRenderLayer",
-      "order": 598,
+      "order": 599,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81829,7 +81868,7 @@
     },
     {
       "name": "TileSpriteLayout",
-      "order": 599,
+      "order": 600,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -81909,7 +81948,7 @@
     },
     {
       "name": "TileSpriteLayoutVariant",
-      "order": 600,
+      "order": 601,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -81985,7 +82024,7 @@
     },
     {
       "name": "TileTransitionSpritesheetLayout",
-      "order": 601,
+      "order": 602,
       "description": "The properties from the parent TileSpriteLayoutVariant provide defaults for the TileTransitionVariantLayouts.\n\nThe `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the corresponding properties in the TileTransitionVariantLayouts. They are used when the TileTransitionVariantLayouts have the same layout. See the example below.",
       "examples": [
         "```\n-- all the layers use the same layout, at different offsets inside the spritesheet\nlayout =\n{\n  scale = 0.5,\n  inner_corner_count = 8,\n  outer_corner_count = 8,\n  o_transition_count = 1,\n  outer_corner_x = 576,\n  u_transition_x = 1728,\n\n  overlay = { y_offset = 0 },  -- 0 is default, but by defining overlay property, we enable the layer\n  mask = { y_offset = 512 },\n  background = { y_offset = 1024 }\n}\n```"
@@ -82345,7 +82384,7 @@
     },
     {
       "name": "TileTransitionVariantLayout",
-      "order": 602,
+      "order": 603,
       "description": "The properties from the parent TileSpriteLayoutVariant provide defaults for the properties defined here.\n\nThe `{inner_corner | outer_corner | side | double_side | u_transition | o_transition}_*` properties provide defaults for the properties inside the specific variant. They are used to specify select values for the variant without creating the table for the variant.\n\nThese various ways to define the variants are also shown in the examples below.",
       "examples": [
         "```\n-- longest version, using TileSpriteLayoutVariant tables for each variant\n{\n  inner_corner =\n  {\n    scale = 0.5,\n    count = 8,\n  },\n  outer_corner =\n  {\n    scale = 0.5,\n    count = 8,\n    x = 576\n  },\n  u_transition  =\n  {\n    scale = 0.5,\n    count = 1,\n    x = 1728\n  },\n  [...]\n}\n```",
@@ -82723,7 +82762,7 @@
     },
     {
       "name": "TileTransitions",
-      "order": 603,
+      "order": 604,
       "description": "Used for [TilePrototype](prototype:TilePrototype) graphics.\n\nUse `layout` with `spritesheet` to define all the tile layers inside the `layout` property. The `*_enabled`, `*_layout` and `*_spritesheet` properties can be used to override specific layers of a reused layout.",
       "abstract": false,
       "inline": false,
@@ -83174,7 +83213,7 @@
     },
     {
       "name": "TileTransitionsBetweenTransitions",
-      "order": 604,
+      "order": 605,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -83203,7 +83242,7 @@
     },
     {
       "name": "TileTransitionsToTiles",
-      "order": 605,
+      "order": 606,
       "description": "",
       "parent": "TileTransitions",
       "abstract": false,
@@ -83235,7 +83274,7 @@
     },
     {
       "name": "TileTransitionsVariants",
-      "order": 606,
+      "order": 607,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83329,7 +83368,7 @@
     },
     {
       "name": "TimeElapsedTipTrigger",
-      "order": 607,
+      "order": 608,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83360,7 +83399,7 @@
     },
     {
       "name": "TimeSinceLastTipActivationTipTrigger",
-      "order": 608,
+      "order": 609,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -83391,7 +83430,7 @@
     },
     {
       "name": "TintProcessionBezierControlPoint",
-      "order": 609,
+      "order": 610,
       "description": "One frame in time for a Bezier interpolation.",
       "abstract": false,
       "inline": true,
@@ -83459,7 +83498,7 @@
     },
     {
       "name": "TintProcessionLayer",
-      "order": 610,
+      "order": 611,
       "description": "Fullscreen overlay which blends gradient from top to bottom edge of the screen using [pre-multiplied alpha blending](prototype:BlendMode::normal).",
       "abstract": false,
       "inline": false,
@@ -83505,7 +83544,7 @@
     },
     {
       "name": "TipStatus",
-      "order": 611,
+      "order": 612,
       "description": "This is used by [TipsAndTricksItem](prototype:TipsAndTricksItem) for the initial starting status. One of the following values:",
       "abstract": false,
       "inline": false,
@@ -83558,7 +83597,7 @@
     },
     {
       "name": "TipTrigger",
-      "order": 612,
+      "order": 613,
       "description": "Loaded as one of the tip triggers, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -83816,7 +83855,7 @@
     },
     {
       "name": "ToggleRailLayerTipTrigger",
-      "order": 613,
+      "order": 614,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -83840,7 +83879,7 @@
     },
     {
       "name": "ToggleShowEntityInfoTipTrigger",
-      "order": 614,
+      "order": 615,
       "description": "Triggered when the player turns \"alt-mode\" on or off.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -83864,7 +83903,7 @@
     },
     {
       "name": "TrainBrakingForceBonusModifier",
-      "order": 615,
+      "order": 616,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -83912,7 +83951,7 @@
     },
     {
       "name": "TrainPathFinderConstants",
-      "order": 616,
+      "order": 617,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -84020,7 +84059,7 @@
     },
     {
       "name": "TrainStopDrawingBoxes",
-      "order": 617,
+      "order": 618,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -84064,7 +84103,7 @@
     },
     {
       "name": "TrainStopLight",
-      "order": 618,
+      "order": 619,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -84100,7 +84139,7 @@
     },
     {
       "name": "TrainVisualizationConstants",
-      "order": 619,
+      "order": 620,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -84192,7 +84231,7 @@
     },
     {
       "name": "TransitionApplication",
-      "order": 620,
+      "order": 621,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -84240,7 +84279,7 @@
     },
     {
       "name": "TransportBeltAnimationSet",
-      "order": 621,
+      "order": 622,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -84579,7 +84618,7 @@
     },
     {
       "name": "TransportBeltAnimationSetWithCorners",
-      "order": 622,
+      "order": 623,
       "description": "",
       "parent": "TransportBeltAnimationSet",
       "abstract": false,
@@ -84784,7 +84823,7 @@
     },
     {
       "name": "TransportBeltConnectorFrame",
-      "order": 623,
+      "order": 624,
       "description": "Used to define the graphics for the (in vanilla) yellow frame that is used when a [TransportBeltPrototype](prototype:TransportBeltPrototype) is connected to the circuit network.",
       "abstract": false,
       "inline": false,
@@ -84988,7 +85027,7 @@
     },
     {
       "name": "TravelToSpacePlatformsModifier",
-      "order": 624,
+      "order": 625,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -85024,7 +85063,7 @@
     },
     {
       "name": "TreeGrowth",
-      "order": 625,
+      "order": 626,
       "description": "[TreePrototype](prototype:TreePrototype)s develop over time. To introduce visual fidelity, the shape of the plant is shrunk and distorted using a warp texture, and it slowly retracts back into its grown state.",
       "abstract": false,
       "inline": false,
@@ -85100,7 +85139,7 @@
     },
     {
       "name": "TreeVariation",
-      "order": 626,
+      "order": 627,
       "description": "Tree has number of \"dying\" stages, which is deduced from frame count of `shadow` if shadow is defined, otherwise from frame count of `trunk`. Frame count of `leaves` has to be one less than deduced number stages, as last stage is always assumed to be leafless.",
       "abstract": false,
       "inline": false,
@@ -85300,7 +85339,7 @@
     },
     {
       "name": "Trigger",
-      "order": 627,
+      "order": 628,
       "description": "Loaded as one of the [TriggerItem](prototype:TriggerItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -85368,7 +85407,7 @@
     },
     {
       "name": "TriggerDelivery",
-      "order": 628,
+      "order": 629,
       "description": "Loaded as one of the [TriggerDeliveryItem](prototype:TriggerDeliveryItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -85416,7 +85455,7 @@
     },
     {
       "name": "TriggerDeliveryItem",
-      "order": 629,
+      "order": 630,
       "description": "The abstract base of all [TriggerDeliveries](prototype:TriggerDelivery).",
       "abstract": true,
       "inline": false,
@@ -85444,7 +85483,7 @@
     },
     {
       "name": "TriggerEffect",
-      "order": 630,
+      "order": 631,
       "description": "Loaded as one of the [TriggerEffectItem](prototype:TriggerEffectItem) extensions, based on the value of the `type` key.",
       "abstract": false,
       "inline": false,
@@ -85712,7 +85751,7 @@
     },
     {
       "name": "TriggerEffectItem",
-      "order": 631,
+      "order": 632,
       "description": "The abstract base of all [TriggerEffects](prototype:TriggerEffect).",
       "abstract": true,
       "inline": false,
@@ -85792,7 +85831,7 @@
     },
     {
       "name": "TriggerEffectWithCooldown",
-      "order": 632,
+      "order": 633,
       "description": "A [TriggerEffect](prototype:TriggerEffect) with cooldown conditions, used to limit the frequency of trigger effects that would otherwise fire every single tick. If multiple cooldown conditions are defined, then all cooldowns must be satisfied before the effect can be triggered.",
       "abstract": false,
       "inline": false,
@@ -85860,7 +85899,7 @@
     },
     {
       "name": "TriggerItem",
-      "order": 633,
+      "order": 634,
       "description": "The abstract base of all [Triggers](prototype:Trigger).",
       "abstract": true,
       "inline": false,
@@ -85962,7 +86001,7 @@
     },
     {
       "name": "TriggerTargetMask",
-      "order": 634,
+      "order": 635,
       "description": "An array of names of [TriggerTargetType](prototype:TriggerTargetType). See [Design discussion: Trigger target type](https://forums.factorio.com/71657) and [Blacklist for prototypes turrets shouldn't attack](https://forums.factorio.com/86164).",
       "abstract": false,
       "inline": false,
@@ -85973,7 +86012,7 @@
     },
     {
       "name": "TrivialSmokeID",
-      "order": 635,
+      "order": 636,
       "description": "The name of a [TrivialSmokePrototype](prototype:TrivialSmokePrototype).",
       "examples": [
         "```\n\"smoke-building\"\n```",
@@ -85985,7 +86024,7 @@
     },
     {
       "name": "TurretAttackModifier",
-      "order": 636,
+      "order": 637,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -86049,7 +86088,7 @@
     },
     {
       "name": "TurretBaseVisualisation",
-      "order": 637,
+      "order": 638,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -86176,7 +86215,7 @@
     },
     {
       "name": "TurretGraphicsSet",
-      "order": 638,
+      "order": 639,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -86214,7 +86253,7 @@
     },
     {
       "name": "TurretSpecialEffect",
-      "order": 639,
+      "order": 640,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -86301,7 +86340,7 @@
     },
     {
       "name": "TurretSpecialEffectCenter",
-      "order": 640,
+      "order": 641,
       "description": "If this is loaded as a single Vector, it is used for all directions.",
       "abstract": false,
       "inline": false,
@@ -86392,7 +86431,7 @@
     },
     {
       "name": "TurretState",
-      "order": 641,
+      "order": 642,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -86445,7 +86484,7 @@
     },
     {
       "name": "UndergroundBeltStructure",
-      "order": 642,
+      "order": 643,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -86521,7 +86560,7 @@
     },
     {
       "name": "UnitAISettings",
-      "order": 643,
+      "order": 644,
       "description": "Used by [UnitPrototype](prototype:UnitPrototype) and [SpiderUnitPrototype](prototype:SpiderUnitPrototype).",
       "abstract": false,
       "inline": false,
@@ -86613,7 +86652,7 @@
     },
     {
       "name": "UnitAlternativeFrameSequence",
-      "order": 644,
+      "order": 645,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -86731,7 +86770,7 @@
     },
     {
       "name": "UnitGroupSettings",
-      "order": 645,
+      "order": 646,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -86847,7 +86886,7 @@
     },
     {
       "name": "UnitSpawnDefinition",
-      "order": 646,
+      "order": 647,
       "description": "It can be specified as a table with named or numbered keys, but not a mix of both. If this is specified as a table with numbered keys then the first value is the unit and the second is the spawn points.",
       "abstract": false,
       "inline": false,
@@ -86894,7 +86933,7 @@
     },
     {
       "name": "UnlockLogisticNetworkModifier",
-      "order": 647,
+      "order": 648,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -86930,7 +86969,7 @@
     },
     {
       "name": "UnlockQualityModifier",
-      "order": 648,
+      "order": 649,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -86974,7 +87013,7 @@
     },
     {
       "name": "UnlockRecipeModifier",
-      "order": 649,
+      "order": 650,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -87018,7 +87057,7 @@
     },
     {
       "name": "UnlockRecipeTipTrigger",
-      "order": 650,
+      "order": 651,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87049,7 +87088,7 @@
     },
     {
       "name": "UnlockSpaceLocationModifier",
-      "order": 651,
+      "order": 652,
       "description": "",
       "parent": "BaseModifier",
       "abstract": false,
@@ -87093,7 +87132,7 @@
     },
     {
       "name": "UseConfirmTipTrigger",
-      "order": 652,
+      "order": 653,
       "description": "Triggered when using E to confirm a GUI that allows to pick from a certain kind of prototype.",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -87117,7 +87156,7 @@
     },
     {
       "name": "UseOnSelfCapsuleAction",
-      "order": 653,
+      "order": 654,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87160,7 +87199,7 @@
     },
     {
       "name": "UsePipetteTipTrigger",
-      "order": 654,
+      "order": 655,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -87184,7 +87223,7 @@
     },
     {
       "name": "UseRailPlannerTipTrigger",
-      "order": 655,
+      "order": 656,
       "description": "",
       "parent": "CountBasedTipTrigger",
       "abstract": false,
@@ -87216,7 +87255,7 @@
     },
     {
       "name": "ValveMode",
-      "order": 656,
+      "order": 657,
       "description": "Defines the mode of operation for a [ValvePrototype](prototype:ValvePrototype).",
       "abstract": false,
       "inline": false,
@@ -87244,7 +87283,7 @@
     },
     {
       "name": "VariableAmbientSoundCompositionMode",
-      "order": 657,
+      "order": 658,
       "description": "Defines how are individual samples selected and played after each other.",
       "abstract": false,
       "inline": false,
@@ -87277,7 +87316,7 @@
     },
     {
       "name": "VariableAmbientSoundLayer",
-      "order": 658,
+      "order": 659,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87412,7 +87451,7 @@
     },
     {
       "name": "VariableAmbientSoundLayerSample",
-      "order": 659,
+      "order": 660,
       "description": "First property is the name of a layer.\n\nSecond property is the sample index.",
       "abstract": false,
       "inline": false,
@@ -87426,7 +87465,7 @@
     },
     {
       "name": "VariableAmbientSoundLayerStateProperties",
-      "order": 660,
+      "order": 661,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87521,7 +87560,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateConditions",
-      "order": 661,
+      "order": 662,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87557,7 +87596,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateItem",
-      "order": 662,
+      "order": 663,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87585,7 +87624,7 @@
     },
     {
       "name": "VariableAmbientSoundNextStateTrigger",
-      "order": 663,
+      "order": 664,
       "description": "Defines how a transition to next state is triggered.",
       "abstract": false,
       "inline": false,
@@ -87608,7 +87647,7 @@
     },
     {
       "name": "VariableAmbientSoundState",
-      "order": 664,
+      "order": 665,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87721,7 +87760,7 @@
     },
     {
       "name": "VariableAmbientSoundStateType",
-      "order": 665,
+      "order": 666,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87754,7 +87793,7 @@
     },
     {
       "name": "VariableAmbientSoundVariableSound",
-      "order": 666,
+      "order": 667,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87816,7 +87855,7 @@
     },
     {
       "name": "Vector",
-      "order": 667,
+      "order": 668,
       "description": "A vector is a two-element array or dictionary containing the x and y components. Positive x goes east, positive y goes south.",
       "examples": [
         "```\nshift = {0, 12}\n```",
@@ -87862,7 +87901,7 @@
     },
     {
       "name": "Vector3D",
-      "order": 668,
+      "order": 669,
       "description": "If this is specified as a three-element array then the array items are x, y and z, in that order.",
       "abstract": false,
       "inline": false,
@@ -87912,7 +87951,7 @@
     },
     {
       "name": "Vector4f",
-      "order": 669,
+      "order": 670,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -87971,7 +88010,7 @@
     },
     {
       "name": "VectorRotation",
-      "order": 670,
+      "order": 671,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -88002,7 +88041,7 @@
     },
     {
       "name": "VehicleLogisticsModifier",
-      "order": 671,
+      "order": 672,
       "description": "",
       "parent": "BoolModifier",
       "abstract": false,
@@ -88038,7 +88077,7 @@
     },
     {
       "name": "VerticalAlign",
-      "order": 672,
+      "order": 673,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -88066,7 +88105,7 @@
     },
     {
       "name": "VerticalFlowStyleSpecification",
-      "order": 673,
+      "order": 674,
       "description": "Root style: `\"vertical_flow\"`",
       "parent": "BaseStyleSpecification",
       "abstract": false,
@@ -88098,7 +88137,7 @@
     },
     {
       "name": "VerticalScrollBarStyleSpecification",
-      "order": 674,
+      "order": 675,
       "description": "Root style: `\"vertical_scrollbar\"`",
       "parent": "ScrollBarStyleSpecification",
       "abstract": false,
@@ -88122,7 +88161,7 @@
     },
     {
       "name": "VirtualSignalID",
-      "order": 675,
+      "order": 676,
       "description": "The name of a [VirtualSignalPrototype](prototype:VirtualSignalPrototype).",
       "examples": [
         "```\n\"signal-red\"\n```",
@@ -88134,7 +88173,7 @@
     },
     {
       "name": "VisualState",
-      "order": 676,
+      "order": 677,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -88186,7 +88225,7 @@
     },
     {
       "name": "VoidEnergySource",
-      "order": 677,
+      "order": 678,
       "description": "Void energy sources provide unlimited free energy.",
       "examples": [
         "```\nenergy_source = {type = \"void\"}\n```"
@@ -88213,7 +88252,7 @@
     },
     {
       "name": "WallPictures",
-      "order": 678,
+      "order": 679,
       "description": "",
       "abstract": false,
       "inline": true,
@@ -88313,7 +88352,7 @@
     },
     {
       "name": "WaterReflectionDefinition",
-      "order": 679,
+      "order": 680,
       "description": "Entity water reflection. [Currently only renders](https://forums.factorio.com/100703) for [EntityWithHealthPrototype](prototype:EntityWithHealthPrototype).",
       "abstract": false,
       "inline": false,
@@ -88357,7 +88396,7 @@
     },
     {
       "name": "WaterTileEffectParameters",
-      "order": 680,
+      "order": 681,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -88603,7 +88642,7 @@
     },
     {
       "name": "Weight",
-      "order": 681,
+      "order": 682,
       "description": "Weight of an object. The weight is stored as a fixed-size 64 bit integer, with 16 bits reserved for decimal precision, meaning the smallest value step is `1/2^16`.",
       "abstract": false,
       "inline": false,
@@ -88611,7 +88650,7 @@
     },
     {
       "name": "WireConnectionPoint",
-      "order": 682,
+      "order": 683,
       "description": "Definition of a point where circuit network wires can be connected to an entity.",
       "abstract": false,
       "inline": false,
@@ -88639,7 +88678,7 @@
     },
     {
       "name": "WirePosition",
-      "order": 683,
+      "order": 684,
       "description": "Used by [WireConnectionPoint](prototype:WireConnectionPoint).",
       "abstract": false,
       "inline": false,
@@ -88675,7 +88714,7 @@
     },
     {
       "name": "WorkerRobotBatteryModifier",
-      "order": 684,
+      "order": 685,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -88723,7 +88762,7 @@
     },
     {
       "name": "WorkerRobotSpeedModifier",
-      "order": 685,
+      "order": 686,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -88771,7 +88810,7 @@
     },
     {
       "name": "WorkerRobotStorageModifier",
-      "order": 686,
+      "order": 687,
       "description": "",
       "parent": "SimpleModifier",
       "abstract": false,
@@ -88819,7 +88858,7 @@
     },
     {
       "name": "WorkingSound",
-      "order": 687,
+      "order": 688,
       "description": "This type is used to produce sound from in-game entities when they are working/idle.",
       "examples": [
         "```\n-- refinery\nworking_sound =\n{\n  sound = {filename = \"__base__/sound/oil-refinery.ogg\"},\n  idle_sound = {filename = \"__base__/sound/idle1.ogg\", volume = 0.6},\n}\n```",
@@ -88947,7 +88986,7 @@
     },
     {
       "name": "WorkingVisualisation",
-      "order": 688,
+      "order": 689,
       "description": "Used by crafting machines to display different graphics when the machine is running.",
       "abstract": false,
       "inline": false,
@@ -89421,7 +89460,7 @@
     },
     {
       "name": "WorkingVisualisations",
-      "order": 689,
+      "order": 690,
       "description": "",
       "abstract": true,
       "inline": false,
@@ -89539,7 +89578,7 @@
     },
     {
       "name": "WorldAmbientSoundDefinition",
-      "order": 690,
+      "order": 691,
       "description": "",
       "abstract": false,
       "inline": false,
@@ -89626,7 +89665,7 @@
     },
     {
       "name": "boolean",
-      "order": 691,
+      "order": 692,
       "description": "A variable type which can have one of two values: `true` or `false`. Wikipedia has a [comprehensive article](https://en.wikipedia.org/wiki/Boolean) on Booleans.",
       "abstract": false,
       "inline": false,
@@ -89634,7 +89673,7 @@
     },
     {
       "name": "double",
-      "order": 692,
+      "order": 693,
       "description": "Format uses a dot as its decimal delimiter. Doubles are stored in the [double precision](https://en.wikipedia.org/wiki/Double-precision_floating-point_format) floating point format.\n\nMay not be [NaN](https://en.wikipedia.org/wiki/NaN).",
       "examples": [
         "```\n7.5\n6\n```"
@@ -89645,7 +89684,7 @@
     },
     {
       "name": "float",
-      "order": 693,
+      "order": 694,
       "description": "Format uses a dot as its decimal delimiter. Floats are stored in the [single precision](https://en.wikipedia.org/wiki/Single-precision_floating-point_format) floating point format.\n\nMay not be [NaN](https://en.wikipedia.org/wiki/NaN).",
       "examples": [
         "```\n7.5\n6\n```"
@@ -89656,7 +89695,7 @@
     },
     {
       "name": "int16",
-      "order": 694,
+      "order": 695,
       "description": "16 bit signed integer. Ranges from `-32 768` to `32 767`, or `[-2^15, 2^15-1]`.\n\nDecimal numbers are automatically truncated when used in place of `int16`.",
       "abstract": false,
       "inline": false,
@@ -89664,7 +89703,7 @@
     },
     {
       "name": "int32",
-      "order": 695,
+      "order": 696,
       "description": "32 bit signed integer. Ranges from `-2 147 483 648` to `2 147 483 647`, or `[-2^31, 2^31-1]`.\n\nDecimal numbers are automatically truncated when used in place of `int32`.",
       "abstract": false,
       "inline": false,
@@ -89672,7 +89711,7 @@
     },
     {
       "name": "int8",
-      "order": 696,
+      "order": 697,
       "description": "8 bit signed integer. Ranges from `-128` to `127`, or `[-2^7, 2^7-1]`.\n\nDecimal numbers are automatically truncated when used in place of `int8`.",
       "abstract": false,
       "inline": false,
@@ -89680,7 +89719,7 @@
     },
     {
       "name": "number",
-      "order": 697,
+      "order": 698,
       "description": "Any kind of integer or floating point number.",
       "abstract": false,
       "inline": false,
@@ -89688,7 +89727,7 @@
     },
     {
       "name": "string",
-      "order": 698,
+      "order": 699,
       "description": "Strings are enclosed in double-quotes.",
       "examples": [
         "```\n\"Hello, world!\"\n```"
@@ -89699,7 +89738,7 @@
     },
     {
       "name": "table",
-      "order": 699,
+      "order": 700,
       "description": "A simple [Lua table](https://www.lua.org/pil/2.5.html). An array is a table that uses continuous integer keys starting at `1`, while a dictionary can use numeric or string keys in any order or combination.\n\nTables used by prototypes may be parsed via an internal class called \"property tree\". Errors that reference this class treat tables as 0-indexed. For example `Value must be a number in property tree at ROOT.technology.steel-plate-productivity.effects[0].change` refers to element 0 of the property tree array which in Lua is at index 1.",
       "abstract": false,
       "inline": false,
@@ -89707,7 +89746,7 @@
     },
     {
       "name": "uint16",
-      "order": 700,
+      "order": 701,
       "description": "16 bit unsigned integer. Ranges from `0` to `65 535`, or `[0, 2^16-1]`.\n\nDecimal numbers are automatically truncated when used in place of `uint16`.",
       "abstract": false,
       "inline": false,
@@ -89715,7 +89754,7 @@
     },
     {
       "name": "uint32",
-      "order": 701,
+      "order": 702,
       "description": "32 bit unsigned integer. Ranges from `0` to `4 294 967 295`, or `[0, 2^32-1]`.\n\nDecimal numbers are automatically truncated when used in place of `uint32`.",
       "abstract": false,
       "inline": false,
@@ -89723,7 +89762,7 @@
     },
     {
       "name": "uint64",
-      "order": 702,
+      "order": 703,
       "description": "64 bit unsigned integer. Ranges from `0` to `18 446 744 073 709 551 615`, or `[0, 2^64-1]`.\n\nDecimal numbers are automatically truncated when used in place of `uint64`.",
       "abstract": false,
       "inline": false,
@@ -89731,7 +89770,7 @@
     },
     {
       "name": "uint8",
-      "order": 703,
+      "order": 704,
       "description": "8 bit unsigned integer. Ranges from `0` to `255`, or `[0, 2^8-1]`.\n\nDecimal numbers are automatically truncated when used in place of `uint8`.",
       "abstract": false,
       "inline": false,
@@ -97322,7 +97361,7 @@
       "values": [
         {
           "name": "alt_reverse_select",
-          "order": 3,
+          "order": 4,
           "description": ""
         },
         {
@@ -97332,12 +97371,17 @@
         },
         {
           "name": "reverse_select",
-          "order": 2,
+          "order": 3,
           "description": ""
         },
         {
           "name": "select",
           "order": 0,
+          "description": ""
+        },
+        {
+          "name": "super_forced_select",
+          "order": 2,
           "description": ""
         }
       ]
