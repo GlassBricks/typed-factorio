@@ -127,6 +127,48 @@ declare module "factorio:runtime" {
      */
     readonly orientation?: RealOrientation
   }
+  export interface OnRecipeCraftedData {
+    /**
+     * Identifier of the event.
+     */
+    readonly name: defines.events
+    /**
+     * Tick the event was generated.
+     */
+    readonly tick: MapTick
+    /**
+     * Entity that crafted recipe.
+     */
+    readonly entity: LuaEntity
+    /**
+     * Name of recipe that was crafted.
+     */
+    readonly recipe: string
+    /**
+     * Quality of the recipe crafted.
+     */
+    readonly recipe_quality: string
+    /**
+     * Quality effect used when giving products. Not provided if value is 0. May be different than value obtained from {@link LuaEntity#effects LuaEntity::effects} when quality modules were changed between craft starting and products being given.
+     */
+    readonly quality_effect?: EffectValue
+    /**
+     * Random value in range [0, 1) that was used when selecting product quality. Only provided when quality_effect is provided.
+     */
+    readonly quality_seed?: double
+    /**
+     * Quality of products given. May be different than recipe quality if quality modules are present. Always provided even if quality_effect is zero because {@link LuaEntity#result_quality LuaEntity::result_quality} may have been used. Only used by products without quality control.
+     */
+    readonly product_quality: string
+    /**
+     * If crafted as part of bonus products.
+     */
+    readonly bonus: boolean
+    /**
+     * Random value in range {@link import("factorio:prototype").ProductPrototypeBase#shared_probability 0, 1) used as part of shared roll when giving products. Related to [ProductPrototypeBase::shared_probability}.
+     */
+    readonly shared_roll: double
+  }
   /**
    * ## Union members
    * - `"input"`
@@ -4216,6 +4258,7 @@ declare module "factorio:runtime" {
     target_entity_number: uint32,
     target_wire_connector_id: defines.wire_connector_id,
   ]
+  export type PropertyTree = unknown
   export interface UndoRedoEquipment {
     readonly id: LuaEquipmentPrototype
     readonly position: EquipmentPosition
