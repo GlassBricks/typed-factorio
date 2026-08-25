@@ -169,7 +169,8 @@ function getTypeFromTsType(type: ts.TypeNode | undefined): Type {
     ts.isConditionalTypeNode(type) ||
     type.kind === ts.SyntaxKind.BooleanKeyword ||
     type.kind === ts.SyntaxKind.StringKeyword ||
-    type.kind === ts.SyntaxKind.NumberKeyword
+    type.kind === ts.SyntaxKind.NumberKeyword ||
+    type.kind === ts.SyntaxKind.UnknownKeyword
   ) {
     return type.getText()
   }
