@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.16",
+  "application_version": "2.1.17",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -49317,9 +49317,23 @@
                 {
                   "name": "filter",
                   "order": 0,
-                  "description": "",
+                  "description": "Note: since quickbar slots are also of type ItemFilter, filter is used as a value: it must be equal [QuickBarSlot::filter](runtime:QuickBarSlot::filter).",
                   "type": "ItemFilter",
-                  "optional": false
+                  "optional": true
+                },
+                {
+                  "name": "page_index",
+                  "order": 1,
+                  "description": "",
+                  "type": "uint8",
+                  "optional": true
+                },
+                {
+                  "name": "slot_index",
+                  "order": 2,
+                  "description": "",
+                  "type": "uint8",
+                  "optional": true
                 }
               ]
             },
@@ -96350,6 +96364,11 @@
             "complex_type": "literal",
             "value": "elevated-rail-metal",
             "description": "137"
+          },
+          {
+            "complex_type": "literal",
+            "value": "elevated-rail-above-metal",
+            "description": "138"
           },
           {
             "complex_type": "literal",

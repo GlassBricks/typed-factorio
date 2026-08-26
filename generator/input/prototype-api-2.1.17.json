@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.16",
+  "application_version": "2.1.17",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -72137,6 +72137,11 @@
           {
             "complex_type": "literal",
             "value": "elevated-rail-metal",
+            "description": ""
+          },
+          {
+            "complex_type": "literal",
+            "value": "elevated-rail-above-metal",
             "description": ""
           },
           {
