@@ -261,9 +261,6 @@ export interface LuaRemote {
 
 // events
 
-/** @usage r */
-export interface OnRecipeCraftedData {}
-
 /** @addTo concepts before EventData */
 export type RaiseableEvents =
   | typeof defines.events.on_console_chat
@@ -280,10 +277,6 @@ export type RaiseableEvents =
 export interface EventData {
   readonly name: EventId<EventData> | string
 }
-
-/** @addTo concepts before UndoRedoEquipment */
-/** Currently absent from docs (upstream bug!). */
-export type PropertyTree = unknown
 
 export interface CustomInputEvent {}
 
