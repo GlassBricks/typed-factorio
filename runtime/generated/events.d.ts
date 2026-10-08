@@ -97,7 +97,7 @@ declare module "factorio:runtime" {
     /**
      * Identifier of the event.
      */
-    readonly name: typeof defines.events.RecipeCraftedEvent
+    readonly name: defines.events
     /**
      * Tick the event was generated.
      */

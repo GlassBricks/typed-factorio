@@ -46,7 +46,19 @@ function analyzeAttribute(context: RuntimeGenerationContext, attribute: Attribut
   }
 }
 
+function warnIfLandmineWorkaroundObsolete(context: RuntimeGenerationContext): void {
+  const stillMiscased = [...context.classes.values()].some((clazz) =>
+    [...clazz.attributes, ...clazz.methods].some((member) => member.subclasses?.includes("Landmine")),
+  )
+  if (!stillMiscased) {
+    context.warning(
+      'No "Landmine" subclass found; remove LandMine subclass casing workaround in resolveKnownNameConflict',
+    )
+  }
+}
+
 export function generateClasses(context: RuntimeGenerationContext): void {
+  warnIfLandmineWorkaroundObsolete(context)
   context.addFile("classes", FactorioModule.Runtime, () => {
     for (const clazz of context.classes.values()) {
       const existing = context.manualDefs.getDeclaration(clazz.name)
@@ -295,12 +307,7 @@ function generateClass(
     function resolveKnownNameConflict(a: UseName, b: UseName): UseName | undefined {
       const names = [a, b]
       if (names.includes("LandMine" as UseName) && names.includes("Landmine" as UseName)) {
-        const workaroundVersion = "2.1.16"
-        if (context.factorioVersion !== workaroundVersion) {
-          context.warning(
-            `LandMine subclass casing workaround is for factorio ${workaroundVersion}, but current version is ${context.factorioVersion}; re-check whether it is still needed`,
-          )
-        }
+        // upstream bug, see warnIfLandmineWorkaroundObsolete
         return "LandMine" as UseName
       }
       return undefined

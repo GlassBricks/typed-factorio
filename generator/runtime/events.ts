@@ -32,8 +32,10 @@ export function generateEvents(context: RuntimeGenerationContext): void {
         undefined,
         heritageClause,
         event.data.sort(byOrder).map((p) => {
-          if (p.name === "name" && event.name !== "CustomInputEvent") {
-            p.type = `typeof ${p.type as string}.${event.name}`
+          // Some events (e.g. CustomInputEvent) have no constant in defines.events
+          const definesValue = `${p.type as string}.${event.name}`
+          if (p.name === "name" && context.tsToFactorioType.has(definesValue)) {
+            p.type = `typeof ${definesValue}`
           }
           return mapParameterToProperty(context, p, name, RWUsage.Read, existing).mainProperty
         }),

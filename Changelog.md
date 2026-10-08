@@ -1,6 +1,7 @@
 # v4.6.0
 
 - Updated to factorio version 2.1.21
+- Removed the placeholder `PropertyTree` type.
 
 # v4.5.0
 
