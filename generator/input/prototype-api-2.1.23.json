@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.22",
+  "application_version": "2.1.23",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -61195,7 +61195,12 @@
             {
               "complex_type": "literal",
               "value": "draw-logistic-overlay",
-              "description": "Whether the logistics areas of roboports should be drawn when holding this item. Used for example by the [deconstruction planner](https://wiki.factorio.com/Deconstruction_planner)."
+              "description": "Whether the logistics areas of roboports should be drawn when holding this item. Used for example by the [deconstruction planner](https://wiki.factorio.com/Deconstruction_planner). The overlay will also be drawn in some instances without this flag enabled."
+            },
+            {
+              "complex_type": "literal",
+              "value": "disable-logistic-overlay",
+              "description": "The logistics areas of roboports are never drawn when holding this item. Can't be used together with `\"draw-logistic-overlay\"`."
             },
             {
               "complex_type": "literal",
