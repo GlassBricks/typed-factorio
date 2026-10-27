@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.22",
+  "application_version": "2.1.24",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -1069,6 +1069,24 @@
       "abstract": false,
       "methods": [
         {
+          "name": "finish_test",
+          "order": 15,
+          "description": "Finishes the test when the game was started with `--test-scenario` or `--test-save`: the game exits after the current tick, with exit code 0 if the test passed and 1 if it failed. Does nothing otherwise.",
+          "parameters": [
+            {
+              "name": "passed",
+              "order": 0,
+              "description": "Whether the test passed. Defaults to `true`.",
+              "type": "boolean",
+              "optional": true
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": []
+        },
+        {
           "name": "generate_event_name",
           "order": 7,
           "description": "Generate a new, unique event ID that can be used to raise custom events with [LuaBootstrap::raise_event](runtime:LuaBootstrap::raise_event).",
@@ -1421,7 +1439,7 @@
         },
         {
           "name": "raise_biter_base_built",
-          "order": 19,
+          "order": 20,
           "description": "",
           "raises": [
             {
@@ -1449,7 +1467,7 @@
         },
         {
           "name": "raise_console_chat",
-          "order": 16,
+          "order": 17,
           "description": "",
           "raises": [
             {
@@ -1484,7 +1502,7 @@
         },
         {
           "name": "raise_event",
-          "order": 15,
+          "order": 16,
           "description": "Raise an event. Only events generated with [LuaBootstrap::generate_event_name](runtime:LuaBootstrap::generate_event_name) and the following can be raised:",
           "lists": [
             "Events that can be raised manually:\n\n- [on_console_chat](runtime:on_console_chat)\n- [on_player_crafted_item](runtime:on_player_crafted_item)\n- [on_player_fast_transferred](runtime:on_player_fast_transferred)\n- [on_biter_base_built](runtime:on_biter_base_built)\n- [on_market_item_purchased](runtime:on_market_item_purchased)\n- [script_raised_built](runtime:script_raised_built)\n- [script_raised_destroy](runtime:script_raised_destroy)\n- [script_raised_revive](runtime:script_raised_revive)\n- [script_raised_teleported](runtime:script_raised_teleported)\n- [script_raised_set_tiles](runtime:script_raised_set_tiles)"
@@ -1515,7 +1533,7 @@
         },
         {
           "name": "raise_market_item_purchased",
-          "order": 20,
+          "order": 21,
           "description": "",
           "raises": [
             {
@@ -1564,7 +1582,7 @@
         },
         {
           "name": "raise_player_crafted_item",
-          "order": 17,
+          "order": 18,
           "description": "",
           "raises": [
             {
@@ -1606,7 +1624,7 @@
         },
         {
           "name": "raise_player_fast_transferred",
-          "order": 18,
+          "order": 19,
           "description": "",
           "raises": [
             {
@@ -1655,7 +1673,7 @@
         },
         {
           "name": "raise_script_built",
-          "order": 21,
+          "order": 22,
           "description": "",
           "raises": [
             {
@@ -1683,7 +1701,7 @@
         },
         {
           "name": "raise_script_destroy",
-          "order": 22,
+          "order": 23,
           "description": "",
           "raises": [
             {
@@ -1711,7 +1729,7 @@
         },
         {
           "name": "raise_script_destroy_segmented_unit",
-          "order": 26,
+          "order": 27,
           "description": "",
           "raises": [
             {
@@ -1739,7 +1757,7 @@
         },
         {
           "name": "raise_script_revive",
-          "order": 23,
+          "order": 24,
           "description": "",
           "raises": [
             {
@@ -1774,7 +1792,7 @@
         },
         {
           "name": "raise_script_set_tiles",
-          "order": 25,
+          "order": 26,
           "description": "",
           "raises": [
             {
@@ -1812,7 +1830,7 @@
         },
         {
           "name": "raise_script_teleported",
-          "order": 24,
+          "order": 25,
           "description": "",
           "raises": [
             {
@@ -2077,10 +2095,17 @@
         },
         {
           "name": "object_name",
-          "order": 4,
+          "order": 5,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
+        },
+        {
+          "name": "test_arg",
+          "order": 4,
+          "description": "The string given with `--test-arg` when the game was started with `--test-scenario` or `--test-save`.",
+          "read_type": "string",
+          "optional": true
         }
       ],
       "operators": []
@@ -27752,7 +27777,7 @@
           "parameters": [
             {
               "name": "allow_in_replay",
-              "order": 14,
+              "order": 15,
               "description": "Whether to save the screenshot even during replay playback. Defaults to `false`.",
               "type": "boolean",
               "optional": true
@@ -27773,14 +27798,14 @@
             },
             {
               "name": "daytime",
-              "order": 15,
+              "order": 16,
               "description": "Overrides the current surface daytime for the duration of screenshot rendering.",
               "type": "double",
               "optional": true
             },
             {
               "name": "force_render",
-              "order": 17,
+              "order": 18,
               "description": "Screenshot requests are processed in between game update and render. The game may skip rendering (ie. drop frames) if the previous frame has not finished rendering or the game simulation starts to fall below 60 updates per second. If `force_render` is set to `true`, the game won't drop frames and process the screenshot request at the end of the update in which the request was created. This is not honored on multiplayer clients that are catching up to server. Defaults to `false`.",
               "type": "boolean",
               "optional": true
@@ -27796,6 +27821,13 @@
               "name": "hide_fog",
               "order": 12,
               "description": "If `true` fog effect and foreground space dust effect won't be rendered. Defaults to `false`.",
+              "type": "boolean",
+              "optional": true
+            },
+            {
+              "name": "hide_health_bars",
+              "order": 13,
+              "description": "If `true` entity health bars won't be rendered. Defaults to `false`.",
               "type": "boolean",
               "optional": true
             },
@@ -27822,7 +27854,7 @@
             },
             {
               "name": "quality",
-              "order": 13,
+              "order": 14,
               "description": "The `.jpg` render quality as a percentage (from 0% to 100% inclusive), if used. A lower value means a more compressed image. Defaults to `80`.",
               "type": "int32",
               "optional": true
@@ -27864,7 +27896,7 @@
             },
             {
               "name": "water_tick",
-              "order": 16,
+              "order": 17,
               "description": "Overrides the tick of water animation, if animated water is enabled.",
               "type": "uint32",
               "optional": true
@@ -38458,7 +38490,7 @@
     {
       "name": "LuaPin",
       "order": 94,
-      "description": "A pin owned by a player.",
+      "description": "A map pin owned by a player.",
       "abstract": false,
       "methods": [
         {
@@ -38493,7 +38525,7 @@
         {
           "name": "alert_positions",
           "order": 11,
-          "description": "The alert positions if this pin is configured to show alert data.",
+          "description": "The alert positions, if this pin targets an alert.",
           "read_type": {
             "complex_type": "array",
             "value": "MapPosition"
@@ -38507,7 +38539,7 @@
         {
           "name": "alert_type",
           "order": 10,
-          "description": "The type of alert this pin is for (if configured to be about alerts).",
+          "description": "The type of alert this pin is for, if this pin targets an alert.",
           "read_type": "defines.alert_type",
           "write_type": "defines.alert_type",
           "optional": true
@@ -38523,7 +38555,7 @@
         {
           "name": "chart_tag",
           "order": 6,
-          "description": "The custom chart tag - if this pin specifically binds to a chart tag.\n\nThe chart tag must be on the same force as the owning player.",
+          "description": "The custom chart tag, if this pin specifically targets a chart tag.\n\nThe chart tag must be on the same force as the [owning player](runtime:LuaPin::owner).",
           "read_type": "LuaCustomChartTag",
           "write_type": "LuaCustomChartTag",
           "optional": true
@@ -38531,14 +38563,14 @@
         {
           "name": "index",
           "order": 0,
-          "description": "The index of this pin (unique to this player).\n\nNote that this index has no correlation to the position of the pin within [LuaPlayer::get_pins](runtime:LuaPlayer::get_pins)",
+          "description": "The index of this pin. The index is unique to this player.\n\nNote that this index has no correlation to the position of the pin within [LuaPlayer::get_pins](runtime:LuaPlayer::get_pins).",
           "read_type": "uint32",
           "optional": false
         },
         {
           "name": "label",
           "order": 7,
-          "description": "The label for this pin - if any. This will be an empty string if there is no label set.",
+          "description": "The label for this pin, if any. This will be an empty string if there is no label set.",
           "read_type": "string",
           "write_type": "string",
           "optional": false
@@ -38560,15 +38592,15 @@
         {
           "name": "player",
           "order": 2,
-          "description": "The player that this pin is bound to.",
+          "description": "The player that this pin targets, if any.",
           "read_type": "LuaPlayer",
-          "write_type": "LuaPlayer",
+          "write_type": "PlayerIdentification",
           "optional": true
         },
         {
           "name": "position",
           "order": 5,
-          "description": "The position if this pin specifically binds to a surface and position.\n\nIf writing, and this pin was not bound to a specific surface and position, the default surface of nauvis is used.",
+          "description": "The position if this pin specifically targets a surface and position.\n\nWhen writing, and this pin was not bound to a specific surface and position, the default surface of nauvis is used.",
           "read_type": "MapPosition",
           "write_type": "MapPosition",
           "optional": true
@@ -38584,7 +38616,7 @@
         {
           "name": "surface_index",
           "order": 4,
-          "description": "The surface index if this pin specifically binds to a surface and position.\n\nIf writing, and this pin was not bound to a specific surface and position, the default position of (0,0) is used.",
+          "description": "The surface index if this pin specifically targets a surface and position.\n\nWhen writing, and this pin was not bound to a specific surface and position, the default position of `{0, 0}` is used.",
           "read_type": "uint32",
           "write_type": "uint32",
           "optional": true
@@ -38592,7 +38624,7 @@
         {
           "name": "targets",
           "order": 3,
-          "description": "The targets of this pin - if any.",
+          "description": "The entities that this pin targets, if any.",
           "read_type": {
             "complex_type": "array",
             "value": "LuaEntity"
@@ -67829,7 +67861,7 @@
       "data": [
         {
           "name": "name",
-          "order": 2,
+          "order": 1,
           "description": "Identifier of the event.",
           "type": "defines.events",
           "optional": false
@@ -67842,15 +67874,8 @@
           "optional": false
         },
         {
-          "name": "player_port",
-          "order": 1,
-          "description": "The player port used to respawn if one was used.",
-          "type": "LuaEntity",
-          "optional": true
-        },
-        {
           "name": "tick",
-          "order": 3,
+          "order": 2,
           "description": "Tick the event was generated.",
           "type": "MapTick",
           "optional": false
@@ -84670,7 +84695,7 @@
     {
       "name": "ItemFilter",
       "order": 45,
-      "description": "An item filter may be specified in two ways, either as a string which is an item prototype name or as a table.",
+      "description": "An item filter may be specified in two ways, either as a string which is an item prototype name or as a table.\n\nIf this is specified as a string that is an item prototype name, then quality is set to `\"normal\"` and the comparator is set to `\"=\"`, so only normal quality items will match the filter.",
       "type": {
         "complex_type": "union",
         "options": [
@@ -84680,7 +84705,7 @@
               {
                 "name": "comparator",
                 "order": 2,
-                "description": "The quality comparison type.",
+                "description": "The quality comparison type. Defaults to `\"=\"`.",
                 "type": "ComparatorString",
                 "optional": true
               },
@@ -84694,7 +84719,7 @@
               {
                 "name": "quality",
                 "order": 1,
-                "description": "The quality.",
+                "description": "The quality. Defaults to empty, so any quality items will match the filter.",
                 "type": "QualityID",
                 "optional": true
               }
@@ -85512,6 +85537,11 @@
             "complex_type": "literal",
             "value": "draw-logistic-overlay",
             "description": "Determines whether the logistics areas of roboports should be drawn when holding this item. Used by the deconstruction planner by default."
+          },
+          {
+            "complex_type": "literal",
+            "value": "disable-logistic-overlay",
+            "description": "Prevents the logistics areas of roboports from being drawn when holding this item."
           },
           {
             "complex_type": "literal",
