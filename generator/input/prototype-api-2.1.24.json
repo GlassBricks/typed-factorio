@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.22",
+  "application_version": "2.1.24",
   "api_version": 6,
   "stage": "prototype",
   "prototypes": [
@@ -3866,7 +3866,7 @@
         {
           "name": "maximum_input_temperature",
           "order": 8,
-          "description": "If specified, an input fluid above this temperature will cause the boiler to stop working.",
+          "description": "If specified, an input fluid above this temperature will cause the boiler to stop working. This can be lower than the `target_temperature` for heating the fluid.",
           "override": false,
           "type": "float",
           "optional": true
@@ -4726,7 +4726,7 @@
     {
       "name": "CargoPodPrototype",
       "order": 39,
-      "description": "",
+      "description": "Entity used to send cargo between the [cargo hatches](prototype:CargoHatchDefinition) of [cargo landing pads](prototype:CargoLandingPadPrototype), [space platform hubs](prototype:SpacePlatformHubPrototype), [cargo bays](prototype:CargoBayPrototype) and [rocket silos](prototype:RocketSiloPrototype).\n\nThe pod for sending cargo is determined by [CargoHatchDefinition::cargo_unit_entity_to_spawn](prototype:CargoHatchDefinition::cargo_unit_entity_to_spawn). A cargo pod will only be sent to a destination if [receiving_cargo_units](prototype:CargoHatchDefinition::receiving_cargo_units) of the destination hatch contains the cargo pod.",
       "parent": "EntityWithOwnerPrototype",
       "abstract": false,
       "typename": "cargo-pod",
@@ -4759,7 +4759,7 @@
         {
           "name": "inventory_size",
           "order": 5,
-          "description": "",
+          "description": "The amount of item stacks that this cargo pod can transport.",
           "override": false,
           "type": "ItemStackIndex",
           "optional": false
@@ -4803,7 +4803,7 @@
         {
           "name": "spawned_container",
           "order": 6,
-          "description": "",
+          "description": "The entity that is created if this cargo pod lands on the ground instead of in a cargo hatch. The transported items will be transferred into the spawned entity.",
           "override": false,
           "type": "EntityID",
           "optional": false
@@ -13427,7 +13427,7 @@
         {
           "name": "scale_fluid_usage",
           "order": 11,
-          "description": "Scales the generator's fluid usage to its maximum power output.\n\nSetting this to true prevents the generator from overconsuming fluid, for example when higher than`maximum_temperature` fluid is fed to the generator.\n\nIf scale_fluid_usage is false, the generator consumes the full `fluid_usage_per_tick` and any of the extra energy in the fluid (in the form of higher temperature) is wasted. The [steam engine](https://wiki.factorio.com/Steam_engine) exhibits this behavior when fed steam from [heat exchangers](https://wiki.factorio.com/Heat_exchanger).",
+          "description": "Scales the generator's fluid usage to its maximum power output.\n\nSetting this to `true` prevents the generator from overconsuming fluid, for example when higher than `maximum_temperature` fluid is fed to the generator.\n\nIf scale_fluid_usage is false, the generator consumes the full `fluid_usage_per_tick` and any of the extra energy in the fluid (in the form of higher temperature) is wasted. The [steam engine](https://wiki.factorio.com/Steam_engine) exhibits this behavior when fed steam from [heat exchangers](https://wiki.factorio.com/Heat_exchanger).",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -25347,7 +25347,7 @@
         {
           "name": "send_pre_selection_events",
           "order": 8,
-          "description": "If true, the selection tool will send pre-selection events to mods [defines.events.on_player_start_select_area](runtime:defines.events.on_player_start_select_area), [defines.events.on_player_change_select_area](runtime:defines.events.on_player_change_select_area), and [defines.events.on_player_cancel_select_area](runtime:defines.events.on_player_cancel_select_area). Off by default because it will incur a performance penalty in multiplayer. It should only be enabled if a mod specifically needs it.",
+          "description": "If true, the selection tool will send pre-selection events to mods [defines.events.on_player_start_selected_area](runtime:defines.events.on_player_start_selected_area), [defines.events.on_player_change_selected_area](runtime:defines.events.on_player_change_selected_area), and [defines.events.on_player_cancel_selected_area](runtime:defines.events.on_player_cancel_selected_area). Off by default because it will incur a performance penalty in multiplayer. It should only be enabled if a mod specifically needs it.",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -47478,7 +47478,7 @@
         {
           "name": "cargo_unit_entity_to_spawn",
           "order": 12,
-          "description": "",
+          "description": "The [cargo pod](prototype:CargoPodPrototype) that this cargo hatch spawns when sending cargo.",
           "override": false,
           "type": "EntityID",
           "optional": true
@@ -47573,7 +47573,7 @@
         {
           "name": "receiving_cargo_units",
           "order": 14,
-          "description": "",
+          "description": "The [cargo pods](prototype:CargoPodPrototype) that this cargo hatch can receive.",
           "override": false,
           "type": {
             "complex_type": "array",
@@ -57371,7 +57371,7 @@
         {
           "name": "effectivity",
           "order": 5,
-          "description": "`1` means 100% effectivity. Must be greater than `0`. Multiplier of the energy output.",
+          "description": "`1` means 100% effectivity. Must be greater than `0`.\n\nHow much energy the fluid energy source produces compared to how much energy it consumes. For example, an effectivity of 0.5",
           "override": false,
           "type": "double",
           "optional": true,
@@ -57455,7 +57455,7 @@
         {
           "name": "scale_fluid_usage",
           "order": 7,
-          "description": "If set to `true`, the energy source will consume as much fluid as required to produce the desired power, otherwise it will consume as much as it is allowed to, wasting any excess.",
+          "description": "Scales the energy source's fluid usage to its maximum power output.\n\nIf this is `false` the energy source will overconsume fluid. For example when higher than `maximum_temperature` fluid is fed to the energy source, it will consume the full `fluid_usage_per_tick` and any of the extra energy in the fluid (in the form of higher temperature) is wasted. Setting scale_fluid_usage to `true` prevents this behavior.",
           "override": false,
           "type": "boolean",
           "optional": true,
@@ -61195,7 +61195,12 @@
             {
               "complex_type": "literal",
               "value": "draw-logistic-overlay",
-              "description": "Whether the logistics areas of roboports should be drawn when holding this item. Used for example by the [deconstruction planner](https://wiki.factorio.com/Deconstruction_planner)."
+              "description": "Whether the logistics areas of roboports should be drawn when holding this item. Used for example by the [deconstruction planner](https://wiki.factorio.com/Deconstruction_planner). The overlay will also be drawn in some instances without this flag enabled."
+            },
+            {
+              "complex_type": "literal",
+              "value": "disable-logistic-overlay",
+              "description": "The logistics areas of roboports are never drawn when holding this item. Can't be used together with `\"draw-logistic-overlay\"`."
             },
             {
               "complex_type": "literal",
