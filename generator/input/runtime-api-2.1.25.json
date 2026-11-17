@@ -1,6 +1,6 @@
 {
   "application": "factorio",
-  "application_version": "2.1.24",
+  "application_version": "2.1.25",
   "api_version": 6,
   "stage": "runtime",
   "classes": [
@@ -1503,9 +1503,9 @@
         {
           "name": "raise_event",
           "order": 16,
-          "description": "Raise an event. Only events generated with [LuaBootstrap::generate_event_name](runtime:LuaBootstrap::generate_event_name) and the following can be raised:",
+          "description": "Manually raise an event. [Custom events](prototype:CustomEventPrototype) created in the prototype stage and events generated at runtime with [LuaBootstrap::generate_event_name](runtime:LuaBootstrap::generate_event_name) can be raised.\n\nAdditionally, the following built-in events can be raised:",
           "lists": [
-            "Events that can be raised manually:\n\n- [on_console_chat](runtime:on_console_chat)\n- [on_player_crafted_item](runtime:on_player_crafted_item)\n- [on_player_fast_transferred](runtime:on_player_fast_transferred)\n- [on_biter_base_built](runtime:on_biter_base_built)\n- [on_market_item_purchased](runtime:on_market_item_purchased)\n- [script_raised_built](runtime:script_raised_built)\n- [script_raised_destroy](runtime:script_raised_destroy)\n- [script_raised_revive](runtime:script_raised_revive)\n- [script_raised_teleported](runtime:script_raised_teleported)\n- [script_raised_set_tiles](runtime:script_raised_set_tiles)"
+            "Built-in events that can be raised manually:\n\n- [on_console_chat](runtime:on_console_chat)\n- [on_player_crafted_item](runtime:on_player_crafted_item)\n- [on_player_fast_transferred](runtime:on_player_fast_transferred)\n- [on_biter_base_built](runtime:on_biter_base_built)\n- [on_market_item_purchased](runtime:on_market_item_purchased)\n- [script_raised_built](runtime:script_raised_built)\n- [script_raised_destroy](runtime:script_raised_destroy)\n- [script_raised_revive](runtime:script_raised_revive)\n- [script_raised_teleported](runtime:script_raised_teleported)\n- [script_raised_set_tiles](runtime:script_raised_set_tiles)"
           ],
           "examples": [
             "```\n-- Raise the on_console_chat event with the desired message 'from' the first player\nlocal data = {player_index = 1, message = \"Hello friends!\"}\nscript.raise_event(defines.events.on_console_chat, data)\n```"
@@ -1514,7 +1514,7 @@
             {
               "name": "data",
               "order": 1,
-              "description": "Table with extra data that will be passed to the event handler. Any invalid LuaObjects will silently stop the event from being raised.",
+              "description": "Table with extra data that will be passed to the event handler. Note that any arguments passed through the interface are a copy of the original, not a reference. Metatables are not retained, while references to LuaObjects stay intact. Functions cannot be passed through the interface. Any invalid LuaObjects will silently stop the event from being raised.",
               "type": "table",
               "optional": false
             },
@@ -4629,6 +4629,7 @@
               "LuaInventory",
               "LuaLogisticNetwork",
               "LuaTile",
+              "LuaRecord",
               "defines.gui_type"
             ],
             "full_format": false
@@ -4645,6 +4646,7 @@
               "LuaInventory",
               "LuaLogisticNetwork",
               "LuaTile",
+              "LuaRecord",
               "defines.gui_type"
             ],
             "full_format": false
@@ -17344,6 +17346,26 @@
           "optional": true
         },
         {
+          "name": "exchange_input_lines",
+          "order": 602,
+          "description": "",
+          "subclasses": [
+            "Splitter"
+          ],
+          "read_type": "boolean",
+          "optional": true
+        },
+        {
+          "name": "exchange_output_lines",
+          "order": 603,
+          "description": "",
+          "subclasses": [
+            "Splitter"
+          ],
+          "read_type": "boolean",
+          "optional": true
+        },
+        {
           "name": "expires",
           "order": 433,
           "description": "",
@@ -19328,7 +19350,7 @@
         },
         {
           "name": "object_name",
-          "order": 603,
+          "order": 605,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -21524,7 +21546,7 @@
         },
         {
           "name": "valid",
-          "order": 602,
+          "order": 604,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -29101,6 +29123,13 @@
               "description": "",
               "parameters": [
                 {
+                  "name": "opacity",
+                  "order": 2,
+                  "description": "Opacity of the sprite, clamped to the range [0, 1]. Defaults to `1`.",
+                  "type": "float",
+                  "optional": true
+                },
+                {
                   "name": "resize_to_sprite",
                   "order": 1,
                   "description": "Whether the widget should resize according to the sprite in it. Defaults to `true`.",
@@ -29123,7 +29152,7 @@
               "parameters": [
                 {
                   "name": "auto_toggle",
-                  "order": 8,
+                  "order": 9,
                   "description": "Whether the button will automatically toggle when clicked. Defaults to `false`.",
                   "type": "boolean",
                   "optional": true
@@ -29144,7 +29173,7 @@
                 },
                 {
                   "name": "mouse_button_filter",
-                  "order": 7,
+                  "order": 8,
                   "description": "The mouse buttons that the button responds to. Defaults to `\"left-and-right\"`.",
                   "type": "MouseButtonFlags",
                   "optional": true
@@ -29154,6 +29183,13 @@
                   "order": 4,
                   "description": "The number shown on the button.",
                   "type": "double",
+                  "optional": true
+                },
+                {
+                  "name": "opacity",
+                  "order": 7,
+                  "description": "Opacity of the sprite shown on the button, clamped to the range [0, 1]. Defaults to `1`.",
+                  "type": "float",
                   "optional": true
                 },
                 {
@@ -29186,7 +29222,7 @@
                 },
                 {
                   "name": "toggled",
-                  "order": 9,
+                  "order": 10,
                   "description": "The initial toggled state of the button. Defaults to `false`.",
                   "type": "boolean",
                   "optional": true
@@ -30017,7 +30053,7 @@
       "attributes": [
         {
           "name": "allow_decimal",
-          "order": 57,
+          "order": 59,
           "description": "Whether this textfield (when in numeric mode) allows decimal numbers.",
           "subclasses": [
             "textfield"
@@ -30028,7 +30064,7 @@
         },
         {
           "name": "allow_negative",
-          "order": 58,
+          "order": 60,
           "description": "Whether this textfield (when in numeric mode) allows negative numbers.",
           "subclasses": [
             "textfield"
@@ -30039,7 +30075,7 @@
         },
         {
           "name": "allow_none_state",
-          "order": 79,
+          "order": 81,
           "description": "Whether the `\"none\"` state is allowed for this switch.\n\nThis can't be set to false if the current switch_state is 'none'.",
           "subclasses": [
             "switch"
@@ -30050,7 +30086,7 @@
         },
         {
           "name": "anchor",
-          "order": 66,
+          "order": 68,
           "description": "The anchor for this relative widget, if any. Setting `nil` clears the anchor.",
           "read_type": "GuiAnchor",
           "write_type": "GuiAnchor",
@@ -30058,7 +30094,7 @@
         },
         {
           "name": "auto_center",
-          "order": 30,
+          "order": 31,
           "description": "Whether this frame auto-centers on window resize when stored in [LuaGui::screen](runtime:LuaGui::screen).",
           "subclasses": [
             "frame"
@@ -30069,7 +30105,7 @@
         },
         {
           "name": "auto_toggle",
-          "order": 32,
+          "order": 33,
           "description": "Whether this button will automatically toggle when clicked.",
           "subclasses": [
             "button",
@@ -30081,7 +30117,7 @@
         },
         {
           "name": "badge_text",
-          "order": 31,
+          "order": 32,
           "description": "The text to display after the normal tab text (designed to work with numbers)",
           "subclasses": [
             "tab"
@@ -30131,7 +30167,7 @@
         },
         {
           "name": "column_count",
-          "order": 52,
+          "order": 54,
           "description": "The number of columns in this table.",
           "subclasses": [
             "table"
@@ -30153,7 +30189,7 @@
         },
         {
           "name": "drag_target",
-          "order": 62,
+          "order": 64,
           "description": "The `frame` that is being moved when dragging this GUI element, if any. This element needs to be a child of the `drag_target` at some level.\n\nOnly top-level elements in [LuaGui::screen](runtime:LuaGui::screen) can be `drag_target`s.",
           "examples": [
             "```\n-- This creates a frame that contains a dragging handle which can move the frame.\nlocal frame = player.gui.screen.add{type=\"frame\", direction=\"vertical\"}\nlocal dragger = frame.add{type=\"empty-widget\", style=\"draggable_space\"}\ndragger.style.size = {128, 24}\ndragger.drag_target = frame\n```"
@@ -30171,7 +30207,7 @@
         },
         {
           "name": "draw_horizontal_line_after_headers",
-          "order": 51,
+          "order": 53,
           "description": "Whether this table should draw a horizontal grid line below the first table row.",
           "subclasses": [
             "table"
@@ -30182,7 +30218,7 @@
         },
         {
           "name": "draw_horizontal_lines",
-          "order": 50,
+          "order": 52,
           "description": "Whether this table should draw horizontal grid lines.",
           "subclasses": [
             "table"
@@ -30193,7 +30229,7 @@
         },
         {
           "name": "draw_vertical_lines",
-          "order": 49,
+          "order": 51,
           "description": "Whether this table should draw vertical grid lines.",
           "subclasses": [
             "table"
@@ -30204,7 +30240,7 @@
         },
         {
           "name": "elem_filters",
-          "order": 42,
+          "order": 44,
           "description": "The elem filters of this choose-elem-button, if any. The compatible type of filter is determined by `elem_type`.\n\nWriting to this field does not change or clear the currently selected element.",
           "examples": [
             "```\n-- This will configure a choose-elem-button of type \"entity\" to only show items of type \"furnace\".\nbutton.elem_filters = {{filter = \"type\", type = \"furnace\"}}\n```",
@@ -30228,7 +30264,7 @@
         },
         {
           "name": "elem_type",
-          "order": 40,
+          "order": 42,
           "description": "The elem type of this choose-elem-button.",
           "subclasses": [
             "choose-elem-button"
@@ -30238,7 +30274,7 @@
         },
         {
           "name": "elem_value",
-          "order": 41,
+          "order": 43,
           "description": "The elem value of this choose-elem-button, if any.\n\nThe `\"signal\"` type operates with [SignalID](runtime:SignalID).\n\nThe `\"with-quality\"` types operate with [PrototypeWithQuality](runtime:PrototypeWithQuality).\n\nThe remaining types use strings.",
           "subclasses": [
             "choose-elem-button"
@@ -30265,7 +30301,7 @@
         },
         {
           "name": "empty_slot_info",
-          "order": 71,
+          "order": 73,
           "description": "",
           "subclasses": [
             "inventory"
@@ -30276,7 +30312,7 @@
         },
         {
           "name": "enabled",
-          "order": 46,
+          "order": 48,
           "description": "Whether this GUI element is enabled. Disabled GUI elements don't trigger events when clicked.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30284,7 +30320,7 @@
         },
         {
           "name": "entity",
-          "order": 65,
+          "order": 67,
           "description": "The entity associated with this entity-preview, camera, minimap, if any.",
           "subclasses": [
             "entity-preview",
@@ -30297,7 +30333,7 @@
         },
         {
           "name": "force",
-          "order": 39,
+          "order": 41,
           "description": "The force this minimap is using, if any.",
           "subclasses": [
             "minimap"
@@ -30308,7 +30344,7 @@
         },
         {
           "name": "game_controller_interaction",
-          "order": 34,
+          "order": 35,
           "description": "How this element should interact with game controllers.",
           "read_type": "defines.game_controller_interaction",
           "write_type": "defines.game_controller_interaction",
@@ -30323,39 +30359,6 @@
         },
         {
           "name": "handle_cursor_split",
-          "order": 73,
-          "description": "",
-          "subclasses": [
-            "inventory"
-          ],
-          "read_type": "boolean",
-          "write_type": "boolean",
-          "optional": false
-        },
-        {
-          "name": "handle_cursor_transfer",
-          "order": 72,
-          "description": "",
-          "subclasses": [
-            "inventory"
-          ],
-          "read_type": "boolean",
-          "write_type": "boolean",
-          "optional": false
-        },
-        {
-          "name": "handle_open_item",
-          "order": 74,
-          "description": "",
-          "subclasses": [
-            "inventory"
-          ],
-          "read_type": "boolean",
-          "write_type": "boolean",
-          "optional": false
-        },
-        {
-          "name": "handle_open_mod_item",
           "order": 75,
           "description": "",
           "subclasses": [
@@ -30366,7 +30369,18 @@
           "optional": false
         },
         {
-          "name": "handle_send_stack_to_trash",
+          "name": "handle_cursor_transfer",
+          "order": 74,
+          "description": "",
+          "subclasses": [
+            "inventory"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "handle_open_item",
           "order": 76,
           "description": "",
           "subclasses": [
@@ -30377,8 +30391,30 @@
           "optional": false
         },
         {
-          "name": "handle_send_stacks_to_trash",
+          "name": "handle_open_mod_item",
           "order": 77,
+          "description": "",
+          "subclasses": [
+            "inventory"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "handle_send_stack_to_trash",
+          "order": 78,
+          "description": "",
+          "subclasses": [
+            "inventory"
+          ],
+          "read_type": "boolean",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
+          "name": "handle_send_stacks_to_trash",
+          "order": 79,
           "description": "",
           "subclasses": [
             "inventory"
@@ -30411,7 +30447,7 @@
         },
         {
           "name": "icon_selector",
-          "order": 61,
+          "order": 63,
           "description": "Whether this textfield or text-box was created with an icon selector.",
           "subclasses": [
             "textfield",
@@ -30422,7 +30458,7 @@
         },
         {
           "name": "ignored_by_interaction",
-          "order": 47,
+          "order": 49,
           "description": "Whether this GUI element is ignored by interaction. This makes clicks on this element 'go through' to the GUI element or even the game surface below it.",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30437,7 +30473,7 @@
         },
         {
           "name": "inventory",
-          "order": 69,
+          "order": 71,
           "description": "The inventory target for this custom inventory widget.",
           "subclasses": [
             "inventory"
@@ -30448,7 +30484,7 @@
         },
         {
           "name": "is_password",
-          "order": 59,
+          "order": 61,
           "description": "Whether this textfield displays as a password field, which renders all characters as `*`.",
           "subclasses": [
             "textfield"
@@ -30477,7 +30513,7 @@
         },
         {
           "name": "left_label_caption",
-          "order": 80,
+          "order": 82,
           "description": "The text shown for the left switch label.",
           "subclasses": [
             "switch"
@@ -30488,7 +30524,7 @@
         },
         {
           "name": "left_label_tooltip",
-          "order": 81,
+          "order": 83,
           "description": "The tooltip shown on the left switch label.",
           "subclasses": [
             "switch"
@@ -30499,7 +30535,7 @@
         },
         {
           "name": "location",
-          "order": 29,
+          "order": 30,
           "description": "The location of this widget when stored in [LuaGui::screen](runtime:LuaGui::screen). `nil` if not set or not in [LuaGui::screen](runtime:LuaGui::screen).",
           "read_type": "GuiLocation",
           "write_type": "GuiLocation",
@@ -30507,7 +30543,7 @@
         },
         {
           "name": "locked",
-          "order": 48,
+          "order": 50,
           "description": "Whether this choose-elem-button can be changed by the player.",
           "subclasses": [
             "choose-elem-button"
@@ -30518,7 +30554,7 @@
         },
         {
           "name": "lose_focus_on_confirm",
-          "order": 60,
+          "order": 62,
           "description": "Whether this textfield loses focus after [defines.events.on_gui_confirmed](runtime:defines.events.on_gui_confirmed) is fired.",
           "subclasses": [
             "textfield"
@@ -30529,7 +30565,7 @@
         },
         {
           "name": "minimap_player_index",
-          "order": 38,
+          "order": 40,
           "description": "The player index this minimap is using.",
           "subclasses": [
             "minimap"
@@ -30540,7 +30576,7 @@
         },
         {
           "name": "mouse_button_filter",
-          "order": 55,
+          "order": 57,
           "description": "The mouse button filters for this button or sprite-button.",
           "subclasses": [
             "button",
@@ -30574,7 +30610,7 @@
         },
         {
           "name": "numeric",
-          "order": 56,
+          "order": 58,
           "description": "Whether this textfield is limited to only numeric characters.",
           "subclasses": [
             "textfield"
@@ -30585,9 +30621,21 @@
         },
         {
           "name": "object_name",
-          "order": 85,
+          "order": 87,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
+          "optional": false
+        },
+        {
+          "name": "opacity",
+          "order": 29,
+          "description": "The opacity of the sprite shown in this widget, clamped to the range [0, 1].\n\nSetting this to `0.5` makes the sprite look like a ghost item or an unfulfilled recipe ingredient.",
+          "subclasses": [
+            "sprite",
+            "sprite-button"
+          ],
+          "read_type": "float",
+          "write_type": "float",
           "optional": false
         },
         {
@@ -30606,7 +30654,7 @@
         },
         {
           "name": "position",
-          "order": 35,
+          "order": 36,
           "description": "The position this camera or minimap is focused on, if any.",
           "subclasses": [
             "camera",
@@ -30629,7 +30677,7 @@
         },
         {
           "name": "raise_hover_events",
-          "order": 68,
+          "order": 70,
           "description": "Whether this element will raise [on_gui_hover](runtime:on_gui_hover) and [on_gui_leave](runtime:on_gui_leave).",
           "read_type": "boolean",
           "write_type": "boolean",
@@ -30637,7 +30685,7 @@
         },
         {
           "name": "read_only",
-          "order": 45,
+          "order": 47,
           "description": "Whether this text-box is read-only. Defaults to `false`.",
           "subclasses": [
             "scroll-pane",
@@ -30660,7 +30708,7 @@
         },
         {
           "name": "right_label_caption",
-          "order": 82,
+          "order": 84,
           "description": "The text shown for the right switch label.",
           "subclasses": [
             "switch"
@@ -30671,7 +30719,7 @@
         },
         {
           "name": "right_label_tooltip",
-          "order": 83,
+          "order": 85,
           "description": "The tooltip shown on the right switch label.",
           "subclasses": [
             "switch"
@@ -30693,7 +30741,7 @@
         },
         {
           "name": "selectable",
-          "order": 43,
+          "order": 45,
           "description": "Whether the contents of this text-box are selectable. Defaults to `true`.",
           "subclasses": [
             "scroll-pane",
@@ -30717,7 +30765,7 @@
         },
         {
           "name": "selected_tab_index",
-          "order": 63,
+          "order": 65,
           "description": "The selected tab index for this tabbed pane, if any.",
           "subclasses": [
             "tabbed-pane"
@@ -30739,7 +30787,7 @@
         },
         {
           "name": "slider_value",
-          "order": 54,
+          "order": 56,
           "description": "The value of this slider element.",
           "subclasses": [
             "slider"
@@ -30750,7 +30798,7 @@
         },
         {
           "name": "slots_per_row",
-          "order": 70,
+          "order": 72,
           "description": "",
           "subclasses": [
             "inventory"
@@ -30807,7 +30855,7 @@
         },
         {
           "name": "surface_index",
-          "order": 36,
+          "order": 37,
           "description": "The surface index this camera or minimap is using.",
           "subclasses": [
             "camera",
@@ -30819,7 +30867,7 @@
         },
         {
           "name": "switch_state",
-          "order": 78,
+          "order": 80,
           "description": "The switch state for this switch.\n\nIf [LuaGuiElement::allow_none_state](runtime:LuaGuiElement::allow_none_state) is false this can't be set to `\"none\"`.",
           "subclasses": [
             "switch"
@@ -30830,7 +30878,7 @@
         },
         {
           "name": "tabs",
-          "order": 64,
+          "order": 66,
           "description": "The tabs and contents being shown in this tabbed-pane.",
           "subclasses": [
             "tabbed-pane"
@@ -30843,7 +30891,7 @@
         },
         {
           "name": "tags",
-          "order": 67,
+          "order": 69,
           "description": "The tags associated with this LuaGuiElement.",
           "read_type": "Tags",
           "write_type": "Tags",
@@ -30863,7 +30911,7 @@
         },
         {
           "name": "toggled",
-          "order": 33,
+          "order": 34,
           "description": "Whether this button is currently toggled. When a button is toggled, it will use the `selected_graphical_set` and `selected_font_color` defined in its style.",
           "subclasses": [
             "button",
@@ -30890,7 +30938,7 @@
         },
         {
           "name": "valid",
-          "order": 84,
+          "order": 86,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -30908,7 +30956,7 @@
         },
         {
           "name": "vertical_centering",
-          "order": 53,
+          "order": 55,
           "description": "Whether the content of this table should be vertically centered. Overrides [LuaStyle::column_alignments](runtime:LuaStyle::column_alignments). Defaults to `true`.",
           "subclasses": [
             "table"
@@ -30938,7 +30986,7 @@
         },
         {
           "name": "word_wrap",
-          "order": 44,
+          "order": 46,
           "description": "Whether this text-box will word-wrap automatically. Defaults to `false`.",
           "subclasses": [
             "scroll-pane",
@@ -30950,7 +30998,7 @@
         },
         {
           "name": "zoom",
-          "order": 37,
+          "order": 38,
           "description": "The zoom this camera or minimap is using. This value must be positive.",
           "subclasses": [
             "camera",
@@ -30958,6 +31006,20 @@
           ],
           "read_type": "double",
           "write_type": "double",
+          "optional": false
+        },
+        {
+          "name": "zoom_limits",
+          "order": 39,
+          "description": "The zoom limits of this camera. By default the camera can zoom in to 3x, the same as most player controllers.\n\nReading this field creates a copy and only contains the limits previously set by a script. To change the zoom limits, set the entire field to the desired [ZoomLimits](runtime:ZoomLimits) table.",
+          "examples": [
+            "```\n-- Lets the camera zoom in to 10x the standard zoom level.\ncamera.zoom_limits = { closest = { zoom = 10 } }\ncamera.zoom = 10\n```"
+          ],
+          "subclasses": [
+            "camera"
+          ],
+          "read_type": "ZoomLimits",
+          "write_type": "ZoomLimits",
           "optional": false
         }
       ],
@@ -34258,8 +34320,36 @@
           ]
         },
         {
+          "name": "get_draw_selection_counts",
+          "order": 9,
+          "description": "Whether the list of how many entities are selected should be shown.",
+          "subclasses": [
+            "SelectionTool"
+          ],
+          "parameters": [
+            {
+              "name": "selection_mode",
+              "order": 0,
+              "description": "",
+              "type": "defines.selection_mode",
+              "optional": false
+            }
+          ],
+          "format": {
+            "takes_table": false
+          },
+          "return_values": [
+            {
+              "order": 0,
+              "description": "",
+              "type": "boolean",
+              "optional": true
+            }
+          ]
+        },
+        {
           "name": "get_durability",
-          "order": 14,
+          "order": 15,
           "description": "The durability of this tool item prototype.",
           "subclasses": [
             "ToolItem"
@@ -34287,7 +34377,7 @@
         },
         {
           "name": "get_entity_filter_mode",
-          "order": 9,
+          "order": 10,
           "description": "The entity filter mode used by this selection tool.",
           "subclasses": [
             "SelectionTool"
@@ -34315,7 +34405,7 @@
         },
         {
           "name": "get_entity_filters",
-          "order": 11,
+          "order": 12,
           "description": "The entity filters used by this selection tool.",
           "subclasses": [
             "SelectionTool"
@@ -34346,7 +34436,7 @@
         },
         {
           "name": "get_entity_type_filters",
-          "order": 12,
+          "order": 13,
           "description": "The entity type filters used by this selection tool indexed by entity type.\n\nThe boolean value is meaningless and is used to allow easy lookup if a type exists in the dictionary.",
           "subclasses": [
             "SelectionTool"
@@ -34546,7 +34636,7 @@
         },
         {
           "name": "get_tile_filter_mode",
-          "order": 10,
+          "order": 11,
           "description": "The tile filter mode used by this selection tool.",
           "subclasses": [
             "SelectionTool"
@@ -34574,7 +34664,7 @@
         },
         {
           "name": "get_tile_filters",
-          "order": 13,
+          "order": 14,
           "description": "The tile filters used by this selection tool.",
           "subclasses": [
             "SelectionTool"
@@ -44147,7 +44237,7 @@
         {
           "name": "request_paste_multiplier",
           "order": 9,
-          "description": "The multiplier used when this recipe is copied from an assembling machine to a requester chest. For each item in the recipe the item count * this value is set in the requester chest.",
+          "description": "The multiplier used when this recipe is copied from an assembling machine to a requester chest or infinity chest. For each item ingredient in the recipe the `ingredient_amount * requester_paste_multiplier * machine_crafting_speed / energy_required` is set in the chest.",
           "read_type": "uint32",
           "optional": false
         },
@@ -45113,7 +45203,7 @@
       "attributes": [
         {
           "name": "blueprint_absolute_snapping",
-          "order": 6,
+          "order": 10,
           "description": "If absolute snapping is enabled on this blueprint.",
           "subclasses": [
             "BlueprintRecord"
@@ -45124,7 +45214,7 @@
         },
         {
           "name": "blueprint_description",
-          "order": 7,
+          "order": 11,
           "description": "The description for this blueprint or blueprint book.",
           "subclasses": [
             "BlueprintRecord",
@@ -45136,7 +45226,7 @@
         },
         {
           "name": "blueprint_position_relative_to_grid",
-          "order": 5,
+          "order": 9,
           "description": "The offset from the absolute grid. `nil` if absolute snapping is not enabled.",
           "subclasses": [
             "BlueprintRecord"
@@ -45147,7 +45237,7 @@
         },
         {
           "name": "blueprint_snap_to_grid",
-          "order": 4,
+          "order": 8,
           "description": "The snapping grid size in this blueprint. `nil` if snapping is not enabled.",
           "subclasses": [
             "BlueprintRecord"
@@ -45158,7 +45248,7 @@
         },
         {
           "name": "contents",
-          "order": 10,
+          "order": 14,
           "description": "The contents of this BlueprintBookRecord. This is sparse array - it may have gaps, so using `#` will not be reliable. Use [LuaRecord::contents_size](runtime:LuaRecord::contents_size) or `pairs()` to iterate this table.",
           "subclasses": [
             "BlueprintBookRecord"
@@ -45172,7 +45262,7 @@
         },
         {
           "name": "contents_size",
-          "order": 11,
+          "order": 15,
           "description": "The highest populated index in the contents of this BlueprintBookRecord.",
           "subclasses": [
             "BlueprintBookRecord"
@@ -45182,7 +45272,7 @@
         },
         {
           "name": "cost_to_build",
-          "order": 8,
+          "order": 12,
           "description": "List of raw materials required to build this blueprint.",
           "subclasses": [
             "BlueprintRecord"
@@ -45195,7 +45285,7 @@
         },
         {
           "name": "default_icons",
-          "order": 9,
+          "order": 13,
           "description": "The default icons for a blueprint blueprint.",
           "subclasses": [
             "BlueprintRecord"
@@ -45208,7 +45298,7 @@
         },
         {
           "name": "entity_filter_count",
-          "order": 18,
+          "order": 22,
           "description": "The number of entity filters this deconstruction planner has.",
           "subclasses": [
             "DeconstructionRecord"
@@ -45218,7 +45308,7 @@
         },
         {
           "name": "entity_filter_mode",
-          "order": 14,
+          "order": 18,
           "description": "The blacklist/whitelist entity filter mode for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
@@ -45229,7 +45319,7 @@
         },
         {
           "name": "entity_filters",
-          "order": 12,
+          "order": 16,
           "description": "The entity filters for this deconstruction planner. The attribute is a sparse array with the keys representing the index of the filter. All prototypes in this array must not have the `\"not-deconstructable\"` flag set and are either a `cliff` or marked as `minable`.",
           "subclasses": [
             "DeconstructionRecord"
@@ -45246,14 +45336,14 @@
         },
         {
           "name": "is_preview",
-          "order": 3,
+          "order": 7,
           "description": "Checks if this record is in a preview state.",
           "read_type": "boolean",
           "optional": false
         },
         {
           "name": "label",
-          "order": 21,
+          "order": 25,
           "description": "The current label for this record, if any.",
           "read_type": "string",
           "write_type": "string",
@@ -45261,7 +45351,7 @@
         },
         {
           "name": "mapper_count",
-          "order": 20,
+          "order": 24,
           "description": "The current count of mappers in the upgrade item.",
           "subclasses": [
             "UpgradeRecord"
@@ -45270,15 +45360,22 @@
           "optional": false
         },
         {
+          "name": "name",
+          "order": 2,
+          "description": "",
+          "read_type": "string",
+          "optional": false
+        },
+        {
           "name": "object_name",
-          "order": 24,
+          "order": 28,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "planner_description",
-          "order": 22,
+          "order": 26,
           "description": "The description for this deconstruction planner or upgrade planner.",
           "subclasses": [
             "DeconstructionRecord",
@@ -45290,7 +45387,7 @@
         },
         {
           "name": "preview_icons",
-          "order": 2,
+          "order": 6,
           "description": "The preview icons for this record.",
           "read_type": {
             "complex_type": "array",
@@ -45303,8 +45400,29 @@
           "optional": false
         },
         {
+          "name": "prototype",
+          "order": 1,
+          "description": "",
+          "read_type": "LuaItemPrototype",
+          "optional": false
+        },
+        {
+          "name": "record_id",
+          "order": 5,
+          "description": "Identifier of the record within its shelf.",
+          "read_type": "uint32",
+          "optional": false
+        },
+        {
+          "name": "shelf_index",
+          "order": 4,
+          "description": "Identifier of the shelf this record is in. May correspond to a player index or be a special value when in game blueprints.",
+          "read_type": "uint32",
+          "optional": false
+        },
+        {
           "name": "tile_filter_count",
-          "order": 19,
+          "order": 23,
           "description": "The number of tile filters this deconstruction planner has.",
           "subclasses": [
             "DeconstructionRecord"
@@ -45314,7 +45432,7 @@
         },
         {
           "name": "tile_filter_mode",
-          "order": 15,
+          "order": 19,
           "description": "The blacklist/whitelist tile filter mode for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
@@ -45325,7 +45443,7 @@
         },
         {
           "name": "tile_filters",
-          "order": 13,
+          "order": 17,
           "description": "The tile filters for this deconstruction planner. The attribute is a sparse array with the keys representing the index of the filter. Reading filters always returns an array of strings which are the tile prototype names.",
           "subclasses": [
             "DeconstructionRecord"
@@ -45342,7 +45460,7 @@
         },
         {
           "name": "tile_selection_mode",
-          "order": 16,
+          "order": 20,
           "description": "The tile selection mode for this deconstruction planner.",
           "subclasses": [
             "DeconstructionRecord"
@@ -45353,7 +45471,7 @@
         },
         {
           "name": "trees_and_rocks_only",
-          "order": 17,
+          "order": 21,
           "description": "If this deconstruction planner, is set to allow trees and rocks only.",
           "subclasses": [
             "DeconstructionRecord"
@@ -45364,7 +45482,7 @@
         },
         {
           "name": "type",
-          "order": 1,
+          "order": 3,
           "description": "The type of this blueprint record.",
           "read_type": {
             "complex_type": "union",
@@ -45392,7 +45510,7 @@
         },
         {
           "name": "valid",
-          "order": 23,
+          "order": 27,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -45660,7 +45778,7 @@
         },
         {
           "name": "animation",
-          "order": 48,
+          "order": 50,
           "description": "Animation prototype name of this animation.",
           "subclasses": [
             "Animation"
@@ -45670,9 +45788,20 @@
           "optional": false
         },
         {
+          "name": "animation_frame",
+          "order": 53,
+          "description": "Current frame of this animation. All writes update `animation_offset` to show the desired frame.",
+          "subclasses": [
+            "Animation"
+          ],
+          "read_type": "double",
+          "write_type": "double",
+          "optional": false
+        },
+        {
           "name": "animation_offset",
-          "order": 50,
-          "description": "Animation offset of this animation. Animation offset in frames.",
+          "order": 52,
+          "description": "Animation offset of this animation, in frames. Relative to game tick 0. This means the current animation frame is `((tick * speed) + animation_offset) % frame_count` with speed defined as [LuaRenderObject::animation_speed](runtime:LuaRenderObject::animation_speed) multiplied by [AnimationPrototype::animation_speed](prototype:AnimationPrototype::animation_speed).",
           "subclasses": [
             "Animation"
           ],
@@ -45682,8 +45811,8 @@
         },
         {
           "name": "animation_speed",
-          "order": 49,
-          "description": "Animation speed of this animation. Animation speed in frames per tick.",
+          "order": 51,
+          "description": "Animation speed of this animation, in frames per tick. It is multiplied by [animation speed](prototype:AnimationPrototype::animation_speed) of the selected animation prototype. Changing speed will update `animation_offset`, so that the current `animation_frame` stays the same. Set it to 0 if you want to pause the animation.",
           "subclasses": [
             "Animation"
           ],
@@ -45821,7 +45950,7 @@
         },
         {
           "name": "intensity",
-          "order": 45,
+          "order": 47,
           "description": "Intensity of this light.",
           "subclasses": [
             "Light"
@@ -45843,7 +45972,7 @@
         },
         {
           "name": "light_mode",
-          "order": 44,
+          "order": 46,
           "description": "Whether this sprite or animation should be rendered as a sprite, light or both at once.",
           "subclasses": [
             "Sprite",
@@ -45877,7 +46006,7 @@
         },
         {
           "name": "minimum_darkness",
-          "order": 46,
+          "order": 48,
           "description": "Minimum darkness at which this light is rendered.",
           "subclasses": [
             "Light"
@@ -45888,7 +46017,7 @@
         },
         {
           "name": "object_name",
-          "order": 52,
+          "order": 55,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
@@ -45918,7 +46047,7 @@
         },
         {
           "name": "orientation_target",
-          "order": 42,
+          "order": 44,
           "description": "Target to which this object rotates so that it faces the target. Note that `orientation` is still applied to the object. Writing `nil` will clear the orientation_target. `nil` if no target.\n\nPolygon vertices that are set to an entity will ignore this.",
           "subclasses": [
             "Polygon",
@@ -45931,7 +46060,7 @@
         },
         {
           "name": "oriented",
-          "order": 47,
+          "order": 49,
           "description": "If this light is rendered with the same orientation as the target entity. Note that `orientation` is still applied to the sprite.",
           "subclasses": [
             "Light"
@@ -45942,7 +46071,7 @@
         },
         {
           "name": "oriented_offset",
-          "order": 43,
+          "order": 45,
           "description": "Offsets the center of the sprite or animation if `orientation_target` is given. This offset will rotate together with the sprite or animation.",
           "subclasses": [
             "Sprite",
@@ -45999,7 +46128,7 @@
         },
         {
           "name": "render_layer",
-          "order": 41,
+          "order": 43,
           "description": "Render layer of this sprite or animation.",
           "subclasses": [
             "Sprite",
@@ -46062,6 +46191,30 @@
           "read_type": "SpritePath",
           "write_type": "SpritePath",
           "optional": false
+        },
+        {
+          "name": "sprite_height",
+          "order": 42,
+          "description": "Height of this sprite or animation in tiles. If set, the sprite or animation is stretched to this height regardless of its original size. `nil` if `y_scale` is set. Writing requires a number greater than 0 and clears `y_scale`.",
+          "subclasses": [
+            "Sprite",
+            "Animation"
+          ],
+          "read_type": "double",
+          "write_type": "double",
+          "optional": true
+        },
+        {
+          "name": "sprite_width",
+          "order": 41,
+          "description": "Width of this sprite or animation in tiles. If set, the sprite or animation is stretched to this width regardless of its original size. `nil` if `x_scale` is set. Writing requires a number greater than 0 and clears `x_scale`.",
+          "subclasses": [
+            "Sprite",
+            "Animation"
+          ],
+          "read_type": "double",
+          "write_type": "double",
+          "optional": true
         },
         {
           "name": "start_angle",
@@ -46210,7 +46363,7 @@
         },
         {
           "name": "valid",
-          "order": 51,
+          "order": 54,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -46267,26 +46420,26 @@
         {
           "name": "x_scale",
           "order": 39,
-          "description": "Horizontal scale of this sprite or animation.",
+          "description": "Horizontal scale of this sprite or animation. Write operation requires a valid number and clears `sprite_width`.",
           "subclasses": [
             "Sprite",
             "Animation"
           ],
           "read_type": "double",
           "write_type": "double",
-          "optional": false
+          "optional": true
         },
         {
           "name": "y_scale",
           "order": 40,
-          "description": "Vertical scale of this sprite or animation.",
+          "description": "Vertical scale of this sprite or animation. Write operation requires a valid number and clears `sprite_height`.",
           "subclasses": [
             "Sprite",
             "Animation"
           ],
           "read_type": "double",
           "write_type": "double",
-          "optional": false
+          "optional": true
         }
       ],
       "operators": []
@@ -46328,43 +46481,50 @@
               "optional": false
             },
             {
+              "name": "animation_frame",
+              "order": 10,
+              "description": "Frame the animation starts at. Takes precedence over `animation_offset`.",
+              "type": "double",
+              "optional": true
+            },
+            {
               "name": "animation_offset",
-              "order": 7,
-              "description": "Offset of the animation in frames. Default is 0.",
+              "order": 9,
+              "description": "Offset of the animation in frames relative to game tick 0. Default is 0.",
               "type": "double",
               "optional": true
             },
             {
               "name": "animation_speed",
-              "order": 6,
+              "order": 8,
               "description": "How many frames the animation goes forward per tick. Default is 1.",
               "type": "double",
               "optional": true
             },
             {
               "name": "blink_interval",
-              "order": 14,
+              "order": 17,
               "description": "In ticks. Defaults to 0 (no blinking). Game alerts use 30.",
               "type": "uint16",
               "optional": true
             },
             {
               "name": "forces",
-              "order": 15,
+              "order": 18,
               "description": "The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.",
               "type": "ForceSet",
               "optional": true
             },
             {
               "name": "light_mode",
-              "order": 21,
+              "order": 24,
               "description": "Whether this object should be rendered as a sprite, light or both at once. Defaults to \"occluder\".",
               "type": "ScriptSpriteLightMode",
               "optional": true
             },
             {
               "name": "only_in_alt_mode",
-              "order": 18,
+              "order": 21,
               "description": "If this should only be rendered in alt mode. Defaults to false.",
               "type": "boolean",
               "optional": true
@@ -46378,21 +46538,21 @@
             },
             {
               "name": "orientation_target",
-              "order": 8,
+              "order": 11,
               "description": "If given, the animation rotates so that it faces this target. Note that `orientation` is still applied to the animation.",
               "type": "ScriptRenderTarget",
               "optional": true
             },
             {
               "name": "oriented_offset",
-              "order": 10,
+              "order": 13,
               "description": "Offsets the center of the animation if `orientation_target` is given. This offset will rotate together with the animation.",
               "type": "Vector",
               "optional": true
             },
             {
               "name": "players",
-              "order": 16,
+              "order": 19,
               "description": "The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.",
               "type": {
                 "complex_type": "array",
@@ -46402,63 +46562,77 @@
             },
             {
               "name": "render_layer",
-              "order": 5,
+              "order": 7,
               "description": "Render layer of the animation. Defaults to `\"arrow\"`.",
               "type": "RenderLayer",
               "optional": true
             },
             {
               "name": "render_mode",
-              "order": 20,
+              "order": 23,
               "description": "Mode which this object should render in. Defaults to \"game\".",
               "type": "ScriptRenderMode",
               "optional": true
             },
             {
+              "name": "sprite_height",
+              "order": 5,
+              "description": "Height of the sprite in tiles. If given, the animation is stretched to this height regardless of its original size. Mutually exclusive with `y_scale`.",
+              "type": "double",
+              "optional": true
+            },
+            {
+              "name": "sprite_width",
+              "order": 4,
+              "description": "Width of the sprite in tiles. If given, the animation is stretched to this width regardless of its original size. Mutually exclusive with `x_scale`.",
+              "type": "double",
+              "optional": true
+            },
+            {
               "name": "surface",
-              "order": 12,
+              "order": 15,
               "description": "",
               "type": "SurfaceIdentification",
               "optional": false
             },
             {
               "name": "tall",
-              "order": 19,
+              "order": 22,
               "description": "If this will be translucent when \"Hide tall entities\" mode is active. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "target",
-              "order": 11,
+              "order": 14,
               "description": "Center of the animation.",
               "type": "ScriptRenderTarget",
               "optional": false
             },
             {
               "name": "time_to_live",
-              "order": 13,
+              "order": 16,
               "description": "In ticks. Defaults to living forever.",
               "type": "uint32",
               "optional": true
             },
             {
               "name": "tint",
-              "order": 4,
+              "order": 6,
               "description": "",
               "type": "Color",
               "optional": true
             },
             {
               "name": "use_target_orientation",
-              "order": 9,
+              "order": 12,
               "description": "Only used if `orientation_target` is a LuaEntity.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "visible",
-              "order": 17,
+              "order": 20,
               "description": "If this is rendered to anyone at all. Defaults to true.",
               "type": "boolean",
               "optional": true
@@ -46466,14 +46640,14 @@
             {
               "name": "x_scale",
               "order": 2,
-              "description": "Horizontal scale of the animation. Default is 1.",
+              "description": "Horizontal scale of the sprite. Default is 1. Mutually exclusive with `sprite_width`.",
               "type": "double",
               "optional": true
             },
             {
               "name": "y_scale",
               "order": 3,
-              "description": "Vertical scale of the animation. Default is 1.",
+              "description": "Vertical scale of the sprite. Default is 1. Mutually exclusive with `sprite_height`.",
               "type": "double",
               "optional": true
             }
@@ -47316,28 +47490,28 @@
           "parameters": [
             {
               "name": "blink_interval",
-              "order": 12,
+              "order": 14,
               "description": "In ticks. Defaults to 0 (no blinking). Game alerts use 30.",
               "type": "uint16",
               "optional": true
             },
             {
               "name": "forces",
-              "order": 13,
+              "order": 15,
               "description": "The forces that this object is rendered to. Passing `nil` or an empty table will render it to all forces.",
               "type": "ForceSet",
               "optional": true
             },
             {
               "name": "light_mode",
-              "order": 19,
+              "order": 21,
               "description": "Whether this object should be rendered as a sprite, light or both at once. Defaults to \"occluder\".",
               "type": "ScriptSpriteLightMode",
               "optional": true
             },
             {
               "name": "only_in_alt_mode",
-              "order": 16,
+              "order": 18,
               "description": "If this should only be rendered in alt mode. Defaults to false.",
               "type": "boolean",
               "optional": true
@@ -47351,21 +47525,21 @@
             },
             {
               "name": "orientation_target",
-              "order": 6,
+              "order": 8,
               "description": "If given, the sprite rotates so that it faces this target. Note that `orientation` is still applied to the sprite.",
               "type": "ScriptRenderTarget",
               "optional": true
             },
             {
               "name": "oriented_offset",
-              "order": 8,
+              "order": 10,
               "description": "Offsets the center of the sprite if `orientation_target` is given. This offset will rotate together with the sprite.",
               "type": "Vector",
               "optional": true
             },
             {
               "name": "players",
-              "order": 14,
+              "order": 16,
               "description": "The players that this object is rendered to. Passing `nil` or an empty table will render it to all players.",
               "type": {
                 "complex_type": "array",
@@ -47375,14 +47549,14 @@
             },
             {
               "name": "render_layer",
-              "order": 5,
+              "order": 7,
               "description": "Render layer of the sprite. Defaults to `\"arrow\"`.",
               "type": "RenderLayer",
               "optional": true
             },
             {
               "name": "render_mode",
-              "order": 18,
+              "order": 20,
               "description": "Mode which this object should render in. Defaults to \"game\".",
               "type": "ScriptRenderMode",
               "optional": true
@@ -47395,50 +47569,64 @@
               "optional": false
             },
             {
+              "name": "sprite_height",
+              "order": 5,
+              "description": "Height of the sprite in tiles. If given, the sprite is stretched to this height regardless of its original size. Mutually exclusive with `y_scale`.",
+              "type": "double",
+              "optional": true
+            },
+            {
+              "name": "sprite_width",
+              "order": 4,
+              "description": "Width of the sprite in tiles. If given, the sprite is stretched to this width regardless of its original size. Mutually exclusive with `x_scale`.",
+              "type": "double",
+              "optional": true
+            },
+            {
               "name": "surface",
-              "order": 10,
+              "order": 12,
               "description": "",
               "type": "SurfaceIdentification",
               "optional": false
             },
             {
               "name": "tall",
-              "order": 17,
+              "order": 19,
               "description": "If this will be translucent when \"Hide tall entities\" mode is active. Defaults to false.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "target",
-              "order": 9,
+              "order": 11,
               "description": "Center of the sprite.",
               "type": "ScriptRenderTarget",
               "optional": false
             },
             {
               "name": "time_to_live",
-              "order": 11,
+              "order": 13,
               "description": "In ticks. Defaults to living forever.",
               "type": "uint32",
               "optional": true
             },
             {
               "name": "tint",
-              "order": 4,
+              "order": 6,
               "description": "",
               "type": "Color",
               "optional": true
             },
             {
               "name": "use_target_orientation",
-              "order": 7,
+              "order": 9,
               "description": "Only used if `orientation_target` is a LuaEntity.",
               "type": "boolean",
               "optional": true
             },
             {
               "name": "visible",
-              "order": 15,
+              "order": 17,
               "description": "If this is rendered to anyone at all. Defaults to true.",
               "type": "boolean",
               "optional": true
@@ -47446,14 +47634,14 @@
             {
               "name": "x_scale",
               "order": 2,
-              "description": "Horizontal scale of the sprite. Default is 1.",
+              "description": "Horizontal scale of the sprite. Default is 1. Mutually exclusive with `sprite_width`.",
               "type": "double",
               "optional": true
             },
             {
               "name": "y_scale",
               "order": 3,
-              "description": "Vertical scale of the sprite. Default is 1.",
+              "description": "Vertical scale of the sprite. Default is 1. Mutually exclusive with `sprite_height`.",
               "type": "double",
               "optional": true
             }
@@ -49971,7 +50159,7 @@
       "attributes": [
         {
           "name": "active_quickbars",
-          "order": 10,
+          "order": 11,
           "description": "",
           "write_type": "uint8",
           "optional": false
@@ -50014,6 +50202,13 @@
           "optional": true
         },
         {
+          "name": "camera_show_alerts",
+          "order": 8,
+          "description": "",
+          "write_type": "boolean",
+          "optional": false
+        },
+        {
           "name": "camera_surface_index",
           "order": 2,
           "description": "",
@@ -50030,7 +50225,7 @@
         },
         {
           "name": "gui_tooltip_interval",
-          "order": 9,
+          "order": 10,
           "description": "",
           "write_type": "double",
           "optional": false
@@ -50044,21 +50239,21 @@
         },
         {
           "name": "object_name",
-          "order": 12,
+          "order": 13,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "smart_belt_building",
-          "order": 8,
+          "order": 9,
           "description": "",
           "write_type": "boolean",
           "optional": true
         },
         {
           "name": "valid",
-          "order": 11,
+          "order": 12,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -61051,8 +61246,15 @@
       ],
       "attributes": [
         {
+          "name": "index",
+          "order": 1,
+          "description": "The index of this transport line in its owner.",
+          "read_type": "defines.transport_line",
+          "optional": false
+        },
+        {
           "name": "input_lines",
-          "order": 2,
+          "order": 3,
           "description": "The transport lines that this transport line is fed by or an empty table if none.",
           "read_type": {
             "complex_type": "array",
@@ -61062,21 +61264,21 @@
         },
         {
           "name": "line_length",
-          "order": 3,
+          "order": 4,
           "description": "Length of the transport line. Items can be inserted at line position from 0 up to returned value",
           "read_type": "float",
           "optional": false
         },
         {
           "name": "object_name",
-          "order": 6,
+          "order": 7,
           "description": "The class name of this object. Available even when `valid` is false. For LuaStruct objects it may also be suffixed with a dotted path to a member of the struct.",
           "read_type": "string",
           "optional": false
         },
         {
           "name": "output_lines",
-          "order": 1,
+          "order": 2,
           "description": "The transport lines that this transport line outputs items to or an empty table if none.",
           "read_type": {
             "complex_type": "array",
@@ -61093,14 +61295,14 @@
         },
         {
           "name": "total_segment_length",
-          "order": 4,
+          "order": 5,
           "description": "Total length of segment which consists of this line, all lines in front and lines in the back directly connected.",
           "read_type": "double",
           "optional": false
         },
         {
           "name": "valid",
-          "order": 5,
+          "order": 6,
           "description": "Is this object valid? This Lua object holds a reference to an object within the game engine. It is possible that the game-engine object is removed whilst a mod still holds the corresponding Lua object. If that happens, the object becomes invalid, i.e. this attribute will be `false`. Mods are advised to check for object validity if any change to the game state might have occurred between the creation of the Lua object and its access.",
           "read_type": "boolean",
           "optional": false
@@ -64483,7 +64685,7 @@
         },
         {
           "name": "name",
-          "order": 10,
+          "order": 11,
           "description": "Identifier of the event.",
           "type": "defines.events",
           "optional": false
@@ -64503,6 +64705,13 @@
           "optional": false
         },
         {
+          "name": "record",
+          "order": 10,
+          "description": "Blueprint record that was closed.",
+          "type": "LuaRecord",
+          "optional": true
+        },
+        {
           "name": "surface_index",
           "order": 8,
           "description": "The surface index of the global electric network whose GUI was closed.",
@@ -64511,7 +64720,7 @@
         },
         {
           "name": "tick",
-          "order": 11,
+          "order": 12,
           "description": "Tick the event was generated.",
           "type": "MapTick",
           "optional": false
@@ -64868,7 +65077,7 @@
         },
         {
           "name": "name",
-          "order": 10,
+          "order": 11,
           "description": "Identifier of the event.",
           "type": "defines.events",
           "optional": false
@@ -64888,6 +65097,13 @@
           "optional": false
         },
         {
+          "name": "record",
+          "order": 10,
+          "description": "Blueprint record that was opened.",
+          "type": "LuaRecord",
+          "optional": true
+        },
+        {
           "name": "surface_index",
           "order": 8,
           "description": "The surface index of the global electric network whose GUI was opened.",
@@ -64896,7 +65112,7 @@
         },
         {
           "name": "tick",
-          "order": 11,
+          "order": 12,
           "description": "Tick the event was generated.",
           "type": "MapTick",
           "optional": false
@@ -72257,6 +72473,18 @@
               "options": [
                 {
                   "complex_type": "literal",
+                  "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
+                {
+                  "complex_type": "literal",
                   "value": "allowed-without-fight"
                 },
                 {
@@ -72643,7 +72871,7 @@
     },
     {
       "name": "AlertFilter",
-      "order": 144,
+      "order": 145,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -72773,7 +73001,7 @@
     },
     {
       "name": "AmmoCategoryID",
-      "order": 126,
+      "order": 127,
       "description": "An ammo category may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -72794,7 +73022,7 @@
     },
     {
       "name": "AmmoType",
-      "order": 193,
+      "order": 194,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -72935,7 +73163,7 @@
     },
     {
       "name": "ArithmeticCombinatorParameterOperation",
-      "order": 215,
+      "order": 216,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -73001,7 +73229,7 @@
     },
     {
       "name": "ArithmeticCombinatorParameters",
-      "order": 214,
+      "order": 215,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -73272,7 +73500,7 @@
     },
     {
       "name": "AsteroidChunkID",
-      "order": 139,
+      "order": 140,
       "description": "An asteroid chunk prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -73305,6 +73533,18 @@
             "type": {
               "complex_type": "union",
               "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
                 {
                   "complex_type": "literal",
                   "value": "minable"
@@ -73949,7 +74189,7 @@
     },
     {
       "name": "BlueprintEntity",
-      "order": 170,
+      "order": 171,
       "description": "The representation of an entity inside of a blueprint.",
       "type": {
         "complex_type": "table",
@@ -75902,7 +76142,7 @@
     },
     {
       "name": "BlueprintEquipment",
-      "order": 201,
+      "order": 202,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76005,13 +76245,13 @@
     },
     {
       "name": "BlueprintInventory",
-      "order": 196,
+      "order": 197,
       "description": "",
       "type": "table"
     },
     {
       "name": "BlueprintInventoryWithFilters",
-      "order": 195,
+      "order": 196,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76038,7 +76278,7 @@
     },
     {
       "name": "BlueprintItemFilter",
-      "order": 194,
+      "order": 195,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76271,7 +76511,7 @@
     },
     {
       "name": "BlueprintRollingStockConnection",
-      "order": 169,
+      "order": 170,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76383,7 +76623,7 @@
     },
     {
       "name": "BlueprintScheduleRecord",
-      "order": 225,
+      "order": 226,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76476,7 +76716,7 @@
     },
     {
       "name": "BlueprintWire",
-      "order": 171,
+      "order": 172,
       "description": "Describes a single wire in the blueprint. The members of the tuple are, in order:\n\n- `source_entity_number`\n\n- `source_wire_connector_id`\n\n- `target_entity_number`\n\n- `target_wire_connector_id`",
       "type": {
         "complex_type": "tuple",
@@ -76490,7 +76730,7 @@
     },
     {
       "name": "BlueprintWireEnd",
-      "order": 173,
+      "order": 174,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76674,7 +76914,7 @@
     },
     {
       "name": "BoundingBox",
-      "order": 132,
+      "order": 133,
       "description": "Two positions, specifying the top-left and bottom-right corner of the box respectively. Like with [MapPosition](runtime:MapPosition), the names of the members may be omitted. When read from the game, the third member `orientation` is present if it is non-zero.",
       "examples": [
         "```\n-- Explicit definition\n{left_top = {x = -2, y = -3}, right_bottom = {x = 5, y = 8}}\n```",
@@ -76798,7 +77038,7 @@
     },
     {
       "name": "CapsuleAction",
-      "order": 188,
+      "order": 189,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -76934,7 +77174,7 @@
     },
     {
       "name": "CargoDestination",
-      "order": 152,
+      "order": 153,
       "description": "The destination of a cargo pod.",
       "type": {
         "complex_type": "table",
@@ -77000,7 +77240,7 @@
     },
     {
       "name": "CargoHatchDefinition",
-      "order": 84,
+      "order": 85,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77093,7 +77333,7 @@
     },
     {
       "name": "CargoStationParameters",
-      "order": 85,
+      "order": 86,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77608,7 +77848,7 @@
     },
     {
       "name": "CircuitCondition",
-      "order": 207,
+      "order": 208,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -77691,7 +77931,7 @@
     },
     {
       "name": "CircuitNetworkSelection",
-      "order": 206,
+      "order": 207,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78008,7 +78248,7 @@
     },
     {
       "name": "CloudsEffectProperties",
-      "order": 93,
+      "order": 94,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -78166,7 +78406,7 @@
     },
     {
       "name": "Color",
-      "order": 167,
+      "order": 168,
       "description": "Red, green, blue and alpha values, all in range [0, 1] or all in range [0, 255] if any value is > 1. All values here are optional. Color channels default to `0`, the alpha channel defaults to `1`.\n\nSimilar to [MapPosition](runtime:MapPosition), Color allows the short-hand notation of passing an array of exactly 3 or 4 numbers. The game usually expects colors to be in pre-multiplied form (color channels are pre-multiplied by alpha).",
       "examples": [
         "```\nred1 = {r = 0.5, g = 0, b = 0, a = 0.5}  -- Half-opacity red\nred2 = {r = 0.5, a = 0.5}                -- Same color as red1\nblack = {}                               -- All channels omitted: black\nred1_short = {0.5, 0, 0, 0.5}            -- Same color as red1 in short-hand notation\n```"
@@ -79079,7 +79319,7 @@
     },
     {
       "name": "CustomTooltipField",
-      "order": 90,
+      "order": 91,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79249,7 +79489,7 @@
     },
     {
       "name": "DamageTypeID",
-      "order": 118,
+      "order": 119,
       "description": "A damage type prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -79449,7 +79689,7 @@
     },
     {
       "name": "DeciderCombinatorCondition",
-      "order": 212,
+      "order": 213,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79521,7 +79761,7 @@
     },
     {
       "name": "DeciderCombinatorOutput",
-      "order": 213,
+      "order": 214,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79559,7 +79799,7 @@
     },
     {
       "name": "DeciderCombinatorParameters",
-      "order": 211,
+      "order": 212,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -79630,7 +79870,7 @@
     },
     {
       "name": "DecorativeID",
-      "order": 138,
+      "order": 139,
       "description": "A decorative prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -79663,6 +79903,18 @@
             "type": {
               "complex_type": "union",
               "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
                 {
                   "complex_type": "literal",
                   "value": "decal"
@@ -79896,7 +80148,7 @@
     },
     {
       "name": "DisplayPanelMessageDefinition",
-      "order": 205,
+      "order": 206,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80145,7 +80397,7 @@
     },
     {
       "name": "EffectReceiver",
-      "order": 79,
+      "order": 80,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80231,7 +80483,7 @@
     },
     {
       "name": "EffectValueRange",
-      "order": 78,
+      "order": 79,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80609,7 +80861,7 @@
           {
             "name": "min_expansion_cooldown",
             "order": 12,
-            "description": "The minimum time between expansions in ticks. The actual cooldown is adjusted to the current evolution levels. Defaults to `4*3 600=14 400` ticks.",
+            "description": "The minimum time between expansions in ticks. The actual cooldown is adjusted to the current evolution levels. Defaults to `10*3 600=36 000` ticks.",
             "type": "uint32",
             "optional": false
           },
@@ -80644,7 +80896,7 @@
           {
             "name": "settler_group_max_size",
             "order": 11,
-            "description": "The maximum size of a biter group that goes to build a new base. This is multiplied by the evolution factor. Defaults to `20`.",
+            "description": "The maximum size of a biter group that goes to build a new base. This is multiplied by the evolution factor. Defaults to `10`.",
             "type": "uint32",
             "optional": false
           },
@@ -80660,7 +80912,7 @@
     },
     {
       "name": "EnemySpawnerAbsorption",
-      "order": 105,
+      "order": 106,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -80708,7 +80960,7 @@
     },
     {
       "name": "EntityID",
-      "order": 114,
+      "order": 115,
       "description": "An entity prototype may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -80734,7 +80986,7 @@
     },
     {
       "name": "EntityIDAndQualityIDPair",
-      "order": 109,
+      "order": 110,
       "description": "An entity prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -80864,6 +81116,14 @@
                 {
                   "complex_type": "literal",
                   "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
                 },
                 {
                   "complex_type": "literal",
@@ -81312,7 +81572,7 @@
     },
     {
       "name": "EntityRendererSearchBoxLimits",
-      "order": 80,
+      "order": 81,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -81547,7 +81807,7 @@
     },
     {
       "name": "EntityWithQualityID",
-      "order": 108,
+      "order": 109,
       "description": "An entity prototype with optional quality specification. Can be specified in one of four ways.",
       "type": {
         "complex_type": "union",
@@ -81578,7 +81838,7 @@
     },
     {
       "name": "EquipmentID",
-      "order": 128,
+      "order": 129,
       "description": "An equipment prototype may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -81604,7 +81864,7 @@
     },
     {
       "name": "EquipmentIDAndQualityIDPair",
-      "order": 130,
+      "order": 131,
       "description": "An equipment prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -81652,7 +81912,7 @@
     },
     {
       "name": "EquipmentPosition",
-      "order": 202,
+      "order": 203,
       "description": "Position inside an equipment grid. This uses the same format as [MapPosition](runtime:MapPosition), meaning it can be specified either with or without explicit keys.",
       "examples": [
         "```\n-- Explicit definition\n{x = 5, y = 2}\n{y = 2, x = 5}\n```",
@@ -81705,6 +81965,18 @@
             "type": {
               "complex_type": "union",
               "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
                 {
                   "complex_type": "literal",
                   "value": "item-to-place"
@@ -81808,7 +82080,7 @@
     },
     {
       "name": "EquipmentWithQualityID",
-      "order": 129,
+      "order": 130,
       "description": "An equipment prototype with optional quality specification.",
       "type": {
         "complex_type": "union",
@@ -82160,7 +82432,7 @@
     },
     {
       "name": "Fluid",
-      "order": 127,
+      "order": 128,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82191,7 +82463,7 @@
     },
     {
       "name": "FluidAmount",
-      "order": 180,
+      "order": 181,
       "description": "A fluid amount. The amount is stored as a fixed-size signed 64 bit integer, with 24 bits reserved for decimal precision, meaning the smallest value step is `1/2^24`.",
       "type": "double"
     },
@@ -82252,7 +82524,7 @@
     },
     {
       "name": "FluidFlowDirection",
-      "order": 177,
+      "order": 178,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -82278,7 +82550,7 @@
     },
     {
       "name": "FluidID",
-      "order": 107,
+      "order": 108,
       "description": "A fluid may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -82304,7 +82576,7 @@
     },
     {
       "name": "FluidProduct",
-      "order": 224,
+      "order": 225,
       "description": "",
       "examples": [
         "```\n-- Products of the \"advanced-oil-processing\" recipe\n{{type=\"fluid\", name=\"heavy-oil\", amount=1},\n  {type=\"fluid\", name=\"light-oil\", amount=4.5},\n  {type=\"fluid\", name=\"petroleum-gas\", amount=5.5}}\n```"
@@ -82412,6 +82684,14 @@
                 {
                   "complex_type": "literal",
                   "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
                 },
                 {
                   "complex_type": "literal",
@@ -82655,7 +82935,7 @@
     },
     {
       "name": "FogEffectProperties",
-      "order": 94,
+      "order": 95,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -82686,7 +82966,7 @@
     },
     {
       "name": "ForceCondition",
-      "order": 176,
+      "order": 177,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -82732,7 +83012,7 @@
     },
     {
       "name": "ForceID",
-      "order": 106,
+      "order": 107,
       "description": "A force may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -82758,7 +83038,7 @@
     },
     {
       "name": "ForceSet",
-      "order": 137,
+      "order": 138,
       "description": "Set of forces. Can be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -83296,7 +83576,7 @@
     },
     {
       "name": "GlobalTintEffectProperties",
-      "order": 95,
+      "order": 96,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -84732,7 +85012,7 @@
     },
     {
       "name": "ItemGroupID",
-      "order": 113,
+      "order": 114,
       "description": "An item group may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -84777,7 +85057,7 @@
     },
     {
       "name": "ItemID",
-      "order": 112,
+      "order": 113,
       "description": "An item prototype may be specified in one of four ways.",
       "type": {
         "complex_type": "union",
@@ -84808,7 +85088,7 @@
     },
     {
       "name": "ItemIDAndQualityIDPair",
-      "order": 111,
+      "order": 112,
       "description": "An item prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -84935,7 +85215,7 @@
     },
     {
       "name": "ItemProduct",
-      "order": 223,
+      "order": 224,
       "description": "",
       "examples": [
         "```\n-- Products of the \"steel-chest\" recipe (an array of Product)\n{{type=\"item\", name=\"steel-chest\", amount=1}}\n```",
@@ -85528,7 +85808,7 @@
     },
     {
       "name": "ItemPrototypeFlag",
-      "order": 184,
+      "order": 185,
       "description": "A [string](runtime:string) specifying an item prototype flag.",
       "type": {
         "complex_type": "union",
@@ -85624,7 +85904,7 @@
     },
     {
       "name": "ItemPrototypeFlags",
-      "order": 183,
+      "order": 184,
       "description": "A set of flags. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.\n\nBy default, none of these flags are set.",
       "type": {
         "complex_type": "dictionary",
@@ -85637,7 +85917,7 @@
     },
     {
       "name": "ItemStackDefinition",
-      "order": 186,
+      "order": 187,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -85710,7 +85990,7 @@
     },
     {
       "name": "ItemStackIdentification",
-      "order": 150,
+      "order": 151,
       "description": "An item may be specified in one of three ways.",
       "examples": [
         "```\n-- All of these lines specify an item stack of one iron plate\n{name=\"iron-plate\"}\n{name=\"iron-plate\", count=1}\n{name=\"iron-plate\", count=1, quality=\"normal\"}\n```",
@@ -85826,7 +86106,7 @@
     },
     {
       "name": "ItemWithQualityID",
-      "order": 110,
+      "order": 111,
       "description": "An item prototype with optional quality specification. Can be specified in one of four ways.",
       "type": {
         "complex_type": "union",
@@ -86089,7 +86369,7 @@
     },
     {
       "name": "LinkedGameControl",
-      "order": 174,
+      "order": 175,
       "description": "The internal name of a game control (key binding).",
       "type": {
         "complex_type": "union",
@@ -87234,7 +87514,7 @@
     },
     {
       "name": "LogisticFilter",
-      "order": 143,
+      "order": 144,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -88646,8 +88926,8 @@
     },
     {
       "name": "LuaEventType",
-      "order": 158,
-      "description": "Event name may be specified in one of four ways.",
+      "order": 159,
+      "description": "An event name may be specified in one of four ways.",
       "type": {
         "complex_type": "union",
         "options": [
@@ -88669,7 +88949,7 @@
           {
             "complex_type": "type",
             "value": "string",
-            "description": "Name of the event."
+            "description": "Name of a built-in event, custom event prototype or custom input prototype."
           }
         ],
         "full_format": true
@@ -92384,7 +92664,7 @@
     },
     {
       "name": "MapEditorSetting",
-      "order": 203,
+      "order": 204,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92867,7 +93147,7 @@
     },
     {
       "name": "MapLocation",
-      "order": 165,
+      "order": 166,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -92891,7 +93171,7 @@
     },
     {
       "name": "MapPosition",
-      "order": 166,
+      "order": 167,
       "description": "Coordinates on a surface, for example of an entity. MapPositions may be specified either as a dictionary with `x`, `y` as keys, or simply as an array with two elements. When reading this is always a dictionary.\n\nThe coordinates are saved as a fixed-size 32 bit integer, with 8 bits reserved for decimal precision, meaning the smallest value step is `1/2^8 = 0.00390625` tiles.",
       "examples": [
         "```\n-- Explicit definition\n{x = 5.5, y = 2}\n{y = 2.25, x = 5.125}\n```",
@@ -93149,7 +93429,7 @@
     },
     {
       "name": "MineableProperties",
-      "order": 198,
+      "order": 199,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -93350,6 +93630,18 @@
             "type": {
               "complex_type": "union",
               "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
                 {
                   "complex_type": "literal",
                   "value": "type"
@@ -94145,7 +94437,7 @@
     },
     {
       "name": "ParticleID",
-      "order": 117,
+      "order": 118,
       "description": "A particle prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -94413,7 +94705,7 @@
     },
     {
       "name": "PathfinderFlags",
-      "order": 131,
+      "order": 132,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -94579,7 +94871,7 @@
     },
     {
       "name": "PipeConnectionDefinition",
-      "order": 179,
+      "order": 180,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -94665,7 +94957,7 @@
     },
     {
       "name": "PipeConnectionType",
-      "order": 178,
+      "order": 179,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -94691,7 +94983,7 @@
     },
     {
       "name": "PipetteID",
-      "order": 175,
+      "order": 176,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -94790,7 +95082,7 @@
     },
     {
       "name": "PlatformBackdrop",
-      "order": 98,
+      "order": 99,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95013,7 +95305,7 @@
     },
     {
       "name": "PlatformBackdropHeroCloud",
-      "order": 97,
+      "order": 98,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95137,7 +95429,7 @@
     },
     {
       "name": "PlayMusicSpecification",
-      "order": 134,
+      "order": 135,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95196,7 +95488,7 @@
     },
     {
       "name": "PlaySoundSpecification",
-      "order": 133,
+      "order": 134,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95234,7 +95526,7 @@
     },
     {
       "name": "PlayerColorData",
-      "order": 83,
+      "order": 84,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95265,7 +95557,7 @@
     },
     {
       "name": "PlayerIdentification",
-      "order": 136,
+      "order": 137,
       "description": "A player may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -95419,7 +95711,7 @@
     },
     {
       "name": "PrintSettings",
-      "order": 146,
+      "order": 147,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95477,7 +95769,7 @@
     },
     {
       "name": "ProcessionSet",
-      "order": 82,
+      "order": 83,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95507,7 +95799,7 @@
     },
     {
       "name": "ProcessionTimeline",
-      "order": 92,
+      "order": 93,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -95552,7 +95844,7 @@
     },
     {
       "name": "Product",
-      "order": 221,
+      "order": 222,
       "description": "Returns one of the subtypes, depending on the value of `type`.",
       "examples": [
         "```\n-- Products of the \"steel-chest\" recipe (an array of Product)\n{{type=\"item\", name=\"steel-chest\", amount=1}}\n```",
@@ -95578,7 +95870,7 @@
     },
     {
       "name": "ProductionType",
-      "order": 181,
+      "order": 182,
       "description": "Specifies how the entity will utilize this fluidbox. `input-output` should only be used for boilers in fluid heating mode.",
       "type": {
         "complex_type": "union",
@@ -95900,7 +96192,7 @@
     },
     {
       "name": "PrototypeFilterMode",
-      "order": 189,
+      "order": 190,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -95953,7 +96245,7 @@
     },
     {
       "name": "PrototypeStrafeSettings",
-      "order": 102,
+      "order": 103,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96133,7 +96425,7 @@
     },
     {
       "name": "QualityCondition",
-      "order": 151,
+      "order": 152,
       "description": "An item filter may be specified in two ways, either as a string which is a quality prototype name or as a table.",
       "type": {
         "complex_type": "union",
@@ -96164,7 +96456,7 @@
     },
     {
       "name": "QualityID",
-      "order": 122,
+      "order": 123,
       "description": "A quality prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -96441,7 +96733,7 @@
     },
     {
       "name": "RailLocation",
-      "order": 77,
+      "order": 78,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -96545,7 +96837,7 @@
     },
     {
       "name": "RangeMode",
-      "order": 168,
+      "order": 169,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -96609,13 +96901,13 @@
     },
     {
       "name": "RealOrientation",
-      "order": 164,
+      "order": 165,
       "description": "The smooth orientation. It is a `float` in the range `[0, 1)` that covers a full circle, starting at the top and going clockwise.\n\nThis means a value of `0` indicates \"north\", a value of `0.5` indicates \"south\". For example then, a value of `0.625` would indicate \"south-west\", and a value of `0.875` would indicate \"north-west\".",
       "type": "float"
     },
     {
       "name": "RecipeCategoryID",
-      "order": 123,
+      "order": 124,
       "description": "A recipe category may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -96636,7 +96928,7 @@
     },
     {
       "name": "RecipeID",
-      "order": 124,
+      "order": 125,
       "description": "A recipe may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -96662,7 +96954,7 @@
     },
     {
       "name": "RecipeIDAndQualityIDPair",
-      "order": 81,
+      "order": 82,
       "description": "A recipe prototype with optional quality specification.",
       "type": {
         "complex_type": "table",
@@ -96713,6 +97005,14 @@
                 {
                   "complex_type": "literal",
                   "value": "hidden-from-player-crafting"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
                 },
                 {
                   "complex_type": "literal",
@@ -97510,7 +97810,7 @@
     },
     {
       "name": "RequestFromLocation",
-      "order": 161,
+      "order": 162,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -97953,7 +98253,7 @@
     },
     {
       "name": "RuntimeTooltipField",
-      "order": 91,
+      "order": 92,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98103,7 +98403,7 @@
     },
     {
       "name": "ScheduleRecord",
-      "order": 226,
+      "order": 77,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98111,14 +98411,14 @@
           {
             "name": "allows_unloading",
             "order": 6,
-            "description": "",
+            "description": "When reading this will always be present. Defaults to `true` when writing.",
             "type": "boolean",
             "optional": true
           },
           {
             "name": "created_by_interrupt",
             "order": 5,
-            "description": "",
+            "description": "When reading this will always be present. Defaults to `false` when writing.",
             "type": "boolean",
             "optional": true
           },
@@ -98146,14 +98446,14 @@
           {
             "name": "temporary",
             "order": 4,
-            "description": "",
+            "description": "When reading this will always be present. Defaults to `false` when writing.",
             "type": "boolean",
             "optional": true
           },
           {
             "name": "wait_conditions",
             "order": 3,
-            "description": "",
+            "description": "When reading this will always be present but may be an empty array.",
             "type": {
               "complex_type": "array",
               "value": "WaitCondition"
@@ -98165,7 +98465,7 @@
     },
     {
       "name": "ScheduleRecordPosition",
-      "order": 153,
+      "order": 154,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -98265,7 +98565,7 @@
     },
     {
       "name": "ScriptRenderMode",
-      "order": 156,
+      "order": 157,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -98291,7 +98591,7 @@
     },
     {
       "name": "ScriptRenderTarget",
-      "order": 148,
+      "order": 149,
       "description": "When writing it is possible to give LuaEntity or MapPosition directly. However, reading always returns the full ScriptRenderTargetTable.\n\nThe full ScriptRenderTargetTable allows specifying cursor targets and an offset for entity targets.\n\nIf an entity target of an object (except its `orientation_target`) is destroyed or changes surface, then the object is also destroyed.",
       "examples": [
         "```\ntarget = some_lua_entity\n```",
@@ -98313,7 +98613,7 @@
     },
     {
       "name": "ScriptRenderTargetTable",
-      "order": 149,
+      "order": 150,
       "description": "If an entity target of an object (except its `orientation_target`) is destroyed or changes surface, then the object is also destroyed.\n\nTargets of type `\"cursor\"` draw at the position of the player's cursor.\n\nTargets of type `\"build-cursor\"` draw at the position of the player's build cursor, including snapping to the build position. The offset is rotated by the entity's direction and mirrored if the entity to be built is mirrored. Recommended to be combined with [ScriptRenderMode::build-cursor](runtime:ScriptRenderMode::build-cursor).",
       "examples": [
         "```\n{type = \"entity\", entity = some_lua_entity, offset = {-0.5, 1}}\n```",
@@ -98380,7 +98680,7 @@
     },
     {
       "name": "ScriptSpriteLightMode",
-      "order": 157,
+      "order": 158,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -98442,7 +98742,7 @@
     },
     {
       "name": "SegmentEngineSpecification",
-      "order": 87,
+      "order": 88,
       "description": "A runtime representation of [SegmentEngineSpecification](prototype:SegmentEngineSpecification).",
       "type": {
         "complex_type": "table",
@@ -98469,7 +98769,7 @@
     },
     {
       "name": "SegmentSpecification",
-      "order": 88,
+      "order": 89,
       "description": "A runtime representation of [SegmentSpecification](prototype:SegmentSpecification).",
       "type": {
         "complex_type": "table",
@@ -98677,7 +98977,7 @@
     },
     {
       "name": "SelectionModeFlags",
-      "order": 187,
+      "order": 188,
       "description": "A set of flags on a selection tool that define how entities and tiles are selected. Active flags are in the dictionary as `true`, while inactive flags aren't present at all.",
       "type": {
         "complex_type": "dictionary",
@@ -98830,7 +99130,7 @@
     },
     {
       "name": "SelectorCombinatorParameterOperation",
-      "order": 217,
+      "order": 218,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -98886,7 +99186,7 @@
     },
     {
       "name": "SelectorCombinatorParameters",
-      "order": 216,
+      "order": 217,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99060,7 +99360,7 @@
     },
     {
       "name": "SharedProbabilityDefinition",
-      "order": 222,
+      "order": 223,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99084,7 +99384,7 @@
     },
     {
       "name": "Signal",
-      "order": 204,
+      "order": 205,
       "description": "An actual signal transmitted by the network.",
       "type": {
         "complex_type": "table",
@@ -99108,7 +99408,7 @@
     },
     {
       "name": "SignalFilter",
-      "order": 142,
+      "order": 143,
       "description": "A signal filter may be specified in two ways, either as a string which is a virtual signal name or item prototype name or as a table.\n\nWhen the LogisticFilter that this is used in has a non-zero `min` value then `comparator` must be `\"=\"` (the default when writing) and `quality` is mandatory.",
       "type": {
         "complex_type": "union",
@@ -99153,7 +99453,7 @@
     },
     {
       "name": "SignalID",
-      "order": 208,
+      "order": 209,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99184,7 +99484,7 @@
     },
     {
       "name": "SignalIDBase",
-      "order": 209,
+      "order": 210,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99208,7 +99508,7 @@
     },
     {
       "name": "SignalIDType",
-      "order": 210,
+      "order": 211,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -99826,7 +100126,7 @@
     },
     {
       "name": "SpaceConnectionAsteroidSpawnDefinition",
-      "order": 218,
+      "order": 219,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99860,7 +100160,7 @@
     },
     {
       "name": "SpaceConnectionAsteroidSpawnPoint",
-      "order": 219,
+      "order": 220,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99891,7 +100191,7 @@
     },
     {
       "name": "SpaceConnectionID",
-      "order": 140,
+      "order": 141,
       "description": "A space connection prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -99912,7 +100212,7 @@
     },
     {
       "name": "SpaceDustEffectProperties",
-      "order": 96,
+      "order": 97,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99929,7 +100229,7 @@
     },
     {
       "name": "SpaceLocationAsteroidSpawnDefinition",
-      "order": 220,
+      "order": 221,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -99974,7 +100274,7 @@
     },
     {
       "name": "SpaceLocationID",
-      "order": 141,
+      "order": 142,
       "description": "A space location prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -100007,6 +100307,18 @@
             "type": {
               "complex_type": "union",
               "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
                 {
                   "complex_type": "literal",
                   "value": "fly-condition"
@@ -100205,7 +100517,7 @@
     },
     {
       "name": "SpacePlatformTileDefinition",
-      "order": 197,
+      "order": 198,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100253,7 +100565,7 @@
     },
     {
       "name": "SpentFluidSpecification",
-      "order": 104,
+      "order": 105,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100487,7 +100799,7 @@
     },
     {
       "name": "SpoilToTriggerResult",
-      "order": 190,
+      "order": 191,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100523,7 +100835,7 @@
     },
     {
       "name": "StateSteeringSettings",
-      "order": 100,
+      "order": 101,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100554,7 +100866,7 @@
     },
     {
       "name": "SteeringSettings",
-      "order": 101,
+      "order": 102,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100585,7 +100897,7 @@
     },
     {
       "name": "SurfaceCondition",
-      "order": 182,
+      "order": 183,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100616,7 +100928,7 @@
     },
     {
       "name": "SurfaceIdentification",
-      "order": 135,
+      "order": 136,
       "description": "A surface may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -100642,7 +100954,7 @@
     },
     {
       "name": "SurfacePropertyID",
-      "order": 147,
+      "order": 148,
       "description": "Surface property prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -100663,7 +100975,7 @@
     },
     {
       "name": "SurfaceRenderParameters",
-      "order": 99,
+      "order": 100,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -100778,7 +101090,7 @@
     },
     {
       "name": "TargetType",
-      "order": 192,
+      "order": 193,
       "description": "Target type of an [AmmoType](runtime:AmmoType).",
       "type": {
         "complex_type": "union",
@@ -100804,7 +101116,7 @@
     },
     {
       "name": "TechnologyID",
-      "order": 116,
+      "order": 117,
       "description": "An technology prototype may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -101635,6 +101947,14 @@
                 },
                 {
                   "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
+                {
+                  "complex_type": "literal",
                   "value": "upgrade"
                 },
                 {
@@ -101841,7 +102161,7 @@
     },
     {
       "name": "TerritoryVisibilityCondition",
-      "order": 162,
+      "order": 163,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -101867,7 +102187,7 @@
     },
     {
       "name": "TextAlign",
-      "order": 120,
+      "order": 121,
       "description": "The text is aligned so that the target position is at the given side of the text.\n\nFor example, `\"right\"` aligned text means the right side of the text is at the target position. Or in other words, the target is on the right of the text.",
       "type": {
         "complex_type": "union",
@@ -101948,7 +102268,7 @@
     },
     {
       "name": "TileBuildabilityRule",
-      "order": 89,
+      "order": 90,
       "description": "A runtime representation of [TileBuildabilityRule](prototype:TileBuildabilityRule).",
       "type": {
         "complex_type": "table",
@@ -102010,7 +102330,7 @@
     },
     {
       "name": "TileID",
-      "order": 125,
+      "order": 126,
       "description": "A tile may be specified in one of three ways.",
       "type": {
         "complex_type": "union",
@@ -102036,7 +102356,7 @@
     },
     {
       "name": "TilePosition",
-      "order": 163,
+      "order": 164,
       "description": "Coordinates of a tile on a [LuaSurface](runtime:LuaSurface) where each integer `x`/`y` represents a different tile. This uses the same format as [MapPosition](runtime:MapPosition), except it rounds any non-integer `x`/`y` down to whole numbers. It can be specified either with or without explicit keys.",
       "type": {
         "complex_type": "union",
@@ -102085,6 +102405,18 @@
             "type": {
               "complex_type": "union",
               "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
                 {
                   "complex_type": "literal",
                   "value": "minable"
@@ -105335,7 +105667,7 @@
     },
     {
       "name": "TrivialSmokeID",
-      "order": 119,
+      "order": 120,
       "description": "A trivial smoke prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -105436,7 +105768,7 @@
     },
     {
       "name": "UndoRedoAction",
-      "order": 172,
+      "order": 173,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105808,7 +106140,7 @@
     },
     {
       "name": "UndoRedoEquipment",
-      "order": 200,
+      "order": 201,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105839,7 +106171,7 @@
     },
     {
       "name": "UndoRedoEquipmentSettings",
-      "order": 199,
+      "order": 200,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -105877,7 +106209,7 @@
     },
     {
       "name": "UnitAISettings",
-      "order": 103,
+      "order": 104,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -106064,7 +106396,7 @@
     },
     {
       "name": "UnlockableID",
-      "order": 159,
+      "order": 160,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -106088,7 +106420,7 @@
     },
     {
       "name": "UnlockableIDType",
-      "order": 160,
+      "order": 161,
       "description": "",
       "type": {
         "complex_type": "union",
@@ -106189,7 +106521,7 @@
     },
     {
       "name": "UpgradeMapperDestination",
-      "order": 191,
+      "order": 192,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -106250,7 +106582,7 @@
     },
     {
       "name": "UpgradeMapperSource",
-      "order": 185,
+      "order": 186,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -107846,7 +108178,7 @@
     },
     {
       "name": "VerticalTextAlign",
-      "order": 121,
+      "order": 122,
       "description": "The text is aligned so that the target position is at the given side of the text.\n\nFor example, `\"top\"` aligned text means the top of the text is at the target position. Or in other words, the target is at the top of the text.",
       "type": {
         "complex_type": "union",
@@ -107877,7 +108209,7 @@
     },
     {
       "name": "VirtualSignalID",
-      "order": 115,
+      "order": 116,
       "description": "A virtual signal prototype may be specified in one of two ways.",
       "type": {
         "complex_type": "union",
@@ -107910,6 +108242,18 @@
             "type": {
               "complex_type": "union",
               "options": [
+                {
+                  "complex_type": "literal",
+                  "value": "hidden"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "hidden-in-factoriopedia"
+                },
+                {
+                  "complex_type": "literal",
+                  "value": "is-parameter"
+                },
                 {
                   "complex_type": "literal",
                   "value": "special-signal"
@@ -108230,7 +108574,7 @@
     },
     {
       "name": "WireConnection",
-      "order": 145,
+      "order": 146,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -108254,7 +108598,7 @@
     },
     {
       "name": "WorkerRobotOrder",
-      "order": 86,
+      "order": 87,
       "description": "",
       "type": {
         "complex_type": "table",
@@ -108313,7 +108657,7 @@
     },
     {
       "name": "ZoomLimits",
-      "order": 154,
+      "order": 155,
       "description": "A set of limitations for the player zoom level.",
       "examples": [
         "```\n{\n  closest = { zoom = 4 },\n  furthest = { zoom = 1 / 16 },\n  furthest_game_view = { distance = 200, max_distance = 400 }\n}\n```"
@@ -108347,7 +108691,7 @@
     },
     {
       "name": "ZoomSpecification",
-      "order": 155,
+      "order": 156,
       "description": "A table specifying a fixed or dynamically-computed zoom level using one of the supported methods. Used by [ZoomLimits](runtime:ZoomLimits).\n\nMethod 1 only uses the `zoom` field. The zoom level is fixed and will not change at runtime. Directly correlates to the perceived size of objects in the game world.\n\nMethod 2 only uses `distance` and optionally `max_distance`. The zoom level is computed dynamically based on the player's window dimensions and aspect ratio. This method is ideal for limiting how far the player can see.\n\nIf there is ambiguity in which method should be used (i.e. both `zoom` and `distance` fields are provided), an error will be thrown during parsing.",
       "examples": [
         "```\n-- Method 1: Specify a fixed zoom level.\n{ zoom = 3.0 }\n\n-- Method 2: Specify a dynamic zoom level based on the window dimensions.\n{ distance = 200, max_distance = 500 }\n```"
@@ -111934,968 +112278,973 @@
           "description": ""
         },
         {
-          "name": "flush_opened_entity_specific_fluid",
+          "name": "flush_opened_entity_fluid_system",
           "order": 103,
           "description": ""
         },
         {
-          "name": "go_to_train_station",
+          "name": "flush_opened_entity_specific_fluid",
           "order": 104,
           "description": ""
         },
         {
-          "name": "grab_blueprint_record",
+          "name": "go_to_train_station",
           "order": 105,
           "description": ""
         },
         {
-          "name": "gui_checked_state_changed",
+          "name": "grab_blueprint_record",
           "order": 106,
           "description": ""
         },
         {
-          "name": "gui_click",
+          "name": "gui_checked_state_changed",
           "order": 107,
           "description": ""
         },
         {
-          "name": "gui_confirmed",
+          "name": "gui_click",
           "order": 108,
           "description": ""
         },
         {
-          "name": "gui_elem_changed",
+          "name": "gui_confirmed",
           "order": 109,
           "description": ""
         },
         {
-          "name": "gui_hover",
+          "name": "gui_elem_changed",
           "order": 110,
           "description": ""
         },
         {
-          "name": "gui_inventory_action",
+          "name": "gui_hover",
           "order": 111,
           "description": ""
         },
         {
-          "name": "gui_inventory_bar_changed",
+          "name": "gui_inventory_action",
           "order": 112,
           "description": ""
         },
         {
-          "name": "gui_inventory_filter_changed",
+          "name": "gui_inventory_bar_changed",
           "order": 113,
           "description": ""
         },
         {
-          "name": "gui_leave",
+          "name": "gui_inventory_filter_changed",
           "order": 114,
           "description": ""
         },
         {
-          "name": "gui_location_changed",
+          "name": "gui_leave",
           "order": 115,
           "description": ""
         },
         {
-          "name": "gui_selected_tab_changed",
+          "name": "gui_location_changed",
           "order": 116,
           "description": ""
         },
         {
-          "name": "gui_selection_state_changed",
+          "name": "gui_selected_tab_changed",
           "order": 117,
           "description": ""
         },
         {
-          "name": "gui_switch_state_changed",
+          "name": "gui_selection_state_changed",
           "order": 118,
           "description": ""
         },
         {
-          "name": "gui_text_changed",
+          "name": "gui_switch_state_changed",
           "order": 119,
           "description": ""
         },
         {
-          "name": "gui_value_changed",
+          "name": "gui_text_changed",
           "order": 120,
           "description": ""
         },
         {
-          "name": "import_blueprint",
+          "name": "gui_value_changed",
           "order": 121,
           "description": ""
         },
         {
-          "name": "import_blueprint_string",
+          "name": "import_blueprint",
           "order": 122,
           "description": ""
         },
         {
-          "name": "import_blueprints_filtered",
+          "name": "import_blueprint_string",
           "order": 123,
           "description": ""
         },
         {
-          "name": "import_permissions_string",
+          "name": "import_blueprints_filtered",
           "order": 124,
           "description": ""
         },
         {
-          "name": "instantly_create_space_platform",
+          "name": "import_permissions_string",
           "order": 125,
           "description": ""
         },
         {
-          "name": "inventory_split",
+          "name": "instantly_create_space_platform",
           "order": 126,
           "description": ""
         },
         {
-          "name": "inventory_transfer",
+          "name": "inventory_split",
           "order": 127,
           "description": ""
         },
         {
-          "name": "land_at_planet",
+          "name": "inventory_transfer",
           "order": 128,
           "description": ""
         },
         {
-          "name": "launch_rocket",
+          "name": "land_at_planet",
           "order": 129,
           "description": ""
         },
         {
-          "name": "lua_shortcut",
+          "name": "launch_rocket",
           "order": 130,
           "description": ""
         },
         {
-          "name": "map_editor_action",
+          "name": "lua_shortcut",
           "order": 131,
           "description": ""
         },
         {
-          "name": "market_offer",
+          "name": "map_editor_action",
           "order": 132,
           "description": ""
         },
         {
-          "name": "mod_settings_changed",
+          "name": "market_offer",
           "order": 133,
           "description": ""
         },
         {
-          "name": "modify_decider_combinator_condition",
+          "name": "mod_settings_changed",
           "order": 134,
           "description": ""
         },
         {
-          "name": "modify_decider_combinator_else_output",
+          "name": "modify_decider_combinator_condition",
           "order": 135,
           "description": ""
         },
         {
-          "name": "modify_decider_combinator_output",
+          "name": "modify_decider_combinator_else_output",
           "order": 136,
           "description": ""
         },
         {
-          "name": "move_pin",
+          "name": "modify_decider_combinator_output",
           "order": 137,
           "description": ""
         },
         {
-          "name": "move_research",
+          "name": "move_pin",
           "order": 138,
           "description": ""
         },
         {
-          "name": "open_achievements_gui",
+          "name": "move_research",
           "order": 139,
           "description": ""
         },
         {
-          "name": "open_alerts_config_gui",
+          "name": "open_achievements_gui",
           "order": 140,
           "description": ""
         },
         {
-          "name": "open_blueprint_library_gui",
+          "name": "open_alerts_config_gui",
           "order": 141,
           "description": ""
         },
         {
-          "name": "open_blueprint_record",
+          "name": "open_blueprint_library_gui",
           "order": 142,
           "description": ""
         },
         {
-          "name": "open_bonus_gui",
+          "name": "open_blueprint_record",
           "order": 143,
           "description": ""
         },
         {
-          "name": "open_character_gui",
+          "name": "open_bonus_gui",
           "order": 144,
           "description": ""
         },
         {
-          "name": "open_current_vehicle_gui",
+          "name": "open_character_gui",
           "order": 145,
           "description": ""
         },
         {
-          "name": "open_equipment",
+          "name": "open_current_vehicle_gui",
           "order": 146,
           "description": ""
         },
         {
-          "name": "open_global_electric_network_gui",
+          "name": "open_equipment",
           "order": 147,
           "description": ""
         },
         {
-          "name": "open_gui",
+          "name": "open_global_electric_network_gui",
           "order": 148,
           "description": ""
         },
         {
-          "name": "open_item",
+          "name": "open_gui",
           "order": 149,
           "description": ""
         },
         {
-          "name": "open_logistics_gui",
+          "name": "open_item",
           "order": 150,
           "description": ""
         },
         {
-          "name": "open_mod_item",
+          "name": "open_logistics_gui",
           "order": 151,
           "description": ""
         },
         {
-          "name": "open_new_platform_button_from_rocket_silo",
+          "name": "open_mod_item",
           "order": 152,
           "description": ""
         },
         {
-          "name": "open_opened_entity_grid",
+          "name": "open_new_platform_button_from_rocket_silo",
           "order": 153,
           "description": ""
         },
         {
-          "name": "open_parent_of_opened_item",
+          "name": "open_opened_entity_grid",
           "order": 154,
           "description": ""
         },
         {
-          "name": "open_production_gui",
+          "name": "open_parent_of_opened_item",
           "order": 155,
           "description": ""
         },
         {
-          "name": "open_train_gui",
+          "name": "open_production_gui",
           "order": 156,
           "description": ""
         },
         {
-          "name": "open_train_station_gui",
+          "name": "open_train_gui",
           "order": 157,
           "description": ""
         },
         {
-          "name": "open_trains_gui",
+          "name": "open_train_station_gui",
           "order": 158,
           "description": ""
         },
         {
-          "name": "parametrise_blueprint",
+          "name": "open_trains_gui",
           "order": 159,
           "description": ""
         },
         {
-          "name": "paste_entity_settings",
+          "name": "parametrise_blueprint",
           "order": 160,
           "description": ""
         },
         {
-          "name": "pin_alert_group",
+          "name": "paste_entity_settings",
           "order": 161,
           "description": ""
         },
         {
-          "name": "pin_custom_alert",
+          "name": "pin_alert_group",
           "order": 162,
           "description": ""
         },
         {
-          "name": "pin_search_result",
+          "name": "pin_custom_alert",
           "order": 163,
           "description": ""
         },
         {
-          "name": "pipette",
+          "name": "pin_search_result",
           "order": 164,
           "description": ""
         },
         {
-          "name": "place_equipment",
+          "name": "pipette",
           "order": 165,
           "description": ""
         },
         {
-          "name": "providing_to_other_platforms",
+          "name": "place_equipment",
           "order": 166,
           "description": ""
         },
         {
-          "name": "quick_bar_pick_slot",
+          "name": "providing_to_other_platforms",
           "order": 167,
           "description": ""
         },
         {
-          "name": "quick_bar_set_selected_page",
+          "name": "quick_bar_pick_slot",
           "order": 168,
           "description": ""
         },
         {
-          "name": "quick_bar_set_slot",
+          "name": "quick_bar_set_selected_page",
           "order": 169,
           "description": ""
         },
         {
-          "name": "reassign_blueprint",
+          "name": "quick_bar_set_slot",
           "order": 170,
           "description": ""
         },
         {
-          "name": "redo",
+          "name": "reassign_blueprint",
           "order": 171,
           "description": ""
         },
         {
-          "name": "remote_view_entity",
+          "name": "redo",
           "order": 172,
           "description": ""
         },
         {
-          "name": "remote_view_surface",
+          "name": "remote_view_entity",
           "order": 173,
           "description": ""
         },
         {
-          "name": "remove_cables",
+          "name": "remote_view_surface",
           "order": 174,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_condition",
+          "name": "remove_cables",
           "order": 175,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_else_output",
+          "name": "remove_decider_combinator_condition",
           "order": 176,
           "description": ""
         },
         {
-          "name": "remove_decider_combinator_output",
+          "name": "remove_decider_combinator_else_output",
           "order": 177,
           "description": ""
         },
         {
-          "name": "remove_logistic_section",
+          "name": "remove_decider_combinator_output",
           "order": 178,
           "description": ""
         },
         {
-          "name": "remove_pin",
+          "name": "remove_logistic_section",
           "order": 179,
           "description": ""
         },
         {
-          "name": "remove_train_interrupt",
+          "name": "remove_pin",
           "order": 180,
           "description": ""
         },
         {
-          "name": "remove_train_station",
+          "name": "remove_train_interrupt",
           "order": 181,
           "description": ""
         },
         {
-          "name": "rename_interrupt",
+          "name": "remove_train_station",
           "order": 182,
           "description": ""
         },
         {
-          "name": "rename_space_platform",
+          "name": "rename_interrupt",
           "order": 183,
           "description": ""
         },
         {
-          "name": "reorder_logistic_section",
+          "name": "rename_space_platform",
           "order": 184,
           "description": ""
         },
         {
-          "name": "request_missing_construction_materials",
+          "name": "reorder_logistic_section",
           "order": 185,
           "description": ""
         },
         {
-          "name": "reset_assembling_machine",
+          "name": "request_missing_construction_materials",
           "order": 186,
           "description": ""
         },
         {
-          "name": "rotate_entity",
+          "name": "reset_assembling_machine",
           "order": 187,
           "description": ""
         },
         {
-          "name": "select_area",
+          "name": "rotate_entity",
           "order": 188,
           "description": ""
         },
         {
-          "name": "select_asteroid_chunk_slot",
+          "name": "select_area",
           "order": 189,
           "description": ""
         },
         {
-          "name": "select_blueprint_entities",
+          "name": "select_asteroid_chunk_slot",
           "order": 190,
           "description": ""
         },
         {
-          "name": "select_entity_filter_slot",
+          "name": "select_blueprint_entities",
           "order": 191,
           "description": ""
         },
         {
-          "name": "select_entity_slot",
+          "name": "select_entity_filter_slot",
           "order": 192,
           "description": ""
         },
         {
-          "name": "select_item_filter",
+          "name": "select_entity_slot",
           "order": 193,
           "description": ""
         },
         {
-          "name": "select_mapper_slot_from",
+          "name": "select_item_filter",
           "order": 194,
           "description": ""
         },
         {
-          "name": "select_mapper_slot_to",
+          "name": "select_mapper_slot_from",
           "order": 195,
           "description": ""
         },
         {
-          "name": "select_next_valid_gun",
+          "name": "select_mapper_slot_to",
           "order": 196,
           "description": ""
         },
         {
-          "name": "select_tile_slot",
+          "name": "select_next_valid_gun",
           "order": 197,
           "description": ""
         },
         {
-          "name": "send_spidertron",
+          "name": "select_tile_slot",
           "order": 198,
           "description": ""
         },
         {
-          "name": "send_stack_to_trash",
+          "name": "send_spidertron",
           "order": 199,
           "description": ""
         },
         {
-          "name": "send_stacks_to_trash",
+          "name": "send_stack_to_trash",
           "order": 200,
           "description": ""
         },
         {
-          "name": "send_train_to_pin_target",
+          "name": "send_stacks_to_trash",
           "order": 201,
           "description": ""
         },
         {
-          "name": "set_behavior_mode",
+          "name": "send_train_to_pin_target",
           "order": 202,
           "description": ""
         },
         {
-          "name": "set_car_weapons_control",
+          "name": "set_behavior_mode",
           "order": 203,
           "description": ""
         },
         {
-          "name": "set_cheat_mode_quality",
+          "name": "set_car_weapons_control",
           "order": 204,
           "description": ""
         },
         {
-          "name": "set_circuit_condition",
+          "name": "set_cheat_mode_quality",
           "order": 205,
           "description": ""
         },
         {
-          "name": "set_circuit_mode_of_operation",
+          "name": "set_circuit_condition",
           "order": 206,
           "description": ""
         },
         {
-          "name": "set_combinator_description",
+          "name": "set_circuit_mode_of_operation",
           "order": 207,
           "description": ""
         },
         {
-          "name": "set_control_behavior_input_networks",
+          "name": "set_combinator_description",
           "order": 208,
           "description": ""
         },
         {
-          "name": "set_control_behavior_output_networks",
+          "name": "set_control_behavior_input_networks",
           "order": 209,
           "description": ""
         },
         {
-          "name": "set_copy_color_from_train_stop",
+          "name": "set_control_behavior_output_networks",
           "order": 210,
           "description": ""
         },
         {
-          "name": "set_deconstruction_item_tile_selection_mode",
+          "name": "set_copy_color_from_train_stop",
           "order": 211,
           "description": ""
         },
         {
-          "name": "set_deconstruction_item_trees_and_rocks_only",
+          "name": "set_deconstruction_item_tile_selection_mode",
           "order": 212,
           "description": ""
         },
         {
-          "name": "set_entity_color",
+          "name": "set_deconstruction_item_trees_and_rocks_only",
           "order": 213,
           "description": ""
         },
         {
-          "name": "set_entity_energy_property",
+          "name": "set_entity_color",
           "order": 214,
           "description": ""
         },
         {
-          "name": "set_equipment_energy_property",
+          "name": "set_entity_energy_property",
           "order": 215,
           "description": ""
         },
         {
-          "name": "set_filter",
+          "name": "set_equipment_energy_property",
           "order": 216,
           "description": ""
         },
         {
-          "name": "set_ghost_cursor",
+          "name": "set_filter",
           "order": 217,
           "description": ""
         },
         {
-          "name": "set_heat_interface_mode",
+          "name": "set_ghost_cursor",
           "order": 218,
           "description": ""
         },
         {
-          "name": "set_heat_interface_temperature",
+          "name": "set_heat_interface_mode",
           "order": 219,
           "description": ""
         },
         {
-          "name": "set_infinity_container_filter_item",
+          "name": "set_heat_interface_temperature",
           "order": 220,
           "description": ""
         },
         {
-          "name": "set_infinity_container_logistic_mode",
+          "name": "set_infinity_container_filter_item",
           "order": 221,
           "description": ""
         },
         {
-          "name": "set_infinity_container_remove_unfiltered_items",
+          "name": "set_infinity_container_logistic_mode",
           "order": 222,
           "description": ""
         },
         {
-          "name": "set_infinity_pipe_filter",
+          "name": "set_infinity_container_remove_unfiltered_items",
           "order": 223,
           "description": ""
         },
         {
-          "name": "set_inserter_max_stack_size",
+          "name": "set_infinity_pipe_filter",
           "order": 224,
           "description": ""
         },
         {
-          "name": "set_inventory_bar",
+          "name": "set_inserter_max_stack_size",
           "order": 225,
           "description": ""
         },
         {
-          "name": "set_lamp_always_on",
+          "name": "set_inventory_bar",
           "order": 226,
           "description": ""
         },
         {
-          "name": "set_linked_container_link_i_d",
+          "name": "set_lamp_always_on",
           "order": 227,
           "description": ""
         },
         {
-          "name": "set_loader_belt_stack_size_override",
+          "name": "set_linked_container_link_i_d",
           "order": 228,
           "description": ""
         },
         {
-          "name": "set_logistic_filter_item",
+          "name": "set_loader_belt_stack_size_override",
           "order": 229,
           "description": ""
         },
         {
-          "name": "set_logistic_network_name",
+          "name": "set_logistic_filter_item",
           "order": 230,
           "description": ""
         },
         {
-          "name": "set_logistic_section_active",
+          "name": "set_logistic_network_name",
           "order": 231,
           "description": ""
         },
         {
-          "name": "set_player_color",
+          "name": "set_logistic_section_active",
           "order": 232,
           "description": ""
         },
         {
-          "name": "set_pump_fluid_filter",
+          "name": "set_player_color",
           "order": 233,
           "description": ""
         },
         {
-          "name": "set_request_from_buffers",
+          "name": "set_pump_fluid_filter",
           "order": 234,
           "description": ""
         },
         {
-          "name": "set_research_finished_stops_game",
+          "name": "set_request_from_buffers",
           "order": 235,
           "description": ""
         },
         {
-          "name": "set_rocket_silo_send_to_orbit_automated_mode",
+          "name": "set_research_finished_stops_game",
           "order": 236,
           "description": ""
         },
         {
-          "name": "set_schedule_record_allow_unloading",
+          "name": "set_rocket_silo_send_to_orbit_automated_mode",
           "order": 237,
           "description": ""
         },
         {
-          "name": "set_signal",
+          "name": "set_schedule_record_allow_unloading",
           "order": 238,
           "description": ""
         },
         {
-          "name": "set_splitter_priority",
+          "name": "set_signal",
           "order": 239,
           "description": ""
         },
         {
-          "name": "set_spoil_priority",
+          "name": "set_splitter_priority",
           "order": 240,
           "description": ""
         },
         {
-          "name": "set_train_stop_priority",
+          "name": "set_spoil_priority",
           "order": 241,
           "description": ""
         },
         {
-          "name": "set_train_stopped",
+          "name": "set_train_stop_priority",
           "order": 242,
           "description": ""
         },
         {
-          "name": "set_trains_limit",
+          "name": "set_train_stopped",
           "order": 243,
           "description": ""
         },
         {
-          "name": "set_turret_ignore_unlisted",
+          "name": "set_trains_limit",
           "order": 244,
           "description": ""
         },
         {
-          "name": "set_use_inserter_filters",
+          "name": "set_turret_ignore_unlisted",
           "order": 245,
           "description": ""
         },
         {
-          "name": "set_vehicle_automatic_targeting_parameters",
+          "name": "set_use_inserter_filters",
           "order": 246,
           "description": ""
         },
         {
-          "name": "setup_assembling_machine",
+          "name": "set_vehicle_automatic_targeting_parameters",
           "order": 247,
           "description": ""
         },
         {
-          "name": "setup_blueprint",
+          "name": "setup_assembling_machine",
           "order": 248,
           "description": ""
         },
         {
-          "name": "setup_single_blueprint_record",
+          "name": "setup_blueprint",
           "order": 249,
           "description": ""
         },
         {
-          "name": "spawn_item",
+          "name": "setup_single_blueprint_record",
           "order": 250,
           "description": ""
         },
         {
-          "name": "spectator_change_surface",
+          "name": "spawn_item",
           "order": 251,
           "description": ""
         },
         {
-          "name": "stack_split",
+          "name": "spectator_change_surface",
           "order": 252,
           "description": ""
         },
         {
-          "name": "stack_transfer",
+          "name": "stack_split",
           "order": 253,
           "description": ""
         },
         {
-          "name": "start_repair",
+          "name": "stack_transfer",
           "order": 254,
           "description": ""
         },
         {
-          "name": "start_research",
+          "name": "start_repair",
           "order": 255,
           "description": ""
         },
         {
-          "name": "start_select_area",
+          "name": "start_research",
           "order": 256,
           "description": ""
         },
         {
-          "name": "start_walking",
+          "name": "start_select_area",
           "order": 257,
           "description": ""
         },
         {
-          "name": "stop_drag_build",
+          "name": "start_walking",
           "order": 258,
           "description": ""
         },
         {
-          "name": "swap_asteroid_chunk_slots",
+          "name": "stop_drag_build",
           "order": 259,
           "description": ""
         },
         {
-          "name": "swap_entity_filter_slots",
+          "name": "swap_asteroid_chunk_slots",
           "order": 260,
           "description": ""
         },
         {
-          "name": "swap_entity_slots",
+          "name": "swap_entity_filter_slots",
           "order": 261,
           "description": ""
         },
         {
-          "name": "swap_infinity_container_filter_items",
+          "name": "swap_entity_slots",
           "order": 262,
           "description": ""
         },
         {
-          "name": "swap_item_filters",
+          "name": "swap_infinity_container_filter_items",
           "order": 263,
           "description": ""
         },
         {
-          "name": "swap_logistic_filter_items",
+          "name": "swap_item_filters",
           "order": 264,
           "description": ""
         },
         {
-          "name": "swap_mappers",
+          "name": "swap_logistic_filter_items",
           "order": 265,
           "description": ""
         },
         {
-          "name": "swap_tile_slots",
+          "name": "swap_mappers",
           "order": 266,
           "description": ""
         },
         {
-          "name": "switch_connect_to_logistic_network",
+          "name": "swap_tile_slots",
           "order": 267,
           "description": ""
         },
         {
-          "name": "switch_constant_combinator_state",
+          "name": "switch_connect_to_logistic_network",
           "order": 268,
           "description": ""
         },
         {
-          "name": "switch_inserter_filter_mode_state",
+          "name": "switch_constant_combinator_state",
           "order": 269,
           "description": ""
         },
         {
-          "name": "switch_loader_filter_mode",
+          "name": "switch_inserter_filter_mode_state",
           "order": 270,
           "description": ""
         },
         {
-          "name": "switch_mining_drill_filter_mode_state",
+          "name": "switch_loader_filter_mode",
           "order": 271,
           "description": ""
         },
         {
-          "name": "switch_power_switch_state",
+          "name": "switch_mining_drill_filter_mode_state",
           "order": 272,
           "description": ""
         },
         {
-          "name": "take_equipment",
+          "name": "switch_power_switch_state",
           "order": 273,
           "description": ""
         },
         {
-          "name": "toggle_artillery_auto_targeting",
+          "name": "take_equipment",
           "order": 274,
           "description": ""
         },
         {
-          "name": "toggle_blueprint_snap_to_grid",
+          "name": "toggle_artillery_auto_targeting",
           "order": 275,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_entity_filter_mode",
+          "name": "toggle_blueprint_snap_to_grid",
           "order": 276,
           "description": ""
         },
         {
-          "name": "toggle_deconstruction_item_tile_filter_mode",
+          "name": "toggle_deconstruction_item_entity_filter_mode",
           "order": 277,
           "description": ""
         },
         {
-          "name": "toggle_driving",
+          "name": "toggle_deconstruction_item_tile_filter_mode",
           "order": 278,
           "description": ""
         },
         {
-          "name": "toggle_enable_vehicle_logistics_while_moving",
+          "name": "toggle_driving",
           "order": 279,
           "description": ""
         },
         {
-          "name": "toggle_entity_logistic_requests",
+          "name": "toggle_enable_vehicle_logistics_while_moving",
           "order": 280,
           "description": ""
         },
         {
-          "name": "toggle_equipment_movement_bonus",
+          "name": "toggle_entity_logistic_requests",
           "order": 281,
           "description": ""
         },
         {
-          "name": "toggle_map_editor",
+          "name": "toggle_equipment_movement_bonus",
           "order": 282,
           "description": ""
         },
         {
-          "name": "toggle_personal_logistic_requests",
+          "name": "toggle_map_editor",
           "order": 283,
           "description": ""
         },
         {
-          "name": "toggle_personal_roboport",
+          "name": "toggle_personal_logistic_requests",
           "order": 284,
           "description": ""
         },
         {
-          "name": "toggle_selected_entity",
+          "name": "toggle_personal_roboport",
           "order": 285,
           "description": ""
         },
         {
-          "name": "toggle_show_entity_info",
+          "name": "toggle_selected_entity",
           "order": 286,
           "description": ""
         },
         {
-          "name": "toggle_tall_entity_visibility",
+          "name": "toggle_show_entity_info",
           "order": 287,
           "description": ""
         },
         {
-          "name": "trash_not_requested_items",
+          "name": "toggle_tall_entity_visibility",
           "order": 288,
           "description": ""
         },
         {
-          "name": "undo",
+          "name": "trash_not_requested_items",
           "order": 289,
           "description": ""
         },
         {
-          "name": "upgrade",
+          "name": "undo",
           "order": 290,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_item",
+          "name": "upgrade",
           "order": 291,
           "description": ""
         },
         {
-          "name": "upgrade_opened_blueprint_by_record",
+          "name": "upgrade_opened_blueprint_by_item",
           "order": 292,
           "description": ""
         },
         {
-          "name": "use_item",
+          "name": "upgrade_opened_blueprint_by_record",
           "order": 293,
           "description": ""
         },
         {
-          "name": "wire_dragging",
+          "name": "use_item",
           "order": 294,
           "description": ""
         },
         {
-          "name": "write_to_console",
+          "name": "wire_dragging",
           "order": 295,
+          "description": ""
+        },
+        {
+          "name": "write_to_console",
+          "order": 296,
           "description": ""
         }
       ]
